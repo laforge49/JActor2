@@ -1,6 +1,6 @@
-package org.agilewiki.pactor.impl;
+package org.agilewiki.pactor;
 
-import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.impl.MailboxImpl;
 
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +28,8 @@ public class MailboxFactory {
         while (it.hasNext()) {
             try {
                 it.next().close();
-            } catch (Throwable t) {}
+            } catch (Throwable t) {
+            }
         }
         executorService.shutdownNow();
     }

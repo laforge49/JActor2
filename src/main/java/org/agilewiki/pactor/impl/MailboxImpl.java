@@ -1,6 +1,7 @@
 package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.MailboxFactory;
 
 public class MailboxImpl implements Mailbox {
     private MailboxFactory mailboxFactory;
