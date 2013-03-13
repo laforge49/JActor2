@@ -2,6 +2,7 @@ package org.agilewiki.pactor;
 
 import org.agilewiki.pactor.impl.MailboxImpl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -9,7 +10,7 @@ import java.util.concurrent.Executors;
 
 public class MailboxFactory {
     private ExecutorService executorService = Executors.newCachedThreadPool();
-    private List<AutoCloseable> closables;
+    private List<AutoCloseable> closables = new ArrayList<AutoCloseable>();
 
     public Mailbox createMailbox() {
         return new MailboxImpl(this);
