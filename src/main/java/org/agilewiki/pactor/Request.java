@@ -16,7 +16,7 @@ abstract public class Request<RESPONSE_TYPE> {
     }
 
     public void send(ResponseProcessor<RESPONSE_TYPE> responseProcessor)
-        throws Exception {
+            throws Exception {
         mailbox.send(this, responseProcessor);
     }
 
