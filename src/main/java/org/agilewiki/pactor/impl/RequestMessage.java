@@ -18,7 +18,11 @@ public final class RequestMessage implements Message {
             Request request,
             ExceptionHandler sourceExceptionHandler,
             ResponseProcessorInterface responseProcessor) {
-
+        this.sourceMailbox = sourceMailbox;
+        this.destinationMailbox = destinationMailbox;
+        this.request = request;
+        this.sourceExceptionHandler = sourceExceptionHandler;
+        this.responseProcessor = responseProcessor;
     }
     //todo
 }

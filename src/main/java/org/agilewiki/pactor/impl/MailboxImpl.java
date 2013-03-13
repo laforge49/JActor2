@@ -6,10 +6,11 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReference;
 
-public final class MailboxImpl implements Mailbox {
+public final class MailboxImpl implements Mailbox, Runnable {
     private MailboxFactory mailboxFactory;
     private Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
     private AtomicReference<MailboxImpl> atomicControl = new AtomicReference<MailboxImpl>();
+    ExceptionHandler exceptionHandler;
 
     public MailboxImpl(MailboxFactory mailboxFactory) {
         this.mailboxFactory = mailboxFactory;
@@ -38,7 +39,20 @@ public final class MailboxImpl implements Mailbox {
     @Override
     public void send(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
             throws Exception {
-        //todo
+        MailboxImpl sourceMailbox = (MailboxImpl) source;
+        RequestMessage requestMessage = new RequestMessage(
+                sourceMailbox, this, request, sourceMailbox.exceptionHandler, responseProcessor);
+        addMessage(requestMessage);
+    }
+
+    private void addMessage(Message message) {
+        inbox.add(message);
+        if (atomicControl.compareAndSet(null, this)) {
+            if (inbox.peek() != null)
+                mailboxFactory.submit(this);
+            else
+                atomicControl.set(null);
+        }
     }
 
     @Override
@@ -49,5 +63,25 @@ public final class MailboxImpl implements Mailbox {
     @Override
     public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler) {
         return null;  //todo
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            Message message = inbox.remove();
+            if (message == null) {
+                atomicControl.set(null);
+                if (inbox.peek() != null) {
+                    if (!atomicControl.compareAndSet(null, this))
+                        return;
+                    continue;
+                }
+            }
+            processMessage(message);
+        }
+    }
+
+    private void processMessage(Message message) {
+        //todo
     }
 }
