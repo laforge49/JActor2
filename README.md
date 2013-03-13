@@ -25,6 +25,6 @@ Any Plain Old Java Object (POJO) can function as an actor, given only a referenc
 And there are no interfaces that need to be implemented either.
 
 Status: The API is complete, though untested and undocumented. 
-*Only* three methods in MailboxImpl remain todo in the implementation.
+*Only* three methods in MailboxImpl remain in the implementation.
 
 [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
