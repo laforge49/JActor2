@@ -1,4 +1,4 @@
-PActor (POJO Actors)
+Actor (POJO Actors)
 ======
 
 The PActor project will explore the implementation of Java actors implemented without requiring a base class.
@@ -15,6 +15,10 @@ PActor is a reimplementation of JActor, but without several features:
 Features of JActor to be preserved:
 - Both 1-way (events) and 2-way (request/response) messaging will be included.
 - Exception handlers.
+
+JActor features to be implemented in a later release:
+- Loops.
+- Simple machines.
 
 One new feature will be added in this project: the elimination of the need for a base class for actors. 
 Any Plain Old Java Object (POJO) can function as an actor, given only a reference to a mailbox.
