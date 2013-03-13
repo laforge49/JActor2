@@ -15,4 +15,8 @@ Features of JActor to be preserved:
 - Both 1-way (events) and 2-way (request/response) messaging will be included.
 - Exception handlers.
 
+One new feature will be added in this project: the elimination of the need for a base class for actors. 
+Any Plain Old Java Object (POJO) can function as an actor, given only a reference to a mailbox.
+And there are no interfaces that need to be implemented either.
+
 [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
