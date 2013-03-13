@@ -32,11 +32,11 @@ public final class MailboxImpl implements Mailbox {
 
     @Override
     public void send(Request request) throws Exception {
-        send(request, null, VoidResponseProcessor.singleton);
+        send(request, null, VoidResponseProcessorProcessor.singleton);
     }
 
     @Override
-    public void send(Request request, Mailbox source, ProcessResponseInterface responseProcessor)
+    public void send(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
             throws Exception {
         //todo
     }
