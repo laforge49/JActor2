@@ -1,7 +1,5 @@
 package org.agilewiki.pactor;
 
-import org.agilewiki.pactor.impl.ProcessResponseInterface;
-
 public interface Mailbox {
     public Mailbox createMailbox();
 
