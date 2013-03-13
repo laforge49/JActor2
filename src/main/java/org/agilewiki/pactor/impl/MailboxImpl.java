@@ -29,7 +29,7 @@ public class MailboxImpl implements Mailbox {
 
     @Override
     public void send(Request request) throws Exception {
-        //todo
+        send(request, VoidResponseProcessor.singleton);
     }
 
     @Override

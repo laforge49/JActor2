@@ -2,7 +2,10 @@ package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.ResponseProcessor;
 
-public class VoidResponseProcessor extends ResponseProcessor<Void> {
+public final class VoidResponseProcessor extends ResponseProcessor<Void> {
+    public final static VoidResponseProcessor singleton = new VoidResponseProcessor();
+
+    private VoidResponseProcessor() {}
 
     @Override
     public void processResponse(Void response) {
