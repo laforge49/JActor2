@@ -9,7 +9,7 @@ public interface Mailbox {
 
     public void send(Request request) throws Exception;
 
-    public void send(Request request, ResponseProcessor responseProcessor)
+    public void send(Request request, Mailbox source, ResponseProcessor responseProcessor)
             throws Exception;
 
     public Object pend(Request request) throws Exception;

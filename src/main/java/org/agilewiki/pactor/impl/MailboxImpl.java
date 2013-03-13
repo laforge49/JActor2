@@ -26,11 +26,11 @@ public class MailboxImpl implements Mailbox {
 
     @Override
     public void send(Request request) throws Exception {
-        send(request, VoidResponseProcessor.singleton);
+        send(request, null, VoidResponseProcessor.singleton);
     }
 
     @Override
-    public void send(Request request, ResponseProcessor responseProcessor)
+    public void send(Request request, Mailbox source, ResponseProcessor responseProcessor)
             throws Exception {
         //todo
     }
