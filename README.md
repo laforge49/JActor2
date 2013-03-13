@@ -10,6 +10,7 @@ PActor is a reimplementation of JActor, but without several features:
 - No message buffering, so there is no need for an outpox. The Mailbox will just be an inbox.
 - No factories.
 - No message routing to ancestors.
+- Instead of reimplementing JAThreadManager, the slightly slower ThreadPoolExecutor.
 
 Features of JActor to be preserved:
 - Both 1-way (events) and 2-way (request/response) messaging will be included.
