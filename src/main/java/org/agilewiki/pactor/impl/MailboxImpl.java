@@ -1,9 +1,6 @@
 package org.agilewiki.pactor.impl;
 
-import org.agilewiki.pactor.Mailbox;
-import org.agilewiki.pactor.MailboxFactory;
-import org.agilewiki.pactor.Request;
-import org.agilewiki.pactor.ResponseProcessor;
+import org.agilewiki.pactor.*;
 
 public class MailboxImpl implements Mailbox {
     private MailboxFactory mailboxFactory;
@@ -40,6 +37,11 @@ public class MailboxImpl implements Mailbox {
 
     @Override
     public Object pend(Request request) throws Exception {
+        return null;  //todo
+    }
+
+    @Override
+    public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler) {
         return null;  //todo
     }
 }

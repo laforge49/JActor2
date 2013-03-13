@@ -13,4 +13,6 @@ public interface Mailbox {
             throws Exception;
 
     public Object pend(Request request) throws Exception;
+
+    public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler);
 }
