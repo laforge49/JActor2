@@ -1,4 +1,4 @@
-PActor (Pojo Actors)
+PActor (POJO Actors)
 ======
 
 POJO Actors
