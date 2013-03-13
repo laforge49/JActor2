@@ -12,7 +12,7 @@ public interface Mailbox {
     public void send(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
             throws Exception;
 
-    public Object pend(Request request) throws Exception;
+    public Object pend(Request request) throws Throwable;
 
     public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler);
 }

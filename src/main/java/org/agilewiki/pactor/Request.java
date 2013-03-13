@@ -20,7 +20,7 @@ abstract public class Request<RESPONSE_TYPE> {
         mailbox.send(this, source, responseProcessor);
     }
 
-    public RESPONSE_TYPE pend() throws Exception {
+    public RESPONSE_TYPE pend() throws Throwable {
         return (RESPONSE_TYPE) mailbox.pend(this);
     }
 }

@@ -1,5 +1,5 @@
 package org.agilewiki.pactor.impl;
 
 public interface MessageSource {
-    public void processResponseMessage(ResponseMessage responseMessage);
+    public void incomingResponse(RequestMessage requestMessage, Object response);
 }

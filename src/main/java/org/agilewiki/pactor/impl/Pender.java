@@ -1,21 +1,21 @@
 package org.agilewiki.pactor.impl;
 
-import org.agilewiki.pactor.ExceptionHandler;
-
 import java.util.concurrent.Semaphore;
 
 public final class Pender implements MessageSource {
-    public ExceptionHandler exceptionHandler;
     private Semaphore done;
     private transient Object result;
 
-    public Object pend() throws InterruptedException {
+    public Object pend() throws Throwable {
         done.acquire();
+        if (result instanceof Throwable)
+            throw (Throwable) result;
         return result;
     }
 
-    public void processResponseMessage(ResponseMessage responseMessage) {
-        this.result = result;  //todo
+    @Override
+    public void incomingResponse(RequestMessage requestMessage, Object response) {
+        this.result = response;
         done.release();
     }
 }
