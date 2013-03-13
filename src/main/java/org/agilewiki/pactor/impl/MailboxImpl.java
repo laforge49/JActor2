@@ -6,11 +6,11 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class MailboxImpl implements Mailbox, Runnable {
+public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     private MailboxFactory mailboxFactory;
     private Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
     private AtomicBoolean running = new AtomicBoolean();
-    ExceptionHandler exceptionHandler;
+    public ExceptionHandler exceptionHandler;
 
     public MailboxImpl(MailboxFactory mailboxFactory) {
         this.mailboxFactory = mailboxFactory;
@@ -33,7 +33,7 @@ public final class MailboxImpl implements Mailbox, Runnable {
 
     @Override
     public void send(Request request) throws Exception {
-        send(request, null, VoidResponseProcessorProcessor.singleton);
+        send(request, null, VoidResponseProcessor.singleton);
     }
 
     @Override
@@ -57,7 +57,11 @@ public final class MailboxImpl implements Mailbox, Runnable {
 
     @Override
     public Object pend(Request request) throws Exception {
-        return null;  //todo
+        Pender pender = new Pender();
+        RequestMessage requestMessage = new RequestMessage(
+                pender, this, request, pender.exceptionHandler, DummyResponseProcessor.singleton);
+        addMessage(requestMessage);
+        return pender.pend();
     }
 
     @Override
@@ -84,6 +88,11 @@ public final class MailboxImpl implements Mailbox, Runnable {
     }
 
     private void processMessage(Message message) {
+        //todo
+    }
+
+    @Override
+    public void processResponseMessage(ResponseMessage responseMessage) {
         //todo
     }
 }

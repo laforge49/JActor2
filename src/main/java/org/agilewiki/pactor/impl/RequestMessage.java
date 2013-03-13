@@ -5,7 +5,7 @@ import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessorInterface;
 
 public final class RequestMessage implements Message {
-    private MailboxImpl sourceMailbox;
+    private MessageSource messageSource;
     private MailboxImpl destinationMailbox;
     private Request request;
     private ExceptionHandler sourceExceptionHandler;
@@ -13,12 +13,12 @@ public final class RequestMessage implements Message {
     private boolean active = true;
 
     public RequestMessage(
-            MailboxImpl sourceMailbox,
+            MessageSource messageSource,
             MailboxImpl destinationMailbox,
             Request request,
             ExceptionHandler sourceExceptionHandler,
             ResponseProcessorInterface responseProcessor) {
-        this.sourceMailbox = sourceMailbox;
+        this.messageSource = messageSource;
         this.destinationMailbox = destinationMailbox;
         this.request = request;
         this.sourceExceptionHandler = sourceExceptionHandler;
