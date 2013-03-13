@@ -1,5 +1,7 @@
 package org.agilewiki.pactor;
 
+import org.agilewiki.pactor.impl.ProcessResponseInterface;
+
 public interface Mailbox {
     public Mailbox createMailbox();
 
@@ -9,7 +11,7 @@ public interface Mailbox {
 
     public void send(Request request) throws Exception;
 
-    public void send(Request request, Mailbox source, ResponseProcessor responseProcessor)
+    public void send(Request request, Mailbox source, ProcessResponseInterface responseProcessor)
             throws Exception;
 
     public Object pend(Request request) throws Exception;

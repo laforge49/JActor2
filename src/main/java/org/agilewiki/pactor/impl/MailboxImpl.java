@@ -2,8 +2,14 @@ package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.*;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class MailboxImpl implements Mailbox {
     private MailboxFactory mailboxFactory;
+    private Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
+    private AtomicReference<MailboxImpl> atomicControl = new AtomicReference<MailboxImpl>();
 
     public MailboxImpl(MailboxFactory mailboxFactory) {
         this.mailboxFactory = mailboxFactory;
@@ -30,7 +36,7 @@ public class MailboxImpl implements Mailbox {
     }
 
     @Override
-    public void send(Request request, Mailbox source, ResponseProcessor responseProcessor)
+    public void send(Request request, Mailbox source, ProcessResponseInterface responseProcessor)
             throws Exception {
         //todo
     }
