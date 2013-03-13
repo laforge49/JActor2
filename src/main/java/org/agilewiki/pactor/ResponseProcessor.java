@@ -1,8 +1,6 @@
 package org.agilewiki.pactor;
 
-import org.agilewiki.pactor.impl.ResponseProcessorInterface;
-
-abstract public class ResponseProcessorProcessor<RESPONSE_TYPE>
+abstract public class ResponseProcessor<RESPONSE_TYPE>
         implements ResponseProcessorInterface<RESPONSE_TYPE> {
     abstract public void processResponse(RESPONSE_TYPE response)
             throws Exception;

@@ -8,14 +8,14 @@ abstract public class Request<RESPONSE_TYPE> {
     }
 
     abstract public void processRequest(
-            ResponseProcessorProcessor<ResponseProcessorProcessor> responseProcessor)
+            ResponseProcessor<ResponseProcessor> responseProcessor)
             throws Exception;
 
     public void send() throws Exception {
         mailbox.send(this);
     }
 
-    public void send(Mailbox source, ResponseProcessorProcessor<RESPONSE_TYPE> responseProcessor)
+    public void send(Mailbox source, ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception {
         mailbox.send(this, source, responseProcessor);
     }
