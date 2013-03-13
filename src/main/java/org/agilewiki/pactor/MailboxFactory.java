@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MailboxFactory {
+public final class MailboxFactory {
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private List<AutoCloseable> closables = new ArrayList<AutoCloseable>();
 

@@ -6,7 +6,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class MailboxImpl implements Mailbox {
+public final class MailboxImpl implements Mailbox {
     private MailboxFactory mailboxFactory;
     private Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
     private AtomicReference<MailboxImpl> atomicControl = new AtomicReference<MailboxImpl>();
