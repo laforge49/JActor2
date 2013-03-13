@@ -4,12 +4,12 @@ import org.agilewiki.pactor.*;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class MailboxImpl implements Mailbox, Runnable {
     private MailboxFactory mailboxFactory;
     private Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
-    private AtomicReference<MailboxImpl> atomicControl = new AtomicReference<MailboxImpl>();
+    private AtomicBoolean running = new AtomicBoolean();
     ExceptionHandler exceptionHandler;
 
     public MailboxImpl(MailboxFactory mailboxFactory) {
@@ -47,11 +47,11 @@ public final class MailboxImpl implements Mailbox, Runnable {
 
     private void addMessage(Message message) {
         inbox.add(message);
-        if (atomicControl.compareAndSet(null, this)) {
+        if (running.compareAndSet(false, true)) {
             if (inbox.peek() != null)
                 mailboxFactory.submit(this);
             else
-                atomicControl.set(null);
+                running.set(false);
         }
     }
 
@@ -62,7 +62,9 @@ public final class MailboxImpl implements Mailbox, Runnable {
 
     @Override
     public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler) {
-        return null;  //todo
+        ExceptionHandler rv = this.exceptionHandler;
+        this.exceptionHandler = exceptionHandler;
+        return rv;
     }
 
     @Override
@@ -70,9 +72,9 @@ public final class MailboxImpl implements Mailbox, Runnable {
         while (true) {
             Message message = inbox.remove();
             if (message == null) {
-                atomicControl.set(null);
+                running.set(false);
                 if (inbox.peek() != null) {
-                    if (!atomicControl.compareAndSet(null, this))
+                    if (!running.compareAndSet(false, true))
                         return;
                     continue;
                 }
