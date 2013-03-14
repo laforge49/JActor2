@@ -8,7 +8,7 @@ abstract public class Request<RESPONSE_TYPE> {
     }
 
     abstract public void processRequest(
-            ResponseProcessor<ResponseProcessor> responseProcessor)
+            ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception;
 
     public void send() throws Exception {
