@@ -34,7 +34,9 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
 
     @Override
     public void send(Request request) throws Exception {
-        send(request, null, VoidResponseProcessor.singleton);
+        RequestMessage requestMessage = new RequestMessage(
+                null, null, request, null, VoidResponseProcessor.singleton);
+        addMessage(requestMessage);
     }
 
     @Override
