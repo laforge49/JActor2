@@ -122,21 +122,26 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     private void processThrowable(Throwable t) {
         if (!currentRequestMessage.active)
             return;
-        currentRequestMessage.active = false;
         if (exceptionHandler != null) {
             try {
                 exceptionHandler.processException(t);
             } catch (Throwable u) {
                 logger.error("Exception handler unable to process throwable " +
                         exceptionHandler.getClass().getName(), (Throwable) t);
-                if (currentRequestMessage.responseProcessor.responseRequired())
+                if (currentRequestMessage.responseProcessor.responseRequired()) {
+                    if (!currentRequestMessage.active)
+                        return;
+                    currentRequestMessage.active = false;
                     currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, u);
-                else {
+                } else {
                     logger.error("Thrown by exception handler and uncaught " +
                             exceptionHandler.getClass().getName(), (Throwable) t);
                 }
             }
         } else {
+            if (!currentRequestMessage.active)
+                return;
+            currentRequestMessage.active = false;
             if (currentRequestMessage.responseProcessor.responseRequired())
                 currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, t);
             else {
