@@ -102,7 +102,8 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                     if (!requestMessage.active)
                         return;
                     requestMessage.active = false;
-                    requestMessage.messageSource.incomingResponse(requestMessage, response);
+                    if (requestMessage.responseProcessor.responseRequired())
+                        requestMessage.messageSource.incomingResponse(requestMessage, response);
                 }
             });
         } catch (Throwable t) {
@@ -113,10 +114,12 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                 try {
                     exceptionHandler.processException(t);
                 } catch (Throwable u) {
-                    requestMessage.messageSource.incomingResponse(currentRequestMessage, u);
+                    if (requestMessage.responseProcessor.responseRequired())
+                        requestMessage.messageSource.incomingResponse(currentRequestMessage, u);
                 }
             } else {
-                requestMessage.messageSource.incomingResponse(requestMessage, t);
+                if (requestMessage.responseProcessor.responseRequired())
+                    requestMessage.messageSource.incomingResponse(requestMessage, t);
             }
         }
     }

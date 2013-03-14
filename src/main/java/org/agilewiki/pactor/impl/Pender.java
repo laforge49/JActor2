@@ -3,7 +3,7 @@ package org.agilewiki.pactor.impl;
 import java.util.concurrent.Semaphore;
 
 public final class Pender implements MessageSource {
-    private Semaphore done;
+    private Semaphore done = new Semaphore(0);
     private transient Object result;
 
     public Object pend() throws Throwable {
