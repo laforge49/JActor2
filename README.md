@@ -25,6 +25,6 @@ One new feature will be added in this project: the elimination of the need for a
 Any Plain Old Java Object (POJO) can function as an actor, given only a reference to a mailbox.
 And there are no interfaces that need to be implemented either.
 
-Status: A rough draft has been completed, though there are no docs and only 1 test.
+Status: A rough draft has been completed, though there are no docs and only 2 test.
 
 [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
