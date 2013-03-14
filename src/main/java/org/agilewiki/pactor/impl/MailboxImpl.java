@@ -1,12 +1,15 @@
 package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
+    private static Logger logger = LoggerFactory.getLogger(MailboxImpl.class);;
     private MailboxFactory mailboxFactory;
     private Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
     private AtomicBoolean running = new AtomicBoolean();
@@ -106,22 +109,32 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                     requestMessage.active = false;
                     if (requestMessage.responseProcessor.responseRequired())
                         requestMessage.messageSource.incomingResponse(requestMessage, response);
+                    else if (response instanceof Throwable) {
+                        logger.warn("Uncaught throwable", (Throwable) response);
+                    }
                 }
             });
         } catch (Throwable t) {
-            if (!requestMessage.active)
-                return;
-            requestMessage.active = false;
-            if (exceptionHandler != null) {
-                try {
-                    exceptionHandler.processException(t);
-                } catch (Throwable u) {
-                    if (requestMessage.responseProcessor.responseRequired())
-                        requestMessage.messageSource.incomingResponse(currentRequestMessage, u);
-                }
-            } else {
-                if (requestMessage.responseProcessor.responseRequired())
-                    requestMessage.messageSource.incomingResponse(requestMessage, t);
+            processThrowable(t);
+        }
+    }
+
+    private void processThrowable(Throwable t) {
+        if (!currentRequestMessage.active)
+            return;
+        currentRequestMessage.active = false;
+        if (exceptionHandler != null) {
+            try {
+                exceptionHandler.processException(t);
+            } catch (Throwable u) {
+                if (currentRequestMessage.responseProcessor.responseRequired())
+                    currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, u);
+            }
+        } else {
+            if (currentRequestMessage.responseProcessor.responseRequired())
+                currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, t);
+            else {
+                logger.warn("Uncaught throwable", (Throwable) t);
             }
         }
     }
@@ -132,31 +145,14 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         exceptionHandler = requestMessage.sourceExceptionHandler;
         currentRequestMessage = requestMessage.oldRequestMessage;
         if (response instanceof Throwable) {
-            if (exceptionHandler == null) {
-                currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, response);
-            } else {
-                try {
-                    exceptionHandler.processException((Throwable) response);
-                } catch (Throwable t) {
-                    currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, response);
-                }
-            }
+            processThrowable((Throwable) response);
             return;
         }
         ResponseProcessorInterface responseProcessor = requestMessage.responseProcessor;
         try {
             responseProcessor.processResponse(response);
         } catch (Throwable t) {
-            if (exceptionHandler == null) {
-                currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, response);
-            } else {
-                try {
-                    exceptionHandler.processException((Throwable) response);
-                } catch (Throwable u) {
-                    currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, u);
-                }
-            }
-            return;
+            processThrowable(t);
         }
     }
 
