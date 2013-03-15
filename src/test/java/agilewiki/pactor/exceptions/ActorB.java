@@ -15,7 +15,7 @@ public class ActorB {
         return new Request<Void>(mailbox) {
             @Override
             public void processRequest(ResponseProcessor<Void> responseProcessor) throws Exception {
-                actorA.throwRequest().send(mailbox, responseProcessor);
+                actorA.throwRequest().reply(mailbox, responseProcessor);
             }
         };
     }

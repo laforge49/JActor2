@@ -43,7 +43,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     @Override
-    public void send(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
+    public void reply(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
             throws Exception {
         MailboxImpl sourceMailbox = (MailboxImpl) source;
         RequestMessage requestMessage = new RequestMessage(

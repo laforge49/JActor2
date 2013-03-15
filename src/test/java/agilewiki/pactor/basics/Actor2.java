@@ -18,7 +18,7 @@ public class Actor2 {
         return new Request<String>(mailbox) {
             @Override
             public void processRequest(ResponseProcessor<String> responseProcessor) throws Exception {
-                actor1.hi1().send(mailbox, responseProcessor);
+                actor1.hi1().reply(mailbox, responseProcessor);
             }
         };
     }

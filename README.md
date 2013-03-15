@@ -12,7 +12,7 @@ There are only two requirements placed on an object to receive messages in a thr
 
 Message processing then is somewhat similar to using synchronization locks.
 The advantage of using messaging is that the thread used to send a message does not block
-unless the pend method was used. (Request implements send and pend methods.)
+unless the pend method was used. (Request implements send, reply and pend methods.)
 
 PActor is a reimplementation of JActor, but without several features:
 - There will be only one type of mailbox (asynchronous).
