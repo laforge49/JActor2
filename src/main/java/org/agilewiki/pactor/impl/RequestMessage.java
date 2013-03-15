@@ -10,7 +10,6 @@ final class RequestMessage implements Message {
     public Request request;
     public ExceptionHandler sourceExceptionHandler;
     public ResponseProcessorInterface responseProcessor;
-    public boolean active = true;
 
     public RequestMessage(
             MessageSource messageSource,
