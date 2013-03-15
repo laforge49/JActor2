@@ -1,4 +1,4 @@
-Actor (POJO Actors)
+PActor (POJO Actors)
 ======
 
 The PActor project support Plain Old Java Objects as actors:
