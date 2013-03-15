@@ -74,6 +74,8 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
 
     @Override
     public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler) {
+        if (!running.get())
+            throw new IllegalStateException("Attempt to set an exception handler on an idle mailbox");
         ExceptionHandler rv = this.exceptionHandler;
         this.exceptionHandler = exceptionHandler;
         return rv;
