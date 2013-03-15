@@ -4,7 +4,7 @@ import org.agilewiki.pactor.ExceptionHandler;
 import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessorInterface;
 
-public final class RequestMessage implements Message {
+final class RequestMessage implements Message {
     public MessageSource messageSource;
     public RequestMessage oldRequestMessage;
     public Request request;

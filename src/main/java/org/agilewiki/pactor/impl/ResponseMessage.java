@@ -1,6 +1,6 @@
 package org.agilewiki.pactor.impl;
 
-public final class ResponseMessage implements Message {
+final class ResponseMessage implements Message {
     public RequestMessage requestMessage;
     public Object response;
 
