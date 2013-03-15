@@ -123,7 +123,6 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
 
     private void inactivateCurrentRequest() {
         currentRequestMessage.active = false;
-        currentRequestMessage = null;
     }
 
     private void processThrowable(Throwable t) {
