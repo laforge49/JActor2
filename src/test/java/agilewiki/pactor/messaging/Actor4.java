@@ -1,4 +1,4 @@
-package agilewiki.pactor.basics;
+package agilewiki.pactor.messaging;
 
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.Request;
