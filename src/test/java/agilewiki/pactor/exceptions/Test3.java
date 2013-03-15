@@ -15,4 +15,11 @@ public class Test3 extends TestCase {
         String result = actorC.throwRequest().pend();
         assertEquals("java.lang.SecurityException: thrown on request", result);
     }
+
+    public void testII() throws Throwable {
+        MailboxFactory mailboxFactory = new MailboxFactory();
+        Mailbox mailbox = mailboxFactory.createMailbox();
+        ActorC actorC = new ActorC(mailbox);
+        actorC.throwRequest().send();
+    }
 }
