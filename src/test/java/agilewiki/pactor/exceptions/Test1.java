@@ -29,5 +29,6 @@ public class Test1 extends TestCase {
         Mailbox mailbox = mailboxFactory.createMailbox();
         ActorA actorA = new ActorA(mailbox);
         actorA.throwRequest().send();
+        mailboxFactory.shutdown();
     }
 }

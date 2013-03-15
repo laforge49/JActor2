@@ -6,7 +6,8 @@ public class ResponseCounter<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_T
     private boolean active = true;
     private RESPONSE_TYPE result;
 
-    public ResponseCounter(ResponseProcessor<RESPONSE_TYPE> rp, RESPONSE_TYPE result) {
+    public ResponseCounter(int count, ResponseProcessor<RESPONSE_TYPE> rp, RESPONSE_TYPE result) {
+        this.count = count;
         this.rp = rp;
     }
 

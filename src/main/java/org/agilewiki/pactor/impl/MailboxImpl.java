@@ -49,18 +49,12 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         if (!sourceMailbox.running.get())
             throw new IllegalStateException("A valid source mailbox can not be idle");
         RequestMessage requestMessage = new RequestMessage(
-                sourceMailbox, sourceMailbox.currentRequestMessage, request, sourceMailbox.exceptionHandler, responseProcessor);
+                sourceMailbox,
+                sourceMailbox.currentRequestMessage,
+                request,
+                sourceMailbox.exceptionHandler,
+                responseProcessor);
         addMessage(requestMessage);
-    }
-
-    private void addMessage(Message message) {
-        inbox.add(message);
-        if (running.compareAndSet(false, true)) {
-            if (inbox.peek() != null)
-                mailboxFactory.submit(this);
-            else
-                running.set(false);
-        }
     }
 
     @Override
@@ -81,10 +75,20 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         return rv;
     }
 
+    private void addMessage(Message message) {
+        inbox.add(message);
+        if (running.compareAndSet(false, true)) {
+            if (inbox.peek() != null)
+                mailboxFactory.submit(this);
+            else
+                running.set(false);
+        }
+    }
+
     @Override
     public void run() {
         while (true) {
-            Message message = inbox.remove();
+            Message message = inbox.poll();
             if (message == null) {
                 running.set(false);
                 if (inbox.peek() != null) {
@@ -111,9 +115,9 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                     if (!requestMessage.active)
                         return;
                     inactivateCurrentRequest();
-                    if (requestMessage.responseProcessor.responseRequired())
+                    if (requestMessage.responseProcessor.responseRequired()) {
                         requestMessage.messageSource.incomingResponse(requestMessage, response);
-                    else if (response instanceof Throwable) {
+                    } else if (response instanceof Throwable) {
                         logger.warn("Uncaught throwable", (Throwable) response);
                     }
                 }
