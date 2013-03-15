@@ -45,9 +45,9 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     @Override
     public void reply(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
             throws Exception {
-        if (!running.get())
-            throw new IllegalStateException("A valid source mailbox can not be idle");
         MailboxImpl sourceMailbox = (MailboxImpl) source;
+        if (!sourceMailbox.running.get())
+            throw new IllegalStateException("A valid source mailbox can not be idle");
         RequestMessage requestMessage = new RequestMessage(
                 sourceMailbox, sourceMailbox.currentRequestMessage, request, sourceMailbox.exceptionHandler, responseProcessor);
         addMessage(requestMessage);
