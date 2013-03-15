@@ -17,7 +17,7 @@ public class Actor4 {
     public Request<Void> hi4(final Actor1 actor1) {
         return new Request<Void>(mailbox) {
             @Override
-            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Exception {
+            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Throwable {
                 actor1.hi1().reply(mailbox, new ResponseProcessor<String>() {
                     @Override
                     public void processResponse(String response) throws Exception {

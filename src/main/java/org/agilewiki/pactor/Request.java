@@ -9,7 +9,7 @@ abstract public class Request<RESPONSE_TYPE> {
 
     abstract public void processRequest(
             ResponseProcessor<RESPONSE_TYPE> responseProcessor)
-            throws Exception;
+            throws Throwable;
 
     public void send() throws Exception {
         mailbox.send(this);

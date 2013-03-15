@@ -15,7 +15,7 @@ public class ActorD {
     Request<Void> doSomethin() {
         return new Request<Void>(mailbox) {
             @Override
-            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Exception {
+            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Throwable {
                 responseProcessor.processResponse(null);
             }
         };

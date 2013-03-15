@@ -17,7 +17,7 @@ public class Actor3 {
     public Request<Void> hi3() {
         return new Request<Void>(mailbox) {
             @Override
-            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Exception {
+            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Throwable {
                 System.out.println("Hello world!");
                 responseProcessor.processResponse(null);
             }
