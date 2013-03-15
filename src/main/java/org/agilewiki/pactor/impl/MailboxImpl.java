@@ -104,7 +104,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
             request.processRequest(new ResponseProcessor() {
                 @Override
                 public void processResponse(Object response) throws Exception {
-                    if (currentRequestMessage == null)
+                    if (!requestMessage.active)
                         return;
                     inactivateCurrentRequest();
                     if (requestMessage.responseProcessor.responseRequired())
@@ -120,11 +120,12 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     private void inactivateCurrentRequest() {
+        currentRequestMessage.active = false;
         currentRequestMessage = null;
     }
 
     private void processThrowable(Throwable t) {
-        if (currentRequestMessage == null)
+        if (!currentRequestMessage.active)
             return;
         RequestMessage requestMessage = currentRequestMessage;
         if (exceptionHandler != null) {
@@ -134,7 +135,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                 logger.error("Exception handler unable to process throwable " +
                         exceptionHandler.getClass().getName(), (Throwable) t);
                 if (requestMessage.responseProcessor.responseRequired()) {
-                    if (currentRequestMessage == null)
+                    if (!requestMessage.active)
                         return;
                     inactivateCurrentRequest();
                     requestMessage.messageSource.incomingResponse(requestMessage, u);
@@ -144,7 +145,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                 }
             }
         } else {
-            if (currentRequestMessage == null)
+            if (!requestMessage.active)
                 return;
             inactivateCurrentRequest();
             if (requestMessage.responseProcessor.responseRequired())
