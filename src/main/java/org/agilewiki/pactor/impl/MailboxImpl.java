@@ -106,7 +106,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                 public void processResponse(Object response) throws Exception {
                     if (!requestMessage.active)
                         return;
-                    requestMessage.active = false;
+                    inactivateCurrentRequest();
                     if (requestMessage.responseProcessor.responseRequired())
                         requestMessage.messageSource.incomingResponse(requestMessage, response);
                     else if (response instanceof Throwable) {
@@ -119,31 +119,37 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         }
     }
 
+    private void inactivateCurrentRequest() {
+        currentRequestMessage.active = false;
+        currentRequestMessage = null;
+    }
+
     private void processThrowable(Throwable t) {
         if (!currentRequestMessage.active)
             return;
+        RequestMessage requestMessage = currentRequestMessage;
         if (exceptionHandler != null) {
             try {
                 exceptionHandler.processException(t);
             } catch (Throwable u) {
                 logger.error("Exception handler unable to process throwable " +
                         exceptionHandler.getClass().getName(), (Throwable) t);
-                if (currentRequestMessage.responseProcessor.responseRequired()) {
-                    if (!currentRequestMessage.active)
+                if (requestMessage.responseProcessor.responseRequired()) {
+                    if (!requestMessage.active)
                         return;
-                    currentRequestMessage.active = false;
-                    currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, u);
+                    inactivateCurrentRequest();
+                    requestMessage.messageSource.incomingResponse(requestMessage, u);
                 } else {
                     logger.error("Thrown by exception handler and uncaught " +
                             exceptionHandler.getClass().getName(), (Throwable) t);
                 }
             }
         } else {
-            if (!currentRequestMessage.active)
+            if (!requestMessage.active)
                 return;
-            currentRequestMessage.active = false;
-            if (currentRequestMessage.responseProcessor.responseRequired())
-                currentRequestMessage.messageSource.incomingResponse(currentRequestMessage, t);
+            inactivateCurrentRequest();
+            if (requestMessage.responseProcessor.responseRequired())
+                requestMessage.messageSource.incomingResponse(requestMessage, t);
             else {
                 logger.warn("Uncaught throwable", (Throwable) t);
             }
