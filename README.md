@@ -1,8 +1,18 @@
 Actor (POJO Actors)
 ======
 
-The PActor project will explore the implementation of Java actors implemented without requiring a base class.
-Implementation will stress both ease of use and simplicity of implementation.
+The PActor project support Plain Old Java Objects as actors:
+- Actors do not need to subclass an actor base class.
+- Bytecode manipulation is not used. And
+- There are no interfaces that an actor must implement.
+
+There are only two requirements placed on an object to receive messages in a thread-safe way:
+- Methods which receive a message must return a Request object. And
+- All the Request objects created by the actor must be created with the same Mailbox object.
+
+Message processing then is somewhat similar to using synchronization locks.
+The advantage of using messaging is that the thread used to send a message does not block
+unless the pend method was used. (Request implements send and pend methods.)
 
 PActor is a reimplementation of JActor, but without several features:
 - There will be only one type of mailbox (asynchronous).
@@ -25,6 +35,6 @@ One new feature will be added in this project: the elimination of the need for a
 Any Plain Old Java Object (POJO) can function as an actor, given only a reference to a mailbox.
 And there are no interfaces that need to be implemented either.
 
-Status: Messaging has been tested (1-way and 2-way, and in combinations), but not exceptions.
+Status: No docs and only limited testing.
 
 [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
