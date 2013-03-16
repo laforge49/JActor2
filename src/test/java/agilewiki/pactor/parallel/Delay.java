@@ -1,17 +1,18 @@
 package agilewiki.pactor.parallel;
 
 import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.MailboxFactory;
 import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessor;
 
 /**
  * Test code.
  */
-public class Load {
+public class Delay {
     private final Mailbox mailbox;
 
-    public Load(Mailbox mailbox) {
-        this.mailbox = mailbox;
+    public Delay(MailboxFactory mailboxFactory) {
+        this.mailbox = mailboxFactory.createMailbox();
     }
 
     public Request<Void> sleep(final long delay) {

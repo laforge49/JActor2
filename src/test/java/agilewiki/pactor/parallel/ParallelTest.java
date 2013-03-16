@@ -32,9 +32,8 @@ public class ParallelTest extends TestCase {
                         new ResponseCounter<Void>(loads, responseProcessor, null);
                 int i = 0;
                 while (i < loads) {
-                    Mailbox mb = mailboxFactory.createMailbox();
-                    Load load = new Load(mb);
-                    load.sleep(delay).reply(mailbox, responseCounter);
+                    Delay delay = new Delay(mailboxFactory);
+                    delay.sleep(ParallelTest.delay).reply(mailbox, responseCounter);
                     i += 1;
                 }
             }
