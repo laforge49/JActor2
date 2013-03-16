@@ -1,11 +1,25 @@
 package org.agilewiki.pactor.impl;
 
 final class ResponseMessage implements Message {
-    public RequestMessage requestMessage;
-    public Object response;
+    private final RequestMessage requestMessage;
+    private final Object response;
 
-    public ResponseMessage(RequestMessage requestMessage, Object response) {
-        this.requestMessage = requestMessage;
-        this.response = response;
+    public ResponseMessage(final RequestMessage request, final Object _response) {
+        this.requestMessage = request;
+        this.response = _response;
+    }
+
+    /**
+     * @return the requestMessage
+     */
+    public RequestMessage getRequestMessage() {
+        return requestMessage;
+    }
+
+    /**
+     * @return the response
+     */
+    public Object getResponse() {
+        return response;
     }
 }

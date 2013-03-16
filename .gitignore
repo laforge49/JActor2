@@ -6,6 +6,10 @@
 target
 .settings
 .metadata
+.project
+.classpath
+.pmd
+.ruleset
 *.docs
 .scala_dependencies
 *.iml

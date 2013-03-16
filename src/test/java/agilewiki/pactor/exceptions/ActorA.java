@@ -7,14 +7,16 @@ import org.agilewiki.pactor.ResponseProcessor;
 public class ActorA {
     private final Mailbox mailbox;
 
-    public ActorA(Mailbox mailbox) {
-        this.mailbox = mailbox;
+    public ActorA(final Mailbox mbox) {
+        this.mailbox = mbox;
     }
 
     public Request<Void> throwRequest() {
         return new Request<Void>(mailbox) {
             @Override
-            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Exception {
+            public void processRequest(
+                    final ResponseProcessor<Void> responseProcessor)
+                    throws Exception {
                 throw new SecurityException("thrown on request");
             }
         };

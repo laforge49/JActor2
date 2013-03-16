@@ -7,19 +7,21 @@ import java.util.Queue;
  * Blocks request processing, not threads.
  */
 public class Semaphore {
-    private Mailbox mailbox;
+    private final Mailbox mailbox;
     private int permits;
-    private Queue<ResponseProcessor<Void>> queue = new ArrayDeque<ResponseProcessor<Void>>();
+    private final Queue<ResponseProcessor<Void>> queue = new ArrayDeque<ResponseProcessor<Void>>();
 
-    public Semaphore(Mailbox mailbox, int permits) {
-        this.mailbox = mailbox;
-        this.permits = permits;
+    public Semaphore(final Mailbox mbox, final int permitCount) {
+        this.mailbox = mbox;
+        this.permits = permitCount;
     }
 
     public Request<Void> acquire() {
         return new Request<Void>(mailbox) {
             @Override
-            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Throwable {
+            public void processRequest(
+                    final ResponseProcessor<Void> responseProcessor)
+                    throws Exception {
                 if (permits > 0) {
                     permits -= 1;
                     responseProcessor.processResponse(null);
@@ -33,7 +35,9 @@ public class Semaphore {
     public Request<Void> release() {
         return new Request<Void>(mailbox) {
             @Override
-            public void processRequest(final ResponseProcessor<Void> responseProcessor) throws Throwable {
+            public void processRequest(
+                    final ResponseProcessor<Void> responseProcessor)
+                    throws Exception {
                 final ResponseProcessor<Void> rp = queue.poll();
                 if (rp == null) {
                     permits += 1;

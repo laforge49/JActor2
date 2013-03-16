@@ -1,14 +1,17 @@
 package org.agilewiki.pactor;
 
-public class ResponseCounter<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_TYPE> {
-    private ResponseProcessor<RESPONSE_TYPE> rp;
-    private int count = 0;
+public class ResponseCounter<RESPONSE_TYPE> extends
+        ResponseProcessor<RESPONSE_TYPE> {
+    private final ResponseProcessor<RESPONSE_TYPE> rp;
+    private int count;
     private boolean active = true;
     private RESPONSE_TYPE result;
 
-    public ResponseCounter(int count, ResponseProcessor<RESPONSE_TYPE> rp, RESPONSE_TYPE result) {
-        this.count = count;
-        this.rp = rp;
+    public ResponseCounter(final int _count,
+            final ResponseProcessor<RESPONSE_TYPE> _rp,
+            final RESPONSE_TYPE response) {
+        this.count = _count;
+        this.rp = _rp;
     }
 
     public void incrementCount() {
@@ -16,7 +19,7 @@ public class ResponseCounter<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_T
             count += 1;
     }
 
-    public void decrementCount() throws Throwable {
+    public void decrementCount() throws Exception {
         if (active) {
             count -= 1;
             if (count == 0) {
@@ -26,8 +29,8 @@ public class ResponseCounter<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_T
         }
     }
 
-    public void setResult(RESPONSE_TYPE result) {
-        this.result = result;
+    public void setResult(final RESPONSE_TYPE _result) {
+        this.result = _result;
     }
 
     public int getCount() {
@@ -35,7 +38,7 @@ public class ResponseCounter<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_T
     }
 
     @Override
-    public void processResponse(RESPONSE_TYPE response) throws Throwable {
+    public void processResponse(final RESPONSE_TYPE response) throws Exception {
         decrementCount();
     }
 }

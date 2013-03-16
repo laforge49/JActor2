@@ -10,14 +10,16 @@ import org.agilewiki.pactor.ResponseProcessor;
 public class Actor3 {
     private final Mailbox mailbox;
 
-    public Actor3(Mailbox mailbox) {
-        this.mailbox = mailbox;
+    public Actor3(final Mailbox mbox) {
+        this.mailbox = mbox;
     }
 
     public Request<Void> hi3() {
         return new Request<Void>(mailbox) {
             @Override
-            public void processRequest(ResponseProcessor<Void> responseProcessor) throws Throwable {
+            public void processRequest(
+                    final ResponseProcessor<Void> responseProcessor)
+                    throws Exception {
                 System.out.println("Hello world!");
                 responseProcessor.processResponse(null);
             }

@@ -1,30 +1,31 @@
 package org.agilewiki.pactor;
 
-abstract public class Request<RESPONSE_TYPE> {
-    private Mailbox mailbox;
+public abstract class Request<RESPONSE_TYPE> {
+    private final Mailbox mailbox;
 
-    public Request(Mailbox mailbox) {
-        this.mailbox = mailbox;
+    public Request(final Mailbox mbox) {
+        this.mailbox = mbox;
     }
 
     public Mailbox getMailbox() {
         return mailbox;
     }
 
-    abstract public void processRequest(
-            ResponseProcessor<RESPONSE_TYPE> responseProcessor)
-            throws Throwable;
+    public abstract void processRequest(
+            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+            throws Exception;
 
-    public void send() throws Throwable {
+    public void send() throws Exception {
         mailbox.send(this);
     }
 
-    public void reply(Mailbox source, ResponseProcessor<RESPONSE_TYPE> responseProcessor)
-            throws Throwable {
+    public void reply(final Mailbox source,
+            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+            throws Exception {
         mailbox.reply(this, source, responseProcessor);
     }
 
-    public RESPONSE_TYPE pend() throws Throwable {
-        return (RESPONSE_TYPE) mailbox.pend(this);
+    public RESPONSE_TYPE pend() throws Exception {
+        return mailbox.pend(this);
     }
 }

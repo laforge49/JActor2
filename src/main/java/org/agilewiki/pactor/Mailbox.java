@@ -1,18 +1,19 @@
 package org.agilewiki.pactor;
 
 public interface Mailbox {
-    public Mailbox createMailbox();
+    Mailbox createMailbox();
 
-    public void addAutoClosable(AutoCloseable closeable);
+    void addAutoClosable(final AutoCloseable closeable);
 
-    public void shutdown();
+    void shutdown();
 
-    public void send(Request request) throws Throwable;
+    void send(final Request<?> request) throws Exception;
 
-    public void reply(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
-            throws Throwable;
+    <E> void reply(final Request<E> request, final Mailbox source,
+            final ResponseProcessorInterface<E> responseProcessor)
+            throws Exception;
 
-    public Object pend(Request request) throws Throwable;
+    <E> E pend(final Request<E> request) throws Exception;
 
-    public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler);
+    ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 }

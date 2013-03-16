@@ -2,15 +2,14 @@ package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.ResponseProcessorInterface;
 
-final class VoidResponseProcessor
-        implements ResponseProcessorInterface<Void> {
-    public final static VoidResponseProcessor singleton = new VoidResponseProcessor();
+final class VoidResponseProcessor implements ResponseProcessorInterface<Void> {
+    public static final VoidResponseProcessor SINGLETON = new VoidResponseProcessor();
 
     private VoidResponseProcessor() {
     }
 
     @Override
-    public void processResponse(Void response) {
+    public void processResponse(final Void response) {
     }
 
     @Override

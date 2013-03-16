@@ -1,6 +1,7 @@
 package agilewiki.pactor.exceptions;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
 
@@ -8,13 +9,13 @@ import org.agilewiki.pactor.MailboxFactory;
  * Test code.
  */
 public class Test1 extends TestCase {
-    public void testI() throws Throwable {
-        MailboxFactory mailboxFactory = new MailboxFactory();
-        Mailbox mailbox = mailboxFactory.createMailbox();
-        ActorA actorA = new ActorA(mailbox);
+    public void testI() throws Exception {
+        final MailboxFactory mailboxFactory = new MailboxFactory();
+        final Mailbox mailbox = mailboxFactory.createMailbox();
+        final ActorA actorA = new ActorA(mailbox);
         try {
             actorA.throwRequest().pend();
-        } catch (SecurityException se) {
+        } catch (final SecurityException se) {
             mailboxFactory.shutdown();
             return;
         }
@@ -24,10 +25,10 @@ public class Test1 extends TestCase {
     /**
      * A SecurityException should be logged.
      */
-    public void testII() throws Throwable {
-        MailboxFactory mailboxFactory = new MailboxFactory();
-        Mailbox mailbox = mailboxFactory.createMailbox();
-        ActorA actorA = new ActorA(mailbox);
+    public void testII() throws Exception {
+        final MailboxFactory mailboxFactory = new MailboxFactory();
+        final Mailbox mailbox = mailboxFactory.createMailbox();
+        final ActorA actorA = new ActorA(mailbox);
         actorA.throwRequest().send();
         mailboxFactory.shutdown();
     }

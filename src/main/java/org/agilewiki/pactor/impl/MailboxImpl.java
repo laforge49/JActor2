@@ -1,23 +1,28 @@
 package org.agilewiki.pactor.impl;
 
-import org.agilewiki.pactor.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.agilewiki.pactor.ExceptionHandler;
+import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.ResponseProcessor;
+import org.agilewiki.pactor.ResponseProcessorInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
-    private static Logger logger = LoggerFactory.getLogger(MailboxImpl.class);;
-    private MailboxFactory mailboxFactory;
-    private Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
-    private AtomicBoolean running = new AtomicBoolean();
-    public ExceptionHandler exceptionHandler;
+    private static Logger LOG = LoggerFactory.getLogger(MailboxImpl.class);;
+    private final MailboxFactory mailboxFactory;
+    private final Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
+    private final AtomicBoolean running = new AtomicBoolean();
+    private ExceptionHandler exceptionHandler;
     private RequestMessage currentRequestMessage;
 
-    public MailboxImpl(MailboxFactory mailboxFactory) {
-        this.mailboxFactory = mailboxFactory;
+    public MailboxImpl(final MailboxFactory factory) {
+        this.mailboxFactory = factory;
     }
 
     @Override
@@ -26,7 +31,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     @Override
-    public void addAutoClosable(AutoCloseable closeable) {
+    public void addAutoClosable(final AutoCloseable closeable) {
         mailboxFactory.addAutoClosable(closeable);
     }
 
@@ -36,46 +41,47 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     @Override
-    public void send(Request request) throws Throwable {
-        RequestMessage requestMessage = new RequestMessage(
-                null, null, request, null, VoidResponseProcessor.singleton);
+    public void send(final Request<?> request) throws Exception {
+        final RequestMessage requestMessage = new RequestMessage(null, null,
+                request, null, VoidResponseProcessor.SINGLETON);
         addMessage(requestMessage);
     }
 
     @Override
-    public void reply(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
-            throws Throwable {
-        MailboxImpl sourceMailbox = (MailboxImpl) source;
+    public <E> void reply(final Request<E> request, final Mailbox source,
+            final ResponseProcessorInterface<E> responseProcessor)
+            throws Exception {
+        final MailboxImpl sourceMailbox = (MailboxImpl) source;
         if (!sourceMailbox.running.get())
-            throw new IllegalStateException("A valid source mailbox can not be idle");
-        RequestMessage requestMessage = new RequestMessage(
-                sourceMailbox,
-                sourceMailbox.currentRequestMessage,
-                request,
-                sourceMailbox.exceptionHandler,
-                responseProcessor);
+            throw new IllegalStateException(
+                    "A valid source mailbox can not be idle");
+        final RequestMessage requestMessage = new RequestMessage(sourceMailbox,
+                sourceMailbox.currentRequestMessage, request,
+                sourceMailbox.exceptionHandler, responseProcessor);
         addMessage(requestMessage);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Object pend(Request request) throws Throwable {
-        Pender pender = new Pender();
-        RequestMessage requestMessage = new RequestMessage(
-                pender, null, request, null, DummyResponseProcessor.singleton);
+    public <E> E pend(final Request<E> request) throws Exception {
+        final Pender pender = new Pender();
+        final RequestMessage requestMessage = new RequestMessage(pender, null,
+                request, null, DummyResponseProcessor.SINGLETON);
         addMessage(requestMessage);
-        return pender.pend();
+        return (E) pender.pend();
     }
 
     @Override
-    public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler) {
+    public ExceptionHandler setExceptionHandler(final ExceptionHandler handler) {
         if (!running.get())
-            throw new IllegalStateException("Attempt to set an exception handler on an idle mailbox");
-        ExceptionHandler rv = this.exceptionHandler;
-        this.exceptionHandler = exceptionHandler;
+            throw new IllegalStateException(
+                    "Attempt to set an exception handler on an idle mailbox");
+        final ExceptionHandler rv = this.exceptionHandler;
+        this.exceptionHandler = handler;
         return rv;
     }
 
-    private void addMessage(Message message) throws Throwable {
+    private void addMessage(final Message message) throws Exception {
         inbox.add(message);
         if (running.compareAndSet(false, true)) {
             if (inbox.peek() != null)
@@ -88,7 +94,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     @Override
     public void run() {
         while (true) {
-            Message message = inbox.poll();
+            final Message message = inbox.poll();
             if (message == null) {
                 running.set(false);
                 if (inbox.peek() != null) {
@@ -104,89 +110,101 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         }
     }
 
-    private void processRequestMessage(final RequestMessage requestMessage){
-        exceptionHandler = null;
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void processRequestMessage(final RequestMessage requestMessage) {
+        exceptionHandler = null; //NOPMD
         currentRequestMessage = requestMessage;
-        Request request = requestMessage.request;
+        final Request<?> request = requestMessage.getRequest();
         try {
             request.processRequest(new ResponseProcessor() {
                 @Override
-                public void processResponse(Object response) throws Throwable {
-                    if (!requestMessage.active)
+                public void processResponse(final Object response)
+                        throws Exception {
+                    if (!requestMessage.isActive())
                         return;
                     inactivateCurrentRequest();
-                    if (requestMessage.responseProcessor.responseRequired()) {
-                        requestMessage.messageSource.incomingResponse(requestMessage, response);
+                    if (requestMessage.getResponseProcessor()
+                            .responseRequired()) {
+                        requestMessage.getMessageSource().incomingResponse(
+                                requestMessage, response);
                     } else if (response instanceof Throwable) {
-                        logger.warn("Uncaught throwable", (Throwable) response);
+                        LOG.warn("Uncaught throwable", (Throwable) response);
                     }
                 }
             });
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             processThrowable(t);
         }
     }
 
     private void inactivateCurrentRequest() {
-        currentRequestMessage.active = false;
+        currentRequestMessage.setActive(false);
     }
 
-    private void processThrowable(Throwable t) {
-        if (!currentRequestMessage.active)
+    private void processThrowable(final Throwable t) {
+        if (!currentRequestMessage.isActive())
             return;
-        RequestMessage requestMessage = currentRequestMessage;
+        final RequestMessage requestMessage = currentRequestMessage;
         if (exceptionHandler != null) {
             try {
                 exceptionHandler.processException(t);
-            } catch (Throwable u) {
-                logger.error("Exception handler unable to process throwable " +
-                        exceptionHandler.getClass().getName(), (Throwable) t);
-                if (requestMessage.responseProcessor.responseRequired()) {
-                    if (!requestMessage.active)
+            } catch (final Throwable u) {
+                LOG.error("Exception handler unable to process throwable "
+                        + exceptionHandler.getClass().getName(), t);
+                if (requestMessage.getResponseProcessor().responseRequired()) {
+                    if (!requestMessage.isActive())
                         return;
                     inactivateCurrentRequest();
-                    requestMessage.messageSource.incomingResponse(requestMessage, u);
+                    requestMessage.getMessageSource().incomingResponse(
+                            requestMessage, u);
                 } else {
-                    logger.error("Thrown by exception handler and uncaught " +
-                            exceptionHandler.getClass().getName(), (Throwable) t);
+                    LOG.error("Thrown by exception handler and uncaught "
+                            + exceptionHandler.getClass().getName(), t);
                 }
             }
         } else {
-            if (!requestMessage.active)
+            if (!requestMessage.isActive())
                 return;
             inactivateCurrentRequest();
-            if (requestMessage.responseProcessor.responseRequired())
-                requestMessage.messageSource.incomingResponse(requestMessage, t);
+            if (requestMessage.getResponseProcessor().responseRequired())
+                requestMessage.getMessageSource().incomingResponse(
+                        requestMessage, t);
             else {
-                logger.warn("Uncaught throwable", (Throwable) t);
+                LOG.warn("Uncaught throwable", t);
             }
         }
     }
 
-    private void processResponseMessage(ResponseMessage responseMessage) {
-        RequestMessage requestMessage = responseMessage.requestMessage;
-        Object response = responseMessage.response;
-        exceptionHandler = requestMessage.sourceExceptionHandler;
-        currentRequestMessage = requestMessage.oldRequestMessage;
+    @SuppressWarnings("unchecked")
+    private void processResponseMessage(final ResponseMessage responseMessage) {
+        final RequestMessage requestMessage = responseMessage
+                .getRequestMessage();
+        final Object response = responseMessage.getResponse();
+        exceptionHandler = requestMessage.getSourceExceptionHandler();
+        currentRequestMessage = requestMessage.getOldRequestMessage();
         if (response instanceof Throwable) {
             processThrowable((Throwable) response);
             return;
         }
-        ResponseProcessorInterface responseProcessor = requestMessage.responseProcessor;
+        @SuppressWarnings("rawtypes")
+        final ResponseProcessorInterface responseProcessor = requestMessage
+                .getResponseProcessor();
         try {
             responseProcessor.processResponse(response);
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             processThrowable(t);
         }
     }
 
     @Override
-    public void incomingResponse(RequestMessage requestMessage, Object response) {
-        ResponseMessage responseMessage = new ResponseMessage(requestMessage, response);
+    public void incomingResponse(final RequestMessage requestMessage,
+            final Object response) {
+        final ResponseMessage responseMessage = new ResponseMessage(
+                requestMessage, response);
         try {
             addMessage(responseMessage);
-        } catch (Throwable t) {
-            logger.error("unable to add response message", t);
+        } catch (final Throwable t) {
+            LOG.error("unable to add response message", t);
         }
     }
 }

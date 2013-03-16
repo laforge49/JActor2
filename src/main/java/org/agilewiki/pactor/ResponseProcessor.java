@@ -1,11 +1,13 @@
 package org.agilewiki.pactor;
 
-abstract public class ResponseProcessor<RESPONSE_TYPE>
-        implements ResponseProcessorInterface<RESPONSE_TYPE> {
-    abstract public void processResponse(RESPONSE_TYPE response)
-            throws Throwable;
+public abstract class ResponseProcessor<RESPONSE_TYPE> implements
+        ResponseProcessorInterface<RESPONSE_TYPE> {
+    @Override
+    public abstract void processResponse(final RESPONSE_TYPE response)
+            throws Exception;
 
-    final public boolean responseRequired() {
+    @Override
+    public final boolean responseRequired() {
         return true;
     }
 }

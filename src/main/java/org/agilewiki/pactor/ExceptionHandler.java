@@ -1,5 +1,6 @@
 package org.agilewiki.pactor;
 
-abstract public class ExceptionHandler {
-    abstract public void processException(Throwable throwable) throws Throwable;
+public abstract class ExceptionHandler {
+    public abstract void processException(final Throwable throwable)
+            throws Exception;
 }

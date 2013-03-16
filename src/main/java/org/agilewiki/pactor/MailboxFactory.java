@@ -1,42 +1,46 @@
 package org.agilewiki.pactor;
 
-import org.agilewiki.pactor.impl.MailboxImpl;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.agilewiki.pactor.impl.MailboxImpl;
+
 public final class MailboxFactory {
-    private ExecutorService executorService = Executors.newCachedThreadPool();
-    private List<AutoCloseable> closables = new ArrayList<AutoCloseable>();
+    private final ExecutorService executorService = Executors
+            .newCachedThreadPool();
+    private final List<AutoCloseable> closables = new ArrayList<AutoCloseable>();
     private boolean shuttingDown;
 
     public Mailbox createMailbox() {
         return new MailboxImpl(this);
     }
 
-    public void submit(Runnable task) throws Throwable {
+    public void submit(final Runnable task) throws Exception {
         try {
             executorService.submit(task);
-        } catch (Throwable t) {
+        } catch (final Exception e) {
             if (!shuttingDown)
-                throw t;
+                throw e;
+        } catch (final Error e) {
+            if (!shuttingDown)
+                throw e;
         }
     }
 
-    public void addAutoClosable(AutoCloseable closeable) {
+    public void addAutoClosable(final AutoCloseable closeable) {
         closables.add(closeable);
     }
 
     public void shutdown() {
         shuttingDown = true;
-        Iterator<AutoCloseable> it = closables.iterator();
+        final Iterator<AutoCloseable> it = closables.iterator();
         while (it.hasNext()) {
             try {
                 it.next().close();
-            } catch (Throwable t) {
+            } catch (final Throwable t) {
             }
         }
         executorService.shutdownNow();
