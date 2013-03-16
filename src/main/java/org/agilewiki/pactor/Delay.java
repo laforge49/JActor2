@@ -1,13 +1,10 @@
-package agilewiki.pactor.parallel;
+package org.agilewiki.pactor;
 
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
 import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessor;
 
-/**
- * Test code.
- */
 public class Delay {
     private final Mailbox mailbox;
 
