@@ -38,15 +38,6 @@ public class Semaphore {
                 if (rp == null) {
                     permits += 1;
                 } else {
-                    /*
-                    mailbox.setExceptionHandler(new ExceptionHandler() {
-                        @Override
-                        public void processException(Throwable throwable) throws Throwable {
-                            ((ResponseProcessor) rp).processResponse(throwable);
-                            responseProcessor.processResponse(null);
-                        }
-                    });
-                    */
                     rp.processResponse(null);
                 }
                 responseProcessor.processResponse(null);

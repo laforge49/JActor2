@@ -1,10 +1,14 @@
 package org.agilewiki.pactor;
 
 abstract public class Request<RESPONSE_TYPE> {
-    Mailbox mailbox;
+    private Mailbox mailbox;
 
     public Request(Mailbox mailbox) {
         this.mailbox = mailbox;
+    }
+
+    public Mailbox getMailbox() {
+        return mailbox;
     }
 
     abstract public void processRequest(
