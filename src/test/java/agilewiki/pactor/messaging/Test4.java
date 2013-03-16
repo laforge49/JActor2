@@ -25,4 +25,20 @@ public class Test4 extends TestCase {
         actor4.hi4(actor1).pend();
         mailboxFactory.shutdown();
     }
+
+    public void testc() throws Throwable {
+        MailboxFactory mailboxFactory = new MailboxFactory();
+        Actor1 actor1 = new Actor1(mailboxFactory.createMailbox());
+        Actor4 actor4 = new Actor4(mailboxFactory.createMailbox());
+        actor4.hi4(actor1).send();
+        mailboxFactory.shutdown();
+    }
+
+    public void testd() throws Throwable {
+        MailboxFactory mailboxFactory = new MailboxFactory();
+        Actor1 actor1 = new Actor1(mailboxFactory.createMailbox());
+        Actor4 actor4 = new Actor4(mailboxFactory.createMailbox());
+        actor4.hi4(actor1).pend();
+        mailboxFactory.shutdown();
+    }
 }

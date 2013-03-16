@@ -32,4 +32,27 @@ public class Test2 extends TestCase {
         ActorB actorB = new ActorB(mailbox);
         actorB.throwRequest(actorA).send();
     }
+
+    public void testIII() throws Throwable {
+        MailboxFactory mailboxFactory = new MailboxFactory();
+        ActorA actorA = new ActorA(mailboxFactory.createMailbox());
+        ActorB actorB = new ActorB(mailboxFactory.createMailbox());
+        try {
+            actorB.throwRequest(actorA).pend();
+        } catch (SecurityException se) {
+            mailboxFactory.shutdown();
+            return;
+        }
+        throw new Exception("Security exception was not caught");
+    }
+
+    /**
+     * A SecurityException should be logged.
+     */
+    public void testIV() throws Throwable {
+        MailboxFactory mailboxFactory = new MailboxFactory();
+        ActorA actorA = new ActorA(mailboxFactory.createMailbox());
+        ActorB actorB = new ActorB(mailboxFactory.createMailbox());
+        actorB.throwRequest(actorA).send();
+    }
 }
