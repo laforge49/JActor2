@@ -24,7 +24,7 @@ public class ActorD {
     public Request<String> throwRequest() {
         return new Request<String>(mailbox) {
             @Override
-            public void processRequest(final ResponseProcessor<String> responseProcessor) throws Exception {
+            public void processRequest(final ResponseProcessor<String> responseProcessor) throws Throwable {
                 mailbox.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(Throwable throwable) throws Throwable {
@@ -33,7 +33,7 @@ public class ActorD {
                 });
                 doSomethin().reply(mailbox, new ResponseProcessor<Void>() {
                     @Override
-                    public void processResponse(Void response) throws Exception {
+                    public void processResponse(Void response) throws Throwable {
                         throw new SecurityException("thrown on request");
                     }
                 });

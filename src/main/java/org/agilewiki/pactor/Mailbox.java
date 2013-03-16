@@ -7,10 +7,10 @@ public interface Mailbox {
 
     public void shutdown();
 
-    public void send(Request request) throws Exception;
+    public void send(Request request) throws Throwable;
 
     public void reply(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
-            throws Exception;
+            throws Throwable;
 
     public Object pend(Request request) throws Throwable;
 

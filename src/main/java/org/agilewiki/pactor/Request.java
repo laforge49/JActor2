@@ -11,12 +11,12 @@ abstract public class Request<RESPONSE_TYPE> {
             ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Throwable;
 
-    public void send() throws Exception {
+    public void send() throws Throwable {
         mailbox.send(this);
     }
 
     public void reply(Mailbox source, ResponseProcessor<RESPONSE_TYPE> responseProcessor)
-            throws Exception {
+            throws Throwable {
         mailbox.reply(this, source, responseProcessor);
     }
 

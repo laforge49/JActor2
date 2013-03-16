@@ -36,7 +36,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     @Override
-    public void send(Request request) throws Exception {
+    public void send(Request request) throws Throwable {
         RequestMessage requestMessage = new RequestMessage(
                 null, null, request, null, VoidResponseProcessor.singleton);
         addMessage(requestMessage);
@@ -44,7 +44,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
 
     @Override
     public void reply(Request request, Mailbox source, ResponseProcessorInterface responseProcessor)
-            throws Exception {
+            throws Throwable {
         MailboxImpl sourceMailbox = (MailboxImpl) source;
         if (!sourceMailbox.running.get())
             throw new IllegalStateException("A valid source mailbox can not be idle");
@@ -75,7 +75,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         return rv;
     }
 
-    private void addMessage(Message message) {
+    private void addMessage(Message message) throws Throwable {
         inbox.add(message);
         if (running.compareAndSet(false, true)) {
             if (inbox.peek() != null)
@@ -104,14 +104,14 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         }
     }
 
-    private void processRequestMessage(final RequestMessage requestMessage) {
+    private void processRequestMessage(final RequestMessage requestMessage){
         exceptionHandler = null;
         currentRequestMessage = requestMessage;
         Request request = requestMessage.request;
         try {
             request.processRequest(new ResponseProcessor() {
                 @Override
-                public void processResponse(Object response) throws Exception {
+                public void processResponse(Object response) throws Throwable {
                     if (!requestMessage.active)
                         return;
                     inactivateCurrentRequest();
@@ -183,6 +183,10 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     @Override
     public void incomingResponse(RequestMessage requestMessage, Object response) {
         ResponseMessage responseMessage = new ResponseMessage(requestMessage, response);
-        addMessage(responseMessage);
+        try {
+            addMessage(responseMessage);
+        } catch (Throwable t) {
+            logger.error("unable to add response message", t);
+        }
     }
 }

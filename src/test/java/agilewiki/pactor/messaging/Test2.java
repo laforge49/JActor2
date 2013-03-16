@@ -26,4 +26,21 @@ public class Test2 extends TestCase {
         actor2.hi2(actor1).send();
         mailboxFactory.shutdown();
     }
+
+    public void testc() throws Throwable {
+        MailboxFactory mailboxFactory = new MailboxFactory();
+        Actor1 actor1 = new Actor1(mailboxFactory.createMailbox());
+        Actor2 actor2 = new Actor2(mailboxFactory.createMailbox());
+        String result = actor2.hi2(actor1).pend();
+        assertEquals("Hello world!", result);
+        mailboxFactory.shutdown();
+    }
+
+    public void testd() throws Throwable {
+        MailboxFactory mailboxFactory = new MailboxFactory();
+        Actor1 actor1 = new Actor1(mailboxFactory.createMailbox());
+        Actor2 actor2 = new Actor2(mailboxFactory.createMailbox());
+        actor2.hi2(actor1).send();
+        mailboxFactory.shutdown();
+    }
 }
