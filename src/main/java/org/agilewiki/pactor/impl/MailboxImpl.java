@@ -4,12 +4,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.agilewiki.pactor.ExceptionHandler;
-import org.agilewiki.pactor.Mailbox;
-import org.agilewiki.pactor.MailboxFactory;
-import org.agilewiki.pactor.Request;
-import org.agilewiki.pactor.ResponseProcessor;
-import org.agilewiki.pactor.ResponseProcessorInterface;
+import org.agilewiki.pactor.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,13 +38,13 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     @Override
     public void send(final Request<?> request) throws Exception {
         final RequestMessage requestMessage = new RequestMessage(null, null,
-                request, null, VoidResponseProcessor.SINGLETON);
+                request, null, EventResponseProcessor.SINGLETON);
         addMessage(requestMessage);
     }
 
     @Override
     public <E> void reply(final Request<E> request, final Mailbox source,
-            final ResponseProcessorInterface<E> responseProcessor)
+            final ResponseProcessor<E> responseProcessor)
             throws Exception {
         final MailboxImpl sourceMailbox = (MailboxImpl) source;
         if (!sourceMailbox.running.get())
@@ -123,8 +118,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                     if (!requestMessage.isActive())
                         return;
                     inactivateCurrentRequest();
-                    if (requestMessage.getResponseProcessor()
-                            .responseRequired()) {
+                    if (!(requestMessage.getResponseProcessor() instanceof EventResponseProcessor)) {
                         requestMessage.getMessageSource().incomingResponse(
                                 requestMessage, response);
                     } else if (response instanceof Throwable) {
@@ -151,7 +145,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
             } catch (final Throwable u) {
                 LOG.error("Exception handler unable to process throwable "
                         + exceptionHandler.getClass().getName(), t);
-                if (requestMessage.getResponseProcessor().responseRequired()) {
+                if (!(requestMessage.getResponseProcessor() instanceof EventResponseProcessor)) {
                     if (!requestMessage.isActive())
                         return;
                     inactivateCurrentRequest();
@@ -166,7 +160,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
             if (!requestMessage.isActive())
                 return;
             inactivateCurrentRequest();
-            if (requestMessage.getResponseProcessor().responseRequired())
+            if (!(requestMessage.getResponseProcessor() instanceof EventResponseProcessor))
                 requestMessage.getMessageSource().incomingResponse(
                         requestMessage, t);
             else {
@@ -187,7 +181,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
             return;
         }
         @SuppressWarnings("rawtypes")
-        final ResponseProcessorInterface responseProcessor = requestMessage
+        final ResponseProcessor responseProcessor = requestMessage
                 .getResponseProcessor();
         try {
             responseProcessor.processResponse(response);

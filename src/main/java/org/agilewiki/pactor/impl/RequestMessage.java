@@ -2,14 +2,14 @@ package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.ExceptionHandler;
 import org.agilewiki.pactor.Request;
-import org.agilewiki.pactor.ResponseProcessorInterface;
+import org.agilewiki.pactor.ResponseProcessor;
 
 final class RequestMessage implements Message {
     private final MessageSource messageSource;
     private final RequestMessage oldRequestMessage;
     private final Request<?> request;
     private final ExceptionHandler sourceExceptionHandler;
-    private final ResponseProcessorInterface<?> responseProcessor;
+    private final ResponseProcessor<?> responseProcessor;
     private boolean active = true;
 
     /**
@@ -57,13 +57,13 @@ final class RequestMessage implements Message {
     /**
      * @return the responseProcessor
      */
-    public ResponseProcessorInterface<?> getResponseProcessor() {
+    public ResponseProcessor<?> getResponseProcessor() {
         return responseProcessor;
     }
 
     public RequestMessage(final MessageSource source, final RequestMessage old,
             final Request<?> _request, final ExceptionHandler handler,
-            final ResponseProcessorInterface<?> rp) {
+            final ResponseProcessor<?> rp) {
         messageSource = source;
         oldRequestMessage = old;
         request = _request;

@@ -10,7 +10,7 @@ public interface Mailbox {
     void send(final Request<?> request) throws Exception;
 
     <E> void reply(final Request<E> request, final Mailbox source,
-            final ResponseProcessorInterface<E> responseProcessor)
+            final ResponseProcessor<E> responseProcessor)
             throws Exception;
 
     <E> E pend(final Request<E> request) throws Exception;
