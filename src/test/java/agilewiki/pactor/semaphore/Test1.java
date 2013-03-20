@@ -75,7 +75,6 @@ public class Test1 extends TestCase {
                     @Override
                     public void processException(final Throwable throwable)
                             throws Exception {
-                        System.out.println(throwable);
                         responseProcessor.processResponse(true);
                     }
                 });
@@ -96,7 +95,7 @@ public class Test1 extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Semaphore semaphore = new Semaphore(
                 mailboxFactory.createMailbox(), 0);
-        final long d = 100;
+        final long d = 1000;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, mailboxFactory).send();
         final boolean result = acquireException(semaphore,

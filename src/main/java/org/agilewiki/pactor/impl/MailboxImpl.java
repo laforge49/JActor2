@@ -14,7 +14,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     private final Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
     private final AtomicBoolean running = new AtomicBoolean();
     private ExceptionHandler exceptionHandler;
-    private RequestMessage currentRequestMessage;
+    private Message currentMessage;
 
     public MailboxImpl(final MailboxFactory factory) {
         this.mailboxFactory = factory;
@@ -37,9 +37,9 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
 
     @Override
     public void send(final Request<?> request) throws Exception {
-        final RequestMessage requestMessage = new RequestMessage(null, null,
+        final Message message = new Message(null, null,
                 request, null, EventResponseProcessor.SINGLETON);
-        addMessage(requestMessage);
+        addMessage(message);
     }
 
     @Override
@@ -50,19 +50,19 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         if (!sourceMailbox.running.get())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
-        final RequestMessage requestMessage = new RequestMessage(sourceMailbox,
-                sourceMailbox.currentRequestMessage, request,
+        final Message message = new Message(sourceMailbox,
+                sourceMailbox.currentMessage, request,
                 sourceMailbox.exceptionHandler, responseProcessor);
-        addMessage(requestMessage);
+        addMessage(message);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <E> E pend(final Request<E> request) throws Exception {
         final Pender pender = new Pender();
-        final RequestMessage requestMessage = new RequestMessage(pender, null,
+        final Message message = new Message(pender, null,
                 request, null, DummyResponseProcessor.SINGLETON);
-        addMessage(requestMessage);
+        addMessage(message);
         return (E) pender.pend();
     }
 
@@ -98,29 +98,28 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                     continue;
                 }
             }
-            if (message instanceof RequestMessage)
-                processRequestMessage((RequestMessage) message);
+            if (message.isResponsePending())
+                processRequestMessage((Message) message);
             else
-                processResponseMessage((ResponseMessage) message);
+                processResponseMessage(message);
         }
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void processRequestMessage(final RequestMessage requestMessage) {
+    private void processRequestMessage(final Message message) {
         exceptionHandler = null; //NOPMD
-        currentRequestMessage = requestMessage;
-        final Request<?> request = requestMessage.getRequest();
+        currentMessage = message;
+        final Request<?> request = message.getRequest();
         try {
             request.processRequest(new ResponseProcessor() {
                 @Override
                 public void processResponse(final Object response)
                         throws Exception {
-                    if (!requestMessage.isActive())
+                    if (!message.isResponsePending())
                         return;
-                    inactivateCurrentRequest();
-                    if (!(requestMessage.getResponseProcessor() instanceof EventResponseProcessor)) {
-                        requestMessage.getMessageSource().incomingResponse(
-                                requestMessage, response);
+                    message.setResponse(response);
+                    if (!(message.getResponseProcessor() instanceof EventResponseProcessor)) {
+                        message.getMessageSource().incomingResponse(message);
                     } else if (response instanceof Throwable) {
                         LOG.warn("Uncaught throwable", (Throwable) response);
                     }
@@ -131,38 +130,32 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         }
     }
 
-    private void inactivateCurrentRequest() {
-        currentRequestMessage.setActive(false);
-    }
-
     private void processThrowable(final Throwable t) {
-        if (!currentRequestMessage.isActive())
+        if (!currentMessage.isResponsePending())
             return;
-        final RequestMessage requestMessage = currentRequestMessage;
+        final Message message = currentMessage;
         if (exceptionHandler != null) {
             try {
                 exceptionHandler.processException(t);
             } catch (final Throwable u) {
                 LOG.error("Exception handler unable to process throwable "
                         + exceptionHandler.getClass().getName(), t);
-                if (!(requestMessage.getResponseProcessor() instanceof EventResponseProcessor)) {
-                    if (!requestMessage.isActive())
+                if (!(message.getResponseProcessor() instanceof EventResponseProcessor)) {
+                    if (!message.isResponsePending())
                         return;
-                    inactivateCurrentRequest();
-                    requestMessage.getMessageSource().incomingResponse(
-                            requestMessage, u);
+                    currentMessage.setResponse(u);
+                    message.getMessageSource().incomingResponse(message);
                 } else {
                     LOG.error("Thrown by exception handler and uncaught "
                             + exceptionHandler.getClass().getName(), t);
                 }
             }
         } else {
-            if (!requestMessage.isActive())
+            if (!message.isResponsePending())
                 return;
-            inactivateCurrentRequest();
-            if (!(requestMessage.getResponseProcessor() instanceof EventResponseProcessor))
-                requestMessage.getMessageSource().incomingResponse(
-                        requestMessage, t);
+            currentMessage.setResponse(t);
+            if (!(message.getResponseProcessor() instanceof EventResponseProcessor))
+                message.getMessageSource().incomingResponse(message);
             else {
                 LOG.warn("Uncaught throwable", t);
             }
@@ -170,18 +163,16 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     @SuppressWarnings("unchecked")
-    private void processResponseMessage(final ResponseMessage responseMessage) {
-        final RequestMessage requestMessage = responseMessage
-                .getRequestMessage();
-        final Object response = responseMessage.getResponse();
-        exceptionHandler = requestMessage.getSourceExceptionHandler();
-        currentRequestMessage = requestMessage.getOldRequestMessage();
+    private void processResponseMessage(final Message message) {
+        final Object response = message.getResponse();
+        exceptionHandler = message.getSourceExceptionHandler();
+        currentMessage = message.getOldMessage();
         if (response instanceof Throwable) {
             processThrowable((Throwable) response);
             return;
         }
         @SuppressWarnings("rawtypes")
-        final ResponseProcessor responseProcessor = requestMessage
+        final ResponseProcessor responseProcessor = message
                 .getResponseProcessor();
         try {
             responseProcessor.processResponse(response);
@@ -191,12 +182,9 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     @Override
-    public void incomingResponse(final RequestMessage requestMessage,
-            final Object response) {
-        final ResponseMessage responseMessage = new ResponseMessage(
-                requestMessage, response);
+    public void incomingResponse(final Message message) {
         try {
-            addMessage(responseMessage);
+            addMessage(message);
         } catch (final Throwable t) {
             LOG.error("unable to add response message", t);
         }

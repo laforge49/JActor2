@@ -16,9 +16,8 @@ final class Pender implements MessageSource {
     }
 
     @Override
-    public void incomingResponse(final RequestMessage requestMessage,
-            final Object response) {
-        this.result = response;
+    public void incomingResponse(final Message message) {
+        this.result = message.getResponse();
         done.release();
     }
 }
