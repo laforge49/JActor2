@@ -1,10 +1,8 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.ancestor;
 
-public final class PActor {
-    private PActor() {
-        throw new UnsupportedOperationException();
-    }
+import org.agilewiki.pactor.ancestor.Ancestor;
 
+public class AncestorBase implements Ancestor {
     public static Ancestor getAncestor(final Ancestor child, final Class targetClass) {
         if (child == null)
             return null;
@@ -18,5 +16,20 @@ public final class PActor {
             ancestor = ancestor.getParent();
         }
         return null;
+    }
+
+    protected Ancestor parent;
+    private boolean initialized;
+
+    @Override
+    public Ancestor getParent() {
+        return parent;
+    }
+
+    public void initialize(final Ancestor _parent) {
+        if (initialized)
+            throw new IllegalStateException("Already initialized");
+        initialized = true;
+        parent = _parent;
     }
 }
