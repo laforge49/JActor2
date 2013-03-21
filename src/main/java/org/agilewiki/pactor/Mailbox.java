@@ -56,7 +56,7 @@ public interface Mailbox {
      * @param responseProcessor The response processor implementation.
      */ 
     <E> void reply(final Request<E> request, final Mailbox source,
-            final ResponseProcessorInterface<E> responseProcessor)
+            final ResponseProcessor<E> responseProcessor)
             throws Exception;
 
     /**

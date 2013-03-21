@@ -1,6 +1,6 @@
 package org.agilewiki.pactor;
 
-public class ResponseCounter<RESPONSE_TYPE> extends
+public class ResponseCounter<RESPONSE_TYPE> implements
         ResponseProcessor<RESPONSE_TYPE> {
     private final ResponseProcessor<RESPONSE_TYPE> rp;
     private int count;
