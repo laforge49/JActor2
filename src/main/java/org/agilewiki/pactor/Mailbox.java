@@ -21,16 +21,19 @@ public interface Mailbox {
     Mailbox createMailbox();
 
     /**
-     * Adds the autoclosable resources.
+     * Adds the resources which are required to be closed(released) when the mailbox 
+     * is shutdown.
      *
-     * @param closeable TBD.
+     * @param closable resource whose cleanup should be done in when the mailbox is 
+     * shutdown.
      */
     void addAutoClosable(final AutoCloseable closeable);
 
     /**
-     * The shutdown should make sure that the a lightweight thread
-     * executing the messages associated with this mailbox is terminated. This 
-     * should be executed after the Request is send to the mailbox.
+     * The shutdown should make sure that the a lightweight threads required to process 
+     * the messages associated with this mailbox is terminated. This will result in the 
+     * graceful shutdown of the threads. The messages send to the mailbox after calling 
+     * the shutdown would not be executed.
      *
      */    
     void shutdown();
