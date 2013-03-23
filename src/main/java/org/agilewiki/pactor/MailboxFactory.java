@@ -10,6 +10,14 @@ import org.agilewiki.pactor.impl.MailboxImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <p>
+ * The MailboxFactory is the factory as the name suggests for the MailBoxes to be used with the PActor. In addition to 
+ * creation of the Mailboxes it also encapsulates the threads( threadpool) which would process the Requests coming to 
+ * the mailbox in asynchronous mode.
+ * </p>
+ */
+
 public final class MailboxFactory {
 	private static Logger LOG = LoggerFactory.getLogger(MailboxFactory.class);;
     private final ExecutorService executorService = Executors

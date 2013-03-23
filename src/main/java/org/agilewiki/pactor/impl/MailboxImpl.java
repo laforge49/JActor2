@@ -99,7 +99,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                 }
             }
             if (message.isResponsePending())
-                processRequestMessage((Message) message);
+                processRequestMessage(message);
             else
                 processResponseMessage(message);
         }
