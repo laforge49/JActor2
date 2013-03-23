@@ -20,9 +20,8 @@ public interface MessageQueue {
 
     /**
      * Inserts the specified message into this queue.
-     * Always returns true.
      */
-    boolean add(final Message e);
+    void offer(final Message e, final boolean local);
 
     /**
      * Retrieves and removes the head of this queue, or returns null if this queue is empty.
