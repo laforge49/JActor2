@@ -1,5 +1,7 @@
 package org.agilewiki.pactor.ancestor;
 
-public interface Ancestor {
+import org.agilewiki.pactor.Actor;
+
+public interface Ancestor extends Actor {
     public Ancestor getParent();
 }

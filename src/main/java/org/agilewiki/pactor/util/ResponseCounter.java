@@ -1,4 +1,6 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.util;
+
+import org.agilewiki.pactor.ResponseProcessor;
 
 public class ResponseCounter<RESPONSE_TYPE> implements
         ResponseProcessor<RESPONSE_TYPE> {

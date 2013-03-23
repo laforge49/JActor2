@@ -1,23 +1,32 @@
 package org.agilewiki.pactor.impl;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.EventResponseProcessor;
+import org.agilewiki.pactor.ExceptionHandler;
+import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.Message;
+import org.agilewiki.pactor.MessageSource;
+import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.ResponseProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
+	
     private static Logger LOG = LoggerFactory.getLogger(MailboxImpl.class);
     private final MailboxFactory mailboxFactory;
-    private final Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
+    private final MessageQueue inbox;
     private final AtomicBoolean running = new AtomicBoolean();
     private ExceptionHandler exceptionHandler;
     private Message currentMessage;
 
-    public MailboxImpl(final MailboxFactory factory) {
+    /** messageQueue can be null to use the default queue implementation. */
+    public MailboxImpl(final MailboxFactory factory,
+            final MessageQueue messageQueue) {
         this.mailboxFactory = factory;
+        this.inbox = messageQueue;
     }
 
     @Override
@@ -37,20 +46,19 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
 
     @Override
     public void send(final Request<?> request) throws Exception {
-        final Message message = new Message(null, null,
-                request, null, EventResponseProcessor.SINGLETON);
+        final Message message = inbox.createMessage(null, null, request, null,
+                EventResponseProcessor.SINGLETON);
         addMessage(message);
     }
 
     @Override
     public <E> void reply(final Request<E> request, final Mailbox source,
-            final ResponseProcessor<E> responseProcessor)
-            throws Exception {
+            final ResponseProcessor<E> responseProcessor) throws Exception {
         final MailboxImpl sourceMailbox = (MailboxImpl) source;
         if (!sourceMailbox.running.get())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
-        final Message message = new Message(sourceMailbox,
+        final Message message = inbox.createMessage(sourceMailbox,
                 sourceMailbox.currentMessage, request,
                 sourceMailbox.exceptionHandler, responseProcessor);
         addMessage(message);
@@ -60,8 +68,8 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     @Override
     public <E> E pend(final Request<E> request) throws Exception {
         final Pender pender = new Pender();
-        final Message message = new Message(pender, null,
-                request, null, DummyResponseProcessor.SINGLETON);
+        final Message message = inbox.createMessage(pender, null, request,
+                null, DummyResponseProcessor.SINGLETON);
         addMessage(message);
         return (E) pender.pend();
     }
@@ -79,7 +87,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     private void addMessage(final Message message) throws Exception {
         inbox.add(message);
         if (running.compareAndSet(false, true)) {
-            if (inbox.peek() != null)
+            if (inbox.isNonEmpty())
                 mailboxFactory.submit(this);
             else
                 running.set(false);
@@ -92,7 +100,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
             final Message message = inbox.poll();
             if (message == null) {
                 running.set(false);
-                if (inbox.peek() != null) {
+                if (inbox.isNonEmpty()) {
                     if (!running.compareAndSet(false, true))
                         return;
                     continue;

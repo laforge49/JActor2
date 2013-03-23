@@ -1,13 +1,9 @@
-package agilewiki.pactor.parallel;
+package agilewiki.pactor.util;
 
 import junit.framework.TestCase;
-
-import org.agilewiki.pactor.Delay;
-import org.agilewiki.pactor.Mailbox;
-import org.agilewiki.pactor.MailboxFactory;
-import org.agilewiki.pactor.Request;
-import org.agilewiki.pactor.ResponseCounter;
-import org.agilewiki.pactor.ResponseProcessor;
+import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.util.Delay;
+import org.agilewiki.pactor.util.ResponseCounter;
 
 /**
  * Test code.
@@ -18,19 +14,13 @@ public class ParallelTest extends TestCase {
 
     private Mailbox mailbox;
     private MailboxFactory mailboxFactory;
+    private Request<Void> start;
 
     public void test() throws Exception {
         mailboxFactory = new MailboxFactory();
         mailbox = mailboxFactory.createMailbox();
-        final long t0 = System.currentTimeMillis();
-        start().pend();
-        final long t1 = System.currentTimeMillis();
-        assertTrue((t1 - t0) < DELAY + DELAY / 2);
-        mailboxFactory.shutdown();
-    }
 
-    private Request<Void> start() {
-        return new Request<Void>(mailbox) {
+        start = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)
@@ -46,5 +36,11 @@ public class ParallelTest extends TestCase {
                 }
             }
         };
+
+        final long t0 = System.currentTimeMillis();
+        start.pend();
+        final long t1 = System.currentTimeMillis();
+        assertTrue((t1 - t0) < DELAY + DELAY / 2);
+        mailboxFactory.shutdown();
     }
 }

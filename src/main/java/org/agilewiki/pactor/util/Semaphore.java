@@ -1,4 +1,9 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.util;
+
+import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.RequestBase;
+import org.agilewiki.pactor.ResponseProcessor;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -10,14 +15,14 @@ public class Semaphore {
     private final Mailbox mailbox;
     private int permits;
     private final Queue<ResponseProcessor<Void>> queue = new ArrayDeque<ResponseProcessor<Void>>();
+    public final Request<Void> acquire;
+    public final Request<Void> release;
 
     public Semaphore(final Mailbox mbox, final int permitCount) {
         this.mailbox = mbox;
         this.permits = permitCount;
-    }
 
-    public Request<Void> acquire() {
-        return new Request<Void>(mailbox) {
+        acquire = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)
@@ -30,10 +35,8 @@ public class Semaphore {
                 }
             }
         };
-    }
 
-    public Request<Void> release() {
-        return new Request<Void>(mailbox) {
+        release = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)

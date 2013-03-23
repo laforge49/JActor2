@@ -2,6 +2,7 @@ package agilewiki.pactor.messaging;
 
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.ResponseProcessor;
 
 /**
@@ -15,12 +16,12 @@ public class Actor4 {
     }
 
     public Request<Void> hi4(final Actor1 actor1) {
-        return new Request<Void>(mailbox) {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)
                     throws Exception {
-                actor1.hi1().reply(mailbox, new ResponseProcessor<String>() {
+                actor1.hi1.reply(mailbox, new ResponseProcessor<String>() {
                     @Override
                     public void processResponse(final String response)
                             throws Exception {
