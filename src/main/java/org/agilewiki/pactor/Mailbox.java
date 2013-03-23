@@ -7,13 +7,13 @@ public interface Mailbox {
 
     void shutdown();
 
-    void send(final RequestBase<?> request) throws Exception;
+    void send(final Request<?> request) throws Exception;
 
-    <E> void reply(final RequestBase<E> request, final Mailbox source,
+    <E> void reply(final Request<E> request, final Mailbox source,
             final ResponseProcessor<E> responseProcessor)
             throws Exception;
 
-    <E> E pend(final RequestBase<E> request) throws Exception;
+    <E> E pend(final Request<E> request) throws Exception;
 
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 }

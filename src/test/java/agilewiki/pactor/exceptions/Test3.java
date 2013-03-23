@@ -1,7 +1,6 @@
 package agilewiki.pactor.exceptions;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
 

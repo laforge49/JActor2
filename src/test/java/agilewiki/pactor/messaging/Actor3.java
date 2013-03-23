@@ -1,6 +1,7 @@
 package agilewiki.pactor.messaging;
 
 import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.ResponseProcessor;
 
@@ -14,7 +15,7 @@ public class Actor3 {
         this.mailbox = mbox;
     }
 
-    public RequestBase<Void> hi3() {
+    public Request<Void> hi3() {
         return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(

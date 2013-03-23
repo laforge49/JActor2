@@ -1,10 +1,8 @@
 package agilewiki.pactor.util;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.pactor.*;
 import org.agilewiki.pactor.util.Delay;
-import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.util.Semaphore;
 
 /**
@@ -28,7 +26,7 @@ public class SemaphoreTest extends TestCase {
         mailboxFactory.shutdown();
     }
 
-    private RequestBase<Void> delayedRelease(final Semaphore semaphore,
+    private Request<Void> delayedRelease(final Semaphore semaphore,
             final long delay, final MailboxFactory mailboxFactory) {
         return new RequestBase<Void>(mailboxFactory.createMailbox()) {
             @Override
@@ -61,7 +59,7 @@ public class SemaphoreTest extends TestCase {
         mailboxFactory.shutdown();
     }
 
-    private RequestBase<Boolean> acquireException(final Semaphore semaphore,
+    private Request<Boolean> acquireException(final Semaphore semaphore,
             final Mailbox mailbox) {
         return new RequestBase<Boolean>(mailbox) {
             @Override

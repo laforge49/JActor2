@@ -1,6 +1,7 @@
 package org.agilewiki.pactor.util;
 
 import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.ResponseProcessor;
 
@@ -20,7 +21,7 @@ public class Semaphore {
         this.permits = permitCount;
     }
 
-    public RequestBase<Void> acquire() {
+    public Request<Void> acquire() {
         return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
@@ -36,7 +37,7 @@ public class Semaphore {
         };
     }
 
-    public RequestBase<Void> release() {
+    public Request<Void> release() {
         return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(

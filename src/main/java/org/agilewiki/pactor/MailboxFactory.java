@@ -1,12 +1,12 @@
 package org.agilewiki.pactor;
 
+import org.agilewiki.pactor.impl.MailboxImpl;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.agilewiki.pactor.impl.MailboxImpl;
 
 public final class MailboxFactory {
     private final ExecutorService executorService = Executors
