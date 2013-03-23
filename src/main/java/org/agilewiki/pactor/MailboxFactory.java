@@ -11,8 +11,11 @@ import org.agilewiki.pactor.impl.MailboxImpl;
 import org.agilewiki.pactor.impl.MessageQueue;
 import org.agilewiki.pactor.impl.MessageQueueFactory;
 import org.agilewiki.pactor.impl.MessageQueueFactoryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class MailboxFactory {
+    private static Logger LOG = LoggerFactory.getLogger(MailboxFactory.class);;
     private final ExecutorService executorService;
     private final MessageQueueFactory messageQueueFactory;
     /** Must also be thread-safe. */
@@ -45,6 +48,8 @@ public final class MailboxFactory {
         } catch (final Exception e) {
             if (!isShuttingDown())
                 throw e;
+            else
+                LOG.warn("Unable to process the request, possible mailbox shutdown had been called in the application");
         } catch (final Error e) {
             if (!isShuttingDown())
                 throw e;
