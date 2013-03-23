@@ -1,12 +1,12 @@
-package agilewiki.pactor.extensions;
+package agilewiki.pactor.util;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.pactor.extensions.Delay;
+import org.agilewiki.pactor.util.Delay;
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
 import org.agilewiki.pactor.Request;
-import org.agilewiki.pactor.extensions.ResponseCounter;
+import org.agilewiki.pactor.util.ResponseCounter;
 import org.agilewiki.pactor.ResponseProcessor;
 
 /**

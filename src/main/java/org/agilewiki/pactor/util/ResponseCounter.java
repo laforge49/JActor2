@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.extensions;
+package org.agilewiki.pactor.util;
 
 import org.agilewiki.pactor.ResponseProcessor;
 

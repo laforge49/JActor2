@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.extensions.ancestor;
+package org.agilewiki.pactor.ancestor;
 
 import org.agilewiki.pactor.Actor;
 
