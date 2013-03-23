@@ -1,9 +1,9 @@
 package org.agilewiki.pactor;
 
-public abstract class Request<RESPONSE_TYPE> {
+public abstract class RequestBase<RESPONSE_TYPE> {
     private final Mailbox mailbox;
 
-    public Request(final Mailbox mbox) {
+    public RequestBase(final Mailbox mbox) {
         this.mailbox = mbox;
     }
 

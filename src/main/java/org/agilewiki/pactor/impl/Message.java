@@ -1,13 +1,13 @@
 package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.ExceptionHandler;
-import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.ResponseProcessor;
 
 class Message {
     private final MessageSource messageSource;
     private final Message oldMessage;
-    private final Request<?> request;
+    private final RequestBase<?> request;
     private final ExceptionHandler sourceExceptionHandler;
     private final ResponseProcessor<?> responseProcessor;
     private boolean responsePending = true;
@@ -52,7 +52,7 @@ class Message {
     /**
      * @return the request
      */
-    public Request<?> getRequest() {
+    public RequestBase<?> getRequest() {
         return request;
     }
 
@@ -72,7 +72,7 @@ class Message {
 
     public Message(final MessageSource source,
                    final Message old,
-                   final Request<?> _request,
+                   final RequestBase<?> _request,
                    final ExceptionHandler handler,
                    final ResponseProcessor<?> rp) {
         messageSource = source;

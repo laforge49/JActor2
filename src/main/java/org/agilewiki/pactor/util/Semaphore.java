@@ -1,7 +1,7 @@
 package org.agilewiki.pactor.util;
 
 import org.agilewiki.pactor.Mailbox;
-import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.ResponseProcessor;
 
 import java.util.ArrayDeque;
@@ -20,8 +20,8 @@ public class Semaphore {
         this.permits = permitCount;
     }
 
-    public Request<Void> acquire() {
-        return new Request<Void>(mailbox) {
+    public RequestBase<Void> acquire() {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)
@@ -36,8 +36,8 @@ public class Semaphore {
         };
     }
 
-    public Request<Void> release() {
-        return new Request<Void>(mailbox) {
+    public RequestBase<Void> release() {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)

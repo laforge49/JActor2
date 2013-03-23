@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import org.agilewiki.pactor.util.Delay;
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
-import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.util.ResponseCounter;
 import org.agilewiki.pactor.ResponseProcessor;
 
@@ -29,8 +29,8 @@ public class ParallelTest extends TestCase {
         mailboxFactory.shutdown();
     }
 
-    private Request<Void> start() {
-        return new Request<Void>(mailbox) {
+    private RequestBase<Void> start() {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)

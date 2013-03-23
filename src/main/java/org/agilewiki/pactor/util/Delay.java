@@ -2,7 +2,7 @@ package org.agilewiki.pactor.util;
 
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
-import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.ResponseProcessor;
 
 public class Delay {
@@ -12,8 +12,8 @@ public class Delay {
         this.mailbox = mailboxFactory.createMailbox();
     }
 
-    public Request<Void> sleep(final long delay) {
-        return new Request<Void>(mailbox) {
+    public RequestBase<Void> sleep(final long delay) {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)

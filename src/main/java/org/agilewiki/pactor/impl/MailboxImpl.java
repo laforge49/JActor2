@@ -36,14 +36,14 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     @Override
-    public void send(final Request<?> request) throws Exception {
+    public void send(final RequestBase<?> request) throws Exception {
         final Message message = new Message(null, null,
                 request, null, EventResponseProcessor.SINGLETON);
         addMessage(message);
     }
 
     @Override
-    public <E> void reply(final Request<E> request, final Mailbox source,
+    public <E> void reply(final RequestBase<E> request, final Mailbox source,
             final ResponseProcessor<E> responseProcessor)
             throws Exception {
         final MailboxImpl sourceMailbox = (MailboxImpl) source;
@@ -58,7 +58,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <E> E pend(final Request<E> request) throws Exception {
+    public <E> E pend(final RequestBase<E> request) throws Exception {
         final Pender pender = new Pender();
         final Message message = new Message(pender, null,
                 request, null, DummyResponseProcessor.SINGLETON);
@@ -109,7 +109,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     private void processRequestMessage(final Message message) {
         exceptionHandler = null; //NOPMD
         currentMessage = message;
-        final Request<?> request = message.getRequest();
+        final RequestBase<?> request = message.getRequest();
         try {
             request.processRequest(new ResponseProcessor() {
                 @Override

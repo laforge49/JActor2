@@ -2,7 +2,7 @@ package agilewiki.pactor.exceptions;
 
 import org.agilewiki.pactor.ExceptionHandler;
 import org.agilewiki.pactor.Mailbox;
-import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.ResponseProcessor;
 
 public class ActorC {
@@ -12,8 +12,8 @@ public class ActorC {
         this.mailbox = mbox;
     }
 
-    public Request<String> throwRequest() {
-        return new Request<String>(mailbox) {
+    public RequestBase<String> throwRequest() {
+        return new RequestBase<String>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<String> responseProcessor)
