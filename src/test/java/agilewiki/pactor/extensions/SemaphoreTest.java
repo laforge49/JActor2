@@ -1,19 +1,19 @@
-package agilewiki.pactor.semaphore;
+package agilewiki.pactor.extensions;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.pactor.Delay;
+import org.agilewiki.pactor.extensions.Delay;
 import org.agilewiki.pactor.ExceptionHandler;
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
 import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessor;
-import org.agilewiki.pactor.Semaphore;
+import org.agilewiki.pactor.extensions.Semaphore;
 
 /**
  * Test code.
  */
-public class Test1 extends TestCase {
+public class SemaphoreTest extends TestCase {
     public void testI() throws Exception {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Semaphore semaphore = new Semaphore(

@@ -1,4 +1,8 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.extensions;
+
+import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.ResponseProcessor;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
