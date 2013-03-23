@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
-    private static Logger LOG = LoggerFactory.getLogger(MailboxImpl.class);;
+    private static Logger LOG = LoggerFactory.getLogger(MailboxImpl.class);
     private final MailboxFactory mailboxFactory;
     private final Queue<Message> inbox = new ConcurrentLinkedQueue<Message>();
     private final AtomicBoolean running = new AtomicBoolean();
