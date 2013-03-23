@@ -2,6 +2,10 @@ package org.agilewiki.pactor.impl;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.agilewiki.pactor.ExceptionHandler;
+import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.ResponseProcessor;
+
 /**
  * Creates default MessageQueues instances.
  *
@@ -12,6 +16,14 @@ public class MessageQueueFactoryImpl implements MessageQueueFactory {
             ConcurrentLinkedQueue<Message> implements MessageQueue {
         /**  */
         private static final long serialVersionUID = 1L;
+
+        /** Creates a new Message instance. */
+        @Override
+        public Message createMessage(final MessageSource source,
+                final Message old, final Request<?> _request,
+                final ExceptionHandler handler, final ResponseProcessor<?> rp) {
+            return new Message(source, old, _request, handler, rp);
+        }
 
         /** Is the queue empty? */
         @Override

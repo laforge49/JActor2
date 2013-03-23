@@ -44,7 +44,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
 
     @Override
     public void send(final Request<?> request) throws Exception {
-        final Message message = new Message(null, null, request, null,
+        final Message message = inbox.createMessage(null, null, request, null,
                 EventResponseProcessor.SINGLETON);
         addMessage(message);
     }
@@ -56,7 +56,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         if (!sourceMailbox.running.get())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
-        final Message message = new Message(sourceMailbox,
+        final Message message = inbox.createMessage(sourceMailbox,
                 sourceMailbox.currentMessage, request,
                 sourceMailbox.exceptionHandler, responseProcessor);
         addMessage(message);
@@ -66,8 +66,8 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     @Override
     public <E> E pend(final Request<E> request) throws Exception {
         final Pender pender = new Pender();
-        final Message message = new Message(pender, null, request, null,
-                DummyResponseProcessor.SINGLETON);
+        final Message message = inbox.createMessage(pender, null, request,
+                null, DummyResponseProcessor.SINGLETON);
         addMessage(message);
         return (E) pender.pend();
     }
