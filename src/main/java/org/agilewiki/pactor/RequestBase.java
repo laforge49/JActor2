@@ -2,8 +2,9 @@ package org.agilewiki.pactor;
 
 /**
  * <p>
- * Request Object represents the User/Application Request which needs to be executed. The mailbox reference to which the Request
- * should be send is set via the Constructor.
+ * The basic implementation of the Request interface. The application should extend the RequestBase to 
+ * create the Request implementations which would be used to send to the PActors mailbox for asynchronous 
+ * processing.  
  * </p>
  */
 public abstract class RequestBase<RESPONSE_TYPE> implements
@@ -28,14 +29,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     public void send() throws Exception {
         mailbox.send(this);
     }
-
-    /**
-     * The processRequest is asynchronously invoked by the threads associated with the Requests attached mailbox. The send
-     * methods pushes the Request to the mailbox.
-     *
-     * @param responseProcessor The ResponseProcessor contains the Response that is generated from the Request.
-     * @throws Exception
-     */
+    
     @Override
     public void reply(final Mailbox source,
             final ResponseProcessor<RESPONSE_TYPE> responseProcessor)

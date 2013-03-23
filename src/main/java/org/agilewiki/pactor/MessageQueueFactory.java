@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.impl;
+package org.agilewiki.pactor;
 
 /**
  * Creates MessageQueues.

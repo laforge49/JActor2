@@ -8,6 +8,7 @@ import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
 import org.agilewiki.pactor.Message;
 import org.agilewiki.pactor.MessageSource;
+import org.agilewiki.pactor.MessageQueue;
 import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessor;
 import org.slf4j.Logger;

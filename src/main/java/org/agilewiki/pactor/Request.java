@@ -13,12 +13,34 @@ public interface Request<RESPONSE_TYPE> {
 
     public Mailbox getMailbox();
 
+    /**
+     * This will send the current Request to the mailbox for asynchronous processing.
+     * 
+     */
     public void send() throws Exception;
 
+    /**
+     * reply will be used when chain of PActors needs to process the User/Application Request.
+     * The responseProcessor would be shared for PActor chain.
+     * 
+     * @param source The mailbox associated with the Request for which the ResponseMessage is to 
+     * added for asynchronous processing.
+     * 
+     * @param responseProcessor The associated ResponseProcessor whose role is to process the response.
+     * @throws Exception Will thrown Exception if the source mailbox is not running.
+     */ 
     public void reply(final Mailbox source,
             final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception;
 
+    /**
+     * This will make the invoking thread to wait for the response before continuing ahead.
+     * It will let the invocation to be synchronous for the calling thread. It is better to evaluate 
+     * if plain OO call would for using instead of pend.
+     * 
+     * @return RESPONSE_TYPE
+     * @throws Exception
+     */ 
     public RESPONSE_TYPE pend() throws Exception;
 
     /** 
@@ -28,7 +50,7 @@ public interface Request<RESPONSE_TYPE> {
      * @param responseProcessor The ResponseProcessor contains the Response that is generated from the Request.
      * @throws Exception
      */
-    public abstract void processRequest(
+    public void processRequest(
             final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception;
 }

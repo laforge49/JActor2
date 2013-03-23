@@ -8,8 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.agilewiki.pactor.impl.MailboxImpl;
-import org.agilewiki.pactor.impl.MessageQueue;
-import org.agilewiki.pactor.impl.MessageQueueFactory;
+import org.agilewiki.pactor.MessageQueue;
+import org.agilewiki.pactor.MessageQueueFactory;
 import org.agilewiki.pactor.impl.MessageQueueFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * <p>
  * The MailboxFactory is the factory as the name suggests for the MailBoxes to be used with the PActor. In addition to 
- * creation of the Mailboxes it also encapsulates the threads( threadpool) which would process the Requests coming to 
+ * creation of the Mailboxes it also encapsulates the threads( threadpool) which would process the Requests added to 
  * the mailbox in asynchronous mode.
  * </p>
  */
