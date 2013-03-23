@@ -12,7 +12,7 @@ public class Test3 extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Mailbox mailbox = mailboxFactory.createMailbox();
         final Actor3 actor3 = new Actor3(mailbox);
-        actor3.hi3().send();
+        actor3.hi3.send();
         mailboxFactory.shutdown();
     }
 
@@ -20,7 +20,7 @@ public class Test3 extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Mailbox mailbox = mailboxFactory.createMailbox();
         final Actor3 actor3 = new Actor3(mailbox);
-        actor3.hi3().pend();
+        actor3.hi3.pend();
         mailboxFactory.shutdown();
     }
 }

@@ -4,13 +4,13 @@ import org.agilewiki.pactor.*;
 
 public class ActorD {
     private final Mailbox mailbox;
+    final Request<Void> doSomethin;
+    public final Request<String> throwRequest;
 
     public ActorD(final Mailbox mbox) {
         this.mailbox = mbox;
-    }
 
-    Request<Void> doSomethin() {
-        return new RequestBase<Void>(mailbox) {
+        doSomethin = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)
@@ -18,10 +18,8 @@ public class ActorD {
                 responseProcessor.processResponse(null);
             }
         };
-    }
 
-    public Request<String> throwRequest() {
-        return new RequestBase<String>(mailbox) {
+        throwRequest = new RequestBase<String>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<String> responseProcessor)
@@ -33,7 +31,7 @@ public class ActorD {
                         responseProcessor.processResponse(throwable.toString());
                     }
                 });
-                doSomethin().reply(mailbox, new ResponseProcessor<Void>() {
+                doSomethin.reply(mailbox, new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(final Void response)
                             throws Exception {

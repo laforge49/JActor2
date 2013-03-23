@@ -10,13 +10,12 @@ import org.agilewiki.pactor.ResponseProcessor;
  */
 public class Actor3 {
     private final Mailbox mailbox;
+    public final Request<Void> hi3;
 
     public Actor3(final Mailbox mbox) {
         this.mailbox = mbox;
-    }
 
-    public Request<Void> hi3() {
-        return new RequestBase<Void>(mailbox) {
+        hi3 = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)

@@ -4,13 +4,12 @@ import org.agilewiki.pactor.*;
 
 public class ActorC {
     private final Mailbox mailbox;
+    public final Request<String> throwRequest;
 
     public ActorC(final Mailbox mbox) {
         this.mailbox = mbox;
-    }
 
-    public Request<String> throwRequest() {
-        return new RequestBase<String>(mailbox) {
+        throwRequest = new RequestBase<String>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<String> responseProcessor)

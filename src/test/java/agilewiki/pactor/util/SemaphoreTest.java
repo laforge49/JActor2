@@ -13,7 +13,7 @@ public class SemaphoreTest extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Semaphore semaphore = new Semaphore(
                 mailboxFactory.createMailbox(), 1);
-        semaphore.acquire().pend();
+        semaphore.acquire.pend();
         mailboxFactory.shutdown();
     }
 
@@ -21,8 +21,8 @@ public class SemaphoreTest extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Semaphore semaphore = new Semaphore(
                 mailboxFactory.createMailbox(), 0);
-        semaphore.release().send();
-        semaphore.acquire().pend();
+        semaphore.release.send();
+        semaphore.acquire.pend();
         mailboxFactory.shutdown();
     }
 
@@ -38,7 +38,7 @@ public class SemaphoreTest extends TestCase {
                             @Override
                             public void processResponse(final Void response)
                                     throws Exception {
-                                semaphore.release().send();
+                                semaphore.release.send();
                                 responseProcessor.processResponse(null);
                             }
                         });
@@ -53,7 +53,7 @@ public class SemaphoreTest extends TestCase {
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, mailboxFactory).send();
-        semaphore.acquire().pend();
+        semaphore.acquire.pend();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
         mailboxFactory.shutdown();
@@ -74,7 +74,7 @@ public class SemaphoreTest extends TestCase {
                         responseProcessor.processResponse(true);
                     }
                 });
-                semaphore.acquire().reply(mailbox,
+                semaphore.acquire.reply(mailbox,
                         new ResponseProcessor<Void>() {
                             @Override
                             public void processResponse(final Void response)

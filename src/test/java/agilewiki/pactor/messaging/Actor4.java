@@ -21,7 +21,7 @@ public class Actor4 {
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)
                     throws Exception {
-                actor1.hi1().reply(mailbox, new ResponseProcessor<String>() {
+                actor1.hi1.reply(mailbox, new ResponseProcessor<String>() {
                     @Override
                     public void processResponse(final String response)
                             throws Exception {

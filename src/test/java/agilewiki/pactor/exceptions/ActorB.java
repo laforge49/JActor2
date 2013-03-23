@@ -18,7 +18,7 @@ public class ActorB {
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)
                     throws Exception {
-                actorA.throwRequest().reply(mailbox, responseProcessor);
+                actorA.throwRequest.reply(mailbox, responseProcessor);
             }
         };
     }

@@ -14,19 +14,13 @@ public class ParallelTest extends TestCase {
 
     private Mailbox mailbox;
     private MailboxFactory mailboxFactory;
+    private Request<Void> start;
 
     public void test() throws Exception {
         mailboxFactory = new MailboxFactory();
         mailbox = mailboxFactory.createMailbox();
-        final long t0 = System.currentTimeMillis();
-        start().pend();
-        final long t1 = System.currentTimeMillis();
-        assertTrue((t1 - t0) < DELAY + DELAY / 2);
-        mailboxFactory.shutdown();
-    }
 
-    private Request<Void> start() {
-        return new RequestBase<Void>(mailbox) {
+        start = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final ResponseProcessor<Void> responseProcessor)
@@ -42,5 +36,11 @@ public class ParallelTest extends TestCase {
                 }
             }
         };
+
+        final long t0 = System.currentTimeMillis();
+        start.pend();
+        final long t1 = System.currentTimeMillis();
+        assertTrue((t1 - t0) < DELAY + DELAY / 2);
+        mailboxFactory.shutdown();
     }
 }

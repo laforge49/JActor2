@@ -12,7 +12,7 @@ public class Test1 extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Mailbox mailbox = mailboxFactory.createMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
-        final String result = actor1.hi1().pend();
+        final String result = actor1.hi1.pend();
         assertEquals("Hello world!", result);
         mailboxFactory.shutdown();
     }
@@ -21,7 +21,7 @@ public class Test1 extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Mailbox mailbox = mailboxFactory.createMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
-        actor1.hi1().send();
+        actor1.hi1.send();
         mailboxFactory.shutdown();
     }
 }

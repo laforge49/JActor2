@@ -12,7 +12,7 @@ public class Test4 extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Mailbox mailbox = mailboxFactory.createMailbox();
         final ActorD actorD = new ActorD(mailbox);
-        final String result = actorD.throwRequest().pend();
+        final String result = actorD.throwRequest.pend();
         assertEquals("java.lang.SecurityException: thrown on request", result);
     }
 
@@ -20,6 +20,6 @@ public class Test4 extends TestCase {
         final MailboxFactory mailboxFactory = new MailboxFactory();
         final Mailbox mailbox = mailboxFactory.createMailbox();
         final ActorD actorD = new ActorD(mailbox);
-        actorD.throwRequest().send();
+        actorD.throwRequest.send();
     }
 }
