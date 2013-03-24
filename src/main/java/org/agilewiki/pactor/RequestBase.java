@@ -30,10 +30,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     @SuppressWarnings("unchecked")
     @Override
     public void send() throws Exception {
-        mailbox.reply(
-                this,
-                mailbox,
-                (ResponseProcessor<RESPONSE_TYPE>) EventResponseProcessor.SINGLETON);
+        mailbox.send(this);
     }
 
     /**
