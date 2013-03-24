@@ -33,7 +33,13 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     public void send() throws Exception {
         mailbox.send(this);
     }
-    
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void send(final Mailbox source) throws Exception {
+        mailbox.send(this, source);
+    }
+
     @Override
     public void reply(final Mailbox source,
             final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
