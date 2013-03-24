@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.ExceptionHandler;
 import org.agilewiki.pactor.Request;

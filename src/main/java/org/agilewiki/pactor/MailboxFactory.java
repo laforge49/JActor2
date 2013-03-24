@@ -8,8 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.agilewiki.pactor.impl.MailboxImpl;
-import org.agilewiki.pactor.MessageQueue;
-import org.agilewiki.pactor.MessageQueueFactory;
+import org.agilewiki.pactor.impl.MessageQueue;
+import org.agilewiki.pactor.impl.MessageQueueFactory;
 import org.agilewiki.pactor.impl.MessageQueueFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

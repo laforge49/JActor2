@@ -1,8 +1,8 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.ExceptionHandler;
-import org.agilewiki.pactor.Message;
-import org.agilewiki.pactor.MessageSource;
+import org.agilewiki.pactor.impl.Message;
+import org.agilewiki.pactor.impl.MessageSource;
 import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessor;
 

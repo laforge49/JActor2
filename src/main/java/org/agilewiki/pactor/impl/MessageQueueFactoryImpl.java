@@ -2,10 +2,6 @@ package org.agilewiki.pactor.impl;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.agilewiki.pactor.Message;
-import org.agilewiki.pactor.MessageSource;
-import org.agilewiki.pactor.MessageQueue;
-import org.agilewiki.pactor.MessageQueueFactory;
 import org.agilewiki.pactor.ExceptionHandler;
 import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessor;

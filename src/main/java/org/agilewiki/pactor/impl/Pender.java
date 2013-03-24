@@ -1,8 +1,5 @@
 package org.agilewiki.pactor.impl;
 
-import org.agilewiki.pactor.Message;
-import org.agilewiki.pactor.MessageSource;
-
 import java.util.concurrent.Semaphore;
 
 final class Pender implements MessageSource {
