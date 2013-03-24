@@ -17,6 +17,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     private final Mailbox mailbox;
 
     public RequestBase(final Mailbox mbox) {
+        if (mbox == null) {
+            throw new NullPointerException("mbox");
+        }
         this.mailbox = mbox;
     }
 
@@ -25,6 +28,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
         return mailbox;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void send() throws Exception {
         mailbox.send(this);

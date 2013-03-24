@@ -49,7 +49,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     public void send(final Request<?> request) throws Exception {
         final Message message = inbox.createMessage(null, null, request, null,
                 EventResponseProcessor.SINGLETON);
-        addMessage(message);
+        addMessage(message, this == message.getMessageSource());
     }
 
     @Override
@@ -62,7 +62,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         final Message message = inbox.createMessage(sourceMailbox,
                 sourceMailbox.currentMessage, request,
                 sourceMailbox.exceptionHandler, responseProcessor);
-        addMessage(message);
+        addMessage(message, this == message.getMessageSource());
     }
 
     @SuppressWarnings("unchecked")
@@ -71,7 +71,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         final Pender pender = new Pender();
         final Message message = inbox.createMessage(pender, null, request,
                 null, DummyResponseProcessor.SINGLETON);
-        addMessage(message);
+        addMessage(message, this == message.getMessageSource());
         return (E) pender.pend();
     }
 
@@ -85,8 +85,9 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
         return rv;
     }
 
-    private void addMessage(final Message message) throws Exception {
-        inbox.add(message);
+    private void addMessage(final Message message, final boolean local)
+            throws Exception {
+        inbox.offer(message, local);
         if (running.compareAndSet(false, true)) {
             if (inbox.isNonEmpty())
                 mailboxFactory.submit(this);
@@ -101,6 +102,9 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
             final Message message = inbox.poll();
             if (message == null) {
                 running.set(false);
+                // If inbox.isNonEmpty() was ever to throw an Exception,
+                // we should still be in a consistent state, since there
+                // was no unprocessed message, and running was set to false.
                 if (inbox.isNonEmpty()) {
                     if (!running.compareAndSet(false, true))
                         return;
@@ -127,7 +131,7 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
                     if (!message.isResponsePending())
                         return;
                     message.setResponse(response);
-                    if (!(message.getResponseProcessor() instanceof EventResponseProcessor)) {
+                    if (message.getResponseProcessor() != EventResponseProcessor.SINGLETON) {
                         message.getMessageSource().incomingResponse(message);
                     } else if (response instanceof Throwable) {
                         LOG.warn("Uncaught throwable", (Throwable) response);
@@ -193,7 +197,8 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     @Override
     public void incomingResponse(final Message message) {
         try {
-            addMessage(message);
+            addMessage(message, this == message.getOldMessage()
+                    .getMessageSource());
         } catch (final Throwable t) {
             LOG.error("unable to add response message", t);
         }
