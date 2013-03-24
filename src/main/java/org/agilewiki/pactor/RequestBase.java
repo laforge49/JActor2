@@ -2,9 +2,9 @@ package org.agilewiki.pactor;
 
 /**
  * <p>
- * The basic implementation of the Request interface. The application should extend the RequestBase to 
- * create the Request implementations which would be used to send to the PActors mailbox for asynchronous 
- * processing.  
+ * The basic implementation of the Request interface. The application should extend the RequestBase to
+ * create the Request implementations which would be used to send to the PActors mailbox for asynchronous
+ * processing.
  * </p>
  */
 public abstract class RequestBase<RESPONSE_TYPE> implements
@@ -28,12 +28,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
         return mailbox;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void send() throws Exception {
         mailbox.send(this);
     }
-    
+
     @Override
     public void reply(final Mailbox source,
             final ResponseProcessor<RESPONSE_TYPE> responseProcessor)

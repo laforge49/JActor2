@@ -1,8 +1,6 @@
 package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.ExceptionHandler;
-import org.agilewiki.pactor.impl.Message;
-import org.agilewiki.pactor.impl.MessageSource;
 import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.ResponseProcessor;
 
@@ -12,6 +10,9 @@ import org.agilewiki.pactor.ResponseProcessor;
  * @author monster
  */
 public interface MessageQueue {
+    /** How big should the initial local queue size be? */
+    int INITIAL_LOCAL_QUEUE_SIZE = 16;
+
     /** Creates a new Message instance. */
     Message createMessage(final MessageSource source, final Message old,
             final Request<?> _request, final ExceptionHandler handler,
@@ -21,7 +22,10 @@ public interface MessageQueue {
     boolean isNonEmpty();
 
     /**
-     * Inserts the specified message into this queue.
+     * Inserts a new message in the queue.
+     *
+     * @param e The new message
+     * @param local Should be true for same-mailbox exchanges
      */
     void offer(final Message e, final boolean local);
 
@@ -30,4 +34,10 @@ public interface MessageQueue {
      * @return the head of this queue, or null if this queue is empty
      */
     Message poll();
+
+    /** Returns one message from the concurrent queue, if any is available. */
+    Message pollConcurrent();
+
+    /** Returns one message from the local queue, if any is available. */
+    Message pollLocal();
 }

@@ -7,17 +7,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.agilewiki.pactor.impl.DefaultMessageQueueFactoryImpl;
 import org.agilewiki.pactor.impl.MailboxImpl;
 import org.agilewiki.pactor.impl.MessageQueue;
 import org.agilewiki.pactor.impl.MessageQueueFactory;
-import org.agilewiki.pactor.impl.MessageQueueFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * The MailboxFactory is the factory as the name suggests for the MailBoxes to be used with the PActor. In addition to 
- * creation of the Mailboxes it also encapsulates the threads( threadpool) which would process the Requests added to 
+ * The MailboxFactory is the factory as the name suggests for the MailBoxes to be used with the PActor. In addition to
+ * creation of the Mailboxes it also encapsulates the threads( threadpool) which would process the Requests added to
  * the mailbox in asynchronous mode.
  * </p>
  */
@@ -29,21 +29,27 @@ public final class MailboxFactory {
     /** Must also be thread-safe. */
     private final List<AutoCloseable> closables = new Vector<AutoCloseable>();
     private final AtomicBoolean shuttingDown = new AtomicBoolean();
+    /** How big should the initial local queue size be? */
+    private final int initialLocalMessageQueueSize;
 
     public MailboxFactory() {
-        this(null, null);
+        this(null, null, MessageQueue.INITIAL_LOCAL_QUEUE_SIZE);
     }
 
     public MailboxFactory(final ExecutorService executorService,
-            final MessageQueueFactory messageQueueFactory) {
+            final MessageQueueFactory messageQueueFactory,
+            final int initialLocalMessageQueueSize) {
         this.executorService = (executorService == null) ? Executors
                 .newCachedThreadPool() : executorService;
-        this.messageQueueFactory = (messageQueueFactory == null) ? MessageQueueFactoryImpl.INTANCE
+        this.messageQueueFactory = (messageQueueFactory == null) ? DefaultMessageQueueFactoryImpl.INSTANCE
                 : messageQueueFactory;
+        this.initialLocalMessageQueueSize = initialLocalMessageQueueSize;
     }
 
     public Mailbox createMailbox() {
-        return new MailboxImpl(this, messageQueueFactory.createMessageQueue());
+        return new MailboxImpl(this,
+                messageQueueFactory
+                        .createMessageQueue(initialLocalMessageQueueSize));
     }
 
     public Mailbox createMailbox(final MessageQueue messageQueue) {
@@ -75,7 +81,9 @@ public final class MailboxFactory {
 
     public void shutdown() {
         if (shuttingDown.compareAndSet(false, true)) {
-            executorService.shutdownNow();
+            if (!executorService.isShutdown()) {
+                executorService.shutdownNow();
+            }
             final Iterator<AutoCloseable> it = closables.iterator();
             while (it.hasNext()) {
                 try {
