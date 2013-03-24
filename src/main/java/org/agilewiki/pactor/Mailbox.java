@@ -38,6 +38,16 @@ public interface Mailbox {
     void shutdown();
 
     /**
+     * Returns true when the inbox is empty.
+     */
+    boolean isEmpty();
+
+    /**
+     * Flush buffered messages.
+     */
+    void flush() throws Exception;
+
+    /**
      * This should send the Request to the associated mailbox's queue in asynchronous
      * mode.
      *
@@ -45,6 +55,11 @@ public interface Mailbox {
      * to be processed.
      */
     void send(final Request<?> request) throws Exception;
+
+    /**
+     * Same as send(Request) until buffered message are implemented.
+     */
+    void send(final Request<?> request, final Mailbox source) throws Exception;
 
     /**
      * This should send the Request to the associated mailbox's queue with specific return

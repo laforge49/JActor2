@@ -42,7 +42,31 @@ public final class MailboxImpl implements Mailbox, Runnable, MessageSource {
     }
 
     @Override
+    public boolean isEmpty() {
+        return !inbox.isNonEmpty();
+    }
+
+    /**
+     * does nothing until message buffering is implemented.
+     */
+    @Override
+    public void flush() {
+        //todo
+    }
+
+    @Override
     public void send(final Request<?> request) throws Exception {
+        final Message message = inbox.createMessage(null, null, request, null,
+                EventResponseProcessor.SINGLETON);
+        addMessage(message, this == message.getMessageSource());
+    }
+
+    /**
+     * Same as send(Request) until buffered message are implemented.
+     */
+    @Override
+    public void send(final Request<?> request, final Mailbox source) throws Exception {
+        //todo Buffer events the same way reply buffers requests.
         final Message message = inbox.createMessage(null, null, request, null,
                 EventResponseProcessor.SINGLETON);
         addMessage(message, this == message.getMessageSource());
