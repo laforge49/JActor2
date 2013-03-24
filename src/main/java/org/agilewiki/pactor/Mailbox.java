@@ -10,32 +10,22 @@ package org.agilewiki.pactor;
  * Request are submitted to the MailboxFactory which internally calls the mailbox thread to consume the Request.
  * </p>
  */
-
 public interface Mailbox {
 
     /**
-     * Creates the mailbox.
-     *
+     * Returns the mailbox factory.
      */
-    Mailbox createMailbox();
+    MailboxFactory getMailboxFactory();
 
     /**
-     * Adds the resources which are required to be closed(released) when the mailbox
-     * is shutdown.
-     *
-     * @param closeable resource whose cleanup should be done in when the mailbox is
-     * shutdown.
+     * Returns true when the inbox is empty.
      */
-    void addAutoClosable(final AutoCloseable closeable);
+    boolean isEmpty();
 
     /**
-     * The shutdown should make sure that the a lightweight threads required to process
-     * the messages associated with this mailbox is terminated. This will result in the
-     * graceful shutdown of the threads. The messages send to the mailbox after calling
-     * the shutdown would not be executed.
-     *
+     * Flush buffered messages.
      */
-    void shutdown();
+    void flush() throws Exception;
 
     /**
      * This should send the Request to the associated mailbox's queue in asynchronous
@@ -45,6 +35,11 @@ public interface Mailbox {
      * to be processed.
      */
     void send(final Request<?> request) throws Exception;
+
+    /**
+     * Same as send(Request) until buffered message are implemented.
+     */
+    void send(final Request<?> request, final Mailbox source) throws Exception;
 
     /**
      * This should send the Request to the associated mailbox's queue with specific return

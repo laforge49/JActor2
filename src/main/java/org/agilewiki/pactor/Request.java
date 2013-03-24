@@ -19,6 +19,8 @@ public interface Request<RESPONSE_TYPE> {
      */
     public void send() throws Exception;
 
+    public void send(final Mailbox source) throws Exception;
+
     /**
      * reply will be used when chain of PActors needs to process the User/Application Request.
      * The responseProcessor would be shared for PActor chain.
