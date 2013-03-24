@@ -1,4 +1,6 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.impl;
+
+import org.agilewiki.pactor.ResponseProcessor;
 
 final public class EventResponseProcessor implements ResponseProcessor<Void> {
     public static final EventResponseProcessor SINGLETON = new EventResponseProcessor();

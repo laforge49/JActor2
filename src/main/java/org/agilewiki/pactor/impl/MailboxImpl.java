@@ -2,7 +2,6 @@ package org.agilewiki.pactor.impl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.agilewiki.pactor.EventResponseProcessor;
 import org.agilewiki.pactor.ExceptionHandler;
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
