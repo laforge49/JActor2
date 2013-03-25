@@ -15,6 +15,9 @@ public interface MailboxFactory extends AutoCloseable {
     /** Creates a Mailbox with a default message queue. */
     Mailbox createMailbox();
 
+    /** Creates an Mailbox with a default message queue that does not support commandeering. */
+    Mailbox createAsyncMailbox();
+
     /**
      * Runs a Runnable in the internal executor service.
      * Normally, the runnable is a Mailbox.

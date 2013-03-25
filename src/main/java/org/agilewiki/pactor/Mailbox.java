@@ -66,4 +66,7 @@ public interface Mailbox {
     <E> E pend(final Request<E> request) throws Exception;
 
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
+
+    /** Returns a mailbox wrapper that does not buffer */
+    Mailbox autoFlush();
 }
