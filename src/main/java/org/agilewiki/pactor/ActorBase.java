@@ -4,8 +4,7 @@ package org.agilewiki.pactor;
  * Use of this class is entirely optional.
  */
 public class ActorBase implements Actor {
-    /** TODO Do we need synchronization here (non-final fields)? */
-    protected Mailbox mailbox;
+    private Mailbox mailbox;
     private boolean initialized;
 
     public void initialize() {
