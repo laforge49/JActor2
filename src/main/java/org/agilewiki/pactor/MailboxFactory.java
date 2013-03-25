@@ -3,8 +3,6 @@
  */
 package org.agilewiki.pactor;
 
-import org.agilewiki.pactor.impl.MessageQueue;
-
 /**
  * <p>
  * The MailboxFactory is the factory as the name suggests for the MailBoxes to be used with the PActor. In addition to
@@ -16,9 +14,6 @@ public interface MailboxFactory extends AutoCloseable {
 
     /** Creates a Mailbox with a default message queue. */
     Mailbox createMailbox();
-
-    /** Creates a Mailbox with a specific message queue. */
-    Mailbox createMailbox(final MessageQueue messageQueue);
 
     /**
      * Runs a Runnable in the internal executor service.
