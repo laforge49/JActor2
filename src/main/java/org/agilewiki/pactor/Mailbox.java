@@ -17,6 +17,12 @@ public interface Mailbox {
      */
     MailboxFactory getMailboxFactory();
 
+    /** Calls MailboxFactory.createMailbox() */
+    Mailbox createMailbox();
+
+    /** Calls MailboxFactory.createAsyncMailbox() */
+    Mailbox createAsyncMailbox();
+
     /**
      * Returns true when the inbox is empty.
      */
