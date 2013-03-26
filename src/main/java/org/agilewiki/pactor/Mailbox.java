@@ -73,6 +73,5 @@ public interface Mailbox {
 
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 
-    /** Returns a mailbox wrapper that does not buffer */
-    Mailbox autoFlush();
+    void setNoBuffering();
 }
