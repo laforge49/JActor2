@@ -17,7 +17,9 @@ public interface Mailbox {
      */
     MailboxFactory getMailboxFactory();
 
-    /** Calls MailboxFactory.createMailbox() */
+    /**
+     * Calls MailboxFactory.createMailbox()
+     */
     Mailbox createMailbox();
 
     /**
@@ -35,28 +37,31 @@ public interface Mailbox {
      * mode.
      *
      * @param request _Request Object that should encapsulate the Requested Information
-     * to be processed.
+     *                to be processed.
      */
-    void send(final _Request<?> request) throws Exception;
+    <A extends Actor> void send(final _Request<Void, A> request, final A targetActor) throws Exception;
 
     /**
      * Same as send(_Request) until buffered message are implemented.
      */
-    void send(final _Request<?> request, final Mailbox source) throws Exception;
+    <A extends Actor> void send(final _Request<Void, A> request,
+                     final Mailbox source,
+                     final A targetActor) throws Exception;
 
     /**
      * This should send the _Request to the associated mailbox's queue with specific return
      * type which is encapsulated in ResponseProcessor. reply with VoidResponseProcessor
      * will act same as the send method.
      *
-     *
-     * @param request _Request Object that should encapsulate the Requested Information
-     * to be processed.
-     * @param source The mailbox reference where the Response Message should be dispatched.
+     * @param request           _Request Object that should encapsulate the Requested Information
+     *                          to be processed.
+     * @param source            The mailbox reference where the Response Message should be dispatched.
      * @param responseProcessor The response processor implementation.
      */
-    <E> void reply(final _Request<E> request, final Mailbox source,
-            final ResponseProcessor<E> responseProcessor) throws Exception;
+    <E, A extends Actor> void reply(final _Request<E, A> request,
+                      final Mailbox source,
+                      final A targetActor,
+                      final ResponseProcessor<E> responseProcessor) throws Exception;
 
     /**
      * This should send the _Request to the associated mailbox's queue in synchronous mode.
@@ -64,9 +69,9 @@ public interface Mailbox {
      * response to be send back the invoking thread.
      *
      * @param request _Request Object that should encapsulate the Requested Information
-     * to be processed.
+     *                to be processed.
      */
-    <E> E pend(final _Request<E> request) throws Exception;
+    <E, A extends Actor> E pend(final _Request<E, A> request, final A targetActor) throws Exception;
 
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 

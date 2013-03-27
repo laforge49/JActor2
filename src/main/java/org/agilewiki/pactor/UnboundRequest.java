@@ -9,17 +9,17 @@ package org.agilewiki.pactor;
  * </p>
  */
 
-public interface Request<RESPONSE_TYPE> {
-
-    public Mailbox getMailbox();
+public interface UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
+        extends _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
 
     /**
      * This will send the current Request to the mailbox for asynchronous processing.
      * 
      */
-    public void send() throws Exception;
+    public void send(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 
-    public void send(final Mailbox source) throws Exception;
+    public void send(final Mailbox source, final TARGET_ACTOR_TYPE _targetActor)
+            throws Exception;
 
     /**
      * reply will be used when chain of PActors needs to process the User/Application Request.
@@ -32,7 +32,8 @@ public interface Request<RESPONSE_TYPE> {
      * @throws Exception Will thrown Exception if the source mailbox is not running.
      */ 
     public void reply(final Mailbox source,
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+                      final TARGET_ACTOR_TYPE _targetActor,
+                      final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception;
 
     /**
@@ -43,16 +44,5 @@ public interface Request<RESPONSE_TYPE> {
      * @return RESPONSE_TYPE
      * @throws Exception
      */ 
-    public RESPONSE_TYPE pend() throws Exception;
-
-    /**
-     * The processRequest is asynchronously invoked by the threads associated with the Requests attached mailbox. The send
-     * methods pushes the Request to the mailbox.
-     *
-     * @param responseProcessor The ResponseProcessor contains the Response that is generated from the Request.
-     * @throws Exception
-     */
-    public void processRequest(
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
-            throws Exception;
+    public RESPONSE_TYPE pend(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 }

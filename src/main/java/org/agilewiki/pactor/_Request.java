@@ -1,6 +1,6 @@
 package org.agilewiki.pactor;
 
-public interface _Request<RESPONSE_TYPE> {
+public interface _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
 
     /** 
      * The processRequest is asynchronously invoked by the threads associated with the Requests attached mailbox. The send
@@ -10,6 +10,7 @@ public interface _Request<RESPONSE_TYPE> {
      * @throws Exception
      */
     public void processRequest(
+            final TARGET_ACTOR_TYPE _targetActor,
             final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception;
 }
