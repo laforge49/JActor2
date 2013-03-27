@@ -9,7 +9,7 @@ package org.agilewiki.pactor;
  * </p>
  */
 
-public interface Request<RESPONSE_TYPE> {
+public interface Request<RESPONSE_TYPE> extends _Request<RESPONSE_TYPE> {
 
     public Mailbox getMailbox();
 
@@ -44,15 +44,4 @@ public interface Request<RESPONSE_TYPE> {
      * @throws Exception
      */ 
     public RESPONSE_TYPE pend() throws Exception;
-
-    /** 
-     * The processRequest is asynchronously invoked by the threads associated with the Requests attached mailbox. The send
-     * methods pushes the Request to the mailbox.
-     *
-     * @param responseProcessor The ResponseProcessor contains the Response that is generated from the Request.
-     * @throws Exception
-     */
-    public void processRequest(
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
-            throws Exception;
 }
