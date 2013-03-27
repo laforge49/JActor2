@@ -20,9 +20,6 @@ public interface Mailbox {
     /** Calls MailboxFactory.createMailbox() */
     Mailbox createMailbox();
 
-    /** Calls MailboxFactory.createAsyncMailbox() */
-    Mailbox createAsyncMailbox();
-
     /**
      * Returns true when the inbox is empty.
      */
@@ -73,5 +70,5 @@ public interface Mailbox {
 
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 
-    void setNoBuffering();
+    void disableCommandeering();
 }
