@@ -22,11 +22,11 @@ public abstract class UnboundRequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extend
     }
 
     @Override
-    public void reply(final Mailbox source,
-                      final TARGET_ACTOR_TYPE _targetActor,
-                      final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+    public void send(final Mailbox source,
+                     final TARGET_ACTOR_TYPE _targetActor,
+                     final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception {
-        _targetActor.getMailbox().reply(this, source, _targetActor, responseProcessor);
+        _targetActor.getMailbox().send(this, source, _targetActor, responseProcessor);
     }
 
     @Override

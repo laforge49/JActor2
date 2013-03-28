@@ -22,7 +22,7 @@ public interface Request<RESPONSE_TYPE> {
     public void signal(final Mailbox source) throws Exception;
 
     /**
-     * reply will be used when chain of PActors needs to process the User/Application Request.
+     * send will be used when chain of PActors needs to process the User/Application Request.
      * The responseProcessor would be shared for PActor chain.
      * 
      * @param source The mailbox associated with the Request for which the ResponseMessage is to 
@@ -31,8 +31,8 @@ public interface Request<RESPONSE_TYPE> {
      * @param responseProcessor The associated ResponseProcessor whose role is to process the response.
      * @throws Exception Will thrown Exception if the source mailbox is not running.
      */ 
-    public void reply(final Mailbox source,
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+    public void send(final Mailbox source,
+                     final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception;
 
     /**

@@ -39,10 +39,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     }
 
     @Override
-    public void reply(final Mailbox source,
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+    public void send(final Mailbox source,
+                     final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception {
-        mailbox.reply(this, source, null, responseProcessor);
+        mailbox.send(this, source, null, responseProcessor);
     }
 
     @Override
