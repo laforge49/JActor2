@@ -13,12 +13,12 @@ public interface UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
         extends _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
 
     /**
-     * This will send the current Request to the mailbox for asynchronous processing.
+     * This will signal the current Request to the mailbox for asynchronous processing.
      * 
      */
-    public void send(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
+    public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 
-    public void send(final Mailbox source, final TARGET_ACTOR_TYPE _targetActor)
+    public void signal(final Mailbox source, final TARGET_ACTOR_TYPE _targetActor)
             throws Exception;
 
     /**
@@ -39,10 +39,10 @@ public interface UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
     /**
      * This will make the invoking thread to wait for the response before continuing ahead.
      * It will let the invocation to be synchronous for the calling thread. It is better to evaluate 
-     * if plain OO call would for using instead of pend.
+     * if plain OO call would for using instead of call.
      * 
      * @return RESPONSE_TYPE
      * @throws Exception
      */ 
-    public RESPONSE_TYPE pend(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
+    public RESPONSE_TYPE call(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 }

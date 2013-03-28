@@ -14,12 +14,12 @@ public interface Request<RESPONSE_TYPE> {
     public Mailbox getMailbox();
 
     /**
-     * This will send the current Request to the mailbox for asynchronous processing.
+     * This will signal the current Request to the mailbox for asynchronous processing.
      * 
      */
-    public void send() throws Exception;
+    public void signal() throws Exception;
 
-    public void send(final Mailbox source) throws Exception;
+    public void signal(final Mailbox source) throws Exception;
 
     /**
      * reply will be used when chain of PActors needs to process the User/Application Request.
@@ -38,15 +38,15 @@ public interface Request<RESPONSE_TYPE> {
     /**
      * This will make the invoking thread to wait for the response before continuing ahead.
      * It will let the invocation to be synchronous for the calling thread. It is better to evaluate 
-     * if plain OO call would for using instead of pend.
+     * if plain OO call would for using instead of call.
      * 
      * @return RESPONSE_TYPE
      * @throws Exception
      */ 
-    public RESPONSE_TYPE pend() throws Exception;
+    public RESPONSE_TYPE call() throws Exception;
 
     /**
-     * The processRequest is asynchronously invoked by the threads associated with the Requests attached mailbox. The send
+     * The processRequest is asynchronously invoked by the threads associated with the Requests attached mailbox. The signal
      * methods pushes the Request to the mailbox.
      *
      * @param responseProcessor The ResponseProcessor contains the Response that is generated from the Request.
