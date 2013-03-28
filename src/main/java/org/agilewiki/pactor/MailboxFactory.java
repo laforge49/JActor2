@@ -12,8 +12,17 @@ package org.agilewiki.pactor;
  */
 public interface MailboxFactory extends AutoCloseable {
 
-    /** Creates a Mailbox with a default message queue. */
+    /** Creates a Mailbox with a default message queue
+     * with commandeering and message buffering enabled. */
     Mailbox createMailbox();
+
+    /** Creates a Mailbox with a default message queue
+     * with message buffering enabled. */
+    Mailbox createMailbox(final boolean _disableCommandeering);
+
+    /** Creates a Mailbox with a default message queue. */
+    Mailbox createMailbox(final boolean _disableCommandeering,
+                          final boolean _disableMessageBuffering);
 
     /**
      * Runs a Runnable in the internal executor service.

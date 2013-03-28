@@ -17,10 +17,17 @@ public interface Mailbox {
      */
     MailboxFactory getMailboxFactory();
 
-    /**
-     * Calls MailboxFactory.createMailbox()
-     */
+    /** Creates a Mailbox with a default message queue
+     * with commandeering and message buffering enabled. */
     Mailbox createMailbox();
+
+    /** Creates a Mailbox with a default message queue
+     * with message buffering enabled. */
+    Mailbox createMailbox(final boolean _disableCommandeering);
+
+    /** Creates a Mailbox with a default message queue. */
+    Mailbox createMailbox(final boolean _disableCommandeering,
+                          final boolean _disableMessageBuffering);
 
     /**
      * Returns true when the inbox is empty.
@@ -74,8 +81,4 @@ public interface Mailbox {
     <E, A extends Actor> E call(final _Request<E, A> request, final A targetActor) throws Exception;
 
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
-
-    void disableCommandeering();
-
-    void disableMessageBuffering();
 }
