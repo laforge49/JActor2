@@ -76,4 +76,6 @@ public interface Mailbox {
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 
     void disableCommandeering();
+
+    void disableMessageBuffering();
 }
