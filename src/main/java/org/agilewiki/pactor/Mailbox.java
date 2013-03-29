@@ -10,7 +10,7 @@ package org.agilewiki.pactor;
  * Request are submitted to the MailboxFactory which internally calls the mailbox thread to consume the Request.
  * </p>
  */
-public interface Mailbox {
+public interface Mailbox extends Runnable {
 
     /**
      * Returns the mailbox factory.
@@ -81,6 +81,4 @@ public interface Mailbox {
     <E, A extends Actor> E call(final _Request<E, A> request, final A targetActor) throws Exception;
 
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
-
-    void processMessages();
 }

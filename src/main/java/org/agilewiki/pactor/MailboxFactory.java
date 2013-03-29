@@ -24,8 +24,18 @@ public interface MailboxFactory extends AutoCloseable {
     Mailbox createMailbox(final boolean _disableCommandeering,
                           final boolean _disableMessageBuffering);
 
-    /** Creates a Mailbox bound to the current thread. */
-    Mailbox createThreadBoundMailbox();
+    /**
+     * Create a mailbox that runs on the current thread.
+     * <p>
+     * When messageProcessor.run will typically us SwingUtilities.invokeLater(mailbox)
+     * to process the pending messages.
+     * </p>
+     *
+     *
+     * @param _messageProcessor The run method is called when there are messages t be processed.
+     * @return The thread bounded mailbox.
+     */
+    Mailbox createThreadBoundMailbox(final Runnable _messageProcessor);
 
     /**
      * Runs a Runnable in the internal executor service.
