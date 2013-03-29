@@ -81,4 +81,6 @@ public interface Mailbox {
     <E, A extends Actor> E call(final _Request<E, A> request, final A targetActor) throws Exception;
 
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
+
+    void processMessages();
 }

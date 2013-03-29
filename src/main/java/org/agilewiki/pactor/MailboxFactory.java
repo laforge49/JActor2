@@ -24,6 +24,9 @@ public interface MailboxFactory extends AutoCloseable {
     Mailbox createMailbox(final boolean _disableCommandeering,
                           final boolean _disableMessageBuffering);
 
+    /** Creates a Mailbox bound to the current thread. */
+    Mailbox createThreadBoundMailbox();
+
     /**
      * Runs a Runnable in the internal executor service.
      * Normally, the runnable is a Mailbox.
