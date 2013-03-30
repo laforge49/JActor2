@@ -16,11 +16,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
      */
     private final Mailbox mailbox;
 
-    public RequestBase(final Mailbox mbox) {
-        if (mbox == null) {
-            throw new NullPointerException("mbox");
+    public RequestBase(final Mailbox targetMailbox) {
+        if (targetMailbox == null) {
+            throw new NullPointerException("targetMailbox");
         }
-        this.mailbox = mbox;
+        this.mailbox = targetMailbox;
     }
 
     @Override
@@ -40,19 +40,18 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public void send(final Mailbox source,
-                     final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception {
         mailbox.send(this, source, null, responseProcessor);
     }
 
     @Override
     public RESPONSE_TYPE call() throws Exception {
-        return (RESPONSE_TYPE) mailbox.call(this, null);
+        return mailbox.call(this, null);
     }
 
     @Override
-    public void processRequest(
-            final Actor _targetActor,
+    public void processRequest(final Actor _targetActor,
             final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
             throws Exception {
         processRequest(responseProcessor);
