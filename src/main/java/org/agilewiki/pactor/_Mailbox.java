@@ -1,45 +1,92 @@
 package org.agilewiki.pactor;
 
+/**
+ * _Mailbox defines the internal API used by RequestBase and UnboundRequestBase
+ * to pass _Request's to a target mailbox.
+ */
 interface _Mailbox {
 
     /**
-     * This should signal the _Request to the associated mailbox's queue in asynchronous
-     * mode.
+     * A _Request object is enqueued by this mailbox for subsequent processing.
+     * The request is not buffered.
+     * No result is returned.
+     * Any uncaught exceptions which occur while processing the request
+     * are logged as a warning.
      *
-     * @param request _Request Object that should encapsulate the Requested Information
-     *                to be processed.
+     * @param _request     Defines the operation to be applied to the target actor.
+     * @param _targetActor For Request's (bound requests), _targetActor is null.
+     *                     For UnboundRequest's, _targetActor is the actor
+     *                     to which the request is applied.
      */
-    <A extends Actor> void signal(final _Request<Void, A> request, final A targetActor) throws Exception;
+    <A extends Actor> void signal(final _Request<Void, A> _request, final A _targetActor) throws Exception;
 
     /**
-     * Same as signal(_Request) until buffered message are implemented.
+     * A _Request object is enqueued by this mailbox for subsequent processing.
+     * The request is buffered by _sourceMailbox until the source mailbox has no more
+     * requests or responses to process.
+     * No result is returned.
+     * Any uncaught exceptions which occur while processing the request
+     * are logged as a warning.
+     *
+     * @param _request       Defines the operation to be applied to the target actor.
+     * @param _sourceMailbox The originating mailbox where the request is buffered.
+     * @param _targetActor   For Request's (bound requests), _targetActor is null.
+     *                       For UnboundRequest's, _targetActor is the actor
+     *                       to which the request is applied.
      */
-    <A extends Actor> void signal(final _Request<Void, A> request,
-                                  final Mailbox source,
-                                  final A targetActor) throws Exception;
+    <A extends Actor> void signal(final _Request<Void, A> _request,
+                                  final Mailbox _sourceMailbox,
+                                  final A _targetActor) throws Exception;
 
     /**
-     * This should signal the _Request to the associated mailbox's queue with specific return
-     * type which is encapsulated in ResponseProcessor. send with VoidResponseProcessor
-     * will act same as the signal method.
+     * _Request and ResponseProcessor objects are enqueued by this mailbox
+     * for subsequent processing.
+     * The request is buffered by _sourceMailbox until the source mailbox has no more
+     * requests or responses to process.
+     * <p>
+     * If no exception occurs while processing the request, the ResponseProcessor object and
+     * a result object created when the request is processed are enqueued by the source mailbox
+     * for subsequent processing.
+     * Otherwise the exception is enqueued by the source mailbox in place of the result.
+     * </p>
+     * <p>
+     * The ResponseProcessor and the result/exception are however not enqueued
+     * immediately. Rather, they are buffered by this mailbox until there are no more
+     * requests or results to process.
+     * </p>
      *
-     * @param request           _Request Object that should encapsulate the Requested Information
-     *                          to be processed.
-     * @param source            The mailbox reference where the Response Message should be dispatched.
-     * @param responseProcessor The response processor implementation.
+     * @param _request       Defines the operation to be applied to the target actor.
+     * @param _sourceMailbox The originating mailbox where the request is buffered.
+     * @param _targetActor   For Request's (bound requests), _targetActor is null.
+     *                       For UnboundRequest's, _targetActor is the actor
+     *                       to which the request is applied.
+     * @param _rp            The callback used to receive the result of the request.
      */
-    <E, A extends Actor> void send(final _Request<E, A> request,
-                                   final Mailbox source,
-                                   final A targetActor,
-                                   final ResponseProcessor<E> responseProcessor) throws Exception;
+    <E, A extends Actor> void send(final _Request<E, A> _request,
+                                   final Mailbox _sourceMailbox,
+                                   final A _targetActor,
+                                   final ResponseProcessor<E> _rp) throws Exception;
 
     /**
-     * This should signal the _Request to the associated mailbox's queue in synchronous mode.
-     * The thread that invokes this operation will wait for process to be executed and
-     * response to be signal back the invoking thread.
+     * A _Request object is enqueued by this mailbox for subsequent processing and
+     * the current thread is blocked until there is a result from processing the request.
+     * The request is not buffered.
+     * <p>
+     * If no exception occurs while processing the request,
+     * a result object created when the request is processed is returned on the caller's thread.
+     * Otherwise the exception is thrown on the caller's thread.
+     * </p>
+     * <p>
+     * The result/exception are however not returned/thrown
+     * immediately. Rather, they are buffered by this mailbox until there are no more
+     * requests or results to process.
+     * </p>
      *
-     * @param request _Request Object that should encapsulate the Requested Information
-     *                to be processed.
+     * @param _request       Defines the operation to be applied to the target actor.
+     * @param _targetActor   For Request's (bound requests), _targetActor is null.
+     *                       For UnboundRequest's, _targetActor is the actor
+     *                       to which the request is applied.
      */
-    <E, A extends Actor> E call(final _Request<E, A> request, final A targetActor) throws Exception;
+    <E, A extends Actor> E call(final _Request<E, A> _request, final A _targetActor)
+            throws Exception;
 }
