@@ -25,7 +25,7 @@ public interface MailboxFactory extends AutoCloseable {
     /**
      * Creates a Mailbox.
      *
-     * @param _disableCommandeering True when commandeering is to be disabled.
+     * @param _disableCommandeering    True when commandeering is to be disabled.
      * @param _disableMessageBuffering True when message buffering is to be disabled.
      * @return A new mailbox.
      */
@@ -37,9 +37,9 @@ public interface MailboxFactory extends AutoCloseable {
      * Sample usage:
      * <pre>
      *     public class CreateUiMailbox{
-     *         private static Mailbox uiMailbox;
+     *         private Mailbox uiMailbox;
      *
-     *         synchronized public static Mailbox get(MailboxFactory mailboxFactory) {
+     *         synchronized public Mailbox get(MailboxFactory mailboxFactory) {
      *             if (uiMailbox == null) {
      *                 uiMailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
      *                     public void run() {
@@ -85,9 +85,9 @@ public interface MailboxFactory extends AutoCloseable {
 }
 /*
 class CreateUiMailbox{
-         private static Mailbox uiMailbox;
+         private Mailbox uiMailbox;
 
-         synchronized public static Mailbox get(MailboxFactory mailboxFactory) {
+         synchronized public Mailbox get(MailboxFactory mailboxFactory) {
              if (uiMailbox == null) {
                  uiMailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
                      public void run() {
