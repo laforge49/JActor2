@@ -34,10 +34,25 @@ public interface MailboxFactory extends AutoCloseable {
 
     /**
      * Create a mailbox that runs on an existing thread.
-     * <p>
+     * Sample usage:
+     * <pre>
+     *     public class CreateUiMailbox{
+     *         private static Mailbox uiMailbox;
+     *
+     *         synchronized public static Mailbox get(MailboxFactory mailboxFactory) {
+     *             if (uiMailbox == null) {
+     *                 uiMailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
+     *                     public void run() {
+     *                         SwingUtilities.invokeLater(uiMailbox);
+     *                     }
+     *                 });
+     *             }
+     *             return uiMailbox;
+     *         }
+     *     }
      * The _messageProcessor.run method typically will call
      * SwingUtilities.invokeLater(mailbox) to process pending messages on the UI thread.
-     * </p>
+     * </pre>
      *
      * @param _messageProcessor The run method is called when there are messages
      *                          to be processed.
@@ -68,3 +83,19 @@ public interface MailboxFactory extends AutoCloseable {
      */
     boolean isClosing();
 }
+/*
+class CreateUiMailbox{
+         private static Mailbox uiMailbox;
+
+         synchronized public static Mailbox get(MailboxFactory mailboxFactory) {
+             if (uiMailbox == null) {
+                 uiMailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
+                     public void run() {
+                         SwingUtilities.invokeLater(uiMailbox);
+                     }
+                 });
+             }
+             return uiMailbox;
+         }
+}
+*/
