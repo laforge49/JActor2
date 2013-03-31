@@ -37,12 +37,6 @@ public interface MailboxFactory extends AutoCloseable {
      */
     Mailbox createThreadBoundMailbox(final Runnable _messageProcessor);
 
-    /**
-     * Runs a Runnable in the internal executor service.
-     * Normally, the runnable is a Mailbox.
-     */
-    void submit(final Runnable task) throws Exception;
-
     /** Adds a closeable, to close when the MailboxFactory closes down. */
     void addAutoClosable(final AutoCloseable closeable);
 
