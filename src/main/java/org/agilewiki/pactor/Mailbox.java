@@ -17,27 +17,54 @@ public interface Mailbox extends Runnable, _Mailbox {
      */
     MailboxFactory getMailboxFactory();
 
-    /** Creates a Mailbox with a default message queue
-     * with commandeering and message buffering enabled. */
+    /**
+     * Creates a Mailbox
+     * with both commandeering and message buffering enabled.
+     * (This is a convenience method which simply calls the corresponding
+     * method on the mailbox factory.)
+     */
     Mailbox createMailbox();
 
-    /** Creates a Mailbox with a default message queue
-     * with message buffering enabled. */
+    /**
+     * Creates a Mailbox
+     * with message buffering enabled.
+     * (This is a convenience method which simply calls the corresponding
+     * method on the mailbox factory.)
+     *
+     * @param _disableCommandeering Disables commandeering when true.
+     */
     Mailbox createMailbox(final boolean _disableCommandeering);
 
-    /** Creates a Mailbox with a default message queue. */
+    /**
+     * Creates a Mailbox.
+     * (This is a convenience method which simply calls the corresponding
+     * method on the mailbox factory.)
+     *
+     * @param _disableCommandeering    Disables commandeering when true.
+     * @param _disableMessageBuffering Disables message buffering when true.
+     */
     Mailbox createMailbox(final boolean _disableCommandeering,
                           final boolean _disableMessageBuffering);
 
     /**
-     * Returns true when the inbox is empty.
+     * Returns true when there no requests or responses enqueued for processing.
      */
     boolean isEmpty();
 
     /**
-     * Flush buffered messages.
+     * The flush method forwards all buffered requests to their target mailbox for
+     * processing and all buffered results/exceptions to their source
+     * mailbox. For results/exceptions originating from a call, the calling thread
+     * is unblocked and the results returned or the exception thrown.
      */
     void flush() throws Exception;
 
+    /**
+     * Replace the current ExceptionHandler with another.
+     * @param exceptionHandler The exception handler to be used now.
+     *                         May be null if the default exception handler is to be used.
+     * @return The exception handler that was previously in effect, or null if the
+     * default exception handler was in effect.
+     */
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 }
