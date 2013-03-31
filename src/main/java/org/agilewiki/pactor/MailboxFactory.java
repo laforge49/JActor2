@@ -38,8 +38,10 @@ public interface MailboxFactory extends AutoCloseable {
     Mailbox createThreadBoundMailbox(final Runnable _messageProcessor);
 
     /** Adds a closeable, to close when the MailboxFactory closes down. */
-    void addAutoClosable(final AutoCloseable closeable);
+    boolean addAutoClosable(final AutoCloseable closeable);
+
+    boolean removeAutoClosable(final AutoCloseable closeable);
 
     /** Returns true, if close() has been called already. */
-    boolean isShuttingDown();
+    boolean isClosing();
 }
