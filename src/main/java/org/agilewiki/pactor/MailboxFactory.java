@@ -30,11 +30,12 @@ public interface MailboxFactory extends AutoCloseable {
      * Creates a Mailbox.
      *
      * @param mayBlock True when actors using this mailbox may block.
-     * @param _disableMessageBuffering True when message buffering is to be disabled.
+     * @param onIdle The run method is called when the input queue is empty.
+     *               When non-null, buffering of outgoing requests/results is also disabled.
      * @return A new mailbox.
      */
     Mailbox createMailbox(final boolean mayBlock,
-                          final boolean _disableMessageBuffering);
+                          final Runnable onIdle);
 
     /**
      * Creates a mailbox that runs on an existing thread.
