@@ -8,28 +8,28 @@ package org.agilewiki.pactor;
 public interface MailboxFactory extends AutoCloseable {
 
     /**
-     * Creates a Mailbox with a both commandeering and message buffering enabled.
+     * Creates a Mailbox which does not block and has message buffering enabled.
      *
      * @return A new mailbox.
      */
     Mailbox createMailbox();
 
     /**
-     * Creates a Mailbox with commandeering enabled.
+     * Creates a Mailbox with buffering enabled.
      *
-     * @param _disableCommandeering True when commandeering is to be disabled.
+     * @param mayBlock True when actors using this mailbox may block.
      * @return A new mailbox.
      */
-    Mailbox createMailbox(final boolean _disableCommandeering);
+    Mailbox createMailbox(final boolean mayBlock);
 
     /**
      * Creates a Mailbox.
      *
-     * @param _disableCommandeering    True when commandeering is to be disabled.
+     * @param mayBlock True when actors using this mailbox may block.
      * @param _disableMessageBuffering True when message buffering is to be disabled.
      * @return A new mailbox.
      */
-    Mailbox createMailbox(final boolean _disableCommandeering,
+    Mailbox createMailbox(final boolean mayBlock,
                           final boolean _disableMessageBuffering);
 
     /**
