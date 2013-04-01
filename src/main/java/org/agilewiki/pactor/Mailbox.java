@@ -23,35 +23,6 @@ public interface Mailbox extends Runnable, _Mailbox {
     MailboxFactory getMailboxFactory();
 
     /**
-     * Creates another Mailbox
-     * with both commandeering and message buffering enabled.
-     * (This is a convenience method which simply calls the corresponding
-     * method on the mailbox factory.)
-     */
-    Mailbox createMailbox();
-
-    /**
-     * Creates another Mailbox
-     * with message buffering enabled.
-     * (This is a convenience method which simply calls the corresponding
-     * method on the mailbox factory.)
-     *
-     * @param _disableCommandeering Disables commandeering when true.
-     */
-    Mailbox createMailbox(final boolean _disableCommandeering);
-
-    /**
-     * Creates another Mailbox.
-     * (This is a convenience method which simply calls the corresponding
-     * method on the mailbox factory.)
-     *
-     * @param _disableCommandeering    Disables commandeering when true.
-     * @param _disableMessageBuffering Disables message buffering when true.
-     */
-    Mailbox createMailbox(final boolean _disableCommandeering,
-                          final boolean _disableMessageBuffering);
-
-    /**
      * Returns true when there no requests or responses enqueued for processing.
      */
     boolean isEmpty();

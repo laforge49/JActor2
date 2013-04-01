@@ -33,7 +33,7 @@ public interface MailboxFactory extends AutoCloseable {
                           final boolean _disableMessageBuffering);
 
     /**
-     * Create a mailbox that runs on an existing thread.
+     * Creates a mailbox that runs on an existing thread.
      * Sample usage:
      * <pre>
      *     public class CreateUiMailbox{
