@@ -2,11 +2,7 @@ package org.agilewiki.pactor;
 
 /**
  * A mailbox is a light-weight thread. Requests/responses passed to a mailbox are enqueued and subsequently processed
- * when a thread is allocated to the mailbox. And when the queue is empty, the thread is realeased.
- * <p>
- * Mailboxes buffer outgoing requests/responses for greater throughput, though message buffering can be disabled
- * when a mailbox is created.
- * </p>
+ * when a thread is allocated to the mailbox. And when the queue is empty, the thread is released.
  */
 public interface Mailbox extends Runnable, _Mailbox {
 
