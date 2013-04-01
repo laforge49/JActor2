@@ -27,6 +27,23 @@ public interface MailboxFactory extends AutoCloseable {
     Mailbox createMailbox(final boolean mayBlock);
 
     /**
+     * Creates a Mailbox with buffering enabled.
+     *
+     * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @return A new mailbox.
+     */
+    Mailbox createMailbox(final int initialBufferSize);
+
+    /**
+     * Creates a Mailbox with buffering enabled.
+     *
+     * @param mayBlock True when actors using this mailbox may block.
+     * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @return A new mailbox.
+     */
+    Mailbox createMailbox(final boolean mayBlock, final int initialBufferSize);
+
+    /**
      * Creates a Mailbox.
      *
      * @param mayBlock True when actors using this mailbox may block.
@@ -34,8 +51,19 @@ public interface MailboxFactory extends AutoCloseable {
      *               When non-null, buffering of outgoing requests/results is also disabled.
      * @return A new mailbox.
      */
-    Mailbox createMailbox(final boolean mayBlock,
-                          final Runnable onIdle);
+    Mailbox createMailbox(final boolean mayBlock, final Runnable onIdle);
+
+    /**
+     * Creates a Mailbox.
+     *
+     * @param mayBlock True when actors using this mailbox may block.
+     * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @param onIdle The run method is called when the input queue is empty.
+     *               When non-null, buffering of outgoing requests/results is also disabled.
+     * @return A new mailbox.
+     */
+    Mailbox createMailbox(final boolean mayBlock, final int initialBufferSize,
+            final Runnable onIdle);
 
     /**
      * Creates a mailbox that runs on an existing thread.
