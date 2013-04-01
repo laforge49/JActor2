@@ -7,13 +7,6 @@ package org.agilewiki.pactor;
  * Mailboxes buffer outgoing requests/responses for greater throughput, though message buffering can be disabled
  * when a mailbox is created.
  * </p>
- * <p>
- * A mailbox can also commandeer other mailboxes when passing a request/response to another mailbox for
- * which a thread has not been allocated. This allows the mailbox passing the request/response to process the contents
- * of the other mailbox's queue for greater throughput. This feature must be turned off for mailboxes which receive
- * requests that are CPU intensive or which otherwise block their thread. Failure to disable this feature can result
- * in multiple mailboxes being blocked when a single blocking request is processed.
- * </p>
  */
 public interface Mailbox extends Runnable, _Mailbox {
 

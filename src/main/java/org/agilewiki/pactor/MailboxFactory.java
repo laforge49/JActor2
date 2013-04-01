@@ -4,6 +4,10 @@ package org.agilewiki.pactor;
  * MailboxFactory creates different types of mailboxes, including thread bound mailboxes.
  * This class is also responsible for closing everything down and managing a list of
  * auto closables to be called when MailboxFactory.close() is called.
+ * <p>
+ * Mailboxes should not normally process requests that are CPU intensive or block a thread. But when that is the case,
+ * the mailbox should be created with mapBlock set to true.
+ * </p>
  */
 public interface MailboxFactory extends AutoCloseable {
 
