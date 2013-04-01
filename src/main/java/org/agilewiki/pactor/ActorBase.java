@@ -2,6 +2,10 @@ package org.agilewiki.pactor;
 
 /**
  * Use of this class is entirely optional.
+ *
+ * ActorBase allows the definition of an actor, with deferred initialization
+ * of the Mailbox. Bare in mind that the initialization must happen right after
+ * the construction, and before the actor is used, or passed to another thread!
  */
 public class ActorBase implements Actor {
     private Mailbox mailbox;

@@ -21,8 +21,9 @@ public interface Mailbox extends Runnable, _Mailbox {
      * processing and all buffered results/exceptions to their source
      * mailbox. For results/exceptions originating from a call, the calling thread
      * is unblocked and the results returned or the exception thrown.
+     * @return
      */
-    void flush() throws Exception;
+    boolean flush() throws Exception;
 
     /**
      * Replace the current ExceptionHandler with another.
