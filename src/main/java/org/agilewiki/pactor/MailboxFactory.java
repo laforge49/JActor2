@@ -5,29 +5,30 @@ package org.agilewiki.pactor;
  * This class is also responsible for closing everything down and managing a list of
  * auto closables to be called when MailboxFactory.close() is called.
  * <p>
- * Mailboxes should not normally process requests that are CPU intensive or block a thread. But when that is the case,
+ * Mailboxes should not normally process requests that are CPU intensive or block a thread.
+ * But when that is the case,
  * the mailbox should be created with mapBlock set to true.
  * </p>
  */
 public interface MailboxFactory extends AutoCloseable {
 
     /**
-     * Creates a Mailbox which does not block and has message buffering enabled.
+     * Creates a Mailbox which is only used to process non-blocking requests.
      *
      * @return A new mailbox.
      */
     Mailbox createMailbox();
 
     /**
-     * Creates a Mailbox with buffering enabled.
+     * Creates a Mailbox.
      *
-     * @param mayBlock True when actors using this mailbox may block.
+     * @param mayBlock True when requests are CPU intensive or may block the thread.
      * @return A new mailbox.
      */
     Mailbox createMailbox(final boolean mayBlock);
 
     /**
-     * Creates a Mailbox with buffering enabled.
+     * Creates a Mailbox which is only used to process non-blocking requests.
      *
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @return A new mailbox.
@@ -35,9 +36,9 @@ public interface MailboxFactory extends AutoCloseable {
     Mailbox createMailbox(final int initialBufferSize);
 
     /**
-     * Creates a Mailbox with buffering enabled.
+     * Creates a Mailbox.
      *
-     * @param mayBlock True when actors using this mailbox may block.
+     * @param mayBlock True when requests are CPU intensive or may block the thread.
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @return A new mailbox.
      */
@@ -46,9 +47,8 @@ public interface MailboxFactory extends AutoCloseable {
     /**
      * Creates a Mailbox.
      *
-     * @param mayBlock True when actors using this mailbox may block.
+     * @param mayBlock True when requests are CPU intensive or may block the thread.
      * @param onIdle The run method is called when the input queue is empty.
-     *               When non-null, buffering of outgoing requests/results is also disabled.
      * @return A new mailbox.
      */
     Mailbox createMailbox(final boolean mayBlock, final Runnable onIdle);
@@ -56,10 +56,9 @@ public interface MailboxFactory extends AutoCloseable {
     /**
      * Creates a Mailbox.
      *
-     * @param mayBlock True when actors using this mailbox may block.
+     * @param mayBlock True when requests are CPU intensive or may block the thread.
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @param onIdle The run method is called when the input queue is empty.
-     *               When non-null, buffering of outgoing requests/results is also disabled.
      * @return A new mailbox.
      */
     Mailbox createMailbox(final boolean mayBlock, final int initialBufferSize,
@@ -116,19 +115,3 @@ public interface MailboxFactory extends AutoCloseable {
      */
     boolean isClosing();
 }
-/*
-class CreateUiMailbox{
-         private Mailbox uiMailbox;
-
-         synchronized public Mailbox get(MailboxFactory mailboxFactory) {
-             if (uiMailbox == null) {
-                 uiMailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
-                     public void run() {
-                         SwingUtilities.invokeLater(uiMailbox);
-                     }
-                 });
-             }
-             return uiMailbox;
-         }
-}
-*/
