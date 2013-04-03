@@ -1,58 +1,68 @@
 package org.agilewiki.pactor;
 
 /**
- * <p>
- * Request Object represents the User/Application data that needs to be processed. 
- * Request abstracts the Application/User Request(data) that is dispatched to the Actor's mailbox for asynchronous execution.
- * The Request object should be created in the PActor, it abstracts the user/application data that needs to be processed 
- * by the lightweight thread attached to the Actors mailbox.
- * </p>
+ * A Request Object represents an operation to be performed. The Request is bound to a Mailbox and
+ * will be processed by the thread owned by that Mailbox.
+ *
+ * @param <RESPONSE_TYPE> The class of the result returned when this Request is processed.
  */
-
 public interface Request<RESPONSE_TYPE> {
 
+    /**
+     * Returns the Mailbox to which this Request is bound and to which this Request is to be passed.
+     *
+     * @return The target Mailbox.
+     */
     public Mailbox getMailbox();
 
     /**
-     * This will signal the current Request to the mailbox for asynchronous processing.
-     * 
+     * Passes this Request to the target Mailbox without a return address.
+     * No result is passed back and if an exception is thrown while processing this Request,
+     * that exception is simply logged as a warning.
      */
     public void signal() throws Exception;
 
-    public void signal(final Mailbox source) throws Exception;
+    /**
+     * Passes this Request to the target Mailbox without a return address.
+     * No result is passed back and if an exception is thrown while processing this Request,
+     * that exception is simply logged as a warning.
+     *
+     * @param _source The mailbox on whose thread this method was invoked and which
+     *                will buffer this Request.
+     */
+    public void signal(final Mailbox _source) throws Exception;
 
     /**
-     * send will be used when chain of PActors needs to process the User/Application Request.
-     * The responseProcessor would be shared for PActor chain.
-     * 
-     * @param source The mailbox associated with the Request for which the ResponseMessage is to 
-     * added for asynchronous processing.
-     * 
-     * @param responseProcessor The associated ResponseProcessor whose role is to process the response.
-     * @throws Exception Will thrown Exception if the source mailbox is not running.
-     */ 
-    public void send(final Mailbox source,
-                     final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+     * Passes this Request together with the ResponseProcessor to the target Mailbox.
+     *
+     * @param _source The mailbox on whose thread this method was invoked and which
+     *                will buffer this Request and subsequently receive the result for
+     *                processing on the same thread.
+     * @param _rp     Passed with this request and then returned with the result, the
+     *                ResponseProcessor is used to process the result on the same thread
+     *                that originally invoked this method.
+     */
+    public void send(final Mailbox _source,
+                     final ResponseProcessor<RESPONSE_TYPE> _rp)
             throws Exception;
 
     /**
-     * This will make the invoking thread to wait for the response before continuing ahead.
-     * It will let the invocation to be synchronous for the calling thread. It is better to evaluate 
-     * if plain OO call would for using instead of call.
-     * 
-     * @return RESPONSE_TYPE
-     * @throws Exception
-     */ 
+     * Passes this Request to the target Mailbox and blocks the current thread until
+     * a result is returned.
+     *
+     * @return The result from processing this Request.
+     * @throws Exception If the result is an exception, it is thrown rather than being returned.
+     */
     public RESPONSE_TYPE call() throws Exception;
 
     /**
-     * The processRequest is asynchronously invoked by the threads associated with the Requests attached mailbox. The signal
-     * methods pushes the Request to the mailbox.
+     * The processRequest method will be invoked by the target Mailbox on its own thread
+     * when this Request is received for processing.
      *
-     * @param responseProcessor The ResponseProcessor contains the Response that is generated from the Request.
-     * @throws Exception
+     * @param _rp The ResponseProcessor that is responsible for passing the result back
+     *            to the originator of this Request. Either an Exception must be thrown or
+     *            the _rp.processResponse method must be invoked.
      */
     public void processRequest(
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
-            throws Exception;
+            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception;
 }
