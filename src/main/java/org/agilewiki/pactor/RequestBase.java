@@ -20,14 +20,15 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     /**
      * Create an Request and bind it to its target mailbox.
-     * @param targetMailbox The mailbox where this Request Objects is passed for processing.
-     *                      The thread owned by this mailbox will process this Request.
+     *
+     * @param _targetMailbox The mailbox where this Request Objects is passed for processing.
+     *                       The thread owned by this mailbox will process this Request.
      */
-    public RequestBase(final Mailbox targetMailbox) {
-        if (targetMailbox == null) {
+    public RequestBase(final Mailbox _targetMailbox) {
+        if (_targetMailbox == null) {
             throw new NullPointerException("targetMailbox");
         }
-        this.mailbox = targetMailbox;
+        this.mailbox = _targetMailbox;
     }
 
     @Override
@@ -41,15 +42,15 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     }
 
     @Override
-    public void signal(final Mailbox source) throws Exception {
-        mailbox.signal((_Request<Void, Actor>) this, source, null);
+    public void signal(final Mailbox _source) throws Exception {
+        mailbox.signal((_Request<Void, Actor>) this, _source, null);
     }
 
     @Override
-    public void send(final Mailbox source,
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+    public void send(final Mailbox _source,
+                     final ResponseProcessor<RESPONSE_TYPE> _rp)
             throws Exception {
-        mailbox.send(this, source, null, responseProcessor);
+        mailbox.send(this, _source, null, _rp);
     }
 
     @Override
@@ -59,8 +60,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public void processRequest(final Actor _targetActor,
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+                               final ResponseProcessor<RESPONSE_TYPE> _rp)
             throws Exception {
-        processRequest(responseProcessor);
+        processRequest(_rp);
     }
 }
