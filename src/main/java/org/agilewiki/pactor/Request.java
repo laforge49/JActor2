@@ -1,7 +1,7 @@
 package org.agilewiki.pactor;
 
 /**
- * A Request Object represents an operation to be performed. The Request is bound to a Mailbox and
+ * A Request Object implements an operation to be performed. The Request is bound to a Mailbox and
  * will be processed by the thread owned by that Mailbox.
  *
  * @param <RESPONSE_TYPE> The class of the result returned when this Request is processed.
