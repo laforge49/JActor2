@@ -1,21 +1,28 @@
 package org.agilewiki.pactor;
 
 /**
+ * A Request Object represents an operation to be performed. The Request is bound to a Mailbox and
+ * will be processed by the thread owned by that Mailbox.
  * <p>
- * The basic implementation of the Request interface. The application should extend the RequestBase to
- * create the Request implementations which would be used to signal to the PActors mailbox for asynchronous
- * processing.
+ * Request objects are typically created as an anonymous class within the targeted Actor and bound
+ * to that actor's mailbox. By this means the request can update an actor's state in a thread-safe way.
  * </p>
+ *
+ * @param <RESPONSE_TYPE> The class of the result returned when this Request is processed.
  */
 public abstract class RequestBase<RESPONSE_TYPE> implements
         Request<RESPONSE_TYPE>, _Request<RESPONSE_TYPE, Actor> {
     /**
-     * The mailbox reference where this Request Objects is signal for processing. The mailbox
-     * will be associated with the thread pool which will execute the processRequest method
-     * of the Request.
+     * The mailbox where this Request Objects is passed for processing. The thread
+     * owned by this mailbox will process this Request.
      */
     private final Mailbox mailbox;
 
+    /**
+     * Create an Request and bind it to its target mailbox.
+     * @param targetMailbox The mailbox where this Request Objects is passed for processing.
+     *                      The thread owned by this mailbox will process this Request.
+     */
     public RequestBase(final Mailbox targetMailbox) {
         if (targetMailbox == null) {
             throw new NullPointerException("targetMailbox");
