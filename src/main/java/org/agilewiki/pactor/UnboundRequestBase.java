@@ -16,17 +16,17 @@ public abstract class UnboundRequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extend
     }
 
     @Override
-    public void signal(final Mailbox source, final TARGET_ACTOR_TYPE _targetActor)
+    public void signal(final Mailbox _source, final TARGET_ACTOR_TYPE _targetActor)
             throws Exception {
-        _targetActor.getMailbox().signal((_Request<Void, Actor>) this, source, _targetActor);
+        _targetActor.getMailbox().signal((_Request<Void, Actor>) this, _source, _targetActor);
     }
 
     @Override
-    public void send(final Mailbox source,
+    public void send(final Mailbox _source,
                      final TARGET_ACTOR_TYPE _targetActor,
-                     final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+                     final ResponseProcessor<RESPONSE_TYPE> _rp)
             throws Exception {
-        _targetActor.getMailbox().send(this, source, _targetActor, responseProcessor);
+        _targetActor.getMailbox().send(this, _source, _targetActor, _rp);
     }
 
     @Override

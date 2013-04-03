@@ -18,22 +18,22 @@ public interface UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
      */
     public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 
-    public void signal(final Mailbox source, final TARGET_ACTOR_TYPE _targetActor)
+    public void signal(final Mailbox _source, final TARGET_ACTOR_TYPE _targetActor)
             throws Exception;
 
     /**
      * send will be used when chain of PActors needs to process the User/Application Request.
      * The responseProcessor would be shared for PActor chain.
      * 
-     * @param source The mailbox associated with the Request for which the ResponseMessage is to 
+     * @param _source The mailbox associated with the Request for which the ResponseMessage is to
      * added for asynchronous processing.
      * 
-     * @param responseProcessor The associated ResponseProcessor whose role is to process the response.
+     * @param _rp The associated ResponseProcessor whose role is to process the response.
      * @throws Exception Will thrown Exception if the source mailbox is not running.
      */ 
-    public void send(final Mailbox source,
+    public void send(final Mailbox _source,
                      final TARGET_ACTOR_TYPE _targetActor,
-                     final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+                     final ResponseProcessor<RESPONSE_TYPE> _rp)
             throws Exception;
 
     /**
