@@ -1,12 +1,26 @@
 package org.agilewiki.pactor;
 
 /**
- * A Request Object represents an operation to be performed. The Request is bound to a Mailbox and
- * will be processed by the thread owned by that Mailbox.
- * <p>
  * Request objects are typically created as an anonymous class within the targeted Actor and bound
  * to that actor's mailbox. By this means the request can update an actor's state in a thread-safe way.
- * </p>
+ * <p/>
+ * <pre>
+ *     public class ActorA {
+ *         private final Mailbox mailbox;
+ *         public final Request&lt;String&gt; hi1;
+ *
+ *         public Actor1(final Mailbox _mailbox) {
+ *             mailbox = _mailbox;
+ *
+ *             hi1 = new RequestBase&lt;String&gt;(mailbox) {
+ *                 public void processRequest(final ResponseProcessor&lt;String&gt; _rp)
+ *                         throws Exception {
+ *                     responseProcessor.processResponse("Hello world!");
+ *                }
+ *             };
+ *         }
+ *     }
+ * </pre>
  *
  * @param <RESPONSE_TYPE> The class of the result returned when this Request is processed.
  */
@@ -65,3 +79,23 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
         processRequest(_rp);
     }
 }
+
+/*
+public class Actor1 {
+    private final Mailbox mailbox;
+    public final Request<String> hi1;
+
+    public Actor1(final Mailbox mbox) {
+        this.mailbox = mbox;
+
+        hi1 = new RequestBase<String>(mailbox) {
+            @Override
+            public void processRequest(
+                    final ResponseProcessor<String> responseProcessor)
+                    throws Exception {
+                responseProcessor.processResponse("Hello world!");
+            }
+        };
+    }
+}
+*/

@@ -3,10 +3,6 @@ package org.agilewiki.pactor;
 /**
  * A Request Object represents an operation to be performed. The Request is bound to a Mailbox and
  * will be processed by the thread owned by that Mailbox.
- * <p>
- * Request objects are typically created as an anonymous class within the targeted Actor and bound
- * to that actor's mailbox. By this means the request can update an actor's state in a thread-safe way.
- * </p>
  *
  * @param <RESPONSE_TYPE> The class of the result returned when this Request is processed.
  */
