@@ -1,8 +1,13 @@
 package org.agilewiki.pactor;
 
 /**
- * Use of this interface is entirely optional.
+ * Actors which receive unbound requests must implement this interface, which is otherwise optional.
  */
 public interface Actor {
+    /**
+     * Returns the mailbox associated with this Actor.
+     *
+     * @return The actor's mailbox.
+     */
     public Mailbox getMailbox();
 }
