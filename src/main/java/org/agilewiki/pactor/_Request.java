@@ -22,10 +22,10 @@ public interface _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
      *
      * @param _targetActor      Null for Request objects,
      *                          this is the target actor for a BoundRequest.
-     * @param responseProcessor A callback for processing the response.
+     * @param _rp A callback for processing the response.
      */
     public void processRequest(
             final TARGET_ACTOR_TYPE _targetActor,
-            final ResponseProcessor<RESPONSE_TYPE> responseProcessor)
+            final ResponseProcessor<RESPONSE_TYPE> _rp)
             throws Exception;
 }

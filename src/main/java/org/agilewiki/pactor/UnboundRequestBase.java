@@ -1,11 +1,25 @@
 package org.agilewiki.pactor;
 
 /**
- * <p>
- * The basic implementation of the Request interface. The application should extend the RequestBase to
- * create the Request implementations which would be used to signal to the PActors mailbox for asynchronous
- * processing.
- * </p>
+ * UnboundRequestBase is typically subclassed to create requests that are targeted to a class
+ * of actors or to an interface, rather than to a specific instance. The target class must however
+ * implement the Actor interface.
+ * <p/>
+ * <pre>
+ * public interface DudActor extends Actor {
+ *     public String getDuddly();
+ * }
+ *
+ * public class DuddlyReq extends UnboundRequestBase&lt;String, DudActor&gt; {
+ *     public void processRequest(final DudActor _targetActor, final ResponseProcessor&lt;String response&gt; _rp)
+ *             throws Exception {
+ *         _rp.processResponse(_targetActor.getDuddly());
+ *     }
+ * }
+ * </pre>
+ *
+ * @param <RESPONSE_TYPE>     The class of the result returned when this UnboundRequest is processed.
+ * @param <TARGET_ACTOR_TYPE> The class of the actor that will be used when this UnboundRequest is processed.
  */
 public abstract class UnboundRequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
         implements UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
