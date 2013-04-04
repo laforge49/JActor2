@@ -39,4 +39,13 @@ public interface Mailbox extends Runnable, _Mailbox {
      *         default exception handler was in effect.
      */
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
+
+    /**
+     * A port creates a high-speed one-way connection between two mailboxes.
+     * (Ports should generally be opened in pairs.)
+     * This method is NOT thread-safe.
+     *
+     * @param _source The mailbox that originates the request or result message.
+     */
+    void createPort(final Mailbox _source);
 }
