@@ -1,20 +1,45 @@
 package org.agilewiki.pactor;
 
 /**
- * Use of this class is entirely optional.
+ * ActorBase implements an Actor bean, i.e. it no constructor arguments.
+ * Initialization is not thread-safe, so it should be done
+ * before a reference to the actor is shared.
  *
- * ActorBase allows the definition of an actor, with deferred initialization
- * of the Mailbox. Bare in mind that the initialization must happen right after
- * the construction, and before the actor is used, or passed to another thread!
+ * Use of this class is entirely optional, as actors need only a reference to a mailbox
+ * to be able to exchange messages with other actors.
  */
 public class ActorBase implements Actor {
+    /**
+     * The actor's mailbox.
+     */
     private Mailbox mailbox;
+
+    /**
+     * True when initialized, this flag prevents duplicate initialization.
+     */
     private boolean initialized;
 
+    /**
+     * Returns true when the actor has been initialized.
+     * @return True when the actor has been initialized.
+     */
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    /**
+     * Initialize an actor without a mailbox. An actor initialized this way will not be
+     * able to send or receive messages.
+     */
     public void initialize() {
         initialize(null);
     }
 
+    /**
+     * Initialize an actor.
+     *
+     * @param _mailbox The actor's mailbox.
+     */
     public void initialize(final Mailbox _mailbox) {
         if (initialized)
             throw new IllegalStateException("Already initialized");
