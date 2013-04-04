@@ -17,6 +17,7 @@ interface _Mailbox {
      * @param _targetActor For Request's (bound requests), _targetActor is null.
      *                     For UnboundRequest's, _targetActor is the actor
      *                     to which the request is applied.
+     * @param <A>          The target actor type.
      */
     <A extends Actor> void signal(final _Request<Void, A> _request, final A _targetActor) throws Exception;
 
@@ -33,6 +34,7 @@ interface _Mailbox {
      * @param _targetActor   For Request's (bound requests), _targetActor is null.
      *                       For UnboundRequest's, _targetActor is the actor
      *                       to which the request is applied.
+     * @param <A>            The target actor type.
      */
     <A extends Actor> void signal(final _Request<Void, A> _request,
                                   final Mailbox _sourceMailbox,
@@ -61,6 +63,8 @@ interface _Mailbox {
      *                       For UnboundRequest's, _targetActor is the actor
      *                       to which the request is applied.
      * @param _rp            The callback used to receive the result of the request.
+     * @param <E>            The result type.
+     * @param <A>            The target actor type.
      */
     <E, A extends Actor> void send(final _Request<E, A> _request,
                                    final Mailbox _sourceMailbox,
@@ -86,6 +90,9 @@ interface _Mailbox {
      * @param _targetActor   For Request's (bound requests), _targetActor is null.
      *                       For UnboundRequest's, _targetActor is the actor
      *                       to which the request is applied.
+     * @param <E>            The result type.
+     * @param <A>            The target actor type.
+     * @return The result.
      */
     <E, A extends Actor> E call(final _Request<E, A> _request, final A _targetActor)
             throws Exception;
