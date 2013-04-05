@@ -31,7 +31,7 @@ public class ActorBase implements Actor {
      * Initialize an actor without a mailbox. An actor initialized this way will not be
      * able to send or receive messages.
      */
-    public void initialize() {
+    final public void initialize() throws Exception {
         initialize(null);
     }
 
@@ -40,7 +40,7 @@ public class ActorBase implements Actor {
      *
      * @param _mailbox The actor's mailbox.
      */
-    public void initialize(final Mailbox _mailbox) {
+    public void initialize(final Mailbox _mailbox) throws Exception {
         if (initialized)
             throw new IllegalStateException("Already initialized");
         initialized = true;
