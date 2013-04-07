@@ -31,7 +31,7 @@ public class ActorBase implements Actor {
      * Initialize an actor without a mailbox. An actor initialized this way will not be
      * able to send or receive messages.
      */
-    final public void initialize() throws Exception {
+    public final void initialize() throws Exception {
         initialize(null);
     }
 
@@ -50,5 +50,10 @@ public class ActorBase implements Actor {
     @Override
     public Mailbox getMailbox() {
         return mailbox;
+    }
+
+    @Override
+    public boolean sameMailbox(final Actor other) {
+        return mailbox == other.getMailbox();
     }
 }
