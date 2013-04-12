@@ -114,4 +114,18 @@ public interface MailboxFactory extends AutoCloseable {
      * @return true if close() has already been called.
      */
     boolean isClosing();
+
+    /**
+     * Assigns the effectively final properties set manager.
+     * Once assigned, it can not be updated.
+     *
+     * @param properties The properties set manager.
+     */
+    void setProperties(Properties properties);
+
+    /**
+     * Returns the property set manager.
+     * @return The properties set manager.
+     */
+    Properties getProperties();
 }
