@@ -11,7 +11,7 @@ public interface Properties {
      * @param propertyName The name of the property.
      * @return The value, or null.
      */
-    public Object getProperty(final String propertyName)
+    public Object getProperty(final String _propertyName)
             throws Exception;
 
     /**
@@ -20,6 +20,6 @@ public interface Properties {
      * @param propertyName  The name of the property.
      * @param propertyValue The value to be assigned.
      */
-    public void setProperty(final String propertyName, final Object propertyValue)
+    public void setProperty(final String _propertyName, final Object _propertyValue)
             throws Exception;
 }
