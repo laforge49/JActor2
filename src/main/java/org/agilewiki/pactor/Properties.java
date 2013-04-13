@@ -1,5 +1,8 @@
 package org.agilewiki.pactor;
 
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * Manages a property set.
  */
@@ -11,7 +14,7 @@ public interface Properties {
      * @param _propertyName The name of the property.
      * @return The value, or null.
      */
-    public Object getProperty(final String _propertyName)
+    Object getProperty(final String _propertyName)
             throws Exception;
 
     /**
@@ -20,6 +23,13 @@ public interface Properties {
      * @param _propertyName  The name of the property.
      * @param _propertyValue The value to be assigned.
      */
-    public void putProperty(final String _propertyName, final Object _propertyValue)
+    void putProperty(final String _propertyName, final Object _propertyValue)
             throws Exception;
+
+    /**
+     * Returns an iterator over the properties set in ascending order.
+     *
+     * @return An ascending iterator over the map entries.
+     */
+    Iterator<Map.Entry<String, Object>> iterator();
 }
