@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Manages a property set.
  */
-public interface Properties {
+public interface Properties extends Actor {
 
     /**
      * Returns the named property, or null.
