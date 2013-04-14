@@ -1,10 +1,9 @@
 package org.agilewiki.pactor;
 
-import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Manages a property set.
+ * Manages a (possibly hierarchical) property set.
  */
 public interface Properties extends Actor {
 
@@ -14,8 +13,7 @@ public interface Properties extends Actor {
      * @param _propertyName The name of the property.
      * @return The value, or null.
      */
-    Object getProperty(final String _propertyName)
-            throws Exception;
+    Object getProperty(final String _propertyName);
 
     /**
      * Assign a value to a property.
@@ -23,13 +21,12 @@ public interface Properties extends Actor {
      * @param _propertyName  The name of the property.
      * @param _propertyValue The value to be assigned.
      */
-    void putProperty(final String _propertyName, final Object _propertyValue)
-            throws Exception;
+    void putProperty(final String _propertyName, final Object _propertyValue);
 
     /**
-     * Returns an iterator over the properties set in ascending order.
+     * Copies all the properties into the specified map.
      *
-     * @return An ascending iterator over the map entries.
+     * @param _map The map to be updated
      */
-    Iterator<Map.Entry<String, Object>> iterator();
+    void copyTo(final Map<String, Object> _map);
 }

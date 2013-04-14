@@ -3,7 +3,7 @@ package org.agilewiki.pactor;
 /**
  * Request objects are typically created as an anonymous class within the targeted Actor and bound
  * to that actor's mailbox. By this means the request can update an actor's state in a thread-safe way.
- * <p>
+ * <p/>
  * <pre>
  *     public class ActorA {
  *         private final Mailbox mailbox;

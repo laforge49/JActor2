@@ -86,12 +86,12 @@ interface _Mailbox {
      * requests or results to process.
      * </p>
      *
-     * @param _request       Defines the operation to be applied to the target actor.
-     * @param _targetActor   For Request's (bound requests), _targetActor is null.
-     *                       For UnboundRequest's, _targetActor is the actor
-     *                       to which the request is applied.
-     * @param <E>            The result type.
-     * @param <A>            The target actor type.
+     * @param _request     Defines the operation to be applied to the target actor.
+     * @param _targetActor For Request's (bound requests), _targetActor is null.
+     *                     For UnboundRequest's, _targetActor is the actor
+     *                     to which the request is applied.
+     * @param <E>          The result type.
+     * @param <A>          The target actor type.
      * @return The result.
      */
     <E, A extends Actor> E call(final _Request<E, A> _request, final A _targetActor)

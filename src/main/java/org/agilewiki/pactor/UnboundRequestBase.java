@@ -4,7 +4,7 @@ package org.agilewiki.pactor;
  * UnboundRequestBase is typically subclassed to create requests that are targeted to a class
  * of actors or to an interface, rather than to a specific instance. The target class must however
  * implement the Actor interface.
- * <p>
+ * <p/>
  * <pre>
  * public interface DudActor extends Actor {
  *     public String getDuddly();

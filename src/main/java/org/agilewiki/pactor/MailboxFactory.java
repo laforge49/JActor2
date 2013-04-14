@@ -38,7 +38,7 @@ public interface MailboxFactory extends AutoCloseable {
     /**
      * Creates a Mailbox.
      *
-     * @param mayBlock True when requests are CPU intensive or may block the thread.
+     * @param mayBlock          True when requests are CPU intensive or may block the thread.
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @return A new mailbox.
      */
@@ -48,7 +48,7 @@ public interface MailboxFactory extends AutoCloseable {
      * Creates a Mailbox.
      *
      * @param mayBlock True when requests are CPU intensive or may block the thread.
-     * @param onIdle The run method is called when the input queue is empty.
+     * @param onIdle   The run method is called when the input queue is empty.
      * @return A new mailbox.
      */
     Mailbox createMailbox(final boolean mayBlock, final Runnable onIdle);
@@ -56,13 +56,13 @@ public interface MailboxFactory extends AutoCloseable {
     /**
      * Creates a Mailbox.
      *
-     * @param mayBlock True when requests are CPU intensive or may block the thread.
+     * @param mayBlock          True when requests are CPU intensive or may block the thread.
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
-     * @param onIdle The run method is called when the input queue is empty.
+     * @param onIdle            The run method is called when the input queue is empty.
      * @return A new mailbox.
      */
     Mailbox createMailbox(final boolean mayBlock, final int initialBufferSize,
-            final Runnable onIdle);
+                          final Runnable onIdle);
 
     /**
      * Creates a mailbox that runs on an existing thread.
@@ -125,6 +125,7 @@ public interface MailboxFactory extends AutoCloseable {
 
     /**
      * Returns the property set manager.
+     *
      * @return The properties set manager.
      */
     Properties getProperties();

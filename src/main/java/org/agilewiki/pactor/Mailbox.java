@@ -8,12 +8,14 @@ public interface Mailbox extends Runnable, _Mailbox {
 
     /**
      * Returns the mailbox factory.
+     *
      * @return The mailbox factory.
      */
     MailboxFactory getMailboxFactory();
 
     /**
      * Returns true when there no requests or responses enqueued for processing.
+     *
      * @return True when there no requests or responses enqueued for processing.
      */
     boolean isEmpty();
