@@ -29,14 +29,6 @@ public class ActorBase implements Actor {
     }
 
     /**
-     * Initialize an actor without a mailbox. An actor initialized this way will not be
-     * able to send or receive messages.
-     */
-    public final void initialize() throws Exception {
-        initialize(null);
-    }
-
-    /**
      * Initialize an actor.
      *
      * @param _mailbox The actor's mailbox.
