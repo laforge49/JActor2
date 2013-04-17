@@ -44,9 +44,4 @@ public class ActorBase implements Actor {
     public Mailbox getMailbox() {
         return mailbox;
     }
-
-    @Override
-    public boolean sameMailbox(final Actor other) {
-        return mailbox == other.getMailbox();
-    }
 }
