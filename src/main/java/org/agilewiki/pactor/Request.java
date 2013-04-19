@@ -43,8 +43,7 @@ public interface Request<RESPONSE_TYPE> {
      *                that originally invoked this method.
      */
     public void send(final Mailbox _source,
-                     final ResponseProcessor<RESPONSE_TYPE> _rp)
-            throws Exception;
+            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception;
 
     /**
      * Passes this Request to the target Mailbox and blocks the current thread until
@@ -63,6 +62,6 @@ public interface Request<RESPONSE_TYPE> {
      *            to the originator of this Request. Either an Exception must be thrown or
      *            the _rp.processResponse method must be invoked.
      */
-    public void processRequest(
-            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception;
+    public void processRequest(final ResponseProcessor<RESPONSE_TYPE> _rp)
+            throws Exception;
 }

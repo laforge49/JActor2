@@ -62,7 +62,7 @@ public interface MailboxFactory extends AutoCloseable {
      * @return A new mailbox.
      */
     Mailbox createMailbox(final boolean mayBlock, final int initialBufferSize,
-                          final Runnable onIdle);
+            final Runnable onIdle);
 
     /**
      * Creates a mailbox that runs on an existing thread.

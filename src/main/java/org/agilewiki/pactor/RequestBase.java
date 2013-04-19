@@ -62,8 +62,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public void send(final Mailbox _source,
-                     final ResponseProcessor<RESPONSE_TYPE> _rp)
-            throws Exception {
+            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
         mailbox.send(this, _source, null, _rp);
     }
 
@@ -74,8 +73,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public void processRequest(final Actor _targetActor,
-                               final ResponseProcessor<RESPONSE_TYPE> _rp)
-            throws Exception {
+            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
         processRequest(_rp);
     }
 }

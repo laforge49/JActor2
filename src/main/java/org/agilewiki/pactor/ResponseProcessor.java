@@ -19,6 +19,5 @@ public interface ResponseProcessor<RESPONSE_TYPE> {
      *
      * @param response The response to a request.
      */
-    public void processResponse(final RESPONSE_TYPE response)
-            throws Exception;
+    public void processResponse(final RESPONSE_TYPE response) throws Exception;
 }
