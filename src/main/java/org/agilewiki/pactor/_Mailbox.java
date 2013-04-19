@@ -19,7 +19,8 @@ interface _Mailbox {
      *                     to which the request is applied.
      * @param <A>          The target actor type.
      */
-    <A extends Actor> void signal(final _Request<Void, A> _request, final A _targetActor) throws Exception;
+    <A extends Actor> void signal(final _Request<Void, A> _request,
+            final A _targetActor) throws Exception;
 
     /**
      * A _Request object is enqueued by this mailbox for subsequent processing.
@@ -37,8 +38,8 @@ interface _Mailbox {
      * @param <A>            The target actor type.
      */
     <A extends Actor> void signal(final _Request<Void, A> _request,
-                                  final Mailbox _sourceMailbox,
-                                  final A _targetActor) throws Exception;
+            final Mailbox _sourceMailbox, final A _targetActor)
+            throws Exception;
 
     /**
      * _Request and ResponseProcessor objects are enqueued by this mailbox
@@ -56,6 +57,11 @@ interface _Mailbox {
      * immediately. Rather, they are buffered by this mailbox until there are no more
      * requests or results to process.
      * </p>
+     * <p>
+     * If an error occurs, and _request implements ExceptionHandler, then _request
+     * will receive the error, otherwise the currently configured error handler,
+     * if any.
+     * </p>
      *
      * @param _request       Defines the operation to be applied to the target actor.
      * @param _sourceMailbox The originating mailbox where the request is buffered.
@@ -67,9 +73,8 @@ interface _Mailbox {
      * @param <A>            The target actor type.
      */
     <E, A extends Actor> void send(final _Request<E, A> _request,
-                                   final Mailbox _sourceMailbox,
-                                   final A _targetActor,
-                                   final ResponseProcessor<E> _rp) throws Exception;
+            final Mailbox _sourceMailbox, final A _targetActor,
+            final ResponseProcessor<E> _rp) throws Exception;
 
     /**
      * A _Request object is enqueued by this mailbox for subsequent processing and
@@ -94,6 +99,6 @@ interface _Mailbox {
      * @param <A>          The target actor type.
      * @return The result.
      */
-    <E, A extends Actor> E call(final _Request<E, A> _request, final A _targetActor)
-            throws Exception;
+    <E, A extends Actor> E call(final _Request<E, A> _request,
+            final A _targetActor) throws Exception;
 }
