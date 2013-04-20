@@ -57,11 +57,6 @@ interface _Mailbox {
      * immediately. Rather, they are buffered by this mailbox until there are no more
      * requests or results to process.
      * </p>
-     * <p>
-     * If an error occurs, and _request implements ExceptionHandler, then _request
-     * will receive the error, otherwise the currently configured error handler,
-     * if any.
-     * </p>
      *
      * @param _request       Defines the operation to be applied to the target actor.
      * @param _sourceMailbox The originating mailbox where the request is buffered.
