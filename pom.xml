@@ -80,16 +80,9 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-<!--                        <Bundle-Activator>org.agilewiki.jid.jaosgi.Activator</Bundle-Activator>  -->
                         <Export-Package>
                             org.agilewiki.pactor*;version=${project.version}
                         </Export-Package>
-<!--
-                        <Import-Package>
-                            org.agilewiki.jactor*;version="[5.0,5.1)",
-                            *
-                        </Import-Package>
- -->
                     </instructions>
                 </configuration>
             </plugin>
