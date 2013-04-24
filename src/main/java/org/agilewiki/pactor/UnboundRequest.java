@@ -29,7 +29,7 @@ public interface UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
      * @param _targetActor The actor being operated on.
      */
     public void signal(final Mailbox _source,
-            final TARGET_ACTOR_TYPE _targetActor) throws Exception;
+                       final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 
     /**
      * Passes this Request together with the ResponseProcessor to the target actor's Mailbox.
@@ -43,8 +43,8 @@ public interface UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
      *                     that originally invoked this method.
      */
     public void send(final Mailbox _source,
-            final TARGET_ACTOR_TYPE _targetActor,
-            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception;
+                     final TARGET_ACTOR_TYPE _targetActor,
+                     final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception;
 
     /**
      * Passes this Request to the target actor's Mailbox and blocks the current thread until

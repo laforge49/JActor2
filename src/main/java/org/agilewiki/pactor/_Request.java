@@ -22,8 +22,8 @@ public interface _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
      *
      * @param _targetActor Null for Request objects,
      *                     this is the target actor for a BoundRequest.
-     * @param _rp          A callback for processing the response.
+     * @param _transport   A callback for processing the response on the appropriate thread.
      */
     public void processRequest(final TARGET_ACTOR_TYPE _targetActor,
-            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception;
+                               final Transport<RESPONSE_TYPE> _transport) throws Exception;
 }

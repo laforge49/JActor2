@@ -62,7 +62,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public void send(final Mailbox _source,
-            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
+                     final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
         mailbox.send(this, _source, null, _rp);
     }
 
@@ -73,27 +73,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public void processRequest(final Actor _targetActor,
-            final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
-        processRequest(_rp);
+                               final Transport<RESPONSE_TYPE> _transport) throws Exception {
+        processRequest(_transport);
     }
 }
-
-/*
-public class Actor1 {
-    private final Mailbox mailbox;
-    public final Request<String> hi1;
-
-    public Actor1(final Mailbox mbox) {
-        this.mailbox = mbox;
-
-        hi1 = new RequestBase<String>(mailbox) {
-            @Override
-            public void processRequest(
-                    final ResponseProcessor<String> responseProcessor)
-                    throws Exception {
-                responseProcessor.processResponse("Hello world!");
-            }
-        };
-    }
-}
-*/

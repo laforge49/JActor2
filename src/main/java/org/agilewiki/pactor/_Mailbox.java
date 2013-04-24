@@ -20,7 +20,7 @@ interface _Mailbox {
      * @param <A>          The target actor type.
      */
     <A extends Actor> void signal(final _Request<Void, A> _request,
-            final A _targetActor) throws Exception;
+                                  final A _targetActor) throws Exception;
 
     /**
      * A _Request object is enqueued by this mailbox for subsequent processing.
@@ -38,7 +38,7 @@ interface _Mailbox {
      * @param <A>            The target actor type.
      */
     <A extends Actor> void signal(final _Request<Void, A> _request,
-            final Mailbox _sourceMailbox, final A _targetActor)
+                                  final Mailbox _sourceMailbox, final A _targetActor)
             throws Exception;
 
     /**
@@ -68,8 +68,8 @@ interface _Mailbox {
      * @param <A>            The target actor type.
      */
     <E, A extends Actor> void send(final _Request<E, A> _request,
-            final Mailbox _sourceMailbox, final A _targetActor,
-            final ResponseProcessor<E> _rp) throws Exception;
+                                   final Mailbox _sourceMailbox, final A _targetActor,
+                                   final ResponseProcessor<E> _rp) throws Exception;
 
     /**
      * A _Request object is enqueued by this mailbox for subsequent processing and
@@ -95,5 +95,5 @@ interface _Mailbox {
      * @return The result.
      */
     <E, A extends Actor> E call(final _Request<E, A> _request,
-            final A _targetActor) throws Exception;
+                                final A _targetActor) throws Exception;
 }
