@@ -52,6 +52,7 @@
                         </Export-Package>
                         <Import-Package>
                             org.agilewiki.pactor*;version=${project.version},
+                            org.agilewiki.pamailbox*;version=${project.version},
                             org.agilewiki.pautil*;version=${project.version},
                             *
                         </Import-Package>
@@ -68,7 +69,13 @@
             <artifactId>pactor-api</artifactId>
             <version>${project.version}</version>
         </dependency>
- 
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pactor-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pactor-util</artifactId>
@@ -85,7 +92,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.5.11</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
