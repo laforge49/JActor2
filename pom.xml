@@ -52,5 +52,6 @@
         <module>pactor-impl</module>
         <module>pactor-util</module>
         <module>pactor-osgi</module>
+        <module>pactor-test-iface</module>
     </modules>
 </project>
