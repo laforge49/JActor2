@@ -49,5 +49,6 @@
 	
     <modules>
         <module>pactor-api</module>
+        <module>pactor-impl</module>
     </modules>
 </project>
