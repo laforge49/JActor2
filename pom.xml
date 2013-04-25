@@ -50,5 +50,6 @@
     <modules>
         <module>pactor-api</module>
         <module>pactor-impl</module>
+        <module>pactor-util</module>
     </modules>
 </project>
