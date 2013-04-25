@@ -51,5 +51,6 @@
         <module>pactor-api</module>
         <module>pactor-impl</module>
         <module>pactor-util</module>
+        <module>pactor-osgi</module>
     </modules>
 </project>
