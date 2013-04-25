@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>pactor-api</artifactId>
-    <name>PActor-api</name>
+    <name>PActor-API</name>
     <packaging>bundle</packaging>
  
     <build>

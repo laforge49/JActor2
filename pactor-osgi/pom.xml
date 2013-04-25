@@ -12,7 +12,7 @@
 
     <artifactId>pactor-osgi</artifactId>
     <packaging>bundle</packaging>
-    <name>PActor-osgi</name>
+    <name>PActor-OSGi</name>
 
     <build>
         <plugins>
