@@ -3,6 +3,9 @@ package org.agilewiki.pactor.durable;
 import org.agilewiki.pactor.Request;
 
 public interface PAString extends IncDes {
+
+    public static final String FACTORY_NAME = "string";
+
     Request<String> getStringReq();
 
     String getValue();

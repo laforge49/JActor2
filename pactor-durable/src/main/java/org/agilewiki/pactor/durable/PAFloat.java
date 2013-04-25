@@ -3,6 +3,9 @@ package org.agilewiki.pactor.durable;
 import org.agilewiki.pactor.Request;
 
 public interface PAFloat extends IncDes {
+
+    public static final String FACTORY_NAME = "float";
+
     Request<Float> getFloatReq();
 
     Float getValue();

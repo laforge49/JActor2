@@ -5,6 +5,8 @@ import org.agilewiki.pactor.Request;
 
 public interface IncDes extends PASerializable {
 
+    public static final String FACTORY_NAME = "incdes";
+
     Request<Integer> getSerializedLengthReq();
 
     /**

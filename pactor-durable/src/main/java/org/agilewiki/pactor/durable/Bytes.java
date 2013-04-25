@@ -3,6 +3,9 @@ package org.agilewiki.pactor.durable;
 import org.agilewiki.pactor.Request;
 
 public interface Bytes extends IncDes {
+
+    public static final String FACTORY_NAME = "bytes";
+
     Request<byte[]> getBytesReq();
 
     byte[] getValue();
