@@ -61,8 +61,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.agilewiki</groupId>
-            <artifactId>pactor</artifactId>
+            <groupId>org.agilewiki.pactor</groupId>
+            <artifactId>pactor-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
