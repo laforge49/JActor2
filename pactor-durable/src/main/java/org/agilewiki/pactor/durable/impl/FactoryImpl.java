@@ -21,8 +21,12 @@ abstract public class FactoryImpl implements Factory {
         return name;
     }
 
-    public void configure(FactoryLocator factoryLocator) {
-        this.factoryLocator = factoryLocator;
+    public void configure(final FactoryLocator _factoryLocator) {
+        factoryLocator = _factoryLocator;
+    }
+
+    public FactoryLocator getFactoryLocator() {
+        return factoryLocator;
     }
 
     public String getFactoryKey() {
@@ -59,15 +63,15 @@ abstract public class FactoryImpl implements Factory {
     /**
      * Create and configure an actor.
      *
-     * @param mailbox The mailbox of the new actor.
-     * @param parent  The parent of the new actor.
+     * @param _mailbox The mailbox of the new actor.
+     * @param _parent  The parent of the new actor.
      * @return The new actor.
      */
     @Override
-    public PASerializable newSerializable(Mailbox mailbox, Ancestor parent)
+    public PASerializable newSerializable(final Mailbox _mailbox, final Ancestor _parent)
             throws Exception {
         PASerializable a = instantiateActor();
-        ((IncDesImpl) a.getDurable()).initialize(mailbox, parent, this);
+        ((IncDesImpl) a.getDurable()).initialize(_mailbox, _parent, this);
         return a;
     }
 }

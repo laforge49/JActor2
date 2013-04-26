@@ -1,9 +1,7 @@
 package org.agilewiki.pactor.durable;
 
-import org.agilewiki.pactor.Actor;
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
-import org.agilewiki.pactor.Properties;
 import org.agilewiki.pautil.Ancestor;
 
 public class Util {
@@ -33,48 +31,44 @@ public class Util {
      */
     public final static int DOUBLE_LENGTH = 8;
 
-    public static FactoryLocator getFactoryLocator(final Properties _properties) {
-        return (FactoryLocator) _properties.getProperty("factoryLocator");
+    public static FactoryLocator getFactoryLocator(final PASerializable _serializable) {
+        return _serializable.getDurable().getFactory().getFactoryLocator();
     }
 
-    public static FactoryLocator getFactoryLocator(final MailboxFactory _mailboxFactory) {
-        return getFactoryLocator(_mailboxFactory.getProperties());
-    }
-
-    public static FactoryLocator getFactoryLocator(final Mailbox _mailbox) {
-        return getFactoryLocator(_mailbox.getMailboxFactory());
-    }
-
-    public static FactoryLocator getFactoryLocator(final Actor _actor) {
-        return getFactoryLocator(_actor.getMailbox());
-    }
-
-    public static PASerializable newSerializable(final Actor _actor,
+    public static PASerializable newSerializable(final PASerializable _serializable,
                                                  final String _factoryName)
             throws Exception {
-        return newSerializable(getFactoryLocator(_actor), _factoryName, _actor.getMailbox().getMailboxFactory(), null);
+        return newSerializable(
+                getFactoryLocator(_serializable),
+                _factoryName,
+                _serializable.getMailbox().getMailboxFactory(),
+                null);
     }
 
-    public static PASerializable newSerializable(final Actor _actor,
+    public static PASerializable newSerializable(final PASerializable _serializable,
                                                  final String _factoryName,
                                                  final Ancestor _parent)
             throws Exception {
-        return newSerializable(getFactoryLocator(_actor), _factoryName, _actor.getMailbox().getMailboxFactory(), _parent);
+        return newSerializable(
+                getFactoryLocator(_serializable),
+                _factoryName,
+                _serializable.getMailbox().getMailboxFactory(),
+                _parent);
     }
 
-    public static PASerializable newSerializable(final Actor _actor,
+    public static PASerializable newSerializable(final PASerializable _serializable,
                                                  final String _factoryName,
                                                  final Mailbox _mailbox)
             throws Exception {
-        return newSerializable(getFactoryLocator(_actor), _factoryName, _mailbox, null);
+        return newSerializable(getFactoryLocator(_serializable), _factoryName, _mailbox, null);
     }
 
-    public static PASerializable newSerializable(final Actor _actor,
+    public static PASerializable newSerializable(final PASerializable _serializable,
                                                  final String _factoryName,
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
             throws Exception {
-        return newSerializable(getFactoryLocator(_actor), _factoryName, _mailbox, _parent);
+        return newSerializable(getFactoryLocator(_serializable), _factoryName, _mailbox, _parent);
     }
 
     public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
@@ -93,9 +87,9 @@ public class Util {
         return _factoryLocator.newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
     }
 
-    public static Factory getActorFactory(final Actor _actor, final String _factoryName)
+    public static Factory getActorFactory(final PASerializable _serializable, final String _factoryName)
             throws Exception {
-        return getActorFactory(getFactoryLocator(_actor), _factoryName);
+        return getActorFactory(getFactoryLocator(_serializable), _factoryName);
     }
 
     public static Factory getActorFactory(final FactoryLocator _factoryLocator, final String _factoryName)
