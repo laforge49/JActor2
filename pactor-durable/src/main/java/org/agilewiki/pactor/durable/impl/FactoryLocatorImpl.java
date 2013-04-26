@@ -29,10 +29,6 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
      */
     private ConcurrentSkipListMap<String, Factory> types = new ConcurrentSkipListMap();
 
-    public void configure(final String _bundleName) {
-        bundleName = _bundleName;
-    }
-
     public void configure(final String _bundleName, final String _version, final String _location) {
         bundleName = _bundleName;
         version  = _version;

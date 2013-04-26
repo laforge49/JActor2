@@ -2,7 +2,10 @@ package org.agilewiki.pactor.durable;
 
 import org.agilewiki.pactor.Mailbox;
 import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.durable.impl.FactoryLocatorImpl;
 import org.agilewiki.pautil.Ancestor;
+import org.agilewiki.pamailbox.DefaultMailboxFactoryImpl;
+import org.agilewiki.pautil.PAProperties;
 
 public class Util {
 
@@ -30,6 +33,22 @@ public class Util {
      * Size of an double in bytes.
      */
     public final static int DOUBLE_LENGTH = 8;
+
+    public static MailboxFactory createMailboxFactory(final String _bundleName) throws Exception {
+        return createMailboxFactory(_bundleName, "", "");
+    }
+
+    public static MailboxFactory createMailboxFactory(
+            final String _bundleName,
+            final String _version,
+            final String _location) throws Exception {
+        MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        PAProperties properties = new PAProperties(mailboxFactory);
+        FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
+        factoryLocator.configure(_bundleName, _version, _location);
+        properties.putProperty("factoryLocator", factoryLocator);
+        return mailboxFactory;
+    }
 
     public static FactoryLocator getFactoryLocator(final MailboxFactory _mailboxFactory) {
         return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");

@@ -1,0 +1,21 @@
+package org.agilewiki.pactor.durable;
+
+import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.durable.impl.IncDesFactory;
+
+public class DurableFactories {
+    public static MailboxFactory createMailboxFactory() throws Exception {
+        MailboxFactory mailboxFactory = Util.createMailboxFactory("");
+        registerFactories(mailboxFactory);
+        return mailboxFactory;
+    }
+
+    public static void registerFactories(final MailboxFactory _mailboxFactory) throws Exception {
+        FactoryLocator factoryLocator = Util.getFactoryLocator(_mailboxFactory);
+        registerFactories(factoryLocator);
+    }
+
+    public static void registerFactories(final FactoryLocator _factoryLocator) throws Exception {
+        IncDesFactory.registerFactory(_factoryLocator);
+    }
+}
