@@ -3,6 +3,9 @@ package org.agilewiki.pactor.durable;
 import org.agilewiki.pactor.Request;
 
 public interface Box extends IncDes {
+
+    public static final String FACTORY_NAME = "box";
+
     Request<PASerializable> getIncDesReq();
 
     PASerializable getValue()
