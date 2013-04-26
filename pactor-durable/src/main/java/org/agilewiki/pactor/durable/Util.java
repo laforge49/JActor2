@@ -49,48 +49,48 @@ public class Util {
         return getFactoryLocator(_actor.getMailbox());
     }
 
-    public static PASerializable newJid(final Actor _actor,
-                                        final String _factoryName)
+    public static PASerializable newSerializable(final Actor _actor,
+                                                 final String _factoryName)
             throws Exception {
-        return newJid(getFactoryLocator(_actor), _factoryName, _actor.getMailbox().getMailboxFactory(), null);
+        return newSerializable(getFactoryLocator(_actor), _factoryName, _actor.getMailbox().getMailboxFactory(), null);
     }
 
-    public static PASerializable newJid(final Actor _actor,
-                                        final String _factoryName,
-                                        final Ancestor _parent)
+    public static PASerializable newSerializable(final Actor _actor,
+                                                 final String _factoryName,
+                                                 final Ancestor _parent)
             throws Exception {
-        return newJid(getFactoryLocator(_actor), _factoryName, _actor.getMailbox().getMailboxFactory(), _parent);
+        return newSerializable(getFactoryLocator(_actor), _factoryName, _actor.getMailbox().getMailboxFactory(), _parent);
     }
 
-    public static PASerializable newJid(final Actor _actor,
-                                        final String _factoryName,
-                                        final Mailbox _mailbox)
+    public static PASerializable newSerializable(final Actor _actor,
+                                                 final String _factoryName,
+                                                 final Mailbox _mailbox)
             throws Exception {
-        return newJid(getFactoryLocator(_actor), _factoryName, _mailbox, null);
+        return newSerializable(getFactoryLocator(_actor), _factoryName, _mailbox, null);
     }
 
-    public static PASerializable newJid(final Actor _actor,
-                                        final String _factoryName,
-                                        final Mailbox _mailbox,
-                                        final Ancestor _parent)
+    public static PASerializable newSerializable(final Actor _actor,
+                                                 final String _factoryName,
+                                                 final Mailbox _mailbox,
+                                                 final Ancestor _parent)
             throws Exception {
-        return newJid(getFactoryLocator(_actor), _factoryName, _mailbox, _parent);
+        return newSerializable(getFactoryLocator(_actor), _factoryName, _mailbox, _parent);
     }
 
-    public static PASerializable newJid(final FactoryLocator _factoryLocator,
-                                        final String _factoryName,
-                                        final Mailbox _mailbox,
-                                        final Ancestor _parent)
+    public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
+                                                 final String _factoryName,
+                                                 final Mailbox _mailbox,
+                                                 final Ancestor _parent)
             throws Exception {
-        return _factoryLocator.newJid(_factoryName, _mailbox, _parent);
+        return _factoryLocator.newSerializable(_factoryName, _mailbox, _parent);
     }
 
-    public static PASerializable newJid(final FactoryLocator _factoryLocator,
-                                        final String _factoryName,
-                                        final MailboxFactory _mailboxFactory,
-                                        final Ancestor _parent)
+    public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
+                                                 final String _factoryName,
+                                                 final MailboxFactory _mailboxFactory,
+                                                 final Ancestor _parent)
             throws Exception {
-        return _factoryLocator.newJid(_factoryName, _mailboxFactory.createMailbox(), _parent);
+        return _factoryLocator.newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
     }
 
     public static Factory getActorFactory(final Actor _actor, final String _factoryName)
