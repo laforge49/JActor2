@@ -66,7 +66,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public PASerializable createSubordinate(Factory factory, Ancestor parent)
             throws Exception {
-        PASerializable jid = factory.newActor(getMailbox(), parent);
+        PASerializable jid = factory.newSerializable(getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
@@ -92,7 +92,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             throws Exception {
         if (bytes == null)
             return createSubordinate(factory, parent);
-        PASerializable jid = factory.newActor(getMailbox(), parent);
+        PASerializable jid = factory.newSerializable(getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
@@ -120,7 +120,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public PASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes)
             throws Exception {
-        PASerializable jid = factory.newActor(getMailbox(), parent);
+        PASerializable jid = factory.newSerializable(getMailbox(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
@@ -304,7 +304,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         Mailbox mb = m;
         if (mb == null)
             mb = getMailbox();
-        PASerializable serializable = getFactory().newActor(mb, getParent());
+        PASerializable serializable = getFactory().newSerializable(mb, getParent());
         IncDesImpl jid = (IncDesImpl) serializable.getDurable();
         jid.load(new ReadableBytes(getSerializedBytes(), 0));
         return serializable;
