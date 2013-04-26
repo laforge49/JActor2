@@ -74,4 +74,14 @@ abstract public class FactoryImpl implements Factory {
         ((IncDesImpl) a.getDurable()).initialize(_mailbox, _parent, this);
         return a;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof FactoryImpl))
+            return false;
+        FactoryImpl af = (FactoryImpl) o;
+        return getFactoryKey().equals(af.getFactoryKey());
+    }
 }
