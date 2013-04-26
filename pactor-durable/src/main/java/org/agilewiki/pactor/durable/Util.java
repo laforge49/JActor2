@@ -35,10 +35,6 @@ public class Util {
         return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");
     }
 
-    public static FactoryLocator getFactoryLocator(final PASerializable _serializable) {
-        return _serializable.getDurable().getFactory().getFactoryLocator();
-    }
-
     public static PASerializable newSerializable(final MailboxFactory _mailboxFactory,
                                                  final String _factoryName)
             throws Exception {
@@ -46,16 +42,6 @@ public class Util {
                 getFactoryLocator(_mailboxFactory),
                 _factoryName,
                 _mailboxFactory,
-                null);
-    }
-
-    public static PASerializable newSerializable(final PASerializable _serializable,
-                                                 final String _factoryName)
-            throws Exception {
-        return newSerializable(
-                getFactoryLocator(_serializable),
-                _factoryName,
-                _serializable.getMailbox().getMailboxFactory(),
                 null);
     }
 
@@ -67,17 +53,6 @@ public class Util {
                 getFactoryLocator(_mailboxFactory),
                 _factoryName,
                 _mailboxFactory,
-                _parent);
-    }
-
-    public static PASerializable newSerializable(final PASerializable _serializable,
-                                                 final String _factoryName,
-                                                 final Ancestor _parent)
-            throws Exception {
-        return newSerializable(
-                getFactoryLocator(_serializable),
-                _factoryName,
-                _serializable.getMailbox().getMailboxFactory(),
                 _parent);
     }
 
@@ -91,26 +66,11 @@ public class Util {
                 null);
     }
 
-    public static PASerializable newSerializable(final PASerializable _serializable,
-                                                 final String _factoryName,
-                                                 final Mailbox _mailbox)
-            throws Exception {
-        return newSerializable(getFactoryLocator(_serializable), _factoryName, _mailbox, null);
-    }
-
     public static PASerializable newSerializable(final String _factoryName,
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
             throws Exception {
         return newSerializable(getFactoryLocator(_mailbox.getMailboxFactory()), _factoryName, _mailbox, _parent);
-    }
-
-    public static PASerializable newSerializable(final PASerializable _serializable,
-                                                 final String _factoryName,
-                                                 final Mailbox _mailbox,
-                                                 final Ancestor _parent)
-            throws Exception {
-        return newSerializable(getFactoryLocator(_serializable), _factoryName, _mailbox, _parent);
     }
 
     public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
@@ -129,12 +89,7 @@ public class Util {
         return _factoryLocator.newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
     }
 
-    public static Factory getActorFactory(final PASerializable _serializable, final String _factoryName)
-            throws Exception {
-        return getActorFactory(getFactoryLocator(_serializable), _factoryName);
-    }
-
-    public static Factory getActorFactory(final FactoryLocator _factoryLocator, final String _factoryName)
+    public static Factory getFactory(final FactoryLocator _factoryLocator, final String _factoryName)
             throws Exception {
         if (_factoryLocator == null)
             throw new IllegalArgumentException("Unknown jid type: " + _factoryName);
