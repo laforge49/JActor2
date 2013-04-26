@@ -40,26 +40,7 @@ public interface FactoryLocator extends Ancestor {
     Factory getFactory(final String _factoryName)
             throws Exception;
 
-    Factory _getActorFactory(final String _factoryName)
-            throws Exception;
-
-    /**
-     * Creates a new actor.
-     *
-     * @param _factoryName The jid type.
-     * @return The new jid.
-     */
-    PASerializable newJid(final String _factoryName)
-            throws Exception;
-
-    /**
-     * Creates a new actor.
-     *
-     * @param _factoryName The jid type.
-     * @param _mailbox A mailbox which may be shared with other actors, or null.
-     * @return The new actor.
-     */
-    PASerializable newJid(final String _factoryName, final Mailbox _mailbox)
+    Factory _getFactory(final String _factoryName)
             throws Exception;
 
     /**

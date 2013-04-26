@@ -31,8 +31,22 @@ public class Util {
      */
     public final static int DOUBLE_LENGTH = 8;
 
+    public static FactoryLocator getFactoryLocator(final MailboxFactory _mailboxFactory) {
+        return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");
+    }
+
     public static FactoryLocator getFactoryLocator(final PASerializable _serializable) {
         return _serializable.getDurable().getFactory().getFactoryLocator();
+    }
+
+    public static PASerializable newSerializable(final MailboxFactory _mailboxFactory,
+                                                 final String _factoryName)
+            throws Exception {
+        return newSerializable(
+                getFactoryLocator(_mailboxFactory),
+                _factoryName,
+                _mailboxFactory,
+                null);
     }
 
     public static PASerializable newSerializable(final PASerializable _serializable,
@@ -43,6 +57,17 @@ public class Util {
                 _factoryName,
                 _serializable.getMailbox().getMailboxFactory(),
                 null);
+    }
+
+    public static PASerializable newSerializable(final MailboxFactory _mailboxFactory,
+                                                 final String _factoryName,
+                                                 final Ancestor _parent)
+            throws Exception {
+        return newSerializable(
+                getFactoryLocator(_mailboxFactory),
+                _factoryName,
+                _mailboxFactory,
+                _parent);
     }
 
     public static PASerializable newSerializable(final PASerializable _serializable,
@@ -56,11 +81,28 @@ public class Util {
                 _parent);
     }
 
+    public static PASerializable newSerializable(final String _factoryName,
+                                                 final Mailbox _mailbox)
+            throws Exception {
+        return newSerializable(
+                getFactoryLocator(_mailbox.getMailboxFactory()),
+                _factoryName,
+                _mailbox,
+                null);
+    }
+
     public static PASerializable newSerializable(final PASerializable _serializable,
                                                  final String _factoryName,
                                                  final Mailbox _mailbox)
             throws Exception {
         return newSerializable(getFactoryLocator(_serializable), _factoryName, _mailbox, null);
+    }
+
+    public static PASerializable newSerializable(final String _factoryName,
+                                                 final Mailbox _mailbox,
+                                                 final Ancestor _parent)
+            throws Exception {
+        return newSerializable(getFactoryLocator(_mailbox.getMailboxFactory()), _factoryName, _mailbox, _parent);
     }
 
     public static PASerializable newSerializable(final PASerializable _serializable,
