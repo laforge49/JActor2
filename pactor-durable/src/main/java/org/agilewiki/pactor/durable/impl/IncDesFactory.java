@@ -10,7 +10,7 @@ public class IncDesFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator factoryLocator)
             throws Exception {
-        factoryLocator.registerJidFactory(new IncDesFactory());
+        factoryLocator.registerFactory(new IncDesFactory());
     }
 
     /**
