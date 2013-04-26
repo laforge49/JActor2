@@ -25,6 +25,20 @@ abstract public class FactoryImpl implements Factory {
         this.factoryLocator = factoryLocator;
     }
 
+    public String getFactoryKey() {
+        if (factoryKey == null)
+            factoryKey = name + "|" + getLocatorKey();
+        return factoryKey;
+    }
+
+    public String getLocatorKey() {
+        return factoryLocator.getLocatorKey();
+    }
+
+    public String getLocation() {
+        return factoryLocator.getLocation();
+    }
+
     /**
      * Create an FactoryImpl.
      *

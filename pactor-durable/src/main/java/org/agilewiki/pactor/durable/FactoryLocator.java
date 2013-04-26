@@ -10,62 +10,66 @@ import org.agilewiki.pautil.Ancestor;
 public interface FactoryLocator extends Ancestor {
     MailboxFactory getMailboxFactory();
 
+    String getLocation();
+
+    String getLocatorKey();
+
     /**
      * Bind an actor type to a Class.
      *
-     * @param jidType The jid type.
+     * @param _factoryName The jid type.
      * @param clazz   The class of the actor.
      */
-    void defineJidType(String jidType, Class clazz)
+    void defineJidType(final String _factoryName, Class clazz)
             throws Exception;
 
     /**
      * Register an actor factory.
      *
-     * @param factoryImpl An actor factory.
+     * @param _factoryImpl An actor factory.
      */
-    void registerJidFactory(Factory factoryImpl)
+    void registerJidFactory(final Factory _factoryImpl)
             throws Exception;
 
     /**
      * Returns the requested actor factory.
      *
-     * @param jidType The jid type.
+     * @param _factoryName The jid type.
      * @return The registered actor factory.
      */
-    Factory getFactory(String jidType)
+    Factory getFactory(final String _factoryName)
             throws Exception;
 
-    Factory _getActorFactory(String actorType)
+    Factory _getActorFactory(final String _factoryName)
             throws Exception;
 
     /**
      * Creates a new actor.
      *
-     * @param jidType The jid type.
+     * @param _factoryName The jid type.
      * @return The new jid.
      */
-    PASerializable newJid(String jidType)
+    PASerializable newJid(final String _factoryName)
             throws Exception;
 
     /**
      * Creates a new actor.
      *
-     * @param jidType The jid type.
-     * @param mailbox A mailbox which may be shared with other actors, or null.
+     * @param _factoryName The jid type.
+     * @param _mailbox A mailbox which may be shared with other actors, or null.
      * @return The new actor.
      */
-    PASerializable newJid(String jidType, Mailbox mailbox)
+    PASerializable newJid(final String _factoryName, final Mailbox _mailbox)
             throws Exception;
 
     /**
      * Creates a new actor.
      *
-     * @param jidType The jid type.
-     * @param mailbox A mailbox which may be shared with other actors, or null.
-     * @param parent  The parent actor to which unrecognized requests are forwarded, or null.
+     * @param _factoryName The jid type.
+     * @param _mailbox A mailbox which may be shared with other actors, or null.
+     * @param _parent  The parent actor to which unrecognized requests are forwarded, or null.
      * @return The new actor.
      */
-    PASerializable newJid(String jidType, Mailbox mailbox, Ancestor parent)
+    PASerializable newJid(final String _factoryName, final Mailbox _mailbox, final Ancestor _parent)
             throws Exception;
 }
