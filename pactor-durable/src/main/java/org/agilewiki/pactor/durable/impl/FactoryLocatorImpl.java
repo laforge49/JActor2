@@ -23,6 +23,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
     private String version = "";
     private String location = "";
     private String locatorKey;
+    private String descriptor;
 
     /**
      * A table which maps type names to actor factories.
@@ -45,6 +46,12 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getDescriptor() {
+        if (descriptor == null)
+            descriptor = getLocatorKey() + "|" + location;
+        return descriptor;
     }
 
     public String getLocatorKey() {
@@ -121,7 +128,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
         String actorType = factory.getName();
         String factoryKey = actorType + "|" + bundleName + "|" + version;
         Factory old = types.get(factoryKey);
-        ((FactoryImpl) factory).configure(this);
+        ((FactoryImpl) factory).configure(factoryKey);
         if (old == null) {
             types.put(factoryKey, factory);
         } else if (!old.equals(factory))

@@ -65,7 +65,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
 
     protected int getFactoryIndex(String actorType)
             throws Exception {
-        FactoryLocator factoryLocator = getFactory().getFactoryLocator();
+        FactoryLocator factoryLocator = Util.getFactoryLocator(getMailbox());
         Factory actorFactory = factoryLocator.getFactory(actorType);
         return getFactoryIndex(actorFactory);
     }

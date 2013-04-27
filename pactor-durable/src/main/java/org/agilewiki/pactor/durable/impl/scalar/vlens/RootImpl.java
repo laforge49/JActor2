@@ -25,6 +25,20 @@ public class RootImpl extends BoxImpl implements Root {
         });
     }
 
+    private String descriptor;
+
+    @Override
+    public String getDescriptor() {
+        return descriptor;
+    }
+
+    @Override
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+        super.initialize(mailbox, parent, factory);
+        FactoryLocator factoryLocator = Util.getFactoryLocator(getMailbox());
+        descriptor = factoryLocator.getDescriptor();
+    }
+
     /**
      * Save the serialized data into a byte array.
      *

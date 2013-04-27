@@ -11,5 +11,5 @@ public interface Factory extends Named {
     PASerializable newSerializable(final Mailbox _mailbox, final Ancestor _parent)
             throws Exception;
 
-    FactoryLocator getFactoryLocator();
+    String getFactoryKey();
 }

@@ -12,6 +12,8 @@ public interface FactoryLocator extends Ancestor {
 
     String getLocatorKey();
 
+    String getDescriptor();
+
     /**
      * Register an actor factory.
      *

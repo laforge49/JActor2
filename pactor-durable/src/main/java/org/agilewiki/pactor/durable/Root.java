@@ -10,4 +10,6 @@ public interface Root extends Box {
 
     void load(final byte[] _bytes)
             throws Exception;
+
+    String getDescriptor();
 }

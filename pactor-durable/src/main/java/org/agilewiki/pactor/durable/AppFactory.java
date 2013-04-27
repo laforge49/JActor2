@@ -45,7 +45,7 @@ public abstract class AppFactory extends FactoryImpl {
         DurableImpl tj = new DurableImpl();
         a.setDurable(tj);
         tj.initialize(mailbox, parent, this);
-        FactoryLocator fl = getFactoryLocator();
+        FactoryLocator fl = Util.getFactoryLocator(mailbox);
         Factory[] afs = new FactoryImpl[jidTypes.length];
         int i = 0;
         while (i < jidTypes.length) {

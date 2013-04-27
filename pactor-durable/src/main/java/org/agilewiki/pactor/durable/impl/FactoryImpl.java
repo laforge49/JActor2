@@ -8,39 +8,25 @@ import org.agilewiki.pautil.Ancestor;
  * Creates a JLPCActor.
  */
 abstract public class FactoryImpl implements Factory {
-    private String factoryKey;
 
     /**
      * The jid type.
      */
     public final String name;
-    private FactoryLocator factoryLocator;
+    private String factoryKey;
 
     @Override
     public String getName() {
         return name;
     }
 
-    public void configure(final FactoryLocator _factoryLocator) {
-        factoryLocator = _factoryLocator;
+    public void configure(final String _factoryKey) {
+        factoryKey = _factoryKey;
     }
 
-    public FactoryLocator getFactoryLocator() {
-        return factoryLocator;
-    }
-
+    @Override
     public String getFactoryKey() {
-        if (factoryKey == null)
-            factoryKey = name + "|" + getLocatorKey();
         return factoryKey;
-    }
-
-    public String getLocatorKey() {
-        return factoryLocator.getLocatorKey();
-    }
-
-    public String getLocation() {
-        return factoryLocator.getLocation();
     }
 
     /**
@@ -85,9 +71,9 @@ abstract public class FactoryImpl implements Factory {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof FactoryImpl))
+        if (!(o instanceof Factory))
             return false;
-        FactoryImpl af = (FactoryImpl) o;
-        return getFactoryKey().equals(af.getFactoryKey());
+        Factory af = (Factory) o;
+        return factoryKey.equals(af.getFactoryKey());
     }
 }

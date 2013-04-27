@@ -50,6 +50,10 @@ public class Util {
         return mailboxFactory;
     }
 
+    public static FactoryLocator getFactoryLocator(final Mailbox _mailbox)  {
+        return getFactoryLocator(_mailbox.getMailboxFactory());
+    }
+
     public static FactoryLocator getFactoryLocator(final MailboxFactory _mailboxFactory) {
         return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");
     }
