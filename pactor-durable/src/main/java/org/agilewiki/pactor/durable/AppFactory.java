@@ -39,8 +39,7 @@ public abstract class AppFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public App newSerializable(Mailbox mailbox, Ancestor parent)
-            throws Exception {
+    public App newSerializable(Mailbox mailbox, Ancestor parent) {
         App a = instantiateActor();
         DurableImpl tj = new DurableImpl();
         a.setDurable(tj);

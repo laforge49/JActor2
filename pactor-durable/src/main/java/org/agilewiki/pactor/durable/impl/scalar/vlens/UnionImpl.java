@@ -19,14 +19,12 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         _factoryLocator.registerFactory(new FactoryImpl(_subActorType) {
 
             @Override
-            protected UnionImpl instantiateActor()
-                    throws Exception {
+            protected UnionImpl instantiateActor() {
                 return new UnionImpl();
             }
 
             @Override
-            public UnionImpl newSerializable(Mailbox mailbox, Ancestor parent)
-                    throws Exception {
+            public UnionImpl newSerializable(Mailbox mailbox, Ancestor parent) {
                 UnionImpl uj = (UnionImpl) super.newSerializable(mailbox, parent);
                 Factory[] afs = new FactoryImpl[_actorTypes.length];
                 int i = 0;
@@ -56,8 +54,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         return getPAIDReq;
     }
 
-    protected Factory[] getUnionFactories()
-            throws Exception {
+    protected Factory[] getUnionFactories() {
         if (unionFactories != null)
             return unionFactories;
         throw new IllegalStateException("unionFactories is null");
@@ -89,8 +86,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(ReadableBytes readableBytes) {
         super.load(readableBytes);
         factoryIndex = readableBytes.readInt();
         if (factoryIndex == -1)
@@ -107,7 +103,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength() throws Exception {
+    public int getSerializedLength() {
         if (factoryIndex == -1)
             return Util.INT_LENGTH;
         return Util.INT_LENGTH + value.getDurable().getSerializedLength();
@@ -320,7 +316,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         throw new IllegalArgumentException("pathname " + pathname);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         clearReq = new RequestBase<Void>(getMailbox()) {
             public void processRequest(Transport rp) throws Exception {

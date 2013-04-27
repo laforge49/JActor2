@@ -28,11 +28,9 @@ public interface FactoryLocator extends Ancestor {
      * @param _name The jid type.
      * @return The registered actor factory.
      */
-    Factory getFactory(final String _name)
-            throws Exception;
+    Factory getFactory(final String _name);
 
-    Factory _getFactory(final String _name)
-            throws Exception;
+    Factory _getFactory(final String _name);
 
     /**
      * Creates a new actor.
@@ -42,6 +40,5 @@ public interface FactoryLocator extends Ancestor {
      * @param _parent  The parent actor to which unrecognized requests are forwarded, or null.
      * @return The new actor.
      */
-    PASerializable newSerializable(final String _name, final Mailbox _mailbox, final Ancestor _parent)
-            throws Exception;
+    PASerializable newSerializable(final String _name, final Mailbox _mailbox, final Ancestor _parent);
 }

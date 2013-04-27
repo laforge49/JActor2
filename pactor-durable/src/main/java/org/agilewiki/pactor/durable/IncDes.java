@@ -14,8 +14,7 @@ public interface IncDes extends PASerializable {
      *
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
-    int getSerializedLength()
-            throws Exception;
+    int getSerializedLength();
 
     Request<byte[]> getSerializedBytesReq();
 
@@ -37,8 +36,7 @@ public interface IncDes extends PASerializable {
      *
      * @param _readableBytes Holds the serialized data.
      */
-    void load(final ReadableBytes _readableBytes)
-            throws Exception;
+    void load(final ReadableBytes _readableBytes);
 
     Request<PASerializable> resolvePathnameReq(final String _pathname);
 

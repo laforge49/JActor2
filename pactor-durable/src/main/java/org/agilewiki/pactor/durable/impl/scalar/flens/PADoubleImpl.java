@@ -18,8 +18,7 @@ public class PADoubleImpl
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(PADouble.FACTORY_NAME) {
             @Override
-            final protected PADoubleImpl instantiateActor()
-                    throws Exception {
+            final protected PADoubleImpl instantiateActor() {
                 return new PADoubleImpl();
             }
         });
@@ -88,7 +87,7 @@ public class PADoubleImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         getDoubleReq = new RequestBase<Double>(getMailbox()) {
             @Override

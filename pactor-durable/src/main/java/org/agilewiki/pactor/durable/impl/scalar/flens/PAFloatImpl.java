@@ -18,8 +18,7 @@ public class PAFloatImpl
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(PAFloat.FACTORY_NAME) {
             @Override
-            final protected PAFloatImpl instantiateActor()
-                    throws Exception {
+            final protected PAFloatImpl instantiateActor() {
                 return new PAFloatImpl();
             }
         });
@@ -88,7 +87,7 @@ public class PAFloatImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         getFloatReq = new RequestBase<Float>(getMailbox()) {
             @Override

@@ -19,8 +19,7 @@ public class PAStringImpl
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(PAString.FACTORY_NAME) {
             @Override
-            final protected PAStringImpl instantiateActor()
-                    throws Exception {
+            final protected PAStringImpl instantiateActor() {
                 return new PAStringImpl();
             }
         });
@@ -39,7 +38,7 @@ public class PAStringImpl
      * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void setValue(final String v) throws Exception {
+    public void setValue(final String v) {
         int c = v.length() * 2;
         if (len > -1)
             c -= len;
@@ -134,8 +133,7 @@ public class PAStringImpl
         return getValue().compareTo(o);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         getStringReq = new RequestBase<String>(getMailbox()) {
             @Override

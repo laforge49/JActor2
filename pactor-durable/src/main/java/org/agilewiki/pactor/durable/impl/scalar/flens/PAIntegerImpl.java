@@ -18,8 +18,7 @@ public class PAIntegerImpl
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(PAInteger.FACTORY_NAME) {
             @Override
-            final protected PAIntegerImpl instantiateActor()
-                    throws Exception {
+            final protected PAIntegerImpl instantiateActor() {
                 return new PAIntegerImpl();
             }
         });
@@ -88,7 +87,7 @@ public class PAIntegerImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         getIntegerReq = new RequestBase<Integer>(getMailbox()) {
             @Override

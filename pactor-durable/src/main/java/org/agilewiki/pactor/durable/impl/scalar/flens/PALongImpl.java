@@ -18,8 +18,7 @@ public class PALongImpl
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(PALong.FACTORY_NAME) {
             @Override
-            final protected PALongImpl instantiateActor()
-                    throws Exception {
+            final protected PALongImpl instantiateActor() {
                 return new PALongImpl();
             }
         });
@@ -88,7 +87,7 @@ public class PALongImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         getLongReq = new RequestBase<Long>(getMailbox()) {
             @Override

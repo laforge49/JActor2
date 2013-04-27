@@ -16,7 +16,7 @@ public interface PAString extends IncDes {
 
     Request<Void> setStringReq(final String _v);
 
-    void setValue(final String _v) throws Exception;
+    void setValue(final String _v);
 
     Request<Boolean> makeStringReq(final String _v);
 

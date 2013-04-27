@@ -30,8 +30,7 @@ abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(ReadableBytes readableBytes) {
         super.load(readableBytes);
         readableBytes.skip(getSerializedLength());
         value = null;

@@ -26,8 +26,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      *
      * @return An array of element factories.
      */
-    protected Factory[] getTupleFactories()
-            throws Exception {
+    protected Factory[] getTupleFactories() {
         if (tupleFactories != null)
             return tupleFactories;
         throw new IllegalStateException("tupleFactories is null");
@@ -46,8 +45,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public int _size()
-            throws Exception {
+    public int _size() {
         return getTupleFactories().length;
     }
 
@@ -92,8 +90,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      *
      * @throws Exception Any exceptions thrown during initialization.
      */
-    private void _initialize()
-            throws Exception {
+    private void _initialize() {
         if (tuple != null)
             return;
         tupleFactories = getTupleFactories();
@@ -147,8 +144,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength()
-            throws Exception {
+    public int getSerializedLength() {
         _initialize();
         return Util.INT_LENGTH + _len;
     }
@@ -175,8 +171,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(ReadableBytes readableBytes) {
         super.load(readableBytes);
         _len = _loadLen(readableBytes);
         tuple = null;
@@ -190,8 +185,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @throws Exception Any uncaught exception which occurred while processing the change.
      */
     @Override
-    public void change(int lengthChange)
-            throws Exception {
+    public void change(int lengthChange) {
         _len += lengthChange;
         super.change(lengthChange);
     }

@@ -18,25 +18,25 @@ public class RootImpl extends BoxImpl implements Root {
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
             @Override
-            final protected RootImpl instantiateActor()
-                    throws Exception {
+            final protected RootImpl instantiateActor() {
                 return new RootImpl();
             }
         });
     }
 
-    private String descriptor;
+    private PAString descriptor;
 
     @Override
     public String getDescriptor() {
-        return descriptor;
+        return descriptor.getValue();
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         FactoryLocator factoryLocator = Util.getFactoryLocator(getMailbox());
-        descriptor = factoryLocator.getDescriptor();
+        descriptor = (PAString) Util.newSerializable(PAString.FACTORY_NAME, mailbox);
+        descriptor.setValue(factoryLocator.getDescriptor());
     }
 
     /**
@@ -97,7 +97,8 @@ public class RootImpl extends BoxImpl implements Root {
      * @return The size of the remaining bytes of serialized data.
      */
     @Override
-    protected int loadLen(ReadableBytes readableBytes) throws Exception {
+    protected int loadLen(ReadableBytes readableBytes) {
+        descriptor.load(readableBytes);
         int l = readableBytes.remaining();
         if (l == 0)
             return -1;
@@ -111,6 +112,7 @@ public class RootImpl extends BoxImpl implements Root {
      */
     @Override
     protected void skipLen(ReadableBytes readableBytes) {
+        readableBytes.skip(descriptor.getSerializedLength());
     }
 
     /**
@@ -120,6 +122,7 @@ public class RootImpl extends BoxImpl implements Root {
      */
     @Override
     protected void saveLen(AppendableBytes appendableBytes) throws Exception {
+        descriptor.save(appendableBytes);
     }
 
     /**
@@ -130,8 +133,8 @@ public class RootImpl extends BoxImpl implements Root {
     @Override
     public int getSerializedLength() {
         if (len == -1)
-            return 0;
-        return len;
+            return descriptor.getSerializedLength();
+        return descriptor.getSerializedLength() + len;
     }
 
     public PASerializable copy(Mailbox m)

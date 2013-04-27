@@ -108,8 +108,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return jid;
     }
 
-    final public PASerializable createSubordinate(Factory factory, ReadableBytes readableBytes)
-            throws Exception {
+    final public PASerializable createSubordinate(Factory factory, ReadableBytes readableBytes) {
         return createSubordinate(factory, getParent(), readableBytes);
     }
 
@@ -118,8 +117,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return createSubordinate(actorType, getParent(), readableBytes);
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes)
-            throws Exception {
+    final public PASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes) {
         PASerializable jid = factory.newSerializable(getMailbox(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
@@ -151,8 +149,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param lengthChange The change in the size of the serialized data.
      * @throws Exception Any uncaught exception which occurred while processing the notification.
      */
-    protected void changed(int lengthChange)
-            throws Exception {
+    protected void changed(int lengthChange) {
         serializedBytes = null;
         serializedOffset = -1;
         if (containerJid == null)
@@ -166,7 +163,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param lengthChange The change in the size of the serialized data.
      * @throws Exception Any uncaught exception which occurred while processing the change.
      */
-    public void change(int lengthChange) throws Exception {
+    public void change(int lengthChange) {
         changed(lengthChange);
     }
 
@@ -175,7 +172,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param containerJid The container, or null.
      */
-    public void setContainerJid(IncDesImpl containerJid) throws Exception {
+    public void setContainerJid(IncDesImpl containerJid) {
         this.containerJid = containerJid;
     }
 
@@ -185,7 +182,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength() throws Exception {
+    public int getSerializedLength() {
         return 0;
     }
 
@@ -264,8 +261,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(ReadableBytes readableBytes) {
         serializedBytes = readableBytes.getBytes();
         serializedOffset = readableBytes.getOffset();
     }
@@ -372,8 +368,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param _parent  The parent actor.
      * @param _factory The factory.
      */
-    public void initialize(final Mailbox _mailbox, final Ancestor _parent, final FactoryImpl _factory)
-            throws Exception {
+    public void initialize(final Mailbox _mailbox, final Ancestor _parent, final FactoryImpl _factory) {
         super.initialize(_parent);
         mailbox = _mailbox;
         factory = _factory;

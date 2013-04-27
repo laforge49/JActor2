@@ -72,8 +72,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
      * @param parent  The parent actor to which unrecognized requests are forwarded, or null.
      * @return The new jid.
      */
-    public PASerializable newSerializable(String jidType, Mailbox mailbox, Ancestor parent)
-            throws Exception {
+    public PASerializable newSerializable(String jidType, Mailbox mailbox, Ancestor parent) {
         if (mailbox == null)
             throw new IllegalArgumentException("mailbox may not be null");
         Factory af = getFactory(jidType);
@@ -87,8 +86,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
      * @return The registered actor factory.
      */
     @Override
-    public Factory getFactory(String jidType)
-            throws Exception {
+    public Factory getFactory(String jidType) {
         Factory af = _getFactory(jidType);
         if (af == null) {
             throw new IllegalArgumentException("Unknown jid type: " + jidType);
@@ -97,8 +95,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
     }
 
     @Override
-    public Factory _getFactory(String actorType)
-            throws Exception {
+    public Factory _getFactory(String actorType) {
         String factoryKey = null;
         if (actorType.contains("|")) {
             factoryKey = actorType;

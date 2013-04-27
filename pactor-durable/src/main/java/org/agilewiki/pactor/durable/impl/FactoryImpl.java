@@ -43,8 +43,7 @@ abstract public class FactoryImpl implements Factory {
      *
      * @return The new actor.
      */
-    abstract protected PASerializable instantiateActor()
-            throws Exception;
+    abstract protected PASerializable instantiateActor();
 
     @Override
     public PASerializable newSerializable(final Mailbox _mailbox)
@@ -60,8 +59,7 @@ abstract public class FactoryImpl implements Factory {
      * @return The new actor.
      */
     @Override
-    public PASerializable newSerializable(final Mailbox _mailbox, final Ancestor _parent)
-            throws Exception {
+    public PASerializable newSerializable(final Mailbox _mailbox, final Ancestor _parent) {
         PASerializable a = instantiateActor();
         ((IncDesImpl) a.getDurable()).initialize(_mailbox, _parent, this);
         return a;

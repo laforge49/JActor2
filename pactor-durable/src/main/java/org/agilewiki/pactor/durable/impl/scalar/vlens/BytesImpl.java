@@ -26,8 +26,7 @@ public class BytesImpl
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(Bytes.FACTORY_NAME) {
             @Override
-            final protected BytesImpl instantiateActor()
-                    throws Exception {
+            final protected BytesImpl instantiateActor() {
                 return new BytesImpl();
             }
         });
@@ -150,7 +149,7 @@ public class BytesImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         getBytesReq = new RequestBase<byte[]>(getMailbox()) {
             @Override

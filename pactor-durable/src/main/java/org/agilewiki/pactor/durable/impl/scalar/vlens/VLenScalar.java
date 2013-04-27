@@ -77,7 +77,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param readableBytes Holds the serialized data.
      * @return The size of the serialized data (exclusive of its length header).
      */
-    protected int loadLen(ReadableBytes readableBytes) throws Exception {
+    protected int loadLen(ReadableBytes readableBytes) {
         int l = readableBytes.readInt();
         return l;
     }
@@ -107,7 +107,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @throws Exception Any uncaught exception which occurred while processing the change.
      */
     @Override
-    public void change(int lengthChange) throws Exception {
+    public void change(int lengthChange) {
         if (len == -1)
             len = lengthChange;
         else
@@ -121,8 +121,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param readableBytes Holds the immutable serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(ReadableBytes readableBytes) {
         super.load(readableBytes);
         len = loadLen(readableBytes);
         value = null;
@@ -130,7 +129,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
             readableBytes.skip(len);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         clearReq = new RequestBase<Void>(getMailbox()) {
             public void processRequest(Transport rp) throws Exception {

@@ -66,7 +66,7 @@ public class AncestorBase implements Ancestor {
      *
      * @param _parent The top of the immutable dependency stack.
      */
-    public void initialize(final Ancestor _parent) throws Exception {
+    public void initialize(final Ancestor _parent) {
         if (initialized)
             throw new IllegalStateException("Already initialized");
         initialized = true;

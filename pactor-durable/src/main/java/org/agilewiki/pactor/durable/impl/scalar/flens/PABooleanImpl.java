@@ -18,8 +18,7 @@ public class PABooleanImpl
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(PABoolean.FACTORY_NAME) {
             @Override
-            final protected PABooleanImpl instantiateActor()
-                    throws Exception {
+            final protected PABooleanImpl instantiateActor() {
                 return new PABooleanImpl();
             }
         });
@@ -88,7 +87,7 @@ public class PABooleanImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         getBooleanReq = new RequestBase<Boolean>(getMailbox()) {
             @Override

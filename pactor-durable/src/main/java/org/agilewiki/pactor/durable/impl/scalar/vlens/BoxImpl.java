@@ -19,8 +19,7 @@ public class BoxImpl
             throws Exception {
         factoryLocator.registerFactory(new FactoryImpl(Box.FACTORY_NAME) {
             @Override
-            final protected BoxImpl instantiateActor()
-                    throws Exception {
+            final protected BoxImpl instantiateActor() {
                 return new BoxImpl();
             }
         });
@@ -264,7 +263,7 @@ public class BoxImpl
         throw new IllegalArgumentException("pathname " + pathname);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) throws Exception {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
         clearReq = new RequestBase<Void>(getMailbox()) {
             public void processRequest(Transport rp) throws Exception {
