@@ -68,6 +68,7 @@ public class BytesImpl
         };
     }
 
+    @Override
     public void setObject(Object v) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -125,6 +126,7 @@ public class BytesImpl
         return value;
     }
 
+    @Override
     public Object getObject() throws Exception {
         byte[] bytes = getValue();
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
