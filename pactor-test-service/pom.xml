@@ -79,12 +79,6 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pactor-osgi</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>pactor-test-iface</artifactId>
             <version>${project.version}</version>
         </dependency>

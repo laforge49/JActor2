@@ -36,7 +36,6 @@ public class HelloTest {
                 mavenBundle("org.agilewiki.pactor", "pactor-api", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.pactor", "pactor-impl", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.pactor", "pactor-util", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.pactor", "pactor-osgi", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.pactor", "pactor-test-iface", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.pactor", "pactor-test-service", "0.0.1-SNAPSHOT"),
                 junitBundles()

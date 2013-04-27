@@ -69,7 +69,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>pactor-impl</artifactId>
             <version>${project.version}</version>
-			<scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -103,11 +102,14 @@
             <artifactId>org.osgi.core</artifactId>
             <version>4.3.1</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.compendium</artifactId>
             <version>4.3.1</version>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

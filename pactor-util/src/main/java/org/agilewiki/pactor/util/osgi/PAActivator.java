@@ -1,4 +1,4 @@
-package org.agilewiki.paosgi.util;
+package org.agilewiki.pactor.util.osgi;
 
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;

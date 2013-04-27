@@ -52,7 +52,6 @@
         <module>pactor-impl</module>
         <module>pactor-util</module>
         <module>pactor-durable</module>
-        <module>pactor-osgi</module>
         <module>pactor-test-iface</module>
         <module>pactor-test-service</module>
         <module>pactor-test</module>

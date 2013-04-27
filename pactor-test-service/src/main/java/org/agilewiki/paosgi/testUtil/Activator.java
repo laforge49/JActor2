@@ -1,7 +1,7 @@
 package org.agilewiki.paosgi.testUtil;
 
 import org.agilewiki.paosgi.testIface.Hello;
-import org.agilewiki.paosgi.util.PAActivator;
+import org.agilewiki.pactor.util.osgi.PAActivator;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
