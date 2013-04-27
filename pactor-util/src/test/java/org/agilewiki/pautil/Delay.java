@@ -1,6 +1,6 @@
 package org.agilewiki.pautil;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.api.*;
 
 public class Delay {
     private final Mailbox mailbox;

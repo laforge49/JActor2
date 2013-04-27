@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * A callback passed to the _Request.processRequest method.

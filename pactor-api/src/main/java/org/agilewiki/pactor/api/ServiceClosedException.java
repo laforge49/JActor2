@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * This exception may be thrown when calling or sending a Request and the MailboxFactory is closed.

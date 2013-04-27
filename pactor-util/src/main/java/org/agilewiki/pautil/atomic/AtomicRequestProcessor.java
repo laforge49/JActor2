@@ -2,7 +2,7 @@ package org.agilewiki.pautil.atomic;
 
 import java.util.Queue;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.api.*;
 
 /**
  * An actor which processes a requests one at a time, waiting for each

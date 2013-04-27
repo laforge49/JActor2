@@ -1,6 +1,6 @@
 package org.agilewiki.pactor.durable;
 
-import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.api.Request;
 
 public interface PAString extends IncDes {
 

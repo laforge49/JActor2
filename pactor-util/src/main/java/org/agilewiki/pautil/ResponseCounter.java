@@ -1,6 +1,6 @@
 package org.agilewiki.pautil;
 
-import org.agilewiki.pactor.ResponseProcessor;
+import org.agilewiki.pactor.api.ResponseProcessor;
 
 /**
  * When multiple requests have been sent, ResponseCounter can be used to

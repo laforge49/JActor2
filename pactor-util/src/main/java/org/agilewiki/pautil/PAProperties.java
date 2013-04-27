@@ -3,9 +3,9 @@ package org.agilewiki.pautil;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.agilewiki.pactor.Actor;
-import org.agilewiki.pactor.MailboxFactory;
-import org.agilewiki.pactor.Properties;
+import org.agilewiki.pactor.api.Actor;
+import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.pactor.api.Properties;
 
 /**
  * A hierarchy of concurrent property sets.

@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * A Request Object implements an operation to be performed. The Request is bound to a Mailbox and

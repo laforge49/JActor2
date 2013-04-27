@@ -2,7 +2,7 @@ package org.agilewiki.pautil;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.api.*;
 import org.agilewiki.pamailbox.DefaultMailboxFactoryImpl;
 
 /**

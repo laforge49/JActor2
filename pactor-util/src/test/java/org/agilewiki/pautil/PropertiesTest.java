@@ -2,8 +2,8 @@ package org.agilewiki.pautil;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.pactor.ActorBase;
-import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.api.ActorBase;
+import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pamailbox.DefaultMailboxFactoryImpl;
 
 public class PropertiesTest extends TestCase {

@@ -1,6 +1,6 @@
 package org.agilewiki.pamailbox;
 
-import org.agilewiki.pactor.ResponseProcessor;
+import org.agilewiki.pactor.api.ResponseProcessor;
 
 final class DummyResponseProcessor implements ResponseProcessor<Object> {
     public static final DummyResponseProcessor SINGLETON = new DummyResponseProcessor();

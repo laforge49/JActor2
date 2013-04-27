@@ -50,7 +50,7 @@
                             org.agilewiki.pautil*;version=${project.version}
                         </Export-Package>
                         <Import-Package>
-                            org.agilewiki.pactor*;version=${project.version},
+                            org.agilewiki.pactor.api;version=${project.version},
                             *
                         </Import-Package>
                     </instructions>

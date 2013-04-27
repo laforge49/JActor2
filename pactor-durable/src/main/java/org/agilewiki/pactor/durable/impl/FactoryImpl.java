@@ -1,7 +1,7 @@
 package org.agilewiki.pactor.durable.impl;
 
 import org.agilewiki.pactor.durable.*;
-import org.agilewiki.pactor.Mailbox;
+import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pautil.Ancestor;
 
 /**

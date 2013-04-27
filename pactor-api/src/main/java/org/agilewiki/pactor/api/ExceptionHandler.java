@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * Exception handlers are used to alter how exceptions are processed.

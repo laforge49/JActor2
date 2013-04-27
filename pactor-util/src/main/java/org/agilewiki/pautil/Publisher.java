@@ -3,7 +3,7 @@ package org.agilewiki.pautil;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.api.*;
 
 /**
  * Implements Publish and Subscribe.

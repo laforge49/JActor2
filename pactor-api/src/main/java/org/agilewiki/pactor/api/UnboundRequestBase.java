@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * UnboundRequestBase is typically subclassed to create requests that are targeted to a class

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.api.*;
 import org.slf4j.Logger;
 
 public class MailboxImpl implements PAMailbox, Runnable {

@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * A ResponseProcessor is either a callback sent with a _Request to another actor's mailbox

@@ -1,7 +1,7 @@
 package org.agilewiki.pactor.durable;
 
 import junit.framework.TestCase;
-import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.api.MailboxFactory;
 
 public class LongTest extends TestCase {
     public void test() throws Exception {

@@ -1,10 +1,10 @@
 package org.agilewiki.pamailbox;
 
-import org.agilewiki.pactor.Actor;
-import org.agilewiki.pactor.ExceptionHandler;
-import org.agilewiki.pactor.ResponseProcessor;
-import org.agilewiki.pactor.ServiceClosedException;
-import org.agilewiki.pactor._Request;
+import org.agilewiki.pactor.api.Actor;
+import org.agilewiki.pactor.api.ExceptionHandler;
+import org.agilewiki.pactor.api.ResponseProcessor;
+import org.agilewiki.pactor.api.ServiceClosedException;
+import org.agilewiki.pactor.api._Request;
 
 /**
  * <p>

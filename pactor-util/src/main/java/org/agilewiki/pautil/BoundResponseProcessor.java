@@ -1,9 +1,9 @@
 package org.agilewiki.pautil;
 
-import org.agilewiki.pactor.Mailbox;
-import org.agilewiki.pactor.RequestBase;
-import org.agilewiki.pactor.ResponseProcessor;
-import org.agilewiki.pactor.Transport;
+import org.agilewiki.pactor.api.Mailbox;
+import org.agilewiki.pactor.api.RequestBase;
+import org.agilewiki.pactor.api.ResponseProcessor;
+import org.agilewiki.pactor.api.Transport;
 
 /**
  * A thread-safe wrapper for ResponseProcessor.

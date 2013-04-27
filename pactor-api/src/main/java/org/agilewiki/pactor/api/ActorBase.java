@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * ActorBase implements an Actor bean, i.e. it no constructor arguments.

@@ -1,6 +1,6 @@
 package org.agilewiki.pactor.durable;
 
-import org.agilewiki.pactor.Request;
+import org.agilewiki.pactor.api.Request;
 
 public interface PAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends PASerializable>
         extends PAList<MapEntry<KEY_TYPE, VALUE_TYPE>> {

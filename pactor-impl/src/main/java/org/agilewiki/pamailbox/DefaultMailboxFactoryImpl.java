@@ -7,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.agilewiki.pactor.MailboxFactory;
-import org.agilewiki.pactor.Properties;
+import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.pactor.api.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

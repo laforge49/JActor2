@@ -1,6 +1,6 @@
 package org.agilewiki.pactor.durable;
 
-import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.durable.impl.IncDesFactory;
 import org.agilewiki.pactor.durable.impl.scalar.flens.*;
 import org.agilewiki.pactor.durable.impl.scalar.vlens.*;

@@ -1,6 +1,6 @@
 package org.agilewiki.general.exceptions;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.api.*;
 
 public class ActorC {
     private final Mailbox mailbox;

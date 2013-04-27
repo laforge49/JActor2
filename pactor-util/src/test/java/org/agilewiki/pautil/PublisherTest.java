@@ -2,7 +2,10 @@ package org.agilewiki.pautil;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.api.ActorBase;
+import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.pactor.api.Transport;
+import org.agilewiki.pactor.api.UnboundRequestBase;
 import org.agilewiki.pamailbox.DefaultMailboxFactoryImpl;
 
 public class PublisherTest extends TestCase {

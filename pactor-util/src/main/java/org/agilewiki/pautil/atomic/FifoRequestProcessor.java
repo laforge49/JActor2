@@ -3,7 +3,7 @@ package org.agilewiki.pautil.atomic;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.api.MailboxFactory;
 
 /**
  * Create an atomic request processor which processes requests successively and in

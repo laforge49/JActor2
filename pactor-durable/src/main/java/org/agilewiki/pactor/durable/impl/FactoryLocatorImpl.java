@@ -1,13 +1,11 @@
 package org.agilewiki.pactor.durable.impl;
 
-import org.agilewiki.pactor.Mailbox;
-import org.agilewiki.pactor.MailboxFactory;
+import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.durable.Factory;
 import org.agilewiki.pactor.durable.FactoryLocator;
 import org.agilewiki.pactor.durable.PASerializable;
 import org.agilewiki.pautil.Ancestor;
 import org.agilewiki.pautil.AncestorBase;
-import org.osgi.framework.Bundle;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;

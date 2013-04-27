@@ -1,6 +1,6 @@
 package org.agilewiki.pautil;
 
-import org.agilewiki.pactor.ResponseProcessor;
+import org.agilewiki.pactor.api.ResponseProcessor;
 
 /**
  * The JAIterator.process method is called repeatedly until it returns a non-null response,

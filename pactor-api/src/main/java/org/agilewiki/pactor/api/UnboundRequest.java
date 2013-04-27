@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * An UnboundRequest implements an operation that is to be performed on an actor in a thread-safe way,

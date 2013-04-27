@@ -4,10 +4,10 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.agilewiki.pactor.Actor;
-import org.agilewiki.pactor.ExceptionHandler;
-import org.agilewiki.pactor.ResponseProcessor;
-import org.agilewiki.pactor._Request;
+import org.agilewiki.pactor.api.Actor;
+import org.agilewiki.pactor.api.ExceptionHandler;
+import org.agilewiki.pactor.api.ResponseProcessor;
+import org.agilewiki.pactor.api._Request;
 
 /**
  * A default <code>MessageQueue</code> implementation, using a

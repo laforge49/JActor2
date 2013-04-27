@@ -1,9 +1,9 @@
 package org.agilewiki.pactor.durable.impl.scalar.vlens;
 
-import org.agilewiki.pactor.Mailbox;
-import org.agilewiki.pactor.Request;
-import org.agilewiki.pactor.RequestBase;
-import org.agilewiki.pactor.Transport;
+import org.agilewiki.pactor.api.Mailbox;
+import org.agilewiki.pactor.api.Request;
+import org.agilewiki.pactor.api.RequestBase;
+import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.durable.AppendableBytes;
 import org.agilewiki.pactor.durable.Durables;
 import org.agilewiki.pactor.durable.ReadableBytes;

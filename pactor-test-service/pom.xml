@@ -51,7 +51,7 @@
                             org.agilewiki.paosgi.testUtil*;version=${project.version}
                         </Export-Package>
                         <Import-Package>
-                            org.agilewiki.pactor*;version=${project.version},
+                            org.agilewiki.pactor.api;version=${project.version},
                             org.agilewiki.pautil*;version=${project.version},
                             org.agilewiki.paosgi.util*;version=${project.version}
                             org.agilewiki.paosgi.testIface*;version=${project.version},

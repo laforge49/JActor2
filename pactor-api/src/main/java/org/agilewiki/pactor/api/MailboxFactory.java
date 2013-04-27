@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * MailboxFactory creates different types of mailboxes, including thread bound mailboxes.

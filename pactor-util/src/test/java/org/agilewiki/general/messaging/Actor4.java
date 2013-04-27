@@ -1,6 +1,6 @@
 package org.agilewiki.general.messaging;
 
-import org.agilewiki.pactor.*;
+import org.agilewiki.pactor.api.*;
 
 /**
  * Test code.

@@ -1,4 +1,4 @@
-package org.agilewiki.pactor;
+package org.agilewiki.pactor.api;
 
 /**
  * Request objects are typically created as an anonymous class within the targeted Actor and bound
