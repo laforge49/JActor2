@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 import org.agilewiki.pactor.api.ActorBase;
 import org.agilewiki.pactor.api.MailboxFactory;
-import org.agilewiki.pamailbox.DefaultMailboxFactoryImpl;
+import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
 
 public class PropertiesTest extends TestCase {
     public void test() throws Exception {

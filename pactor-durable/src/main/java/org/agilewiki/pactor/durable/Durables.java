@@ -4,7 +4,7 @@ import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.durable.impl.FactoryLocatorImpl;
 import org.agilewiki.pautil.Ancestor;
-import org.agilewiki.pamailbox.DefaultMailboxFactoryImpl;
+import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.pautil.PAProperties;
 
 public class Durables {

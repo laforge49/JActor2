@@ -1,4 +1,4 @@
-package org.agilewiki.pamailbox;
+package org.agilewiki.pactor.impl;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;

@@ -1,4 +1,4 @@
-package org.agilewiki.pamailbox;
+package org.agilewiki.pactor.impl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -29,7 +29,7 @@ public class ExecutorServiceWrapper implements ThreadManager {
     }
 
     /* (non-Javadoc)
-     * @see org.agilewiki.pamailbox.ThreadManager#start(int, java.util.concurrent.ThreadFactory)
+     * @see org.agilewiki.pactor.impl.ThreadManager#start(int, java.util.concurrent.ThreadFactory)
      */
     @Override
     public void start(final int threadCount, final ThreadFactory threadFactory) {
@@ -37,7 +37,7 @@ public class ExecutorServiceWrapper implements ThreadManager {
     }
 
     /* (non-Javadoc)
-     * @see org.agilewiki.pamailbox.ThreadManager#process(java.lang.Runnable)
+     * @see org.agilewiki.pactor.impl.ThreadManager#process(java.lang.Runnable)
      */
     @Override
     public void process(final Runnable runnable) {
@@ -45,7 +45,7 @@ public class ExecutorServiceWrapper implements ThreadManager {
     }
 
     /* (non-Javadoc)
-     * @see org.agilewiki.pamailbox.ThreadManager#close()
+     * @see org.agilewiki.pactor.impl.ThreadManager#close()
      */
     @Override
     public void close() {
@@ -53,7 +53,7 @@ public class ExecutorServiceWrapper implements ThreadManager {
     }
 
     /* (non-Javadoc)
-     * @see org.agilewiki.pamailbox.ThreadManager#logException(boolean, java.lang.String, java.lang.Throwable)
+     * @see org.agilewiki.pactor.impl.ThreadManager#logException(boolean, java.lang.String, java.lang.Throwable)
      */
     @Override
     public void logException(final boolean fatal, final String msg,

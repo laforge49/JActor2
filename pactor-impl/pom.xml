@@ -47,7 +47,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>
-                            org.agilewiki.pamailbox*;version=${project.version}
+                            org.agilewiki.pactor.impl;version=${project.version}
                         </Export-Package>
                         <Import-Package>
                             org.agilewiki.pactor.api;version=${project.version},

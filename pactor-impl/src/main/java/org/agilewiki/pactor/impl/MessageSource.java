@@ -1,4 +1,4 @@
-package org.agilewiki.pamailbox;
+package org.agilewiki.pactor.impl;
 
 import org.agilewiki.pactor.api.Actor;
 import org.agilewiki.pactor.api.ResponseProcessor;

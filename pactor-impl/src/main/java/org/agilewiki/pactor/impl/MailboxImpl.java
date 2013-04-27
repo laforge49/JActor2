@@ -1,4 +1,4 @@
-package org.agilewiki.pamailbox;
+package org.agilewiki.pactor.impl;
 
 import java.util.ArrayDeque;
 import java.util.IdentityHashMap;
