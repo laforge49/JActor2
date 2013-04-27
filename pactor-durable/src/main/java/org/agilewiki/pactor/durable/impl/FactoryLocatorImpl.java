@@ -132,6 +132,6 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
         if (old == null) {
             types.put(factoryKey, factory);
         } else if (!old.equals(factory))
-            throw new IllegalArgumentException("IncDesImpl type is already defined: " + actorType);
+            throw new IllegalArgumentException("IncDesImpl type is already defined differently: " + old.getFactoryKey());
     }
 }
