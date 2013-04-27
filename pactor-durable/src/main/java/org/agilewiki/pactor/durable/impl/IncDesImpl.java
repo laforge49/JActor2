@@ -2,8 +2,8 @@ package org.agilewiki.pactor.durable.impl;
 
 import org.agilewiki.pactor.api.*;
 import org.agilewiki.pactor.durable.*;
-import org.agilewiki.pautil.Ancestor;
-import org.agilewiki.pautil.AncestorBase;
+import org.agilewiki.pactor.util.Ancestor;
+import org.agilewiki.pactor.util.AncestorBase;
 
 import java.util.Arrays;
 

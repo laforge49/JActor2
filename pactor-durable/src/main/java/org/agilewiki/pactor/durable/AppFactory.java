@@ -3,7 +3,7 @@ package org.agilewiki.pactor.durable;
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.durable.impl.DurableImpl;
 import org.agilewiki.pactor.durable.impl.FactoryImpl;
-import org.agilewiki.pautil.Ancestor;
+import org.agilewiki.pactor.util.Ancestor;
 
 /**
  * Creates DurableImpl objects.

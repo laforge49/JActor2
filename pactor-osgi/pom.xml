@@ -53,7 +53,7 @@
                         <Import-Package>
                             org.agilewiki.pactor.api;version=${project.version},
                             org.agilewiki.pactor.impl;version=${project.version},
-                            org.agilewiki.pautil*;version=${project.version},
+                            org.agilewiki.pactor.util*;version=${project.version},
                             *
                         </Import-Package>
                     </instructions>

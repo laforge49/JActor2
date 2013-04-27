@@ -7,7 +7,7 @@ import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.durable.*;
 import org.agilewiki.pactor.durable.impl.FactoryImpl;
 import org.agilewiki.pactor.durable.impl.IncDesImpl;
-import org.agilewiki.pautil.Ancestor;
+import org.agilewiki.pactor.util.Ancestor;
 
 /**
  * A JID actor that holds a JID actor.

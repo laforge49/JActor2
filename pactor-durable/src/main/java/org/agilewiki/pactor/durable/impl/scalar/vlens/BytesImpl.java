@@ -9,7 +9,7 @@ import org.agilewiki.pactor.durable.Bytes;
 import org.agilewiki.pactor.durable.FactoryLocator;
 import org.agilewiki.pactor.durable.ReadableBytes;
 import org.agilewiki.pactor.durable.impl.FactoryImpl;
-import org.agilewiki.pautil.Ancestor;
+import org.agilewiki.pactor.util.Ancestor;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

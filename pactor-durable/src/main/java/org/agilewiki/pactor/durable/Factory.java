@@ -1,8 +1,8 @@
 package org.agilewiki.pactor.durable;
 
 import org.agilewiki.pactor.api.Mailbox;
-import org.agilewiki.pautil.Ancestor;
-import org.agilewiki.pautil.Named;
+import org.agilewiki.pactor.util.Ancestor;
+import org.agilewiki.pactor.util.Named;
 
 public interface Factory extends Named {
     PASerializable newSerializable(final Mailbox _mailbox)

@@ -1,7 +1,7 @@
 package org.agilewiki.pactor.durable;
 
 import org.agilewiki.pactor.api.Mailbox;
-import org.agilewiki.pautil.Ancestor;
+import org.agilewiki.pactor.util.Ancestor;
 
 /**
  * Defines actor types and instantiating

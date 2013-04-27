@@ -8,7 +8,7 @@ import org.agilewiki.pactor.durable.*;
 import org.agilewiki.pactor.durable.impl.FactoryImpl;
 import org.agilewiki.pactor.durable.impl.IncDesImpl;
 import org.agilewiki.pactor.durable.impl.scalar.Scalar;
-import org.agilewiki.pautil.Ancestor;
+import org.agilewiki.pactor.util.Ancestor;
 
 public class UnionImpl extends Scalar<String, PASerializable> implements Union {
 

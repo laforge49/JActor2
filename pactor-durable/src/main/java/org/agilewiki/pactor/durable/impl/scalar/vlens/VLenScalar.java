@@ -9,7 +9,7 @@ import org.agilewiki.pactor.durable.Durables;
 import org.agilewiki.pactor.durable.ReadableBytes;
 import org.agilewiki.pactor.durable.impl.FactoryImpl;
 import org.agilewiki.pactor.durable.impl.scalar.Scalar;
-import org.agilewiki.pautil.Ancestor;
+import org.agilewiki.pactor.util.Ancestor;
 
 /**
  * A JID component that holds a variable-length value, or null.

@@ -4,8 +4,8 @@ import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.durable.Factory;
 import org.agilewiki.pactor.durable.FactoryLocator;
 import org.agilewiki.pactor.durable.PASerializable;
-import org.agilewiki.pautil.Ancestor;
-import org.agilewiki.pautil.AncestorBase;
+import org.agilewiki.pactor.util.Ancestor;
+import org.agilewiki.pactor.util.AncestorBase;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
