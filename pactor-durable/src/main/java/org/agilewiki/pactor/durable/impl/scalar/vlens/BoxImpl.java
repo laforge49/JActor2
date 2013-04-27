@@ -94,7 +94,7 @@ public class BoxImpl
     public void setValue(final String jidType)
             throws Exception {
         value = createSubordinate(jidType);
-        int l = Util.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
+        int l = Durables.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
@@ -175,7 +175,7 @@ public class BoxImpl
     public void setBytes(String jidType, byte[] bytes)
             throws Exception {
         value = createSubordinate(jidType, bytes);
-        int l = Util.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
+        int l = Durables.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
@@ -192,7 +192,7 @@ public class BoxImpl
     public void setBytes(FactoryImpl jidFactory, byte[] bytes)
             throws Exception {
         value = createSubordinate(jidFactory, bytes);
-        int l = Util.stringLength(jidFactory.getFactoryKey()) +
+        int l = Durables.stringLength(jidFactory.getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;

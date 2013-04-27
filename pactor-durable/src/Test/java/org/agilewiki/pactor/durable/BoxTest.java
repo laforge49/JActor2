@@ -8,7 +8,7 @@ public class BoxTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
         try {
-            FactoryLocator factoryLocator = Util.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             Factory boxAFactory = factoryLocator.getFactory(Box.FACTORY_NAME);
             Mailbox mailbox = mailboxFactory.createMailbox();
             Box box1 = (Box) boxAFactory.newSerializable(mailbox);
@@ -36,7 +36,7 @@ public class BoxTest extends TestCase {
             PAString sj = (PAString) box1.getIncDesReq().call();
             assertEquals("abc", sj.getStringReq().call());
 
-            Box box2 = (Box) Util.newSerializable(factoryLocator, Box.FACTORY_NAME, mailbox);
+            Box box2 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, mailbox);
             sl = box2.getSerializedLength();
             assertEquals(4, sl);
 
@@ -66,7 +66,7 @@ public class BoxTest extends TestCase {
             sl = rpa.getSerializedLength();
             assertEquals(0, sl);
 
-            Box box3 = (Box) Util.newSerializable(factoryLocator, Box.FACTORY_NAME, mailboxFactory);
+            Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, mailboxFactory);
             sl = box3.getSerializedLength();
             assertEquals(4, sl);
             made = box3.makeIncDesReq(Box.FACTORY_NAME).call();

@@ -5,8 +5,8 @@ import org.agilewiki.pactor.Request;
 import org.agilewiki.pactor.RequestBase;
 import org.agilewiki.pactor.Transport;
 import org.agilewiki.pactor.durable.AppendableBytes;
+import org.agilewiki.pactor.durable.Durables;
 import org.agilewiki.pactor.durable.ReadableBytes;
-import org.agilewiki.pactor.durable.Util;
 import org.agilewiki.pactor.durable.impl.FactoryImpl;
 import org.agilewiki.pactor.durable.impl.scalar.Scalar;
 import org.agilewiki.pautil.Ancestor;
@@ -67,8 +67,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
     @Override
     public int getSerializedLength() {
         if (len == -1)
-            return Util.INT_LENGTH;
-        return Util.INT_LENGTH + len;
+            return Durables.INT_LENGTH;
+        return Durables.INT_LENGTH + len;
     }
 
     /**
@@ -97,7 +97,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param readableBytes Holds the serialized data.
      */
     protected void skipLen(ReadableBytes readableBytes) {
-        readableBytes.skip(Util.INT_LENGTH);
+        readableBytes.skip(Durables.INT_LENGTH);
     }
 
     /**

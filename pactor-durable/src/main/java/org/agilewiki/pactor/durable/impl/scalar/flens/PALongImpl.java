@@ -73,7 +73,7 @@ public class PALongImpl
      */
     @Override
     public int getSerializedLength() {
-        return Util.LONG_LENGTH;
+        return Durables.LONG_LENGTH;
     }
 
     /**

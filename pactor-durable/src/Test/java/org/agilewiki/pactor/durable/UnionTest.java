@@ -8,9 +8,9 @@ public class UnionTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
         try {
-            FactoryLocator factoryLocator = Util.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             DurableFactories.registerUnionFactory(factoryLocator, "siUnion", PAString.FACTORY_NAME, "siUnion");
-            Union siu1 = (Union) Util.newSerializable(mailboxFactory, "siUnion");
+            Union siu1 = (Union) Durables.newSerializable(mailboxFactory, "siUnion");
             assertNull(siu1.getValue());
             Mailbox mailbox = mailboxFactory.createMailbox();
             Union siu2 = (Union) siu1.copy(mailbox);

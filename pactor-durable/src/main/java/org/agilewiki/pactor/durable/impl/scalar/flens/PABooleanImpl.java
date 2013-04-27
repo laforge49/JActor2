@@ -73,7 +73,7 @@ public class PABooleanImpl
      */
     @Override
     public int getSerializedLength() {
-        return Util.BOOLEAN_LENGTH;
+        return Durables.BOOLEAN_LENGTH;
     }
 
     /**

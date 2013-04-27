@@ -7,7 +7,7 @@ public class StringTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
         try {
-            PAString paString1 = (PAString) Util.newSerializable(mailboxFactory, PAString.FACTORY_NAME);
+            PAString paString1 = (PAString) Durables.newSerializable(mailboxFactory, PAString.FACTORY_NAME);
             PAString paString2 = (PAString) paString1.copyReq(null).call();
             paString2.setStringReq("abc").call();
             PAString paString3 = (PAString) paString2.copyReq(null).call();
@@ -23,7 +23,7 @@ public class StringTest extends TestCase {
             assertEquals("abc", paString2.getStringReq().call());
             assertEquals("abc", paString3.getStringReq().call());
 
-            Box box = (Box) Util.newSerializable(mailboxFactory, Box.FACTORY_NAME);
+            Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
             box.setIncDesReq(PAString.FACTORY_NAME).call();
             PAString rpa = (PAString) box.resolvePathnameReq("0").call();
             assertNull(rpa.getStringReq().call());

@@ -7,7 +7,7 @@ import org.agilewiki.pautil.Ancestor;
 import org.agilewiki.pamailbox.DefaultMailboxFactoryImpl;
 import org.agilewiki.pautil.PAProperties;
 
-public class Util {
+public class Durables {
 
     /**
      * Size of a boolean in bytes.

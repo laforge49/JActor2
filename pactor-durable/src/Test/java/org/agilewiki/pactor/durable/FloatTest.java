@@ -7,7 +7,7 @@ public class FloatTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
         try {
-            PAFloat float1 = (PAFloat) Util.newSerializable(mailboxFactory, PAFloat.FACTORY_NAME);
+            PAFloat float1 = (PAFloat) Durables.newSerializable(mailboxFactory, PAFloat.FACTORY_NAME);
             PAFloat float2 = (PAFloat) float1.copyReq(null).call();
             float2.setFloatReq(1.0f).call();
             PAFloat float3 = (PAFloat) float2.copyReq(null).call();
@@ -26,7 +26,7 @@ public class FloatTest extends TestCase {
             v = float3.getFloatReq().call();
             assertEquals(1.f, v);
 
-            Box box = (Box) Util.newSerializable(mailboxFactory, Box.FACTORY_NAME);
+            Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
             box.setIncDesReq(PAFloat.FACTORY_NAME).call();
             PAFloat rpa = (PAFloat) box.resolvePathnameReq("0").call();
             v = rpa.getFloatReq().call();

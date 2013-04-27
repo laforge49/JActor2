@@ -62,7 +62,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
 
     protected int getFactoryIndex(String actorType)
             throws Exception {
-        FactoryLocator factoryLocator = Util.getFactoryLocator(getMailbox());
+        FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
         Factory actorFactory = factoryLocator.getFactory(actorType);
         return getFactoryIndex(actorFactory);
     }
@@ -105,8 +105,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     @Override
     public int getSerializedLength() {
         if (factoryIndex == -1)
-            return Util.INT_LENGTH;
-        return Util.INT_LENGTH + value.getDurable().getSerializedLength();
+            return Durables.INT_LENGTH;
+        return Durables.INT_LENGTH + value.getDurable().getSerializedLength();
     }
 
     /**

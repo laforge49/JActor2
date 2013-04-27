@@ -7,7 +7,7 @@ public class IntegerTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
         try {
-            PAInteger int1 = (PAInteger) Util.newSerializable(mailboxFactory, PAInteger.FACTORY_NAME);
+            PAInteger int1 = (PAInteger) Durables.newSerializable(mailboxFactory, PAInteger.FACTORY_NAME);
             PAInteger int2 = (PAInteger) int1.copyReq(null).call();
             int2.setIntegerReq(1).call();
             PAInteger int3 = (PAInteger) int2.copyReq(null).call();
@@ -26,7 +26,7 @@ public class IntegerTest extends TestCase {
             v = int3.getIntegerReq().call();
             assertEquals(1, v);
 
-            Box box1 = (Box) Util.newSerializable(mailboxFactory, Box.FACTORY_NAME);
+            Box box1 = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
             box1.setIncDesReq(PAInteger.FACTORY_NAME).call();
             PAInteger rpa = (PAInteger) box1.resolvePathnameReq("0").call();
             v = rpa.getIntegerReq().call();

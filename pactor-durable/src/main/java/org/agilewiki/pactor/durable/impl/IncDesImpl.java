@@ -73,7 +73,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public PASerializable createSubordinate(String actorType, Ancestor parent)
             throws Exception {
-        PASerializable jid = Util.newSerializable(Util.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
@@ -102,7 +102,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             throws Exception {
         if (bytes == null)
             return createSubordinate(actorType, parent);
-        PASerializable jid = Util.newSerializable(Util.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
@@ -127,7 +127,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public PASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes)
             throws Exception {
-        PASerializable jid = Util.newSerializable(Util.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);

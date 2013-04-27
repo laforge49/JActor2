@@ -73,7 +73,7 @@ public class PADoubleImpl
      */
     @Override
     public int getSerializedLength() {
-        return Util.DOUBLE_LENGTH;
+        return Durables.DOUBLE_LENGTH;
     }
 
     /**

@@ -116,7 +116,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param readableBytes Holds the serialized data.
      */
     private void _skipLen(ReadableBytes readableBytes) {
-        readableBytes.skip(Util.INT_LENGTH);
+        readableBytes.skip(Durables.INT_LENGTH);
     }
 
     /**
@@ -146,7 +146,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     @Override
     public int getSerializedLength() {
         _initialize();
-        return Util.INT_LENGTH + _len;
+        return Durables.INT_LENGTH + _len;
     }
 
     /**

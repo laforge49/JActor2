@@ -8,7 +8,7 @@ public class RootTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
         try {
-            FactoryLocator factoryLocator = Util.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
             Mailbox mailbox = mailboxFactory.createMailbox();
             Root root1 = (Root) rootFactory.newSerializable(mailbox, factoryLocator);

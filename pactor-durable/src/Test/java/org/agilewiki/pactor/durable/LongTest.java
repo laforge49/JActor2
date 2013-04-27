@@ -7,7 +7,7 @@ public class LongTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
         try {
-            PALong long1 = (PALong) Util.newSerializable(mailboxFactory, PALong.FACTORY_NAME);
+            PALong long1 = (PALong) Durables.newSerializable(mailboxFactory, PALong.FACTORY_NAME);
             PALong long2 = (PALong) long1.copyReq(null).call();
             long2.setLongReq(1L).call();
             PALong long3 = (PALong) long2.copyReq(null).call();
@@ -26,7 +26,7 @@ public class LongTest extends TestCase {
             v = long3.getLongReq().call();
             assertEquals(1L, v);
 
-            Box box = (Box) Util.newSerializable(mailboxFactory, Box.FACTORY_NAME);
+            Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
             box.setIncDesReq(PALong.FACTORY_NAME).call();
             PALong rpa = (PALong) box.resolvePathnameReq("0").call();
             v = rpa.getLongReq().call();

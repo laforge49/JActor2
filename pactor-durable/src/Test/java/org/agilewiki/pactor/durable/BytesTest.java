@@ -7,7 +7,7 @@ public class BytesTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
         try {
-            Bytes bytes1 = (Bytes) Util.newSerializable(mailboxFactory, Bytes.FACTORY_NAME);
+            Bytes bytes1 = (Bytes) Durables.newSerializable(mailboxFactory, Bytes.FACTORY_NAME);
             Bytes bytes2 = (Bytes) bytes1.copyReq(null).call();
             bytes2.setBytesReq(new byte[3]).call();
             Bytes bytes3 = (Bytes) bytes2.copyReq(null).call();
@@ -23,7 +23,7 @@ public class BytesTest extends TestCase {
             assertEquals(3, bytes2.getBytesReq().call().length);
             assertEquals(3, bytes3.getBytesReq().call().length);
 
-            Box box = (Box) Util.newSerializable(mailboxFactory, Box.FACTORY_NAME);
+            Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
             box.setIncDesReq(Bytes.FACTORY_NAME).call();
             Bytes rpa = (Bytes) box.resolvePathnameReq("0").call();
             assertNull(rpa.getBytesReq().call());

@@ -62,7 +62,7 @@ public class PAIntegerImpl
      */
     @Override
     public int getSerializedLength() {
-        return Util.INT_LENGTH;
+        return Durables.INT_LENGTH;
     }
 
     /**

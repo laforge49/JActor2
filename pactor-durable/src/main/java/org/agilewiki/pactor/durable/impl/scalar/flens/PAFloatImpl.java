@@ -73,7 +73,7 @@ public class PAFloatImpl
      */
     @Override
     public int getSerializedLength() {
-        return Util.FLOAT_LENGTH;
+        return Durables.FLOAT_LENGTH;
     }
 
     /**

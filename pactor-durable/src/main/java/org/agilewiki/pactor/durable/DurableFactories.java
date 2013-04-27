@@ -7,13 +7,13 @@ import org.agilewiki.pactor.durable.impl.scalar.vlens.*;
 
 public class DurableFactories {
     public static MailboxFactory createMailboxFactory() throws Exception {
-        MailboxFactory mailboxFactory = Util.createMailboxFactory("org.agilewiki.pactor.durable");
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory("org.agilewiki.pactor.durable");
         registerFactories(mailboxFactory);
         return mailboxFactory;
     }
 
     public static void registerFactories(final MailboxFactory _mailboxFactory) throws Exception {
-        FactoryLocator factoryLocator = Util.getFactoryLocator(_mailboxFactory);
+        FactoryLocator factoryLocator = Durables.getFactoryLocator(_mailboxFactory);
         registerFactories(factoryLocator);
     }
 
