@@ -1,9 +1,9 @@
 package org.agilewiki.pactor.util;
 
+import org.agilewiki.pactor.api.*;
+
 import java.util.ArrayDeque;
 import java.util.Queue;
-
-import org.agilewiki.pactor.api.*;
 
 /**
  * Blocks request processing, not threads.

@@ -1,11 +1,11 @@
 package org.agilewiki.pactor.util;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
-
 import org.agilewiki.pactor.api.Actor;
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.api.Properties;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * A hierarchy of concurrent property sets.
@@ -40,7 +40,7 @@ public class PAProperties extends AncestorBase implements Properties {
      * @throws UnsupportedOperationException Thrown when a Properties actor could not be found.
      */
     public static Object getProperty(final Actor actor,
-            final String propertyName) throws Exception {
+                                     final String propertyName) throws Exception {
         Properties properties = actor.getMailbox().getMailboxFactory()
                 .getProperties();
         if (properties == null)
@@ -57,7 +57,7 @@ public class PAProperties extends AncestorBase implements Properties {
      * @throws UnsupportedOperationException Thrown when a Properties actor could not be found.
      */
     public static void putProperty(final Actor actor,
-            final String propertyName, final Object propertyValue)
+                                   final String propertyName, final Object propertyValue)
             throws Exception {
         Properties properties = actor.getMailbox().getMailboxFactory()
                 .getProperties();
@@ -76,7 +76,7 @@ public class PAProperties extends AncestorBase implements Properties {
     }
 
     public PAProperties(final MailboxFactory _mailboxFactory,
-            final Ancestor _parent) throws Exception {
+                        final Ancestor _parent) throws Exception {
         initialize(_parent);
         _mailboxFactory.setProperties(this);
         putProperty("mailboxFactory", _mailboxFactory);
@@ -94,7 +94,7 @@ public class PAProperties extends AncestorBase implements Properties {
 
     @Override
     public void putProperty(final String propertyName,
-            final Object propertyValue) {
+                            final Object propertyValue) {
         properties.put(propertyName, propertyValue);
     }
 

@@ -39,7 +39,7 @@ public class ResponseCounter<RESPONSE_TYPE> implements
      * @param _rp      The ResponseProcessor to be used when all outstanding requests have completed.
      */
     public ResponseCounter(final int _count, final RESPONSE_TYPE response,
-            final ResponseProcessor<RESPONSE_TYPE> _rp) {
+                           final ResponseProcessor<RESPONSE_TYPE> _rp) {
         this.count = _count;
         this.rp = _rp;
     }

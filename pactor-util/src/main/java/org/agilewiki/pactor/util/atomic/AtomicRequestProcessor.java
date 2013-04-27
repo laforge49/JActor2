@@ -1,8 +1,8 @@
 package org.agilewiki.pactor.util.atomic;
 
-import java.util.Queue;
-
 import org.agilewiki.pactor.api.*;
+
+import java.util.Queue;
 
 /**
  * An actor which processes a requests one at a time, waiting for each
@@ -109,7 +109,7 @@ class AtomicEntry {
      * @param _rp      The ResponseProcessor that gets the response from the request, or the exception if one occurs.
      */
     public AtomicEntry(final Request _request,
-            final ResponseProcessor<Object> _rp) {
+                       final ResponseProcessor<Object> _rp) {
         request = _request;
         rp = _rp;
     }

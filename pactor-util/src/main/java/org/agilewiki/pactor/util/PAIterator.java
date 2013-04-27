@@ -20,7 +20,7 @@ abstract public class PAIterator {
                 if (response == null) {
                     iterate(responseProcessor); //not recursive
                 }/* else if (response instanceof JANull)
-                    responseProcessor.processResponse(null);*/else
+                    responseProcessor.processResponse(null);*/ else
                     responseProcessor.processResponse(response);
             }
         };

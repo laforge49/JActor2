@@ -1,9 +1,9 @@
 package org.agilewiki.pactor.util.atomic;
 
+import org.agilewiki.pactor.api.MailboxFactory;
+
 import java.util.PriorityQueue;
 import java.util.Queue;
-
-import org.agilewiki.pactor.api.MailboxFactory;
 
 /**
  * Create an atomic request processor which processes requests from least to greatest.
