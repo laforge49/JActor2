@@ -94,10 +94,24 @@ public class Util {
 
     public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
+                                                 final Mailbox _mailbox)
+            throws Exception {
+        return _factoryLocator.newSerializable(_factoryName, _mailbox, null);
+    }
+
+    public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
+                                                 final String _factoryName,
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
             throws Exception {
         return _factoryLocator.newSerializable(_factoryName, _mailbox, _parent);
+    }
+
+    public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
+                                                 final String _factoryName,
+                                                 final MailboxFactory _mailboxFactory)
+            throws Exception {
+        return _factoryLocator.newSerializable(_factoryName, _mailboxFactory.createMailbox(), null);
     }
 
     public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
