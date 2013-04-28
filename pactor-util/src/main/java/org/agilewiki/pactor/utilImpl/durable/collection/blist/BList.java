@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.utilImpl.durable.collection.lists;
+package org.agilewiki.pactor.utilImpl.durable.collection.blist;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
@@ -8,6 +8,7 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
 import org.agilewiki.pactor.utilImpl.durable.DurableImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.collection.slist.SList;
 import org.agilewiki.pactor.utilImpl.durable.scalar.flens.PAIntegerImpl;
 import org.agilewiki.pactor.utilImpl.durable.scalar.vlens.UnionImpl;
 

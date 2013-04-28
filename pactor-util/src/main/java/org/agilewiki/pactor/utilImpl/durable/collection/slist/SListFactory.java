@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.utilImpl.durable.collection.lists;
+package org.agilewiki.pactor.utilImpl.durable.collection.slist;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
