@@ -1,5 +1,6 @@
 package org.agilewiki.pactor.impl;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 
 /**
@@ -7,7 +8,7 @@ import java.util.concurrent.ThreadFactory;
  * ThreadManager is a thread pool, but with a simplified API and
  * assumes that the thread pool has a fixed number of threads.
  */
-public interface ThreadManager {
+public interface ThreadManager extends Executor, AutoCloseable {
     /**
      * Create and start the concurrent.
      *
@@ -21,13 +22,12 @@ public interface ThreadManager {
      *
      * @param runnable The run method is to be called by another thread.
      */
-    public void process(final Runnable runnable);
+    @Override
+    public void execute(final Runnable runnable);
 
     /**
      * Stop all the threads as they complete their tasks.
      */
+    @Override
     public void close();
-
-    public void logException(final boolean fatal, final String msg,
-            final Throwable exception);
 }

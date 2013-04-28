@@ -3,9 +3,6 @@ package org.agilewiki.pactor.impl;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Wraps an ExecutorService in a ThreadManager, so that an ExecutorService
  * can be used instead of a default ThreadManager if desired.
@@ -13,8 +10,6 @@ import org.slf4j.LoggerFactory;
  * @author monster
  */
 public class ExecutorServiceWrapper implements ThreadManager {
-    private static final Logger logger = LoggerFactory
-            .getLogger(ThreadManagerImpl.class);
 
     /**
      * The executor service.
@@ -40,7 +35,7 @@ public class ExecutorServiceWrapper implements ThreadManager {
      * @see org.agilewiki.pactor.impl.ThreadManager#process(java.lang.Runnable)
      */
     @Override
-    public void process(final Runnable runnable) {
+    public void execute(final Runnable runnable) {
         executorService.execute(runnable);
     }
 
@@ -50,17 +45,5 @@ public class ExecutorServiceWrapper implements ThreadManager {
     @Override
     public void close() {
         executorService.shutdownNow();
-    }
-
-    /* (non-Javadoc)
-     * @see org.agilewiki.pactor.impl.ThreadManager#logException(boolean, java.lang.String, java.lang.Throwable)
-     */
-    @Override
-    public void logException(final boolean fatal, final String msg,
-            final Throwable exception) {
-        if (fatal)
-            logger.error(msg, exception);
-        else
-            logger.warn(msg, exception);
     }
 }

@@ -126,7 +126,7 @@ public class DefaultMailboxFactoryImpl<M extends PAMailbox> implements
     public final void submit(final Runnable task, final boolean willBlock)
             throws Exception {
         try {
-            (willBlock ? blockingThreadManager : threadManager).process(task);
+            (willBlock ? blockingThreadManager : threadManager).execute(task);
         } catch (final Exception e) {
             if (!isClosing())
                 throw e;

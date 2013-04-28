@@ -87,8 +87,7 @@ final public class ThreadManagerImpl implements ThreadManager {
                             try {
                                 task.run();
                             } catch (final Throwable e) {
-                                logException(
-                                        false,
+                                logger.error(
                                         "Exception thrown by a task's run method",
                                         e);
                             }
@@ -111,7 +110,7 @@ final public class ThreadManagerImpl implements ThreadManager {
      * @param task A task to be processed on another thread.
      */
     @Override
-    final public void process(final Runnable task) {
+    final public void execute(final Runnable task) {
         tasks.add(task);
         taskRequest.release();
     }
@@ -142,14 +141,5 @@ final public class ThreadManagerImpl implements ThreadManager {
         }
         // Release the references to the thread array...
         threads = null;
-    }
-
-    @Override
-    public void logException(final boolean fatal, final String msg,
-            final Throwable exception) {
-        if (fatal)
-            logger.error(msg, exception);
-        else
-            logger.warn(msg, exception);
     }
 }
