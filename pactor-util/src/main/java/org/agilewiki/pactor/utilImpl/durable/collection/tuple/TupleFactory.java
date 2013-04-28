@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.utilImpl.durable.collection.flenc;
+package org.agilewiki.pactor.utilImpl.durable.collection.tuple;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;

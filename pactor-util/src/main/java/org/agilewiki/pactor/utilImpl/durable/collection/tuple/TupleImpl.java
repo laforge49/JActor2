@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.utilImpl.durable.collection.flenc;
+package org.agilewiki.pactor.utilImpl.durable.collection.tuple;
 
 import org.agilewiki.pactor.util.durable.*;
 import org.agilewiki.pactor.utilImpl.durable.IncDesImpl;

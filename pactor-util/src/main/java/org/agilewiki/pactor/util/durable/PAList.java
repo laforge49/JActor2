@@ -12,6 +12,7 @@ public interface PAList<ENTRY_TYPE extends PASerializable> extends Collection<EN
     public final static String PAFLOAT_BLIST = "floatBList";
     public final static String PADOUBLE_BLIST = "doubleBList";
     public final static String PABOOLEAN_BLIST = "boolBList";
+
     public final static String PASTRING_LIST = "stringList";
     public final static String BYTES_LIST = "bytesList";
     public final static String BOX_LIST = "boxList";

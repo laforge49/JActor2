@@ -118,8 +118,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
      * @param factory An actor factory.
      */
     @Override
-    public void registerFactory(Factory factory)
-            throws Exception {
+    public void registerFactory(Factory factory) {
         String actorType = factory.getName();
         String factoryKey = actorType + "|" + bundleName + "|" + version;
         Factory old = types.get(factoryKey);

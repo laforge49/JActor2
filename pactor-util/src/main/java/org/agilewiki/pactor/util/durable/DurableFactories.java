@@ -2,7 +2,9 @@ package org.agilewiki.pactor.util.durable;
 
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.utilImpl.durable.IncDesFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.flenc.TupleFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.lists.SList;
+import org.agilewiki.pactor.utilImpl.durable.collection.lists.SListFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.tuple.TupleFactory;
 import org.agilewiki.pactor.utilImpl.durable.scalar.flens.*;
 import org.agilewiki.pactor.utilImpl.durable.scalar.vlens.*;
 
@@ -31,6 +33,8 @@ public class DurableFactories {
         RootImpl.registerFactory(_factoryLocator);
         PAStringImpl.registerFactory(_factoryLocator);
         BytesImpl.registerFactory(_factoryLocator);
+
+        SListFactory.registerFactories(_factoryLocator);
     }
 
     public static void registerUnionFactory(final FactoryLocator _factoryLocator,

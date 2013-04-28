@@ -19,8 +19,7 @@ public interface FactoryLocator extends Ancestor {
      *
      * @param _factory An actor factory.
      */
-    void registerFactory(final Factory _factory)
-            throws Exception;
+    void registerFactory(final Factory _factory);
 
     /**
      * Returns the requested actor factory.
