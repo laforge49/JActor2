@@ -2,6 +2,7 @@ package org.agilewiki.pactor.util.durable;
 
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.utilImpl.durable.IncDesFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.flenc.TupleFactory;
 import org.agilewiki.pactor.utilImpl.durable.scalar.flens.*;
 import org.agilewiki.pactor.utilImpl.durable.scalar.vlens.*;
 
@@ -37,5 +38,12 @@ public class DurableFactories {
                                             final String... _actorTypes)
             throws Exception {
         UnionImpl.registerFactory(_factoryLocator, _subActorType, _actorTypes);
+    }
+
+    public static void registerTupleFactory(final FactoryLocator _factoryLocator,
+                                            final String _subActorType,
+                                            final String... _actorTypes)
+            throws Exception {
+        TupleFactory.registerFactory(_factoryLocator, _subActorType, _actorTypes);
     }
 }

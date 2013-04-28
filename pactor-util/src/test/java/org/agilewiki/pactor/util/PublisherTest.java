@@ -1,7 +1,6 @@
 package org.agilewiki.pactor.util;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.pactor.api.ActorBase;
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.api.Transport;
@@ -76,7 +75,7 @@ class Print extends UnboundRequestBase<Void, Printer> {
 
     @Override
     public void processRequest(final Printer _targetActor,
-            final Transport<Void> _rp) throws Exception {
+                               final Transport<Void> _rp) throws Exception {
         _targetActor.print(msg);
         _rp.processResponse(null);
     }

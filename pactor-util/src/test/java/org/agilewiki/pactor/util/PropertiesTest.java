@@ -1,7 +1,6 @@
 package org.agilewiki.pactor.util;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.pactor.api.ActorBase;
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;

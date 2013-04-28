@@ -1,7 +1,6 @@
 package org.agilewiki.pactor.util;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.pactor.api.*;
 import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
 
@@ -115,7 +114,7 @@ class UnboundAddReq extends UnboundRequestBase<Void, CounterActor> {
 
     @Override
     public void processRequest(final CounterActor _targetActor,
-            final Transport<Void> _rp) throws Exception {
+                               final Transport<Void> _rp) throws Exception {
         _targetActor.add(inc);
         _rp.processResponse(null);
     }
@@ -125,7 +124,7 @@ class UnboundResetReq extends UnboundRequestBase<Long, CounterActor> {
 
     @Override
     public void processRequest(final CounterActor _targetActor,
-            final Transport<Long> _rp) throws Exception {
+                               final Transport<Long> _rp) throws Exception {
         _rp.processResponse(_targetActor.reset());
     }
 }
