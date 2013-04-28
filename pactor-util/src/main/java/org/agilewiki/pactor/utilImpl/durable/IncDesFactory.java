@@ -8,8 +8,7 @@ import org.agilewiki.pactor.util.durable.IncDes;
  */
 public class IncDesFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new IncDesFactory());
     }
 

@@ -54,42 +54,35 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return getSerializedLengthReq;
     }
 
-    final public PASerializable createSubordinate(Factory factory)
-            throws Exception {
+    final public PASerializable createSubordinate(Factory factory) {
         return createSubordinate(factory, getParent());
     }
 
-    final public PASerializable createSubordinate(String actorType)
-            throws Exception {
+    final public PASerializable createSubordinate(String actorType) {
         return createSubordinate(actorType, getParent());
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent)
-            throws Exception {
+    final public PASerializable createSubordinate(Factory factory, Ancestor parent) {
         PASerializable jid = factory.newSerializable(getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent)
-            throws Exception {
+    final public PASerializable createSubordinate(String actorType, Ancestor parent) {
         PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(Factory factory, byte[] bytes)
-            throws Exception {
+    final public PASerializable createSubordinate(Factory factory, byte[] bytes) {
         return createSubordinate(factory, getParent(), bytes);
     }
 
-    final public PASerializable createSubordinate(String actorType, byte[] bytes)
-            throws Exception {
+    final public PASerializable createSubordinate(String actorType, byte[] bytes) {
         return createSubordinate(actorType, getParent(), bytes);
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent, byte[] bytes)
-            throws Exception {
+    final public PASerializable createSubordinate(Factory factory, Ancestor parent, byte[] bytes) {
         if (bytes == null)
             return createSubordinate(factory, parent);
         PASerializable jid = factory.newSerializable(getMailbox(), parent);
@@ -98,8 +91,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent, byte[] bytes)
-            throws Exception {
+    final public PASerializable createSubordinate(String actorType, Ancestor parent, byte[] bytes) {
         if (bytes == null)
             return createSubordinate(actorType, parent);
         PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
@@ -112,8 +104,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return createSubordinate(factory, getParent(), readableBytes);
     }
 
-    final public PASerializable createSubordinate(String actorType, ReadableBytes readableBytes)
-            throws Exception {
+    final public PASerializable createSubordinate(String actorType, ReadableBytes readableBytes) {
         return createSubordinate(actorType, getParent(), readableBytes);
     }
 
@@ -125,8 +116,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes)
-            throws Exception {
+    final public PASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes) {
         PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
@@ -147,7 +137,6 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * Notification that the persistent data has changed.
      *
      * @param lengthChange The change in the size of the serialized data.
-     * @throws Exception Any uncaught exception which occurred while processing the notification.
      */
     protected void changed(int lengthChange) {
         serializedBytes = null;
@@ -161,7 +150,6 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * Process a change in the persistent data.
      *
      * @param lengthChange The change in the size of the serialized data.
-     * @throws Exception Any uncaught exception which occurred while processing the change.
      */
     public void change(int lengthChange) {
         changed(lengthChange);
@@ -200,8 +188,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
-    protected void serialize(AppendableBytes appendableBytes)
-            throws Exception {
+    protected void serialize(AppendableBytes appendableBytes) {
     }
 
     /**
@@ -210,8 +197,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param appendableBytes Holds the byte array and offset.
      */
     @Override
-    public void save(final AppendableBytes appendableBytes)
-            throws Exception {
+    public void save(final AppendableBytes appendableBytes) {
         if (isSerialized()) {
             byte[] bs = appendableBytes.getBytes();
             int off = appendableBytes.getOffset();
@@ -247,8 +233,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @return The byte array holding the serialized persistent data.
      */
-    public final byte[] getSerializedBytes()
-            throws Exception {
+    public final byte[] getSerializedBytes() {
         byte[] bs = new byte[getSerializedLength()];
         AppendableBytes appendableBytes = new AppendableBytes(bs, 0);
         save(appendableBytes);
@@ -271,10 +256,9 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param pathname A JID pathname.
      * @return A JID actor or null.
-     * @throws Exception Any uncaught exception which occurred while processing the request.
      */
     @Override
-    public PASerializable resolvePathname(final String pathname) throws Exception {
+    public PASerializable resolvePathname(final String pathname) {
         throw new UnsupportedOperationException();
     }
 
@@ -295,8 +279,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return a copy of the actor.
      */
     @Override
-    public PASerializable copy(final Mailbox m)
-            throws Exception {
+    public PASerializable copy(final Mailbox m) {
         Mailbox mb = m;
         if (mb == null)
             mb = getMailbox();

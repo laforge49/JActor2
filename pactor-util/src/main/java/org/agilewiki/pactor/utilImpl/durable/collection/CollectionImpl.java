@@ -81,7 +81,6 @@ abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
      * Process a change in the persistent data.
      *
      * @param lengthChange The change in the size of the serialized data.
-     * @throws Exception Any uncaught exception which occurred while processing the change.
      */
     @Override
     public void change(int lengthChange) {
@@ -94,11 +93,9 @@ abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
      *
      * @param pathname A JID pathname.
      * @return A JID actor or null.
-     * @throws Exception Any uncaught exception which occurred while processing the request.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
-            throws Exception {
+    public PASerializable resolvePathname(String pathname) {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }

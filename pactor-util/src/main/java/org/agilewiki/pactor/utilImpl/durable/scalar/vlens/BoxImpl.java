@@ -15,8 +15,7 @@ import org.agilewiki.pactor.utilImpl.durable.IncDesImpl;
 public class BoxImpl
         extends VLenScalar<String, PASerializable> implements Box {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(Box.FACTORY_NAME) {
             @Override
             final protected BoxImpl instantiateActor() {
@@ -40,11 +39,9 @@ public class BoxImpl
 
     /**
      * Clear the content.
-     *
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void clear() throws Exception {
+    public void clear() {
         if (len == -1)
             return;
         int l = len;
@@ -63,11 +60,9 @@ public class BoxImpl
      *
      * @param jidType The MakeValue request.
      * @return True if a new value is created.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public Boolean makeValue(final String jidType)
-            throws Exception {
+    public Boolean makeValue(final String jidType) {
         if (len > -1)
             return false;
         setValue(jidType);
@@ -88,11 +83,9 @@ public class BoxImpl
      * Assign a value.
      *
      * @param jidType The jid type.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void setValue(final String jidType)
-            throws Exception {
+    public void setValue(final String jidType) {
         value = createSubordinate(jidType);
         int l = Durables.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
@@ -117,11 +110,9 @@ public class BoxImpl
      *
      * @param jidType An jid type name.
      * @param bytes   The serialized data.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void setValue(final String jidType, final byte[] bytes)
-            throws Exception {
+    public void setValue(final String jidType, final byte[] bytes) {
         if (len > -1)
             clear();
         setBytes(jidType, bytes);
@@ -144,11 +135,9 @@ public class BoxImpl
      * @param jidType An jid type name.
      * @param bytes   The serialized data.
      * @return True if a new value is created.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public Boolean makeValue(final String jidType, final byte[] bytes)
-            throws Exception {
+    public Boolean makeValue(final String jidType, final byte[] bytes) {
         if (len > -1)
             return false;
         setBytes(jidType, bytes);
@@ -170,10 +159,8 @@ public class BoxImpl
      *
      * @param jidType The jid type.
      * @param bytes   The serialized data.
-     * @throws Exception Any uncaught exception raised.
      */
-    public void setBytes(String jidType, byte[] bytes)
-            throws Exception {
+    public void setBytes(String jidType, byte[] bytes) {
         value = createSubordinate(jidType, bytes);
         int l = Durables.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
@@ -187,10 +174,8 @@ public class BoxImpl
      *
      * @param jidFactory The jid factory.
      * @param bytes      The serialized data.
-     * @throws Exception Any uncaught exception raised.
      */
-    public void setBytes(FactoryImpl jidFactory, byte[] bytes)
-            throws Exception {
+    public void setBytes(FactoryImpl jidFactory, byte[] bytes) {
         value = createSubordinate(jidFactory, bytes);
         int l = Durables.stringLength(jidFactory.getFactoryKey()) +
                 value.getDurable().getSerializedLength();
@@ -203,11 +188,9 @@ public class BoxImpl
      * Returns the actor held by this component.
      *
      * @return The actor held by this component, or null.
-     * @throws Exception Any uncaught exception raised during deserialization.
      */
     @Override
-    public PASerializable getValue()
-            throws Exception {
+    public PASerializable getValue() {
         if (len == -1)
             return null;
         if (value != null)
@@ -228,8 +211,7 @@ public class BoxImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
-            throws Exception {
+    protected void serialize(AppendableBytes appendableBytes) {
         saveLen(appendableBytes);
         if (len == -1)
             return;
@@ -243,11 +225,9 @@ public class BoxImpl
      *
      * @param pathname A JID pathname.
      * @return A JID actor or null.
-     * @throws Exception Any uncaught exception which occurred while processing the request.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
-            throws Exception {
+    public PASerializable resolvePathname(String pathname) {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }

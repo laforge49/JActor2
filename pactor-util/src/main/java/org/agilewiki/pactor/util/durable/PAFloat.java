@@ -12,5 +12,5 @@ public interface PAFloat extends IncDes {
 
     Request<Void> setFloatReq(final Float _v);
 
-    void setValue(final Float _v) throws Exception;
+    void setValue(final Float _v);
 }

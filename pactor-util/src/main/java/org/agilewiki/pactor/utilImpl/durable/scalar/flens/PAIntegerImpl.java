@@ -14,8 +14,7 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PAIntegerImpl
         extends FLenScalar<Integer> implements PAInteger {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PAInteger.FACTORY_NAME) {
             @Override
             final protected PAIntegerImpl instantiateActor() {

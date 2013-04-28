@@ -7,6 +7,7 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.PAProperties;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.pactor.utilImpl.durable.IncDesFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.lists.BListFactory;
 import org.agilewiki.pactor.utilImpl.durable.collection.lists.SListFactory;
 import org.agilewiki.pactor.utilImpl.durable.collection.tuple.TupleFactory;
 import org.agilewiki.pactor.utilImpl.durable.scalar.flens.*;
@@ -45,7 +46,7 @@ public class Durables {
         return mailboxFactory;
     }
 
-    public static void registerFactories(final MailboxFactory _mailboxFactory) throws Exception {
+    public static void registerFactories(final MailboxFactory _mailboxFactory) {
         FactoryLocator factoryLocator = getFactoryLocator(_mailboxFactory);
         registerFactories(factoryLocator);
     }
@@ -66,7 +67,7 @@ public class Durables {
         return mailboxFactory;
     }
 
-    public static void registerFactories(final FactoryLocator _factoryLocator) throws Exception {
+    public static void registerFactories(final FactoryLocator _factoryLocator) {
         IncDesFactory.registerFactory(_factoryLocator);
 
         PABooleanImpl.registerFactory(_factoryLocator);
@@ -81,19 +82,18 @@ public class Durables {
         BytesImpl.registerFactory(_factoryLocator);
 
         SListFactory.registerFactories(_factoryLocator);
+        BListFactory.registerFactories(_factoryLocator);
     }
 
     public static void registerUnionFactory(final FactoryLocator _factoryLocator,
                                             final String _subActorType,
-                                            final String... _actorTypes)
-            throws Exception {
+                                            final String... _actorTypes) {
         UnionImpl.registerFactory(_factoryLocator, _subActorType, _actorTypes);
     }
 
     public static void registerTupleFactory(final FactoryLocator _factoryLocator,
                                             final String _subActorType,
-                                            final String... _actorTypes)
-            throws Exception {
+                                            final String... _actorTypes) {
         TupleFactory.registerFactory(_factoryLocator, _subActorType, _actorTypes);
     }
 
@@ -165,8 +165,7 @@ public class Durables {
         return _factoryLocator.newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
     }
 
-    public static Factory getFactory(final FactoryLocator _factoryLocator, final String _factoryName)
-            throws Exception {
+    public static Factory getFactory(final FactoryLocator _factoryLocator, final String _factoryName) {
         if (_factoryLocator == null)
             throw new IllegalArgumentException("Unknown jid type: " + _factoryName);
         return _factoryLocator.getFactory(_factoryName);

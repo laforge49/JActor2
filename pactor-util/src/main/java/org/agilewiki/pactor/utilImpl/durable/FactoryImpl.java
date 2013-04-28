@@ -47,8 +47,7 @@ abstract public class FactoryImpl implements Factory {
     abstract protected PASerializable instantiateActor();
 
     @Override
-    public PASerializable newSerializable(final Mailbox _mailbox)
-            throws Exception {
+    public PASerializable newSerializable(final Mailbox _mailbox) {
         return newSerializable(_mailbox, null);
     }
 

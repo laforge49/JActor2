@@ -14,8 +14,7 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PABooleanImpl
         extends FLenScalar<Boolean> implements PABoolean {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PABoolean.FACTORY_NAME) {
             @Override
             final protected PABooleanImpl instantiateActor() {

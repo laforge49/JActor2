@@ -15,8 +15,7 @@ public class PAStringImpl
         extends VLenScalar<String, String>
         implements ComparableKey<String>, PAString {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PAString.FACTORY_NAME) {
             @Override
             final protected PAStringImpl instantiateActor() {
@@ -35,7 +34,6 @@ public class PAStringImpl
      * Assign a value.
      *
      * @param v The new value.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
     public void setValue(final String v) {
@@ -65,10 +63,9 @@ public class PAStringImpl
      *
      * @param v The MakeValue request.
      * @return True if a new value is created.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public Boolean makeValue(String v) throws Exception {
+    public Boolean makeValue(String v) {
         if (len > -1)
             return false;
         int c = v.length() * 2;
@@ -115,7 +112,7 @@ public class PAStringImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) throws Exception {
+    protected void serialize(AppendableBytes appendableBytes) {
         if (len == -1)
             saveLen(appendableBytes);
         else

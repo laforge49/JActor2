@@ -14,8 +14,7 @@ import org.agilewiki.pactor.utilImpl.durable.IncDesImpl;
  */
 public class RootImpl extends BoxImpl implements Root {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
             @Override
             final protected RootImpl instantiateActor() {
@@ -46,7 +45,7 @@ public class RootImpl extends BoxImpl implements Root {
      * @param offset Location of the serialized data.
      * @return Updated offset.
      */
-    public int save(byte[] bytes, int offset) throws Exception {
+    public int save(byte[] bytes, int offset) {
         AppendableBytes appendableBytes = new AppendableBytes(bytes, offset);
         save(appendableBytes);
         return appendableBytes.getOffset();
@@ -60,7 +59,7 @@ public class RootImpl extends BoxImpl implements Root {
      * @param length Length of the serialized data
      * @return The updated offset.
      */
-    public int load(byte[] bytes, int offset, int length) throws Exception {
+    public int load(byte[] bytes, int offset, int length) {
         byte[] bs = new byte[length];
         System.arraycopy(bytes, offset, bs, 0, length);
         load(bs);
@@ -73,8 +72,7 @@ public class RootImpl extends BoxImpl implements Root {
      * @param bytes Holds the immutable serialized data.
      *              (And nothing else.)
      */
-    public void load(byte[] bytes)
-            throws Exception {
+    public void load(byte[] bytes) {
         ReadableBytes rb = new ReadableBytes(bytes, 0);
         load(rb);
     }
@@ -121,7 +119,7 @@ public class RootImpl extends BoxImpl implements Root {
      * @param appendableBytes The object written to.
      */
     @Override
-    protected void saveLen(AppendableBytes appendableBytes) throws Exception {
+    protected void saveLen(AppendableBytes appendableBytes) {
         descriptor.save(appendableBytes);
     }
 
@@ -137,8 +135,7 @@ public class RootImpl extends BoxImpl implements Root {
         return descriptor.getSerializedLength() + len;
     }
 
-    public PASerializable copy(Mailbox m)
-            throws Exception {
+    public PASerializable copy(Mailbox m) {
         Mailbox mb = m;
         if (mb == null)
             mb = getMailbox();

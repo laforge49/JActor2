@@ -14,8 +14,7 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PAFloatImpl
         extends FLenScalar<Float> implements PAFloat {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PAFloat.FACTORY_NAME) {
             @Override
             final protected PAFloatImpl instantiateActor() {

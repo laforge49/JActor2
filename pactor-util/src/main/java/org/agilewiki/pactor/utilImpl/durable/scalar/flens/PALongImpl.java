@@ -14,8 +14,7 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PALongImpl
         extends FLenScalar<Long> implements PALong {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PALong.FACTORY_NAME) {
             @Override
             final protected PALongImpl instantiateActor() {

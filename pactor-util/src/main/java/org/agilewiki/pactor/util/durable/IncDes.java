@@ -18,8 +18,7 @@ public interface IncDes extends PASerializable {
 
     Request<byte[]> getSerializedBytesReq();
 
-    byte[] getSerializedBytes()
-            throws Exception;
+    byte[] getSerializedBytes();
 
     Request<Void> saveReq(final AppendableBytes _appendableBytes);
 
@@ -28,8 +27,7 @@ public interface IncDes extends PASerializable {
      *
      * @param _appendableBytes Holds the byte array and offset.
      */
-    void save(final AppendableBytes _appendableBytes)
-            throws Exception;
+    void save(final AppendableBytes _appendableBytes);
 
     /**
      * Load the serialized data into the JID.
@@ -45,10 +43,8 @@ public interface IncDes extends PASerializable {
      *
      * @param _pathname A JID pathname.
      * @return A JID actor or null.
-     * @throws Exception Any uncaught exception which occurred while processing the request.
      */
-    PASerializable resolvePathname(final String _pathname)
-            throws Exception;
+    PASerializable resolvePathname(final String _pathname);
 
     /**
      * Returns the factory.
@@ -66,8 +62,7 @@ public interface IncDes extends PASerializable {
 
     Request<PASerializable> copyReq(final Mailbox _m);
 
-    PASerializable copy(final Mailbox m)
-            throws Exception;
+    PASerializable copy(final Mailbox m);
 
     Request<Boolean> isEqualReq(final PASerializable _jidA);
 }

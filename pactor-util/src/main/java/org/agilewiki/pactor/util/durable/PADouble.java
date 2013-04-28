@@ -12,5 +12,5 @@ public interface PADouble extends IncDes {
 
     Request<Void> setDoubleReq(final Double _v);
 
-    void setValue(final Double _v) throws Exception;
+    void setValue(final Double _v);
 }

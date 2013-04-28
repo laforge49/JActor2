@@ -14,8 +14,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
 
     public static void registerFactory(final FactoryLocator _factoryLocator,
                                        final String _subActorType,
-                                       final String... _actorTypes)
-            throws Exception {
+                                       final String... _actorTypes) {
         _factoryLocator.registerFactory(new FactoryImpl(_subActorType) {
 
             @Override
@@ -60,15 +59,13 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         throw new IllegalStateException("unionFactories is null");
     }
 
-    protected int getFactoryIndex(String actorType)
-            throws Exception {
+    protected int getFactoryIndex(String actorType) {
         FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
         Factory actorFactory = factoryLocator.getFactory(actorType);
         return getFactoryIndex(actorFactory);
     }
 
-    protected int getFactoryIndex(Factory actorFactory)
-            throws Exception {
+    protected int getFactoryIndex(Factory actorFactory) {
         String factoryKey = ((FactoryImpl) actorFactory).getFactoryKey();
         Factory[] uf = getUnionFactories();
         int i = 0;
@@ -111,17 +108,14 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
 
     /**
      * Clear the content.
-     *
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void clear() throws Exception {
+    public void clear() {
         setValue(-1);
     }
 
     @Override
-    public void setValue(final String actorType)
-            throws Exception {
+    public void setValue(final String actorType) {
         setValue(getFactoryIndex(actorType));
     }
 
@@ -136,13 +130,11 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         };
     }
 
-    public void setValue(final FactoryImpl factoryImpl)
-            throws Exception {
+    public void setValue(final FactoryImpl factoryImpl) {
         setValue(getFactoryIndex(factoryImpl));
     }
 
-    public void setValue(Integer ndx)
-            throws Exception {
+    public void setValue(Integer ndx) {
         int oldLength = getSerializedLength();
         if (value != null)
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
@@ -163,11 +155,9 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      *
      * @param jidType A jid type name.
      * @param bytes   The serialized data.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void setValue(final String jidType, final byte[] bytes)
-            throws Exception {
+    public void setValue(final String jidType, final byte[] bytes) {
         setUnionBytes(getFactoryIndex(jidType), bytes);
     }
 
@@ -187,10 +177,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      *
      * @param ndx   The factory index.
      * @param bytes The serialized data.
-     * @throws Exception Any uncaught exception raised.
      */
-    public void setUnionBytes(Integer ndx, byte[] bytes)
-            throws Exception {
+    public void setUnionBytes(Integer ndx, byte[] bytes) {
         int oldLength = getSerializedLength();
         if (value != null)
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
@@ -207,11 +195,9 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      *
      * @param jidType The MakeValue request.
      * @return True if a new value is created.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public Boolean makeValue(final String jidType)
-            throws Exception {
+    public Boolean makeValue(final String jidType) {
         return makeUnionValue(getFactoryIndex(jidType));
     }
 
@@ -230,10 +216,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      *
      * @param ndx The Make request.
      * @return True if a new value is created.
-     * @throws Exception Any uncaught exception raised.
      */
-    public Boolean makeUnionValue(Integer ndx)
-            throws Exception {
+    public Boolean makeUnionValue(Integer ndx) {
         if (factoryIndex > -1)
             return false;
         setValue(ndx);
@@ -246,11 +230,9 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @param jidType A jid type name.
      * @param bytes   The serialized data.
      * @return True if a new value is created.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public Boolean makeValue(final String jidType, final byte[] bytes)
-            throws Exception {
+    public Boolean makeValue(final String jidType, final byte[] bytes) {
         return makeUnionBytes(getFactoryIndex(jidType), bytes);
     }
 
@@ -264,8 +246,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         };
     }
 
-    public Boolean makeUnionBytes(Integer ndx, byte[] bytes)
-            throws Exception {
+    public Boolean makeUnionBytes(Integer ndx, byte[] bytes) {
         if (factoryIndex > -1)
             return false;
         setUnionBytes(ndx, bytes);
@@ -273,7 +254,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     }
 
     @Override
-    public PASerializable getValue() throws Exception {
+    public PASerializable getValue() {
         return value;
     }
 
@@ -283,8 +264,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
-            throws Exception {
+    protected void serialize(AppendableBytes appendableBytes) {
         appendableBytes.writeInt(factoryIndex);
         if (factoryIndex == -1)
             return;
@@ -296,11 +276,9 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      *
      * @param pathname A JID pathname.
      * @return A JID actor or null.
-     * @throws Exception Any uncaught exception which occurred while processing the request.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
-            throws Exception {
+    public PASerializable resolvePathname(String pathname) {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }

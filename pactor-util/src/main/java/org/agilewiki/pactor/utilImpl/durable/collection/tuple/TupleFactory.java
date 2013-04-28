@@ -13,7 +13,7 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class TupleFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator factoryLocator,
-                                       String subActorType, String... actorTypes) throws Exception {
+                                       String subActorType, String... actorTypes) {
         factoryLocator.registerFactory(new TupleFactory(subActorType, actorTypes));
     }
 

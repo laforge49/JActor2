@@ -12,5 +12,5 @@ public interface PAInteger extends IncDes {
 
     Request<Void> setIntegerReq(final Integer _v);
 
-    void setValue(final Integer _v) throws Exception;
+    void setValue(final Integer _v);
 }

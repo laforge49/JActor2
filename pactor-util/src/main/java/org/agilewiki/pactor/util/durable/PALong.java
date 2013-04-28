@@ -12,5 +12,5 @@ public interface PALong extends IncDes {
 
     Request<Void> setLongReq(final Long _v);
 
-    void setValue(final Long _v) throws Exception;
+    void setValue(final Long _v);
 }

@@ -24,21 +24,17 @@ public interface PAList<ENTRY_TYPE extends PASerializable> extends Collection<EN
 
     Request<Void> emptyReq();
 
-    void empty()
-            throws Exception;
+    void empty();
 
     Request<Void> iAddReq(final int _i);
 
-    void iAdd(final int _i)
-            throws Exception;
+    void iAdd(final int _i);
 
     Request<Void> iAddReq(final int _i, final byte[] _bytes);
 
-    void iAdd(final int _i, final byte[] _bytes)
-            throws Exception;
+    void iAdd(final int _i, final byte[] _bytes);
 
     Request<Void> iRemoveReq(final int _i);
 
-    void iRemove(final int _i)
-            throws Exception;
+    void iRemove(final int _i);
 }

@@ -12,7 +12,7 @@ public interface PAString extends IncDes {
 
     Request<Void> clearReq();
 
-    void clear() throws Exception;
+    void clear();
 
     Request<Void> setStringReq(final String _v);
 
@@ -20,5 +20,5 @@ public interface PAString extends IncDes {
 
     Request<Boolean> makeStringReq(final String _v);
 
-    Boolean makeValue(final String _v) throws Exception;
+    Boolean makeValue(final String _v);
 }

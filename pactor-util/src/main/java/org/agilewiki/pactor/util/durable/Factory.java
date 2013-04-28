@@ -5,8 +5,7 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.Named;
 
 public interface Factory extends Named {
-    PASerializable newSerializable(final Mailbox _mailbox)
-            throws Exception;
+    PASerializable newSerializable(final Mailbox _mailbox);
 
     PASerializable newSerializable(final Mailbox _mailbox, final Ancestor _parent);
 

@@ -40,10 +40,9 @@ abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
      * Assign a value.
      *
      * @param v The new value.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void setValue(final RESPONSE_TYPE v) throws Exception {
+    public void setValue(final RESPONSE_TYPE v) {
         if (v.equals(value))
             return;
         value = v;
@@ -59,7 +58,7 @@ abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
      * @return The result of a compareTo(o).
      */
     @Override
-    public int compareKeyTo(RESPONSE_TYPE o) throws Exception {
+    public int compareKeyTo(RESPONSE_TYPE o) {
         return getValue().compareTo(o);
     }
 }

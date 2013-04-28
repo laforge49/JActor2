@@ -22,8 +22,7 @@ import java.io.ObjectOutputStream;
 public class BytesImpl
         extends VLenScalar<byte[], byte[]> implements Bytes {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(Bytes.FACTORY_NAME) {
             @Override
             final protected BytesImpl instantiateActor() {
@@ -43,10 +42,9 @@ public class BytesImpl
      * Assign a value.
      *
      * @param v The new value.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void setValue(final byte[] v) throws Exception {
+    public void setValue(final byte[] v) {
         int c = v.length;
         if (len > -1)
             c -= len;
@@ -85,7 +83,7 @@ public class BytesImpl
      * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public Boolean makeValue(final byte[] v) throws Exception {
+    public Boolean makeValue(final byte[] v) {
         if (len > -1)
             return false;
         int c = v.length;
@@ -141,7 +139,7 @@ public class BytesImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) throws Exception {
+    protected void serialize(AppendableBytes appendableBytes) {
         saveLen(appendableBytes);
         if (len == -1)
             return;

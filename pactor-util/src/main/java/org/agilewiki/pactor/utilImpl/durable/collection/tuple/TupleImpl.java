@@ -23,7 +23,6 @@ public class TupleImpl
     /**
      * Perform lazy initialization.
      *
-     * @throws Exception Any exceptions thrown during initialization.
      */
     private void initializeTuple() {
         if (tuple != null)
@@ -61,11 +60,9 @@ public class TupleImpl
      *
      * @param i     The index of the desired element.
      * @param bytes Holds the serialized data.
-     * @throws Exception Any exceptions thrown while processing the request.
      */
     @Override
-    public void iSet(int i, byte[] bytes)
-            throws Exception {
+    public void iSet(int i, byte[] bytes) {
         initializeTuple();
         PASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
         PASerializable oldElementJid = iGet(i);
@@ -103,7 +100,7 @@ public class TupleImpl
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public PASerializable iGet(int i) throws Exception {
+    public PASerializable iGet(int i) {
         initializeTuple();
         if (i < 0)
             i += size();
@@ -118,8 +115,7 @@ public class TupleImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
-            throws Exception {
+    protected void serialize(AppendableBytes appendableBytes) {
         saveLen(appendableBytes);
         int i = 0;
         while (i < size()) {
@@ -148,8 +144,7 @@ public class TupleImpl
      * @return The result of a compareTo(o) using element 0.
      */
     @Override
-    public int compareKeyTo(Object o)
-            throws Exception {
+    public int compareKeyTo(Object o) {
         ComparableKey<Object> e0 = (ComparableKey<Object>) iGet(0);
         return e0.compareKeyTo(o);
     }

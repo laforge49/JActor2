@@ -38,17 +38,13 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      *
      * @param v The value.
      * @return True if a new value is created.
-     * @throws Exception Any uncaught exception raised.
      */
-    abstract public Boolean makeValue(SET_TYPE v)
-            throws Exception;
+    abstract public Boolean makeValue(SET_TYPE v);
 
     /**
      * Clear the content.
-     *
-     * @throws Exception Any uncaught exception raised.
      */
-    public void clear() throws Exception {
+    public void clear() {
         if (len == -1)
             return;
         int l = len;
@@ -87,7 +83,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      *
      * @param appendableBytes The object written to.
      */
-    protected void saveLen(AppendableBytes appendableBytes) throws Exception {
+    protected void saveLen(AppendableBytes appendableBytes) {
         appendableBytes.writeInt(len);
     }
 
@@ -104,7 +100,6 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * Process a change in the persistent data.
      *
      * @param lengthChange The change in the size of the serialized data.
-     * @throws Exception Any uncaught exception which occurred while processing the change.
      */
     @Override
     public void change(int lengthChange) {

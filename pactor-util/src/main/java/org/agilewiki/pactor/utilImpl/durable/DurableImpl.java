@@ -33,8 +33,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public void _iSetBytes(int i, byte[] bytes)
-            throws Exception {
+    public void _iSetBytes(int i, byte[] bytes) {
         _initialize();
         PASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
         PASerializable oldElementJid = _iGet(i);
@@ -50,7 +49,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public PASerializable _iGet(int i) throws Exception {
+    public PASerializable _iGet(int i) {
         _initialize();
         if (i < 0)
             i += _size();
@@ -60,8 +59,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public PASerializable _resolvePathname(String pathname)
-            throws Exception {
+    public PASerializable _resolvePathname(String pathname) {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
@@ -87,8 +85,6 @@ public class DurableImpl extends IncDesImpl implements Durable {
 
     /**
      * Perform lazy initialization.
-     *
-     * @throws Exception Any exceptions thrown during initialization.
      */
     private void _initialize() {
         if (tuple != null)
@@ -155,8 +151,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
-            throws Exception {
+    protected void serialize(AppendableBytes appendableBytes) {
         _saveLen(appendableBytes);
         int i = 0;
         while (i < _size()) {
@@ -182,7 +177,6 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * Process a change in the persistent data.
      *
      * @param lengthChange The change in the size of the serialized data.
-     * @throws Exception Any uncaught exception which occurred while processing the change.
      */
     @Override
     public void change(int lengthChange) {

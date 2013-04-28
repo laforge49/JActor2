@@ -8,11 +8,9 @@ public class ListTest extends TestCase {
         t(PAList.PASTRING_LIST, 8, 12, 20, 24, 16);
     }
 
-    /*
     public void test2() throws Exception {
-        t(IncDesFactories.PASTRING_BLIST, 20, 24, 32, 36, 28);
+        t(PAList.PASTRING_BLIST, 20, 24, 32, 36, 28);
     }
-    */
 
     void t(String lt, int elsl, int nslsl, int sls, int l2sl2, int l2sl3) throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();

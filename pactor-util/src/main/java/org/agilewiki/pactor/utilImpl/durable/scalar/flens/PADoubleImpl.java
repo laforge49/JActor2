@@ -14,8 +14,7 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PADoubleImpl
         extends FLenScalar<Double> implements PADouble {
 
-    public static void registerFactory(FactoryLocator factoryLocator)
-            throws Exception {
+    public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PADouble.FACTORY_NAME) {
             @Override
             final protected PADoubleImpl instantiateActor() {

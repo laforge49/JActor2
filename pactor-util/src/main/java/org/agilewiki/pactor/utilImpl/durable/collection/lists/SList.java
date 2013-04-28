@@ -43,8 +43,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @return The size of the collection.
      */
     @Override
-    public int size()
-            throws Exception {
+    public int size() {
         initializeList();
         return list.size();
     }
@@ -58,8 +57,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public ENTRY_TYPE iGet(int i)
-            throws Exception {
+    public ENTRY_TYPE iGet(int i) {
         initializeList();
         if (i < 0)
             i += list.size();
@@ -96,8 +94,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
      *
      * @return The IncDesFactory for of all the elements in the list.
      */
-    protected Factory getEntryFactory()
-            throws Exception {
+    protected Factory getEntryFactory() {
         if (entryFactory == null)
             throw new IllegalStateException("entryFactory uninitialized");
         return entryFactory;
@@ -105,11 +102,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
 
     /**
      * Perform lazy initialization.
-     *
-     * @throws Exception Any exceptions thrown during initialization.
      */
-    protected void initializeList()
-            throws Exception {
+    protected void initializeList() {
         if (list != null)
             return;
         entryFactory = getEntryFactory();
@@ -135,8 +129,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
-            throws Exception {
+    protected void serialize(AppendableBytes appendableBytes) {
         saveLen(appendableBytes);
         appendableBytes.writeInt(size());
         int i = 0;
@@ -151,11 +144,9 @@ public class SList<ENTRY_TYPE extends PASerializable>
      *
      * @param pathname A JID pathname.
      * @return A JID actor or null.
-     * @throws Exception Any uncaught exception which occurred while processing the request.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
-            throws Exception {
+    public PASerializable resolvePathname(String pathname) {
         initializeList();
         return super.resolvePathname(pathname);
     }
@@ -165,11 +156,9 @@ public class SList<ENTRY_TYPE extends PASerializable>
      *
      * @param i     The index of the desired element.
      * @param bytes Holds the serialized data.
-     * @throws Exception Any exceptions thrown while processing the request.
      */
     @Override
-    public void iSet(int i, byte[] bytes)
-            throws Exception {
+    public void iSet(int i, byte[] bytes) {
         initializeList();
         if (i < 0)
             i += list.size();
@@ -195,8 +184,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iAdd(int i, byte[] bytes)
-            throws Exception {
+    public void iAdd(int i, byte[] bytes) {
         initializeList();
         if (i < 0)
             i = size() + 1 + i;
@@ -218,8 +206,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iAdd(int i)
-            throws Exception {
+    public void iAdd(int i) {
         initializeList();
         if (i < 0)
             i = size() + 1 + i;
@@ -230,8 +217,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void empty()
-            throws Exception {
+    public void empty() {
         int c = 0;
         int i = 0;
         int s = size();
@@ -257,8 +243,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iRemove(int i)
-            throws Exception {
+    public void iRemove(int i) {
         int s = size();
         if (i < 0)
             i += s;
