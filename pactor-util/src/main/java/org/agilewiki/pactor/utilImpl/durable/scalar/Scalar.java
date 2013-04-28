@@ -1,6 +1,6 @@
-package org.agilewiki.pactor.util.durable.impl.scalar;
+package org.agilewiki.pactor.utilImpl.durable.scalar;
 
-import org.agilewiki.pactor.util.durable.impl.IncDesImpl;
+import org.agilewiki.pactor.utilImpl.durable.IncDesImpl;
 
 /**
  * A IncDesImpl actor that hold a single value.

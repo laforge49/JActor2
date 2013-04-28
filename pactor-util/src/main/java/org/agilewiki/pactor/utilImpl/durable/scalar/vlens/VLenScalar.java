@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.vlens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.vlens;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
@@ -8,8 +8,8 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
-import org.agilewiki.pactor.util.durable.impl.FactoryImpl;
-import org.agilewiki.pactor.util.durable.impl.scalar.Scalar;
+import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.scalar.Scalar;
 
 /**
  * A JID component that holds a variable-length value, or null.

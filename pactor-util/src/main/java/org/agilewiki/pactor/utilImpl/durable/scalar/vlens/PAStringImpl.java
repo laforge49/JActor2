@@ -1,42 +1,34 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.vlens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.vlens;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
 import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
-import org.agilewiki.pactor.util.durable.AppendableBytes;
-import org.agilewiki.pactor.util.durable.Bytes;
-import org.agilewiki.pactor.util.durable.FactoryLocator;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
-import org.agilewiki.pactor.util.durable.impl.FactoryImpl;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import org.agilewiki.pactor.util.durable.*;
+import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 /**
- * A JID component that holds a byte array.
+ * A JID actor that holds a String.
  */
-public class BytesImpl
-        extends VLenScalar<byte[], byte[]> implements Bytes {
+public class PAStringImpl
+        extends VLenScalar<String, String>
+        implements ComparableKey<String>, PAString {
 
     public static void registerFactory(FactoryLocator factoryLocator)
             throws Exception {
-        factoryLocator.registerFactory(new FactoryImpl(Bytes.FACTORY_NAME) {
+        factoryLocator.registerFactory(new FactoryImpl(PAString.FACTORY_NAME) {
             @Override
-            final protected BytesImpl instantiateActor() {
-                return new BytesImpl();
+            final protected PAStringImpl instantiateActor() {
+                return new PAStringImpl();
             }
         });
     }
 
-    private Request<byte[]> getBytesReq;
+    private Request<String> getStringReq;
 
-    @Override
-    public Request<byte[]> getBytesReq() {
-        return getBytesReq;
+    public Request<String> getStringReq() {
+        return getStringReq;
     }
 
     /**
@@ -46,8 +38,8 @@ public class BytesImpl
      * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public void setValue(final byte[] v) throws Exception {
-        int c = v.length;
+    public void setValue(final String v) {
+        int c = v.length() * 2;
         if (len > -1)
             c -= len;
         value = v;
@@ -56,8 +48,9 @@ public class BytesImpl
         change(c);
     }
 
-    @Override
-    public Request<Void> setBytesReq(final byte[] v) {
+    public Request<Void> setStringReq(final String v) {
+        if (v == null)
+            throw new IllegalArgumentException("value may not be null");
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
@@ -65,16 +58,6 @@ public class BytesImpl
                 rp.processResponse(null);
             }
         };
-    }
-
-    @Override
-    public void setObject(Object v) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(v);
-        oos.close();
-        byte[] bytes = baos.toByteArray();
-        setValue(bytes);
     }
 
     /**
@@ -85,10 +68,10 @@ public class BytesImpl
      * @throws Exception Any uncaught exception raised.
      */
     @Override
-    public Boolean makeValue(final byte[] v) throws Exception {
+    public Boolean makeValue(String v) throws Exception {
         if (len > -1)
             return false;
-        int c = v.length;
+        int c = v.length() * 2;
         if (len > -1)
             c -= len;
         value = v;
@@ -98,8 +81,9 @@ public class BytesImpl
         return true;
     }
 
-    @Override
-    public Request<Boolean> makeBytesReq(final byte[] v) {
+    public Request<Boolean> makeStringReq(final String v) {
+        if (v == null)
+            throw new IllegalArgumentException("value may not be null");
         return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
@@ -114,25 +98,15 @@ public class BytesImpl
      * @return The value held by this component, or null.
      */
     @Override
-    public byte[] getValue() {
+    public String getValue() {
         if (len == -1)
             return null;
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
         skipLen(readableBytes);
-        value = readableBytes.readBytes(len);
+        value = readableBytes.readString(len);
         return value;
-    }
-
-    @Override
-    public Object getObject() throws Exception {
-        byte[] bytes = getValue();
-        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        Object o = ois.readObject();
-        ois.close();
-        return o;
     }
 
     /**
@@ -142,16 +116,26 @@ public class BytesImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) throws Exception {
-        saveLen(appendableBytes);
         if (len == -1)
-            return;
-        appendableBytes.writeBytes(value);
+            saveLen(appendableBytes);
+        else
+            appendableBytes.writeString(value);
     }
 
+    /**
+     * Compares the key or value;
+     *
+     * @param o The comparison value.
+     * @return The result of a compareTo(o).
+     */
     @Override
+    public int compareKeyTo(String o) {
+        return getValue().compareTo(o);
+    }
+
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
-        getBytesReq = new RequestBase<byte[]>(getMailbox()) {
+        getStringReq = new RequestBase<String>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

@@ -1,8 +1,8 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.flens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.flens;
 
 import org.agilewiki.pactor.util.durable.ComparableKey;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
-import org.agilewiki.pactor.util.durable.impl.scalar.Scalar;
+import org.agilewiki.pactor.utilImpl.durable.scalar.Scalar;
 
 /**
  * A JID actor that holds a fixed-length value.

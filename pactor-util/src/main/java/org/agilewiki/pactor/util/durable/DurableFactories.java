@@ -1,9 +1,9 @@
 package org.agilewiki.pactor.util.durable;
 
 import org.agilewiki.pactor.api.MailboxFactory;
-import org.agilewiki.pactor.util.durable.impl.IncDesFactory;
-import org.agilewiki.pactor.util.durable.impl.scalar.flens.*;
-import org.agilewiki.pactor.util.durable.impl.scalar.vlens.*;
+import org.agilewiki.pactor.utilImpl.durable.IncDesFactory;
+import org.agilewiki.pactor.utilImpl.durable.scalar.flens.*;
+import org.agilewiki.pactor.utilImpl.durable.scalar.vlens.*;
 
 public class DurableFactories {
     public static MailboxFactory createMailboxFactory() throws Exception {

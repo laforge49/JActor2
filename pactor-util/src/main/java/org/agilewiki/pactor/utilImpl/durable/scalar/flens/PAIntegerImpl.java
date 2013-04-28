@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.flens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.flens;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
@@ -6,29 +6,29 @@ import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
-import org.agilewiki.pactor.util.durable.impl.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 /**
- * A JID actor that holds a double.
+ * A JID actor that holds an integer.
  */
-public class PADoubleImpl
-        extends FLenScalar<Double> implements PADouble {
+public class PAIntegerImpl
+        extends FLenScalar<Integer> implements PAInteger {
 
     public static void registerFactory(FactoryLocator factoryLocator)
             throws Exception {
-        factoryLocator.registerFactory(new FactoryImpl(PADouble.FACTORY_NAME) {
+        factoryLocator.registerFactory(new FactoryImpl(PAInteger.FACTORY_NAME) {
             @Override
-            final protected PADoubleImpl instantiateActor() {
-                return new PADoubleImpl();
+            final protected PAIntegerImpl instantiateActor() {
+                return new PAIntegerImpl();
             }
         });
     }
 
-    private Request<Double> getDoubleReq;
+    private Request<Integer> getIntegerReq;
 
     @Override
-    public Request<Double> getDoubleReq() {
-        return getDoubleReq;
+    public Request<Integer> getIntegerReq() {
+        return getIntegerReq;
     }
 
     /**
@@ -37,8 +37,8 @@ public class PADoubleImpl
      * @return The default value
      */
     @Override
-    protected Double newValue() {
-        return new Double(0.D);
+    protected Integer newValue() {
+        return new Integer(0);
     }
 
     /**
@@ -47,23 +47,12 @@ public class PADoubleImpl
      * @return The value held by this component.
      */
     @Override
-    public Double getValue() {
+    public Integer getValue() {
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
-        value = readableBytes.readDouble();
+        value = readableBytes.readInt();
         return value;
-    }
-
-    @Override
-    public Request<Void> setDoubleReq(final Double v) {
-        return new RequestBase<Void>(getMailbox()) {
-            @Override
-            public void processRequest(Transport rp) throws Exception {
-                setValue(v);
-                rp.processResponse(null);
-            }
-        };
     }
 
     /**
@@ -73,7 +62,7 @@ public class PADoubleImpl
      */
     @Override
     public int getSerializedLength() {
-        return Durables.DOUBLE_LENGTH;
+        return Durables.INT_LENGTH;
     }
 
     /**
@@ -83,13 +72,24 @@ public class PADoubleImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeDouble(value);
+        appendableBytes.writeInt(value);
+    }
+
+    @Override
+    public Request<Void> setIntegerReq(final Integer v) {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(Transport<Void> rp) throws Exception {
+                setValue(v);
+                rp.processResponse(null);
+            }
+        };
     }
 
     @Override
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
-        getDoubleReq = new RequestBase<Double>(getMailbox()) {
+        getIntegerReq = new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl;
+package org.agilewiki.pactor.utilImpl.durable;
 
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.IncDes;

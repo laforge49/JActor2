@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.flens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.flens;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
@@ -6,29 +6,29 @@ import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
-import org.agilewiki.pactor.util.durable.impl.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 /**
- * A JID actor that holds a float.
+ * A JID actor that holds a long.
  */
-public class PAFloatImpl
-        extends FLenScalar<Float> implements PAFloat {
+public class PALongImpl
+        extends FLenScalar<Long> implements PALong {
 
     public static void registerFactory(FactoryLocator factoryLocator)
             throws Exception {
-        factoryLocator.registerFactory(new FactoryImpl(PAFloat.FACTORY_NAME) {
+        factoryLocator.registerFactory(new FactoryImpl(PALong.FACTORY_NAME) {
             @Override
-            final protected PAFloatImpl instantiateActor() {
-                return new PAFloatImpl();
+            final protected PALongImpl instantiateActor() {
+                return new PALongImpl();
             }
         });
     }
 
-    private Request<Float> getFloatReq;
+    private Request<Long> getLongReq;
 
     @Override
-    public Request<Float> getFloatReq() {
-        return getFloatReq;
+    public Request<Long> getLongReq() {
+        return getLongReq;
     }
 
     /**
@@ -37,8 +37,8 @@ public class PAFloatImpl
      * @return The default value
      */
     @Override
-    protected Float newValue() {
-        return new Float(0.F);
+    protected Long newValue() {
+        return new Long(0L);
     }
 
     /**
@@ -47,20 +47,20 @@ public class PAFloatImpl
      * @return The value held by this component.
      */
     @Override
-    public Float getValue() {
+    public Long getValue() {
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
-        value = readableBytes.readFloat();
+        value = readableBytes.readLong();
         return value;
     }
 
     @Override
-    public Request<Void> setFloatReq(final Float v) {
+    public Request<Void> setLongReq(final Long _v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
-                setValue(v);
+                setValue(_v);
                 rp.processResponse(null);
             }
         };
@@ -73,7 +73,7 @@ public class PAFloatImpl
      */
     @Override
     public int getSerializedLength() {
-        return Durables.FLOAT_LENGTH;
+        return Durables.LONG_LENGTH;
     }
 
     /**
@@ -83,13 +83,13 @@ public class PAFloatImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeFloat(value);
+        appendableBytes.writeLong(value);
     }
 
     @Override
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
-        getFloatReq = new RequestBase<Float>(getMailbox()) {
+        getLongReq = new RequestBase<Long>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

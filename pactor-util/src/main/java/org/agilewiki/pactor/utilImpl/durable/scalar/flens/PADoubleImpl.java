@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.flens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.flens;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
@@ -6,29 +6,29 @@ import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
-import org.agilewiki.pactor.util.durable.impl.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 /**
- * A JID actor that holds a long.
+ * A JID actor that holds a double.
  */
-public class PALongImpl
-        extends FLenScalar<Long> implements PALong {
+public class PADoubleImpl
+        extends FLenScalar<Double> implements PADouble {
 
     public static void registerFactory(FactoryLocator factoryLocator)
             throws Exception {
-        factoryLocator.registerFactory(new FactoryImpl(PALong.FACTORY_NAME) {
+        factoryLocator.registerFactory(new FactoryImpl(PADouble.FACTORY_NAME) {
             @Override
-            final protected PALongImpl instantiateActor() {
-                return new PALongImpl();
+            final protected PADoubleImpl instantiateActor() {
+                return new PADoubleImpl();
             }
         });
     }
 
-    private Request<Long> getLongReq;
+    private Request<Double> getDoubleReq;
 
     @Override
-    public Request<Long> getLongReq() {
-        return getLongReq;
+    public Request<Double> getDoubleReq() {
+        return getDoubleReq;
     }
 
     /**
@@ -37,8 +37,8 @@ public class PALongImpl
      * @return The default value
      */
     @Override
-    protected Long newValue() {
-        return new Long(0L);
+    protected Double newValue() {
+        return new Double(0.D);
     }
 
     /**
@@ -47,20 +47,20 @@ public class PALongImpl
      * @return The value held by this component.
      */
     @Override
-    public Long getValue() {
+    public Double getValue() {
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
-        value = readableBytes.readLong();
+        value = readableBytes.readDouble();
         return value;
     }
 
     @Override
-    public Request<Void> setLongReq(final Long _v) {
+    public Request<Void> setDoubleReq(final Double v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
-                setValue(_v);
+                setValue(v);
                 rp.processResponse(null);
             }
         };
@@ -73,7 +73,7 @@ public class PALongImpl
      */
     @Override
     public int getSerializedLength() {
-        return Durables.LONG_LENGTH;
+        return Durables.DOUBLE_LENGTH;
     }
 
     /**
@@ -83,13 +83,13 @@ public class PALongImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeLong(value);
+        appendableBytes.writeDouble(value);
     }
 
     @Override
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
-        getLongReq = new RequestBase<Long>(getMailbox()) {
+        getDoubleReq = new RequestBase<Double>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

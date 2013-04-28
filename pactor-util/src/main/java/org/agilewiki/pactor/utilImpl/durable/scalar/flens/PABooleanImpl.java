@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.flens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.flens;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
@@ -6,29 +6,29 @@ import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
-import org.agilewiki.pactor.util.durable.impl.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 /**
- * A JID actor that holds an integer.
+ * A JID actor that holds a boolean.
  */
-public class PAIntegerImpl
-        extends FLenScalar<Integer> implements PAInteger {
+public class PABooleanImpl
+        extends FLenScalar<Boolean> implements PABoolean {
 
     public static void registerFactory(FactoryLocator factoryLocator)
             throws Exception {
-        factoryLocator.registerFactory(new FactoryImpl(PAInteger.FACTORY_NAME) {
+        factoryLocator.registerFactory(new FactoryImpl(PABoolean.FACTORY_NAME) {
             @Override
-            final protected PAIntegerImpl instantiateActor() {
-                return new PAIntegerImpl();
+            final protected PABooleanImpl instantiateActor() {
+                return new PABooleanImpl();
             }
         });
     }
 
-    private Request<Integer> getIntegerReq;
+    private Request<Boolean> getBooleanReq;
 
     @Override
-    public Request<Integer> getIntegerReq() {
-        return getIntegerReq;
+    public Request<Boolean> getBooleanReq() {
+        return getBooleanReq;
     }
 
     /**
@@ -37,8 +37,8 @@ public class PAIntegerImpl
      * @return The default value
      */
     @Override
-    protected Integer newValue() {
-        return new Integer(0);
+    protected Boolean newValue() {
+        return new Boolean(false);
     }
 
     /**
@@ -47,12 +47,23 @@ public class PAIntegerImpl
      * @return The value held by this component.
      */
     @Override
-    public Integer getValue() {
+    public Boolean getValue() {
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
-        value = readableBytes.readInt();
+        value = readableBytes.readBoolean();
         return value;
+    }
+
+    @Override
+    public Request<Void> setBooleanReq(final Boolean v) {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                setValue(v);
+                rp.processResponse(null);
+            }
+        };
     }
 
     /**
@@ -62,7 +73,7 @@ public class PAIntegerImpl
      */
     @Override
     public int getSerializedLength() {
-        return Durables.INT_LENGTH;
+        return Durables.BOOLEAN_LENGTH;
     }
 
     /**
@@ -72,24 +83,13 @@ public class PAIntegerImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeInt(value);
-    }
-
-    @Override
-    public Request<Void> setIntegerReq(final Integer v) {
-        return new RequestBase<Void>(getMailbox()) {
-            @Override
-            public void processRequest(Transport<Void> rp) throws Exception {
-                setValue(v);
-                rp.processResponse(null);
-            }
-        };
+        appendableBytes.writeBoolean(((Boolean) value).booleanValue());
     }
 
     @Override
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
-        getIntegerReq = new RequestBase<Integer>(getMailbox()) {
+        getBooleanReq = new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

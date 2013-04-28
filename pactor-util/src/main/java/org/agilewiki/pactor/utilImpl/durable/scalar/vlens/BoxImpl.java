@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.vlens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.vlens;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
@@ -6,8 +6,8 @@ import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
-import org.agilewiki.pactor.util.durable.impl.FactoryImpl;
-import org.agilewiki.pactor.util.durable.impl.IncDesImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.IncDesImpl;
 
 /**
  * A JID actor that holds a JID actor.

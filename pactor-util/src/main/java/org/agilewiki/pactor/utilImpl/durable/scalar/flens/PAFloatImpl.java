@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl.scalar.flens;
+package org.agilewiki.pactor.utilImpl.durable.scalar.flens;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
@@ -6,29 +6,29 @@ import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
-import org.agilewiki.pactor.util.durable.impl.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 /**
- * A JID actor that holds a boolean.
+ * A JID actor that holds a float.
  */
-public class PABooleanImpl
-        extends FLenScalar<Boolean> implements PABoolean {
+public class PAFloatImpl
+        extends FLenScalar<Float> implements PAFloat {
 
     public static void registerFactory(FactoryLocator factoryLocator)
             throws Exception {
-        factoryLocator.registerFactory(new FactoryImpl(PABoolean.FACTORY_NAME) {
+        factoryLocator.registerFactory(new FactoryImpl(PAFloat.FACTORY_NAME) {
             @Override
-            final protected PABooleanImpl instantiateActor() {
-                return new PABooleanImpl();
+            final protected PAFloatImpl instantiateActor() {
+                return new PAFloatImpl();
             }
         });
     }
 
-    private Request<Boolean> getBooleanReq;
+    private Request<Float> getFloatReq;
 
     @Override
-    public Request<Boolean> getBooleanReq() {
-        return getBooleanReq;
+    public Request<Float> getFloatReq() {
+        return getFloatReq;
     }
 
     /**
@@ -37,8 +37,8 @@ public class PABooleanImpl
      * @return The default value
      */
     @Override
-    protected Boolean newValue() {
-        return new Boolean(false);
+    protected Float newValue() {
+        return new Float(0.F);
     }
 
     /**
@@ -47,16 +47,16 @@ public class PABooleanImpl
      * @return The value held by this component.
      */
     @Override
-    public Boolean getValue() {
+    public Float getValue() {
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
-        value = readableBytes.readBoolean();
+        value = readableBytes.readFloat();
         return value;
     }
 
     @Override
-    public Request<Void> setBooleanReq(final Boolean v) {
+    public Request<Void> setFloatReq(final Float v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
@@ -73,7 +73,7 @@ public class PABooleanImpl
      */
     @Override
     public int getSerializedLength() {
-        return Durables.BOOLEAN_LENGTH;
+        return Durables.FLOAT_LENGTH;
     }
 
     /**
@@ -83,13 +83,13 @@ public class PABooleanImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeBoolean(((Boolean) value).booleanValue());
+        appendableBytes.writeFloat(value);
     }
 
     @Override
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
         super.initialize(mailbox, parent, factory);
-        getBooleanReq = new RequestBase<Boolean>(getMailbox()) {
+        getFloatReq = new RequestBase<Float>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

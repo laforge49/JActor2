@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.impl;
+package org.agilewiki.pactor.utilImpl.durable;
 
 import org.agilewiki.pactor.api.*;
 import org.agilewiki.pactor.util.Ancestor;
