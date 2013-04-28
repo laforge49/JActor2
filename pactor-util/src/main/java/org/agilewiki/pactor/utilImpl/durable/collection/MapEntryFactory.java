@@ -28,7 +28,7 @@ public class MapEntryFactory extends FactoryImpl {
      *
      * @param jidType The jid type.
      */
-    protected MapEntryFactory(String jidType, String keyType, String valueType) {
+    public MapEntryFactory(String jidType, String keyType, String valueType) {
         super(jidType);
         this.keyType = keyType;
         this.valueType = valueType;

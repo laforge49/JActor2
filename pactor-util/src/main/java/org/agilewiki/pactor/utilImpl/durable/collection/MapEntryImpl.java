@@ -29,7 +29,7 @@ public class MapEntryImpl<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE>
         return (KEY_TYPE) ((Scalar) _iGet(TUPLE_KEY).getDurable()).getValue();
     }
 
-    protected void setKey(KEY_TYPE key) {
+    public void setKey(KEY_TYPE key) {
         ((Scalar) _iGet(TUPLE_KEY).getDurable()).setValue(key);
     }
 
