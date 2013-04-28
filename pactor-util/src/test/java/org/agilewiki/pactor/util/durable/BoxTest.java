@@ -6,7 +6,7 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class BoxTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             Factory boxAFactory = factoryLocator.getFactory(Box.FACTORY_NAME);

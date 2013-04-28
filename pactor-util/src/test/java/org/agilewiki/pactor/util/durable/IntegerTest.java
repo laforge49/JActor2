@@ -5,7 +5,7 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class IntegerTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAInteger int1 = (PAInteger) Durables.newSerializable(mailboxFactory, PAInteger.FACTORY_NAME);
             PAInteger int2 = (PAInteger) int1.copyReq(null).call();

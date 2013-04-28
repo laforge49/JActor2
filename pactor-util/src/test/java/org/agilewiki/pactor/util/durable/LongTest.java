@@ -5,7 +5,7 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class LongTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PALong long1 = (PALong) Durables.newSerializable(mailboxFactory, PALong.FACTORY_NAME);
             PALong long2 = (PALong) long1.copyReq(null).call();

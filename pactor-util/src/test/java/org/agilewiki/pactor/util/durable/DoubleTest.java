@@ -5,7 +5,7 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class DoubleTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PADouble double1 = (PADouble) Durables.newSerializable(mailboxFactory, PADouble.FACTORY_NAME);
             PADouble double2 = (PADouble) double1.copy(null);

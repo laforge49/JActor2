@@ -15,7 +15,7 @@ public class ListTest extends TestCase {
     */
 
     void t(String lt, int elsl, int nslsl, int sls, int l2sl2, int l2sl3) throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAList<PAString> l0 = (PAList) Durables.newSerializable(mailboxFactory, lt);
             int l0sl = l0.getSerializedLength();

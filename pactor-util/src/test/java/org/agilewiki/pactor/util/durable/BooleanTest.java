@@ -5,7 +5,7 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class BooleanTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PABoolean boolean1 = (PABoolean) Durables.newSerializable(mailboxFactory, PABoolean.FACTORY_NAME);
             PABoolean boolean2 = (PABoolean) boolean1.copyReq(null).call();

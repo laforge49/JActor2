@@ -5,7 +5,7 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class FloatTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAFloat float1 = (PAFloat) Durables.newSerializable(mailboxFactory, PAFloat.FACTORY_NAME);
             PAFloat float2 = (PAFloat) float1.copyReq(null).call();

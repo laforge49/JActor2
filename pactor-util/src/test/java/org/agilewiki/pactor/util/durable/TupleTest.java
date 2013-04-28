@@ -6,10 +6,10 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class TupleTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
-            DurableFactories.registerTupleFactory(factoryLocator,
+            Durables.registerTupleFactory(factoryLocator,
                     "sst", PAString.FACTORY_NAME, PAString.FACTORY_NAME);
             Factory tjf = factoryLocator.getFactory("sst");
             Mailbox mailbox = mailboxFactory.createMailbox();

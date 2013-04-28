@@ -5,7 +5,7 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class BytesTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             Bytes bytes1 = (Bytes) Durables.newSerializable(mailboxFactory, Bytes.FACTORY_NAME);
             Bytes bytes2 = (Bytes) bytes1.copyReq(null).call();

@@ -6,6 +6,11 @@ import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.PAProperties;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
+import org.agilewiki.pactor.utilImpl.durable.IncDesFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.lists.SListFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.tuple.TupleFactory;
+import org.agilewiki.pactor.utilImpl.durable.scalar.flens.*;
+import org.agilewiki.pactor.utilImpl.durable.scalar.vlens.*;
 
 public class Durables {
 
@@ -34,6 +39,17 @@ public class Durables {
      */
     public final static int DOUBLE_LENGTH = 8;
 
+    public static MailboxFactory createMailboxFactory() throws Exception {
+        MailboxFactory mailboxFactory = createMailboxFactory("org.agilewiki.pactor.util.durable");
+        registerFactories(mailboxFactory);
+        return mailboxFactory;
+    }
+
+    public static void registerFactories(final MailboxFactory _mailboxFactory) throws Exception {
+        FactoryLocator factoryLocator = getFactoryLocator(_mailboxFactory);
+        registerFactories(factoryLocator);
+    }
+
     public static MailboxFactory createMailboxFactory(final String _bundleName) throws Exception {
         return createMailboxFactory(_bundleName, "", "");
     }
@@ -48,6 +64,37 @@ public class Durables {
         factoryLocator.configure(_bundleName, _version, _location);
         properties.putProperty("factoryLocator", factoryLocator);
         return mailboxFactory;
+    }
+
+    public static void registerFactories(final FactoryLocator _factoryLocator) throws Exception {
+        IncDesFactory.registerFactory(_factoryLocator);
+
+        PABooleanImpl.registerFactory(_factoryLocator);
+        PAIntegerImpl.registerFactory(_factoryLocator);
+        PALongImpl.registerFactory(_factoryLocator);
+        PAFloatImpl.registerFactory(_factoryLocator);
+        PADoubleImpl.registerFactory(_factoryLocator);
+
+        BoxImpl.registerFactory(_factoryLocator);
+        RootImpl.registerFactory(_factoryLocator);
+        PAStringImpl.registerFactory(_factoryLocator);
+        BytesImpl.registerFactory(_factoryLocator);
+
+        SListFactory.registerFactories(_factoryLocator);
+    }
+
+    public static void registerUnionFactory(final FactoryLocator _factoryLocator,
+                                            final String _subActorType,
+                                            final String... _actorTypes)
+            throws Exception {
+        UnionImpl.registerFactory(_factoryLocator, _subActorType, _actorTypes);
+    }
+
+    public static void registerTupleFactory(final FactoryLocator _factoryLocator,
+                                            final String _subActorType,
+                                            final String... _actorTypes)
+            throws Exception {
+        TupleFactory.registerFactory(_factoryLocator, _subActorType, _actorTypes);
     }
 
     public static FactoryLocator getFactoryLocator(final Mailbox _mailbox) {

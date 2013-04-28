@@ -6,10 +6,10 @@ import org.agilewiki.pactor.api.MailboxFactory;
 
 public class UnionTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = DurableFactories.createMailboxFactory();
+        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
-            DurableFactories.registerUnionFactory(factoryLocator, "siUnion", PAString.FACTORY_NAME, "siUnion");
+            Durables.registerUnionFactory(factoryLocator, "siUnion", PAString.FACTORY_NAME, "siUnion");
             Union siu1 = (Union) Durables.newSerializable(mailboxFactory, "siUnion");
             assertNull(siu1.getValue());
             Mailbox mailbox = mailboxFactory.createMailbox();
