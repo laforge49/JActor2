@@ -325,8 +325,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return (MapEntryImpl<KEY_TYPE, VALUE_TYPE>) iGet(-1);
     }
 
-    public KEY_TYPE getLastKey()
-            throws Exception {
+    public KEY_TYPE getLastKey() {
         return getLast().getKey();
     }
 
