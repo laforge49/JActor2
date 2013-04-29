@@ -1,7 +1,8 @@
-package org.agilewiki.pactor.util.durable;
+package org.agilewiki.pactor.util.durable.app;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
+import org.agilewiki.pactor.util.durable.Durable;
 
 public class AppBase implements App {
     private Durable durable;

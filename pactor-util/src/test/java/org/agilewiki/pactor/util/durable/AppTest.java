@@ -2,6 +2,9 @@ package org.agilewiki.pactor.util.durable;
 
 import junit.framework.TestCase;
 import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.pactor.util.durable.app.App;
+import org.agilewiki.pactor.util.durable.app.AppBase;
+import org.agilewiki.pactor.util.durable.app.AppFactory;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {
