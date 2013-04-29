@@ -8,6 +8,9 @@ import org.agilewiki.pactor.util.PAProperties;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.pactor.utilImpl.durable.IncDesFactory;
 import org.agilewiki.pactor.utilImpl.durable.collection.blist.BListFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.bmap.IntegerBMapFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.bmap.LongBMapFactory;
+import org.agilewiki.pactor.utilImpl.durable.collection.bmap.StringBMapFactory;
 import org.agilewiki.pactor.utilImpl.durable.collection.slist.SListFactory;
 import org.agilewiki.pactor.utilImpl.durable.collection.smap.IntegerSMapFactory;
 import org.agilewiki.pactor.utilImpl.durable.collection.smap.LongSMapFactory;
@@ -90,6 +93,10 @@ public class Durables {
         StringSMapFactory.registerFactories(_factoryLocator);
         LongSMapFactory.registerFactories(_factoryLocator);
         IntegerSMapFactory.registerFactories(_factoryLocator);
+
+        StringBMapFactory.registerFactories(_factoryLocator);
+        LongBMapFactory.registerFactories(_factoryLocator);
+        IntegerBMapFactory.registerFactories(_factoryLocator);
     }
 
     public static void registerUnionFactory(final FactoryLocator _factoryLocator,

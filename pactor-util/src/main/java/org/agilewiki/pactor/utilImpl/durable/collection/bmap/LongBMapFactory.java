@@ -2,8 +2,7 @@ package org.agilewiki.pactor.utilImpl.durable.collection.bmap;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
-import org.agilewiki.pactor.util.durable.Durables;
-import org.agilewiki.pactor.util.durable.FactoryLocator;
+import org.agilewiki.pactor.util.durable.*;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.collection.smap.LongSMapFactory;
 import org.agilewiki.pactor.utilImpl.durable.scalar.vlens.UnionImpl;
@@ -13,6 +12,17 @@ import org.agilewiki.pactor.utilImpl.durable.scalar.vlens.UnionImpl;
  */
 public class LongBMapFactory extends FactoryImpl {
     private final static int NODE_CAPACITY = 28;
+
+    public static void registerFactories(final FactoryLocator _factoryLocator) {
+        registerFactory(_factoryLocator, PAMap.LONG_PASTRING_BMAP, PAString.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.LONG_BYTES_BMAP, Bytes.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.LONG_BOX_BMAP, Box.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.LONG_PALONG_BMAP, PALong.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.LONG_PAINTEGER_BMAP, PAInteger.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.LONG_PAFLOAT_BMAP, PAFloat.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.LONG_PADOUBLE_BMAP, PADouble.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.LONG_PABOOLEAN_BMAP, PABoolean.FACTORY_NAME);
+    }
 
     public static void registerFactory(FactoryLocator factoryLocator,
                                        String actorType,

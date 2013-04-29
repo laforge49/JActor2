@@ -15,7 +15,7 @@ public interface PAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
     public final static String STRING_PABOOLEAN_BMAP = "stringBoolBMap";
 
     public final static String INTEGER_PASTRING_BMAP = "intStringBMap";
-    public final static String INTEGER_PABYTES_BMAP = "intBytesBMap";
+    public final static String INTEGER_BYTES_BMAP = "intBytesBMap";
     public final static String INTEGER_BOX_BMAP = "intBoxBMap";
     public final static String INTEGER_PALONG_BMAP = "intLongBMap";
     public final static String INTEGER_PAINTEGER_BMAP = "intIntBMap";
