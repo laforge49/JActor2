@@ -6,7 +6,7 @@ public interface Bytes extends IncDes {
 
     public static final String FACTORY_NAME = "bytes";
 
-    Request<byte[]> getBytesReq();
+    Request<byte[]> getValueReq();
 
     byte[] getValue();
 
@@ -16,13 +16,13 @@ public interface Bytes extends IncDes {
 
     void clear();
 
-    Request<Void> setBytesReq(final byte[] _v);
+    Request<Void> setValueReq(final byte[] _v);
 
     void setValue(final byte[] _v);
 
     void setObject(Object v) throws Exception;
 
-    Request<Boolean> makeBytesReq(final byte[] _v);
+    Request<Boolean> makeValueReq(final byte[] _v);
 
     Boolean makeValue(final byte[] v);
 }

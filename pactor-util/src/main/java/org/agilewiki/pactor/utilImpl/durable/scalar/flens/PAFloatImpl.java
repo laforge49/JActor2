@@ -26,7 +26,7 @@ public class PAFloatImpl
     private Request<Float> getFloatReq;
 
     @Override
-    public Request<Float> getFloatReq() {
+    public Request<Float> getValueReq() {
         return getFloatReq;
     }
 
@@ -55,7 +55,7 @@ public class PAFloatImpl
     }
 
     @Override
-    public Request<Void> setFloatReq(final Float v) {
+    public Request<Void> setValueReq(final Float v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {

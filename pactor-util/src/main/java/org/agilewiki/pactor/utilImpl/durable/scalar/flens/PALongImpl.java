@@ -26,7 +26,7 @@ public class PALongImpl
     private Request<Long> getLongReq;
 
     @Override
-    public Request<Long> getLongReq() {
+    public Request<Long> getValueReq() {
         return getLongReq;
     }
 
@@ -55,7 +55,7 @@ public class PALongImpl
     }
 
     @Override
-    public Request<Void> setLongReq(final Long _v) {
+    public Request<Void> setValueReq(final Long _v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {

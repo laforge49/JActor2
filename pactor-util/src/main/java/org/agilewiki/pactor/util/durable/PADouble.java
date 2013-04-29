@@ -6,11 +6,11 @@ public interface PADouble extends IncDes {
 
     public static final String FACTORY_NAME = "double";
 
-    Request<Double> getDoubleReq();
+    Request<Double> getValueReq();
 
     Double getValue();
 
-    Request<Void> setDoubleReq(final Double _v);
+    Request<Void> setValueReq(final Double _v);
 
     void setValue(final Double _v);
 }

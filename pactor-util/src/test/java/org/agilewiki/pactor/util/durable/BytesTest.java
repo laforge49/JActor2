@@ -9,7 +9,7 @@ public class BytesTest extends TestCase {
         try {
             Bytes bytes1 = (Bytes) Durables.newSerializable(mailboxFactory, Bytes.FACTORY_NAME);
             Bytes bytes2 = (Bytes) bytes1.copyReq(null).call();
-            bytes2.setBytesReq(new byte[3]).call();
+            bytes2.setValueReq(new byte[3]).call();
             Bytes bytes3 = (Bytes) bytes2.copyReq(null).call();
 
             int sl = bytes1.getSerializedLength();
@@ -19,20 +19,20 @@ public class BytesTest extends TestCase {
             sl = bytes3.getSerializedLength();
             assertEquals(7, sl);
 
-            assertNull(bytes1.getBytesReq().call());
-            assertEquals(3, bytes2.getBytesReq().call().length);
-            assertEquals(3, bytes3.getBytesReq().call().length);
+            assertNull(bytes1.getValueReq().call());
+            assertEquals(3, bytes2.getValueReq().call().length);
+            assertEquals(3, bytes3.getValueReq().call().length);
 
             Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
-            box.setIncDesReq(Bytes.FACTORY_NAME).call();
+            box.setValueReq(Bytes.FACTORY_NAME).call();
             Bytes rpa = (Bytes) box.resolvePathnameReq("0").call();
-            assertNull(rpa.getBytesReq().call());
-            assertTrue(rpa.makeBytesReq(new byte[0]).call());
-            assertFalse(rpa.makeBytesReq(new byte[99]).call());
+            assertNull(rpa.getValueReq().call());
+            assertTrue(rpa.makeValueReq(new byte[0]).call());
+            assertFalse(rpa.makeValueReq(new byte[99]).call());
             rpa = (Bytes) box.resolvePathnameReq("0").call();
-            assertEquals(0, rpa.getBytesReq().call().length);
+            assertEquals(0, rpa.getValueReq().call().length);
             rpa.clearReq().call();
-            assertNull(rpa.getBytesReq().call());
+            assertNull(rpa.getValueReq().call());
 
         } finally {
             mailboxFactory.close();

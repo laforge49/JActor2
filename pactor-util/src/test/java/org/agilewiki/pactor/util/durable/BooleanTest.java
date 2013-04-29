@@ -9,7 +9,7 @@ public class BooleanTest extends TestCase {
         try {
             PABoolean boolean1 = (PABoolean) Durables.newSerializable(mailboxFactory, PABoolean.FACTORY_NAME);
             PABoolean boolean2 = (PABoolean) boolean1.copyReq(null).call();
-            boolean2.setBooleanReq(true).call();
+            boolean2.setValueReq(true).call();
             PABoolean boolean3 = (PABoolean) boolean2.copyReq(null).call();
 
             int sl = boolean1.getSerializedLength();
@@ -19,17 +19,17 @@ public class BooleanTest extends TestCase {
             sl = boolean3.getSerializedLength();
             assertEquals(1, sl);
 
-            assertFalse(boolean1.getBooleanReq().call());
-            assertTrue(boolean2.getBooleanReq().call());
-            assertTrue(boolean3.getBooleanReq().call());
+            assertFalse(boolean1.getValueReq().call());
+            assertTrue(boolean2.getValueReq().call());
+            assertTrue(boolean3.getValueReq().call());
 
             Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
-            box.setIncDesReq(PABoolean.FACTORY_NAME).call();
+            box.setValueReq(PABoolean.FACTORY_NAME).call();
             PABoolean rpa = (PABoolean) box.resolvePathnameReq("0").call();
-            assertFalse(rpa.getBooleanReq().call());
-            rpa.setBooleanReq(true).call();
+            assertFalse(rpa.getValueReq().call());
+            rpa.setValueReq(true).call();
             rpa = (PABoolean) box.resolvePathnameReq("0").call();
-            assertTrue(rpa.getBooleanReq().call());
+            assertTrue(rpa.getValueReq().call());
 
         } finally {
             mailboxFactory.close();

@@ -28,7 +28,7 @@ public class ListTest extends TestCase {
             int l2sl = l2.getSerializedLength();
             assertEquals(nslsl, l2sl);
             PAString s0 = (PAString) Durables.newSerializable(mailboxFactory, PAString.FACTORY_NAME);
-            s0.setStringReq("Hi").call();
+            s0.setValueReq("Hi").call();
             int s0sl = s0.getSerializedLength();
             assertEquals(8, s0sl);
             byte[] s0bs = s0.getSerializedBytes();

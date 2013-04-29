@@ -34,7 +34,7 @@ public class BytesImpl
     private Request<byte[]> getBytesReq;
 
     @Override
-    public Request<byte[]> getBytesReq() {
+    public Request<byte[]> getValueReq() {
         return getBytesReq;
     }
 
@@ -55,7 +55,7 @@ public class BytesImpl
     }
 
     @Override
-    public Request<Void> setBytesReq(final byte[] v) {
+    public Request<Void> setValueReq(final byte[] v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
@@ -97,7 +97,7 @@ public class BytesImpl
     }
 
     @Override
-    public Request<Boolean> makeBytesReq(final byte[] v) {
+    public Request<Boolean> makeValueReq(final byte[] v) {
         return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {

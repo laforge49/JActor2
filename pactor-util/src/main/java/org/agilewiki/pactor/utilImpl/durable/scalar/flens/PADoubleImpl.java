@@ -26,7 +26,7 @@ public class PADoubleImpl
     private Request<Double> getDoubleReq;
 
     @Override
-    public Request<Double> getDoubleReq() {
+    public Request<Double> getValueReq() {
         return getDoubleReq;
     }
 
@@ -55,7 +55,7 @@ public class PADoubleImpl
     }
 
     @Override
-    public Request<Void> setDoubleReq(final Double v) {
+    public Request<Void> setValueReq(final Double v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {

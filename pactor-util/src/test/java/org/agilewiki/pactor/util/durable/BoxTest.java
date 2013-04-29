@@ -17,7 +17,7 @@ public class BoxTest extends TestCase {
             box1.clearReq().call();
             sl = box1.getSerializedLength();
             assertEquals(4, sl);
-            IncDes incDes1a = (IncDes) box1.getIncDesReq().call();
+            IncDes incDes1a = (IncDes) box1.getValueReq().call();
             assertNull(incDes1a);
             IncDes rpa = (IncDes) box1.resolvePathnameReq("0").call();
             assertNull(rpa);
@@ -30,20 +30,20 @@ public class BoxTest extends TestCase {
 
             Factory stringAFactory = factoryLocator.getFactory(PAString.FACTORY_NAME);
             PAString string1 = (PAString) stringAFactory.newSerializable(mailbox, factoryLocator);
-            string1.setStringReq("abc").call();
+            string1.setValueReq("abc").call();
             byte[] sb = string1.getSerializedBytes();
-            box1.setIncDesReq(string1.getType(), sb).call();
-            PAString sj = (PAString) box1.getIncDesReq().call();
-            assertEquals("abc", sj.getStringReq().call());
+            box1.setValueReq(string1.getType(), sb).call();
+            PAString sj = (PAString) box1.getValueReq().call();
+            assertEquals("abc", sj.getValueReq().call());
 
             Box box2 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, mailbox);
             sl = box2.getSerializedLength();
             assertEquals(4, sl);
 
-            box2.setIncDesReq(IncDes.FACTORY_NAME).call();
-            boolean made = box2.makeIncDesReq(IncDes.FACTORY_NAME).call();
+            box2.setValueReq(IncDes.FACTORY_NAME).call();
+            boolean made = box2.makeValueReq(IncDes.FACTORY_NAME).call();
             assertEquals(false, made);
-            IncDes incDes2a = (IncDes) box2.getIncDesReq().call();
+            IncDes incDes2a = (IncDes) box2.getValueReq().call();
             assertNotNull(incDes2a);
             sl = incDes2a.getSerializedLength();
             assertEquals(0, sl);
@@ -56,7 +56,7 @@ public class BoxTest extends TestCase {
             box2.clearReq().call();
             sl = box2.getSerializedLength();
             assertEquals(4, sl);
-            incDes2a = (IncDes) box2.getIncDesReq().call();
+            incDes2a = (IncDes) box2.getValueReq().call();
             assertNull(incDes2a);
             assertNotNull(box22);
             sl = box22.getSerializedLength();
@@ -69,21 +69,21 @@ public class BoxTest extends TestCase {
             Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, mailboxFactory);
             sl = box3.getSerializedLength();
             assertEquals(4, sl);
-            made = box3.makeIncDesReq(Box.FACTORY_NAME).call();
+            made = box3.makeValueReq(Box.FACTORY_NAME).call();
             assertEquals(true, made);
-            made = box3.makeIncDesReq(Box.FACTORY_NAME).call();
+            made = box3.makeValueReq(Box.FACTORY_NAME).call();
             assertEquals(false, made);
-            Box box3a = (Box) box3.getIncDesReq().call();
+            Box box3a = (Box) box3.getValueReq().call();
             assertNotNull(box3a);
             sl = box3a.getSerializedLength();
             assertEquals(4, sl);
             sl = box3.getSerializedLength();
             assertEquals(88, sl);
-            made = box3a.makeIncDesReq(IncDes.FACTORY_NAME).call();
+            made = box3a.makeValueReq(IncDes.FACTORY_NAME).call();
             assertEquals(true, made);
-            made = box3a.makeIncDesReq(IncDes.FACTORY_NAME).call();
+            made = box3a.makeValueReq(IncDes.FACTORY_NAME).call();
             assertEquals(false, made);
-            IncDes incDes3b = (IncDes) box3a.getIncDesReq().call();
+            IncDes incDes3b = (IncDes) box3a.getValueReq().call();
             assertNotNull(incDes3b);
             sl = incDes3b.getSerializedLength();
             assertEquals(0, sl);
@@ -103,9 +103,9 @@ public class BoxTest extends TestCase {
             assertEquals(4, sl);
             sl = box3.getSerializedLength();
             assertEquals(88, sl);
-            incDes3b = (IncDes) box3a.getIncDesReq().call();
+            incDes3b = (IncDes) box3a.getValueReq().call();
             assertNull(incDes3b);
-            Box box3aa = (Box) box3.getIncDesReq().call();
+            Box box3aa = (Box) box3.getValueReq().call();
             assertEquals(box3a, box3aa);
             assertNotNull(box33);
             sl = box33.getSerializedLength();

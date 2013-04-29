@@ -26,7 +26,7 @@ public class PAStringImpl
 
     private Request<String> getStringReq;
 
-    public Request<String> getStringReq() {
+    public Request<String> getValueReq() {
         return getStringReq;
     }
 
@@ -46,7 +46,7 @@ public class PAStringImpl
         change(c);
     }
 
-    public Request<Void> setStringReq(final String v) {
+    public Request<Void> setValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
         return new RequestBase<Void>(getMailbox()) {
@@ -78,7 +78,7 @@ public class PAStringImpl
         return true;
     }
 
-    public Request<Boolean> makeStringReq(final String v) {
+    public Request<Boolean> makeValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
         return new RequestBase<Boolean>(getMailbox()) {

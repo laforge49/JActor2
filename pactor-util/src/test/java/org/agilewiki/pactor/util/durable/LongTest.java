@@ -9,7 +9,7 @@ public class LongTest extends TestCase {
         try {
             PALong long1 = (PALong) Durables.newSerializable(mailboxFactory, PALong.FACTORY_NAME);
             PALong long2 = (PALong) long1.copyReq(null).call();
-            long2.setLongReq(1L).call();
+            long2.setValueReq(1L).call();
             PALong long3 = (PALong) long2.copyReq(null).call();
 
             int sl = long1.getSerializedLength();
@@ -19,21 +19,21 @@ public class LongTest extends TestCase {
             sl = long3.getSerializedLength();
             assertEquals(8, sl);
 
-            long v = long1.getLongReq().call();
+            long v = long1.getValueReq().call();
             assertEquals(0L, v);
-            v = long2.getLongReq().call();
+            v = long2.getValueReq().call();
             assertEquals(1L, v);
-            v = long3.getLongReq().call();
+            v = long3.getValueReq().call();
             assertEquals(1L, v);
 
             Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
-            box.setIncDesReq(PALong.FACTORY_NAME).call();
+            box.setValueReq(PALong.FACTORY_NAME).call();
             PALong rpa = (PALong) box.resolvePathnameReq("0").call();
-            v = rpa.getLongReq().call();
+            v = rpa.getValueReq().call();
             assertEquals(0L, v);
-            rpa.setLongReq(-1000000000000L).call();
+            rpa.setValueReq(-1000000000000L).call();
             rpa = (PALong) box.resolvePathnameReq("0").call();
-            v = rpa.getLongReq().call();
+            v = rpa.getValueReq().call();
             assertEquals(-1000000000000L, v);
 
         } finally {

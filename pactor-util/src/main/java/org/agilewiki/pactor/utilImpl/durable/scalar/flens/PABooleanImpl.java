@@ -26,7 +26,7 @@ public class PABooleanImpl
     private Request<Boolean> getBooleanReq;
 
     @Override
-    public Request<Boolean> getBooleanReq() {
+    public Request<Boolean> getValueReq() {
         return getBooleanReq;
     }
 
@@ -55,7 +55,7 @@ public class PABooleanImpl
     }
 
     @Override
-    public Request<Void> setBooleanReq(final Boolean v) {
+    public Request<Void> setValueReq(final Boolean v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {

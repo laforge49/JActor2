@@ -17,7 +17,7 @@ public class RootTest extends TestCase {
             root1.clearReq().call();
             sl = root1.getSerializedLength();
             //assertEquals(56, sl);
-            IncDes rootJid1a = (IncDes) root1.getIncDesReq().call();
+            IncDes rootJid1a = (IncDes) root1.getValueReq().call();
             assertNull(rootJid1a);
             IncDes rpa = (IncDes) root1.resolvePathnameReq("0").call();
             assertNull(rpa);
@@ -30,19 +30,19 @@ public class RootTest extends TestCase {
 
             Factory stringAFactory = factoryLocator.getFactory(PAString.FACTORY_NAME);
             PAString paString1 = (PAString) stringAFactory.newSerializable(mailbox, factoryLocator);
-            paString1.setStringReq("abc").call();
+            paString1.setValueReq("abc").call();
             byte[] sb = paString1.getSerializedBytesReq().call();
-            root1.setIncDesReq(paString1.getType(), sb).call();
-            PAString sj = (PAString) root1.getIncDesReq().call();
-            assertEquals("abc", sj.getStringReq().call());
+            root1.setValueReq(paString1.getType(), sb).call();
+            PAString sj = (PAString) root1.getValueReq().call();
+            assertEquals("abc", sj.getValueReq().call());
 
             Root root2 = (Root) rootFactory.newSerializable(mailbox, factoryLocator);
             sl = root2.getSerializedLength();
             //assertEquals(56, sl);
-            root2.setIncDesReq(IncDes.FACTORY_NAME).call();
-            boolean made = root2.makeIncDesReq(IncDes.FACTORY_NAME).call();
+            root2.setValueReq(IncDes.FACTORY_NAME).call();
+            boolean made = root2.makeValueReq(IncDes.FACTORY_NAME).call();
             assertEquals(false, made);
-            IncDes incDes2a = (IncDes) root2.getIncDesReq().call();
+            IncDes incDes2a = (IncDes) root2.getValueReq().call();
             assertNotNull(incDes2a);
             sl = incDes2a.getSerializedLength();
             assertEquals(0, sl);
@@ -55,7 +55,7 @@ public class RootTest extends TestCase {
             root2.clearReq().call();
             sl = root2.getSerializedLength();
             //assertEquals(56, sl);
-            incDes2a = (IncDes) root2.getIncDesReq().call();
+            incDes2a = (IncDes) root2.getValueReq().call();
             assertNull(incDes2a);
             assertNotNull(root22);
             sl = root22.getSerializedLength();

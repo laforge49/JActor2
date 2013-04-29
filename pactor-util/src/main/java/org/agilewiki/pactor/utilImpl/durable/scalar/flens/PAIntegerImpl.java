@@ -26,7 +26,7 @@ public class PAIntegerImpl
     private Request<Integer> getIntegerReq;
 
     @Override
-    public Request<Integer> getIntegerReq() {
+    public Request<Integer> getValueReq() {
         return getIntegerReq;
     }
 
@@ -75,7 +75,7 @@ public class PAIntegerImpl
     }
 
     @Override
-    public Request<Void> setIntegerReq(final Integer v) {
+    public Request<Void> setValueReq(final Integer v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> rp) throws Exception {

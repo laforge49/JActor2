@@ -6,11 +6,11 @@ public interface PAFloat extends IncDes {
 
     public static final String FACTORY_NAME = "float";
 
-    Request<Float> getFloatReq();
+    Request<Float> getValueReq();
 
     Float getValue();
 
-    Request<Void> setFloatReq(final Float _v);
+    Request<Void> setValueReq(final Float _v);
 
     void setValue(final Float _v);
 }
