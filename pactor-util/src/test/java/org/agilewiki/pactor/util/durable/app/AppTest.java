@@ -1,10 +1,9 @@
-package org.agilewiki.pactor.util.durable;
+package org.agilewiki.pactor.util.durable.app;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.agilewiki.pactor.api.MailboxFactory;
-import org.agilewiki.pactor.util.durable.app.App;
-import org.agilewiki.pactor.util.durable.app.AppBase;
-import org.agilewiki.pactor.util.durable.app.AppFactory;
+import org.agilewiki.pactor.util.durable.*;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {
@@ -18,9 +17,9 @@ public class AppTest extends TestCase {
             user1.PALocation().setValue("Boston");
 
             User user2 = (User) user1.getDurable().copy(null);
-            assertEquals("Joe", user2.PAName().getValue());
+            Assert.assertEquals("Joe", user2.PAName().getValue());
             assertEquals(42, (int) user2.PAAge().getValue());
-            assertEquals("Boston", user2.PALocation().getValue());
+            Assert.assertEquals("Boston", user2.PALocation().getValue());
         } finally {
             mailboxFactory.close();
         }
@@ -40,9 +39,9 @@ public class AppTest extends TestCase {
 
             Box box2 = (Box) box1.copy(null);
             User user2 = (User) box2.getValue();
-            assertEquals("Joe", user2.PAName().getValue());
+            Assert.assertEquals("Joe", user2.PAName().getValue());
             assertEquals(42, (int) user2.PAAge().getValue());
-            assertEquals("Boston", user2.PALocation().getValue());
+            Assert.assertEquals("Boston", user2.PALocation().getValue());
         } finally {
             mailboxFactory.close();
         }

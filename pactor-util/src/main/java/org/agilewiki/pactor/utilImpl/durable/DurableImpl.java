@@ -1,6 +1,7 @@
 package org.agilewiki.pactor.utilImpl.durable;
 
 import org.agilewiki.pactor.util.durable.*;
+import org.agilewiki.pactor.util.durable.app.Durable;
 
 /**
  * A base class for applications, DurableImpl provides a durable tuple without an external interface.
