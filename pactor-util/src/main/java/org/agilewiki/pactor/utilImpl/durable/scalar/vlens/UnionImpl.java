@@ -49,7 +49,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     }
 
     @Override
-    public Request<PASerializable> getIncDesReq() {
+    public Request<PASerializable> getValueReq() {
         return getPAIDReq;
     }
 
@@ -120,7 +120,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     }
 
     @Override
-    public Request<Void> setIncDesReq(final String actorType) {
+    public Request<Void> setValueReq(final String actorType) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
@@ -162,7 +162,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     }
 
     @Override
-    public Request<Void> setIncDesReq(final String jidType, final byte[] bytes) {
+    public Request<Void> setValueReq(final String jidType, final byte[] bytes) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
@@ -202,7 +202,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     }
 
     @Override
-    public Request<Boolean> makeIncDesReq(final String jidType) {
+    public Request<Boolean> makeValueReq(final String jidType) {
         return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
@@ -237,7 +237,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     }
 
     @Override
-    public Request<Boolean> makeIncDesReq(final String jidType, final byte[] bytes) {
+    public Request<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
         return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
