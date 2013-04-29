@@ -1,9 +1,11 @@
 package org.agilewiki.pactor.util.durable;
 
+import org.agilewiki.pactor.api.Actor;
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.Request;
+import org.agilewiki.pactor.util.Ancestor;
 
-public interface IncDes extends PASerializable {
+public interface IncDes extends PASerializable, Actor, Ancestor {
 
     public static final String FACTORY_NAME = "incdes";
 

@@ -8,7 +8,7 @@ import org.agilewiki.pactor.util.durable.*;
 public class BMapTimingsTest extends TestCase {
     public void test1() throws Exception {
 
-        int s = 1000000;
+        int s = 1000;
         int r = 1000;
 
         //map size = 1,000
