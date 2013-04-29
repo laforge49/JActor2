@@ -7,19 +7,19 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.collection.MapEntryFactory;
 
 /**
- * Creates StringSMap's.
+ * Creates IntegerSMap's.
  */
-public class StringSMapFactory extends FactoryImpl {
+public class IntegerSMapFactory extends FactoryImpl {
 
     public static void registerFactories(final FactoryLocator _factoryLocator) {
-        registerFactory(_factoryLocator, PAMap.STRING_PASTRING_MAP, PAString.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_BYTES_MAP, Bytes.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_BOX_MAP, Box.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PALONG_MAP, PALong.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PAINTEGER_MAP, PAInteger.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PAFLOAT_MAP, PAFloat.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PADOUBLE_MAP, PADouble.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PABOOLEAN_MAP, PABoolean.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PASTRING_MAP, PAString.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_BYTES_MAP, Bytes.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_BOX_MAP, Box.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PALONG_MAP, PALong.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PAINTEGER_MAP, PAInteger.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PAFLOAT_MAP, PAFloat.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PADOUBLE_MAP, PADouble.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PABOOLEAN_MAP, PABoolean.FACTORY_NAME);
     }
 
     public static void registerFactory(FactoryLocator factoryLocator,
@@ -33,8 +33,8 @@ public class StringSMapFactory extends FactoryImpl {
                                        String valueType,
                                        int initialCapacity) {
         factoryLocator.registerFactory(new MapEntryFactory(
-                "E." + actorType, PAString.FACTORY_NAME, valueType));
-        factoryLocator.registerFactory(new StringSMapFactory(
+                "E." + actorType, PAInteger.FACTORY_NAME, valueType));
+        factoryLocator.registerFactory(new IntegerSMapFactory(
                 actorType, valueType, initialCapacity));
     }
 
@@ -44,11 +44,10 @@ public class StringSMapFactory extends FactoryImpl {
     /**
      * Create an FactoryImpl.
      *
-     * @param jidType         The jid type.
-     * @param valueType       The value type.
-     * @param initialCapacity The initial capacity.
+     * @param jidType   The jid type.
+     * @param valueType The value type.
      */
-    protected StringSMapFactory(String jidType, String valueType, int initialCapacity) {
+    protected IntegerSMapFactory(String jidType, String valueType, int initialCapacity) {
         super(jidType);
         this.valueType = valueType;
         this.initialCapacity = initialCapacity;
@@ -60,8 +59,8 @@ public class StringSMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected StringSMap instantiateActor() {
-        return new StringSMap();
+    protected IntegerSMap instantiateActor() {
+        return new IntegerSMap();
     }
 
     /**
@@ -72,8 +71,8 @@ public class StringSMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public StringSMap newSerializable(Mailbox mailbox, Ancestor parent) {
-        StringSMap imj = (StringSMap) super.newSerializable(mailbox, parent);
+    public IntegerSMap newSerializable(Mailbox mailbox, Ancestor parent) {
+        IntegerSMap imj = (IntegerSMap) super.newSerializable(mailbox, parent);
         FactoryLocator fl = Durables.getFactoryLocator(mailbox);
         imj.valueFactory = fl.getFactory(valueType);
         imj.initialCapacity = initialCapacity;

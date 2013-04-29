@@ -13,6 +13,7 @@ public interface PAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
     public final static String STRING_PAFLOAT_BMAP = "stringFloatBMap";
     public final static String STRING_PADOUBLE_BMAP = "stringDoubleBMap";
     public final static String STRING_PABOOLEAN_BMAP = "stringBoolBMap";
+
     public final static String INTEGER_PASTRING_BMAP = "intStringBMap";
     public final static String INTEGER_PABYTES_BMAP = "intBytesBMap";
     public final static String INTEGER_BOX_BMAP = "intBoxBMap";
@@ -21,6 +22,7 @@ public interface PAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
     public final static String INTEGER_PAFLOAT_BMAP = "intFloatBMap";
     public final static String INTEGER_PADOUBLE_BMAP = "intDoubleBMap";
     public final static String INTEGER_PABOOLEAN_BMAP = "intBoolBMap";
+
     public final static String LONG_PASTRING_BMAP = "longStringBMap";
     public final static String LONG_BYTES_BMAP = "longBytesBMap";
     public final static String LONG_BOX_BMAP = "longBoxBMap";
@@ -38,6 +40,7 @@ public interface PAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
     public final static String STRING_PAFLOAT_MAP = "stringFloatMap";
     public final static String STRING_PADOUBLE_MAP = "stringDoubleMap";
     public final static String STRING_PABOOLEAN_MAP = "stringBoolMap";
+
     public final static String INTEGER_PASTRING_MAP = "intStringMap";
     public final static String INTEGER_BYTES_MAP = "intBytesMap";
     public final static String INTEGER_BOX_MAP = "intBoxMap";
@@ -46,6 +49,7 @@ public interface PAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
     public final static String INTEGER_PAFLOAT_MAP = "intFloatMap";
     public final static String INTEGER_PADOUBLE_MAP = "intDoubleMap";
     public final static String INTEGER_PABOOLEAN_MAP = "intBoolMap";
+
     public final static String LONG_PASTRING_MAP = "longStringMap";
     public final static String LONG_BYTES_MAP = "longBytesMap";
     public final static String LONG_BOX_MAP = "longBoxMap";

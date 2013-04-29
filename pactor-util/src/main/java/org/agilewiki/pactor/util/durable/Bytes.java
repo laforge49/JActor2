@@ -14,15 +14,15 @@ public interface Bytes extends IncDes {
 
     Request<Void> clearReq();
 
-    void clear() ;
+    void clear();
 
     Request<Void> setBytesReq(final byte[] _v);
 
-    void setValue(final byte[] _v) ;
+    void setValue(final byte[] _v);
 
     void setObject(Object v) throws Exception;
 
     Request<Boolean> makeBytesReq(final byte[] _v);
 
-    Boolean makeValue(final byte[] v) ;
+    Boolean makeValue(final byte[] v);
 }

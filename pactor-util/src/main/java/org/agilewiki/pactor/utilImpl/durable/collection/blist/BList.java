@@ -85,8 +85,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
         sj.setValue(sj.getValue() + inc);
     }
 
-    protected UnionImpl getUnionJid()
-            {
+    protected UnionImpl getUnionJid() {
         return (UnionImpl) _iGet(TUPLE_UNION);
     }
 

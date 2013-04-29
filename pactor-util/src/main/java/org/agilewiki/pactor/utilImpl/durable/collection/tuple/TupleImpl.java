@@ -22,7 +22,6 @@ public class TupleImpl
 
     /**
      * Perform lazy initialization.
-     *
      */
     private void initializeTuple() {
         if (tuple != null)
