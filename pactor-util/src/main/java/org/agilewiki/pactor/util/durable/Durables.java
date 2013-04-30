@@ -12,10 +12,6 @@ import org.agilewiki.pactor.utilImpl.durable.incDes.collection.blist.BListFactor
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.bmap.IntegerBMapFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.bmap.LongBMapFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.bmap.StringBMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.incDes.collection.slist.SListFactory;
-import org.agilewiki.pactor.utilImpl.durable.incDes.collection.smap.IntegerSMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.incDes.collection.smap.LongSMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.incDes.collection.smap.StringSMapFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.tuple.TupleFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.flens.*;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.*;
@@ -110,8 +106,8 @@ public class Durables {
     }
 
     public static void registerStringMapFactory(final FactoryLocator _factoryLocator,
-                                                 final String _actorType,
-                                                 final String _valueType) {
+                                                final String _actorType,
+                                                final String _valueType) {
         StringBMapFactory.registerFactory(_factoryLocator, _actorType, _valueType);
     }
 
@@ -122,8 +118,8 @@ public class Durables {
     }
 
     public static void registerLongMapFactory(final FactoryLocator _factoryLocator,
-                                                 final String _actorType,
-                                                 final String _valueType) {
+                                              final String _actorType,
+                                              final String _valueType) {
         LongBMapFactory.registerFactory(_factoryLocator, _actorType, _valueType);
     }
 
