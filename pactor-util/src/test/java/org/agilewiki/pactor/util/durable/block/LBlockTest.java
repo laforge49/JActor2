@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
-import org.agilewiki.pactor.util.durable.Root;
+import org.agilewiki.pactor.util.durable.incDes.Root;
 
 public class LBlockTest extends TestCase {
     public void test()

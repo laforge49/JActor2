@@ -2,7 +2,6 @@ package org.agilewiki.pactor.general;
 
 import junit.framework.TestCase;
 import org.agilewiki.pactor.api.*;
-import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
 
 public class ServiceTest extends TestCase {
     public void test1() throws Exception {

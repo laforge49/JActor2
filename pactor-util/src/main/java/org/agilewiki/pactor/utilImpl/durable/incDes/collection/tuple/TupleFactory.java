@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable.app;
+package org.agilewiki.pactor.utilImpl.durable.incDes.collection.tuple;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
@@ -6,19 +6,18 @@ import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
-import org.agilewiki.pactor.utilImpl.durable.app.DurableImpl;
 
 /**
- * Creates DurableImpl objects.
+ * Creates a TupleImpl.
  */
-public abstract class AppFactory extends FactoryImpl {
-    private Factory[] tupleFactories;
-    private String[] jidTypes;
+public class TupleFactory extends FactoryImpl {
 
-    public AppFactory(String subActorType) {
-        super(subActorType);
-        this.jidTypes = new String[0];
+    public static void registerFactory(FactoryLocator factoryLocator,
+                                       String subActorType, String... actorTypes) {
+        factoryLocator.registerFactory(new TupleFactory(subActorType, actorTypes));
     }
+
+    private String[] jidTypes;
 
     /**
      * Create a JLPCActorFactory.
@@ -26,13 +25,20 @@ public abstract class AppFactory extends FactoryImpl {
      * @param subJidType The jid type.
      * @param jidTypes   The element types.
      */
-    public AppFactory(String subJidType, String... jidTypes) {
+    protected TupleFactory(String subJidType, String... jidTypes) {
         super(subJidType);
         this.jidTypes = jidTypes;
     }
 
+    /**
+     * Create a JLPCActor.
+     *
+     * @return The new actor.
+     */
     @Override
-    abstract protected App instantiateActor();
+    protected TupleImpl instantiateActor() {
+        return new TupleImpl();
+    }
 
     /**
      * Create and configure an actor.
@@ -42,11 +48,8 @@ public abstract class AppFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public App newSerializable(Mailbox mailbox, Ancestor parent) {
-        App a = instantiateActor();
-        DurableImpl tj = new DurableImpl();
-        a.setDurable(tj);
-        tj.initialize(mailbox, parent, this);
+    public TupleImpl newSerializable(Mailbox mailbox, Ancestor parent) {
+        TupleImpl tj = (TupleImpl) super.newSerializable(mailbox, parent);
         FactoryLocator fl = Durables.getFactoryLocator(mailbox);
         Factory[] afs = new FactoryImpl[jidTypes.length];
         int i = 0;
@@ -54,8 +57,7 @@ public abstract class AppFactory extends FactoryImpl {
             afs[i] = fl.getFactory(jidTypes[i]);
             i += 1;
         }
-        tupleFactories = afs;
-        tj.tupleFactories = tupleFactories;
-        return a;
+        tj.tupleFactories = afs;
+        return tj;
     }
 }

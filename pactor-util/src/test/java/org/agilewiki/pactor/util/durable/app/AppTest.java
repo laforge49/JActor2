@@ -3,7 +3,11 @@ package org.agilewiki.pactor.util.durable.app;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.agilewiki.pactor.api.MailboxFactory;
-import org.agilewiki.pactor.util.durable.*;
+import org.agilewiki.pactor.util.durable.Durables;
+import org.agilewiki.pactor.util.durable.FactoryLocator;
+import org.agilewiki.pactor.util.durable.incDes.Box;
+import org.agilewiki.pactor.util.durable.incDes.PAInteger;
+import org.agilewiki.pactor.util.durable.incDes.PAString;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {

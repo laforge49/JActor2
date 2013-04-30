@@ -1,7 +1,7 @@
 package org.agilewiki.pactor.util.durable.app;
 
-import org.agilewiki.pactor.util.durable.IncDes;
 import org.agilewiki.pactor.util.durable.PASerializable;
+import org.agilewiki.pactor.util.durable.incDes.IncDes;
 
 public interface Durable extends IncDes {
     /**

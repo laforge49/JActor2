@@ -3,7 +3,7 @@ package org.agilewiki.pactor.util.durable.block;
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
-import org.agilewiki.pactor.util.durable.Root;
+import org.agilewiki.pactor.util.durable.incDes.Root;
 
 /**
  * A wrapper for data to be read from or written to disk.

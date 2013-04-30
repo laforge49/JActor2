@@ -2,7 +2,7 @@ package org.agilewiki.pactor.util.durable.block;
 
 import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.Durables;
-import org.agilewiki.pactor.util.durable.Root;
+import org.agilewiki.pactor.util.durable.incDes.Root;
 
 /**
  * A block with a length and a timestamp in the header.

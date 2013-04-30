@@ -6,18 +6,18 @@ import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.PAProperties;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
-import org.agilewiki.pactor.utilImpl.durable.IncDesFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.blist.BListFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.bmap.IntegerBMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.bmap.LongBMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.bmap.StringBMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.slist.SListFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.smap.IntegerSMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.smap.LongSMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.smap.StringSMapFactory;
-import org.agilewiki.pactor.utilImpl.durable.collection.tuple.TupleFactory;
-import org.agilewiki.pactor.utilImpl.durable.scalar.flens.*;
-import org.agilewiki.pactor.utilImpl.durable.scalar.vlens.*;
+import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.blist.BListFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.bmap.IntegerBMapFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.bmap.LongBMapFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.bmap.StringBMapFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.slist.SListFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.smap.IntegerSMapFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.smap.LongSMapFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.smap.StringSMapFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.collection.tuple.TupleFactory;
+import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.flens.*;
+import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.*;
 
 public class Durables {
 
