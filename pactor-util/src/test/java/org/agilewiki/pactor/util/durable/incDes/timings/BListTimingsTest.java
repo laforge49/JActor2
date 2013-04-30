@@ -35,7 +35,7 @@ public class BListTimingsTest extends TestCase {
 
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_BLIST);
+            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_LIST);
             Mailbox mailbox = mailboxFactory.createMailbox();
             int i = 0;
             while (i < s) {

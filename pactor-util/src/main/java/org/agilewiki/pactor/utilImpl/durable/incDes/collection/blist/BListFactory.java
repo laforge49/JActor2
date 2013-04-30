@@ -16,14 +16,14 @@ public class BListFactory extends FactoryImpl {
     private final static int NODE_CAPACITY = 28;
 
     public static void registerFactories(final FactoryLocator _factoryLocator) {
-        registerFactory(_factoryLocator, PAList.PASTRING_BLIST, PAString.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.BYTES_BLIST, Bytes.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.BOX_BLIST, Box.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PALONG_BLIST, PALong.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PAINTEGER_BLIST, PAInteger.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PAFLOAT_BLIST, PAFloat.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PADOUBLE_BLIST, PADouble.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PABOOLEAN_BLIST, PABoolean.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAList.PASTRING_LIST, PAString.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAList.BYTES_LIST, Bytes.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAList.BOX_LIST, Box.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAList.PALONG_LIST, PALong.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAList.PAINTEGER_LIST, PAInteger.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAList.PAFLOAT_LIST, PAFloat.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAList.PADOUBLE_LIST, PADouble.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAList.PABOOLEAN_LIST, PABoolean.FACTORY_NAME);
     }
 
     public static void registerFactory(FactoryLocator factoryLocator,

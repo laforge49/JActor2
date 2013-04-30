@@ -9,7 +9,7 @@ public class BListTest extends TestCase {
     public void test1() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAList<PAString> stringList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PASTRING_BLIST);
+            PAList<PAString> stringList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PASTRING_LIST);
             stringList1.iAdd(0);
             stringList1.iAdd(1);
             stringList1.iAdd(2);
@@ -35,7 +35,7 @@ public class BListTest extends TestCase {
     public void test2() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_BLIST);
+            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_LIST);
             int i = 0;
             while (i < 28) {
                 intList1.iAdd(i);
@@ -57,7 +57,7 @@ public class BListTest extends TestCase {
     public void test3() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_BLIST);
+            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_LIST);
             int i = 0;
             while (i < 41) {
                 intList1.iAdd(-1);
@@ -79,7 +79,7 @@ public class BListTest extends TestCase {
     public void test4() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_BLIST);
+            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_LIST);
             int i = 0;
             while (i < 391) {
                 intList1.iAdd(-1);
@@ -101,7 +101,7 @@ public class BListTest extends TestCase {
     public void test5() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_BLIST);
+            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_LIST);
             int i = 0;
             while (i < 10000) {
                 intList1.iAdd(-1);
@@ -123,7 +123,7 @@ public class BListTest extends TestCase {
     public void test6() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_BLIST);
+            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_LIST);
             int i = 0;
             while (i < 10000) {
                 intList1.iAdd(-1);

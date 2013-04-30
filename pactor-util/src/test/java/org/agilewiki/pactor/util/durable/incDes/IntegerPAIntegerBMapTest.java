@@ -10,7 +10,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             m.kMake(0);
             m.kMake(1);
             m.kMake(2);
@@ -37,7 +37,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < 28) {
                 m.kMake(i);
@@ -61,7 +61,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < 41) {
                 m.kMake(i);
@@ -85,7 +85,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < 391) {
                 m.kMake(i);
@@ -109,7 +109,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -133,7 +133,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -156,7 +156,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -179,7 +179,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -202,7 +202,7 @@ public class IntegerPAIntegerBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Integer, PAInteger> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+                    newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);

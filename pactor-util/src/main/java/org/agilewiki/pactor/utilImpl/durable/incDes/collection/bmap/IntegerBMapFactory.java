@@ -17,14 +17,14 @@ public class IntegerBMapFactory extends FactoryImpl {
     private final static int NODE_CAPACITY = 28;
 
     public static void registerFactories(final FactoryLocator _factoryLocator) {
-        registerFactory(_factoryLocator, PAMap.INTEGER_PASTRING_BMAP, PAString.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.INTEGER_BYTES_BMAP, Bytes.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.INTEGER_BOX_BMAP, Box.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.INTEGER_PALONG_BMAP, PALong.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.INTEGER_PAINTEGER_BMAP, PAInteger.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.INTEGER_PAFLOAT_BMAP, PAFloat.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.INTEGER_PADOUBLE_BMAP, PADouble.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.INTEGER_PABOOLEAN_BMAP, PABoolean.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PASTRING_MAP, PAString.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_BYTES_MAP, Bytes.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_BOX_MAP, Box.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PALONG_MAP, PALong.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PAINTEGER_MAP, PAInteger.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PAFLOAT_MAP, PAFloat.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PADOUBLE_MAP, PADouble.FACTORY_NAME);
+        registerFactory(_factoryLocator, PAMap.INTEGER_PABOOLEAN_MAP, PABoolean.FACTORY_NAME);
     }
 
     public static void registerFactory(FactoryLocator factoryLocator,

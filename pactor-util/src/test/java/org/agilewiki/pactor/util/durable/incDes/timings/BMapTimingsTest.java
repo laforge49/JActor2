@@ -35,7 +35,7 @@ public class BMapTimingsTest extends TestCase {
 
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAMap<Integer, PAInteger> m1 = (PAMap) Durables.newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_BMAP);
+            PAMap<Integer, PAInteger> m1 = (PAMap) Durables.newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
             int i = 0;
             while (i < s) {
                 m1.kMake(i);

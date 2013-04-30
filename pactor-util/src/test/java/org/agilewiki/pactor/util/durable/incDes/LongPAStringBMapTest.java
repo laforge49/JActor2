@@ -9,7 +9,7 @@ public class LongPAStringBMapTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             PAMap<Long, PAString> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.LONG_PASTRING_BMAP);
+                    newSerializable(mailboxFactory, PAMap.LONG_PASTRING_MAP);
             assertEquals(0, m.size());
             assertTrue(m.kMake(1L));
             assertFalse(m.kMake(1L));
