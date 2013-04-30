@@ -21,31 +21,6 @@ import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.*;
 
 public class Durables {
 
-    /**
-     * Size of a boolean in bytes.
-     */
-    public final static int BOOLEAN_LENGTH = 1;
-
-    /**
-     * Size of an int in bytes.
-     */
-    public final static int INT_LENGTH = 4;
-
-    /**
-     * Size of a long in bytes.
-     */
-    public final static int LONG_LENGTH = 8;
-
-    /**
-     * Size of an float in bytes.
-     */
-    public final static int FLOAT_LENGTH = 4;
-
-    /**
-     * Size of an double in bytes.
-     */
-    public final static int DOUBLE_LENGTH = 8;
-
     public static MailboxFactory createMailboxFactory() throws Exception {
         MailboxFactory mailboxFactory = createMailboxFactory("org.agilewiki.pactor.util.durable");
         registerFactories(mailboxFactory);
@@ -87,12 +62,7 @@ public class Durables {
         PAStringImpl.registerFactory(_factoryLocator);
         BytesImpl.registerFactory(_factoryLocator);
 
-        SListFactory.registerFactories(_factoryLocator);
         BListFactory.registerFactories(_factoryLocator);
-
-        StringSMapFactory.registerFactories(_factoryLocator);
-        LongSMapFactory.registerFactories(_factoryLocator);
-        IntegerSMapFactory.registerFactories(_factoryLocator);
 
         StringBMapFactory.registerFactories(_factoryLocator);
         LongBMapFactory.registerFactories(_factoryLocator);
@@ -183,31 +153,5 @@ public class Durables {
         if (_factoryLocator == null)
             throw new IllegalArgumentException("Unknown jid type: " + _factoryName);
         return _factoryLocator.getFactory(_factoryName);
-    }
-
-    /**
-     * Returns the number of bytes needed to write a string.
-     *
-     * @param _length The number of characters in the string.
-     * @return The size in bytes.
-     */
-    public final static int stringLength(final int _length) {
-        if (_length == -1)
-            return INT_LENGTH;
-        if (_length > -1)
-            return INT_LENGTH + 2 * _length;
-        throw new IllegalArgumentException("invalid string length: " + _length);
-    }
-
-    /**
-     * Returns the number of bytes needed to write a string.
-     *
-     * @param _s The string.
-     * @return The size in bytes.
-     */
-    public final static int stringLength(final String _s) {
-        if (_s == null)
-            return INT_LENGTH;
-        return stringLength(_s.length());
     }
 }

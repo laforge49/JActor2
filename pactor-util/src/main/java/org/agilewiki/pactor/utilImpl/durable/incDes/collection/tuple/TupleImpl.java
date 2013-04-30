@@ -2,6 +2,7 @@ package org.agilewiki.pactor.utilImpl.durable.incDes.collection.tuple;
 
 import org.agilewiki.pactor.util.durable.*;
 import org.agilewiki.pactor.util.durable.incDes.Tuple;
+import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.CollectionImpl;
 
@@ -80,7 +81,7 @@ public class TupleImpl
     @Override
     public int getSerializedLength() {
         initializeTuple();
-        return Durables.INT_LENGTH + len;
+        return DurablesImpl.INT_LENGTH + len;
     }
 
     /**

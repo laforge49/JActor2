@@ -7,6 +7,7 @@ import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
 import org.agilewiki.pactor.util.durable.incDes.Box;
+import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 
@@ -88,7 +89,7 @@ public class BoxImpl
     @Override
     public void setValue(final String jidType) {
         value = createSubordinate(jidType);
-        int l = Durables.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
+        int l = DurablesImpl.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
@@ -163,7 +164,7 @@ public class BoxImpl
      */
     public void setBytes(String jidType, byte[] bytes) {
         value = createSubordinate(jidType, bytes);
-        int l = Durables.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
+        int l = DurablesImpl.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
@@ -178,7 +179,7 @@ public class BoxImpl
      */
     public void setBytes(FactoryImpl jidFactory, byte[] bytes) {
         value = createSubordinate(jidFactory, bytes);
-        int l = Durables.stringLength(jidFactory.getFactoryKey()) +
+        int l = DurablesImpl.stringLength(jidFactory.getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;

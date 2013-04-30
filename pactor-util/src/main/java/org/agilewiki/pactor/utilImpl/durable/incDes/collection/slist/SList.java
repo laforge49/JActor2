@@ -7,6 +7,7 @@ import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
 import org.agilewiki.pactor.util.durable.incDes.PAList;
+import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.CollectionImpl;
@@ -74,7 +75,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
      */
     @Override
     public int getSerializedLength() {
-        return Durables.INT_LENGTH * 2 + len;
+        return DurablesImpl.INT_LENGTH * 2 + len;
     }
 
     /**
@@ -87,7 +88,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
         super.load(readableBytes);
         len = loadLen(readableBytes);
         list = null;
-        readableBytes.skip(Durables.INT_LENGTH + len);
+        readableBytes.skip(DurablesImpl.INT_LENGTH + len);
     }
 
     /**

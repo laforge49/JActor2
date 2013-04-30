@@ -12,17 +12,6 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
  */
 public class SListFactory extends FactoryImpl {
 
-    public static void registerFactories(final FactoryLocator _factoryLocator) {
-        registerFactory(_factoryLocator, PAList.PASTRING_LIST, PAString.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.BYTES_LIST, Bytes.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.BOX_LIST, Box.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PALONG_LIST, PALong.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PAINTEGER_LIST, PAInteger.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PAFLOAT_LIST, PAFloat.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PADOUBLE_LIST, PADouble.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAList.PABOOLEAN_LIST, PABoolean.FACTORY_NAME);
-    }
-
     public static void registerFactory(FactoryLocator factoryLocator,
                                        String actorType,
                                        String valueType) {

@@ -10,6 +10,7 @@ import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PALong;
+import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 /**
@@ -76,7 +77,7 @@ public class PALongImpl
      */
     @Override
     public int getSerializedLength() {
-        return Durables.LONG_LENGTH;
+        return DurablesImpl.LONG_LENGTH;
     }
 
     /**
