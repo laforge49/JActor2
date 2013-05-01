@@ -16,7 +16,7 @@ public class LongSMap<VALUE_TYPE extends IncDesImpl> extends SMap<Long, VALUE_TY
      * @return The IncDesFactory for the key.
      */
     final protected Factory getKeyFactory() {
-        return Durables.getFactory(Durables.getFactoryLocator(getMailbox()), PALong.FACTORY_NAME);
+        return Durables.getFactoryLocator(getMailbox()).getFactory(PALong.FACTORY_NAME);
     }
 
     /**

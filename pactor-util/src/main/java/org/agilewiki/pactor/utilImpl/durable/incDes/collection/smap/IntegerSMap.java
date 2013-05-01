@@ -15,7 +15,7 @@ public class IntegerSMap<VALUE_TYPE extends IncDesImpl> extends SMap<Integer, VA
      * @return The IncDesFactory for the key.
      */
     final protected Factory getKeyFactory() {
-        return Durables.getFactory(Durables.getFactoryLocator(getMailbox()), PAInteger.FACTORY_NAME);
+        return Durables.getFactoryLocator(getMailbox()).getFactory(PAInteger.FACTORY_NAME);
     }
 
     /**

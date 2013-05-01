@@ -57,7 +57,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      */
     @Override
     final protected Factory getEntryFactory() {
-        Factory af = Durables.getFactory(Durables.getFactoryLocator(getMailbox()), "E." + getType());
+        Factory af = Durables.getFactoryLocator(getMailbox()).getFactory("E." + getType());
         return af;
     }
 

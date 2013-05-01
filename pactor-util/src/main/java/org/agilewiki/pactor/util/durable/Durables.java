@@ -24,11 +24,6 @@ public class Durables {
         return mailboxFactory;
     }
 
-    public static void registerFactories(final MailboxFactory _mailboxFactory) {
-        FactoryLocator factoryLocator = getFactoryLocator(_mailboxFactory);
-        registerFactories(factoryLocator);
-    }
-
     public static MailboxFactory createMailboxFactory(final String _bundleName) throws Exception {
         return createMailboxFactory(_bundleName, "", "");
     }
@@ -43,6 +38,11 @@ public class Durables {
         factoryLocator.configure(_bundleName, _version, _location);
         properties.putProperty("factoryLocator", factoryLocator);
         return mailboxFactory;
+    }
+
+    public static void registerFactories(final MailboxFactory _mailboxFactory) {
+        FactoryLocator factoryLocator = getFactoryLocator(_mailboxFactory);
+        registerFactories(factoryLocator);
     }
 
     public static void registerFactories(final FactoryLocator _factoryLocator) {
@@ -201,11 +201,5 @@ public class Durables {
                                                  final MailboxFactory _mailboxFactory,
                                                  final Ancestor _parent) {
         return _factoryLocator.newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
-    }
-
-    public static Factory getFactory(final FactoryLocator _factoryLocator, final String _factoryName) {
-        if (_factoryLocator == null)
-            throw new IllegalArgumentException("Unknown jid type: " + _factoryName);
-        return _factoryLocator.getFactory(_factoryName);
     }
 }
