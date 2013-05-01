@@ -5,12 +5,12 @@ import org.agilewiki.pactor.api.Request;
 import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
-import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.PASerializable;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.PAList;
+import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.CollectionImpl;
@@ -139,7 +139,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
         appendableBytes.writeInt(size());
         int i = 0;
         while (i < size()) {
-            iGet(i).getDurable().save(appendableBytes);
+            ((IncDesImpl) iGet(i).getDurable()).save(appendableBytes);
             i += 1;
         }
     }

@@ -5,12 +5,12 @@ import org.agilewiki.pactor.api.Request;
 import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
-import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.PASerializable;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.Box;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
+import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 
@@ -248,7 +248,7 @@ public class BoxImpl
             return;
         String factoryKey = ((FactoryImpl) value.getDurable().getFactory()).getFactoryKey();
         appendableBytes.writeString(factoryKey);
-        value.getDurable().save(appendableBytes);
+        ((IncDesImpl) value.getDurable()).save(appendableBytes);
     }
 
     /**

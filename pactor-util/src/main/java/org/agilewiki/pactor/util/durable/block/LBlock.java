@@ -2,11 +2,12 @@ package org.agilewiki.pactor.util.durable.block;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
-import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Root;
+import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
+import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.RootImpl;
 
 /**
  * A block with a length in the header.
@@ -46,7 +47,7 @@ public class LBlock implements Block {
         l = rootJid.getSerializedLength();
         blockBytes = new byte[headerLength() + l];
         AppendableBytes ab = new AppendableBytes(blockBytes, headerLength());
-        rootJid.save(ab);
+        ((RootImpl) rootJid).save(ab);
         ab = new AppendableBytes(blockBytes, 0);
         saveHeader(ab, l);
         return blockBytes;

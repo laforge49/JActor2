@@ -1,7 +1,7 @@
 package org.agilewiki.pactor.util.durable.block;
 
-import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PALong;
+import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 
 import java.util.zip.Adler32;
 

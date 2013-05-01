@@ -1,4 +1,6 @@
-package org.agilewiki.pactor.util.durable;
+package org.agilewiki.pactor.utilImpl.durable;
+
+import org.agilewiki.pactor.util.durable.ReadableBytes;
 
 /**
  * <p>

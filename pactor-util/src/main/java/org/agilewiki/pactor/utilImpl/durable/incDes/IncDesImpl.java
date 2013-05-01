@@ -3,8 +3,12 @@ package org.agilewiki.pactor.utilImpl.durable.incDes;
 import org.agilewiki.pactor.api.*;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.AncestorBase;
-import org.agilewiki.pactor.util.durable.*;
+import org.agilewiki.pactor.util.durable.Durables;
+import org.agilewiki.pactor.util.durable.Factory;
+import org.agilewiki.pactor.util.durable.PASerializable;
+import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.IncDes;
+import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 import java.util.Arrays;
@@ -198,7 +202,6 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param appendableBytes Holds the byte array and offset.
      */
-    @Override
     public void save(final AppendableBytes appendableBytes) {
         if (isSerialized()) {
             byte[] bs = appendableBytes.getBytes();
@@ -219,7 +222,6 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         }
     }
 
-    @Override
     final public Request<Void> saveReq(final AppendableBytes appendableBytes) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
@@ -240,6 +242,23 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         AppendableBytes appendableBytes = new AppendableBytes(bs, 0);
         save(appendableBytes);
         return bs;
+    }
+
+    @Override
+    final public Request<Void> getSerializedBytesReq(final byte[] bytes, final int offset) {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                getSerializedBytes(bytes, offset);
+                rp.processResponse(null);
+            }
+        };
+    }
+
+    @Override
+    public final void getSerializedBytes(byte[] bytes, int offset) {
+        AppendableBytes appendableBytes = new AppendableBytes(bytes, offset);
+        save(appendableBytes);
     }
 
     /**

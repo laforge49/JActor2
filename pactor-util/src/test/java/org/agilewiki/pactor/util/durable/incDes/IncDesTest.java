@@ -3,7 +3,6 @@ package org.agilewiki.pactor.util.durable.incDes;
 import junit.framework.TestCase;
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.MailboxFactory;
-import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 
@@ -16,19 +15,6 @@ public class IncDesTest extends TestCase {
             int l = a.getSerializedLengthReq().call();
             System.err.println(l);
             assertEquals(l, 0);
-        } finally {
-            mailboxFactory.close();
-        }
-    }
-
-    public void test3() throws Exception {
-        System.err.println("\nTest 3");
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
-        try {
-            IncDes a = (IncDes) Durables.newSerializable(mailboxFactory, IncDes.FACTORY_NAME);
-            int l = a.getSerializedLengthReq().call();
-            AppendableBytes appendableBytes = new AppendableBytes(l);
-            a.save(appendableBytes);
         } finally {
             mailboxFactory.close();
         }

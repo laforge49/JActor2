@@ -8,6 +8,7 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Union;
+import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.Scalar;
@@ -270,7 +271,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         appendableBytes.writeInt(factoryIndex);
         if (factoryIndex == -1)
             return;
-        value.getDurable().save(appendableBytes);
+        ((IncDesImpl) value.getDurable()).save(appendableBytes);
     }
 
     /**
