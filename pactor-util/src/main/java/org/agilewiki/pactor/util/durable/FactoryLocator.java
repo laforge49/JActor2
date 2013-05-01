@@ -22,8 +22,6 @@ public interface FactoryLocator extends Ancestor {
      */
     Factory getFactory(final String _name);
 
-    Factory _getFactory(final String _name);
-
     /**
      * Creates a new actor.
      *

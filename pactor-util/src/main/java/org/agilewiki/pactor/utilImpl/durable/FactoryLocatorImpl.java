@@ -93,7 +93,6 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
         return af;
     }
 
-    @Override
     public Factory _getFactory(String actorType) {
         String factoryKey = null;
         if (actorType.contains("|")) {
@@ -105,7 +104,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
         if (af == null) {
             Iterator<FactoryLocator> it = factoryImports.iterator();
             while (it.hasNext()) {
-                af = it.next()._getFactory(actorType);
+                af = ((FactoryLocatorImpl) it.next())._getFactory(actorType);
                 if (af != null)
                     return af;
             }
