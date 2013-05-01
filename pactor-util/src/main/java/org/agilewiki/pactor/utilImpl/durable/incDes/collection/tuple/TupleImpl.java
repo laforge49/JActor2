@@ -1,12 +1,12 @@
 package org.agilewiki.pactor.utilImpl.durable.incDes.collection.tuple;
 
-import org.agilewiki.pactor.util.durable.ComparableKey;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.PASerializable;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Tuple;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
+import org.agilewiki.pactor.utilImpl.durable.ComparableKey;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.CollectionImpl;
 

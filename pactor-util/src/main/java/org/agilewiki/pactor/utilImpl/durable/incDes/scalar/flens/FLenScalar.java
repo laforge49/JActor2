@@ -1,7 +1,7 @@
 package org.agilewiki.pactor.utilImpl.durable.incDes.scalar.flens;
 
-import org.agilewiki.pactor.util.durable.ComparableKey;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
+import org.agilewiki.pactor.utilImpl.durable.ComparableKey;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.Scalar;
 
 /**

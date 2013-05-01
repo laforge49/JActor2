@@ -3,6 +3,7 @@ package org.agilewiki.pactor.utilImpl.durable.incDes.collection;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.PASerializable;
 import org.agilewiki.pactor.util.durable.incDes.MapEntry;
+import org.agilewiki.pactor.utilImpl.durable.ComparableKey;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.app.DurableImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
@@ -13,7 +14,7 @@ import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.Scalar;
  */
 public class MapEntryImpl<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE>
         extends DurableImpl
-        implements MapEntry<KEY_TYPE, VALUE_TYPE> {
+        implements MapEntry<KEY_TYPE, VALUE_TYPE>, ComparableKey<KEY_TYPE> {
 
     private final static int TUPLE_KEY = 0;
     private final static int TUPLE_VALUE = 1;

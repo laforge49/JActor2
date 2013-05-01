@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable;
+package org.agilewiki.pactor.utilImpl.durable;
 
 /**
  * Compares the key or value of a IncDesImpl.
