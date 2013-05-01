@@ -89,7 +89,8 @@ public class PAFloatImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         getFloatReq = new RequestBase<Float>(getMailbox()) {
             @Override

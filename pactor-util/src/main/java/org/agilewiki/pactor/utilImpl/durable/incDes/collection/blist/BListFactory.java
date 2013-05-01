@@ -61,7 +61,8 @@ public class BListFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public BList newSerializable(Mailbox mailbox, Ancestor parent) {
+    public BList newSerializable(Mailbox mailbox, Ancestor parent)
+            throws Exception {
         BList lj = (BList) super.newSerializable(mailbox, parent);
         FactoryLocator f = Durables.getFactoryLocator(mailbox);
         lj.entryFactory = f.getFactory(entryType);

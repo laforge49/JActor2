@@ -39,7 +39,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param v The value.
      * @return True if a new value is created.
      */
-    abstract public Boolean makeValue(SET_TYPE v);
+    abstract public Boolean makeValue(SET_TYPE v)
+            throws Exception;
 
     /**
      * Clear the content.
@@ -61,7 +62,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength() {
+    public int getSerializedLength()
+            throws Exception {
         if (len == -1)
             return PAInteger.LENGTH;
         return PAInteger.LENGTH + len;
@@ -73,7 +75,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param readableBytes Holds the serialized data.
      * @return The size of the serialized data (exclusive of its length header).
      */
-    protected int loadLen(ReadableBytes readableBytes) {
+    protected int loadLen(ReadableBytes readableBytes)
+            throws Exception {
         int l = readableBytes.readInt();
         return l;
     }
@@ -83,7 +86,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      *
      * @param appendableBytes The object written to.
      */
-    protected void saveLen(AppendableBytes appendableBytes) {
+    protected void saveLen(AppendableBytes appendableBytes)
+            throws Exception {
         appendableBytes.writeInt(len);
     }
 
@@ -92,7 +96,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      *
      * @param readableBytes Holds the serialized data.
      */
-    protected void skipLen(ReadableBytes readableBytes) {
+    protected void skipLen(ReadableBytes readableBytes)
+            throws Exception {
         readableBytes.skip(PAInteger.LENGTH);
     }
 
@@ -116,7 +121,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param readableBytes Holds the immutable serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes) {
+    public void load(ReadableBytes readableBytes)
+            throws Exception {
         super.load(readableBytes);
         len = loadLen(readableBytes);
         value = null;
@@ -124,7 +130,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
             readableBytes.skip(len);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         clearReq = new RequestBase<Void>(getMailbox()) {
             public void processRequest(Transport rp) throws Exception {

@@ -63,7 +63,8 @@ public class LongSMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public LongSMap newSerializable(Mailbox mailbox, Ancestor parent) {
+    public LongSMap newSerializable(Mailbox mailbox, Ancestor parent)
+            throws Exception {
         LongSMap imj = (LongSMap) super.newSerializable(mailbox, parent);
         FactoryLocator fl = Durables.getFactoryLocator(mailbox);
         imj.valueFactory = fl.getFactory(valueType);

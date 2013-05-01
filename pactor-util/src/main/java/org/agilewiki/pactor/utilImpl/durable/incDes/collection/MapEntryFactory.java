@@ -52,7 +52,7 @@ public class MapEntryFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public MapEntryImpl newSerializable(Mailbox mailbox, Ancestor parent) {
+    public MapEntryImpl newSerializable(Mailbox mailbox, Ancestor parent) throws Exception {
         MapEntryImpl me = (MapEntryImpl) super.newSerializable(mailbox, parent);
         FactoryLocator fl = Durables.getFactoryLocator(mailbox);
         Factory keyFactory = fl.getFactory(keyType);

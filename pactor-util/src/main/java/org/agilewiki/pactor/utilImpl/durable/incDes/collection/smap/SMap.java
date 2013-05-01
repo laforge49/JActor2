@@ -78,7 +78,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @param key The key which matches to the entry's first element.
      * @return The index or - (insertion point + 1).
      */
-    final public int search(KEY_TYPE key) {
+    final public int search(KEY_TYPE key)
+            throws Exception {
         initializeList();
         int low = 0;
         int high = size() - 1;
@@ -102,7 +103,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @param key The key which matches to the entry's first element.
      * @return The index or -1.
      */
-    final public int higher(KEY_TYPE key) {
+    final public int higher(KEY_TYPE key)
+            throws Exception {
         int i = search(key);
         if (i > -1)
             i += 1;
@@ -120,7 +122,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @param key The key which matches to the entry's first element, or size.
      * @return The index, or size.
      */
-    final public int match(KEY_TYPE key) {
+    final public int match(KEY_TYPE key)
+            throws Exception {
         int i = search(key);
         if (i > -1)
             return i;
@@ -134,7 +137,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @param key The key which matches to the entry's first element.
      * @return The index or -1.
      */
-    final public int ceiling(KEY_TYPE key) {
+    final public int ceiling(KEY_TYPE key)
+            throws Exception {
         int i = match(key);
         if (i == size())
             return -1;
@@ -158,7 +162,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return True if a new entry was created.
      */
     @Override
-    final public Boolean kMake(KEY_TYPE key) {
+    final public Boolean kMake(KEY_TYPE key)
+            throws Exception {
         int i = search(key);
         if (i > -1)
             return false;
@@ -186,14 +191,16 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @param bytes The serialized form of a JID of the appropriate type.
      * @return True if a new tuple was created; otherwise the old value is unaltered.
      */
-    public Boolean kMake(KEY_TYPE key, byte[] bytes) {
+    public Boolean kMake(KEY_TYPE key, byte[] bytes)
+            throws Exception {
         if (!kMake(key))
             return false;
         kSet(key, bytes);
         return true;
     }
 
-    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> kGetEntry(KEY_TYPE key) {
+    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> kGetEntry(KEY_TYPE key)
+            throws Exception {
         int i = search(key);
         if (i < 0)
             return null;
@@ -217,7 +224,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The jid assigned to the key, or null.
      */
     @Override
-    final public VALUE_TYPE kGet(KEY_TYPE key) {
+    final public VALUE_TYPE kGet(KEY_TYPE key)
+            throws Exception {
         MapEntryImpl<KEY_TYPE, VALUE_TYPE> entry = kGetEntry(key);
         if (entry == null)
             return null;
@@ -241,7 +249,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The matching jid, or null.
      */
     @Override
-    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getHigher(KEY_TYPE key) {
+    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getHigher(KEY_TYPE key)
+            throws Exception {
         int i = higher(key);
         if (i < 0)
             return null;
@@ -265,7 +274,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The matching jid, or null.
      */
     @Override
-    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getCeiling(KEY_TYPE key) {
+    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getCeiling(KEY_TYPE key)
+            throws Exception {
         int i = ceiling(key);
         if (i < 0)
             return null;
@@ -289,7 +299,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return True when the item was present and removed.
      */
     @Override
-    final public boolean kRemove(KEY_TYPE key) {
+    final public boolean kRemove(KEY_TYPE key)
+            throws Exception {
         int i = search(key);
         if (i < 0)
             return false;
@@ -304,7 +315,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return A JID actor or null.
      */
     @Override
-    final public PASerializable resolvePathname(String pathname) {
+    final public PASerializable resolvePathname(String pathname)
+            throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
@@ -322,15 +334,18 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
     }
 
-    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getFirst() {
+    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getFirst()
+            throws Exception {
         return (MapEntryImpl<KEY_TYPE, VALUE_TYPE>) iGet(0);
     }
 
-    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getLast() {
+    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getLast()
+            throws Exception {
         return (MapEntryImpl<KEY_TYPE, VALUE_TYPE>) iGet(-1);
     }
 
-    public KEY_TYPE getLastKey() {
+    public KEY_TYPE getLastKey()
+            throws Exception {
         return getLast().getKey();
     }
 
@@ -346,14 +361,16 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public void kSet(KEY_TYPE key, byte[] bytes) {
+    public void kSet(KEY_TYPE key, byte[] bytes)
+            throws Exception {
         MapEntryImpl<KEY_TYPE, VALUE_TYPE> entry = kGetEntry(key);
         if (entry == null)
             throw new IllegalArgumentException("not present: " + key);
         entry.setValueBytes(bytes);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         getFirstReq = new RequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
             @Override

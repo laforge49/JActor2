@@ -39,7 +39,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public void _iSetBytes(int i, byte[] bytes) {
+    public void _iSetBytes(int i, byte[] bytes)
+            throws Exception {
         _initialize();
         PASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
         PASerializable oldElementJid = _iGet(i);
@@ -55,7 +56,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public PASerializable _iGet(int i) {
+    public PASerializable _iGet(int i)
+            throws Exception {
         _initialize();
         if (i < 0)
             i += _size();
@@ -65,7 +67,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public PASerializable _resolvePathname(String pathname) {
+    public PASerializable _resolvePathname(String pathname)
+            throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
@@ -92,7 +95,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
     /**
      * Perform lazy initialization.
      */
-    private void _initialize() {
+    private void _initialize()
+            throws Exception {
         if (tuple != null)
             return;
         tupleFactories = getTupleFactories();
@@ -146,7 +150,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength() {
+    public int getSerializedLength()
+            throws Exception {
         _initialize();
         return PAInteger.LENGTH + _len;
     }
@@ -157,7 +162,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(AppendableBytes appendableBytes)
+            throws Exception {
         _saveLen(appendableBytes);
         int i = 0;
         while (i < _size()) {
@@ -172,7 +178,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes) {
+    public void load(ReadableBytes readableBytes)
+            throws Exception {
         super.load(readableBytes);
         _len = _loadLen(readableBytes);
         tuple = null;

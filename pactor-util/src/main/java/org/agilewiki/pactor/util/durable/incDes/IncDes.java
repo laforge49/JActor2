@@ -19,22 +19,26 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
      *
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
-    int getSerializedLength();
+    int getSerializedLength()
+            throws Exception;
 
     Request<byte[]> getSerializedBytesReq();
 
-    byte[] getSerializedBytes();
+    byte[] getSerializedBytes()
+            throws Exception;
 
     Request<Void> getSerializedBytesReq(byte[] bytes, int offset);
 
-    void getSerializedBytes(byte[] bytes, int offset);
+    void getSerializedBytes(byte[] bytes, int offset)
+            throws Exception;
 
     /**
      * Load the serialized data into the JID.
      *
      * @param _readableBytes Holds the serialized data.
      */
-    void load(final ReadableBytes _readableBytes);
+    void load(final ReadableBytes _readableBytes)
+            throws Exception;
 
     Request<PASerializable> resolvePathnameReq(final String _pathname);
 
@@ -44,7 +48,8 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
      * @param _pathname A JID pathname.
      * @return A JID actor or null.
      */
-    PASerializable resolvePathname(final String _pathname);
+    PASerializable resolvePathname(final String _pathname)
+            throws Exception;
 
     /**
      * Returns the factory.
@@ -62,7 +67,7 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
 
     Request<PASerializable> copyReq(final Mailbox _m);
 
-    PASerializable copy(final Mailbox m);
+    PASerializable copy(final Mailbox m) throws Exception;
 
     Request<Boolean> isEqualReq(final PASerializable _jidA);
 }

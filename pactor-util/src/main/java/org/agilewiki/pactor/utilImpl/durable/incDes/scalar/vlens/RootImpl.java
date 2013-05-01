@@ -32,12 +32,14 @@ public class RootImpl extends BoxImpl implements Root {
     private PAString descriptor;
 
     @Override
-    public String getDescriptor() {
+    public String getDescriptor()
+            throws Exception {
         return descriptor.getValue();
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
         descriptor = (PAString) Durables.newSerializable(PAString.FACTORY_NAME, mailbox);
@@ -51,7 +53,8 @@ public class RootImpl extends BoxImpl implements Root {
      * @param offset Location of the serialized data.
      * @return Updated offset.
      */
-    public int save(byte[] bytes, int offset) {
+    public int save(byte[] bytes, int offset)
+            throws Exception {
         AppendableBytes appendableBytes = new AppendableBytes(bytes, offset);
         save(appendableBytes);
         return appendableBytes.getOffset();
@@ -65,7 +68,8 @@ public class RootImpl extends BoxImpl implements Root {
      * @param length Length of the serialized data
      * @return The updated offset.
      */
-    public int load(byte[] bytes, int offset, int length) {
+    public int load(byte[] bytes, int offset, int length)
+            throws Exception {
         byte[] bs = new byte[length];
         System.arraycopy(bytes, offset, bs, 0, length);
         load(bs);
@@ -78,7 +82,8 @@ public class RootImpl extends BoxImpl implements Root {
      * @param bytes Holds the immutable serialized data.
      *              (And nothing else.)
      */
-    public void load(byte[] bytes) {
+    public void load(byte[] bytes)
+            throws Exception {
         ReadableBytes rb = new ReadableBytes(bytes, 0);
         load(rb);
     }
@@ -101,7 +106,8 @@ public class RootImpl extends BoxImpl implements Root {
      * @return The size of the remaining bytes of serialized data.
      */
     @Override
-    protected int loadLen(ReadableBytes readableBytes) {
+    protected int loadLen(ReadableBytes readableBytes)
+            throws Exception {
         descriptor.load(readableBytes);
         int l = readableBytes.remaining();
         if (l == 0)
@@ -115,7 +121,8 @@ public class RootImpl extends BoxImpl implements Root {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    protected void skipLen(ReadableBytes readableBytes) {
+    protected void skipLen(ReadableBytes readableBytes)
+            throws Exception {
         readableBytes.skip(descriptor.getSerializedLength());
     }
 
@@ -125,7 +132,8 @@ public class RootImpl extends BoxImpl implements Root {
      * @param appendableBytes The object written to.
      */
     @Override
-    protected void saveLen(AppendableBytes appendableBytes) {
+    protected void saveLen(AppendableBytes appendableBytes)
+            throws Exception {
         ((IncDesImpl) descriptor).save(appendableBytes);
     }
 
@@ -135,13 +143,15 @@ public class RootImpl extends BoxImpl implements Root {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength() {
+    public int getSerializedLength()
+            throws Exception {
         if (len == -1)
             return descriptor.getSerializedLength();
         return descriptor.getSerializedLength() + len;
     }
 
-    public PASerializable copy(Mailbox m) {
+    public PASerializable copy(Mailbox m)
+            throws Exception {
         Mailbox mb = m;
         if (mb == null)
             mb = getMailbox();

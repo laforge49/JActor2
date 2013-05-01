@@ -26,7 +26,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
             }
 
             @Override
-            public UnionImpl newSerializable(Mailbox mailbox, Ancestor parent) {
+            public UnionImpl newSerializable(Mailbox mailbox, Ancestor parent)
+                    throws Exception {
                 UnionImpl uj = (UnionImpl) super.newSerializable(mailbox, parent);
                 Factory[] afs = new FactoryImpl[_actorTypes.length];
                 int i = 0;
@@ -86,7 +87,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes) {
+    public void load(ReadableBytes readableBytes)
+            throws Exception {
         super.load(readableBytes);
         factoryIndex = readableBytes.readInt();
         if (factoryIndex == -1)
@@ -103,7 +105,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength() {
+    public int getSerializedLength()
+            throws Exception {
         if (factoryIndex == -1)
             return PAInteger.LENGTH;
         return PAInteger.LENGTH + value.getDurable().getSerializedLength();
@@ -113,12 +116,14 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * Clear the content.
      */
     @Override
-    public void clear() {
+    public void clear()
+            throws Exception {
         setValue(-1);
     }
 
     @Override
-    public void setValue(final String actorType) {
+    public void setValue(final String actorType)
+            throws Exception {
         setValue(getFactoryIndex(actorType));
     }
 
@@ -133,11 +138,13 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         };
     }
 
-    public void setValue(final FactoryImpl factoryImpl) {
+    public void setValue(final FactoryImpl factoryImpl)
+            throws Exception {
         setValue(getFactoryIndex(factoryImpl));
     }
 
-    public void setValue(Integer ndx) {
+    public void setValue(Integer ndx)
+            throws Exception {
         int oldLength = getSerializedLength();
         if (value != null)
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
@@ -160,7 +167,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @param bytes   The serialized data.
      */
     @Override
-    public void setValue(final String jidType, final byte[] bytes) {
+    public void setValue(final String jidType, final byte[] bytes)
+            throws Exception {
         setUnionBytes(getFactoryIndex(jidType), bytes);
     }
 
@@ -181,7 +189,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @param ndx   The factory index.
      * @param bytes The serialized data.
      */
-    public void setUnionBytes(Integer ndx, byte[] bytes) {
+    public void setUnionBytes(Integer ndx, byte[] bytes)
+            throws Exception {
         int oldLength = getSerializedLength();
         if (value != null)
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
@@ -200,7 +209,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @return True if a new value is created.
      */
     @Override
-    public Boolean makeValue(final String jidType) {
+    public Boolean makeValue(final String jidType)
+            throws Exception {
         return makeUnionValue(getFactoryIndex(jidType));
     }
 
@@ -220,7 +230,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @param ndx The Make request.
      * @return True if a new value is created.
      */
-    public Boolean makeUnionValue(Integer ndx) {
+    public Boolean makeUnionValue(Integer ndx)
+            throws Exception {
         if (factoryIndex > -1)
             return false;
         setValue(ndx);
@@ -235,7 +246,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @return True if a new value is created.
      */
     @Override
-    public Boolean makeValue(final String jidType, final byte[] bytes) {
+    public Boolean makeValue(final String jidType, final byte[] bytes)
+            throws Exception {
         return makeUnionBytes(getFactoryIndex(jidType), bytes);
     }
 
@@ -249,7 +261,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         };
     }
 
-    public Boolean makeUnionBytes(Integer ndx, byte[] bytes) {
+    public Boolean makeUnionBytes(Integer ndx, byte[] bytes)
+            throws Exception {
         if (factoryIndex > -1)
             return false;
         setUnionBytes(ndx, bytes);
@@ -267,7 +280,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(AppendableBytes appendableBytes)
+            throws Exception {
         appendableBytes.writeInt(factoryIndex);
         if (factoryIndex == -1)
             return;
@@ -281,7 +295,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname) {
+    public PASerializable resolvePathname(String pathname)
+            throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
@@ -297,7 +312,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
         throw new IllegalArgumentException("pathname " + pathname);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         clearReq = new RequestBase<Void>(getMailbox()) {
             public void processRequest(Transport rp) throws Exception {

@@ -8,7 +8,8 @@ public interface Bytes extends IncDes {
 
     Request<byte[]> getValueReq();
 
-    byte[] getValue();
+    byte[] getValue()
+            throws Exception;
 
     Object getObject() throws Exception;
 

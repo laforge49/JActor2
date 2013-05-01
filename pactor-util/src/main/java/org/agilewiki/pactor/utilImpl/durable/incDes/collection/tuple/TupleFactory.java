@@ -48,7 +48,8 @@ public class TupleFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public TupleImpl newSerializable(Mailbox mailbox, Ancestor parent) {
+    public TupleImpl newSerializable(Mailbox mailbox, Ancestor parent)
+            throws Exception {
         TupleImpl tj = (TupleImpl) super.newSerializable(mailbox, parent);
         FactoryLocator fl = Durables.getFactoryLocator(mailbox);
         Factory[] afs = new FactoryImpl[jidTypes.length];

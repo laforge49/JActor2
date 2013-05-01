@@ -39,5 +39,6 @@ public interface FactoryLocator extends Ancestor {
      * @param _parent  The parent actor to which unrecognized requests are forwarded, or null.
      * @return The new actor.
      */
-    PASerializable newSerializable(final String _name, final Mailbox _mailbox, final Ancestor _parent);
+    PASerializable newSerializable(final String _name, final Mailbox _mailbox, final Ancestor _parent)
+            throws Exception;
 }

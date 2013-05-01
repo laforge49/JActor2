@@ -60,35 +60,42 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return getSerializedLengthReq;
     }
 
-    final public PASerializable createSubordinate(Factory factory) {
+    final public PASerializable createSubordinate(Factory factory)
+            throws Exception {
         return createSubordinate(factory, getParent());
     }
 
-    final public PASerializable createSubordinate(String actorType) {
+    final public PASerializable createSubordinate(String actorType)
+            throws Exception {
         return createSubordinate(actorType, getParent());
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent) {
+    final public PASerializable createSubordinate(Factory factory, Ancestor parent)
+            throws Exception {
         PASerializable jid = factory.newSerializable(getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent) {
+    final public PASerializable createSubordinate(String actorType, Ancestor parent)
+            throws Exception {
         PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(Factory factory, byte[] bytes) {
+    final public PASerializable createSubordinate(Factory factory, byte[] bytes)
+            throws Exception {
         return createSubordinate(factory, getParent(), bytes);
     }
 
-    final public PASerializable createSubordinate(String actorType, byte[] bytes) {
+    final public PASerializable createSubordinate(String actorType, byte[] bytes)
+            throws Exception {
         return createSubordinate(actorType, getParent(), bytes);
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent, byte[] bytes) {
+    final public PASerializable createSubordinate(Factory factory, Ancestor parent, byte[] bytes)
+            throws Exception {
         if (bytes == null)
             return createSubordinate(factory, parent);
         PASerializable jid = factory.newSerializable(getMailbox(), parent);
@@ -97,7 +104,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent, byte[] bytes) {
+    final public PASerializable createSubordinate(String actorType, Ancestor parent, byte[] bytes)
+            throws Exception {
         if (bytes == null)
             return createSubordinate(actorType, parent);
         PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
@@ -106,15 +114,18 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return jid;
     }
 
-    final public PASerializable createSubordinate(Factory factory, ReadableBytes readableBytes) {
+    final public PASerializable createSubordinate(Factory factory, ReadableBytes readableBytes)
+            throws Exception {
         return createSubordinate(factory, getParent(), readableBytes);
     }
 
-    final public PASerializable createSubordinate(String actorType, ReadableBytes readableBytes) {
+    final public PASerializable createSubordinate(String actorType, ReadableBytes readableBytes)
+            throws Exception {
         return createSubordinate(actorType, getParent(), readableBytes);
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes) {
+    final public PASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes)
+            throws Exception {
         PASerializable jid = factory.newSerializable(getMailbox(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
@@ -122,7 +133,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes) {
+    final public PASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes)
+            throws Exception {
         PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
@@ -176,7 +188,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength() {
+    public int getSerializedLength()
+            throws Exception {
         return 0;
     }
 
@@ -194,7 +207,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(AppendableBytes appendableBytes)
+            throws Exception {
     }
 
     /**
@@ -202,7 +216,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param appendableBytes Holds the byte array and offset.
      */
-    public void save(final AppendableBytes appendableBytes) {
+    public void save(final AppendableBytes appendableBytes)
+            throws Exception {
         if (isSerialized()) {
             byte[] bs = appendableBytes.getBytes();
             int off = appendableBytes.getOffset();
@@ -237,7 +252,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @return The byte array holding the serialized persistent data.
      */
-    public final byte[] getSerializedBytes() {
+    public final byte[] getSerializedBytes()
+            throws Exception {
         byte[] bs = new byte[getSerializedLength()];
         AppendableBytes appendableBytes = new AppendableBytes(bs, 0);
         save(appendableBytes);
@@ -256,7 +272,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    public final void getSerializedBytes(byte[] bytes, int offset) {
+    public final void getSerializedBytes(byte[] bytes, int offset)
+            throws Exception {
         AppendableBytes appendableBytes = new AppendableBytes(bytes, offset);
         save(appendableBytes);
     }
@@ -267,7 +284,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes) {
+    public void load(ReadableBytes readableBytes)
+            throws Exception {
         serializedBytes = readableBytes.getBytes();
         serializedOffset = readableBytes.getOffset();
     }
@@ -279,7 +297,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(final String pathname) {
+    public PASerializable resolvePathname(final String pathname)
+            throws Exception {
         throw new UnsupportedOperationException();
     }
 
@@ -300,7 +319,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return a copy of the actor.
      */
     @Override
-    public PASerializable copy(final Mailbox m) {
+    public PASerializable copy(final Mailbox m)
+            throws Exception {
         Mailbox mb = m;
         if (mb == null)
             mb = getMailbox();
@@ -372,7 +392,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param _parent  The parent actor.
      * @param _factory The factory.
      */
-    public void initialize(final Mailbox _mailbox, final Ancestor _parent, final FactoryImpl _factory) {
+    public void initialize(final Mailbox _mailbox, final Ancestor _parent, final FactoryImpl _factory)
+            throws Exception {
         super.initialize(_parent);
         mailbox = _mailbox;
         factory = _factory;

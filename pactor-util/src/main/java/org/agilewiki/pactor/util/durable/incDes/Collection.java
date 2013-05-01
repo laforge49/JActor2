@@ -12,7 +12,8 @@ public interface Collection<ENTRY_TYPE extends PASerializable> extends IncDes {
      *
      * @return The size of the collection.
      */
-    int size();
+    int size()
+            throws Exception;
 
     Request<ENTRY_TYPE> iGetReq(final int _i);
 
@@ -22,7 +23,8 @@ public interface Collection<ENTRY_TYPE extends PASerializable> extends IncDes {
      * @param _ndx Selects the element.
      * @return The ith JID component, or null if the index is out of range.
      */
-    ENTRY_TYPE iGet(final int _ndx);
+    ENTRY_TYPE iGet(final int _ndx)
+            throws Exception;
 
     Request<Void> iSetReq(final int _i, final byte[] _bytes);
 
@@ -33,5 +35,6 @@ public interface Collection<ENTRY_TYPE extends PASerializable> extends IncDes {
      * @param _bytes Holds the serialized data.
      * @throws Exception Any exceptions thrown while processing the request.
      */
-    void iSet(final int _i, final byte[] _bytes);
+    void iSet(final int _i, final byte[] _bytes)
+            throws Exception;
 }

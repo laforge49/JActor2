@@ -112,7 +112,8 @@ public class BytesImpl
      * @return The value held by this component, or null.
      */
     @Override
-    public byte[] getValue() {
+    public byte[] getValue()
+            throws Exception {
         if (len == -1)
             return null;
         if (value != null)
@@ -139,7 +140,8 @@ public class BytesImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(AppendableBytes appendableBytes)
+            throws Exception {
         saveLen(appendableBytes);
         if (len == -1)
             return;
@@ -147,7 +149,8 @@ public class BytesImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         getBytesReq = new RequestBase<byte[]>(getMailbox()) {
             @Override

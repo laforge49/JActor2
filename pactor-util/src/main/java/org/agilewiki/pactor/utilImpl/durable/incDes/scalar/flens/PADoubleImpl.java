@@ -89,7 +89,8 @@ public class PADoubleImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         getDoubleReq = new RequestBase<Double>(getMailbox()) {
             @Override

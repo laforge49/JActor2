@@ -70,7 +70,8 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
      * @param parent  The parent actor to which unrecognized requests are forwarded, or null.
      * @return The new jid.
      */
-    public PASerializable newSerializable(String jidType, Mailbox mailbox, Ancestor parent) {
+    public PASerializable newSerializable(String jidType, Mailbox mailbox, Ancestor parent)
+            throws Exception {
         if (mailbox == null)
             throw new IllegalArgumentException("mailbox may not be null");
         Factory af = getFactory(jidType);

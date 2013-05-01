@@ -48,7 +48,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @return The size of the collection.
      */
     @Override
-    public int size() {
+    public int size()
+            throws Exception {
         initializeList();
         return list.size();
     }
@@ -62,7 +63,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public ENTRY_TYPE iGet(int i) {
+    public ENTRY_TYPE iGet(int i)
+            throws Exception {
         initializeList();
         if (i < 0)
             i += list.size();
@@ -87,7 +89,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes) {
+    public void load(ReadableBytes readableBytes)
+            throws Exception {
         super.load(readableBytes);
         len = loadLen(readableBytes);
         list = null;
@@ -108,7 +111,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
     /**
      * Perform lazy initialization.
      */
-    protected void initializeList() {
+    protected void initializeList()
+            throws Exception {
         if (list != null)
             return;
         entryFactory = getEntryFactory();
@@ -134,7 +138,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(AppendableBytes appendableBytes)
+            throws Exception {
         saveLen(appendableBytes);
         appendableBytes.writeInt(size());
         int i = 0;
@@ -151,7 +156,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname) {
+    public PASerializable resolvePathname(String pathname)
+            throws Exception {
         initializeList();
         return super.resolvePathname(pathname);
     }
@@ -163,7 +169,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @param bytes Holds the serialized data.
      */
     @Override
-    public void iSet(int i, byte[] bytes) {
+    public void iSet(int i, byte[] bytes)
+            throws Exception {
         initializeList();
         if (i < 0)
             i += list.size();
@@ -189,7 +196,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iAdd(int i, byte[] bytes) {
+    public void iAdd(int i, byte[] bytes)
+            throws Exception {
         initializeList();
         if (i < 0)
             i = size() + 1 + i;
@@ -211,7 +219,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iAdd(int i) {
+    public void iAdd(int i)
+            throws Exception {
         initializeList();
         if (i < 0)
             i = size() + 1 + i;
@@ -222,7 +231,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void empty() {
+    public void empty()
+            throws Exception {
         int c = 0;
         int i = 0;
         int s = size();
@@ -248,7 +258,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iRemove(int i) {
+    public void iRemove(int i)
+            throws Exception {
         int s = size();
         if (i < 0)
             i += s;
@@ -261,7 +272,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
         change(c);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         emptyReq = new RequestBase<Void>(getMailbox()) {
             @Override

@@ -79,15 +79,18 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         tupleFactories[TUPLE_UNION] = factoryLocator.getFactory("U." + baseType);
     }
 
-    protected void setNodeLeaf() {
+    protected void setNodeLeaf()
+            throws Exception {
         getUnionJid().setValue(0);
     }
 
-    protected void setNodeFactory(FactoryImpl factoryImpl) {
+    protected void setNodeFactory(FactoryImpl factoryImpl)
+            throws Exception {
         getUnionJid().setValue(factoryImpl);
     }
 
-    protected PAIntegerImpl getSizeJid() {
+    protected PAIntegerImpl getSizeJid()
+            throws Exception {
         return (PAIntegerImpl) _iGet(TUPLE_SIZE);
     }
 
@@ -97,36 +100,44 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The size of the collection.
      */
     @Override
-    public int size() {
+    public int size()
+            throws Exception {
         return getSizeJid().getValue();
     }
 
-    protected void incSize(int inc) {
+    protected void incSize(int inc)
+            throws Exception {
         PAIntegerImpl sj = getSizeJid();
         sj.setValue(sj.getValue() + inc);
     }
 
-    protected UnionImpl getUnionJid() {
+    protected UnionImpl getUnionJid()
+            throws Exception {
         return (UnionImpl) _iGet(TUPLE_UNION);
     }
 
-    protected SMap<KEY_TYPE, PASerializable> getNode() {
+    protected SMap<KEY_TYPE, PASerializable> getNode()
+            throws Exception {
         return (SMap) getUnionJid().getValue();
     }
 
-    public String getNodeFactoryKey() {
+    public String getNodeFactoryKey()
+            throws Exception {
         return getNode().getFactory().getFactoryKey();
     }
 
-    public boolean isLeaf() {
+    public boolean isLeaf()
+            throws Exception {
         return getNodeFactoryKey().startsWith("LM.");
     }
 
-    public int nodeSize() {
+    public int nodeSize()
+            throws Exception {
         return getNode().size();
     }
 
-    public boolean isFat() {
+    public boolean isFat()
+            throws Exception {
         return nodeSize() >= nodeCapacity;
     }
 
@@ -147,7 +158,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> iGet(int ndx) {
+    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> iGet(int ndx)
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         if (isLeaf()) {
             return (MapEntryImpl<KEY_TYPE, VALUE_TYPE>) node.iGet(ndx);
@@ -240,7 +252,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @param bytes The serialized form of a JID of the appropriate type.
      * @return True if a new tuple was created; otherwise the old value is unaltered.
      */
-    public Boolean kMake(KEY_TYPE key, byte[] bytes) {
+    public Boolean kMake(KEY_TYPE key, byte[] bytes)
+            throws Exception {
         if (!kMake(key))
             return false;
         kSet(key, bytes);
@@ -264,7 +277,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return True if a new entry was created.
      */
     @Override
-    final public Boolean kMake(KEY_TYPE key) {
+    final public Boolean kMake(KEY_TYPE key)
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         if (isLeaf()) {
             int i = node.search(key);
@@ -303,7 +317,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return true;
     }
 
-    protected void rootSplit() {
+    protected void rootSplit()
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> oldRootNode = getNode();
         FactoryImpl oldFactory = oldRootNode.getFactory();
         getUnionJid().setValue(1);
@@ -353,7 +368,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         rightEntry.setKey(rightBNode.getLastKey());
     }
 
-    protected void inodeSplit(MapEntryImpl<KEY_TYPE, BMap<KEY_TYPE, PASerializable>> leftEntry) {
+    protected void inodeSplit(MapEntryImpl<KEY_TYPE, BMap<KEY_TYPE, PASerializable>> leftEntry)
+            throws Exception {
         BMap<KEY_TYPE, PASerializable> leftBNode = leftEntry.getValue();
         leftBNode.setNodeFactory(getNode().getFactory());
         SMap<KEY_TYPE, PASerializable> node = getNode();
@@ -384,7 +400,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public void empty() {
+    public void empty()
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         node.empty();
         PAIntegerImpl sj = getSizeJid();
@@ -403,7 +420,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public void iRemove(int ndx) {
+    public void iRemove(int ndx)
+            throws Exception {
         int s = size();
         if (ndx < 0)
             ndx += s;
@@ -483,7 +501,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return True when the item was present and removed.
      */
     @Override
-    final public boolean kRemove(KEY_TYPE key) {
+    final public boolean kRemove(KEY_TYPE key)
+            throws Exception {
         if (isLeaf()) {
             SMap<KEY_TYPE, PASerializable> node = getNode();
             if (node.kRemove(key)) {
@@ -537,7 +556,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return true;
     }
 
-    void appendTo(BMap<KEY_TYPE, VALUE_TYPE> leftNode) {
+    void appendTo(BMap<KEY_TYPE, VALUE_TYPE> leftNode)
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         int i = 0;
         if (isLeaf()) {
@@ -555,13 +575,15 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         }
     }
 
-    void append(byte[] bytes, int eSize) {
+    void append(byte[] bytes, int eSize)
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         node.iAdd(-1, bytes);
         incSize(eSize);
     }
 
-    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> kGetEntry(KEY_TYPE key) {
+    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> kGetEntry(KEY_TYPE key)
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         if (isLeaf()) {
             int i = node.search(key);
@@ -593,7 +615,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The jid assigned to the key, or null.
      */
     @Override
-    final public VALUE_TYPE kGet(KEY_TYPE key) {
+    final public VALUE_TYPE kGet(KEY_TYPE key)
+            throws Exception {
         MapEntryImpl<KEY_TYPE, VALUE_TYPE> entry = kGetEntry(key);
         if (entry == null)
             return null;
@@ -617,7 +640,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The matching jid, or null.
      */
     @Override
-    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getCeiling(KEY_TYPE key) {
+    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getCeiling(KEY_TYPE key)
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         if (isLeaf()) {
             return (MapEntryImpl<KEY_TYPE, VALUE_TYPE>) node.getCeiling(key);
@@ -646,7 +670,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The matching jid, or null.
      */
     @Override
-    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getHigher(KEY_TYPE key) {
+    final public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getHigher(KEY_TYPE key)
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         MapEntryImpl entry = node.getHigher(key);
         if (isLeaf())
@@ -665,7 +690,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @throws Exception Any uncaught exception which occurred while processing the request.
      */
     @Override
-    final public PASerializable resolvePathname(String pathname) {
+    final public PASerializable resolvePathname(String pathname)
+            throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
@@ -683,16 +709,19 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
     }
 
-    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getFirst() {
+    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getFirst()
+            throws Exception {
         return iGet(0);
     }
 
-    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getLast() {
+    public MapEntryImpl<KEY_TYPE, VALUE_TYPE> getLast()
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         return (MapEntryImpl<KEY_TYPE, VALUE_TYPE>) node.getLast();
     }
 
-    public KEY_TYPE getLastKey() {
+    public KEY_TYPE getLastKey()
+            throws Exception {
         SMap<KEY_TYPE, PASerializable> node = getNode();
         return node.getLastKey();
     }
@@ -709,14 +738,16 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public void kSet(KEY_TYPE key, byte[] bytes) {
+    public void kSet(KEY_TYPE key, byte[] bytes)
+            throws Exception {
         MapEntryImpl<KEY_TYPE, VALUE_TYPE> entry = kGetEntry(key);
         if (entry == null)
             throw new IllegalArgumentException("not present: " + key);
         entry.setValueBytes(bytes);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         sizeReq = new RequestBase<Integer>(getMailbox()) {
             @Override

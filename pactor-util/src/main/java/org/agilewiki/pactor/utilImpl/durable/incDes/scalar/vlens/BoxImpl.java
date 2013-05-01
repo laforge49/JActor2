@@ -93,7 +93,8 @@ public class BoxImpl
      * @return True if a new value is created.
      */
     @Override
-    public Boolean makeValue(final String jidType) {
+    public Boolean makeValue(final String jidType)
+            throws Exception {
         if (len > -1)
             return false;
         setValue(jidType);
@@ -116,7 +117,8 @@ public class BoxImpl
      * @param jidType The jid type.
      */
     @Override
-    public void setValue(final String jidType) {
+    public void setValue(final String jidType)
+            throws Exception {
         value = createSubordinate(jidType);
         int l = stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
@@ -143,7 +145,8 @@ public class BoxImpl
      * @param bytes   The serialized data.
      */
     @Override
-    public void setValue(final String jidType, final byte[] bytes) {
+    public void setValue(final String jidType, final byte[] bytes)
+            throws Exception {
         if (len > -1)
             clear();
         setBytes(jidType, bytes);
@@ -168,7 +171,8 @@ public class BoxImpl
      * @return True if a new value is created.
      */
     @Override
-    public Boolean makeValue(final String jidType, final byte[] bytes) {
+    public Boolean makeValue(final String jidType, final byte[] bytes)
+            throws Exception {
         if (len > -1)
             return false;
         setBytes(jidType, bytes);
@@ -191,7 +195,8 @@ public class BoxImpl
      * @param jidType The jid type.
      * @param bytes   The serialized data.
      */
-    public void setBytes(String jidType, byte[] bytes) {
+    public void setBytes(String jidType, byte[] bytes)
+            throws Exception {
         value = createSubordinate(jidType, bytes);
         int l = stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
@@ -206,7 +211,8 @@ public class BoxImpl
      * @param jidFactory The jid factory.
      * @param bytes      The serialized data.
      */
-    public void setBytes(FactoryImpl jidFactory, byte[] bytes) {
+    public void setBytes(FactoryImpl jidFactory, byte[] bytes)
+            throws Exception {
         value = createSubordinate(jidFactory, bytes);
         int l = stringLength(jidFactory.getFactoryKey()) +
                 value.getDurable().getSerializedLength();
@@ -221,7 +227,8 @@ public class BoxImpl
      * @return The actor held by this component, or null.
      */
     @Override
-    public PASerializable getValue() {
+    public PASerializable getValue()
+            throws Exception {
         if (len == -1)
             return null;
         if (value != null)
@@ -242,7 +249,8 @@ public class BoxImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(AppendableBytes appendableBytes)
+            throws Exception {
         saveLen(appendableBytes);
         if (len == -1)
             return;
@@ -258,7 +266,8 @@ public class BoxImpl
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname) {
+    public PASerializable resolvePathname(String pathname)
+            throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
@@ -274,7 +283,8 @@ public class BoxImpl
         throw new IllegalArgumentException("pathname " + pathname);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         clearReq = new RequestBase<Void>(getMailbox()) {
             public void processRequest(Transport rp) throws Exception {

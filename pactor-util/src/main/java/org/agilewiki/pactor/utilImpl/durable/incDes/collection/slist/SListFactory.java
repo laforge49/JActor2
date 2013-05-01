@@ -59,7 +59,8 @@ public class SListFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public SList newSerializable(Mailbox mailbox, Ancestor parent) {
+    public SList newSerializable(Mailbox mailbox, Ancestor parent)
+            throws Exception {
         SList lj = (SList) super.newSerializable(mailbox, parent);
         FactoryLocator fl = Durables.getFactoryLocator(mailbox);
         lj.entryFactory = fl.getFactory(entryType);

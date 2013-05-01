@@ -8,7 +8,8 @@ public interface PAString extends IncDes {
 
     Request<String> getValueReq();
 
-    String getValue();
+    String getValue()
+            throws Exception;
 
     Request<Void> clearReq();
 

@@ -30,7 +30,8 @@ abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes) {
+    public void load(ReadableBytes readableBytes)
+            throws Exception {
         super.load(readableBytes);
         readableBytes.skip(getSerializedLength());
         value = null;
@@ -58,7 +59,8 @@ abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
      * @return The result of a compareTo(o).
      */
     @Override
-    public int compareKeyTo(RESPONSE_TYPE o) {
+    public int compareKeyTo(RESPONSE_TYPE o)
+            throws Exception {
         return getValue().compareTo(o);
     }
 }

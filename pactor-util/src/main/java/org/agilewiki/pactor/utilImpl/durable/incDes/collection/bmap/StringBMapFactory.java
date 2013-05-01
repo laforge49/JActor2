@@ -81,7 +81,8 @@ public class StringBMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public StringBMap newSerializable(Mailbox mailbox, Ancestor parent) {
+    public StringBMap newSerializable(Mailbox mailbox, Ancestor parent)
+            throws Exception {
         StringBMap imj = (StringBMap) super.newSerializable(mailbox, parent);
         FactoryLocator fl = Durables.getFactoryLocator(mailbox);
         imj.valueFactory = fl.getFactory(valueType);

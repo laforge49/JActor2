@@ -1,10 +1,11 @@
-package org.agilewiki.pactor.util.durable.app;
+package org.agilewiki.pactor.utilImpl.durable.app;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
+import org.agilewiki.pactor.util.durable.app.App;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.app.DurableImpl;
 
@@ -32,7 +33,7 @@ public abstract class AppFactory extends FactoryImpl {
     }
 
     @Override
-    abstract protected App instantiateActor();
+    abstract protected App instantiateActor() throws Exception;
 
     /**
      * Create and configure an actor.
@@ -42,7 +43,7 @@ public abstract class AppFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public App newSerializable(Mailbox mailbox, Ancestor parent) {
+    public App newSerializable(Mailbox mailbox, Ancestor parent) throws Exception {
         App a = instantiateActor();
         DurableImpl tj = new DurableImpl();
         a.setDurable(tj);

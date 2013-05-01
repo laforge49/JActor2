@@ -64,15 +64,18 @@ public class BList<ENTRY_TYPE extends PASerializable>
         tupleFactories[TUPLE_UNION] = factoryLocator.getFactory("U." + baseType);
     }
 
-    protected void setNodeLeaf() {
+    protected void setNodeLeaf()
+            throws Exception {
         getUnionJid().setValue(0);
     }
 
-    protected void setNodeFactory(FactoryImpl factoryImpl) {
+    protected void setNodeFactory(FactoryImpl factoryImpl)
+            throws Exception {
         getUnionJid().setValue(factoryImpl);
     }
 
-    protected PAIntegerImpl getSizeJid() {
+    protected PAIntegerImpl getSizeJid()
+            throws Exception {
         return (PAIntegerImpl) _iGet(TUPLE_SIZE);
     }
 
@@ -82,36 +85,44 @@ public class BList<ENTRY_TYPE extends PASerializable>
      * @return The size of the collection.
      */
     @Override
-    public int size() {
+    public int size()
+            throws Exception {
         return getSizeJid().getValue();
     }
 
-    protected void incSize(int inc) {
+    protected void incSize(int inc)
+            throws Exception {
         PAIntegerImpl sj = getSizeJid();
         sj.setValue(sj.getValue() + inc);
     }
 
-    protected UnionImpl getUnionJid() {
+    protected UnionImpl getUnionJid()
+            throws Exception {
         return (UnionImpl) _iGet(TUPLE_UNION);
     }
 
-    protected SList<ENTRY_TYPE> getNode() {
+    protected SList<ENTRY_TYPE> getNode()
+            throws Exception {
         return (SList) getUnionJid().getValue();
     }
 
-    public String getNodeFactoryKey() {
+    public String getNodeFactoryKey()
+            throws Exception {
         return getNode().getFactory().getFactoryKey();
     }
 
-    public boolean isLeaf() {
+    public boolean isLeaf()
+            throws Exception {
         return getNodeFactoryKey().startsWith("LL.");
     }
 
-    public int nodeSize() {
+    public int nodeSize()
+            throws Exception {
         return getNode().size();
     }
 
-    public boolean isFat() {
+    public boolean isFat()
+            throws Exception {
         return nodeSize() >= nodeCapacity;
     }
 
@@ -132,7 +143,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public ENTRY_TYPE iGet(int ndx) {
+    public ENTRY_TYPE iGet(int ndx)
+            throws Exception {
         SList<ENTRY_TYPE> node = getNode();
         if (isLeaf()) {
             return (ENTRY_TYPE) node.iGet(ndx);
@@ -172,7 +184,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
      * @param bytes Holds the serialized data.
      */
     @Override
-    public void iSet(int ndx, byte[] bytes) {
+    public void iSet(int ndx, byte[] bytes)
+            throws Exception {
         SList<ENTRY_TYPE> node = getNode();
         if (isLeaf()) {
             node.iSet(ndx, bytes);
@@ -203,7 +216,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname) {
+    public PASerializable resolvePathname(String pathname)
+            throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
@@ -239,7 +253,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iAdd(int i) {
+    public void iAdd(int i)
+            throws Exception {
         iAdd(i, null);
     }
 
@@ -255,7 +270,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iAdd(int ndx, byte[] bytes) {
+    public void iAdd(int ndx, byte[] bytes)
+            throws Exception {
         if (ndx < 0)
             ndx = size() + 1 + ndx;
         if (ndx < 0 || ndx > size())
@@ -300,7 +316,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
         }
     }
 
-    protected void rootSplit() {
+    protected void rootSplit()
+            throws Exception {
         SList<ENTRY_TYPE> oldRootNode = getNode();
         FactoryImpl oldFactory = oldRootNode.getFactory();
         getUnionJid().setValue(1);
@@ -344,7 +361,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
         }
     }
 
-    protected void inodeSplit(BList<ENTRY_TYPE> leftBNode) {
+    protected void inodeSplit(BList<ENTRY_TYPE> leftBNode)
+            throws Exception {
         SList<ENTRY_TYPE> node = getNode();
         int h = nodeCapacity / 2;
         int i = 0;
@@ -371,7 +389,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void empty() {
+    public void empty()
+            throws Exception {
         SList<ENTRY_TYPE> node = getNode();
         node.empty();
         PAIntegerImpl sj = getSizeJid();
@@ -390,7 +409,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
     }
 
     @Override
-    public void iRemove(int ndx) {
+    public void iRemove(int ndx)
+            throws Exception {
         int s = size();
         if (ndx < 0)
             ndx += s;
@@ -445,7 +465,8 @@ public class BList<ENTRY_TYPE extends PASerializable>
         throw new IllegalArgumentException();
     }
 
-    void append(BList<ENTRY_TYPE> leftNode) {
+    void append(BList<ENTRY_TYPE> leftNode)
+            throws Exception {
         SList<ENTRY_TYPE> node = getNode();
         int i = 0;
         if (isLeaf()) {
@@ -463,13 +484,15 @@ public class BList<ENTRY_TYPE extends PASerializable>
         }
     }
 
-    void append(byte[] bytes, int eSize) {
+    void append(byte[] bytes, int eSize)
+            throws Exception {
         SList<ENTRY_TYPE> node = getNode();
         node.iAdd(-1, bytes);
         incSize(eSize);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         sizeReq = new RequestBase<Integer>(getMailbox()) {
             @Override

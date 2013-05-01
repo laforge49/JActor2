@@ -99,7 +99,8 @@ abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname) {
+    public PASerializable resolvePathname(String pathname)
+            throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
@@ -123,7 +124,8 @@ abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         sizeReq = new RequestBase<Integer>(getMailbox()) {
             @Override

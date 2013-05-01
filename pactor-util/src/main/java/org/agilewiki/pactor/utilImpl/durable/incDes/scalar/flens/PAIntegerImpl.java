@@ -89,7 +89,8 @@ public class PAIntegerImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory) {
+    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+            throws Exception {
         super.initialize(mailbox, parent, factory);
         getIntegerReq = new RequestBase<Integer>(getMailbox()) {
             @Override

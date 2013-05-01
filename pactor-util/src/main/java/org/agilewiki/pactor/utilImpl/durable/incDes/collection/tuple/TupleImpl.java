@@ -29,7 +29,8 @@ public class TupleImpl
     /**
      * Perform lazy initialization.
      */
-    private void initializeTuple() {
+    private void initializeTuple()
+            throws Exception {
         if (tuple != null)
             return;
         tupleFactories = getTupleFactories();
@@ -67,7 +68,8 @@ public class TupleImpl
      * @param bytes Holds the serialized data.
      */
     @Override
-    public void iSet(int i, byte[] bytes) {
+    public void iSet(int i, byte[] bytes)
+            throws Exception {
         initializeTuple();
         PASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
         PASerializable oldElementJid = iGet(i);
@@ -83,7 +85,8 @@ public class TupleImpl
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength() {
+    public int getSerializedLength()
+            throws Exception {
         initializeTuple();
         return PAInteger.LENGTH + len;
     }
@@ -105,7 +108,8 @@ public class TupleImpl
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public PASerializable iGet(int i) {
+    public PASerializable iGet(int i)
+            throws Exception {
         initializeTuple();
         if (i < 0)
             i += size();
@@ -120,7 +124,8 @@ public class TupleImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(AppendableBytes appendableBytes)
+            throws Exception {
         saveLen(appendableBytes);
         int i = 0;
         while (i < size()) {
@@ -135,7 +140,8 @@ public class TupleImpl
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes) {
+    public void load(ReadableBytes readableBytes)
+            throws Exception {
         super.load(readableBytes);
         len = loadLen(readableBytes);
         tuple = null;
@@ -149,7 +155,8 @@ public class TupleImpl
      * @return The result of a compareTo(o) using element 0.
      */
     @Override
-    public int compareKeyTo(Object o) {
+    public int compareKeyTo(Object o)
+            throws Exception {
         ComparableKey<Object> e0 = (ComparableKey<Object>) iGet(0);
         return e0.compareKeyTo(o);
     }

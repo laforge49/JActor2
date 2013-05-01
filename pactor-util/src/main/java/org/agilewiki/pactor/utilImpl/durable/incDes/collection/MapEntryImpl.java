@@ -26,20 +26,24 @@ public class MapEntryImpl<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE>
     }
 
     @Override
-    public KEY_TYPE getKey() {
+    public KEY_TYPE getKey()
+            throws Exception {
         return (KEY_TYPE) ((Scalar) _iGet(TUPLE_KEY).getDurable()).getValue();
     }
 
-    public void setKey(KEY_TYPE key) {
+    public void setKey(KEY_TYPE key)
+            throws Exception {
         ((Scalar) _iGet(TUPLE_KEY).getDurable()).setValue(key);
     }
 
     @Override
-    public VALUE_TYPE getValue() {
+    public VALUE_TYPE getValue()
+            throws Exception {
         return (VALUE_TYPE) _iGet(TUPLE_VALUE);
     }
 
-    public void setValueBytes(byte[] bytes) {
+    public void setValueBytes(byte[] bytes)
+            throws Exception {
         PASerializable old = (PASerializable) getValue();
         ((IncDesImpl) old.getDurable()).setContainerJid(null);
         PASerializable elementJid = createSubordinate(tupleFactories[TUPLE_VALUE], this, bytes);
@@ -55,7 +59,8 @@ public class MapEntryImpl<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE>
      * @return The result of a compareTo(o).
      */
     @Override
-    public int compareKeyTo(KEY_TYPE o) {
+    public int compareKeyTo(KEY_TYPE o)
+            throws Exception {
         return getKey().compareTo(o);
     }
 }
