@@ -12,10 +12,10 @@ public class LBlockTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
-            Root rj = (Root) factoryLocator.newSerializable(
+            Root rj = (Root) Durables.newSerializable(
+                    factoryLocator,
                     Root.FACTORY_NAME,
-                    mailboxFactory.createMailbox(),
-                    null);
+                    mailboxFactory.createMailbox());
             LBlock lb1 = new LBlock();
             lb1.setRootJid(rj);
             byte[] bs = lb1.serialize();

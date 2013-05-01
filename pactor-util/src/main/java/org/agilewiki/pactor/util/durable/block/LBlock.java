@@ -2,6 +2,7 @@ package org.agilewiki.pactor.util.durable.block;
 
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
+import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Root;
@@ -166,7 +167,7 @@ public class LBlock implements Block {
         rb = null;
         if (rootJidBytes == null)
             return null;
-        rootJid = (Root) factoryLocator.newSerializable(Root.FACTORY_NAME, mailbox, parent);
+        rootJid = (Root) Durables.newSerializable(factoryLocator, Root.FACTORY_NAME, mailbox, parent);
         rootJid.load(new ReadableBytes(rootJidBytes, 0));
         return rootJid;
     }

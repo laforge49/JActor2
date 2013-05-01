@@ -210,7 +210,7 @@ public class Durables {
                                                  final String _factoryName,
                                                  final Mailbox _mailbox)
             throws Exception {
-        return _factoryLocator.newSerializable(_factoryName, _mailbox, null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, null);
     }
 
     public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
@@ -218,14 +218,14 @@ public class Durables {
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
             throws Exception {
-        return _factoryLocator.newSerializable(_factoryName, _mailbox, _parent);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, _parent);
     }
 
     public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
                                                  final MailboxFactory _mailboxFactory)
             throws Exception {
-        return _factoryLocator.newSerializable(_factoryName, _mailboxFactory.createMailbox(), null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), null);
     }
 
     public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
@@ -233,6 +233,6 @@ public class Durables {
                                                  final MailboxFactory _mailboxFactory,
                                                  final Ancestor _parent)
             throws Exception {
-        return _factoryLocator.newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
     }
 }
