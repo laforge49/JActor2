@@ -10,7 +10,7 @@ import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.PASerializable;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.Box;
-import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
+import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 
@@ -27,6 +27,32 @@ public class BoxImpl
                 return new BoxImpl();
             }
         });
+    }
+
+    /**
+     * Returns the number of bytes needed to write a string.
+     *
+     * @param _length The number of characters in the string.
+     * @return The size in bytes.
+     */
+    public final static int stringLength(final int _length) {
+        if (_length == -1)
+            return PAInteger.LENGTH;
+        if (_length > -1)
+            return PAInteger.LENGTH + 2 * _length;
+        throw new IllegalArgumentException("invalid string length: " + _length);
+    }
+
+    /**
+     * Returns the number of bytes needed to write a string.
+     *
+     * @param _s The string.
+     * @return The size in bytes.
+     */
+    public final static int stringLength(final String _s) {
+        if (_s == null)
+            return PAInteger.LENGTH;
+        return stringLength(_s.length());
     }
 
     private Request<Void> clearReq;
@@ -92,7 +118,7 @@ public class BoxImpl
     @Override
     public void setValue(final String jidType) {
         value = createSubordinate(jidType);
-        int l = DurablesImpl.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
+        int l = stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
@@ -167,7 +193,7 @@ public class BoxImpl
      */
     public void setBytes(String jidType, byte[] bytes) {
         value = createSubordinate(jidType, bytes);
-        int l = DurablesImpl.stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
+        int l = stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
@@ -182,7 +208,7 @@ public class BoxImpl
      */
     public void setBytes(FactoryImpl jidFactory, byte[] bytes) {
         value = createSubordinate(jidFactory, bytes);
-        int l = DurablesImpl.stringLength(jidFactory.getFactoryKey()) +
+        int l = stringLength(jidFactory.getFactoryKey()) +
                 value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
