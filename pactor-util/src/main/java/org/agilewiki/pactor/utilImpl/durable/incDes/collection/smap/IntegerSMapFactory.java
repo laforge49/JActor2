@@ -24,9 +24,9 @@ public class IntegerSMapFactory extends FactoryImpl {
                                        String actorType,
                                        String valueType,
                                        int initialCapacity) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new MapEntryFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
                 "E." + actorType, PAInteger.FACTORY_NAME, valueType));
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new IntegerSMapFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IntegerSMapFactory(
                 actorType, valueType, initialCapacity));
     }
 

@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.util.durable;
+package org.agilewiki.pactor.utilImpl.durable;
 
 /**
  * <p>

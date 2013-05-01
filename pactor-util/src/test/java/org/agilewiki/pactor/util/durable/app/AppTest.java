@@ -6,8 +6,6 @@ import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.incDes.Box;
-import org.agilewiki.pactor.util.durable.incDes.PAInteger;
-import org.agilewiki.pactor.util.durable.incDes.PAString;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {

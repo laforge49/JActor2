@@ -5,10 +5,10 @@ import org.agilewiki.pactor.api.Request;
 import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.ReadableBytes;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.Scalar;
 
 /**

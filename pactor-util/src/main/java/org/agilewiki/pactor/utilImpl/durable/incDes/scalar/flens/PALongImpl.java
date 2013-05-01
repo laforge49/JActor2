@@ -6,11 +6,11 @@ import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PALong;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
+import org.agilewiki.pactor.utilImpl.durable.ReadableBytes;
 
 /**
  * A JID actor that holds a long.
@@ -19,7 +19,7 @@ public class PALongImpl
         extends FLenScalar<Long> implements PALong {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(PALong.FACTORY_NAME) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(PALong.FACTORY_NAME) {
             @Override
             final protected PALongImpl instantiateActor() {
                 return new PALongImpl();

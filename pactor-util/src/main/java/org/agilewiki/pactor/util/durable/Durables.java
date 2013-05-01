@@ -6,9 +6,9 @@ import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.PAProperties;
 import org.agilewiki.pactor.util.durable.app.App;
-import org.agilewiki.pactor.utilImpl.durable.app.AppFactory;
 import org.agilewiki.pactor.util.durable.incDes.*;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
+import org.agilewiki.pactor.utilImpl.durable.app.AppFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.blist.BListFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.bmap.IntegerBMapFactory;
@@ -140,7 +140,7 @@ public class Durables {
     public static void registerAppFactory(final FactoryLocator _factoryLocator,
                                           final Class<?> _appClass,
                                           final String _subActorType) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new AppFactory(_subActorType) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_subActorType) {
             @Override
             protected App instantiateActor() throws Exception {
                 return (App) _appClass.newInstance();
@@ -152,7 +152,7 @@ public class Durables {
                                           final Class<?> _appClass,
                                           final String _subActorType,
                                           final String... _actorTypes) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new AppFactory(_subActorType, _actorTypes) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_subActorType, _actorTypes) {
             @Override
             protected App instantiateActor() throws Exception {
                 return (App) _appClass.newInstance();

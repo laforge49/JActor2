@@ -21,9 +21,9 @@ public class LongBMapFactory extends FactoryImpl {
         UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LM." + actorType, "IM." + actorType);
 
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new LongBMapFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new LongBMapFactory(
                 actorType, valueType, true, true));
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new LongBMapFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new LongBMapFactory(
                 "IN." + actorType, valueType, false, false));
 
         LongSMapFactory.registerFactory(

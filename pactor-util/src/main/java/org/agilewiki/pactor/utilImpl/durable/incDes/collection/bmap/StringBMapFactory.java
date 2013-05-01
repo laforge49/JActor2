@@ -33,9 +33,9 @@ public class StringBMapFactory extends FactoryImpl {
         UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LM." + actorType, "IM." + actorType);
 
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new StringBMapFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new StringBMapFactory(
                 actorType, valueType, true, true));
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new StringBMapFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new StringBMapFactory(
                 "IN." + actorType, valueType, false, false));
 
         StringSMapFactory.registerFactory(

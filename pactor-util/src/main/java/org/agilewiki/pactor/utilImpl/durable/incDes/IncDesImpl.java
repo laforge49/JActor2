@@ -6,10 +6,10 @@ import org.agilewiki.pactor.util.AncestorBase;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.PASerializable;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.IncDes;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.ReadableBytes;
 
 import java.util.Arrays;
 
@@ -265,13 +265,13 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getSerializedBytes(bytes, offset));
+                rp.processResponse(save(bytes, offset));
             }
         };
     }
 
     @Override
-    public final int getSerializedBytes(byte[] bytes, int offset)
+    public int save(byte[] bytes, int offset)
             throws Exception {
         AppendableBytes appendableBytes = new AppendableBytes(bytes, offset);
         save(appendableBytes);
@@ -288,6 +288,22 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             throws Exception {
         serializedBytes = readableBytes.getBytes();
         serializedOffset = readableBytes.getOffset();
+    }
+
+    @Override
+    public int load(byte[] bytes, int offset, int length)
+            throws Exception {
+        byte[] bs = new byte[length];
+        System.arraycopy(bytes, offset, bs, 0, length);
+        ReadableBytes rb = new ReadableBytes(bytes, 0);
+        load(rb);
+        return offset + length;
+    }
+
+    @Override
+    public void load(byte[] bytes)
+            throws Exception {
+        load(bytes, 0, bytes.length);
     }
 
     /**

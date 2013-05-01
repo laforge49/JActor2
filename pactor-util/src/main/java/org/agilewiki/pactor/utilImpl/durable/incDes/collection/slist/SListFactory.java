@@ -22,7 +22,7 @@ public class SListFactory extends FactoryImpl {
                                        String actorType,
                                        String valueType,
                                        int initialCapacity) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new SListFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new SListFactory(
                 actorType, valueType, initialCapacity));
     }
 

@@ -6,7 +6,7 @@ import org.agilewiki.pactor.api.Request;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.PASerializable;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
+import org.agilewiki.pactor.utilImpl.durable.ReadableBytes;
 
 public interface IncDes extends PASerializable, Actor, Ancestor {
 
@@ -29,7 +29,7 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
 
     Request<Integer> getSerializedBytesReq(byte[] bytes, int offset);
 
-    int getSerializedBytes(byte[] bytes, int offset)
+    int save(byte[] bytes, int offset)
             throws Exception;
 
     /**
@@ -38,6 +38,11 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
      * @param _readableBytes Holds the serialized data.
      */
     void load(final ReadableBytes _readableBytes)
+            throws Exception;
+
+    void load(final byte[] _bytes) throws Exception;
+
+    int load(final byte[] _bytes, final int _offset, final int _length)
             throws Exception;
 
     Request<PASerializable> resolvePathnameReq(final String _pathname);

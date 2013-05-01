@@ -11,7 +11,7 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 public class IncDesFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new IncDesFactory());
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IncDesFactory());
     }
 
     /**

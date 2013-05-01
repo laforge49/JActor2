@@ -22,9 +22,9 @@ public class IntegerBMapFactory extends FactoryImpl {
         UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LM." + actorType, "IM." + actorType);
 
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new IntegerBMapFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IntegerBMapFactory(
                 actorType, valueType, true, true));
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new IntegerBMapFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IntegerBMapFactory(
                 "IN." + actorType, valueType, false, false));
 
         IntegerSMapFactory.registerFactory(

@@ -17,7 +17,7 @@ public class MapEntryFactory extends FactoryImpl {
                                        String actorType,
                                        String keyType,
                                        String valueType) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new MapEntryFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
                 actorType, keyType, valueType));
     }
 

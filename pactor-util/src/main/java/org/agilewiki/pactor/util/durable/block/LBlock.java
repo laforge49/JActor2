@@ -3,10 +3,10 @@ package org.agilewiki.pactor.util.durable.block;
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Root;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
+import org.agilewiki.pactor.utilImpl.durable.ReadableBytes;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.RootImpl;
 
 /**

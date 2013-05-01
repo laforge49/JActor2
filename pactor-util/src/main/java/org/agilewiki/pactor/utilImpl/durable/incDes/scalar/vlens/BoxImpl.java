@@ -7,12 +7,12 @@ import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.PASerializable;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.Box;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
+import org.agilewiki.pactor.utilImpl.durable.ReadableBytes;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 
 /**
@@ -22,7 +22,7 @@ public class BoxImpl
         extends VLenScalar<String, PASerializable> implements Box {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(Box.FACTORY_NAME) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Box.FACTORY_NAME) {
             @Override
             final protected BoxImpl instantiateActor() {
                 return new BoxImpl();

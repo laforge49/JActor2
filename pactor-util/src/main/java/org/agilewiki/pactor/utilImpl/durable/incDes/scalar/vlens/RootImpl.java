@@ -5,12 +5,12 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.PASerializable;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PAString;
 import org.agilewiki.pactor.util.durable.incDes.Root;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
+import org.agilewiki.pactor.utilImpl.durable.ReadableBytes;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 
 /**
@@ -22,7 +22,7 @@ import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 public class RootImpl extends BoxImpl implements Root {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
             @Override
             final protected RootImpl instantiateActor() {
                 return new RootImpl();
@@ -45,48 +45,6 @@ public class RootImpl extends BoxImpl implements Root {
         FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
         descriptor = (PAString) Durables.newSerializable(PAString.FACTORY_NAME, mailbox);
         descriptor.setValue(factoryLocator.getDescriptor());
-    }
-
-    /**
-     * Save the serialized data into a byte array.
-     *
-     * @param bytes  Where the serialized data is to be saved.
-     * @param offset Location of the serialized data.
-     * @return Updated offset.
-     */
-    public int save(byte[] bytes, int offset)
-            throws Exception {
-        AppendableBytes appendableBytes = new AppendableBytes(bytes, offset);
-        save(appendableBytes);
-        return appendableBytes.getOffset();
-    }
-
-    /**
-     * Load the serialized data into the RootImpl.
-     *
-     * @param bytes  A mutable array holding the serialized data.
-     * @param offset Position of the serialized data.
-     * @param length Length of the serialized data
-     * @return The updated offset.
-     */
-    public int load(byte[] bytes, int offset, int length)
-            throws Exception {
-        byte[] bs = new byte[length];
-        System.arraycopy(bytes, offset, bs, 0, length);
-        load(bs);
-        return offset + length;
-    }
-
-    /**
-     * Assigns the serialized data to the RootImpl.
-     *
-     * @param bytes Holds the immutable serialized data.
-     *              (And nothing else.)
-     */
-    public void load(byte[] bytes)
-            throws Exception {
-        ReadableBytes rb = new ReadableBytes(bytes, 0);
-        load(rb);
     }
 
     /**

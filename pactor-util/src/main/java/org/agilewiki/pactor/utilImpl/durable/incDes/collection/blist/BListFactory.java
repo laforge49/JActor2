@@ -21,9 +21,9 @@ public class BListFactory extends FactoryImpl {
         UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LL." + actorType, "IL." + actorType);
 
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new BListFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new BListFactory(
                 actorType, entryType, true, true));
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new BListFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new BListFactory(
                 "IN." + actorType, entryType, false, false));
 
         SListFactory.registerFactory(_factoryLocator,

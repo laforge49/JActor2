@@ -24,9 +24,9 @@ public class LongSMapFactory extends FactoryImpl {
                                        String actorType,
                                        String valueType,
                                        int initialCapacity) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new MapEntryFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
                 "E." + actorType, PALong.FACTORY_NAME, valueType));
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new LongSMapFactory(
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new LongSMapFactory(
                 actorType, valueType, initialCapacity));
     }
 

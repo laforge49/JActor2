@@ -5,12 +5,16 @@ import org.agilewiki.pactor.api.Request;
 import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
-import org.agilewiki.pactor.util.durable.*;
+import org.agilewiki.pactor.util.durable.Durables;
+import org.agilewiki.pactor.util.durable.Factory;
+import org.agilewiki.pactor.util.durable.FactoryLocator;
+import org.agilewiki.pactor.util.durable.PASerializable;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Union;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
+import org.agilewiki.pactor.utilImpl.durable.ReadableBytes;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.Scalar;
 
@@ -19,7 +23,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     public static void registerFactory(final FactoryLocator _factoryLocator,
                                        final String _subActorType,
                                        final String... _actorTypes) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(_subActorType) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(_subActorType) {
 
             @Override
             protected UnionImpl instantiateActor() {

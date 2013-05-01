@@ -1,7 +1,5 @@
 package org.agilewiki.pactor.utilImpl.durable;
 
-import org.agilewiki.pactor.util.durable.ReadableBytes;
-
 /**
  * <p>
  * A mutable wrapper for an array of bytes.

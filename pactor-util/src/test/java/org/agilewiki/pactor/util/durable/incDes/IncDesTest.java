@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.util.durable.Durables;
-import org.agilewiki.pactor.util.durable.ReadableBytes;
 
 public class IncDesTest extends TestCase {
     public void test1() throws Exception {
@@ -39,7 +38,7 @@ public class IncDesTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             IncDes a = (IncDes) Durables.newSerializable(mailboxFactory, IncDes.FACTORY_NAME);
-            a.load(new ReadableBytes(new byte[0], 0));
+            a.load(new byte[0]);
             int l = a.getSerializedLengthReq().call();
             System.err.println(l);
             assertEquals(l, 0);
@@ -53,7 +52,7 @@ public class IncDesTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             IncDes jid1 = (IncDes) Durables.newSerializable(mailboxFactory, IncDes.FACTORY_NAME);
-            jid1.load(new ReadableBytes(new byte[0], 0));
+            jid1.load(new byte[0]);
             Mailbox mailbox = mailboxFactory.createMailbox();
             IncDes jid2 = (IncDes) jid1.copyReq(mailbox).call();
             int l = jid2.getDurable().getSerializedLengthReq().call();

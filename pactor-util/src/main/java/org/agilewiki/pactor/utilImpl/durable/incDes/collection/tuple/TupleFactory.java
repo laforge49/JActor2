@@ -15,7 +15,7 @@ public class TupleFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator _factoryLocator,
                                        String subActorType, String... actorTypes) {
-        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new TupleFactory(subActorType, actorTypes));
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new TupleFactory(subActorType, actorTypes));
     }
 
     private String[] jidTypes;

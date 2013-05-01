@@ -7,7 +7,6 @@ import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.app.App;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
-import org.agilewiki.pactor.utilImpl.durable.app.DurableImpl;
 
 /**
  * Creates DurableImpl objects.
