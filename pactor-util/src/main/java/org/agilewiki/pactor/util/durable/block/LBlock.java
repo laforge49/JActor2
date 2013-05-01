@@ -5,8 +5,8 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
+import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Root;
-import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
 
 /**
  * A block with a length in the header.
@@ -70,7 +70,7 @@ public class LBlock implements Block {
      */
     @Override
     public int headerLength() {
-        return DurablesImpl.INT_LENGTH;
+        return PAInteger.LENGTH;
     }
 
     /**

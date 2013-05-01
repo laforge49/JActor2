@@ -17,11 +17,6 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PABooleanImpl
         extends FLenScalar<Boolean> implements PABoolean {
 
-    /**
-     * Size of a boolean in bytes.
-     */
-    public final static int BOOLEAN_LENGTH = 1;
-
     public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PABoolean.FACTORY_NAME) {
             @Override
@@ -80,7 +75,7 @@ public class PABooleanImpl
      */
     @Override
     public int getSerializedLength() {
-        return BOOLEAN_LENGTH;
+        return LENGTH;
     }
 
     /**

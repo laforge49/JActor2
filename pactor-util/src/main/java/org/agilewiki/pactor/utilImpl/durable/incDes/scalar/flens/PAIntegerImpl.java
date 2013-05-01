@@ -9,7 +9,6 @@ import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
-import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 
 /**
@@ -65,7 +64,7 @@ public class PAIntegerImpl
      */
     @Override
     public int getSerializedLength() {
-        return DurablesImpl.INT_LENGTH;
+        return LENGTH;
     }
 
     /**

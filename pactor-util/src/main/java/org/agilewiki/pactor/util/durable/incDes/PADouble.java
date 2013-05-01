@@ -4,6 +4,11 @@ import org.agilewiki.pactor.api.Request;
 
 public interface PADouble extends IncDes {
 
+    /**
+     * Size of an double in bytes.
+     */
+    public final static int LENGTH = 8;
+
     public static final String FACTORY_NAME = "double";
 
     Request<Double> getValueReq();

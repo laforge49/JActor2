@@ -5,7 +5,7 @@ import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.PASerializable;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.app.Durable;
-import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
+import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 
 /**
@@ -118,7 +118,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param readableBytes Holds the serialized data.
      */
     private void _skipLen(ReadableBytes readableBytes) {
-        readableBytes.skip(DurablesImpl.INT_LENGTH);
+        readableBytes.skip(PAInteger.LENGTH);
     }
 
     /**
@@ -148,7 +148,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     @Override
     public int getSerializedLength() {
         _initialize();
-        return DurablesImpl.INT_LENGTH + _len;
+        return PAInteger.LENGTH + _len;
     }
 
     /**

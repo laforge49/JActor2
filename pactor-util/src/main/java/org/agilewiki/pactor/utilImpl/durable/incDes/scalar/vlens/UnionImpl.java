@@ -6,8 +6,8 @@ import org.agilewiki.pactor.api.RequestBase;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.*;
+import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Union;
-import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.Scalar;
@@ -104,8 +104,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     @Override
     public int getSerializedLength() {
         if (factoryIndex == -1)
-            return DurablesImpl.INT_LENGTH;
-        return DurablesImpl.INT_LENGTH + value.getDurable().getSerializedLength();
+            return PAInteger.LENGTH;
+        return PAInteger.LENGTH + value.getDurable().getSerializedLength();
     }
 
     /**

@@ -1,8 +1,8 @@
 package org.agilewiki.pactor.util.durable.block;
 
 import org.agilewiki.pactor.util.durable.AppendableBytes;
+import org.agilewiki.pactor.util.durable.incDes.PALong;
 import org.agilewiki.pactor.util.durable.incDes.Root;
-import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
 
 /**
  * A block with a length and a timestamp in the header.
@@ -28,7 +28,7 @@ public class LTBlock extends LBlock {
      */
     @Override
     public int headerLength() {
-        return super.headerLength() + DurablesImpl.LONG_LENGTH;
+        return super.headerLength() + PALong.LENGTH;
     }
 
     /**

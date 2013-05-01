@@ -17,11 +17,6 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PADoubleImpl
         extends FLenScalar<Double> implements PADouble {
 
-    /**
-     * Size of an double in bytes.
-     */
-    public final static int DOUBLE_LENGTH = 8;
-
     public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PADouble.FACTORY_NAME) {
             @Override
@@ -80,7 +75,7 @@ public class PADoubleImpl
      */
     @Override
     public int getSerializedLength() {
-        return DOUBLE_LENGTH;
+        return LENGTH;
     }
 
     /**

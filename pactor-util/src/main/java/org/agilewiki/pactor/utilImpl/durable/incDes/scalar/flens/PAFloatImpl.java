@@ -17,11 +17,6 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PAFloatImpl
         extends FLenScalar<Float> implements PAFloat {
 
-    /**
-     * Size of an float in bytes.
-     */
-    public final static int FLOAT_LENGTH = 4;
-
     public static void registerFactory(FactoryLocator factoryLocator) {
         factoryLocator.registerFactory(new FactoryImpl(PAFloat.FACTORY_NAME) {
             @Override
@@ -80,7 +75,7 @@ public class PAFloatImpl
      */
     @Override
     public int getSerializedLength() {
-        return FLOAT_LENGTH;
+        return LENGTH;
     }
 
     /**

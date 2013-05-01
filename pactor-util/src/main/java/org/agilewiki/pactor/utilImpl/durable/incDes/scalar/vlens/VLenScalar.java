@@ -7,7 +7,7 @@ import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
-import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
+import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.Scalar;
 
@@ -63,8 +63,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
     @Override
     public int getSerializedLength() {
         if (len == -1)
-            return DurablesImpl.INT_LENGTH;
-        return DurablesImpl.INT_LENGTH + len;
+            return PAInteger.LENGTH;
+        return PAInteger.LENGTH + len;
     }
 
     /**
@@ -93,7 +93,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param readableBytes Holds the serialized data.
      */
     protected void skipLen(ReadableBytes readableBytes) {
-        readableBytes.skip(DurablesImpl.INT_LENGTH);
+        readableBytes.skip(PAInteger.LENGTH);
     }
 
     /**

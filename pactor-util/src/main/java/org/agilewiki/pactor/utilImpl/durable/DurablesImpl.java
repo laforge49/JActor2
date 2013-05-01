@@ -1,16 +1,8 @@
 package org.agilewiki.pactor.utilImpl.durable;
 
+import org.agilewiki.pactor.util.durable.incDes.PAInteger;
+
 public class DurablesImpl {
-
-    /**
-     * Size of an int in bytes.
-     */
-    public final static int INT_LENGTH = 4;
-
-    /**
-     * Size of a long in bytes.
-     */
-    public final static int LONG_LENGTH = 8;
 
     /**
      * Returns the number of bytes needed to write a string.
@@ -20,9 +12,9 @@ public class DurablesImpl {
      */
     public final static int stringLength(final int _length) {
         if (_length == -1)
-            return INT_LENGTH;
+            return PAInteger.LENGTH;
         if (_length > -1)
-            return INT_LENGTH + 2 * _length;
+            return PAInteger.LENGTH + 2 * _length;
         throw new IllegalArgumentException("invalid string length: " + _length);
     }
 
@@ -34,7 +26,7 @@ public class DurablesImpl {
      */
     public final static int stringLength(final String _s) {
         if (_s == null)
-            return INT_LENGTH;
+            return PAInteger.LENGTH;
         return stringLength(_s.length());
     }
 }

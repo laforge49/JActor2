@@ -4,6 +4,11 @@ import org.agilewiki.pactor.api.Request;
 
 public interface PAFloat extends IncDes {
 
+    /**
+     * Size of an float in bytes.
+     */
+    public final static int LENGTH = 4;
+
     public static final String FACTORY_NAME = "float";
 
     Request<Float> getValueReq();

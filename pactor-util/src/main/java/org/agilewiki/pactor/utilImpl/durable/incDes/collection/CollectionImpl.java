@@ -9,7 +9,7 @@ import org.agilewiki.pactor.util.durable.AppendableBytes;
 import org.agilewiki.pactor.util.durable.PASerializable;
 import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.Collection;
-import org.agilewiki.pactor.utilImpl.durable.DurablesImpl;
+import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 
@@ -59,7 +59,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
      * @param readableBytes Holds the serialized data.
      */
     protected void skipLen(ReadableBytes readableBytes) {
-        readableBytes.skip(DurablesImpl.INT_LENGTH);
+        readableBytes.skip(PAInteger.LENGTH);
     }
 
     /**

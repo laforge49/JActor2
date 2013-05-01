@@ -4,6 +4,11 @@ import org.agilewiki.pactor.api.Request;
 
 public interface PALong extends IncDes {
 
+    /**
+     * Size of a long in bytes.
+     */
+    public final static int LENGTH = 8;
+
     public static final String FACTORY_NAME = "long";
 
     Request<Long> getValueReq();
