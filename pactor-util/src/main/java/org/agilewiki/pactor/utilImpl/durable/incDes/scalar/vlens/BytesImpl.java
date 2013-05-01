@@ -10,6 +10,7 @@ import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.Bytes;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,8 +23,8 @@ import java.io.ObjectOutputStream;
 public class BytesImpl
         extends VLenScalar<byte[], byte[]> implements Bytes {
 
-    public static void registerFactory(FactoryLocator factoryLocator) {
-        factoryLocator.registerFactory(new FactoryImpl(Bytes.FACTORY_NAME) {
+    public static void registerFactory(FactoryLocator _factoryLocator) {
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(Bytes.FACTORY_NAME) {
             @Override
             final protected BytesImpl instantiateActor() {
                 return new BytesImpl();

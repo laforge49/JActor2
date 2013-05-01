@@ -10,6 +10,7 @@ import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.util.durable.incDes.Union;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.Scalar;
 
@@ -18,7 +19,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     public static void registerFactory(final FactoryLocator _factoryLocator,
                                        final String _subActorType,
                                        final String... _actorTypes) {
-        _factoryLocator.registerFactory(new FactoryImpl(_subActorType) {
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(_subActorType) {
 
             @Override
             protected UnionImpl instantiateActor() {

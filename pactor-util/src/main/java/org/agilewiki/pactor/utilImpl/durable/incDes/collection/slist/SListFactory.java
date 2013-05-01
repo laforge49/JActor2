@@ -5,6 +5,7 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 
 /**
  * Creates ListJids.
@@ -17,11 +18,11 @@ public class SListFactory extends FactoryImpl {
         registerFactory(factoryLocator, actorType, valueType, 10);
     }
 
-    public static void registerFactory(FactoryLocator factoryLocator,
+    public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
                                        String valueType,
                                        int initialCapacity) {
-        factoryLocator.registerFactory(new SListFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new SListFactory(
                 actorType, valueType, initialCapacity));
     }
 

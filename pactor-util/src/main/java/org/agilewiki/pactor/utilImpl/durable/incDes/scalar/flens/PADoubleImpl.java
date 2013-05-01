@@ -10,6 +10,7 @@ import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PADouble;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 
 /**
  * A JID actor that holds a double.
@@ -17,8 +18,8 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PADoubleImpl
         extends FLenScalar<Double> implements PADouble {
 
-    public static void registerFactory(FactoryLocator factoryLocator) {
-        factoryLocator.registerFactory(new FactoryImpl(PADouble.FACTORY_NAME) {
+    public static void registerFactory(FactoryLocator _factoryLocator) {
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(PADouble.FACTORY_NAME) {
             @Override
             final protected PADoubleImpl instantiateActor() {
                 return new PADoubleImpl();

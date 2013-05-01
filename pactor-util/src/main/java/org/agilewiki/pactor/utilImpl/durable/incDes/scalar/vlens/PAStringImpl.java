@@ -11,6 +11,7 @@ import org.agilewiki.pactor.util.durable.incDes.PAString;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.ComparableKey;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 
 /**
  * A JID actor that holds a String.
@@ -19,8 +20,8 @@ public class PAStringImpl
         extends VLenScalar<String, String>
         implements ComparableKey<String>, PAString {
 
-    public static void registerFactory(FactoryLocator factoryLocator) {
-        factoryLocator.registerFactory(new FactoryImpl(PAString.FACTORY_NAME) {
+    public static void registerFactory(FactoryLocator _factoryLocator) {
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(PAString.FACTORY_NAME) {
             @Override
             final protected PAStringImpl instantiateActor() {
                 return new PAStringImpl();

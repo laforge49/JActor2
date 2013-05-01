@@ -6,6 +6,7 @@ import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.MapEntryFactory;
 
 /**
@@ -19,13 +20,13 @@ public class IntegerSMapFactory extends FactoryImpl {
         registerFactory(factoryLocator, actorType, valueType, 10);
     }
 
-    public static void registerFactory(FactoryLocator factoryLocator,
+    public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
                                        String valueType,
                                        int initialCapacity) {
-        factoryLocator.registerFactory(new MapEntryFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new MapEntryFactory(
                 "E." + actorType, PAInteger.FACTORY_NAME, valueType));
-        factoryLocator.registerFactory(new IntegerSMapFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new IntegerSMapFactory(
                 actorType, valueType, initialCapacity));
     }
 

@@ -6,6 +6,7 @@ import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.util.durable.incDes.*;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.smap.StringSMapFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
 
@@ -26,21 +27,21 @@ public class StringBMapFactory extends FactoryImpl {
         registerFactory(_factoryLocator, PAMap.STRING_PABOOLEAN_MAP, PABoolean.FACTORY_NAME);
     }
 
-    public static void registerFactory(FactoryLocator factoryLocator,
+    public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
                                        String valueType) {
-        UnionImpl.registerFactory(factoryLocator,
+        UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LM." + actorType, "IM." + actorType);
 
-        factoryLocator.registerFactory(new StringBMapFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new StringBMapFactory(
                 actorType, valueType, true, true));
-        factoryLocator.registerFactory(new StringBMapFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new StringBMapFactory(
                 "IN." + actorType, valueType, false, false));
 
         StringSMapFactory.registerFactory(
-                factoryLocator, "LM." + actorType, valueType, NODE_CAPACITY);
+                _factoryLocator, "LM." + actorType, valueType, NODE_CAPACITY);
         StringSMapFactory.registerFactory(
-                factoryLocator, "IM." + actorType, "IN." + actorType, NODE_CAPACITY);
+                _factoryLocator, "IM." + actorType, "IN." + actorType, NODE_CAPACITY);
     }
 
     private String valueType;

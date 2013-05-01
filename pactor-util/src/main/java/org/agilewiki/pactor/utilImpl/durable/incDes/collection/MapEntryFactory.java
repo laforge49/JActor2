@@ -6,17 +6,18 @@ import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 
 /**
  * Creates map entries.
  */
 public class MapEntryFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator factoryLocator,
+    public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
                                        String keyType,
                                        String valueType) {
-        factoryLocator.registerFactory(new MapEntryFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new MapEntryFactory(
                 actorType, keyType, valueType));
     }
 

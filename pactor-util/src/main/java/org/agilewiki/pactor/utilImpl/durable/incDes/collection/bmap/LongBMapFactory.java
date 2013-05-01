@@ -5,6 +5,7 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.smap.LongSMapFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
 
@@ -14,21 +15,21 @@ import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
 public class LongBMapFactory extends FactoryImpl {
     private final static int NODE_CAPACITY = 28;
 
-    public static void registerFactory(FactoryLocator factoryLocator,
+    public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
                                        String valueType) {
-        UnionImpl.registerFactory(factoryLocator,
+        UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LM." + actorType, "IM." + actorType);
 
-        factoryLocator.registerFactory(new LongBMapFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new LongBMapFactory(
                 actorType, valueType, true, true));
-        factoryLocator.registerFactory(new LongBMapFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new LongBMapFactory(
                 "IN." + actorType, valueType, false, false));
 
         LongSMapFactory.registerFactory(
-                factoryLocator, "LM." + actorType, valueType, NODE_CAPACITY);
+                _factoryLocator, "LM." + actorType, valueType, NODE_CAPACITY);
         LongSMapFactory.registerFactory(
-                factoryLocator, "IM." + actorType, "IN." + actorType, NODE_CAPACITY);
+                _factoryLocator, "IM." + actorType, "IN." + actorType, NODE_CAPACITY);
     }
 
     private String valueType;

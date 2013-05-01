@@ -15,13 +15,6 @@ public interface FactoryLocator extends Ancestor {
     String getDescriptor();
 
     /**
-     * Register an actor factory.
-     *
-     * @param _factory An actor factory.
-     */
-    void registerFactory(final Factory _factory);
-
-    /**
      * Returns the requested actor factory.
      *
      * @param _name The jid type.

@@ -140,7 +140,7 @@ public class Durables {
     public static void registerAppFactory(final FactoryLocator _factoryLocator,
                                           final Class<?> _appClass,
                                           final String _subActorType) {
-        _factoryLocator.registerFactory(new AppFactory(_subActorType) {
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new AppFactory(_subActorType) {
             @Override
             protected App instantiateActor() throws Exception {
                 return (App) _appClass.newInstance();
@@ -152,7 +152,7 @@ public class Durables {
                                           final Class<?> _appClass,
                                           final String _subActorType,
                                           final String... _actorTypes) {
-        _factoryLocator.registerFactory(new AppFactory(_subActorType, _actorTypes) {
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new AppFactory(_subActorType, _actorTypes) {
             @Override
             protected App instantiateActor() throws Exception {
                 return (App) _appClass.newInstance();

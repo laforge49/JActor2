@@ -5,6 +5,7 @@ import org.agilewiki.pactor.util.Ancestor;
 import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.collection.slist.SListFactory;
 import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
 
@@ -14,20 +15,20 @@ import org.agilewiki.pactor.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
 public class BListFactory extends FactoryImpl {
     private final static int NODE_CAPACITY = 28;
 
-    public static void registerFactory(FactoryLocator factoryLocator,
+    public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
                                        String entryType) {
-        UnionImpl.registerFactory(factoryLocator,
+        UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LL." + actorType, "IL." + actorType);
 
-        factoryLocator.registerFactory(new BListFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new BListFactory(
                 actorType, entryType, true, true));
-        factoryLocator.registerFactory(new BListFactory(
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new BListFactory(
                 "IN." + actorType, entryType, false, false));
 
-        SListFactory.registerFactory(factoryLocator,
+        SListFactory.registerFactory(_factoryLocator,
                 "LL." + actorType, entryType, NODE_CAPACITY);
-        SListFactory.registerFactory(factoryLocator,
+        SListFactory.registerFactory(_factoryLocator,
                 "IL." + actorType, "IN." + actorType, NODE_CAPACITY);
     }
 

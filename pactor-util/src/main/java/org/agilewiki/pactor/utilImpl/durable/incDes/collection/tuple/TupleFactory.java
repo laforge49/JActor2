@@ -6,15 +6,16 @@ import org.agilewiki.pactor.util.durable.Durables;
 import org.agilewiki.pactor.util.durable.Factory;
 import org.agilewiki.pactor.util.durable.FactoryLocator;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 
 /**
  * Creates a TupleImpl.
  */
 public class TupleFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator factoryLocator,
+    public static void registerFactory(FactoryLocator _factoryLocator,
                                        String subActorType, String... actorTypes) {
-        factoryLocator.registerFactory(new TupleFactory(subActorType, actorTypes));
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new TupleFactory(subActorType, actorTypes));
     }
 
     private String[] jidTypes;

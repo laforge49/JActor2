@@ -10,6 +10,7 @@ import org.agilewiki.pactor.util.durable.incDes.PAString;
 import org.agilewiki.pactor.util.durable.incDes.Root;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
 
 /**
@@ -20,8 +21,8 @@ import org.agilewiki.pactor.utilImpl.durable.incDes.IncDesImpl;
  */
 public class RootImpl extends BoxImpl implements Root {
 
-    public static void registerFactory(FactoryLocator factoryLocator) {
-        factoryLocator.registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
+    public static void registerFactory(FactoryLocator _factoryLocator) {
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
             @Override
             final protected RootImpl instantiateActor() {
                 return new RootImpl();

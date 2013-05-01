@@ -10,6 +10,7 @@ import org.agilewiki.pactor.util.durable.ReadableBytes;
 import org.agilewiki.pactor.util.durable.incDes.PAInteger;
 import org.agilewiki.pactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
+import org.agilewiki.pactor.utilImpl.durable.FactoryLocatorImpl;
 
 /**
  * A JID actor that holds an integer.
@@ -17,8 +18,8 @@ import org.agilewiki.pactor.utilImpl.durable.FactoryImpl;
 public class PAIntegerImpl
         extends FLenScalar<Integer> implements PAInteger {
 
-    public static void registerFactory(FactoryLocator factoryLocator) {
-        factoryLocator.registerFactory(new FactoryImpl(PAInteger.FACTORY_NAME) {
+    public static void registerFactory(FactoryLocator _factoryLocator) {
+        ((FactoryLocatorImpl)_factoryLocator).registerFactory(new FactoryImpl(PAInteger.FACTORY_NAME) {
             @Override
             final protected PAIntegerImpl instantiateActor() {
                 return new PAIntegerImpl();
