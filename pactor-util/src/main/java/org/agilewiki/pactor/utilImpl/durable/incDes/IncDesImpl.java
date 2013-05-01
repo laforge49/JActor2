@@ -261,21 +261,21 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    final public Request<Void> getSerializedBytesReq(final byte[] bytes, final int offset) {
-        return new RequestBase<Void>(getMailbox()) {
+    final public Request<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
+        return new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
-                getSerializedBytes(bytes, offset);
-                rp.processResponse(null);
+                rp.processResponse(getSerializedBytes(bytes, offset));
             }
         };
     }
 
     @Override
-    public final void getSerializedBytes(byte[] bytes, int offset)
+    public final int getSerializedBytes(byte[] bytes, int offset)
             throws Exception {
         AppendableBytes appendableBytes = new AppendableBytes(bytes, offset);
         save(appendableBytes);
+        return appendableBytes.getOffset();
     }
 
     /**

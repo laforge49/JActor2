@@ -27,9 +27,9 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
     byte[] getSerializedBytes()
             throws Exception;
 
-    Request<Void> getSerializedBytesReq(byte[] bytes, int offset);
+    Request<Integer> getSerializedBytesReq(byte[] bytes, int offset);
 
-    void getSerializedBytes(byte[] bytes, int offset)
+    int getSerializedBytes(byte[] bytes, int offset)
             throws Exception;
 
     /**
