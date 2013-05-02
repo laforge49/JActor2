@@ -1,4 +1,4 @@
-package org.agilewiki.paosgi.testUtil;
+package org.agilewiki.jactor.testService;
 
 import org.agilewiki.paosgi.testIface.Hello;
 import org.osgi.framework.BundleContext;

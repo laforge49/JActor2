@@ -46,9 +46,9 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Activator>org.agilewiki.paosgi.testUtil.Activator</Bundle-Activator>
+                        <Bundle-Activator>org.agilewiki.jactor.testService.Activator</Bundle-Activator>
                         <Export-Package>
-                            org.agilewiki.paosgi.testUtil*;version=${project.version}
+                            org.agilewiki.jactor.testService;version=${project.version}
                         </Export-Package>
                         <Import-Package>
                             org.agilewiki.pactor.api;version=${project.version},
