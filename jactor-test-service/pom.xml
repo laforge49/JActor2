@@ -53,7 +53,7 @@
                         <Import-Package>
                             org.agilewiki.pactor.api;version=${project.version},
                             org.agilewiki.pactor.util*;version=${project.version},
-                            org.agilewiki.paosgi.testIface*;version=${project.version},
+                            org.agilewiki.jactor.testIface;version=${project.version},
                             *
                         </Import-Package>
                     </instructions>
@@ -78,7 +78,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pactor-test-iface</artifactId>
+            <artifactId>jactor-test-iface</artifactId>
             <version>${project.version}</version>
         </dependency>
 

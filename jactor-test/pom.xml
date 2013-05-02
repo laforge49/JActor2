@@ -36,7 +36,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pactor-test-iface</artifactId>
+            <artifactId>jactor-test-iface</artifactId>
             <version>${project.version}</version>
         </dependency>
 
