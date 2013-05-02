@@ -6,13 +6,6 @@ import org.agilewiki.jactor.util.Ancestor;
  * Defines actor types and instantiating
  */
 public interface FactoryLocator extends Ancestor {
-
-    String getLocation();
-
-    String getLocatorKey();
-
-    String getDescriptor();
-
     /**
      * Returns the requested actor factory.
      *

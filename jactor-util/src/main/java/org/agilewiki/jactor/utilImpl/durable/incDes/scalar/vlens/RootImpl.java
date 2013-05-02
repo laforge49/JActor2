@@ -44,7 +44,7 @@ public class RootImpl extends BoxImpl implements Root {
         super.initialize(mailbox, parent, factory);
         FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
         descriptor = (JAString) Durables.newSerializable(JAString.FACTORY_NAME, mailbox);
-        descriptor.setValue(factoryLocator.getDescriptor());
+        descriptor.setValue(((FactoryLocatorImpl) factoryLocator).getDescriptor());
     }
 
     /**
