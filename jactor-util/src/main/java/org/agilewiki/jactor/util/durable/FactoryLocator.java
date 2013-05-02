@@ -3,14 +3,16 @@ package org.agilewiki.jactor.util.durable;
 import org.agilewiki.jactor.util.Ancestor;
 
 /**
- * Defines actor types and instantiating
+ * Locates factories by factory name or factory key, where the key is in the form
+ * factoryName|bundleName|bundleVersion.
  */
 public interface FactoryLocator extends Ancestor {
     /**
-     * Returns the requested actor factory.
+     * Returns the requested factory.
      *
-     * @param _name The jid type.
-     * @return The registered actor factory.
+     * @param _name The factory name or factory key.
+     * @return The matching factory.
+     * @exception IllegalArgumentException is thrown if there is no matching factory.
      */
     Factory getFactory(final String _name);
 }
