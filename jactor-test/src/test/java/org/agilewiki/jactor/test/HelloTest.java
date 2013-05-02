@@ -30,11 +30,11 @@ public class HelloTest {
     @Configuration
     public Option[] config() {
         return options(
-                mavenBundle("org.agilewiki.pactor", "jactor-api", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.pactor", "jactor-impl", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.pactor", "jactor-util", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.pactor", "jactor-test-iface", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.pactor", "jactor-test-service", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor", "jactor-api", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor", "jactor-impl", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor", "jactor-util", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor", "jactor-test-iface", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor", "jactor-test-service", "0.0.1-SNAPSHOT"),
                 junitBundles()
         );
     }

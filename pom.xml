@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.agilewiki.pactor</groupId>
-    <artifactId>pactor</artifactId>
+    <groupId>org.agilewiki.jactor</groupId>
+    <artifactId>jactor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>PActor</name>
+    <name>JActor</name>
     <description>POJO Actors</description>
     <url>https://github.com/laforge49/PActor</url>
 
