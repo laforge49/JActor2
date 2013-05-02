@@ -21,13 +21,9 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.vlens.*;
 public class Durables {
 
     public static MailboxFactory createMailboxFactory() throws Exception {
-        MailboxFactory mailboxFactory = createMailboxFactory("org.agilewiki.jactor.util.durable");
+        MailboxFactory mailboxFactory = createMailboxFactory("org.agilewiki.jactor.util.durable", "", "");
         registerFactories(mailboxFactory);
         return mailboxFactory;
-    }
-
-    public static MailboxFactory createMailboxFactory(final String _bundleName) throws Exception {
-        return createMailboxFactory(_bundleName, "", "");
     }
 
     public static MailboxFactory createMailboxFactory(
