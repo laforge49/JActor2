@@ -53,6 +53,6 @@
         <module>pactor-util</module>
         <module>pactor-test-iface</module>
         <module>pactor-test-service</module>
-        <module>pactor-test</module>
+        <module>jactor-test</module>
     </modules>
 </project>

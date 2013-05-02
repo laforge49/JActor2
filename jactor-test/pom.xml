@@ -8,8 +8,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>pactor-test</artifactId>
-    <name>PActor-test</name>
+    <artifactId>jactor-test</artifactId>
+    <name>JActor-test</name>
     <packaging>jar</packaging>
 
     <properties>
