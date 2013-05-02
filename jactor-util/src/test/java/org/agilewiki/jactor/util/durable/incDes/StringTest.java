@@ -8,21 +8,21 @@ public class StringTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            JAString paString1 = (JAString) Durables.newSerializable(mailboxFactory, JAString.FACTORY_NAME);
-            JAString paString2 = (JAString) paString1.copyReq(null).call();
-            paString2.setValueReq("abc").call();
-            JAString paString3 = (JAString) paString2.copyReq(null).call();
+            JAString jaString1 = (JAString) Durables.newSerializable(mailboxFactory, JAString.FACTORY_NAME);
+            JAString jaString2 = (JAString) jaString1.copyReq(null).call();
+            jaString2.setValueReq("abc").call();
+            JAString jaString3 = (JAString) jaString2.copyReq(null).call();
 
-            int sl = paString1.getSerializedLength();
+            int sl = jaString1.getSerializedLength();
             assertEquals(4, sl);
-            sl = paString2.getSerializedLength();
+            sl = jaString2.getSerializedLength();
             assertEquals(10, sl);
-            sl = paString3.getSerializedLength();
+            sl = jaString3.getSerializedLength();
             assertEquals(10, sl);
 
-            assertNull(paString1.getValueReq().call());
-            assertEquals("abc", paString2.getValueReq().call());
-            assertEquals("abc", paString3.getValueReq().call());
+            assertNull(jaString1.getValueReq().call());
+            assertEquals("abc", jaString2.getValueReq().call());
+            assertEquals("abc", jaString3.getValueReq().call());
 
             Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
             box.setValueReq(JAString.FACTORY_NAME).call();

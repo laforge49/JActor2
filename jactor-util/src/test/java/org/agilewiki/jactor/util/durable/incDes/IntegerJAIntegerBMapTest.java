@@ -5,7 +5,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 
-public class IntegerPAIntegerBMapTest extends TestCase {
+public class IntegerJAIntegerBMapTest extends TestCase {
     public void test1() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {

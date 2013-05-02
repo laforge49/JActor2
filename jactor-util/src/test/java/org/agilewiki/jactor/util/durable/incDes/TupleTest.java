@@ -31,9 +31,9 @@ public class TupleTest extends TestCase {
             JAString f1 = (JAString) t1.resolvePathnameReq("1").call();
             assertEquals("Oranges", f1.getValueReq().call());
 
-            JAString paString1 = (JAString) Durables.newSerializable(mailboxFactory, JAString.FACTORY_NAME);
-            paString1.setValueReq("Peaches").call();
-            byte[] sb = paString1.getSerializedBytesReq().call();
+            JAString jaString1 = (JAString) Durables.newSerializable(mailboxFactory, JAString.FACTORY_NAME);
+            jaString1.setValueReq("Peaches").call();
+            byte[] sb = jaString1.getSerializedBytesReq().call();
             t1.iSetReq(1, sb).call();
             JAString f1b = (JAString) t1.resolvePathnameReq("1").call();
             assertEquals("Peaches", f1b.getValueReq().call());

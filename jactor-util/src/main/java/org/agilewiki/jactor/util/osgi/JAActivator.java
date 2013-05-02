@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 
 public class JAActivator implements BundleActivator, AutoCloseable {
     private MailboxFactory mailboxFactory;
-    private JAProperties paProperties;
+    private JAProperties jaProperties;
     protected BundleContext bundleContext;
     private boolean closing;
 
@@ -20,8 +20,8 @@ public class JAActivator implements BundleActivator, AutoCloseable {
     protected void createMailboxFactory() throws Exception {
         mailboxFactory = new DefaultMailboxFactoryImpl();
         mailboxFactory.addAutoClosable(this);
-        paProperties = new JAProperties(mailboxFactory, null);
-        paProperties.putProperty("bundleContext", bundleContext);
+        jaProperties = new JAProperties(mailboxFactory, null);
+        jaProperties.putProperty("bundleContext", bundleContext);
     }
 
     protected boolean isBundleClosing() {

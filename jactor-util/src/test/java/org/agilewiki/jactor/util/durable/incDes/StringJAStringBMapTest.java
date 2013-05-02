@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 
-public class StringPAStringBMapTest extends TestCase {
+public class StringJAStringBMapTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
