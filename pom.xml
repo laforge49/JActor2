@@ -51,7 +51,7 @@
         <module>pactor-api</module>
         <module>pactor-impl</module>
         <module>pactor-util</module>
-        <module>pactor-test-iface</module>
+        <module>jactor-test-iface</module>
         <module>jactor-test-service</module>
         <module>jactor-test</module>
     </modules>
