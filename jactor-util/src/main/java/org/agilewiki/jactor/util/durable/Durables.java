@@ -3,7 +3,7 @@ package org.agilewiki.jactor.util.durable;
 import org.agilewiki.jactor.util.durable.incDes.*;
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.MailboxFactory;
-import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.PAProperties;
 import org.agilewiki.jactor.util.durable.app.App;

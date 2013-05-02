@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.impl;
+package org.agilewiki.jactor.impl;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;

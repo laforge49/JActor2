@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.atomic;
 
 import junit.framework.TestCase;
 import org.agilewiki.pactor.api.*;
-import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.Delay;
 import org.agilewiki.jactor.util.ResponseCounter;
 

@@ -5,7 +5,7 @@ import org.agilewiki.pactor.api.ActorBase;
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.api.Transport;
 import org.agilewiki.pactor.api.UnboundRequestBase;
-import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {

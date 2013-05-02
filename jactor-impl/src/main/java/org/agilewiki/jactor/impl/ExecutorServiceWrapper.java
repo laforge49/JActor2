@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.impl;
+package org.agilewiki.jactor.impl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -24,7 +24,7 @@ public class ExecutorServiceWrapper implements ThreadManager {
     }
 
     /* (non-Javadoc)
-     * @see org.agilewiki.pactor.impl.ThreadManager#start(int, java.util.concurrent.ThreadFactory)
+     * @see ThreadManager#start(int, java.util.concurrent.ThreadFactory)
      */
     @Override
     public void start(final int threadCount, final ThreadFactory threadFactory) {
@@ -32,7 +32,7 @@ public class ExecutorServiceWrapper implements ThreadManager {
     }
 
     /* (non-Javadoc)
-     * @see org.agilewiki.pactor.impl.ThreadManager#process(java.lang.Runnable)
+     * @see ThreadManager#process(java.lang.Runnable)
      */
     @Override
     public void execute(final Runnable runnable) {
@@ -40,7 +40,7 @@ public class ExecutorServiceWrapper implements ThreadManager {
     }
 
     /* (non-Javadoc)
-     * @see org.agilewiki.pactor.impl.ThreadManager#close()
+     * @see ThreadManager#close()
      */
     @Override
     public void close() {

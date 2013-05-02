@@ -1,7 +1,7 @@
 package org.agilewiki.jactor.util.osgi;
 
 import org.agilewiki.pactor.api.MailboxFactory;
-import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.PAProperties;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;

@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.pactor.api.Mailbox;
 import org.agilewiki.pactor.api.MailboxFactory;
 import org.agilewiki.pactor.api.ResponseProcessor;
-import org.agilewiki.pactor.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 /**
  * Test code.
