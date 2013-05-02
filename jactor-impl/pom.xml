@@ -50,7 +50,7 @@
                             org.agilewiki.jactor.impl;version=${project.version}
                         </Export-Package>
                         <Import-Package>
-                            org.agilewiki.pactor.api;version=${project.version},
+                            org.agilewiki.jactor.api;version=${project.version},
                             *
                         </Import-Package>
                     </instructions>
@@ -62,7 +62,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pactor-api</artifactId>
+            <artifactId>jactor-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.pactor.api.*;
+import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 public class BoundResponseProcessorTest extends TestCase {

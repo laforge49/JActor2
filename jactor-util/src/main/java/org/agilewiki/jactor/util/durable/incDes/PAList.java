@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
-import org.agilewiki.pactor.api.Request;
+import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.util.durable.PASerializable;
 
 public interface PAList<ENTRY_TYPE extends PASerializable> extends Collection<ENTRY_TYPE> {

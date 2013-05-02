@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.impl;
 
-import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.MailboxFactory;
 
 public interface PAMailboxFactory extends MailboxFactory {
     void submit(final Runnable task, final boolean willBlock) throws Exception;

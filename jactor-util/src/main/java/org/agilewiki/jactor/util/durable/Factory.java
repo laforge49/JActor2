@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable;
 
-import org.agilewiki.pactor.api.Mailbox;
+import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.Named;
 

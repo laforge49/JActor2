@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.utilImpl.durable.incDes.collection.smap;
 
-import org.agilewiki.pactor.api.Mailbox;
+import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;

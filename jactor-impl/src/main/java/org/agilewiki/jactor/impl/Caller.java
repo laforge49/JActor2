@@ -2,9 +2,9 @@ package org.agilewiki.jactor.impl;
 
 import java.util.concurrent.Semaphore;
 
-import org.agilewiki.pactor.api.Actor;
-import org.agilewiki.pactor.api.ResponseProcessor;
-import org.agilewiki.pactor.api._Request;
+import org.agilewiki.jactor.api.Actor;
+import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api._Request;
 
 final class Caller implements MessageSource {
     private final Semaphore done = new Semaphore(0);

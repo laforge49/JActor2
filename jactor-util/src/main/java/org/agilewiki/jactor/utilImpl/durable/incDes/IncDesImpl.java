@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.utilImpl.durable.incDes;
 
-import org.agilewiki.pactor.api.*;
+import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.AncestorBase;
 import org.agilewiki.jactor.util.durable.Durables;

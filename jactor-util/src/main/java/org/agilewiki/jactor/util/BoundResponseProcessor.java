@@ -1,9 +1,9 @@
 package org.agilewiki.jactor.util;
 
-import org.agilewiki.pactor.api.Mailbox;
-import org.agilewiki.pactor.api.RequestBase;
-import org.agilewiki.pactor.api.ResponseProcessor;
-import org.agilewiki.pactor.api.Transport;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.RequestBase;
+import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api.Transport;
 
 /**
  * A thread-safe wrapper for ResponseProcessor.

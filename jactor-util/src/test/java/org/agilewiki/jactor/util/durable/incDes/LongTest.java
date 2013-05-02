@@ -1,7 +1,7 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 
 public class LongTest extends TestCase {

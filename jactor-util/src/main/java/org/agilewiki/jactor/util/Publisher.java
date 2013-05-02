@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util;
 
-import org.agilewiki.pactor.api.*;
+import org.agilewiki.jactor.api.*;
 
 import java.util.HashSet;
 import java.util.Set;

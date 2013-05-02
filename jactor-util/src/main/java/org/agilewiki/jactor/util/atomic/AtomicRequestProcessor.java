@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.atomic;
 
-import org.agilewiki.pactor.api.*;
+import org.agilewiki.jactor.api.*;
 
 import java.util.Queue;
 

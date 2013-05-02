@@ -1,7 +1,7 @@
 package org.agilewiki.jactor.general;
 
 import junit.framework.TestCase;
-import org.agilewiki.pactor.api.*;
+import org.agilewiki.jactor.api.*;
 
 public class ServiceTest extends TestCase {
     public void test1() throws Exception {

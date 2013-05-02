@@ -1,8 +1,8 @@
 package org.agilewiki.jactor.util.durable;
 
 import org.agilewiki.jactor.util.durable.incDes.*;
-import org.agilewiki.pactor.api.Mailbox;
-import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.PAProperties;
@@ -21,7 +21,7 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.vlens.*;
 public class Durables {
 
     public static MailboxFactory createMailboxFactory() throws Exception {
-        MailboxFactory mailboxFactory = createMailboxFactory("org.agilewiki.pactor.util.durable");
+        MailboxFactory mailboxFactory = createMailboxFactory("org.agilewiki.jactor.util.durable");
         registerFactories(mailboxFactory);
         return mailboxFactory;
     }

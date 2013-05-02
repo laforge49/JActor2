@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
-import org.agilewiki.pactor.api.Request;
+import org.agilewiki.jactor.api.Request;
 
 public interface PAInteger extends IncDes {
 

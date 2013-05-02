@@ -50,7 +50,7 @@
                             org.agilewiki.jactor.testIface;version=${project.version}
                         </Export-Package>
                         <Import-Package>
-                            org.agilewiki.pactor.api;version=${project.version},
+                            org.agilewiki.jactor.api;version=${project.version},
                             org.agilewiki.jactor.util*;version=${project.version}
                             *
                         </Import-Package>
@@ -64,7 +64,7 @@
 	
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pactor-api</artifactId>
+            <artifactId>jactor-api</artifactId>
             <version>${project.version}</version>
         </dependency>
  

@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.api;
+package org.agilewiki.jactor.api;
 
 /**
  * _Mailbox defines the internal API used by RequestBase and UnboundRequestBase

@@ -9,8 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>pactor-api</artifactId>
-    <name>PActor-API</name>
+    <artifactId>jactor-api</artifactId>
+    <name>JActor-API</name>
     <packaging>bundle</packaging>
  
     <build>
@@ -47,7 +47,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>
-                            org.agilewiki.pactor.api;version=${project.version}
+                            org.agilewiki.jactor.api;version=${project.version}
                         </Export-Package>
                     </instructions>
                 </configuration>

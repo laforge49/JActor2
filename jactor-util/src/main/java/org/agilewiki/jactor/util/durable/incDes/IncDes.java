@@ -1,8 +1,8 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
-import org.agilewiki.pactor.api.Actor;
-import org.agilewiki.pactor.api.Mailbox;
-import org.agilewiki.pactor.api.Request;
+import org.agilewiki.jactor.api.Actor;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Factory;
 import org.agilewiki.jactor.util.durable.PASerializable;

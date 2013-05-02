@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
-import org.agilewiki.pactor.api.Request;
+import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.util.durable.PASerializable;
 
 public interface PAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends PASerializable>

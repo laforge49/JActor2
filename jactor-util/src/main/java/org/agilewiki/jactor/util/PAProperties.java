@@ -1,8 +1,8 @@
 package org.agilewiki.jactor.util;
 
-import org.agilewiki.pactor.api.Actor;
-import org.agilewiki.pactor.api.MailboxFactory;
-import org.agilewiki.pactor.api.Properties;
+import org.agilewiki.jactor.api.Actor;
+import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.Properties;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;

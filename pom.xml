@@ -48,7 +48,7 @@
     </properties>
 	
     <modules>
-        <module>pactor-api</module>
+        <module>jactor-api</module>
         <module>jactor-impl</module>
         <module>jactor-util</module>
         <module>jactor-test-iface</module>

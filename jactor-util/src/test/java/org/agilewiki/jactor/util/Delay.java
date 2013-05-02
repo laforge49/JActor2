@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util;
 
-import org.agilewiki.pactor.api.*;
+import org.agilewiki.jactor.api.*;
 
 public class Delay {
     private final Mailbox mailbox;

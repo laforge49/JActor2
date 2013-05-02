@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.api;
+package org.agilewiki.jactor.api;
 
 /**
  * Actors which receive unbound requests must implement this interface, which is otherwise optional.

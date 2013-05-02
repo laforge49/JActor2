@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.impl;
 
-import org.agilewiki.pactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api.ResponseProcessor;
 
 final class DummyResponseProcessor implements ResponseProcessor<Object> {
     public static final DummyResponseProcessor SINGLETON = new DummyResponseProcessor();

@@ -1,9 +1,9 @@
 package org.agilewiki.jactor.utilImpl.durable.incDes.collection;
 
-import org.agilewiki.pactor.api.Mailbox;
-import org.agilewiki.pactor.api.Request;
-import org.agilewiki.pactor.api.RequestBase;
-import org.agilewiki.pactor.api.Transport;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.Request;
+import org.agilewiki.jactor.api.RequestBase;
+import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.PASerializable;
 import org.agilewiki.jactor.util.durable.incDes.Collection;

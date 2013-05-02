@@ -2,10 +2,10 @@ package org.agilewiki.jactor.impl;
 
 import java.util.Queue;
 
-import org.agilewiki.pactor.api.Actor;
-import org.agilewiki.pactor.api.ExceptionHandler;
-import org.agilewiki.pactor.api.ResponseProcessor;
-import org.agilewiki.pactor.api._Request;
+import org.agilewiki.jactor.api.Actor;
+import org.agilewiki.jactor.api.ExceptionHandler;
+import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api._Request;
 
 /**
  * A concurrent message queue, used in the Mailbox.

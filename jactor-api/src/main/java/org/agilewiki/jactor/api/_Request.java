@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.api;
+package org.agilewiki.jactor.api;
 
 /**
  * A _Request object is passed to another actor's mailbox for execution,

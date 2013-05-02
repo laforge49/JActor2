@@ -1,8 +1,8 @@
 package org.agilewiki.jactor.general.exceptions;
 
 import junit.framework.TestCase;
-import org.agilewiki.pactor.api.Mailbox;
-import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 /**

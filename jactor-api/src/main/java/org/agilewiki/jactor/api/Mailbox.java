@@ -1,4 +1,4 @@
-package org.agilewiki.pactor.api;
+package org.agilewiki.jactor.api;
 
 /**
  * A mailbox is a light-weight thread. Requests/responses passed to a mailbox are enqueued and subsequently processed

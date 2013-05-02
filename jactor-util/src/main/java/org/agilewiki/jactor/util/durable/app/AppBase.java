@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable.app;
 
-import org.agilewiki.pactor.api.Mailbox;
+import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 
 public class AppBase implements App {

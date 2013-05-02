@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.atomic;
 
-import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.MailboxFactory;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

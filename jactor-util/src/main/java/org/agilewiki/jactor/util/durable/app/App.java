@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable.app;
 
-import org.agilewiki.pactor.api.Actor;
+import org.agilewiki.jactor.api.Actor;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.PASerializable;
 

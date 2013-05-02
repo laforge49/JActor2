@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.durable.app;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.agilewiki.pactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.durable.incDes.Box;
