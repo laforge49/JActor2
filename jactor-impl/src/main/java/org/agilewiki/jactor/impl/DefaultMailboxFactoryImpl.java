@@ -20,9 +20,9 @@ import org.slf4j.LoggerFactory;
  * </p>
  */
 
-public class DefaultMailboxFactoryImpl<M extends PAMailbox> implements
-        PAMailboxFactory {
-    private final Logger mailboxLog = LoggerFactory.getLogger(PAMailbox.class);
+public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
+        JAMailboxFactory {
+    private final Logger mailboxLog = LoggerFactory.getLogger(JAMailbox.class);
 
     private final Logger log = LoggerFactory.getLogger(MailboxFactory.class);
 

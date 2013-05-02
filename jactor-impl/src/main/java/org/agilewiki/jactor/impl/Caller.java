@@ -21,13 +21,13 @@ final class Caller implements MessageSource {
 
     @Override
     public void incomingResponse(final Message message,
-            final PAMailbox responseSource) {
+            final JAMailbox responseSource) {
         this.result = message.getResponse();
         done.release();
     }
 
     @Override
-    public boolean buffer(final Message message, final PAMailbox target) {
+    public boolean buffer(final Message message, final JAMailbox target) {
         return false;
     }
 

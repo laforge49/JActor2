@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface PAString extends IncDes {
+public interface JAString extends IncDes {
 
     public static final String FACTORY_NAME = "string";
 

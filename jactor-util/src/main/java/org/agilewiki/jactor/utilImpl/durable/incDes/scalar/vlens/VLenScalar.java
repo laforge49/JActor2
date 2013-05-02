@@ -5,7 +5,7 @@ import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
@@ -65,8 +65,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
     public int getSerializedLength()
             throws Exception {
         if (len == -1)
-            return PAInteger.LENGTH;
-        return PAInteger.LENGTH + len;
+            return JAInteger.LENGTH;
+        return JAInteger.LENGTH + len;
     }
 
     /**
@@ -98,7 +98,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      */
     protected void skipLen(ReadableBytes readableBytes)
             throws Exception {
-        readableBytes.skip(PAInteger.LENGTH);
+        readableBytes.skip(JAInteger.LENGTH);
     }
 
     /**

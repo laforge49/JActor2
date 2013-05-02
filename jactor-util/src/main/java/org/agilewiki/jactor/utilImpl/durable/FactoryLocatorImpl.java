@@ -5,7 +5,7 @@ import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.AncestorBase;
 import org.agilewiki.jactor.util.durable.Factory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -70,7 +70,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
      * @param parent  The parent actor to which unrecognized requests are forwarded, or null.
      * @return The new jid.
      */
-    public PASerializable newSerializable(String jidType, Mailbox mailbox, Ancestor parent)
+    public JASerializable newSerializable(String jidType, Mailbox mailbox, Ancestor parent)
             throws Exception {
         if (mailbox == null)
             throw new IllegalArgumentException("mailbox may not be null");

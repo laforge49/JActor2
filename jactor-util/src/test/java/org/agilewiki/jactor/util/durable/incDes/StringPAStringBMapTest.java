@@ -8,15 +8,15 @@ public class StringPAStringBMapTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAMap<String, PAString> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.STRING_PASTRING_MAP);
+            JAMap<String, JAString> m = (JAMap) Durables.
+                    newSerializable(mailboxFactory, JAMap.STRING_JASTRING_MAP);
             assertEquals(0, m.size());
             assertTrue(m.kMake("1"));
             assertFalse(m.kMake("1"));
             assertEquals(1, m.size());
-            MapEntry<String, PAString> me = m.iGet(0);
+            MapEntry<String, JAString> me = m.iGet(0);
             assertEquals("1", me.getKey());
-            PAString v = m.kGet("1");
+            JAString v = m.kGet("1");
             assertEquals(v, me.getValue());
             assertEquals(me, m.getCeiling("0"));
             assertEquals(me, m.getCeiling("1"));

@@ -4,7 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.incDes.PALong;
+import org.agilewiki.jactor.util.durable.incDes.JALong;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor.utilImpl.durable.incDes.collection.MapEntryFactory;
@@ -25,7 +25,7 @@ public class LongSMapFactory extends FactoryImpl {
                                        String valueType,
                                        int initialCapacity) {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
-                "E." + actorType, PALong.FACTORY_NAME, valueType));
+                "E." + actorType, JALong.FACTORY_NAME, valueType));
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new LongSMapFactory(
                 actorType, valueType, initialCapacity));
     }

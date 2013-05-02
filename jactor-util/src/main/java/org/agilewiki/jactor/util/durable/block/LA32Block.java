@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable.block;
 
-import org.agilewiki.jactor.util.durable.incDes.PALong;
+import org.agilewiki.jactor.util.durable.incDes.JALong;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 
 import java.util.zip.Adler32;
@@ -19,7 +19,7 @@ public class LA32Block extends LBlock {
      */
     @Override
     public int headerLength() {
-        return super.headerLength() + PALong.LENGTH;
+        return super.headerLength() + JALong.LENGTH;
     }
 
     /**

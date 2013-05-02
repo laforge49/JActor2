@@ -31,12 +31,12 @@ public class RootTest extends TestCase {
             rpa = (IncDes) root11.resolvePathnameReq("0").call();
             assertNull(rpa);
 
-            Factory stringAFactory = factoryLocator.getFactory(PAString.FACTORY_NAME);
-            PAString paString1 = (PAString) stringAFactory.newSerializable(mailbox, factoryLocator);
+            Factory stringAFactory = factoryLocator.getFactory(JAString.FACTORY_NAME);
+            JAString paString1 = (JAString) stringAFactory.newSerializable(mailbox, factoryLocator);
             paString1.setValueReq("abc").call();
             byte[] sb = paString1.getSerializedBytesReq().call();
             root1.setValueReq(paString1.getType(), sb).call();
-            PAString sj = (PAString) root1.getValueReq().call();
+            JAString sj = (JAString) root1.getValueReq().call();
             assertEquals("abc", sj.getValueReq().call());
 
             Root root2 = (Root) rootFactory.newSerializable(mailbox, factoryLocator);

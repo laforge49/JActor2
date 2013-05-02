@@ -8,10 +8,10 @@ public class FloatTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAFloat float1 = (PAFloat) Durables.newSerializable(mailboxFactory, PAFloat.FACTORY_NAME);
-            PAFloat float2 = (PAFloat) float1.copyReq(null).call();
+            JAFloat float1 = (JAFloat) Durables.newSerializable(mailboxFactory, JAFloat.FACTORY_NAME);
+            JAFloat float2 = (JAFloat) float1.copyReq(null).call();
             float2.setValueReq(1.0f).call();
-            PAFloat float3 = (PAFloat) float2.copyReq(null).call();
+            JAFloat float3 = (JAFloat) float2.copyReq(null).call();
 
             int sl = float1.getSerializedLength();
             assertEquals(4, sl);
@@ -28,12 +28,12 @@ public class FloatTest extends TestCase {
             assertEquals(1.f, v);
 
             Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
-            box.setValueReq(PAFloat.FACTORY_NAME).call();
-            PAFloat rpa = (PAFloat) box.resolvePathnameReq("0").call();
+            box.setValueReq(JAFloat.FACTORY_NAME).call();
+            JAFloat rpa = (JAFloat) box.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();
             assertEquals(0.f, v);
             rpa.setValueReq(-1.0f).call();
-            rpa = (PAFloat) box.resolvePathnameReq("0").call();
+            rpa = (JAFloat) box.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();
             assertEquals(-1.f, v);
 

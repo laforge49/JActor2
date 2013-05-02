@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable.block;
 
-import org.agilewiki.jactor.util.durable.incDes.PALong;
+import org.agilewiki.jactor.util.durable.incDes.JALong;
 import org.agilewiki.jactor.util.durable.incDes.Root;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 
@@ -28,7 +28,7 @@ public class LTBlock extends LBlock {
      */
     @Override
     public int headerLength() {
-        return super.headerLength() + PALong.LENGTH;
+        return super.headerLength() + JALong.LENGTH;
     }
 
     /**

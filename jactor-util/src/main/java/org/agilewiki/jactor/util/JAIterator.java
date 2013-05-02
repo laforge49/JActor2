@@ -6,7 +6,7 @@ import org.agilewiki.jactor.api.ResponseProcessor;
  * The JAIterator.process method is called repeatedly until it returns a non-null response,
  * which is then returned by JAIterator.
  */
-abstract public class PAIterator {
+abstract public class JAIterator {
     /**
      * Iterates over the process method until there is a non-null result.
      *

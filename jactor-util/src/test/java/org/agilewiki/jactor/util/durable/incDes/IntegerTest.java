@@ -8,10 +8,10 @@ public class IntegerTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAInteger int1 = (PAInteger) Durables.newSerializable(mailboxFactory, PAInteger.FACTORY_NAME);
-            PAInteger int2 = (PAInteger) int1.copyReq(null).call();
+            JAInteger int1 = (JAInteger) Durables.newSerializable(mailboxFactory, JAInteger.FACTORY_NAME);
+            JAInteger int2 = (JAInteger) int1.copyReq(null).call();
             int2.setValueReq(1).call();
-            PAInteger int3 = (PAInteger) int2.copyReq(null).call();
+            JAInteger int3 = (JAInteger) int2.copyReq(null).call();
 
             int sl = int1.getSerializedLength();
             assertEquals(4, sl);
@@ -28,12 +28,12 @@ public class IntegerTest extends TestCase {
             assertEquals(1, v);
 
             Box box1 = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
-            box1.setValueReq(PAInteger.FACTORY_NAME).call();
-            PAInteger rpa = (PAInteger) box1.resolvePathnameReq("0").call();
+            box1.setValueReq(JAInteger.FACTORY_NAME).call();
+            JAInteger rpa = (JAInteger) box1.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();
             assertEquals(0, v);
             rpa.setValueReq(-1).call();
-            rpa = (PAInteger) box1.resolvePathnameReq("0").call();
+            rpa = (JAInteger) box1.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();
             assertEquals(-1, v);
 

@@ -6,9 +6,9 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.PASerializable;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
-import org.agilewiki.jactor.util.durable.incDes.PAList;
+import org.agilewiki.jactor.util.durable.JASerializable;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAList;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
@@ -20,9 +20,9 @@ import java.util.ArrayList;
 /**
  * Holds an ArrayList of JID actors, all of the same type.
  */
-public class SList<ENTRY_TYPE extends PASerializable>
+public class SList<ENTRY_TYPE extends JASerializable>
         extends CollectionImpl<ENTRY_TYPE>
-        implements PAList<ENTRY_TYPE> {
+        implements JAList<ENTRY_TYPE> {
 
     public int initialCapacity = 10;
 
@@ -80,7 +80,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
      */
     @Override
     public int getSerializedLength() {
-        return PAInteger.LENGTH * 2 + len;
+        return JAInteger.LENGTH * 2 + len;
     }
 
     /**
@@ -94,7 +94,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
         super.load(readableBytes);
         len = loadLen(readableBytes);
         list = null;
-        readableBytes.skip(PAInteger.LENGTH + len);
+        readableBytes.skip(JAInteger.LENGTH + len);
     }
 
     /**
@@ -156,7 +156,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(String pathname)
             throws Exception {
         initializeList();
         return super.resolvePathname(pathname);
@@ -176,8 +176,8 @@ public class SList<ENTRY_TYPE extends PASerializable>
             i += list.size();
         if (i < 0 || i >= list.size())
             throw new IllegalArgumentException();
-        PASerializable elementJid = createSubordinate(entryFactory, this, bytes);
-        PASerializable oldElementJid = iGet(i);
+        JASerializable elementJid = createSubordinate(entryFactory, this, bytes);
+        JASerializable oldElementJid = iGet(i);
         ((IncDesImpl) oldElementJid.getDurable()).setContainerJid(null);
         list.set(i, (ENTRY_TYPE) elementJid);
         change(elementJid.getDurable().getSerializedLength() -
@@ -201,7 +201,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
         initializeList();
         if (i < 0)
             i = size() + 1 + i;
-        PASerializable jid = createSubordinate(entryFactory, this, bytes);
+        JASerializable jid = createSubordinate(entryFactory, this, bytes);
         int c = jid.getDurable().getSerializedLength();
         list.add(i, (ENTRY_TYPE) jid);
         change(c);
@@ -224,7 +224,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
         initializeList();
         if (i < 0)
             i = size() + 1 + i;
-        PASerializable jid = createSubordinate(entryFactory, this);
+        JASerializable jid = createSubordinate(entryFactory, this);
         int c = jid.getDurable().getSerializedLength();
         list.add(i, (ENTRY_TYPE) jid);
         change(c);
@@ -237,7 +237,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
         int i = 0;
         int s = size();
         while (i < s) {
-            PASerializable jid = iGet(i);
+            JASerializable jid = iGet(i);
             ((IncDesImpl) jid.getDurable()).setContainerJid(null);
             c -= jid.getDurable().getSerializedLength();
             i += 1;
@@ -265,7 +265,7 @@ public class SList<ENTRY_TYPE extends PASerializable>
             i += s;
         if (i < 0 || i >= s)
             throw new IllegalArgumentException();
-        PASerializable jid = (IncDesImpl) iGet(i);
+        JASerializable jid = (IncDesImpl) iGet(i);
         ((IncDesImpl) jid.getDurable()).setContainerJid(null);
         int c = -jid.getDurable().getSerializedLength();
         list.remove(i);

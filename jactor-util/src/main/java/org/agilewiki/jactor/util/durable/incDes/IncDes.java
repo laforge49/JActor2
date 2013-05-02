@@ -5,10 +5,10 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
 
-public interface IncDes extends PASerializable, Actor, Ancestor {
+public interface IncDes extends JASerializable, Actor, Ancestor {
 
     public static final String FACTORY_NAME = "incdes";
 
@@ -45,7 +45,7 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
     int load(final byte[] _bytes, final int _offset, final int _length)
             throws Exception;
 
-    Request<PASerializable> resolvePathnameReq(final String _pathname);
+    Request<JASerializable> resolvePathnameReq(final String _pathname);
 
     /**
      * Resolves a JID pathname, returning a JID actor or null.
@@ -53,7 +53,7 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
      * @param _pathname A JID pathname.
      * @return A JID actor or null.
      */
-    PASerializable resolvePathname(final String _pathname)
+    JASerializable resolvePathname(final String _pathname)
             throws Exception;
 
     /**
@@ -70,9 +70,9 @@ public interface IncDes extends PASerializable, Actor, Ancestor {
      */
     String getType();
 
-    Request<PASerializable> copyReq(final Mailbox _m);
+    Request<JASerializable> copyReq(final Mailbox _m);
 
-    PASerializable copy(final Mailbox m) throws Exception;
+    JASerializable copy(final Mailbox m) throws Exception;
 
-    Request<Boolean> isEqualReq(final PASerializable _jidA);
+    Request<Boolean> isEqualReq(final JASerializable _jidA);
 }

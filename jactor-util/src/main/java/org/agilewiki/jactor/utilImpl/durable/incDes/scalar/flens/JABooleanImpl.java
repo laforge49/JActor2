@@ -6,32 +6,32 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.incDes.PADouble;
+import org.agilewiki.jactor.util.durable.incDes.JABoolean;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
 
 /**
- * A JID actor that holds a double.
+ * A JID actor that holds a boolean.
  */
-public class PADoubleImpl
-        extends FLenScalar<Double> implements PADouble {
+public class JABooleanImpl
+        extends FLenScalar<Boolean> implements JABoolean {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(PADouble.FACTORY_NAME) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JABoolean.FACTORY_NAME) {
             @Override
-            final protected PADoubleImpl instantiateActor() {
-                return new PADoubleImpl();
+            final protected JABooleanImpl instantiateActor() {
+                return new JABooleanImpl();
             }
         });
     }
 
-    private Request<Double> getDoubleReq;
+    private Request<Boolean> getBooleanReq;
 
     @Override
-    public Request<Double> getValueReq() {
-        return getDoubleReq;
+    public Request<Boolean> getValueReq() {
+        return getBooleanReq;
     }
 
     /**
@@ -40,8 +40,8 @@ public class PADoubleImpl
      * @return The default value
      */
     @Override
-    protected Double newValue() {
-        return new Double(0.D);
+    protected Boolean newValue() {
+        return new Boolean(false);
     }
 
     /**
@@ -50,16 +50,16 @@ public class PADoubleImpl
      * @return The value held by this component.
      */
     @Override
-    public Double getValue() {
+    public Boolean getValue() {
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
-        value = readableBytes.readDouble();
+        value = readableBytes.readBoolean();
         return value;
     }
 
     @Override
-    public Request<Void> setValueReq(final Double v) {
+    public Request<Void> setValueReq(final Boolean v) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
@@ -86,14 +86,14 @@ public class PADoubleImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeDouble(value);
+        appendableBytes.writeBoolean(((Boolean) value).booleanValue());
     }
 
     @Override
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getDoubleReq = new RequestBase<Double>(getMailbox()) {
+        getBooleanReq = new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

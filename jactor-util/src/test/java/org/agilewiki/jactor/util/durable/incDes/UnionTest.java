@@ -11,17 +11,17 @@ public class UnionTest extends TestCase {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
-            Durables.registerUnionFactory(factoryLocator, "siUnion", PAString.FACTORY_NAME, "siUnion");
+            Durables.registerUnionFactory(factoryLocator, "siUnion", JAString.FACTORY_NAME, "siUnion");
             Union siu1 = (Union) Durables.newSerializable(mailboxFactory, "siUnion");
             assertNull(siu1.getValue());
             Mailbox mailbox = mailboxFactory.createMailbox();
             Union siu2 = (Union) siu1.copy(mailbox);
             assertNull(siu2.getValue());
-            siu2.setValue(PAString.FACTORY_NAME);
-            PAString sj2 = (PAString) siu2.getValue();
+            siu2.setValue(JAString.FACTORY_NAME);
+            JAString sj2 = (JAString) siu2.getValue();
             assertNotNull(sj2);
             Union siu3 = (Union) siu2.copy(mailbox);
-            PAString sj3 = (PAString) siu3.getValue();
+            JAString sj3 = (JAString) siu3.getValue();
             assertNotNull(sj3);
         } finally {
             mailboxFactory.close();

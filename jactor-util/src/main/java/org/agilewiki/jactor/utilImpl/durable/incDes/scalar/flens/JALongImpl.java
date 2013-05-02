@@ -6,32 +6,32 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JALong;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
 
 /**
- * A JID actor that holds an integer.
+ * A JID actor that holds a long.
  */
-public class PAIntegerImpl
-        extends FLenScalar<Integer> implements PAInteger {
+public class JALongImpl
+        extends FLenScalar<Long> implements JALong {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(PAInteger.FACTORY_NAME) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JALong.FACTORY_NAME) {
             @Override
-            final protected PAIntegerImpl instantiateActor() {
-                return new PAIntegerImpl();
+            final protected JALongImpl instantiateActor() {
+                return new JALongImpl();
             }
         });
     }
 
-    private Request<Integer> getIntegerReq;
+    private Request<Long> getLongReq;
 
     @Override
-    public Request<Integer> getValueReq() {
-        return getIntegerReq;
+    public Request<Long> getValueReq() {
+        return getLongReq;
     }
 
     /**
@@ -40,8 +40,8 @@ public class PAIntegerImpl
      * @return The default value
      */
     @Override
-    protected Integer newValue() {
-        return new Integer(0);
+    protected Long newValue() {
+        return new Long(0L);
     }
 
     /**
@@ -50,12 +50,23 @@ public class PAIntegerImpl
      * @return The value held by this component.
      */
     @Override
-    public Integer getValue() {
+    public Long getValue() {
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
-        value = readableBytes.readInt();
+        value = readableBytes.readLong();
         return value;
+    }
+
+    @Override
+    public Request<Void> setValueReq(final Long _v) {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                setValue(_v);
+                rp.processResponse(null);
+            }
+        };
     }
 
     /**
@@ -75,25 +86,14 @@ public class PAIntegerImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeInt(value);
-    }
-
-    @Override
-    public Request<Void> setValueReq(final Integer v) {
-        return new RequestBase<Void>(getMailbox()) {
-            @Override
-            public void processRequest(Transport<Void> rp) throws Exception {
-                setValue(v);
-                rp.processResponse(null);
-            }
-        };
+        appendableBytes.writeLong(value);
     }
 
     @Override
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getIntegerReq = new RequestBase<Integer>(getMailbox()) {
+        getLongReq = new RequestBase<Long>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

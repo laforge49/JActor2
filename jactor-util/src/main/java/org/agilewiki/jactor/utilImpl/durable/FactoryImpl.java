@@ -3,7 +3,7 @@ package org.agilewiki.jactor.utilImpl.durable;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
 
 /**
@@ -45,10 +45,10 @@ abstract public class FactoryImpl implements Factory {
      *
      * @return The new actor.
      */
-    abstract protected PASerializable instantiateActor() throws Exception;
+    abstract protected JASerializable instantiateActor() throws Exception;
 
     @Override
-    public PASerializable newSerializable(final Mailbox _mailbox) throws Exception {
+    public JASerializable newSerializable(final Mailbox _mailbox) throws Exception {
         return newSerializable(_mailbox, null);
     }
 
@@ -60,8 +60,8 @@ abstract public class FactoryImpl implements Factory {
      * @return The new actor.
      */
     @Override
-    public PASerializable newSerializable(final Mailbox _mailbox, final Ancestor _parent) throws Exception {
-        PASerializable a = instantiateActor();
+    public JASerializable newSerializable(final Mailbox _mailbox, final Ancestor _parent) throws Exception {
+        JASerializable a = instantiateActor();
         ((IncDesImpl) a.getDurable()).initialize(_mailbox, _parent, this);
         return a;
     }

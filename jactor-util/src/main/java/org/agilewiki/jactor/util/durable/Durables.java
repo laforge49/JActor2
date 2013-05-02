@@ -1,11 +1,11 @@
 package org.agilewiki.jactor.util.durable;
 
+import org.agilewiki.jactor.util.JAProperties;
 import org.agilewiki.jactor.util.durable.incDes.*;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.Ancestor;
-import org.agilewiki.jactor.util.PAProperties;
 import org.agilewiki.jactor.util.durable.app.App;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor.utilImpl.durable.app.AppFactory;
@@ -35,7 +35,7 @@ public class Durables {
             final String _version,
             final String _location) throws Exception {
         MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
-        PAProperties properties = new PAProperties(mailboxFactory);
+        JAProperties properties = new JAProperties(mailboxFactory);
         FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
         factoryLocator.configure(_bundleName, _version, _location);
         properties.putProperty("factoryLocator", factoryLocator);
@@ -50,53 +50,53 @@ public class Durables {
     public static void registerFactories(final FactoryLocator _factoryLocator) {
         IncDesFactory.registerFactory(_factoryLocator);
 
-        PABooleanImpl.registerFactory(_factoryLocator);
-        PAIntegerImpl.registerFactory(_factoryLocator);
-        PALongImpl.registerFactory(_factoryLocator);
-        PAFloatImpl.registerFactory(_factoryLocator);
-        PADoubleImpl.registerFactory(_factoryLocator);
+        JABooleanImpl.registerFactory(_factoryLocator);
+        JAIntegerImpl.registerFactory(_factoryLocator);
+        JALongImpl.registerFactory(_factoryLocator);
+        JAFloatImpl.registerFactory(_factoryLocator);
+        JADoubleImpl.registerFactory(_factoryLocator);
 
         BoxImpl.registerFactory(_factoryLocator);
         RootImpl.registerFactory(_factoryLocator);
-        PAStringImpl.registerFactory(_factoryLocator);
+        JAStringImpl.registerFactory(_factoryLocator);
         BytesImpl.registerFactory(_factoryLocator);
 
-        registerListFactory(_factoryLocator, PAList.PASTRING_LIST, PAString.FACTORY_NAME);
-        registerListFactory(_factoryLocator, PAList.BYTES_LIST, Bytes.FACTORY_NAME);
-        registerListFactory(_factoryLocator, PAList.BOX_LIST, Box.FACTORY_NAME);
-        registerListFactory(_factoryLocator, PAList.PALONG_LIST, PALong.FACTORY_NAME);
-        registerListFactory(_factoryLocator, PAList.PAINTEGER_LIST, PAInteger.FACTORY_NAME);
-        registerListFactory(_factoryLocator, PAList.PAFLOAT_LIST, PAFloat.FACTORY_NAME);
-        registerListFactory(_factoryLocator, PAList.PADOUBLE_LIST, PADouble.FACTORY_NAME);
-        registerListFactory(_factoryLocator, PAList.PABOOLEAN_LIST, PABoolean.FACTORY_NAME);
+        registerListFactory(_factoryLocator, JAList.JASTRING_LIST, JAString.FACTORY_NAME);
+        registerListFactory(_factoryLocator, JAList.BYTES_LIST, Bytes.FACTORY_NAME);
+        registerListFactory(_factoryLocator, JAList.BOX_LIST, Box.FACTORY_NAME);
+        registerListFactory(_factoryLocator, JAList.JALONG_LIST, JALong.FACTORY_NAME);
+        registerListFactory(_factoryLocator, JAList.JAINTEGER_LIST, JAInteger.FACTORY_NAME);
+        registerListFactory(_factoryLocator, JAList.JAFLOAT_LIST, JAFloat.FACTORY_NAME);
+        registerListFactory(_factoryLocator, JAList.JADOUBLE_LIST, JADouble.FACTORY_NAME);
+        registerListFactory(_factoryLocator, JAList.JABOOLEAN_LIST, JABoolean.FACTORY_NAME);
 
-        registerStringMapFactory(_factoryLocator, PAMap.STRING_PASTRING_MAP, PAString.FACTORY_NAME);
-        registerStringMapFactory(_factoryLocator, PAMap.STRING_BYTES_MAP, Bytes.FACTORY_NAME);
-        registerStringMapFactory(_factoryLocator, PAMap.STRING_BOX_MAP, Box.FACTORY_NAME);
-        registerStringMapFactory(_factoryLocator, PAMap.STRING_PALONG_MAP, PALong.FACTORY_NAME);
-        registerStringMapFactory(_factoryLocator, PAMap.STRING_PAINTEGER_MAP, PAInteger.FACTORY_NAME);
-        registerStringMapFactory(_factoryLocator, PAMap.STRING_PAFLOAT_MAP, PAFloat.FACTORY_NAME);
-        registerStringMapFactory(_factoryLocator, PAMap.STRING_PADOUBLE_MAP, PADouble.FACTORY_NAME);
-        registerStringMapFactory(_factoryLocator, PAMap.STRING_PABOOLEAN_MAP, PABoolean.FACTORY_NAME);
+        registerStringMapFactory(_factoryLocator, JAMap.STRING_JASTRING_MAP, JAString.FACTORY_NAME);
+        registerStringMapFactory(_factoryLocator, JAMap.STRING_BYTES_MAP, Bytes.FACTORY_NAME);
+        registerStringMapFactory(_factoryLocator, JAMap.STRING_BOX_MAP, Box.FACTORY_NAME);
+        registerStringMapFactory(_factoryLocator, JAMap.STRING_JALONG_MAP, JALong.FACTORY_NAME);
+        registerStringMapFactory(_factoryLocator, JAMap.STRING_JAINTEGER_MAP, JAInteger.FACTORY_NAME);
+        registerStringMapFactory(_factoryLocator, JAMap.STRING_JAFLOAT_MAP, JAFloat.FACTORY_NAME);
+        registerStringMapFactory(_factoryLocator, JAMap.STRING_JADOUBLE_MAP, JADouble.FACTORY_NAME);
+        registerStringMapFactory(_factoryLocator, JAMap.STRING_JABOOLEAN_MAP, JABoolean.FACTORY_NAME);
 
 
-        registerIntegerMapFactory(_factoryLocator, PAMap.INTEGER_PASTRING_MAP, PAString.FACTORY_NAME);
-        registerIntegerMapFactory(_factoryLocator, PAMap.INTEGER_BYTES_MAP, Bytes.FACTORY_NAME);
-        registerIntegerMapFactory(_factoryLocator, PAMap.INTEGER_BOX_MAP, Box.FACTORY_NAME);
-        registerIntegerMapFactory(_factoryLocator, PAMap.INTEGER_PALONG_MAP, PALong.FACTORY_NAME);
-        registerIntegerMapFactory(_factoryLocator, PAMap.INTEGER_PAINTEGER_MAP, PAInteger.FACTORY_NAME);
-        registerIntegerMapFactory(_factoryLocator, PAMap.INTEGER_PAFLOAT_MAP, PAFloat.FACTORY_NAME);
-        registerIntegerMapFactory(_factoryLocator, PAMap.INTEGER_PADOUBLE_MAP, PADouble.FACTORY_NAME);
-        registerIntegerMapFactory(_factoryLocator, PAMap.INTEGER_PABOOLEAN_MAP, PABoolean.FACTORY_NAME);
+        registerIntegerMapFactory(_factoryLocator, JAMap.INTEGER_JASTRING_MAP, JAString.FACTORY_NAME);
+        registerIntegerMapFactory(_factoryLocator, JAMap.INTEGER_BYTES_MAP, Bytes.FACTORY_NAME);
+        registerIntegerMapFactory(_factoryLocator, JAMap.INTEGER_BOX_MAP, Box.FACTORY_NAME);
+        registerIntegerMapFactory(_factoryLocator, JAMap.INTEGER_JALONG_MAP, JALong.FACTORY_NAME);
+        registerIntegerMapFactory(_factoryLocator, JAMap.INTEGER_JAINTEGER_MAP, JAInteger.FACTORY_NAME);
+        registerIntegerMapFactory(_factoryLocator, JAMap.INTEGER_JAFLOAT_MAP, JAFloat.FACTORY_NAME);
+        registerIntegerMapFactory(_factoryLocator, JAMap.INTEGER_JADOUBLE_MAP, JADouble.FACTORY_NAME);
+        registerIntegerMapFactory(_factoryLocator, JAMap.INTEGER_JABOOLEAN_MAP, JABoolean.FACTORY_NAME);
 
-        registerLongMapFactory(_factoryLocator, PAMap.LONG_PASTRING_MAP, PAString.FACTORY_NAME);
-        registerLongMapFactory(_factoryLocator, PAMap.LONG_BYTES_MAP, Bytes.FACTORY_NAME);
-        registerLongMapFactory(_factoryLocator, PAMap.LONG_BOX_MAP, Box.FACTORY_NAME);
-        registerLongMapFactory(_factoryLocator, PAMap.LONG_PALONG_MAP, PALong.FACTORY_NAME);
-        registerLongMapFactory(_factoryLocator, PAMap.LONG_PAINTEGER_MAP, PAInteger.FACTORY_NAME);
-        registerLongMapFactory(_factoryLocator, PAMap.LONG_PAFLOAT_MAP, PAFloat.FACTORY_NAME);
-        registerLongMapFactory(_factoryLocator, PAMap.LONG_PADOUBLE_MAP, PADouble.FACTORY_NAME);
-        registerLongMapFactory(_factoryLocator, PAMap.LONG_PABOOLEAN_MAP, PABoolean.FACTORY_NAME);
+        registerLongMapFactory(_factoryLocator, JAMap.LONG_JASTRING_MAP, JAString.FACTORY_NAME);
+        registerLongMapFactory(_factoryLocator, JAMap.LONG_BYTES_MAP, Bytes.FACTORY_NAME);
+        registerLongMapFactory(_factoryLocator, JAMap.LONG_BOX_MAP, Box.FACTORY_NAME);
+        registerLongMapFactory(_factoryLocator, JAMap.LONG_JALONG_MAP, JALong.FACTORY_NAME);
+        registerLongMapFactory(_factoryLocator, JAMap.LONG_JAINTEGER_MAP, JAInteger.FACTORY_NAME);
+        registerLongMapFactory(_factoryLocator, JAMap.LONG_JAFLOAT_MAP, JAFloat.FACTORY_NAME);
+        registerLongMapFactory(_factoryLocator, JAMap.LONG_JADOUBLE_MAP, JADouble.FACTORY_NAME);
+        registerLongMapFactory(_factoryLocator, JAMap.LONG_JABOOLEAN_MAP, JABoolean.FACTORY_NAME);
 
         StringBMapFactory.registerFactories(_factoryLocator);
     }
@@ -168,7 +168,7 @@ public class Durables {
         return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");
     }
 
-    public static PASerializable newSerializable(final MailboxFactory _mailboxFactory,
+    public static JASerializable newSerializable(final MailboxFactory _mailboxFactory,
                                                  final String _factoryName)
             throws Exception {
         return newSerializable(
@@ -178,7 +178,7 @@ public class Durables {
                 null);
     }
 
-    public static PASerializable newSerializable(final MailboxFactory _mailboxFactory,
+    public static JASerializable newSerializable(final MailboxFactory _mailboxFactory,
                                                  final String _factoryName,
                                                  final Ancestor _parent)
             throws Exception {
@@ -189,7 +189,7 @@ public class Durables {
                 _parent);
     }
 
-    public static PASerializable newSerializable(final String _factoryName,
+    public static JASerializable newSerializable(final String _factoryName,
                                                  final Mailbox _mailbox)
             throws Exception {
         return newSerializable(
@@ -199,21 +199,21 @@ public class Durables {
                 null);
     }
 
-    public static PASerializable newSerializable(final String _factoryName,
+    public static JASerializable newSerializable(final String _factoryName,
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
             throws Exception {
         return newSerializable(getFactoryLocator(_mailbox.getMailboxFactory()), _factoryName, _mailbox, _parent);
     }
 
-    public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
+    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
                                                  final Mailbox _mailbox)
             throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, null);
     }
 
-    public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
+    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
@@ -221,14 +221,14 @@ public class Durables {
         return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, _parent);
     }
 
-    public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
+    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
                                                  final MailboxFactory _mailboxFactory)
             throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), null);
     }
 
-    public static PASerializable newSerializable(final FactoryLocator _factoryLocator,
+    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
                                                  final MailboxFactory _mailboxFactory,
                                                  final Ancestor _parent)

@@ -17,14 +17,14 @@ public class StringBMapFactory extends FactoryImpl {
     private final static int NODE_CAPACITY = 28;
 
     public static void registerFactories(final FactoryLocator _factoryLocator) {
-        registerFactory(_factoryLocator, PAMap.STRING_PASTRING_MAP, PAString.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_BYTES_MAP, Bytes.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_BOX_MAP, Box.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PALONG_MAP, PALong.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PAINTEGER_MAP, PAInteger.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PAFLOAT_MAP, PAFloat.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PADOUBLE_MAP, PADouble.FACTORY_NAME);
-        registerFactory(_factoryLocator, PAMap.STRING_PABOOLEAN_MAP, PABoolean.FACTORY_NAME);
+        registerFactory(_factoryLocator, JAMap.STRING_JASTRING_MAP, JAString.FACTORY_NAME);
+        registerFactory(_factoryLocator, JAMap.STRING_BYTES_MAP, Bytes.FACTORY_NAME);
+        registerFactory(_factoryLocator, JAMap.STRING_BOX_MAP, Box.FACTORY_NAME);
+        registerFactory(_factoryLocator, JAMap.STRING_JALONG_MAP, JALong.FACTORY_NAME);
+        registerFactory(_factoryLocator, JAMap.STRING_JAINTEGER_MAP, JAInteger.FACTORY_NAME);
+        registerFactory(_factoryLocator, JAMap.STRING_JAFLOAT_MAP, JAFloat.FACTORY_NAME);
+        registerFactory(_factoryLocator, JAMap.STRING_JADOUBLE_MAP, JADouble.FACTORY_NAME);
+        registerFactory(_factoryLocator, JAMap.STRING_JABOOLEAN_MAP, JABoolean.FACTORY_NAME);
     }
 
     public static void registerFactory(FactoryLocator _factoryLocator,

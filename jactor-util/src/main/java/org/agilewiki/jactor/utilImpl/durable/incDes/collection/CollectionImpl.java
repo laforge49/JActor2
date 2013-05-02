@@ -5,9 +5,9 @@ import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.Collection;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
@@ -16,7 +16,7 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
 /**
  * A collection of JID actors.
  */
-abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
+abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
         extends IncDesImpl
         implements Collection<ENTRY_TYPE> {
 
@@ -59,7 +59,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
      * @param readableBytes Holds the serialized data.
      */
     protected void skipLen(ReadableBytes readableBytes) {
-        readableBytes.skip(PAInteger.LENGTH);
+        readableBytes.skip(JAInteger.LENGTH);
     }
 
     /**
@@ -99,7 +99,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
@@ -118,7 +118,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends PASerializable>
         }
         if (n < 0 || n >= size())
             throw new IllegalArgumentException("pathname " + pathname);
-        PASerializable jid = iGet(n);
+        JASerializable jid = iGet(n);
         if (s == pathname.length())
             return jid;
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));

@@ -7,10 +7,10 @@ import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.Collection;
 import org.agilewiki.jactor.util.durable.incDes.MapEntry;
-import org.agilewiki.jactor.util.durable.incDes.PAMap;
+import org.agilewiki.jactor.util.durable.incDes.JAMap;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.incDes.collection.MapEntryImpl;
 import org.agilewiki.jactor.utilImpl.durable.incDes.collection.slist.SList;
@@ -18,9 +18,9 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.collection.slist.SList;
 /**
  * Holds a map.
  */
-abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends PASerializable>
+abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends JASerializable>
         extends SList<MapEntry<KEY_TYPE, VALUE_TYPE>>
-        implements PAMap<KEY_TYPE, VALUE_TYPE>, Collection<MapEntry<KEY_TYPE, VALUE_TYPE>> {
+        implements JAMap<KEY_TYPE, VALUE_TYPE>, Collection<MapEntry<KEY_TYPE, VALUE_TYPE>> {
 
     public Factory valueFactory;
 
@@ -315,7 +315,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return A JID actor or null.
      */
     @Override
-    final public PASerializable resolvePathname(String pathname)
+    final public JASerializable resolvePathname(String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
@@ -326,7 +326,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         if (s == 0)
             throw new IllegalArgumentException("pathname " + pathname);
         String ns = pathname.substring(0, s);
-        PASerializable jid = kGet(stringToKey(ns));
+        JASerializable jid = kGet(stringToKey(ns));
         if (jid == null)
             return null;
         if (s == pathname.length())

@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface PABoolean extends IncDes {
+public interface JABoolean extends IncDes {
 
     /**
      * Size of a boolean in bytes.

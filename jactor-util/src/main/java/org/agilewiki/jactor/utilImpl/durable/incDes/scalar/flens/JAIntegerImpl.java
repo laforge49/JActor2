@@ -6,32 +6,32 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.incDes.PAFloat;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
 
 /**
- * A JID actor that holds a float.
+ * A JID actor that holds an integer.
  */
-public class PAFloatImpl
-        extends FLenScalar<Float> implements PAFloat {
+public class JAIntegerImpl
+        extends FLenScalar<Integer> implements JAInteger {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(PAFloat.FACTORY_NAME) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JAInteger.FACTORY_NAME) {
             @Override
-            final protected PAFloatImpl instantiateActor() {
-                return new PAFloatImpl();
+            final protected JAIntegerImpl instantiateActor() {
+                return new JAIntegerImpl();
             }
         });
     }
 
-    private Request<Float> getFloatReq;
+    private Request<Integer> getIntegerReq;
 
     @Override
-    public Request<Float> getValueReq() {
-        return getFloatReq;
+    public Request<Integer> getValueReq() {
+        return getIntegerReq;
     }
 
     /**
@@ -40,8 +40,8 @@ public class PAFloatImpl
      * @return The default value
      */
     @Override
-    protected Float newValue() {
-        return new Float(0.F);
+    protected Integer newValue() {
+        return new Integer(0);
     }
 
     /**
@@ -50,23 +50,12 @@ public class PAFloatImpl
      * @return The value held by this component.
      */
     @Override
-    public Float getValue() {
+    public Integer getValue() {
         if (value != null)
             return value;
         ReadableBytes readableBytes = readable();
-        value = readableBytes.readFloat();
+        value = readableBytes.readInt();
         return value;
-    }
-
-    @Override
-    public Request<Void> setValueReq(final Float v) {
-        return new RequestBase<Void>(getMailbox()) {
-            @Override
-            public void processRequest(Transport rp) throws Exception {
-                setValue(v);
-                rp.processResponse(null);
-            }
-        };
     }
 
     /**
@@ -86,14 +75,25 @@ public class PAFloatImpl
      */
     @Override
     protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeFloat(value);
+        appendableBytes.writeInt(value);
+    }
+
+    @Override
+    public Request<Void> setValueReq(final Integer v) {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(Transport<Void> rp) throws Exception {
+                setValue(v);
+                rp.processResponse(null);
+            }
+        };
     }
 
     @Override
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getFloatReq = new RequestBase<Float>(getMailbox()) {
+        getIntegerReq = new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

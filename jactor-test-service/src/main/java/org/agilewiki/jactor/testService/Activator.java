@@ -1,14 +1,14 @@
 package org.agilewiki.jactor.testService;
 
 import org.agilewiki.jactor.testIface.Hello;
-import org.agilewiki.jactor.util.osgi.PAActivator;
+import org.agilewiki.jactor.util.osgi.JAActivator;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Hashtable;
 
-public class Activator extends PAActivator {
+public class Activator extends JAActivator {
     private final Logger logger = LoggerFactory.getLogger(Activator.class);
 
     @Override

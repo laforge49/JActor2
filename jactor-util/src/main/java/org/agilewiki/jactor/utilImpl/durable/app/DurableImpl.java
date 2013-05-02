@@ -1,9 +1,9 @@
 package org.agilewiki.jactor.utilImpl.durable.app;
 
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.app.Durable;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
 import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
@@ -25,7 +25,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     /**
      * A tuple of actors.
      */
-    protected PASerializable[] tuple;
+    protected JASerializable[] tuple;
 
     /**
      * Returns the element factories.
@@ -42,8 +42,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
     public void _iSetBytes(int i, byte[] bytes)
             throws Exception {
         _initialize();
-        PASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
-        PASerializable oldElementJid = _iGet(i);
+        JASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
+        JASerializable oldElementJid = _iGet(i);
         ((IncDesImpl) oldElementJid.getDurable()).setContainerJid(null);
         tuple[i] = elementJid;
         change(elementJid.getDurable().getSerializedLength() -
@@ -56,7 +56,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public PASerializable _iGet(int i)
+    public JASerializable _iGet(int i)
             throws Exception {
         _initialize();
         if (i < 0)
@@ -67,7 +67,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public PASerializable _resolvePathname(String pathname)
+    public JASerializable _resolvePathname(String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
@@ -86,7 +86,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
         }
         if (n < 0 || n >= _size())
             throw new IllegalArgumentException("pathname " + pathname);
-        PASerializable jid = _iGet(n);
+        JASerializable jid = _iGet(n);
         if (s == pathname.length())
             return jid;
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
@@ -105,11 +105,11 @@ public class DurableImpl extends IncDesImpl implements Durable {
             readableBytes = readable();
             _skipLen(readableBytes);
         }
-        tuple = new PASerializable[_size()];
+        tuple = new JASerializable[_size()];
         int i = 0;
         _len = 0;
         while (i < _size()) {
-            PASerializable elementJid = createSubordinate(tupleFactories[i], readableBytes);
+            JASerializable elementJid = createSubordinate(tupleFactories[i], readableBytes);
             _len += elementJid.getDurable().getSerializedLength();
             tuple[i] = elementJid;
             i += 1;
@@ -122,7 +122,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param readableBytes Holds the serialized data.
      */
     private void _skipLen(ReadableBytes readableBytes) {
-        readableBytes.skip(PAInteger.LENGTH);
+        readableBytes.skip(JAInteger.LENGTH);
     }
 
     /**
@@ -153,7 +153,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
     public int getSerializedLength()
             throws Exception {
         _initialize();
-        return PAInteger.LENGTH + _len;
+        return JAInteger.LENGTH + _len;
     }
 
     /**

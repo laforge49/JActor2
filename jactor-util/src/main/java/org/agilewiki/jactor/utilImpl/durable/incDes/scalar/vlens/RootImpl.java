@@ -4,8 +4,8 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.PASerializable;
-import org.agilewiki.jactor.util.durable.incDes.PAString;
+import org.agilewiki.jactor.util.durable.JASerializable;
+import org.agilewiki.jactor.util.durable.incDes.JAString;
 import org.agilewiki.jactor.util.durable.incDes.Root;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
@@ -30,7 +30,7 @@ public class RootImpl extends BoxImpl implements Root {
         });
     }
 
-    private PAString descriptor;
+    private JAString descriptor;
 
     @Override
     public String getDescriptor()
@@ -43,7 +43,7 @@ public class RootImpl extends BoxImpl implements Root {
             throws Exception {
         super.initialize(mailbox, parent, factory);
         FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
-        descriptor = (PAString) Durables.newSerializable(PAString.FACTORY_NAME, mailbox);
+        descriptor = (JAString) Durables.newSerializable(JAString.FACTORY_NAME, mailbox);
         descriptor.setValue(factoryLocator.getDescriptor());
     }
 
@@ -109,12 +109,12 @@ public class RootImpl extends BoxImpl implements Root {
         return descriptor.getSerializedLength() + len;
     }
 
-    public PASerializable copy(Mailbox m)
+    public JASerializable copy(Mailbox m)
             throws Exception {
         Mailbox mb = m;
         if (mb == null)
             mb = getMailbox();
-        PASerializable jid = getFactory().newSerializable(mb, getParent());
+        JASerializable jid = getFactory().newSerializable(mb, getParent());
         jid.getDurable().load(new ReadableBytes(getSerializedBytes(), 0));
         return jid;
     }

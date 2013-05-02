@@ -3,7 +3,7 @@ package org.agilewiki.jactor.utilImpl.durable.incDes.collection.smap;
 
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.incDes.PALong;
+import org.agilewiki.jactor.util.durable.incDes.JALong;
 import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
 
 /**
@@ -16,7 +16,7 @@ public class LongSMap<VALUE_TYPE extends IncDesImpl> extends SMap<Long, VALUE_TY
      * @return The IncDesFactory for the key.
      */
     final protected Factory getKeyFactory() {
-        return Durables.getFactoryLocator(getMailbox()).getFactory(PALong.FACTORY_NAME);
+        return Durables.getFactoryLocator(getMailbox()).getFactory(JALong.FACTORY_NAME);
     }
 
     /**

@@ -4,7 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.util.durable.incDes.Root;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
@@ -72,7 +72,7 @@ public class LBlock implements Block {
      */
     @Override
     public int headerLength() {
-        return PAInteger.LENGTH;
+        return JAInteger.LENGTH;
     }
 
     /**

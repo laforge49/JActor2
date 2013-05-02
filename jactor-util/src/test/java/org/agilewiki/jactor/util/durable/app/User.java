@@ -2,28 +2,28 @@ package org.agilewiki.jactor.util.durable.app;
 
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
-import org.agilewiki.jactor.util.durable.incDes.PAString;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAString;
 
 public class User extends AppBase {
     static void register(final FactoryLocator _factoryLocator) throws Exception {
         Durables.registerAppFactory(_factoryLocator, User.class, "user",
-                PAString.FACTORY_NAME, PAInteger.FACTORY_NAME, PAString.FACTORY_NAME);
+                JAString.FACTORY_NAME, JAInteger.FACTORY_NAME, JAString.FACTORY_NAME);
     }
 
     static int NAME = 0;
     static int AGE = 1;
     static int LOCATION = 2;
 
-    PAString PAName() throws Exception {
-        return (PAString) getDurable()._iGet(NAME);
+    JAString PAName() throws Exception {
+        return (JAString) getDurable()._iGet(NAME);
     }
 
-    PAInteger PAAge() throws Exception {
-        return (PAInteger) getDurable()._iGet(AGE);
+    JAInteger PAAge() throws Exception {
+        return (JAInteger) getDurable()._iGet(AGE);
     }
 
-    PAString PALocation() throws Exception {
-        return (PAString) getDurable()._iGet(LOCATION);
+    JAString PALocation() throws Exception {
+        return (JAString) getDurable()._iGet(LOCATION);
     }
 }

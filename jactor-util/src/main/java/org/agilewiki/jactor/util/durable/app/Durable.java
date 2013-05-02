@@ -1,6 +1,6 @@
 package org.agilewiki.jactor.util.durable.app;
 
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.IncDes;
 
 public interface Durable extends IncDes {
@@ -17,7 +17,7 @@ public interface Durable extends IncDes {
      * @param _i The index of the element of interest.
      * @return The ith JID component, or null if the index is out of range.
      */
-    PASerializable _iGet(final int _i)
+    JASerializable _iGet(final int _i)
             throws Exception;
 
     /**
@@ -35,6 +35,6 @@ public interface Durable extends IncDes {
      * @param _pathname A JID pathname.
      * @return A JID actor or null.
      */
-    public PASerializable _resolvePathname(final String _pathname)
+    public JASerializable _resolvePathname(final String _pathname)
             throws Exception;
 }

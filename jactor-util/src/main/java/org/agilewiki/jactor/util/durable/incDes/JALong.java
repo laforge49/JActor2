@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface PALong extends IncDes {
+public interface JALong extends IncDes {
 
     /**
      * Size of a long in bytes.

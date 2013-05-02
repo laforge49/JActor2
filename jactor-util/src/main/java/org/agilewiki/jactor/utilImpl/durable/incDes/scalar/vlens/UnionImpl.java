@@ -8,8 +8,8 @@ import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.PASerializable;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
+import org.agilewiki.jactor.util.durable.JASerializable;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.util.durable.incDes.Union;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
@@ -18,7 +18,7 @@ import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
 import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.Scalar;
 
-public class UnionImpl extends Scalar<String, PASerializable> implements Union {
+public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     public static void registerFactory(final FactoryLocator _factoryLocator,
                                        final String _subActorType,
@@ -48,17 +48,17 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
 
     protected Factory[] unionFactories;
     protected int factoryIndex = -1;
-    protected PASerializable value;
+    protected JASerializable value;
 
     private Request<Void> clearReq;
-    private Request<PASerializable> getPAIDReq;
+    private Request<JASerializable> getPAIDReq;
 
     public Request<Void> clearReq() {
         return clearReq;
     }
 
     @Override
-    public Request<PASerializable> getValueReq() {
+    public Request<JASerializable> getValueReq() {
         return getPAIDReq;
     }
 
@@ -113,8 +113,8 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     public int getSerializedLength()
             throws Exception {
         if (factoryIndex == -1)
-            return PAInteger.LENGTH;
-        return PAInteger.LENGTH + value.getDurable().getSerializedLength();
+            return JAInteger.LENGTH;
+        return JAInteger.LENGTH + value.getDurable().getSerializedLength();
     }
 
     /**
@@ -275,7 +275,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
     }
 
     @Override
-    public PASerializable getValue() {
+    public JASerializable getValue() {
         return value;
     }
 
@@ -300,7 +300,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
@@ -309,7 +309,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
             return getValue();
         }
         if (pathname.startsWith("0/")) {
-            PASerializable v = getValue();
+            JASerializable v = getValue();
             if (v == null)
                 return null;
             return v.getDurable().resolvePathname(pathname.substring(2));
@@ -327,7 +327,7 @@ public class UnionImpl extends Scalar<String, PASerializable> implements Union {
             }
         };
 
-        getPAIDReq = new RequestBase<PASerializable>(getMailbox()) {
+        getPAIDReq = new RequestBase<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

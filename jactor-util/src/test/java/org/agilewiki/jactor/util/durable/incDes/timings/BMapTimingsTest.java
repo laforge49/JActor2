@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
-import org.agilewiki.jactor.util.durable.incDes.PAMap;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAMap;
 
 public class BMapTimingsTest extends TestCase {
     public void test1() throws Exception {
@@ -35,11 +35,11 @@ public class BMapTimingsTest extends TestCase {
 
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAMap<Integer, PAInteger> m1 = (PAMap) Durables.newSerializable(mailboxFactory, PAMap.INTEGER_PAINTEGER_MAP);
+            JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < s) {
                 m1.kMake(i);
-                PAInteger ij0 = m1.kGet(i);
+                JAInteger ij0 = m1.kGet(i);
                 ij0.setValue(i);
                 i += 1;
             }
@@ -49,8 +49,8 @@ public class BMapTimingsTest extends TestCase {
             Mailbox mailbox = mailboxFactory.createMailbox();
             long t0 = System.currentTimeMillis();
             while (j < r) {
-                PAMap<Integer, PAInteger> m2 = (PAMap) m1.copy(mailbox);
-                PAInteger ij0 = m1.kGet(i);
+                JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(mailbox);
+                JAInteger ij0 = m1.kGet(i);
                 ij0.setValue(-i);
                 m2.getSerializedBytes();
                 j += 1;

@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface PAFloat extends IncDes {
+public interface JAFloat extends IncDes {
 
     /**
      * Size of an float in bytes.

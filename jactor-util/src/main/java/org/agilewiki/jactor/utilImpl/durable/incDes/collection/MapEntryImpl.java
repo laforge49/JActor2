@@ -1,7 +1,7 @@
 package org.agilewiki.jactor.utilImpl.durable.incDes.collection;
 
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.MapEntry;
 import org.agilewiki.jactor.utilImpl.durable.ComparableKey;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
@@ -44,9 +44,9 @@ public class MapEntryImpl<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE>
 
     public void setValueBytes(byte[] bytes)
             throws Exception {
-        PASerializable old = (PASerializable) getValue();
+        JASerializable old = (JASerializable) getValue();
         ((IncDesImpl) old.getDurable()).setContainerJid(null);
-        PASerializable elementJid = createSubordinate(tupleFactories[TUPLE_VALUE], this, bytes);
+        JASerializable elementJid = createSubordinate(tupleFactories[TUPLE_VALUE], this, bytes);
         tuple[TUPLE_VALUE] = elementJid;
         change(elementJid.getDurable().getSerializedLength() -
                 old.getDurable().getSerializedLength());

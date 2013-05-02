@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 /**
  * A hierarchy of concurrent property sets.
  */
-public class PAProperties extends AncestorBase implements Properties {
+public class JAProperties extends AncestorBase implements Properties {
     /**
      * Finds an ancestor that implements Properties.
      *
@@ -71,11 +71,11 @@ public class PAProperties extends AncestorBase implements Properties {
      */
     private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
-    public PAProperties(final MailboxFactory _mailboxFactory) throws Exception {
+    public JAProperties(final MailboxFactory _mailboxFactory) throws Exception {
         this(_mailboxFactory, null);
     }
 
-    public PAProperties(final MailboxFactory _mailboxFactory,
+    public JAProperties(final MailboxFactory _mailboxFactory,
                         final Ancestor _parent) throws Exception {
         initialize(_parent);
         _mailboxFactory.setProperties(this);

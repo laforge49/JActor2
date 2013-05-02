@@ -9,7 +9,7 @@ public interface MessageSource {
     /**
      * Process an incoming response.
      */
-    void incomingResponse(final Message message, final PAMailbox responseSource);
+    void incomingResponse(final Message message, final JAMailbox responseSource);
 
     /**
      * Returns true, if the message could be buffered before sending.
@@ -18,7 +18,7 @@ public interface MessageSource {
      * @param target  The MessageSource that should eventually receive this message
      * @return true, if buffered
      */
-    boolean buffer(final Message message, final PAMailbox target);
+    boolean buffer(final Message message, final JAMailbox target);
 
     /**
      * Returns true, if this message source is currently processing messages.

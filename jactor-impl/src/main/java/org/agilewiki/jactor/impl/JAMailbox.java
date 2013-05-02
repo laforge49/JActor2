@@ -4,7 +4,7 @@ import java.util.Queue;
 
 import org.agilewiki.jactor.api.Mailbox;
 
-public interface PAMailbox extends Mailbox, AutoCloseable, MessageSource {
+public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource {
 
     /**
      * A port creates a high-speed one-way connection between two mailboxes.
@@ -13,7 +13,7 @@ public interface PAMailbox extends Mailbox, AutoCloseable, MessageSource {
      *
      * @param _source The mailbox that originates the request or result message.
      */
-    PAMailbox createPort(final Mailbox _source, int size);
+    JAMailbox createPort(final Mailbox _source, int size);
 
     public boolean isFull();
 

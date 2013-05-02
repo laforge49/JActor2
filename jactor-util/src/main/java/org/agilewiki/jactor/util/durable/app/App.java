@@ -2,8 +2,8 @@ package org.agilewiki.jactor.util.durable.app;
 
 import org.agilewiki.jactor.api.Actor;
 import org.agilewiki.jactor.util.Ancestor;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 
-public interface App extends PASerializable, Actor, Ancestor {
+public interface App extends JASerializable, Actor, Ancestor {
     void setDurable(final Durable _durable);
 }

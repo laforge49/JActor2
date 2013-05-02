@@ -8,22 +8,22 @@ import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.Collection;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
-import org.agilewiki.jactor.util.durable.incDes.PAList;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAList;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.app.DurableImpl;
 import org.agilewiki.jactor.utilImpl.durable.incDes.collection.slist.SList;
-import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.flens.PAIntegerImpl;
+import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.flens.JAIntegerImpl;
 import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
 
 /**
  * A balanced tree holding a list of JIDs, all of the same type.
  */
-public class BList<ENTRY_TYPE extends PASerializable>
+public class BList<ENTRY_TYPE extends JASerializable>
         extends DurableImpl
-        implements PAList<ENTRY_TYPE>, Collection<ENTRY_TYPE> {
+        implements JAList<ENTRY_TYPE>, Collection<ENTRY_TYPE> {
     protected final int TUPLE_SIZE = 0;
     protected final int TUPLE_UNION = 1;
     protected int nodeCapacity = 28;
@@ -60,7 +60,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
             baseType = baseType.substring(3);
         factoryLocator = Durables.getFactoryLocator(getMailbox());
         tupleFactories = new FactoryImpl[2];
-        tupleFactories[TUPLE_SIZE] = factoryLocator.getFactory(PAInteger.FACTORY_NAME);
+        tupleFactories[TUPLE_SIZE] = factoryLocator.getFactory(JAInteger.FACTORY_NAME);
         tupleFactories[TUPLE_UNION] = factoryLocator.getFactory("U." + baseType);
     }
 
@@ -74,9 +74,9 @@ public class BList<ENTRY_TYPE extends PASerializable>
         getUnionJid().setValue(factoryImpl);
     }
 
-    protected PAIntegerImpl getSizeJid()
+    protected JAIntegerImpl getSizeJid()
             throws Exception {
-        return (PAIntegerImpl) _iGet(TUPLE_SIZE);
+        return (JAIntegerImpl) _iGet(TUPLE_SIZE);
     }
 
     /**
@@ -92,7 +92,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
 
     protected void incSize(int inc)
             throws Exception {
-        PAIntegerImpl sj = getSizeJid();
+        JAIntegerImpl sj = getSizeJid();
         sj.setValue(sj.getValue() + inc);
     }
 
@@ -216,7 +216,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
@@ -235,7 +235,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
         }
         if (n < 0 || n >= size())
             throw new IllegalArgumentException("pathname " + pathname);
-        PASerializable jid = iGet(n);
+        JASerializable jid = iGet(n);
         if (s == pathname.length())
             return jid;
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
@@ -332,13 +332,13 @@ public class BList<ENTRY_TYPE extends PASerializable>
         int i = 0;
         if (oldFactory.name.startsWith("LL.")) {
             while (i < h) {
-                PASerializable e = oldRootNode.iGet(i);
+                JASerializable e = oldRootNode.iGet(i);
                 byte[] bytes = e.getDurable().getSerializedBytes();
                 leftBNode.iAdd(-1, bytes);
                 i += 1;
             }
             while (i < nodeCapacity) {
-                PASerializable e = oldRootNode.iGet(i);
+                JASerializable e = oldRootNode.iGet(i);
                 byte[] bytes = e.getDurable().getSerializedBytes();
                 rightBNode.iAdd(-1, bytes);
                 i += 1;
@@ -368,7 +368,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
         int i = 0;
         if (isLeaf()) {
             while (i < h) {
-                PASerializable e = node.iGet(0);
+                JASerializable e = node.iGet(0);
                 node.iRemove(0);
                 byte[] bytes = e.getDurable().getSerializedBytes();
                 leftBNode.iAdd(-1, bytes);
@@ -393,7 +393,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
             throws Exception {
         SList<ENTRY_TYPE> node = getNode();
         node.empty();
-        PAIntegerImpl sj = getSizeJid();
+        JAIntegerImpl sj = getSizeJid();
         sj.setValue(0);
     }
 
@@ -453,7 +453,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
                 if (node.size() == 1 && isRoot && !isLeaf()) {
                     bnode = (BList) node.iGet(0);
                     setNodeFactory(bnode.getNode().getFactory());
-                    PAIntegerImpl sj = getSizeJid();
+                    JAIntegerImpl sj = getSizeJid();
                     sj.setValue(0);
                     bnode.append(this);
                 }
@@ -471,7 +471,7 @@ public class BList<ENTRY_TYPE extends PASerializable>
         int i = 0;
         if (isLeaf()) {
             while (i < node.size()) {
-                PASerializable e = node.iGet(i);
+                JASerializable e = node.iGet(i);
                 leftNode.append(e.getDurable().getSerializedBytes(), 1);
                 i += 1;
             }

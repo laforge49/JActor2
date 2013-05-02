@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface PAInteger extends IncDes {
+public interface JAInteger extends IncDes {
 
     /**
      * Size of an int in bytes.

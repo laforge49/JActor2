@@ -8,15 +8,15 @@ public class LongPAStringBMapTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAMap<Long, PAString> m = (PAMap) Durables.
-                    newSerializable(mailboxFactory, PAMap.LONG_PASTRING_MAP);
+            JAMap<Long, JAString> m = (JAMap) Durables.
+                    newSerializable(mailboxFactory, JAMap.LONG_JASTRING_MAP);
             assertEquals(0, m.size());
             assertTrue(m.kMake(1L));
             assertFalse(m.kMake(1L));
             assertEquals(1, m.size());
-            MapEntry<Long, PAString> me = m.iGet(0);
+            MapEntry<Long, JAString> me = m.iGet(0);
             assertEquals((Long) 1L, me.getKey());
-            PAString v = m.kGet(1L);
+            JAString v = m.kGet(1L);
             assertEquals(v, me.getValue());
             assertEquals(me, m.getCeiling(0L));
             assertEquals(me, m.getCeiling(1L));

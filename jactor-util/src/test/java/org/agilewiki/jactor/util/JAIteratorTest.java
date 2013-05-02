@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
-public class PAIteratorTest extends TestCase {
+public class JAIteratorTest extends TestCase {
     private Mailbox mailbox;
     private Mailbox counterMailbox;
     private long runs;
@@ -58,7 +58,7 @@ public class PAIteratorTest extends TestCase {
                 counterActor.initialize(counterMailbox);
                 final UnboundAddReq uar = new UnboundAddReq(1);
                 final UnboundResetReq urr = new UnboundResetReq();
-                PAIterator pait = new PAIterator() {
+                JAIterator pait = new JAIterator() {
                     long i = 0;
 
                     @Override

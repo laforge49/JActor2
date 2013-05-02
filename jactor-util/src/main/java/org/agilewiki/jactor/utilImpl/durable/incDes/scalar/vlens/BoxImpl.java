@@ -6,9 +6,9 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.Box;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
@@ -19,7 +19,7 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
  * A JID actor that holds a JID actor.
  */
 public class BoxImpl
-        extends VLenScalar<String, PASerializable> implements Box {
+        extends VLenScalar<String, JASerializable> implements Box {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Box.FACTORY_NAME) {
@@ -38,9 +38,9 @@ public class BoxImpl
      */
     public final static int stringLength(final int _length) {
         if (_length == -1)
-            return PAInteger.LENGTH;
+            return JAInteger.LENGTH;
         if (_length > -1)
-            return PAInteger.LENGTH + 2 * _length;
+            return JAInteger.LENGTH + 2 * _length;
         throw new IllegalArgumentException("invalid string length: " + _length);
     }
 
@@ -52,12 +52,12 @@ public class BoxImpl
      */
     public final static int stringLength(final String _s) {
         if (_s == null)
-            return PAInteger.LENGTH;
+            return JAInteger.LENGTH;
         return stringLength(_s.length());
     }
 
     private Request<Void> clearReq;
-    private Request<PASerializable> getPAIDReq;
+    private Request<JASerializable> getPAIDReq;
 
     @Override
     public Request<Void> clearReq() {
@@ -65,7 +65,7 @@ public class BoxImpl
     }
 
     @Override
-    public Request<PASerializable> getValueReq() {
+    public Request<JASerializable> getValueReq() {
         return getPAIDReq;
     }
 
@@ -228,7 +228,7 @@ public class BoxImpl
      * @return The actor held by this component, or null.
      */
     @Override
-    public PASerializable getValue()
+    public JASerializable getValue()
             throws Exception {
         if (len == -1)
             return null;
@@ -267,7 +267,7 @@ public class BoxImpl
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
@@ -276,7 +276,7 @@ public class BoxImpl
             return getValue();
         }
         if (pathname.startsWith("0/")) {
-            PASerializable v = getValue();
+            JASerializable v = getValue();
             if (v == null)
                 return null;
             return v.getDurable().resolvePathname(pathname.substring(2));
@@ -294,7 +294,7 @@ public class BoxImpl
             }
         };
 
-        getPAIDReq = new RequestBase<PASerializable>(getMailbox()) {
+        getPAIDReq = new RequestBase<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

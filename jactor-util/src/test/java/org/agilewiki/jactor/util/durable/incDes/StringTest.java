@@ -8,10 +8,10 @@ public class StringTest extends TestCase {
     public void test() throws Exception {
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAString paString1 = (PAString) Durables.newSerializable(mailboxFactory, PAString.FACTORY_NAME);
-            PAString paString2 = (PAString) paString1.copyReq(null).call();
+            JAString paString1 = (JAString) Durables.newSerializable(mailboxFactory, JAString.FACTORY_NAME);
+            JAString paString2 = (JAString) paString1.copyReq(null).call();
             paString2.setValueReq("abc").call();
-            PAString paString3 = (PAString) paString2.copyReq(null).call();
+            JAString paString3 = (JAString) paString2.copyReq(null).call();
 
             int sl = paString1.getSerializedLength();
             assertEquals(4, sl);
@@ -25,12 +25,12 @@ public class StringTest extends TestCase {
             assertEquals("abc", paString3.getValueReq().call());
 
             Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
-            box.setValueReq(PAString.FACTORY_NAME).call();
-            PAString rpa = (PAString) box.resolvePathnameReq("0").call();
+            box.setValueReq(JAString.FACTORY_NAME).call();
+            JAString rpa = (JAString) box.resolvePathnameReq("0").call();
             assertNull(rpa.getValueReq().call());
             assertTrue(rpa.makeValueReq("").call());
             assertFalse(rpa.makeValueReq("Hello?").call());
-            rpa = (PAString) (PAString) box.resolvePathnameReq("0").call();
+            rpa = (JAString) (JAString) box.resolvePathnameReq("0").call();
             assertEquals("", rpa.getValueReq().call());
             rpa.setValueReq("bye").call();
             assertEquals("bye", rpa.getValueReq().call());

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor.utilImpl.durable.incDes.collection.tuple;
 
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.PASerializable;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
+import org.agilewiki.jactor.util.durable.JASerializable;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.util.durable.incDes.Tuple;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.ComparableKey;
@@ -14,7 +14,7 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.collection.CollectionImpl;
  * Holds a fixed-size array of JID actors of various types.
  */
 public class TupleImpl
-        extends CollectionImpl<PASerializable>
+        extends CollectionImpl<JASerializable>
         implements ComparableKey<Object>, Tuple {
     /**
      * An array of jid factories, one for each element in the tuple.
@@ -24,7 +24,7 @@ public class TupleImpl
     /**
      * A tuple of actors.
      */
-    protected PASerializable[] tuple;
+    protected JASerializable[] tuple;
 
     /**
      * Perform lazy initialization.
@@ -39,11 +39,11 @@ public class TupleImpl
             readableBytes = readable();
             skipLen(readableBytes);
         }
-        tuple = new PASerializable[size()];
+        tuple = new JASerializable[size()];
         int i = 0;
         len = 0;
         while (i < size()) {
-            PASerializable elementJid = createSubordinate(tupleFactories[i], readableBytes);
+            JASerializable elementJid = createSubordinate(tupleFactories[i], readableBytes);
             len += elementJid.getDurable().getSerializedLength();
             tuple[i] = elementJid;
             i += 1;
@@ -71,8 +71,8 @@ public class TupleImpl
     public void iSet(int i, byte[] bytes)
             throws Exception {
         initializeTuple();
-        PASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
-        PASerializable oldElementJid = iGet(i);
+        JASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
+        JASerializable oldElementJid = iGet(i);
         ((IncDesImpl) oldElementJid.getDurable()).setContainerJid(null);
         tuple[i] = elementJid;
         change(elementJid.getDurable().getSerializedLength() -
@@ -88,7 +88,7 @@ public class TupleImpl
     public int getSerializedLength()
             throws Exception {
         initializeTuple();
-        return PAInteger.LENGTH + len;
+        return JAInteger.LENGTH + len;
     }
 
     /**
@@ -108,7 +108,7 @@ public class TupleImpl
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public PASerializable iGet(int i)
+    public JASerializable iGet(int i)
             throws Exception {
         initializeTuple();
         if (i < 0)

@@ -5,7 +5,7 @@ import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.AncestorBase;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.IncDes;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
@@ -60,82 +60,82 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return getSerializedLengthReq;
     }
 
-    final public PASerializable createSubordinate(Factory factory)
+    final public JASerializable createSubordinate(Factory factory)
             throws Exception {
         return createSubordinate(factory, getParent());
     }
 
-    final public PASerializable createSubordinate(String actorType)
+    final public JASerializable createSubordinate(String actorType)
             throws Exception {
         return createSubordinate(actorType, getParent());
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent)
+    final public JASerializable createSubordinate(Factory factory, Ancestor parent)
             throws Exception {
-        PASerializable jid = factory.newSerializable(getMailbox(), parent);
+        JASerializable jid = factory.newSerializable(getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent)
+    final public JASerializable createSubordinate(String actorType, Ancestor parent)
             throws Exception {
-        PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(Factory factory, byte[] bytes)
+    final public JASerializable createSubordinate(Factory factory, byte[] bytes)
             throws Exception {
         return createSubordinate(factory, getParent(), bytes);
     }
 
-    final public PASerializable createSubordinate(String actorType, byte[] bytes)
+    final public JASerializable createSubordinate(String actorType, byte[] bytes)
             throws Exception {
         return createSubordinate(actorType, getParent(), bytes);
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent, byte[] bytes)
+    final public JASerializable createSubordinate(Factory factory, Ancestor parent, byte[] bytes)
             throws Exception {
         if (bytes == null)
             return createSubordinate(factory, parent);
-        PASerializable jid = factory.newSerializable(getMailbox(), parent);
+        JASerializable jid = factory.newSerializable(getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent, byte[] bytes)
+    final public JASerializable createSubordinate(String actorType, Ancestor parent, byte[] bytes)
             throws Exception {
         if (bytes == null)
             return createSubordinate(actorType, parent);
-        PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(Factory factory, ReadableBytes readableBytes)
+    final public JASerializable createSubordinate(Factory factory, ReadableBytes readableBytes)
             throws Exception {
         return createSubordinate(factory, getParent(), readableBytes);
     }
 
-    final public PASerializable createSubordinate(String actorType, ReadableBytes readableBytes)
+    final public JASerializable createSubordinate(String actorType, ReadableBytes readableBytes)
             throws Exception {
         return createSubordinate(actorType, getParent(), readableBytes);
     }
 
-    final public PASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes)
+    final public JASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes)
             throws Exception {
-        PASerializable jid = factory.newSerializable(getMailbox(), parent);
+        JASerializable jid = factory.newSerializable(getMailbox(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public PASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes)
+    final public JASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes)
             throws Exception {
-        PASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
@@ -313,14 +313,14 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return A JID actor or null.
      */
     @Override
-    public PASerializable resolvePathname(final String pathname)
+    public JASerializable resolvePathname(final String pathname)
             throws Exception {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Request<PASerializable> resolvePathnameReq(final String pathname) {
-        return new RequestBase<PASerializable>(getMailbox()) {
+    public Request<JASerializable> resolvePathnameReq(final String pathname) {
+        return new RequestBase<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(resolvePathname(pathname));
@@ -335,19 +335,19 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return a copy of the actor.
      */
     @Override
-    public PASerializable copy(final Mailbox m)
+    public JASerializable copy(final Mailbox m)
             throws Exception {
         Mailbox mb = m;
         if (mb == null)
             mb = getMailbox();
-        PASerializable serializable = getFactory().newSerializable(mb, getParent());
+        JASerializable serializable = getFactory().newSerializable(mb, getParent());
         IncDesImpl jid = (IncDesImpl) serializable.getDurable();
         jid.load(new ReadableBytes(getSerializedBytes(), 0));
         return serializable;
     }
 
-    public final Request<PASerializable> copyReq(final Mailbox m) {
-        return new RequestBase<PASerializable>(getMailbox()) {
+    public final Request<JASerializable> copyReq(final Mailbox m) {
+        return new RequestBase<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(copy(m));
@@ -355,7 +355,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         };
     }
 
-    public final Request<Boolean> isEqualReq(final PASerializable jidA) {
+    public final Request<Boolean> isEqualReq(final JASerializable jidA) {
         return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(final Transport rp) throws Exception {

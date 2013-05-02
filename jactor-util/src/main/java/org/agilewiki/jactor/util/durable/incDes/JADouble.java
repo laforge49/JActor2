@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface PADouble extends IncDes {
+public interface JADouble extends IncDes {
 
     /**
      * Size of an double in bytes.

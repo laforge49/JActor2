@@ -10,17 +10,17 @@ public class PropertiesTest extends TestCase {
         final MailboxFactory mailboxFactory1 = new DefaultMailboxFactoryImpl();
         final MailboxFactory mailboxFactory2 = new DefaultMailboxFactoryImpl();
         try {
-            PAProperties p1 = new PAProperties(mailboxFactory1, null);
-            PAProperties p2 = new PAProperties(mailboxFactory2, p1);
+            JAProperties p1 = new JAProperties(mailboxFactory1, null);
+            JAProperties p2 = new JAProperties(mailboxFactory2, p1);
             p1.putProperty("a", "foo");
             p2.putProperty("b", "bar");
             ActorBase z = new ActorBase();
             z.initialize(mailboxFactory2.createMailbox());
-            String a = (String) PAProperties.getProperty(z, "a");
+            String a = (String) JAProperties.getProperty(z, "a");
             assertEquals("foo", a);
-            String b = (String) PAProperties.getProperty(z, "b");
+            String b = (String) JAProperties.getProperty(z, "b");
             assertEquals("bar", b);
-            String c = (String) PAProperties.getProperty(z, "c");
+            String c = (String) JAProperties.getProperty(z, "c");
             assertNull(c);
         } finally {
             mailboxFactory2.close();

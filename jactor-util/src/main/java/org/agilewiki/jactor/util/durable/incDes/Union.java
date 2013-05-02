@@ -1,13 +1,13 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 
 public interface Union extends IncDes {
 
-    Request<PASerializable> getValueReq();
+    Request<JASerializable> getValueReq();
 
-    PASerializable getValue();
+    JASerializable getValue();
 
     Request<Void> clearReq();
 

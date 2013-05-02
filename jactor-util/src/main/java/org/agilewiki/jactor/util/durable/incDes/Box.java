@@ -1,15 +1,15 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 
 public interface Box extends IncDes {
 
     public static final String FACTORY_NAME = "box";
 
-    Request<PASerializable> getValueReq();
+    Request<JASerializable> getValueReq();
 
-    PASerializable getValue()
+    JASerializable getValue()
             throws Exception;
 
     Request<Void> clearReq();

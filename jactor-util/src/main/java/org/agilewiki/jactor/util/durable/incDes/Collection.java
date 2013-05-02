@@ -1,9 +1,9 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
-import org.agilewiki.jactor.util.durable.PASerializable;
+import org.agilewiki.jactor.util.durable.JASerializable;
 
-public interface Collection<ENTRY_TYPE extends PASerializable> extends IncDes {
+public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
 
     Request<Integer> sizeReq();
 

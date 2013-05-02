@@ -11,11 +11,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.agilewiki.jactor.api.*;
 import org.slf4j.Logger;
 
-public class MailboxImpl implements PAMailbox, Runnable {
+public class MailboxImpl implements JAMailbox, Runnable {
 
     private final Logger log;
 
-    private final PAMailboxFactory mailboxFactory;
+    private final JAMailboxFactory mailboxFactory;
     private final MessageQueue inbox;
     private final AtomicBoolean running = new AtomicBoolean();
     private final Runnable onIdle;
@@ -33,7 +33,7 @@ public class MailboxImpl implements PAMailbox, Runnable {
     /**
      * Send buffer
      */
-    private Map<PAMailbox, ArrayDeque<Message>> sendBuffer;
+    private Map<JAMailbox, ArrayDeque<Message>> sendBuffer;
 
     private ExceptionHandler exceptionHandler;
     private Message currentMessage;
@@ -42,7 +42,7 @@ public class MailboxImpl implements PAMailbox, Runnable {
      * messageQueue can be null to use the default queue implementation.
      */
     public MailboxImpl(final boolean _mayBlock, final Runnable _onIdle,
-            final Runnable _messageProcessor, final PAMailboxFactory factory,
+            final Runnable _messageProcessor, final JAMailboxFactory factory,
             final MessageQueue messageQueue, final Logger _log,
             final int _initialBufferSize) {
         mayBlock = _mayBlock;
@@ -65,11 +65,11 @@ public class MailboxImpl implements PAMailbox, Runnable {
     public void close() throws Exception {
         if (sendBuffer == null)
             return;
-        final Iterator<Entry<PAMailbox, ArrayDeque<Message>>> iter = sendBuffer
+        final Iterator<Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
                 .entrySet().iterator();
         while (iter.hasNext()) {
-            final Entry<PAMailbox, ArrayDeque<Message>> entry = iter.next();
-            final PAMailbox target = entry.getKey();
+            final Entry<JAMailbox, ArrayDeque<Message>> entry = iter.next();
+            final JAMailbox target = entry.getKey();
             if (target.getMailboxFactory() != mailboxFactory) {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
@@ -99,12 +99,12 @@ public class MailboxImpl implements PAMailbox, Runnable {
     public final boolean flush() throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
-            final Iterator<Entry<PAMailbox, ArrayDeque<Message>>> iter = sendBuffer
+            final Iterator<Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
                     .entrySet().iterator();
             while (iter.hasNext()) {
                 result = true;
-                final Entry<PAMailbox, ArrayDeque<Message>> entry = iter.next();
-                final PAMailbox target = entry.getKey();
+                final Entry<JAMailbox, ArrayDeque<Message>> entry = iter.next();
+                final JAMailbox target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.addUnbufferedMessages(messages);
@@ -141,7 +141,7 @@ public class MailboxImpl implements PAMailbox, Runnable {
     public final <E, A extends Actor> void send(final _Request<E, A> request,
             final Mailbox source, final A targetActor,
             final ResponseProcessor<E> responseProcessor) throws Exception {
-        final PAMailbox sourceMailbox = (PAMailbox) source;
+        final JAMailbox sourceMailbox = (JAMailbox) source;
         if (!sourceMailbox.isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
@@ -269,12 +269,12 @@ public class MailboxImpl implements PAMailbox, Runnable {
      * @return true, if buffered
      */
     @Override
-    public boolean buffer(final Message message, final PAMailbox target) {
+    public boolean buffer(final Message message, final JAMailbox target) {
         if (mailboxFactory.isClosing())
             return false;
         ArrayDeque<Message> buffer;
         if (sendBuffer == null) {
-            sendBuffer = new IdentityHashMap<PAMailbox, ArrayDeque<Message>>();
+            sendBuffer = new IdentityHashMap<JAMailbox, ArrayDeque<Message>>();
             buffer = null;
         } else {
             buffer = sendBuffer.get(target);
@@ -453,7 +453,7 @@ public class MailboxImpl implements PAMailbox, Runnable {
 
     @Override
     public final void incomingResponse(final Message message,
-            final PAMailbox responseSource) {
+            final JAMailbox responseSource) {
 //        final MailboxImpl sourceMailbox = (MailboxImpl) responseSource;
 //        if (!sourceMailbox.running.get())
 //            throw new IllegalStateException(
@@ -466,12 +466,12 @@ public class MailboxImpl implements PAMailbox, Runnable {
     }
 
     @Override
-    public PAMailboxFactory getMailboxFactory() {
+    public JAMailboxFactory getMailboxFactory() {
         return mailboxFactory;
     }
 
     @Override
-    public PAMailbox createPort(final Mailbox _source, final int size) {
+    public JAMailbox createPort(final Mailbox _source, final int size) {
         return this;
     }
 

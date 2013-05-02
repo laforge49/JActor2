@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
-import org.agilewiki.jactor.util.durable.incDes.PAInteger;
-import org.agilewiki.jactor.util.durable.incDes.PAList;
+import org.agilewiki.jactor.util.durable.incDes.JAInteger;
+import org.agilewiki.jactor.util.durable.incDes.JAList;
 
 public class BListTimingsTest extends TestCase {
     public void test() throws Exception {
@@ -35,12 +35,12 @@ public class BListTimingsTest extends TestCase {
 
         MailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
-            PAList<PAInteger> intList1 = (PAList) Durables.newSerializable(mailboxFactory, PAList.PAINTEGER_LIST);
+            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JAINTEGER_LIST);
             Mailbox mailbox = mailboxFactory.createMailbox();
             int i = 0;
             while (i < s) {
                 intList1.iAdd(-1);
-                PAInteger ij0 = intList1.iGet(-1);
+                JAInteger ij0 = intList1.iGet(-1);
                 ij0.setValue(i);
                 i += 1;
             }
@@ -48,7 +48,7 @@ public class BListTimingsTest extends TestCase {
             long t0 = System.currentTimeMillis();
             int j = 0;
             while (j < r) {
-                PAList<PAInteger> intList2 = (PAList) intList1.copy(mailbox);
+                JAList<JAInteger> intList2 = (JAList) intList1.copy(mailbox);
                 intList1.iAdd(s / 2);
                 intList2.getSerializedBytes();
                 j += 1;

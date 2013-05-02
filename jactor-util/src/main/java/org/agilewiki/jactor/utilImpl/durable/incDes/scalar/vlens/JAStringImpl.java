@@ -6,21 +6,21 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.incDes.PAString;
+import org.agilewiki.jactor.util.durable.incDes.JAString;
 import org.agilewiki.jactor.utilImpl.durable.*;
 
 /**
  * A JID actor that holds a String.
  */
-public class PAStringImpl
+public class JAStringImpl
         extends VLenScalar<String, String>
-        implements ComparableKey<String>, PAString {
+        implements ComparableKey<String>, JAString {
 
     public static void registerFactory(FactoryLocator _factoryLocator) {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(PAString.FACTORY_NAME) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JAString.FACTORY_NAME) {
             @Override
-            final protected PAStringImpl instantiateActor() {
-                return new PAStringImpl();
+            final protected JAStringImpl instantiateActor() {
+                return new JAStringImpl();
             }
         });
     }
