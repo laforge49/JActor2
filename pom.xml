@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <name>JActor</name>
     <description>POJO Actors</description>
-    <url>https://github.com/laforge49/PActor2</url>
+    <url>https://github.com/laforge49/JActor2</url>
 
     <licenses>
         <license>
