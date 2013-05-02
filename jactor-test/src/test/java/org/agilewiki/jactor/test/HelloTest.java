@@ -1,13 +1,5 @@
 package org.agilewiki.jactor.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.ops4j.pax.exam.CoreOptions.junitBundles;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-
-import javax.inject.Inject;
-
 import org.agilewiki.jactor.testIface.Hello;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +10,12 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+
+import javax.inject.Inject;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -34,7 +32,7 @@ public class HelloTest {
         return options(
                 mavenBundle("org.agilewiki.pactor", "pactor-api", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.pactor", "pactor-impl", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.pactor", "pactor-util", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.pactor", "jactor-util", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.pactor", "jactor-test-iface", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.pactor", "jactor-test-service", "0.0.1-SNAPSHOT"),
                 junitBundles()

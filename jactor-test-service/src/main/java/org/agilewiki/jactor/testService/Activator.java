@@ -1,7 +1,7 @@
 package org.agilewiki.jactor.testService;
 
 import org.agilewiki.jactor.testIface.Hello;
-import org.agilewiki.pactor.util.osgi.PAActivator;
+import org.agilewiki.jactor.util.osgi.PAActivator;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

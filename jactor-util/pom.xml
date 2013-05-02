@@ -3,14 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-	<parent>
+    <parent>
         <groupId>org.agilewiki.pactor</groupId>
         <artifactId>pactor</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-	</parent>
+    </parent>
 
-    <artifactId>jactor-test-service</artifactId>
-    <name>JActor-test-service</name>
+    <artifactId>jactor-util</artifactId>
+    <name>JActor-util</name>
     <packaging>bundle</packaging>
 
     <build>
@@ -46,14 +46,11 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Activator>org.agilewiki.jactor.testService.Activator</Bundle-Activator>
                         <Export-Package>
-                            org.agilewiki.jactor.testService;version=${project.version}
+                            org.agilewiki.jactor.util*;version=${project.version}
                         </Export-Package>
                         <Import-Package>
                             org.agilewiki.pactor.api;version=${project.version},
-                            org.agilewiki.jactor.util*;version=${project.version},
-                            org.agilewiki.jactor.testIface;version=${project.version},
                             *
                         </Import-Package>
                     </instructions>
@@ -63,69 +60,56 @@
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pactor-api</artifactId>
             <version>${project.version}</version>
         </dependency>
- 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jactor-util</artifactId>
+            <artifactId>pactor-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>jactor-test-iface</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.5.11</version>
+            <version>1.6.4</version>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.5.11</version>
+            <version>1.6.4</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
-
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<version>1.3.9</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.kenai.nbpwr</groupId>
 			<artifactId>edu-umd-cs-findbugs-annotations</artifactId>
 			<version>1.3.2-201002241900</version>
 		</dependency>
-
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
             <version>4.3.1</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.compendium</artifactId>
             <version>4.3.1</version>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
-
     </dependencies>
 </project>
