@@ -1,5 +1,6 @@
 package org.agilewiki.jactor.util.durable;
 
+import org.agilewiki.jactor.api.Properties;
 import org.agilewiki.jactor.util.JAProperties;
 import org.agilewiki.jactor.util.durable.incDes.*;
 import org.agilewiki.jactor.api.Mailbox;
@@ -18,32 +19,54 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.collection.tuple.TupleFactor
 import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.flens.*;
 import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.vlens.*;
 
-public class Durables {
+/**
+ * Static methods for accessing durable capabilities.
+ */
+public final class Durables {
 
+    /**
+     * Creates a mailboxFactory with a factoryLocator that supports all the pre-defined factories.
+     * @return A mailbox factory whose properties include the factoryLocator.
+     */
     public static MailboxFactory createMailboxFactory() throws Exception {
-        MailboxFactory mailboxFactory = createMailboxFactory("org.agilewiki.jactor.util.durable", "", "");
-        registerFactories(mailboxFactory);
+        MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        FactoryLocator factoryLocator =
+                createFactoryLocator(mailboxFactory, "org.agilewiki.jactor.util.durable", "", "");
+        registerFactories(factoryLocator);
         return mailboxFactory;
     }
 
-    public static MailboxFactory createMailboxFactory(
+    /**
+     * Create a factoryLocator and add it to the mailboxFactory properties.
+     *
+     * @param _mailboxFactory A mailboxFactory.
+     * @param _bundleName The name of the OSGi bundle or an empty string.
+     * @param _version The version of the OSGi bundle or an empty string.
+     * @param _location   The location of the OSGi bundle or an empty string.
+     * @return The new factoryLocator.
+     */
+    public static FactoryLocator createFactoryLocator(
+            final MailboxFactory _mailboxFactory,
             final String _bundleName,
             final String _version,
             final String _location) throws Exception {
-        MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
-        JAProperties properties = new JAProperties(mailboxFactory);
+        Properties properties = _mailboxFactory.getProperties();
+        if (properties == null) {
+            properties = new JAProperties(_mailboxFactory);
+        }
         FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
         factoryLocator.configure(_bundleName, _version, _location);
         properties.putProperty("factoryLocator", factoryLocator);
-        return mailboxFactory;
+        return factoryLocator;
     }
 
-    public static void registerFactories(final MailboxFactory _mailboxFactory) {
-        FactoryLocator factoryLocator = getFactoryLocator(_mailboxFactory);
-        registerFactories(factoryLocator);
-    }
-
+    /**
+     * Register all the pre-defined factories.
+     *
+     * @param _factoryLocator The factoryLocator that will hold the factories.
+     */
     public static void registerFactories(final FactoryLocator _factoryLocator) {
+
         IncDesFactory.registerFactory(_factoryLocator);
 
         JABooleanImpl.registerFactory(_factoryLocator);
@@ -93,32 +116,58 @@ public class Durables {
         registerLongMapFactory(_factoryLocator, JAMap.LONG_JAFLOAT_MAP, JAFloat.FACTORY_NAME);
         registerLongMapFactory(_factoryLocator, JAMap.LONG_JADOUBLE_MAP, JADouble.FACTORY_NAME);
         registerLongMapFactory(_factoryLocator, JAMap.LONG_JABOOLEAN_MAP, JABoolean.FACTORY_NAME);
-
-        StringBMapFactory.registerFactories(_factoryLocator);
     }
 
+    /**
+     * Register a list factory.
+     *
+     * @param _factoryLocator The factoryLocator that will hold the factory.
+     * @param _listFactoryName    The new list type.
+     * @param _valueFactoryName   The list entry type.
+     */
     public static void registerListFactory(final FactoryLocator _factoryLocator,
-                                           final String _actorType,
-                                           final String _valueType) {
-        BListFactory.registerFactory(_factoryLocator, _actorType, _valueType);
+                                           final String _listFactoryName,
+                                           final String _valueFactoryName) {
+        BListFactory.registerFactory(_factoryLocator, _listFactoryName, _valueFactoryName);
     }
 
+    /**
+     * Register the factory of a map with keys that are strings.
+     *
+     * @param _factoryLocator      The factoryLocator that will hold the factory.
+     * @param _mapFactoryName      The new string map type.
+     * @param _valueFactoryName    The map entry type.
+     */
     public static void registerStringMapFactory(final FactoryLocator _factoryLocator,
-                                                final String _actorType,
-                                                final String _valueType) {
-        StringBMapFactory.registerFactory(_factoryLocator, _actorType, _valueType);
+                                                final String _mapFactoryName,
+                                                final String _valueFactoryName) {
+        StringBMapFactory.registerFactory(_factoryLocator, _mapFactoryName, _valueFactoryName);
     }
 
+    /**
+     * Register the factory of a map with keys that are integers.
+     *
+     * @param _factoryLocator      The factoryLocator that will hold the factory.
+     * @param _mapFactoryName      The new integer map type.
+     * @param _valueFactoryName    The map entry type.
+     */
     public static void registerIntegerMapFactory(final FactoryLocator _factoryLocator,
-                                                 final String _actorType,
-                                                 final String _valueType) {
-        IntegerBMapFactory.registerFactory(_factoryLocator, _actorType, _valueType);
+                                                 final String _mapFactoryName,
+                                                 final String _valueFactoryName) {
+        IntegerBMapFactory.registerFactory(_factoryLocator, _mapFactoryName, _valueFactoryName);
     }
 
+    /**
+     * Register the factory of a map with keys that are longs.
+     *
+     * @param _factoryLocator      The factoryLocator that will hold the factory.
+     * @param _mapFactoryName      The new long map type.
+     * @param _valueFactoryName    The map entry type.
+     */
     public static void registerLongMapFactory(final FactoryLocator _factoryLocator,
-                                              final String _actorType,
-                                              final String _valueType) {
-        LongBMapFactory.registerFactory(_factoryLocator, _actorType, _valueType);
+                                              final String _mapFactoryName,
+                                              final String _valueFactoryName) {
+        LongBMapFactory.registerFactory(_factoryLocator, _mapFactoryName, _valueFactoryName);
     }
 
     public static void registerUnionFactory(final FactoryLocator _factoryLocator,
