@@ -55,7 +55,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     protected void init() {
-        String baseType = getType();
+        String baseType = getFactoryName();
         if (baseType.startsWith("IN."))
             baseType = baseType.substring(3);
         factoryLocator = Durables.getFactoryLocator(getMailbox());

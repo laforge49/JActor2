@@ -70,7 +70,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     protected void init() {
-        String baseType = getType();
+        String baseType = getFactoryName();
         if (baseType.startsWith("IN."))
             baseType = baseType.substring(3);
         factoryLocator = Durables.getFactoryLocator(getMailbox());

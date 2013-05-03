@@ -35,7 +35,7 @@ public class RootTest extends TestCase {
             JAString jaString1 = (JAString) stringAFactory.newSerializable(mailbox, factoryLocator);
             jaString1.setValueReq("abc").call();
             byte[] sb = jaString1.getSerializedBytesReq().call();
-            root1.setValueReq(jaString1.getType(), sb).call();
+            root1.setValueReq(jaString1.getFactoryName(), sb).call();
             JAString sj = (JAString) root1.getValueReq().call();
             assertEquals("abc", sj.getValueReq().call());
 

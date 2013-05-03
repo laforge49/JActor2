@@ -67,7 +67,7 @@ public class RootImpl extends BoxImpl implements Root {
     @Override
     protected int loadLen(ReadableBytes readableBytes)
             throws Exception {
-        descriptor.load(readableBytes);
+        ((JAStringImpl) descriptor).load(readableBytes);
         int l = readableBytes.remaining();
         if (l == 0)
             return -1;
@@ -115,7 +115,7 @@ public class RootImpl extends BoxImpl implements Root {
         if (mb == null)
             mb = getMailbox();
         JASerializable jid = getFactory().newSerializable(mb, getParent());
-        jid.getDurable().load(new ReadableBytes(getSerializedBytes(), 0));
+        ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(getSerializedBytes(), 0));
         return jid;
     }
 }

@@ -168,7 +168,7 @@ public class LBlock implements Block {
         if (rootJidBytes == null)
             return null;
         rootJid = (Root) Durables.newSerializable(factoryLocator, Root.FACTORY_NAME, mailbox, parent);
-        rootJid.load(new ReadableBytes(rootJidBytes, 0));
+        ((RootImpl) rootJid).load(new ReadableBytes(rootJidBytes, 0));
         return rootJid;
     }
 

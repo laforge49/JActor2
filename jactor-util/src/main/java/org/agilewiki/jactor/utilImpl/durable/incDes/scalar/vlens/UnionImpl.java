@@ -100,7 +100,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
             return;
         Factory factory = getUnionFactories()[factoryIndex];
         value = factory.newSerializable(getMailbox(), getParent());
-        value.getDurable().load(readableBytes);
+        ((IncDesImpl) value.getDurable()).load(readableBytes);
         ((IncDesImpl) value.getDurable()).setContainerJid(this);
     }
 
@@ -203,7 +203,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         factoryIndex = ndx;
         value = factory.newSerializable(getMailbox(), getParent());
         ((IncDesImpl) value.getDurable()).setContainerJid(this);
-        value.getDurable().load(new ReadableBytes(bytes, 0));
+        ((IncDesImpl) value.getDurable()).load(new ReadableBytes(bytes, 0));
         change(getSerializedLength() - oldLength);
     }
 

@@ -35,7 +35,7 @@ public class BoxTest extends TestCase {
             JAString string1 = (JAString) stringAFactory.newSerializable(mailbox, factoryLocator);
             string1.setValueReq("abc").call();
             byte[] sb = string1.getSerializedBytes();
-            box1.setValueReq(string1.getType(), sb).call();
+            box1.setValueReq(string1.getFactoryName(), sb).call();
             JAString sj = (JAString) box1.getValueReq().call();
             assertEquals("abc", sj.getValueReq().call());
 

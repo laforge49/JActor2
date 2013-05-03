@@ -283,7 +283,6 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param readableBytes Holds the serialized data.
      */
-    @Override
     public void load(ReadableBytes readableBytes)
             throws Exception {
         serializedBytes = readableBytes.getBytes();
@@ -395,7 +394,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return The jid type, or null.
      */
     @Override
-    final public String getType() {
+    final public String getFactoryName() {
         if (factory == null)
             return null;
         return factory.name;
