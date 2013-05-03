@@ -1,13 +1,13 @@
 package org.agilewiki.jactor.util.durable;
 
-import org.agilewiki.jactor.api.Properties;
-import org.agilewiki.jactor.util.JAProperties;
-import org.agilewiki.jactor.util.durable.incDes.*;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.Properties;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.Ancestor;
+import org.agilewiki.jactor.util.JAProperties;
 import org.agilewiki.jactor.util.durable.app.App;
+import org.agilewiki.jactor.util.durable.incDes.*;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor.utilImpl.durable.app.AppFactory;
 import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesFactory;
@@ -26,6 +26,7 @@ public final class Durables {
 
     /**
      * Creates a mailboxFactory with a factoryLocator that supports all the pre-defined factories.
+     *
      * @return A mailbox factory whose properties include the factoryLocator.
      */
     public static MailboxFactory createMailboxFactory() throws Exception {
@@ -40,9 +41,9 @@ public final class Durables {
      * Create a factoryLocator and add it to the mailboxFactory properties.
      *
      * @param _mailboxFactory A mailboxFactory.
-     * @param _bundleName The name of the OSGi bundle or an empty string.
-     * @param _version The version of the OSGi bundle or an empty string.
-     * @param _location   The location of the OSGi bundle or an empty string.
+     * @param _bundleName     The name of the OSGi bundle or an empty string.
+     * @param _version        The version of the OSGi bundle or an empty string.
+     * @param _location       The location of the OSGi bundle or an empty string.
      * @return The new factoryLocator.
      */
     public static FactoryLocator createFactoryLocator(
@@ -58,6 +59,26 @@ public final class Durables {
         factoryLocator.configure(_bundleName, _version, _location);
         properties.putProperty("factoryLocator", factoryLocator);
         return factoryLocator;
+    }
+
+    /**
+     * Returns the factoryLocator from the mailboxFactory's factoryLocator property.
+     *
+     * @param _mailbox A mailbox.
+     * @return The factoryLocator for that mailbox.
+     */
+    public static FactoryLocator getFactoryLocator(final Mailbox _mailbox) {
+        return getFactoryLocator(_mailbox.getMailboxFactory());
+    }
+
+    /**
+     * Returns the factoryLocator from the mailboxFactory's factoryLocator property.
+     *
+     * @param _mailboxFactory A mailboxFactory.
+     * @return The factoryLocator for that mailboxFactory.
+     */
+    public static FactoryLocator getFactoryLocator(final MailboxFactory _mailboxFactory) {
+        return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");
     }
 
     /**
@@ -121,9 +142,9 @@ public final class Durables {
     /**
      * Register a list factory.
      *
-     * @param _factoryLocator The factoryLocator that will hold the factory.
-     * @param _listFactoryName    The new list type.
-     * @param _valueFactoryName   The list entry type.
+     * @param _factoryLocator   The factoryLocator that will hold the factory.
+     * @param _listFactoryName  The new list type.
+     * @param _valueFactoryName The list entry type.
      */
     public static void registerListFactory(final FactoryLocator _factoryLocator,
                                            final String _listFactoryName,
@@ -134,9 +155,9 @@ public final class Durables {
     /**
      * Register the factory of a map with keys that are strings.
      *
-     * @param _factoryLocator      The factoryLocator that will hold the factory.
-     * @param _mapFactoryName      The new string map type.
-     * @param _valueFactoryName    The map entry type.
+     * @param _factoryLocator   The factoryLocator that will hold the factory.
+     * @param _mapFactoryName   The new string map type.
+     * @param _valueFactoryName The map entry type.
      */
     public static void registerStringMapFactory(final FactoryLocator _factoryLocator,
                                                 final String _mapFactoryName,
@@ -147,9 +168,9 @@ public final class Durables {
     /**
      * Register the factory of a map with keys that are integers.
      *
-     * @param _factoryLocator      The factoryLocator that will hold the factory.
-     * @param _mapFactoryName      The new integer map type.
-     * @param _valueFactoryName    The map entry type.
+     * @param _factoryLocator   The factoryLocator that will hold the factory.
+     * @param _mapFactoryName   The new integer map type.
+     * @param _valueFactoryName The map entry type.
      */
     public static void registerIntegerMapFactory(final FactoryLocator _factoryLocator,
                                                  final String _mapFactoryName,
@@ -160,9 +181,9 @@ public final class Durables {
     /**
      * Register the factory of a map with keys that are longs.
      *
-     * @param _factoryLocator      The factoryLocator that will hold the factory.
-     * @param _mapFactoryName      The new long map type.
-     * @param _valueFactoryName    The map entry type.
+     * @param _factoryLocator   The factoryLocator that will hold the factory.
+     * @param _mapFactoryName   The new long map type.
+     * @param _valueFactoryName The map entry type.
      */
     public static void registerLongMapFactory(final FactoryLocator _factoryLocator,
                                               final String _mapFactoryName,
@@ -173,9 +194,9 @@ public final class Durables {
     /**
      * Register the factory of a union.
      *
-     * @param _factoryLocator      The factoryLocator that will hold the factory.
-     * @param _unionFactoryName    The new union type.
-     * @param _valueFactoryNames   The types of the possible values of the union.
+     * @param _factoryLocator    The factoryLocator that will hold the factory.
+     * @param _unionFactoryName  The new union type.
+     * @param _valueFactoryNames The types of the possible values of the union.
      */
     public static void registerUnionFactory(final FactoryLocator _factoryLocator,
                                             final String _unionFactoryName,
@@ -186,9 +207,9 @@ public final class Durables {
     /**
      * Register the factory of a tuple.
      *
-     * @param _factoryLocator      The factoryLocator that will hold the factory.
-     * @param _tupleFactoryName    The new tuple type.
-     * @param _valueFactoryNames   The types of the values of the tuple.
+     * @param _factoryLocator    The factoryLocator that will hold the factory.
+     * @param _tupleFactoryName  The new tuple type.
+     * @param _valueFactoryNames The types of the values of the tuple.
      */
     public static void registerTupleFactory(final FactoryLocator _factoryLocator,
                                             final String _tupleFactoryName,
@@ -199,9 +220,9 @@ public final class Durables {
     /**
      * Register the factory of a serializable application.
      *
-     * @param _factoryLocator      The factoryLocator that will hold the factory.
-     * @param _appClass            The application class.
-     * @param _appFactoryName      The application type.
+     * @param _factoryLocator The factoryLocator that will hold the factory.
+     * @param _appClass       The application class.
+     * @param _appFactoryName The application type.
      */
     public static void registerAppFactory(final FactoryLocator _factoryLocator,
                                           final Class<?> _appClass,
@@ -217,10 +238,10 @@ public final class Durables {
     /**
      * Register the factory of a serializable application.
      *
-     * @param _factoryLocator      The factoryLocator that will hold the factory.
-     * @param _appClass            The application class.
-     * @param _appFactoryName      The application type.
-     * @param _valueFactoryNames   The types of the durable values of the application.
+     * @param _factoryLocator    The factoryLocator that will hold the factory.
+     * @param _appClass          The application class.
+     * @param _appFactoryName    The application type.
+     * @param _valueFactoryNames The types of the durable values of the application.
      */
     public static void registerAppFactory(final FactoryLocator _factoryLocator,
                                           final Class<?> _appClass,
@@ -234,14 +255,78 @@ public final class Durables {
         });
     }
 
-    public static FactoryLocator getFactoryLocator(final Mailbox _mailbox) {
-        return getFactoryLocator(_mailbox.getMailboxFactory());
+    /**
+     * Create a new serializable object.
+     *
+     * @param _factoryLocator The factoryLocator.
+     * @param _factoryName    The type of object to be created.
+     * @param _mailbox        The mailbox to be used by the new object.
+     * @return A new serializable object.
+     */
+    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
+                                                 final String _factoryName,
+                                                 final Mailbox _mailbox)
+            throws Exception {
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, null);
     }
 
-    public static FactoryLocator getFactoryLocator(final MailboxFactory _mailboxFactory) {
-        return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");
+    /**
+     * Create a new serializable object.
+     *
+     * @param _factoryLocator The factoryLocator.
+     * @param _factoryName    The type of object to be created.
+     * @param _mailbox        The mailbox to be used by the new object.
+     * @param _parent         The dependency to be injected, or null.
+     * @return A new serializable object.
+     */
+    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
+                                                 final String _factoryName,
+                                                 final Mailbox _mailbox,
+                                                 final Ancestor _parent)
+            throws Exception {
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, _parent);
     }
 
+    /**
+     * Create a new serializable object and a new mailbox to be used by that serializable object.
+     *
+     * @param _factoryLocator The factoryLocator.
+     * @param _factoryName    The type of object to be created.
+     * @param _mailboxFactory The mailboxFactory to be used to create the new mailbox.
+     * @return A new serializable object.
+     */
+    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
+                                                 final String _factoryName,
+                                                 final MailboxFactory _mailboxFactory)
+            throws Exception {
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), null);
+    }
+
+    /**
+     * Create a new serializable object and a new mailbox to be used by that serializable object.
+     *
+     * @param _factoryLocator The factoryLocator.
+     * @param _factoryName    The type of object to be created.
+     * @param _mailboxFactory The mailboxFactory to be used to create the new mailbox.
+     * @param _parent         The dependency to be injected, or null.
+     * @return A new serializable object.
+     */
+    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
+                                                 final String _factoryName,
+                                                 final MailboxFactory _mailboxFactory,
+                                                 final Ancestor _parent)
+            throws Exception {
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
+    }
+
+    /**
+     * Create a new serializable object and a new mailbox to be used by that serializable object.
+     *
+     * @param _factoryName    The type of object to be created.
+     * @param _mailboxFactory The mailboxFactory to be used to create the new mailbox
+     *                        and which has a factoryLocator property.
+     * @return A new serializable object.
+     */
     public static JASerializable newSerializable(final MailboxFactory _mailboxFactory,
                                                  final String _factoryName)
             throws Exception {
@@ -252,6 +337,15 @@ public final class Durables {
                 null);
     }
 
+    /**
+     * Create a new serializable object and a new mailbox to be used by that serializable object.
+     *
+     * @param _factoryName    The type of object to be created.
+     * @param _mailboxFactory The mailboxFactory to be used to create the new mailbox
+     *                        and which has a factoryLocator property.
+     * @param _parent         The dependency to be injected, or null.
+     * @return A new serializable object.
+     */
     public static JASerializable newSerializable(final MailboxFactory _mailboxFactory,
                                                  final String _factoryName,
                                                  final Ancestor _parent)
@@ -263,6 +357,14 @@ public final class Durables {
                 _parent);
     }
 
+    /**
+     * Create a new serializable object.
+     *
+     * @param _factoryName The type of object to be created.
+     * @param _mailbox     The mailbox to be used by the new serializable object
+     *                     and whose mailboxFactory has a factoryLocator property.
+     * @return A new serializable object.
+     */
     public static JASerializable newSerializable(final String _factoryName,
                                                  final Mailbox _mailbox)
             throws Exception {
@@ -273,40 +375,19 @@ public final class Durables {
                 null);
     }
 
+    /**
+     * Create a new serializable object.
+     *
+     * @param _factoryName The type of object to be created.
+     * @param _mailbox     The mailbox to be used by the new serializable object
+     *                     and whose mailboxFactory has a factoryLocator property.
+     * @param _parent      The dependency to be injected, or null.
+     * @return A new serializable object.
+     */
     public static JASerializable newSerializable(final String _factoryName,
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
             throws Exception {
         return newSerializable(getFactoryLocator(_mailbox.getMailboxFactory()), _factoryName, _mailbox, _parent);
-    }
-
-    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
-                                                 final String _factoryName,
-                                                 final Mailbox _mailbox)
-            throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, null);
-    }
-
-    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
-                                                 final String _factoryName,
-                                                 final Mailbox _mailbox,
-                                                 final Ancestor _parent)
-            throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, _parent);
-    }
-
-    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
-                                                 final String _factoryName,
-                                                 final MailboxFactory _mailboxFactory)
-            throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), null);
-    }
-
-    public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
-                                                 final String _factoryName,
-                                                 final MailboxFactory _mailboxFactory,
-                                                 final Ancestor _parent)
-            throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
     }
 }
