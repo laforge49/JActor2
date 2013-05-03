@@ -9,7 +9,7 @@ import org.agilewiki.jactor.util.durable.JASerializable;
 public interface Box extends IncDes {
 
     /**
-     * The factory name of a box.
+     * The factory name of a Box object.
      */
     public static final String FACTORY_NAME = "box";
 
@@ -58,6 +58,7 @@ public interface Box extends IncDes {
 
     /**
      * Returns a request for creating and initializing a serializable object and put it in the box.
+     * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _factoryName    The type of the new serializable object.
      * @param _bytes          The content of the serializable object.
@@ -67,6 +68,7 @@ public interface Box extends IncDes {
 
     /**
      * Create and initialize a serialize object and put it in the box.
+     * (The bytes are not copied and must not be subsequently modified.)
      *
      * @param _factoryName    The type of the new serializable object.
      * @param _bytes          The content of the new serializable object.
@@ -93,6 +95,7 @@ public interface Box extends IncDes {
 
     /**
      * Returns a request to create and initialize a serializable object and put it in the box if the box was empty.
+     * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _factoryName    The type of the new serializable object.
      * @param _bytes          The content of the new serializable object.
@@ -102,6 +105,7 @@ public interface Box extends IncDes {
 
     /**
      * Create and initialize a serializable object and put it in the box if the box was empty.
+     * (The bytes are not copied and must not be subsequently modified.)
      *
      * @param _factoryName    The type of the new serializable object.
      * @param _bytes          The content of the new serializable object.

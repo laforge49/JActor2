@@ -128,6 +128,8 @@ public class BytesImpl
     @Override
     public Object getObject() throws Exception {
         byte[] bytes = getValue();
+        if (bytes == null)
+            return null;
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = new ObjectInputStream(bais);
         Object o = ois.readObject();
