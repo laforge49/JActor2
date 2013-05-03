@@ -170,22 +170,43 @@ public final class Durables {
         LongBMapFactory.registerFactory(_factoryLocator, _mapFactoryName, _valueFactoryName);
     }
 
+    /**
+     * Register the factory of a union.
+     *
+     * @param _factoryLocator      The factoryLocator that will hold the factory.
+     * @param _unionFactoryName    The new union type.
+     * @param _valueFactoryNames   The types of the possible values of the union.
+     */
     public static void registerUnionFactory(final FactoryLocator _factoryLocator,
-                                            final String _subActorType,
-                                            final String... _actorTypes) {
-        UnionImpl.registerFactory(_factoryLocator, _subActorType, _actorTypes);
+                                            final String _unionFactoryName,
+                                            final String... _valueFactoryNames) {
+        UnionImpl.registerFactory(_factoryLocator, _unionFactoryName, _valueFactoryNames);
     }
 
+    /**
+     * Register the factory of a tuple.
+     *
+     * @param _factoryLocator      The factoryLocator that will hold the factory.
+     * @param _tupleFactoryName    The new tuple type.
+     * @param _valueFactoryNames   The types of the values of the tuple.
+     */
     public static void registerTupleFactory(final FactoryLocator _factoryLocator,
-                                            final String _subActorType,
-                                            final String... _actorTypes) {
-        TupleFactory.registerFactory(_factoryLocator, _subActorType, _actorTypes);
+                                            final String _tupleFactoryName,
+                                            final String... _valueFactoryNames) {
+        TupleFactory.registerFactory(_factoryLocator, _tupleFactoryName, _valueFactoryNames);
     }
 
+    /**
+     * Register the factory of a serializable application.
+     *
+     * @param _factoryLocator      The factoryLocator that will hold the factory.
+     * @param _appClass            The application class.
+     * @param _appFactoryName      The application type.
+     */
     public static void registerAppFactory(final FactoryLocator _factoryLocator,
                                           final Class<?> _appClass,
-                                          final String _subActorType) {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_subActorType) {
+                                          final String _appFactoryName) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_appFactoryName) {
             @Override
             protected App instantiateActor() throws Exception {
                 return (App) _appClass.newInstance();
@@ -193,11 +214,19 @@ public final class Durables {
         });
     }
 
+    /**
+     * Register the factory of a serializable application.
+     *
+     * @param _factoryLocator      The factoryLocator that will hold the factory.
+     * @param _appClass            The application class.
+     * @param _appFactoryName      The application type.
+     * @param _valueFactoryNames   The types of the durable values of the application.
+     */
     public static void registerAppFactory(final FactoryLocator _factoryLocator,
                                           final Class<?> _appClass,
-                                          final String _subActorType,
-                                          final String... _actorTypes) {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_subActorType, _actorTypes) {
+                                          final String _appFactoryName,
+                                          final String... _valueFactoryNames) {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_appFactoryName, _valueFactoryNames) {
             @Override
             protected App instantiateActor() throws Exception {
                 return (App) _appClass.newInstance();
