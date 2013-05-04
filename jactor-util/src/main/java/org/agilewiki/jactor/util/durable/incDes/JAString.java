@@ -2,24 +2,7 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface JAString extends IncDes {
+public interface JAString extends VLenS<String> {
 
     public static final String FACTORY_NAME = "string";
-
-    Request<String> getValueReq();
-
-    String getValue()
-            throws Exception;
-
-    Request<Void> clearReq();
-
-    void clear();
-
-    Request<Void> setValueReq(final String _v);
-
-    void setValue(final String _v);
-
-    Request<Boolean> makeValueReq(final String _v);
-
-    Boolean makeValue(final String _v);
 }

@@ -21,7 +21,7 @@ public interface FLenS<RESPONSE_TYPE> extends IncDes {
      *
      * @return The value.
      */
-    RESPONSE_TYPE getValue();
+    RESPONSE_TYPE getValue() throws Exception;
 
     /**
      * Returns a request to assign a value.
