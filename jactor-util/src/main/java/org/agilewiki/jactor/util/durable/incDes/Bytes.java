@@ -1,7 +1,5 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
-import org.agilewiki.jactor.api.Request;
-
 /**
  * Bytes holds an array of bytes.
  */
