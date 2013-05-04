@@ -2,20 +2,15 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface JALong extends IncDes {
+public interface JALong extends FLenS<Long> {
 
     /**
-     * Size of a long in bytes.
+     * Size of a serialized JALong in bytes.
      */
     public final static int LENGTH = 8;
 
+    /**
+     * Factory name for a durable long.
+     */
     public static final String FACTORY_NAME = "long";
-
-    Request<Long> getValueReq();
-
-    Long getValue();
-
-    Request<Void> setValueReq(final Long _v);
-
-    void setValue(final Long _v);
 }
