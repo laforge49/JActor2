@@ -2,20 +2,18 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import org.agilewiki.jactor.api.Request;
 
-public interface JADouble extends IncDes {
+/**
+ * A durable double.
+ */
+public interface JADouble extends FLenS<Double> {
 
     /**
-     * Size of an double in bytes.
+     * Size of a serialized JADouble in bytes.
      */
     public final static int LENGTH = 8;
 
+    /**
+     * Factory name for a durable double.
+     */
     public static final String FACTORY_NAME = "double";
-
-    Request<Double> getValueReq();
-
-    Double getValue();
-
-    Request<Void> setValueReq(final Double _v);
-
-    void setValue(final Double _v);
 }
