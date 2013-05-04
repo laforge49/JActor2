@@ -12,7 +12,7 @@ public interface FactoryLocator extends Ancestor {
      *
      * @param _name The factory name or factory key.
      * @return The matching factory.
-     * @exception IllegalArgumentException is thrown if there is no matching factory.
+     * @throws IllegalArgumentException is thrown if there is no matching factory.
      */
     Factory getFactory(final String _name);
 }
