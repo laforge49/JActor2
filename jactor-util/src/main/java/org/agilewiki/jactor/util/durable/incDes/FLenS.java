@@ -4,6 +4,8 @@ import org.agilewiki.jactor.api.Request;
 
 /**
  * Fixed-length scalar
+ *
+ * @param <RESPONSE_TYPE> The type of scalar.
  */
 public interface FLenS<RESPONSE_TYPE> extends IncDes {
 

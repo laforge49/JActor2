@@ -23,7 +23,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
     /**
      * Returns a request that gets the ith element.
      *
-     * @param _i An index.
+     * @param _i An index, where 0 is the first element and -1 is the last element.
      * @return The request.
      */
     Request<ENTRY_TYPE> iGetReq(final int _i);
@@ -31,7 +31,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
     /**
      * Returns the ith element.
      *
-     * @param _i An index.
+     * @param _i An index, where 0 is the first element and -1 is the last element.
      * @return The ith element, or null if the index is out of range.
      */
     ENTRY_TYPE iGet(final int _i)
@@ -42,7 +42,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
      * assigns it to the ith element.
      * (The byte array is not copied and should not be subsequently modified.)
      *
-     * @param _i     An index.
+     * @param _i     An index, where 0 is the first element and -1 is the last element.
      * @param _bytes The new content.
      * @return The request.
      */
@@ -53,7 +53,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
      * assigns it to the ith element.
      * (The byte array is not copied and should not be subsequently modified.)
      *
-     * @param _i     An index.
+     * @param _i     An index, where 0 is the first element and -1 is the last element.
      * @param _bytes The new content.
      */
     void iSet(final int _i, final byte[] _bytes)

@@ -1,7 +1,5 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
-import org.agilewiki.jactor.api.Request;
-
 public interface JAFloat extends FLenS<Float> {
 
     /**
