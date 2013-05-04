@@ -3,7 +3,14 @@ package org.agilewiki.jactor.util.durable.app;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 
+/**
+ * An optional base class for serializable application classes.
+ */
 public class AppBase implements App {
+
+    /**
+     * The durable part of the serializable object.
+     */
     private Durable durable;
 
     @Override

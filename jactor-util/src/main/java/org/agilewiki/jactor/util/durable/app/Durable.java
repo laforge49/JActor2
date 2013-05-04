@@ -4,36 +4,38 @@ import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.IncDes;
 
 public interface Durable extends IncDes {
+
     /**
-     * Returns the size of the collection.
+     * Returns the size of the tuple.
      *
-     * @return The size of the collection.
+     * @return The size of the tuple.
      */
     int _size();
 
     /**
-     * Returns the ith JID component.
+     * Returns the ith element of the tuple.
      *
-     * @param _i The index of the element of interest.
-     * @return The ith JID component, or null if the index is out of range.
+     * @param _i The index.
+     * @return The ith element, or null if the index is out of range.
      */
     JASerializable _iGet(final int _i)
             throws Exception;
 
     /**
-     * Creates a JID actor and loads its serialized data.
+     * Initialize an element.
+     * (The byte array is not copied and should not be subsequently modified.)
      *
-     * @param _i     The index of the desired element.
-     * @param _bytes Holds the serialized data.
+     * @param _i     The index.
+     * @param _bytes The serialized data used to initialize the element.
      */
     void _iSetBytes(final int _i, final byte[] _bytes)
             throws Exception;
 
     /**
-     * Resolves a JID pathname, returning a JID actor or null.
+     * Resolves a pathname, returning a serializable object or null.
      *
-     * @param _pathname A JID pathname.
-     * @return A JID actor or null.
+     * @param _pathname A pathname.
+     * @return A serializable object or null.
      */
     public JASerializable _resolvePathname(final String _pathname)
             throws Exception;

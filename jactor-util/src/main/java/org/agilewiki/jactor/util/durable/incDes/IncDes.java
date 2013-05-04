@@ -95,7 +95,7 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
     Request<JASerializable> resolvePathnameReq(final String _pathname);
 
     /**
-     * Resolves a pathname, returning a JID actor or null.
+     * Resolves a pathname, returning a serializable object or null.
      *
      * @param _pathname A pathname.
      * @return A serializable object or null.
