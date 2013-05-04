@@ -4,7 +4,7 @@ import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.util.durable.JASerializable;
 
 /**
- * A list of serializable objects.
+ * A serializable list.
  *
  * @param <ENTRY_TYPE> The type of list entry.
  */

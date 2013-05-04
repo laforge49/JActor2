@@ -8,7 +8,7 @@ public interface JAInteger extends FLenS<Integer> {
     public final static int LENGTH = 4;
 
     /**
-     * Factory name for a durable int.
+     * Factory name for JAInteger.
      */
     public static final String FACTORY_NAME = "int";
 }

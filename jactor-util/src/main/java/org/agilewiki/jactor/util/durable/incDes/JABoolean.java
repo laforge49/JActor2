@@ -11,7 +11,7 @@ public interface JABoolean extends FLenS<Boolean> {
     public final static int LENGTH = 1;
 
     /**
-     * Factory name for a durable boolean.
+     * Factory name for JABoolean.
      */
     public static final String FACTORY_NAME = "bool";
 }

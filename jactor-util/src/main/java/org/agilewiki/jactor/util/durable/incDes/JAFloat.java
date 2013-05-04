@@ -8,7 +8,7 @@ public interface JAFloat extends FLenS<Float> {
     public final static int LENGTH = 4;
 
     /**
-     * Factory name for a durable float.
+     * Factory name for JAFloat.
      */
     public static final String FACTORY_NAME = "float";
 }

@@ -38,8 +38,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
             throws Exception;
 
     /**
-     * Returns a request that creates and initializes a serializable object and
-     * assigns it to the ith element.
+     * Returns a request that updates an existing serializable object.
      * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _i     An index, where 0 is the first element and -1 is the last element.
@@ -49,8 +48,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
     Request<Void> iSetReq(final int _i, final byte[] _bytes);
 
     /**
-     * Creates and initializes a new serializable object and
-     * assigns it to the ith element.
+     * Updates an existing serializable object.
      * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _i     An index, where 0 is the first element and -1 is the last element.

@@ -10,7 +10,7 @@ public interface JALong extends FLenS<Long> {
     public final static int LENGTH = 8;
 
     /**
-     * Factory name for a durable long.
+     * Factory name for JALong.
      */
     public static final String FACTORY_NAME = "long";
 }

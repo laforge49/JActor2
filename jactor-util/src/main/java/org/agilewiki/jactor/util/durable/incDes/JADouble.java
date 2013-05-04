@@ -11,7 +11,7 @@ public interface JADouble extends FLenS<Double> {
     public final static int LENGTH = 8;
 
     /**
-     * Factory name for a durable double.
+     * Factory name for JADouble.
      */
     public static final String FACTORY_NAME = "double";
 }
