@@ -402,7 +402,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
                 exceptionHandler.processException(t);
             } catch (final Throwable u) {
                 log.error("Exception handler unable to process throwable "
-                        + exceptionHandler.getClass().getName(), t);
+                        + exceptionHandler.getClass().getName(), u);
                 if (!(message.getResponseProcessor() instanceof EventResponseProcessor)) {
                     if (!message.isResponsePending())
                         return;

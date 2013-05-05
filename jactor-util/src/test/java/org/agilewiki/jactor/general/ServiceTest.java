@@ -5,102 +5,78 @@ import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 public class ServiceTest extends TestCase {
-    public void test1() throws Exception {
-        System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
-        final MailboxFactory mailboxFactoryA = new DefaultMailboxFactoryImpl();
+
+    public void test() throws Exception {
+        MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
+        MailboxFactory clientMBF = new DefaultMailboxFactoryImpl();
+        final MailboxFactory serverMBF = new DefaultMailboxFactoryImpl();
         try {
-            final MailboxFactory mailboxFactoryB = new DefaultMailboxFactoryImpl();
-            ActorA actorA;
-            ActorB actorB;
-            try {
-                Mailbox mailboxB = mailboxFactoryB.createMailbox();
-                actorB = new ActorB(mailboxB);
-                assertEquals(42, (int) actorB.getReq().call());
-                Mailbox mailboxA = mailboxFactoryA.createMailbox();
-                actorA = new ActorA(mailboxA, actorB);
-                actorA.startReq().signal();
-            } finally {
-                mailboxFactoryB.close();
-            }
-            assertEquals(true, (boolean) actorA.doneReq().call());
-            boolean ex = false;
-            try {
-                actorB.getReq().call();
-            } catch (ServiceClosedException x) {
-                ex = true;
-                System.out.println("-----got ServiceClosedException 2");
-            }
-            assertEquals(true, ex);
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            Mailbox testMailbox = testMBF.createMailbox();
+            Server server = new Server(serverMBF.createMailbox());
+            final Client client = new Client(clientMBF.createMailbox(), server);
+            new RequestBase<Void>(testMailbox) {
+                @Override
+                public void processRequest(final Transport<Void> _transport) throws Exception {
+                    client.crossReq().send(getMailbox(), new ResponseProcessor<Boolean>() {
+                        @Override
+                        public void processResponse(Boolean response) throws Exception {
+                            assertFalse(response);
+                            _transport.processResponse(null);
+                        }
+                    });
+                    serverMBF.close();
+                }
+            }.call();
         } finally {
-            mailboxFactoryA.close();
+            testMBF.close();
+            clientMBF.close();
+            serverMBF.close();
         }
     }
 }
 
-class ActorA extends ActorBase {
-    final ActorB actorB;
-    ResponseProcessor<Boolean> doneRP;
-    boolean gotIt;
+class Client extends ActorBase {
 
-    ActorA(final Mailbox _mailbox, final ActorB _actorB) throws Exception {
-        initialize(_mailbox);
-        actorB = _actorB;
+    Server server;
+
+    Client(Mailbox mailbox, Server _server) throws Exception {
+        initialize(mailbox);
+        server = _server;
     }
 
-    Request<Void> startReq() {
-        return new RequestBase<Void>(getMailbox()) {
+    Request<Boolean> crossReq() {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
-            public void processRequest(final Transport<Void> _rp) throws Exception {
+            public void processRequest(final Transport<Boolean> _transport) throws Exception {
                 getMailbox().setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(Throwable throwable) throws Throwable {
-                        if (!(throwable instanceof ServiceClosedException))
+                        if (!(throwable instanceof ServiceClosedException)) {
                             throw throwable;
-                        gotIt = true;
-                        System.out.println("-----got ServiceClosedException 1");
-                        _rp.processResponse(null);
-                        doneRP.processResponse(gotIt);
+                        }
+                        _transport.processResponse(false);
                     }
                 });
-                actorB.hangReq().send(getMailbox(), new ResponseProcessor<Integer>() {
+                server.hangReq().send(getMailbox(), new ResponseProcessor<Void>() {
                     @Override
-                    public void processResponse(Integer response) throws Exception {
-                        doneRP.processResponse(gotIt);
+                    public void processResponse(Void response) throws Exception {
+                        _transport.processResponse(true);
                     }
                 });
-            }
-        };
-    }
-
-    Request<Boolean> doneReq() {
-        return new RequestBase<Boolean>(getMailbox()) {
-            @Override
-            public void processRequest(Transport<Boolean> _rp) throws Exception {
-                doneRP = _rp;
             }
         };
     }
 }
 
-class ActorB extends ActorBase {
-    ActorB(final Mailbox _mailbox) throws Exception {
-        initialize(_mailbox);
+class Server extends ActorBase {
+    Server(Mailbox mailbox) throws Exception {
+        initialize(mailbox);
     }
 
-    Request<Integer> getReq() {
-        return new RequestBase<Integer>(getMailbox()) {
+    Request<Void> hangReq() {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
-            public void processRequest(Transport<Integer> _rp) throws Exception {
-                _rp.processResponse(42);
-            }
-        };
-    }
-
-    Request<Integer> hangReq() {
-        return new RequestBase<Integer>(getMailbox()) {
-            @Override
-            public void processRequest(Transport<Integer> _rp) throws Exception {
+            public void processRequest(Transport<Void> _transport) throws Exception {
             }
         };
     }
