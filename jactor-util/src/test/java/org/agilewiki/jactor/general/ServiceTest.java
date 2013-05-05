@@ -2,10 +2,11 @@ package org.agilewiki.jactor.general;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 public class ServiceTest extends TestCase {
     public void test1() throws Exception {
-        /*
+        System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
         final MailboxFactory mailboxFactoryA = new DefaultMailboxFactoryImpl();
         try {
             final MailboxFactory mailboxFactoryB = new DefaultMailboxFactoryImpl();
@@ -27,12 +28,13 @@ public class ServiceTest extends TestCase {
                 actorB.getReq().call();
             } catch (ServiceClosedException x) {
                 ex = true;
+                System.out.println("-----got ServiceClosedException 2");
             }
             assertEquals(true, ex);
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         } finally {
             mailboxFactoryA.close();
         }
-        */
     }
 }
 
@@ -56,11 +58,12 @@ class ActorA extends ActorBase {
                         if (!(throwable instanceof ServiceClosedException))
                             throw throwable;
                         gotIt = true;
+                        System.out.println("-----got ServiceClosedException 1");
                         _rp.processResponse(null);
                         doneRP.processResponse(gotIt);
                     }
                 });
-                actorB.slowReq().send(getMailbox(), new ResponseProcessor<Integer>() {
+                actorB.hangReq().send(getMailbox(), new ResponseProcessor<Integer>() {
                     @Override
                     public void processResponse(Integer response) throws Exception {
                         doneRP.processResponse(gotIt);
@@ -94,14 +97,10 @@ class ActorB extends ActorBase {
         };
     }
 
-    Request<Integer> slowReq() {
+    Request<Integer> hangReq() {
         return new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport<Integer> _rp) throws Exception {
-                long l = 0;
-                while (l < 1000000000)
-                    l += 1;
-                _rp.processResponse(42);
             }
         };
     }
