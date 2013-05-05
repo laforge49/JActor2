@@ -6,22 +6,22 @@ import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.durable.incDes.Root;
 
 /**
- * A wrapper for data to be read from or written to disk.
+ * A wrapper for a Root to be read from or written to disk.
  * The header added to the serialized data contains the length of the serialized
  * data and, optionally, a timestamp and checksum.
  */
 public interface Block {
     /**
-     * Reset the block and assign the RootImpl.
+     * Reset the block and assign the Root.
      *
-     * @param rootJid The RootImpl to be assigned.
+     * @param root The RootImpl to be assigned.
      */
-    public void setRootJid(Root rootJid);
+    public void setRootJid(Root root);
 
     /**
-     * Serializes the header and the assigned RootImpl.
+     * Serializes the header and the assigned Root.
      *
-     * @return The bytes of the header and serialized RootImpl.
+     * @return The bytes of the header and serialized Root.
      */
     public byte[] serialize()
             throws Exception;
@@ -71,29 +71,28 @@ public interface Block {
      * @param bytes The data following the header on disk.
      * @return True when the data is valid.
      */
-    public boolean setRootJidBytes(byte[] bytes);
+    public boolean setRootBytes(byte[] bytes);
 
     /**
-     * Get an existing RootImpl.
+     * Get an existing Root.
      *
-     * @return The RootImpl.
-     * @throws Exception An exception is thrown when there is no RootImpl.
+     * @return The Root.
      */
-    public Root getRootJid()
+    public Root getRoot()
             throws Exception;
 
     /**
-     * Return the RootImpl, deserializing it as needed..
+     * Return the Root, partially deserializing it as needed..
      *
      * @param mailbox The mailbox.
      * @param parent  The parent.
-     * @return The RootImpl, or null.
+     * @return The Root, or null.
      */
-    public Root getRootJid(FactoryLocator factoryLocator, Mailbox mailbox, Ancestor parent)
+    public Root getRoot(FactoryLocator factoryLocator, Mailbox mailbox, Ancestor parent)
             throws Exception;
 
     /**
-     * Indicates the absence of a root jic.
+     * Indicates the absence of a root object.
      *
      * @return True when a root jit is not present.
      */

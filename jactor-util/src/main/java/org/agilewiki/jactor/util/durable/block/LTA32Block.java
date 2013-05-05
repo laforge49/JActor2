@@ -1,14 +1,15 @@
 package org.agilewiki.jactor.util.durable.block;
 
+import org.agilewiki.jactor.util.durable.block.LTBlock;
 import org.agilewiki.jactor.util.durable.incDes.JALong;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 
 import java.util.zip.Adler32;
 
 /**
- * A block with a length and Adler32 checksum in the header.
+ * A block with a length, timestamp and Adler32 checksum in the header.
  */
-public class LA32Block extends LBlock {
+public class LTA32Block extends LTBlock {
     Adler32 a32 = new Adler32();
     long checksum;
 
