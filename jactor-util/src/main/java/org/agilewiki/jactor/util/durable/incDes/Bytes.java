@@ -2,6 +2,8 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 /**
  * Bytes holds an array of bytes.
+ * (Note that setValue does not copy the provided byte array,
+ * so it must not be subsequently modified.)
  */
 public interface Bytes extends VLenS<byte[]> {
 
