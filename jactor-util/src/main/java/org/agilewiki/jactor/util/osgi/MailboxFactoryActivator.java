@@ -7,37 +7,50 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-public class JAActivator implements BundleActivator, AutoCloseable {
+public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
     private MailboxFactory mailboxFactory;
     private JAProperties jaProperties;
     protected BundleContext bundleContext;
     private boolean closing;
 
+    @Override
+    public void start(final BundleContext _bundleContext) throws Exception {
+        setBundleContext(_bundleContext);
+        mailboxFactoryStart();
+    }
+
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        setClosing();
+        MailboxFactoryStop();
+    }
+
+    protected final void setBundleContext(final BundleContext _bundleContext) {
+        bundleContext = _bundleContext;
+    }
+
     protected MailboxFactory getMailboxFactory() {
         return mailboxFactory;
     }
 
-    protected void createMailboxFactory() throws Exception {
+    protected final void mailboxFactoryStart() throws Exception {
         mailboxFactory = new DefaultMailboxFactoryImpl();
         mailboxFactory.addAutoClosable(this);
         jaProperties = new JAProperties(mailboxFactory, null);
         jaProperties.putProperty("bundleContext", bundleContext);
     }
 
-    protected boolean isBundleClosing() {
+    protected final void MailboxFactoryStop() throws Exception {
+        closing = true;
+        mailboxFactory.close();
+    }
+
+    protected final boolean isBundleClosing() {
         return closing;
     }
 
-    @Override
-    public void start(final BundleContext _context) throws Exception {
-        bundleContext = _context;
-        createMailboxFactory();
-    }
-
-    @Override
-    public final void stop(BundleContext context) throws Exception {
+    protected final void setClosing() {
         closing = true;
-        mailboxFactory.close();
     }
 
     @Override
