@@ -1,6 +1,7 @@
 package org.agilewiki.jactor.util.osgi;
 
 import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.Properties;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.JAProperties;
 import org.osgi.framework.Bundle;
@@ -8,6 +9,11 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
+    public static BundleContext getBundleContext(final MailboxFactory _mailboxFactory) {
+        Properties p = _mailboxFactory.getProperties();
+        return (BundleContext) p.getProperty("bundleContext");
+    }
+
     private MailboxFactory mailboxFactory;
     private JAProperties jaProperties;
     protected BundleContext bundleContext;
