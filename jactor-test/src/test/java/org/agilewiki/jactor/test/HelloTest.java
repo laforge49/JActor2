@@ -40,7 +40,7 @@ public class HelloTest {
     }
 
     @Test
-    public void getHelloService() {
+    public void getHelloService() throws Exception {
         assertNotNull(helloService);
         assertEquals("Hello Pax!", helloService.getMessage());
         Bundle bundle = context.getBundle();

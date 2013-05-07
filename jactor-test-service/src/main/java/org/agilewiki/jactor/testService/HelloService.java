@@ -8,6 +8,7 @@ import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.osgi.JAServiceTracker;
 import org.agilewiki.jactor.util.osgi.ServiceChangeReceiver;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
@@ -30,8 +31,10 @@ public class HelloService extends ActorBase implements Hello, ServiceChangeRecei
     }
 
     @Override
-    public String getMessage() {
-        System.out.println("!!!!!!!!!!!!!");
+    public String getMessage() throws Exception {
+        Bundle jactorUtil = context.getBundle("mvn:org.agilewiki.jactor/jactor-util/0.0.1-SNAPSHOT");
+        jactorUtil.stop();
+        System.out.println("!!!!!!!!!!!!! ");
         System.out.println(context.getBundle().getVersion());
         System.out.println(context.getBundle().getLocation());
         logger.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
@@ -40,6 +43,6 @@ public class HelloService extends ActorBase implements Hello, ServiceChangeRecei
 
     @Override
     public void serviceChange(ServiceEvent _event, Map _tracked, Transport _transport) throws Exception {
-        System.out.println(">>>>>>>>>>>>>>>>>> Service change <<<<<<<<<<<<<<<<<<");
+        System.out.println(">>>>>>>>>>>>>>>>>> Service change <<<<<<<<<<<<<<<<<< " + _tracked.size());
     }
 }
