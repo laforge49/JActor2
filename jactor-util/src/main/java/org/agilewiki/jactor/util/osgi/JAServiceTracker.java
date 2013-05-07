@@ -85,13 +85,24 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener, A
                     ServiceReference ref = _event.getServiceReference();
                     switch (typ) {
                         case ServiceEvent.REGISTERED :
-                        case ServiceEvent.MODIFIED :
                             T s = (T) bundleContext.getService(ref);
-                            tracked.put(ref, s);
+                            if (tracked.put(ref, s) != ref) {
+                                Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(tracked);
+                                new ServiceChange<T>(_event, m).signal(getMailbox(), serviceChangeReceiver);
+                            }
+                            break;
+                        case ServiceEvent.MODIFIED :
+                            T sm = (T) bundleContext.getService(ref);
+                            tracked.put(ref, sm);
+                            Map<ServiceReference, T> ma = new HashMap<ServiceReference, T>(tracked);
+                            new ServiceChange<T>(_event, ma).signal(getMailbox(), serviceChangeReceiver);
                             break;
                         case ServiceEvent.MODIFIED_ENDMATCH :
                         case ServiceEvent.UNREGISTERING :
-                            tracked.remove(ref);
+                            if (tracked.remove(ref) == ref) {
+                                Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(tracked);
+                                new ServiceChange<T>(_event, m).signal(getMailbox(), serviceChangeReceiver);
+                            }
                             break;
                     }
                     Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(tracked);
