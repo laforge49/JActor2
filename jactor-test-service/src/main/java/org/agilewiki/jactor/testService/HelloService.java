@@ -34,6 +34,7 @@ public class HelloService extends ActorBase implements Hello, ServiceChangeRecei
     public String getMessage() throws Exception {
         Bundle jactorUtil = context.getBundle("mvn:org.agilewiki.jactor/jactor-util/0.0.1-SNAPSHOT");
         jactorUtil.stop();
+        jactorUtil.start();
         System.out.println("!!!!!!!!!!!!! ");
         System.out.println(context.getBundle().getVersion());
         System.out.println(context.getBundle().getLocation());
@@ -43,6 +44,6 @@ public class HelloService extends ActorBase implements Hello, ServiceChangeRecei
 
     @Override
     public void serviceChange(ServiceEvent _event, Map _tracked, Transport _transport) throws Exception {
-        System.out.println(">>>>>>>>>>>>>>>>>> Service change <<<<<<<<<<<<<<<<<< " + _tracked.size());
+        System.out.println(">>>>>>>>>>>>>>>>>> Service change <<<<<<<<<<<<<<<<<< " + _tracked.size() + " -> "+_event.getType());
     }
 }
