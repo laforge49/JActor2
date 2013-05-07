@@ -1,16 +1,32 @@
 package org.agilewiki.jactor.testService;
 
+import org.agilewiki.jactor.api.ActorBase;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.testIface.Hello;
+import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.osgi.JAServiceTracker;
+import org.agilewiki.jactor.util.osgi.ServiceChangeReceiver;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HelloService implements Hello {
+import java.util.Map;
+
+public class HelloService extends ActorBase implements Hello, ServiceChangeReceiver {
     private final Logger logger = LoggerFactory.getLogger(HelloService.class);
     private BundleContext context;
 
-    public HelloService(final BundleContext _context) {
+    public HelloService(final BundleContext _context, Mailbox mailbox) throws Exception {
+        initialize(mailbox);
         context = _context;
+        String filter = "(bundleName=jactor-utilc)";
+        JAServiceTracker<Object> st = new JAServiceTracker(getMailbox(), context.createFilter(filter));
+        Map<ServiceReference, Object> m = st.startReq(this).call();
+        System.out.println("..................."+m.size());
     }
 
     @Override
@@ -20,5 +36,10 @@ public class HelloService implements Hello {
         System.out.println(context.getBundle().getLocation());
         logger.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         return "Hello Pax!";
+    }
+
+    @Override
+    public void serviceChange(ServiceEvent _event, Map _tracked, Transport _transport) throws Exception {
+        System.out.println(">>>>>>>>>>>>>>>>>> Service change <<<<<<<<<<<<<<<<<<");
     }
 }

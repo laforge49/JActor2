@@ -1,5 +1,6 @@
 package org.agilewiki.jactor.testService;
 
+import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.osgi.framework.BundleContext;
@@ -16,10 +17,12 @@ public class Activator extends MailboxFactoryActivator {
         super.start(context);
         logger.error("testUtil location: " + bundleContext.getBundle().getLocation());
         logger.error("testUtil location: " + bundleContext.getBundle().getSymbolicName());
+        Mailbox mailbox = getMailboxFactory().createMailbox();
+        HelloService hello = new HelloService(context, mailbox);
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         context.registerService(
                 Hello.class.getName(),
-                new HelloService(context),
+                hello,
                 new Hashtable<String, String>());
     }
 }

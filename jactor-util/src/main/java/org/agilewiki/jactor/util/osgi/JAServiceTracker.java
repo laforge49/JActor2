@@ -50,15 +50,16 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener, A
                     references = bundleContext.getServiceReferences(clazz, null);
                 }
                 int i = 0;
-                while (i < references.length) {
-                    ServiceReference ref = references[i];
-                    try {
-                        T s = (T) bundleContext.getService(ref);
-                        tracked.put(ref, s);
-                    } catch (Exception exception) {
+                if (references != null)
+                    while (i < references.length) {
+                        ServiceReference ref = references[i];
+                        try {
+                            T s = (T) bundleContext.getService(ref);
+                            tracked.put(ref, s);
+                        } catch (Exception exception) {
+                        }
+                        i += 1;
                     }
-                    i += 1;
-                }
                 Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(tracked);
                 _transport.processResponse(m);
             }
@@ -78,27 +79,27 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener, A
         if (closed)
             return;
         try {
-            new RequestBase<Void>(getMailbox()){
+            new RequestBase<Void>(getMailbox()) {
                 @Override
                 public void processRequest(Transport<Void> _transport) throws Exception {
                     int typ = _event.getType();
                     ServiceReference ref = _event.getServiceReference();
                     switch (typ) {
-                        case ServiceEvent.REGISTERED :
+                        case ServiceEvent.REGISTERED:
                             T s = (T) bundleContext.getService(ref);
                             if (tracked.put(ref, s) != ref) {
                                 Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(tracked);
                                 new ServiceChange<T>(_event, m).signal(getMailbox(), serviceChangeReceiver);
                             }
                             break;
-                        case ServiceEvent.MODIFIED :
+                        case ServiceEvent.MODIFIED:
                             T sm = (T) bundleContext.getService(ref);
                             tracked.put(ref, sm);
                             Map<ServiceReference, T> ma = new HashMap<ServiceReference, T>(tracked);
                             new ServiceChange<T>(_event, ma).signal(getMailbox(), serviceChangeReceiver);
                             break;
-                        case ServiceEvent.MODIFIED_ENDMATCH :
-                        case ServiceEvent.UNREGISTERING :
+                        case ServiceEvent.MODIFIED_ENDMATCH:
+                        case ServiceEvent.UNREGISTERING:
                             if (tracked.remove(ref) == ref) {
                                 Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(tracked);
                                 new ServiceChange<T>(_event, m).signal(getMailbox(), serviceChangeReceiver);

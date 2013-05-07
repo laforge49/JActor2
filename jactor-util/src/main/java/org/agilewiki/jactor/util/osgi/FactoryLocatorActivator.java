@@ -30,6 +30,9 @@ public class FactoryLocatorActivator extends MailboxFactoryActivator {
         Hashtable<String, String> p = new Hashtable<String, String>();
         p.put("bundleName", factoryLocator.getBundleName());
         p.put("bundleVersion", factoryLocator.getVersion());
+        System.out.println("xxxxxxxxxxxxxxxxxxxxx");
+        System.out.println(p);
+        System.out.println("xxxxxxxxxxxxxxxxxxxxx");
         bundleContext.registerService(FactoryLocator.class, factoryLocator, p);
     }
 
