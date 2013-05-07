@@ -23,7 +23,7 @@ public class HelloService extends ActorBase implements Hello, ServiceChangeRecei
     public HelloService(final BundleContext _context, Mailbox mailbox) throws Exception {
         initialize(mailbox);
         context = _context;
-        String filter = "(bundleName=jactor-utilc)";
+        String filter = "(&(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)(&(bundleName=jactor-util)(bundleVersion=0.0.1.SNAPSHOT)))";
         JAServiceTracker<Object> st = new JAServiceTracker(getMailbox(), context.createFilter(filter));
         Map<ServiceReference, Object> m = st.startReq(this).call();
         System.out.println("..................."+m.size());
