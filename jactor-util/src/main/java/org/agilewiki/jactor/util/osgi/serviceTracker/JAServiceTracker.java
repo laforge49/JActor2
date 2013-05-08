@@ -1,6 +1,7 @@
-package org.agilewiki.jactor.util.osgi;
+package org.agilewiki.jactor.util.osgi.serviceTracker;
 
 import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +84,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener, A
                 @Override
                 public void processRequest(Transport<Void> _transport) throws Exception {
                     int typ = _event.getType();
-                    log.error("****************************************************** "+typ);
+                    log.error("****************************************************** " + typ);
                     ServiceReference ref = _event.getServiceReference();
                     switch (typ) {
                         case ServiceEvent.REGISTERED:

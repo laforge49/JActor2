@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,7 @@ public class Activator extends MailboxFactoryActivator {
         Mailbox mailbox = getMailboxFactory().createMailbox();
         HelloService hello = new HelloService(context, mailbox);
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-        context.registerService(
+        ServiceRegistration sr = context.registerService(
                 Hello.class.getName(),
                 hello,
                 new Hashtable<String, String>());

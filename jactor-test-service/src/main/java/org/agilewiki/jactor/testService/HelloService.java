@@ -2,12 +2,10 @@ package org.agilewiki.jactor.testService;
 
 import org.agilewiki.jactor.api.ActorBase;
 import org.agilewiki.jactor.api.Mailbox;
-import org.agilewiki.jactor.api.ResponseProcessor;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.testIface.Hello;
-import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.osgi.JAServiceTracker;
-import org.agilewiki.jactor.util.osgi.ServiceChangeReceiver;
+import org.agilewiki.jactor.util.osgi.serviceTracker.JAServiceTracker;
+import org.agilewiki.jactor.util.osgi.serviceTracker.ServiceChangeReceiver;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;

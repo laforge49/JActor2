@@ -1,4 +1,4 @@
-package org.agilewiki.jactor.util.osgi;
+package org.agilewiki.jactor.util.osgi.serviceTracker;
 
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.api.UnboundRequestBase;
