@@ -84,11 +84,9 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener, A
                 @Override
                 public void processRequest(Transport<Void> _transport) throws Exception {
                     int typ = _event.getType();
-                    log.error("****************************************************** " + typ);
                     ServiceReference ref = _event.getServiceReference();
                     switch (typ) {
                         case ServiceEvent.REGISTERED:
-                            System.out.println("REGISTERED");
                             T s = (T) bundleContext.getService(ref);
                             if (tracked.put(ref, s) != ref) {
                                 Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(tracked);
@@ -96,7 +94,6 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener, A
                             }
                             break;
                         case ServiceEvent.MODIFIED:
-                            System.out.println("MODIFIED");
                             T sm = (T) bundleContext.getService(ref);
                             tracked.put(ref, sm);
                             Map<ServiceReference, T> ma = new HashMap<ServiceReference, T>(tracked);
@@ -104,7 +101,6 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener, A
                             break;
                         case ServiceEvent.MODIFIED_ENDMATCH:
                         case ServiceEvent.UNREGISTERING:
-                            System.out.println("UNREGISTERED");
                             if (tracked.remove(ref) == ref) {
                                 Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(tracked);
                                 new ServiceChange<T>(_event, m).signal(getMailbox(), serviceChangeReceiver);
