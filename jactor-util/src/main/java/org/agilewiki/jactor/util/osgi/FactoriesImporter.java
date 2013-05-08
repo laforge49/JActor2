@@ -1,6 +1,13 @@
 package org.agilewiki.jactor.util.osgi;
 
-import org.agilewiki.jactor.api.*;
+import java.util.Map;
+
+import org.agilewiki.jactor.api.ActorBase;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.Request;
+import org.agilewiki.jactor.api.RequestBase;
+import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.JAServiceTracker;
@@ -12,13 +19,11 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 /**
  * Imports a FactoryLocator from another bundle into the factory locator of the current bundle.
  */
-public class FactoriesImporter
-        extends ActorBase implements ServiceChangeReceiver<FactoryLocator> {
+public class FactoriesImporter extends ActorBase implements
+        ServiceChangeReceiver<FactoryLocator> {
 
     /**
      * Logger for this object.
@@ -39,7 +44,7 @@ public class FactoriesImporter
     /**
      * The factory locator of the current bundle.
      */
-    private FactoryLocator factoryLocator;
+    private final FactoryLocator factoryLocator;
 
     /**
      * Create and initialize a factories importer.
@@ -48,7 +53,8 @@ public class FactoriesImporter
      */
     public FactoriesImporter(final Mailbox _mailbox) throws Exception {
         initialize(_mailbox);
-        factoryLocator = Durables.getFactoryLocator(_mailbox.getMailboxFactory());
+        factoryLocator = Durables.getFactoryLocator(_mailbox
+                .getMailboxFactory());
     }
 
     /**
@@ -64,59 +70,100 @@ public class FactoriesImporter
     Request<Void> startReq(final Filter _filter) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
-            public void processRequest(final Transport<Void> _transport) throws Exception {
+            public void processRequest(final Transport<Void> _transport)
+                    throws Exception {
+                // We're got a start-request!
+                // We only accept one start request.
                 if (tracker != null)
                     throw new IllegalStateException("already started");
-                tracker = new JAServiceTracker<FactoryLocator>(getMailbox(), _filter);
+                // Create a service tracker for the given filter.
+                tracker = new JAServiceTracker<FactoryLocator>(getMailbox(),
+                        _filter);
+                // Keep _transport for later, in case we do not find out service
+                // at initial registration.
                 startTransport = _transport;
-                tracker.startReq(FactoriesImporter.this).send(
-                        getMailbox(),
-                        new ResponseProcessor<Map<ServiceReference, FactoryLocator>>() {
-                    @Override
-                    public void processResponse(Map<ServiceReference, FactoryLocator> response) throws Exception {
-                        if (response.size() > 1) {
-                            tracker.close();
-                            tracker = null;
-                            startTransport = null;
-                            throw new IllegalStateException("ambiguous filter--number of matches = " + response.size());
-                        }
-                        if (response.size() == 1) {
-                            FactoryLocator fl = response.values().iterator().next();
-                            ((FactoryLocatorImpl) factoryLocator).importFactories(fl);
-                            startTransport = null;
-                            _transport.processResponse(null);
-                        }
-                    }
-                });
+                tracker.startReq(FactoriesImporter.this)
+                        .send(getMailbox(),
+                                // Damn you! Auto-formatter!
+                                new ResponseProcessor<Map<ServiceReference, FactoryLocator>>() {
+                                    @Override
+                                    public void processResponse(
+                                            final Map<ServiceReference, FactoryLocator> response)
+                                            throws Exception {
+                                        if (response.size() > 1) {
+                                            tracker.close();
+                                            tracker = null;
+                                            startTransport = null;
+                                            // We got too many services in the initial registration.
+                                            // Fail. startTransport never will get a response. :(
+                                            throw new IllegalStateException(
+                                                    "ambiguous filter--number of matches = "
+                                                            + response.size());
+                                        }
+                                        if (response.size() == 1) {
+                                            final FactoryLocator fl = response
+                                                    .values().iterator().next();
+                                            ((FactoryLocatorImpl) factoryLocator)
+                                                    .importFactories(fl);
+                                            // We got exactly one service in the initial registration
+                                            // startTransport will get a response. :)
+                                            startTransport = null;
+                                            _transport.processResponse(null);
+                                        }
+                                        // We got zero services. Let's wait until
+                                        // we get more service events. So we do
+                                        // not answer startTransport yet ...
+                                    }
+                                });
             }
         };
     }
 
+    /**
+     * Got a service registration change. Probably either we finally get the
+     * service we were waiting for, or we had it, and now it's gone.
+     */
     @Override
-    public void serviceChange(ServiceEvent _event,
-                              Map<ServiceReference,
-                                      FactoryLocator> _tracked,
-                              Transport _transport) throws Exception {
+    public void serviceChange(final ServiceEvent _event,
+            final Map<ServiceReference, FactoryLocator> _tracked,
+            final Transport _transport) throws Exception {
         if (startTransport == null) {
+            // tracker is only closed if we receive more then one match, but
+            // startTransport can be nulled in other circumstances. So I expect
+            // this case is actually pretty likely, since we might clear startTransport
+            // but NOT close tracker, therefore receiving services updates eventually.
             log.error("Unexpected service change");
+            // I think closing the mailbox *FACTORY* here is not at all
+            // warranted, since this seems a likely occurrence. :(
+            // Similar to a third-party jar calling System.exit() ...
             getMailbox().getMailboxFactory().close();
             return;
         }
         if (_tracked.size() > 1) {
+            // OK. Too many services. Fail and close tracker, but at least
+            // do not bring the whole system down. :)
             tracker.close();
             tracker = null;
-            startTransport.processResponse(
-                    new IllegalStateException("ambiguous filter--number of matches = " + _tracked.size()));
+            startTransport
+                    .processResponse(new IllegalStateException(
+                            "ambiguous filter--number of matches = "
+                                    + _tracked.size()));
             startTransport = null;
             return;
         }
         if (_tracked.size() == 1) {
-            FactoryLocator fl = _tracked.values().iterator().next();
+            // Yeah! success!
+            final FactoryLocator fl = _tracked.values().iterator().next();
             ((FactoryLocatorImpl) factoryLocator).importFactories(fl);
             startTransport.processResponse(null);
             startTransport = null;
             return;
         }
+        // I know nobody actually expects a response to this request, but why
+        // Only send a response to _transport in the basically "impossible" case?
+        // It seems "good manners" to always respond anyway...
+        // In all cases, startTransport is not null, so we can still get the
+        // service later.
         log.info("strange case");
         _transport.processResponse(null);
     }
