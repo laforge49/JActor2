@@ -14,19 +14,53 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+/**
+ * Imports a FactoryLocator from another bundle into the factory locator of the current bundle.
+ */
 public class FactoriesImporter
         extends ActorBase implements ServiceChangeReceiver<FactoryLocator> {
 
+    /**
+     * Logger for this object.
+     */
     private final Logger log = LoggerFactory.getLogger(FactoriesImporter.class);
+
+    /**
+     * The service tracker used to find and then monitor the set of matching services.
+     */
     private JAServiceTracker<FactoryLocator> tracker;
+
+    /**
+     * The transport for the start request. Once a match is found,
+     * startTransport is set to null.
+     */
     private Transport startTransport;
+
+    /**
+     * The factory locator of the current bundle.
+     */
     private FactoryLocator factoryLocator;
 
+    /**
+     * Create and initialize a factories importer.
+     *
+     * @param _mailbox The mailbox of the factory locator actor.
+     */
     public FactoriesImporter(final Mailbox _mailbox) throws Exception {
         initialize(_mailbox);
         factoryLocator = Durables.getFactoryLocator(_mailbox.getMailboxFactory());
     }
 
+    /**
+     * Wait for a matching factory locator, unless one is already registered.
+     * If more than one is found, reject the request.
+     * But once a match has been made and the factory locator is imported,
+     * any change to the set of matching factory locator's will stop the current bundle.
+     *
+     * @param _filter A filter that should identify the single factory locator to be imported into the
+     *                factory locator of the current bundle.
+     * @return The request.
+     */
     Request<Void> startReq(final Filter _filter) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
