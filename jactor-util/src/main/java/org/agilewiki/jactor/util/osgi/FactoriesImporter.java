@@ -40,8 +40,12 @@ public class FactoriesImporter
                         new ResponseProcessor<Map<ServiceReference, FactoryLocator>>() {
                     @Override
                     public void processResponse(Map<ServiceReference, FactoryLocator> response) throws Exception {
-                        if (response.size() > 1)
+                        if (response.size() > 1) {
+                            tracker.close();
+                            tracker = null;
+                            startTransport = null;
                             throw new IllegalStateException("ambiguous filter--number of matches = " + response.size());
+                        }
                         if (response.size() == 1) {
                             FactoryLocator fl = response.values().iterator().next();
                             ((FactoryLocatorImpl) factoryLocator).importFactories(fl);
@@ -65,16 +69,21 @@ public class FactoriesImporter
             return;
         }
         if (_tracked.size() > 1) {
+            tracker.close();
+            tracker = null;
             startTransport.processResponse(
                     new IllegalStateException("ambiguous filter--number of matches = " + _tracked.size()));
+            startTransport = null;
             return;
         }
         if (_tracked.size() == 1) {
-            Transport t = startTransport;
             FactoryLocator fl = _tracked.values().iterator().next();
             ((FactoryLocatorImpl) factoryLocator).importFactories(fl);
+            startTransport.processResponse(null);
             startTransport = null;
-            t.processResponse(null);
+            return;
         }
+        log.info("strange case");
+        _transport.processResponse(null);
     }
 }
