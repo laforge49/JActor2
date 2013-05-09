@@ -44,7 +44,7 @@ public class FactoriesImporter extends ActorBase implements
     /**
      * The factory locator of the current bundle.
      */
-    private final FactoryLocator factoryLocator;
+    private final FactoryLocatorImpl factoryLocator;
 
     /**
      * Create and initialize a factories importer.
@@ -53,7 +53,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     public FactoriesImporter(final Mailbox _mailbox) throws Exception {
         initialize(_mailbox);
-        factoryLocator = Durables.getFactoryLocator(_mailbox
+        factoryLocator = (FactoryLocatorImpl) Durables.getFactoryLocator(_mailbox
                 .getMailboxFactory());
     }
 
@@ -103,8 +103,7 @@ public class FactoriesImporter extends ActorBase implements
                                         if (response.size() == 1) {
                                             final FactoryLocator fl = response
                                                     .values().iterator().next();
-                                            ((FactoryLocatorImpl) factoryLocator)
-                                                    .importFactories(fl);
+                                            factoryLocator.importFactories(fl);
                                             // We got exactly one service in the initial registration
                                             // startTransport will get a response. :)
                                             startTransport = null;
@@ -133,10 +132,7 @@ public class FactoriesImporter extends ActorBase implements
             // this case is actually pretty likely, since we might clear startTransport
             // but NOT close tracker, therefore receiving services updates eventually.
             log.error("Unexpected service change");
-            // I think closing the mailbox *FACTORY* here is not at all
-            // warranted, since this seems a likely occurrence. :(
-            // Similar to a third-party jar calling System.exit() ...
-            getMailbox().getMailboxFactory().close();
+            factoryLocator.close();
             return;
         }
         if (_tracked.size() > 1) {
@@ -154,7 +150,7 @@ public class FactoriesImporter extends ActorBase implements
         if (_tracked.size() == 1) {
             // Yeah! success!
             final FactoryLocator fl = _tracked.values().iterator().next();
-            ((FactoryLocatorImpl) factoryLocator).importFactories(fl);
+            factoryLocator.importFactories(fl);
             startTransport.processResponse(null);
             startTransport = null;
             _transport.processResponse(null);
