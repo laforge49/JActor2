@@ -27,6 +27,11 @@ public class FactoryLocatorActivator extends MailboxFactoryActivator {
 
     protected final void factoryLocatorStart() throws Exception {
         createFactoryLocator();
+        Bundle bundle = bundleContext.getBundle();
+        factoryLocator.configure(
+                bundle.getSymbolicName(),
+                bundle.getVersion().toString(),
+                bundle.getLocation());
         Hashtable<String, String> p = new Hashtable<String, String>();
         p.put("bundleName", factoryLocator.getBundleName());
         p.put("bundleVersion", factoryLocator.getVersion());
@@ -38,10 +43,5 @@ public class FactoryLocatorActivator extends MailboxFactoryActivator {
 
     protected void createFactoryLocator() throws Exception {
         factoryLocator = new FactoryLocatorImpl();
-        Bundle bundle = bundleContext.getBundle();
-        factoryLocator.configure(
-                bundle.getSymbolicName(),
-                bundle.getVersion().toString(),
-                bundle.getLocation());
     }
 }
