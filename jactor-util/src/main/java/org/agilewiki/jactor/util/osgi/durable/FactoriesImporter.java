@@ -1,4 +1,4 @@
-package org.agilewiki.jactor.util.osgi;
+package org.agilewiki.jactor.util.osgi.durable;
 
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public class FactoriesImporter extends ActorBase implements
      * The transport for the start request. Once a match is found,
      * startTransport is set to null.
      */
-    private Transport startTransport;
+    private Transport<Void> startTransport;
 
     /**
      * The factory locator of the current bundle.
@@ -141,7 +141,7 @@ public class FactoriesImporter extends ActorBase implements
             tracker.close();
             tracker = null;
             startTransport
-                    .processResponse(new IllegalStateException(
+                    .processException(new IllegalStateException(
                             "ambiguous filter--number of matches = "
                                     + _tracked.size()));
             startTransport = null;

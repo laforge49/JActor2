@@ -381,6 +381,11 @@ public class MailboxImpl implements JAMailbox, Runnable {
                                     return null;
                                 return ((Mailbox) ms).getMailboxFactory();
                             }
+
+                            @Override
+                            public void processException(Exception response) throws Exception {
+                                processResponse((Object) response);
+                            }
                         });
             } catch (final Throwable t) {
                 if (message.isForeign())
