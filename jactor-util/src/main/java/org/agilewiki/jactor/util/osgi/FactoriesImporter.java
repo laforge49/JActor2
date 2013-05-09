@@ -157,6 +157,7 @@ public class FactoriesImporter extends ActorBase implements
             ((FactoryLocatorImpl) factoryLocator).importFactories(fl);
             startTransport.processResponse(null);
             startTransport = null;
+            _transport.processResponse(null);
             return;
         }
         // I know nobody actually expects a response to this request, but why
