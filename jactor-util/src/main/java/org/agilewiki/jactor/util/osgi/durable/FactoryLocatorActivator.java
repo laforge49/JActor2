@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 import java.util.Hashtable;
 
 public class FactoryLocatorActivator extends MailboxFactoryActivator {
-    private FactoryLocatorImpl factoryLocator;
+    protected OsgiFactoryLocator factoryLocator;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
@@ -28,18 +28,7 @@ public class FactoryLocatorActivator extends MailboxFactoryActivator {
 
     protected final void factoryLocatorStart() throws Exception {
         createFactoryLocator();
-        Bundle bundle = bundleContext.getBundle();
-        factoryLocator.configure(
-                bundle.getSymbolicName(),
-                bundle.getVersion().toString(),
-                bundle.getLocation());
-        Hashtable<String, String> p = new Hashtable<String, String>();
-        p.put("bundleName", factoryLocator.getBundleName());
-        p.put("bundleVersion", factoryLocator.getVersion());
-        System.out.println("xxxxxxxxxxxxxxxxxxxxx");
-        System.out.println(p);
-        System.out.println("xxxxxxxxxxxxxxxxxxxxx");
-        bundleContext.registerService(FactoryLocator.class, factoryLocator, p);
+        factoryLocator.register(bundleContext);
     }
 
     protected void createFactoryLocator() throws Exception {
