@@ -1,6 +1,8 @@
 package org.agilewiki.jactor.util.osgi;
 
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.osgi.durable.MailboxFactoryActivator;
+import org.agilewiki.jactor.util.osgi.durable.OsgiFactoryLocator;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -42,6 +44,6 @@ public class FactoryLocatorActivator extends MailboxFactoryActivator {
     }
 
     protected void createFactoryLocator() throws Exception {
-        factoryLocator = new FactoryLocatorImpl();
+        factoryLocator = new OsgiFactoryLocator();
     }
 }

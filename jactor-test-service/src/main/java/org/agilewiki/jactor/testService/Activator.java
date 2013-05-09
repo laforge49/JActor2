@@ -2,7 +2,7 @@ package org.agilewiki.jactor.testService;
 
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.testIface.Hello;
-import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
+import org.agilewiki.jactor.util.osgi.durable.MailboxFactoryActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
