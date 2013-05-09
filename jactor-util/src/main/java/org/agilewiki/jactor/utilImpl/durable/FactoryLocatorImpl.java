@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 /**
  * An actor for defining jid types and creating instances.
  */
-public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
+public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, AutoCloseable {
 
     private ConcurrentSkipListSet<FactoryLocator> factoryImports = new ConcurrentSkipListSet();
     private String bundleName = "";
@@ -22,6 +22,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
     private String location = "";
     private String locatorKey;
     private String descriptor;
+    private boolean closed;
 
     /**
      * A table which maps type names to actor factories.
@@ -85,7 +86,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
      * @return The registered actor factory.
      */
     @Override
-    public Factory getFactory(String jidType) {
+    public Factory getFactory(String jidType) throws IllegalStateException {
         Factory af = _getFactory(jidType);
         if (af == null) {
             throw new IllegalArgumentException("Unknown jid type: " + jidType);
@@ -93,7 +94,9 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
         return af;
     }
 
-    public Factory _getFactory(String actorType) {
+    public Factory _getFactory(String actorType) throws IllegalStateException {
+        if (closed)
+            throw new IllegalStateException("closed");
         String factoryKey = null;
         if (actorType.contains("|")) {
             factoryKey = actorType;
@@ -117,7 +120,9 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
      *
      * @param factory An actor factory.
      */
-    public void registerFactory(Factory factory) {
+    public void registerFactory(Factory factory) throws IllegalStateException {
+        if (closed)
+            throw new IllegalStateException("closed");
         String actorType = factory.getName();
         String factoryKey = actorType + "|" + bundleName + "|" + version;
         Factory old = types.get(factoryKey);
@@ -126,5 +131,10 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator {
             types.put(factoryKey, factory);
         } else if (!old.equals(factory))
             throw new IllegalArgumentException("IncDesImpl type is already defined differently: " + old.getFactoryKey());
+    }
+
+    @Override
+    public void close() {
+        closed = true;
     }
 }
