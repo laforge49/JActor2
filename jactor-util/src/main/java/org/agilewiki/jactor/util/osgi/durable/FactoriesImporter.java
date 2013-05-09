@@ -127,13 +127,10 @@ public class FactoriesImporter extends ActorBase implements
     public void serviceChange(final ServiceEvent _event,
             final Map<ServiceReference, FactoryLocator> _tracked,
             final Transport _transport) throws Exception {
+        _transport.processResponse(null);
         if (startTransport == null) {
-            // tracker is only closed if we receive more then one match, but
-            // startTransport can be nulled in other circumstances. So I expect
-            // this case is actually pretty likely, since we might clear startTransport
-            // but NOT close tracker, therefore receiving services updates eventually.
+            // If we get here, that means we had it, and now it's gone. :(
             tracker.close();
-            _transport.processResponse(null);
             tracker = null;
             log.error("Unexpected service change");
             factoryLocator.close();
@@ -142,7 +139,6 @@ public class FactoriesImporter extends ActorBase implements
         if (_tracked.size() > 1) {
             // OK. Too many services. Fail and close tracker.
             tracker.close();
-            _transport.processResponse(null);
             tracker = null;
             startTransport
                     .processException(new IllegalStateException(
@@ -157,15 +153,11 @@ public class FactoriesImporter extends ActorBase implements
             factoryLocator.importFactories(fl);
             startTransport.processResponse(null);
             startTransport = null;
-            _transport.processResponse(null);
+            // But we keep tracking, in case it goes down later ...
             return;
         }
-        // I know nobody actually expects a response to this request, but why
-        // Only send a response to _transport in the basically "impossible" case?
-        // It seems "good manners" to always respond anyway...
-        // In all cases, startTransport is not null, so we can still get the
-        // service later.
+        // A serviceChange without any service? Despite the fact that we should
+        // only come here when we did not find any services either at registration?
         log.info("strange case");
-        _transport.processResponse(null);
     }
 }
