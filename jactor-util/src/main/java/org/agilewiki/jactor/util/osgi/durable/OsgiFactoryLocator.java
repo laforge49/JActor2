@@ -26,4 +26,10 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl {
         System.out.println("xxxxxxxxxxxxxxxxxxxxx");
         serviceRegistration = _bundleContext.registerService(FactoryLocator.class, this, p);
     }
+
+    @Override
+    public void close() {
+        super.close();
+        serviceRegistration.unregister();
+    }
 }
