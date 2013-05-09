@@ -53,8 +53,8 @@ public class FactoriesImporter extends ActorBase implements
      */
     public FactoriesImporter(final Mailbox _mailbox) throws Exception {
         initialize(_mailbox);
-        factoryLocator = (FactoryLocatorImpl) Durables.getFactoryLocator(_mailbox
-                .getMailboxFactory());
+        factoryLocator = (FactoryLocatorImpl) Durables
+                .getFactoryLocator(_mailbox.getMailboxFactory());
     }
 
     /**
@@ -94,8 +94,9 @@ public class FactoriesImporter extends ActorBase implements
                                             tracker.close();
                                             tracker = null;
                                             startTransport = null;
-                                            // We got too many services in the initial registration.
-                                            // Fail. startTransport never will get a response. :(
+                                            // We got too many services in the initial registration: Fail.
+                                            // startTransport will get this exception as a response,
+                                            // because the Mailbox will cascade it upward.
                                             throw new IllegalStateException(
                                                     "ambiguous filter--number of matches = "
                                                             + response.size());
@@ -136,8 +137,7 @@ public class FactoriesImporter extends ActorBase implements
             return;
         }
         if (_tracked.size() > 1) {
-            // OK. Too many services. Fail and close tracker, but at least
-            // do not bring the whole system down. :)
+            // OK. Too many services. Fail and close tracker.
             tracker.close();
             tracker = null;
             startTransport
