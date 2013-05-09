@@ -7,7 +7,7 @@ package org.agilewiki.jactor.api;
  * <p>
  * Mailboxes should not normally process requests that are CPU intensive or block a thread.
  * But when that is the case,
- * the mailbox should be created with mapBlock set to true.
+ * the mailbox should be created with mayBlock set to true.
  * </p>
  */
 public interface MailboxFactory extends AutoCloseable {
