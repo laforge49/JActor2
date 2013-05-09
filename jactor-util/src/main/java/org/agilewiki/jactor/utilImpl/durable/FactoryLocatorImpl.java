@@ -9,14 +9,14 @@ import org.agilewiki.jactor.util.durable.JASerializable;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * An actor for defining jid types and creating instances.
  */
 public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, AutoCloseable {
 
-    private ConcurrentSkipListSet<FactoryLocator> factoryImports = new ConcurrentSkipListSet();
+    private CopyOnWriteArrayList<FactoryLocator> factoryImports = new CopyOnWriteArrayList();
     private String bundleName = "";
     private String version = "";
     private String location = "";

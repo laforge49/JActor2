@@ -1,13 +1,6 @@
 package org.agilewiki.jactor.util.osgi.durable;
 
-import java.util.Map;
-
-import org.agilewiki.jactor.api.ActorBase;
-import org.agilewiki.jactor.api.Mailbox;
-import org.agilewiki.jactor.api.Request;
-import org.agilewiki.jactor.api.RequestBase;
-import org.agilewiki.jactor.api.ResponseProcessor;
-import org.agilewiki.jactor.api.Transport;
+import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.JAServiceTracker;
@@ -18,6 +11,8 @@ import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * Imports a FactoryLocator from another bundle into the factory locator of the current bundle.
@@ -67,7 +62,7 @@ public class FactoriesImporter extends ActorBase implements
      *                factory locator of the current bundle.
      * @return The request.
      */
-    Request<Void> startReq(final Filter _filter) {
+    public Request<Void> startReq(final Filter _filter) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Void> _transport)
@@ -125,8 +120,8 @@ public class FactoriesImporter extends ActorBase implements
      */
     @Override
     public void serviceChange(final ServiceEvent _event,
-            final Map<ServiceReference, FactoryLocator> _tracked,
-            final Transport _transport) throws Exception {
+                              final Map<ServiceReference, FactoryLocator> _tracked,
+                              final Transport _transport) throws Exception {
         _transport.processResponse(null);
         if (startTransport == null) {
             // If we get here, that means we had it, and now it's gone. :(
