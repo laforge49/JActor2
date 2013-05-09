@@ -1,4 +1,4 @@
-package org.agilewiki.jactor.util.osgi.durable;
+package org.agilewiki.jactor.util.osgi;
 
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.api.Properties;
