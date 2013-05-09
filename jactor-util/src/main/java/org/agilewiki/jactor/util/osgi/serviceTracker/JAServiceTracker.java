@@ -212,7 +212,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                         }
                         break;
                     case ServiceEvent.MODIFIED:
-                        // *Something changed*, but we don't know what. Send
+                        // The properties on the service reference changed. Send
                         // new service map to the listener, just in case.
                         final T sm = (T) bundleContext.getService(ref);
                         tracked.put(ref, sm);
@@ -223,7 +223,8 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                         break;
                     case ServiceEvent.MODIFIED_ENDMATCH:
                     case ServiceEvent.UNREGISTERING:
-                        // Service gone?
+                        // Service gone or no longer applies due to a change in the properties
+                        //on the service reference.
                         if (tracked.remove(ref) == ref) {
                             // Send new service map if something changed.
                             final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
@@ -241,13 +242,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         } catch (final Exception exception) {
             // Most likely, a failure in signal() ...
             log.error("Unable to signal", exception);
-            try {
-                // I think closing the mailbox *FACTORY* because signal()
-                // failed is rather heavy-handed. :(
-                // Similar to a third-party jar calling System.exit() ...
-                getMailbox().getMailboxFactory().close();
-            } catch (final Exception e) {
-            }
+            close(); //die a silent death without further notification.
         }
     }
 }
