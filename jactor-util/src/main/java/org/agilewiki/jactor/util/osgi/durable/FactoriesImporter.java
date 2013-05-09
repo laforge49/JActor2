@@ -132,6 +132,9 @@ public class FactoriesImporter extends ActorBase implements
             // startTransport can be nulled in other circumstances. So I expect
             // this case is actually pretty likely, since we might clear startTransport
             // but NOT close tracker, therefore receiving services updates eventually.
+            tracker.close();
+            _transport.processResponse(null);
+            tracker = null;
             log.error("Unexpected service change");
             factoryLocator.close();
             return;
@@ -139,6 +142,7 @@ public class FactoriesImporter extends ActorBase implements
         if (_tracked.size() > 1) {
             // OK. Too many services. Fail and close tracker.
             tracker.close();
+            _transport.processResponse(null);
             tracker = null;
             startTransport
                     .processException(new IllegalStateException(
