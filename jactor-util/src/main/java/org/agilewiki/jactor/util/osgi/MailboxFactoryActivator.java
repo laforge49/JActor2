@@ -8,15 +8,42 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+/**
+ * A basic activator with a MailboxFactory,
+ * with a reference to the BundleContext stored in the bundleContext property
+ * in the MailboxFactory.
+ */
 public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
+
+    /**
+     * Returns the BundleContext saved in the bundleContext property of a MailboxFactory.
+     *
+     * @param _mailboxFactory    The mailbox factory.
+     * @return The BundleContext.
+     */
     public static BundleContext getBundleContext(final MailboxFactory _mailboxFactory) {
         Properties p = _mailboxFactory.getProperties();
         return (BundleContext) p.getProperty("bundleContext");
     }
 
+    /**
+     * The mailbox factory used by the bundle.
+     */
     private MailboxFactory mailboxFactory;
+
+    /**
+     * The properties held by the mailbox factory.
+     */
     private JAProperties jaProperties;
+
+    /**
+     * The bundle context.
+     */
     protected BundleContext bundleContext;
+
+    /**
+     * True when the bundle is closed or closing.
+     */
     private boolean closing;
 
     @Override
@@ -28,17 +55,31 @@ public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
     @Override
     public void stop(BundleContext context) throws Exception {
         setClosing();
-        MailboxFactoryStop();
+        mailboxFactory.close();
     }
 
+    /**
+     * Save the bundle context.
+     * @param _bundleContext    The bundle context.
+     */
     protected final void setBundleContext(final BundleContext _bundleContext) {
         bundleContext = _bundleContext;
     }
 
+    /**
+     * Returns the mailbox factory used by the bundle.
+     * @return The mailbox factory.
+     */
     protected MailboxFactory getMailboxFactory() {
         return mailboxFactory;
     }
 
+    /**
+     * Create and initialize the mailbox factory.
+     * The Properties object of the mailbox factory is created
+     * and a bundleContext is added to it.
+     * This activator is also added to the close set of the mailbox factory.
+     */
     protected final void mailboxFactoryStart() throws Exception {
         mailboxFactory = new DefaultMailboxFactoryImpl();
         mailboxFactory.addAutoClosable(this);
@@ -46,19 +87,25 @@ public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
         jaProperties.putProperty("bundleContext", bundleContext);
     }
 
-    protected final void MailboxFactoryStop() throws Exception {
-        closing = true;
-        mailboxFactory.close();
-    }
-
+    /**
+     * Returns true when closing or closed.
+     *
+     * @return True when closing or closed.
+     */
     protected final boolean isBundleClosing() {
         return closing;
     }
 
+    /**
+     * Mark as closing.
+     */
     protected final void setClosing() {
         closing = true;
     }
 
+    /**
+     * Stop the bundle unless already closing.
+     */
     @Override
     public void close() throws Exception {
         if (closing)

@@ -21,6 +21,6 @@ public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
     @Override
     public void stop(BundleContext context) throws Exception {
         setClosing();
-        MailboxFactoryStop();
+        getMailboxFactory().close();
     }
 }
