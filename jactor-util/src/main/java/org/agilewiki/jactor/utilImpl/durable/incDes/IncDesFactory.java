@@ -1,6 +1,7 @@
 package org.agilewiki.jactor.utilImpl.durable.incDes;
 
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.incDes.IncDes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
@@ -10,7 +11,7 @@ import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
  */
 public class IncDesFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) {
+    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IncDesFactory());
     }
 

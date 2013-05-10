@@ -6,6 +6,7 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Factory;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.util.durable.incDes.JAList;
@@ -102,7 +103,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
      *
      * @return The IncDesFactory for of all the elements in the list.
      */
-    protected Factory getEntryFactory() {
+    protected Factory getEntryFactory() throws FactoryLocatorClosedException {
         if (entryFactory == null)
             throw new IllegalStateException("entryFactory uninitialized");
         return entryFactory;

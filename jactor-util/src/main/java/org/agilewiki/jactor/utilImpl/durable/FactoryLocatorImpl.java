@@ -5,6 +5,7 @@ import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.AncestorBase;
 import org.agilewiki.jactor.util.durable.Factory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.JASerializable;
 
 import java.util.Iterator;
@@ -86,7 +87,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
      * @return The registered actor factory.
      */
     @Override
-    public Factory getFactory(String jidType) throws IllegalStateException {
+    public Factory getFactory(String jidType) throws FactoryLocatorClosedException {
         Factory af = _getFactory(jidType);
         if (af == null) {
             throw new IllegalArgumentException("Unknown jid type: " + jidType);
@@ -94,9 +95,9 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         return af;
     }
 
-    public Factory _getFactory(String actorType) throws IllegalStateException {
+    public Factory _getFactory(String actorType) throws FactoryLocatorClosedException {
         if (closed)
-            throw new IllegalStateException("closed");
+            throw new FactoryLocatorClosedException();
         String factoryKey = null;
         if (actorType.contains("|")) {
             factoryKey = actorType;
@@ -120,9 +121,9 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
      *
      * @param factory An actor factory.
      */
-    public void registerFactory(Factory factory) throws IllegalStateException {
+    public void registerFactory(Factory factory) throws FactoryLocatorClosedException {
         if (closed)
-            throw new IllegalStateException("closed");
+            throw new FactoryLocatorClosedException();
         String actorType = factory.getName();
         String factoryKey = actorType + "|" + bundleName + "|" + version;
         Factory old = types.get(factoryKey);

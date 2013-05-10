@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.incDes.*;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
@@ -16,7 +17,7 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
 public class StringBMapFactory extends FactoryImpl {
     private final static int NODE_CAPACITY = 28;
 
-    public static void registerFactories(final FactoryLocator _factoryLocator) {
+    public static void registerFactories(final FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         registerFactory(_factoryLocator, JAMap.STRING_JASTRING_MAP, JAString.FACTORY_NAME);
         registerFactory(_factoryLocator, JAMap.STRING_BYTES_MAP, Bytes.FACTORY_NAME);
         registerFactory(_factoryLocator, JAMap.STRING_BOX_MAP, Box.FACTORY_NAME);
@@ -29,7 +30,7 @@ public class StringBMapFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
-                                       String valueType) {
+                                       String valueType) throws FactoryLocatorClosedException {
         UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LM." + actorType, "IM." + actorType);
 

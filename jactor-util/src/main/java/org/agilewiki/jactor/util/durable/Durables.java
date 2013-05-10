@@ -86,7 +86,7 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator that will hold the factories.
      */
-    public static void registerFactories(final FactoryLocator _factoryLocator) {
+    public static void registerFactories(final FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
 
         IncDesFactory.registerFactory(_factoryLocator);
 
@@ -148,7 +148,7 @@ public final class Durables {
      */
     public static void registerListFactory(final FactoryLocator _factoryLocator,
                                            final String _listFactoryName,
-                                           final String _valueFactoryName) {
+                                           final String _valueFactoryName) throws FactoryLocatorClosedException {
         BListFactory.registerFactory(_factoryLocator, _listFactoryName, _valueFactoryName);
     }
 
@@ -161,7 +161,7 @@ public final class Durables {
      */
     public static void registerStringMapFactory(final FactoryLocator _factoryLocator,
                                                 final String _mapFactoryName,
-                                                final String _valueFactoryName) {
+                                                final String _valueFactoryName) throws FactoryLocatorClosedException {
         StringBMapFactory.registerFactory(_factoryLocator, _mapFactoryName, _valueFactoryName);
     }
 
@@ -174,7 +174,7 @@ public final class Durables {
      */
     public static void registerIntegerMapFactory(final FactoryLocator _factoryLocator,
                                                  final String _mapFactoryName,
-                                                 final String _valueFactoryName) {
+                                                 final String _valueFactoryName) throws FactoryLocatorClosedException {
         IntegerBMapFactory.registerFactory(_factoryLocator, _mapFactoryName, _valueFactoryName);
     }
 
@@ -187,7 +187,7 @@ public final class Durables {
      */
     public static void registerLongMapFactory(final FactoryLocator _factoryLocator,
                                               final String _mapFactoryName,
-                                              final String _valueFactoryName) {
+                                              final String _valueFactoryName) throws FactoryLocatorClosedException {
         LongBMapFactory.registerFactory(_factoryLocator, _mapFactoryName, _valueFactoryName);
     }
 
@@ -200,7 +200,7 @@ public final class Durables {
      */
     public static void registerUnionFactory(final FactoryLocator _factoryLocator,
                                             final String _unionFactoryName,
-                                            final String... _valueFactoryNames) {
+                                            final String... _valueFactoryNames) throws FactoryLocatorClosedException {
         UnionImpl.registerFactory(_factoryLocator, _unionFactoryName, _valueFactoryNames);
     }
 
@@ -213,7 +213,7 @@ public final class Durables {
      */
     public static void registerTupleFactory(final FactoryLocator _factoryLocator,
                                             final String _tupleFactoryName,
-                                            final String... _valueFactoryNames) {
+                                            final String... _valueFactoryNames) throws FactoryLocatorClosedException {
         TupleFactory.registerFactory(_factoryLocator, _tupleFactoryName, _valueFactoryNames);
     }
 
@@ -226,7 +226,7 @@ public final class Durables {
      */
     public static void registerAppFactory(final FactoryLocator _factoryLocator,
                                           final Class<?> _appClass,
-                                          final String _appFactoryName) {
+                                          final String _appFactoryName) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_appFactoryName) {
             @Override
             protected App instantiateActor() throws Exception {
@@ -246,7 +246,7 @@ public final class Durables {
     public static void registerAppFactory(final FactoryLocator _factoryLocator,
                                           final Class<?> _appClass,
                                           final String _appFactoryName,
-                                          final String... _valueFactoryNames) {
+                                          final String... _valueFactoryNames) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_appFactoryName, _valueFactoryNames) {
             @Override
             protected App instantiateActor() throws Exception {

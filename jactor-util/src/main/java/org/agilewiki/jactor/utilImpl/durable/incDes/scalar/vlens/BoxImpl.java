@@ -6,6 +6,7 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.Box;
 import org.agilewiki.jactor.util.durable.incDes.JAInteger;
@@ -21,7 +22,7 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
 public class BoxImpl
         extends VLenScalar<String, JASerializable> implements Box {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) {
+    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Box.FACTORY_NAME) {
             @Override
             final protected BoxImpl instantiateActor() {

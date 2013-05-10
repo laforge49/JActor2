@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor.utilImpl.durable.incDes.collection.smap.LongSMapFactory;
@@ -17,7 +18,7 @@ public class LongBMapFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
-                                       String valueType) {
+                                       String valueType) throws FactoryLocatorClosedException {
         UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LM." + actorType, "IM." + actorType);
 

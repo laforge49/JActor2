@@ -5,10 +5,7 @@ import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
-import org.agilewiki.jactor.util.durable.Durables;
-import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.JASerializable;
+import org.agilewiki.jactor.util.durable.*;
 import org.agilewiki.jactor.util.durable.incDes.Collection;
 import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.util.durable.incDes.JAMap;
@@ -69,7 +66,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return valueFactory;
     }
 
-    protected void init() {
+    protected void init() throws FactoryLocatorClosedException {
         String baseType = getFactoryName();
         if (baseType.startsWith("IN."))
             baseType = baseType.substring(3);

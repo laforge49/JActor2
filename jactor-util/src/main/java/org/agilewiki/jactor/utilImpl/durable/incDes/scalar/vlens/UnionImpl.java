@@ -5,10 +5,7 @@ import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
-import org.agilewiki.jactor.util.durable.Durables;
-import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.durable.JASerializable;
+import org.agilewiki.jactor.util.durable.*;
 import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.util.durable.incDes.Union;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
@@ -22,7 +19,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     public static void registerFactory(final FactoryLocator _factoryLocator,
                                        final String _subActorType,
-                                       final String... _actorTypes) {
+                                       final String... _actorTypes) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(_subActorType) {
 
             @Override
@@ -68,7 +65,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         throw new IllegalStateException("unionFactories is null");
     }
 
-    protected int getFactoryIndex(String actorType) {
+    protected int getFactoryIndex(String actorType) throws FactoryLocatorClosedException {
         FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
         Factory actorFactory = factoryLocator.getFactory(actorType);
         return getFactoryIndex(actorFactory);

@@ -7,6 +7,7 @@ import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.Collection;
 import org.agilewiki.jactor.util.durable.incDes.JAMap;
@@ -40,7 +41,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      *
      * @return The IncDesFactory for the key.
      */
-    abstract protected Factory getKeyFactory();
+    abstract protected Factory getKeyFactory() throws FactoryLocatorClosedException;
 
     /**
      * Converts a string to a key.
@@ -56,7 +57,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The jid type of all the elements in the list.
      */
     @Override
-    final protected Factory getEntryFactory() {
+    final protected Factory getEntryFactory() throws FactoryLocatorClosedException {
         Factory af = Durables.getFactoryLocator(getMailbox()).getFactory("E." + getFactoryName());
         return af;
     }

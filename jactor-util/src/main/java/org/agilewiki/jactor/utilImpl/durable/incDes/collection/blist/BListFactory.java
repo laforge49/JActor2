@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor.utilImpl.durable.incDes.collection.slist.SListFactory;
@@ -17,7 +18,7 @@ public class BListFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
-                                       String entryType) {
+                                       String entryType) throws FactoryLocatorClosedException {
         UnionImpl.registerFactory(_factoryLocator,
                 "U." + actorType, "LL." + actorType, "IL." + actorType);
 

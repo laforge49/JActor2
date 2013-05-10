@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
@@ -16,14 +17,14 @@ public class IntegerSMapFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator factoryLocator,
                                        String actorType,
-                                       String valueType) {
+                                       String valueType) throws FactoryLocatorClosedException {
         registerFactory(factoryLocator, actorType, valueType, 10);
     }
 
     public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
                                        String valueType,
-                                       int initialCapacity) {
+                                       int initialCapacity) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
                 "E." + actorType, JAInteger.FACTORY_NAME, valueType));
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IntegerSMapFactory(

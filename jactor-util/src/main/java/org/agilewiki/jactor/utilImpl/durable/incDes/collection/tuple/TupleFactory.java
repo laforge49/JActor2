@@ -5,6 +5,7 @@ import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 
@@ -14,7 +15,7 @@ import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 public class TupleFactory extends FactoryImpl {
 
     public static void registerFactory(FactoryLocator _factoryLocator,
-                                       String subActorType, String... actorTypes) {
+                                       String subActorType, String... actorTypes) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new TupleFactory(subActorType, actorTypes));
     }
 

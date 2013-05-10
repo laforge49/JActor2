@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.JAString;
 import org.agilewiki.jactor.util.durable.incDes.Root;
@@ -21,7 +22,7 @@ import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
  */
 public class RootImpl extends BoxImpl implements Root {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) {
+    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
             @Override
             final protected RootImpl instantiateActor() {

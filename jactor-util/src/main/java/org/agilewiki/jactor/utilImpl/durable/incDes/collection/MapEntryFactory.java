@@ -5,6 +5,7 @@ import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 
@@ -16,7 +17,7 @@ public class MapEntryFactory extends FactoryImpl {
     public static void registerFactory(FactoryLocator _factoryLocator,
                                        String actorType,
                                        String keyType,
-                                       String valueType) {
+                                       String valueType) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
                 actorType, keyType, valueType));
     }

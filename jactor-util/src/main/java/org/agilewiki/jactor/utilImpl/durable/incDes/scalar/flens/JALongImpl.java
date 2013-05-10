@@ -6,6 +6,7 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.incDes.JALong;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor.utilImpl.durable.FactoryImpl;
@@ -18,7 +19,7 @@ import org.agilewiki.jactor.utilImpl.durable.ReadableBytes;
 public class JALongImpl
         extends FLenScalar<Long> implements JALong {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) {
+    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JALong.FACTORY_NAME) {
             @Override
             final protected JALongImpl instantiateActor() {
