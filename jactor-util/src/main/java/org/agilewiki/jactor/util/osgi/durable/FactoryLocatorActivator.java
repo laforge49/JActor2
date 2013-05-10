@@ -10,6 +10,10 @@ public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
         setBundleContext(_bundleContext);
         mailboxFactoryStart();
         factoryLocatorStart();
+    }
+
+    protected void createFactoryLocator() throws Exception {
+        super.createFactoryLocator();
         Properties properties = getMailboxFactory().getProperties();
         properties.putProperty("factoryLocator", factoryLocator);
     }

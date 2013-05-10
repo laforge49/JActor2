@@ -1,5 +1,6 @@
 package org.agilewiki.jactor.util.osgi.durable;
 
+import org.agilewiki.jactor.api.Properties;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
