@@ -9,7 +9,14 @@ import org.osgi.framework.BundleContext;
 
 import java.util.Hashtable;
 
+/**
+ * A basic activator with a registered factory locator service but no mailbox.
+ */
 public class FactoryLocatorActivator0 extends MailboxFactoryActivator {
+
+    /**
+     * The factory locator service.
+     */
     protected OsgiFactoryLocator factoryLocator;
 
     @Override
@@ -23,15 +30,26 @@ public class FactoryLocatorActivator0 extends MailboxFactoryActivator {
         setClosing();
     }
 
+    /**
+     * Returns the factory locator of the bundle.
+     *
+     * @return The factory locator.
+     */
     protected final FactoryLocator getFactoryLocator() {
         return factoryLocator;
     }
 
+    /**
+     * Create, initialize and register the factory locator.
+     */
     protected final void factoryLocatorStart() throws Exception {
         createFactoryLocator();
         factoryLocator.register(bundleContext);
     }
 
+    /**
+     * Create and initialize the factory locator.
+     */
     protected void createFactoryLocator() throws Exception {
         factoryLocator = new OsgiFactoryLocator();
     }
