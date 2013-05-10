@@ -41,7 +41,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      *
      * @return The IncDesFactory for the key.
      */
-    abstract protected Factory getKeyFactory() throws FactoryLocatorClosedException;
+    abstract protected Factory getKeyFactory() throws Exception;
 
     /**
      * Converts a string to a key.
@@ -57,7 +57,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      * @return The jid type of all the elements in the list.
      */
     @Override
-    final protected Factory getEntryFactory() throws FactoryLocatorClosedException {
+    final protected Factory getEntryFactory() throws Exception {
         Factory af = Durables.getFactoryLocator(getMailbox()).getFactory("E." + getFactoryName());
         return af;
     }

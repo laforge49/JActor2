@@ -66,7 +66,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return valueFactory;
     }
 
-    protected void init() throws FactoryLocatorClosedException {
+    protected void init() throws Exception {
         String baseType = getFactoryName();
         if (baseType.startsWith("IN."))
             baseType = baseType.substring(3);

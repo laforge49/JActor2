@@ -87,7 +87,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
      * @return The registered actor factory.
      */
     @Override
-    public Factory getFactory(String jidType) throws FactoryLocatorClosedException {
+    public Factory getFactory(String jidType) throws Exception {
         Factory af = _getFactory(jidType);
         if (af == null) {
             throw new IllegalArgumentException("Unknown jid type: " + jidType);
@@ -95,7 +95,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         return af;
     }
 
-    public Factory _getFactory(String actorType) throws FactoryLocatorClosedException {
+    public Factory _getFactory(String actorType) throws Exception {
         if (closed)
             throw new FactoryLocatorClosedException();
         String factoryKey = null;
@@ -108,9 +108,14 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         if (af == null) {
             Iterator<FactoryLocator> it = factoryImports.iterator();
             while (it.hasNext()) {
+                try {
                 af = ((FactoryLocatorImpl) it.next())._getFactory(actorType);
                 if (af != null)
                     return af;
+                } catch (FactoryLocatorClosedException flce) {
+                    close();
+                    throw flce;
+                }
             }
         }
         return af;

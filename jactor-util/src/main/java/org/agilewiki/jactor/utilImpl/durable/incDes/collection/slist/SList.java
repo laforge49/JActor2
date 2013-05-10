@@ -103,7 +103,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
      *
      * @return The IncDesFactory for of all the elements in the list.
      */
-    protected Factory getEntryFactory() throws FactoryLocatorClosedException {
+    protected Factory getEntryFactory() throws Exception {
         if (entryFactory == null)
             throw new IllegalStateException("entryFactory uninitialized");
         return entryFactory;

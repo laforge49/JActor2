@@ -51,7 +51,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
         return entryFactory;
     }
 
-    protected void init() throws FactoryLocatorClosedException {
+    protected void init() throws Exception {
         String baseType = getFactoryName();
         if (baseType.startsWith("IN."))
             baseType = baseType.substring(3);

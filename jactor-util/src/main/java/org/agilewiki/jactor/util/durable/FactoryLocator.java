@@ -14,5 +14,5 @@ public interface FactoryLocator extends Ancestor {
      * @return The matching factory.
      * @throws IllegalArgumentException is thrown if there is no matching factory.
      */
-    Factory getFactory(final String _name) throws FactoryLocatorClosedException;
+    Factory getFactory(final String _name) throws Exception;
 }

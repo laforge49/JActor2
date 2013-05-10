@@ -65,7 +65,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         throw new IllegalStateException("unionFactories is null");
     }
 
-    protected int getFactoryIndex(String actorType) throws FactoryLocatorClosedException {
+    protected int getFactoryIndex(String actorType) throws Exception {
         FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
         Factory actorFactory = factoryLocator.getFactory(actorType);
         return getFactoryIndex(actorFactory);
