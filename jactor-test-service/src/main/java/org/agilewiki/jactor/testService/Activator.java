@@ -20,6 +20,7 @@ public class Activator extends FactoryLocatorActivator {
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         super.start(_bundleContext);
+        factoryLocator.setEssentialService(getMailboxFactory());
         Mailbox mailbox = getMailboxFactory().createMailbox();
         logger.error("testUtil location: " + bundleContext.getBundle().getLocation());
         logger.error("testUtil location: " + bundleContext.getBundle().getSymbolicName());

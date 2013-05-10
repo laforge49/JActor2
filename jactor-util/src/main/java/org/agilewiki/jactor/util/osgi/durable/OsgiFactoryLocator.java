@@ -1,5 +1,6 @@
 package org.agilewiki.jactor.util.osgi.durable;
 
+import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.osgi.framework.Bundle;
@@ -11,6 +12,12 @@ import java.util.Hashtable;
 public class OsgiFactoryLocator extends FactoryLocatorImpl {
 
     private ServiceRegistration<FactoryLocator> serviceRegistration;
+
+    private MailboxFactory essentialService;
+
+    public void setEssentialService(final MailboxFactory _mailboxFactory) {
+        essentialService = _mailboxFactory;
+    }
 
     protected void register(final BundleContext _bundleContext) {
         Bundle bundle = _bundleContext.getBundle();
@@ -28,8 +35,11 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl {
     }
 
     @Override
-    public void close() {
+    public void close() throws Exception {
         super.close();
-        serviceRegistration.unregister();
+        if (essentialService != null) {
+            essentialService.close();
+        } else
+            serviceRegistration.unregister();
     }
 }

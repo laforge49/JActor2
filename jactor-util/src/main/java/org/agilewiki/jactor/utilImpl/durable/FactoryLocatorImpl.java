@@ -134,7 +134,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
     }
 
     @Override
-    public void close() {
+    public void close() throws Exception {
         closed = true;
     }
 }
