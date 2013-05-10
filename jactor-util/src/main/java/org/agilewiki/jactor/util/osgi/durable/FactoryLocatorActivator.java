@@ -3,6 +3,9 @@ package org.agilewiki.jactor.util.osgi.durable;
 import org.agilewiki.jactor.api.Properties;
 import org.osgi.framework.BundleContext;
 
+/**
+ * An activator that provides both a mailbox factory and a registered factory locator service.
+ */
 public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
 
     @Override
