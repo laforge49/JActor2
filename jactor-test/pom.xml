@@ -14,7 +14,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <exam.version>3.0.0</exam.version>
+        <exam.version>3.0.3</exam.version>
         <url.version>1.5.2</url.version>
     </properties>
 
