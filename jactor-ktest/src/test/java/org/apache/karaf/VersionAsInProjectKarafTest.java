@@ -2,8 +2,10 @@ package org.apache.karaf;
 
 import static junit.framework.Assert.assertTrue;
 import static org.apache.karaf.tooling.exam.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.apache.karaf.tooling.exam.options.KarafDistributionOption.logLevel;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 
+import org.apache.karaf.tooling.exam.options.LogLevelOption;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -23,7 +25,8 @@ public class VersionAsInProjectKarafTest {
     public Option[] config() {
         return new Option[]{ karafDistributionConfiguration().frameworkUrl(
                 maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject())
-                .karafVersion("2.2.4").name("Apache Karaf")};
+                .karafVersion("2.2.4").name("Apache Karaf"),
+                logLevel(LogLevelOption.LogLevel.INFO)};
     }
 
     @Test
