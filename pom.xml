@@ -54,5 +54,6 @@
         <module>jactor-test-iface</module>
         <module>jactor-test-service</module>
         <module>jactor-test</module>
+        <module>jactor-ktest</module>
     </modules>
 </project>
