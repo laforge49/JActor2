@@ -9,6 +9,8 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
 import javax.inject.Inject;
 
@@ -36,7 +38,7 @@ public class VersionAsInProjectKarafTest {
                 maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject())
                 .karafVersion("2.2.4").name("Apache Karaf"),
 
-                logLevel(LogLevelOption.LogLevel.DEBUG),
+                logLevel(LogLevelOption.LogLevel.INFO),
 
                 mavenBundle("org.agilewiki.jactor", "jactor-api", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-impl", "0.0.1-SNAPSHOT"),
