@@ -38,7 +38,7 @@ public class VersionAsInProjectKarafTest {
                 maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject())
                 .karafVersion("2.2.4").name("Apache Karaf"),
 
-                logLevel(LogLevelOption.LogLevel.INFO),
+                logLevel(LogLevelOption.LogLevel.DEBUG),
 
                 mavenBundle("org.agilewiki.jactor", "jactor-api", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-impl", "0.0.1-SNAPSHOT"),
