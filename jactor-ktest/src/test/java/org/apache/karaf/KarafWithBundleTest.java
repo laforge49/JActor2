@@ -1,7 +1,6 @@
 package org.apache.karaf;
 
 import org.apache.karaf.tooling.exam.options.LogLevelOption;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -9,16 +8,14 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
 
 import javax.inject.Inject;
 
-import static junit.framework.Assert.assertTrue;
 import static org.apache.karaf.tooling.exam.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.apache.karaf.tooling.exam.options.KarafDistributionOption.logLevel;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 
@@ -29,7 +26,7 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
  */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class KarafWithBundleTest {
+public class KarafWithBundleTest implements BundleListener {
 
     @Inject
     private BundleContext bundleContext;
@@ -52,7 +49,22 @@ public class KarafWithBundleTest {
     @Test
     public void test() throws Exception {
         System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbb");
-        Thread.sleep(10000);
+        bundleContext.addBundleListener(this);
+        synchronized(this) {
+            wait(10000);
+        }
         System.out.println("ccccccccccccccccccccccccccc");
+    }
+
+    @Override
+    public void bundleChanged(BundleEvent bundleEvent) {
+        if ( bundleEvent.getType() == BundleEvent.STOPPED) {
+            if (bundleEvent.getBundle().getSymbolicName().equals("jactor-test-service")) {
+                System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz " + bundleEvent.getBundle().getSymbolicName());
+                synchronized(this) {
+                    this.notify();
+                }
+            }
+        }
     }
 }

@@ -1,11 +1,15 @@
 package org.agilewiki.jactor.testService;
 
 import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.Request;
+import org.agilewiki.jactor.api.RequestBase;
+import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.util.osgi.durable.FactoriesImporter;
 import org.agilewiki.jactor.util.osgi.durable.FactoryLocatorActivator;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.ServiceRegistration;
@@ -16,12 +20,13 @@ import java.util.Hashtable;
 
 public class Activator extends FactoryLocatorActivator {
     private final Logger logger = LoggerFactory.getLogger(Activator.class);
+    private Mailbox mailbox;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         super.start(_bundleContext);
         factoryLocator.setEssentialService(getMailboxFactory());
-        Mailbox mailbox = getMailboxFactory().createMailbox();
+        mailbox = getMailboxFactory().createMailbox();
         logger.error("testUtil location: " + bundleContext.getBundle().getLocation());
         logger.error("testUtil location: " + bundleContext.getBundle().getSymbolicName());
         HelloService hello = new HelloService(_bundleContext, mailbox);
@@ -30,6 +35,16 @@ public class Activator extends FactoryLocatorActivator {
                 Hello.class.getName(),
                 hello,
                 new Hashtable<String, String>());
+        dieReq().signal();
+    }
+
+    public Request<Void> dieReq() {
+        return new RequestBase<Void>(mailbox) {
+            @Override
+            public void processRequest(Transport<Void> _transport) throws Exception {
+                getMailboxFactory().close();
+            }
+        };
     }
 
     @Override

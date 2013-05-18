@@ -47,7 +47,6 @@
     </build>
 
     <dependencies>
-
         <!-- Karaf Test Framework Version -->
         <dependency>
             <groupId>org.apache.karaf.tooling.exam</groupId>
