@@ -8,14 +8,13 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleEvent;
-import org.osgi.framework.BundleListener;
+import org.osgi.framework.*;
 
 import javax.inject.Inject;
 
 import static org.apache.karaf.tooling.exam.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.apache.karaf.tooling.exam.options.KarafDistributionOption.logLevel;
+import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 
@@ -26,7 +25,8 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
  */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class KarafWithBundleTest implements BundleListener {
+public class KarafWithBundleTest implements BundleListener, ServiceListener {
+    private boolean success;
 
     @Inject
     private BundleContext bundleContext;
@@ -41,30 +41,43 @@ public class KarafWithBundleTest implements BundleListener {
                 mavenBundle("org.agilewiki.jactor", "jactor-api", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-impl", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-util", "0.0.1-SNAPSHOT"),
-               // mavenBundle("org.agilewiki.jactor", "jactor-test-iface", "0.0.1-SNAPSHOT"),
-               // mavenBundle("org.agilewiki.jactor", "jactor-test-service", "0.0.1-SNAPSHOT"),
+                // mavenBundle("org.agilewiki.jactor", "jactor-test-iface", "0.0.1-SNAPSHOT"),
+                // mavenBundle("org.agilewiki.jactor", "jactor-test-service", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-kdriver", "0.0.1-SNAPSHOT")
         };
     }
 
     @Test
     public void test() throws Exception {
-        System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbb");
         bundleContext.addBundleListener(this);
-        synchronized(this) {
+        bundleContext.addServiceListener(this);
+        synchronized (this) {
             wait(10000);
         }
-        System.out.println("ccccccccccccccccccccccccccc");
+        assertTrue(success);
     }
 
     @Override
     public void bundleChanged(BundleEvent bundleEvent) {
-        if ( bundleEvent.getType() == BundleEvent.STOPPED) {
+        if (bundleEvent.getType() == BundleEvent.STOPPED) {
             if (bundleEvent.getBundle().getSymbolicName().equals("jactor-kdriver")) {
-                System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz " + bundleEvent.getBundle().getSymbolicName());
-                synchronized(this) {
+                synchronized (this) {
                     this.notify();
                 }
+            }
+        }
+    }
+
+    @Override
+    public void serviceChanged(ServiceEvent serviceEvent) {
+        if (serviceEvent.getType() != ServiceEvent.REGISTERED)
+            return;
+        ServiceReference serviceReference = serviceEvent.getServiceReference();
+        String t = (String) serviceReference.getProperty("kdriverSuccess");
+        if (t != null) {
+            success = true;
+            synchronized (this) {
+                this.notify();
             }
         }
     }
