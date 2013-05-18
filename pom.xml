@@ -55,6 +55,7 @@
         <module>jactor-test-service</module>
         <!--module>jactor-test</module-->
         <!--module>jactor-ftest</module-->
+        <module>jactor-kdriver</module>
         <module>jactor-ktest</module>
     </modules>
 </project>
