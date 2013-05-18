@@ -18,35 +18,23 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Hashtable;
 
-public class Activator extends FactoryLocatorActivator {
+public class Activator extends MailboxFactoryActivator {
     private final Logger logger = LoggerFactory.getLogger(Activator.class);
     private Mailbox mailbox;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         super.start(_bundleContext);
-        factoryLocator.setEssentialService(getMailboxFactory());
+//        factoryLocator.setEssentialService(getMailboxFactory());
         mailbox = getMailboxFactory().createMailbox();
-        logger.error("testUtil location: " + bundleContext.getBundle().getLocation());
-        logger.error("testUtil location: " + bundleContext.getBundle().getSymbolicName());
         HelloService hello = new HelloService(_bundleContext, mailbox);
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         ServiceRegistration sr = _bundleContext.registerService(
                 Hello.class.getName(),
                 hello,
                 new Hashtable<String, String>());
-        dieReq().signal();
     }
 
-    public Request<Void> dieReq() {
-        return new RequestBase<Void>(mailbox) {
-            @Override
-            public void processRequest(Transport<Void> _transport) throws Exception {
-                getMailboxFactory().close();
-            }
-        };
-    }
-
+    /*
     @Override
     protected void createFactoryLocator() throws Exception {
         super.createFactoryLocator();
@@ -56,4 +44,5 @@ public class Activator extends FactoryLocatorActivator {
         Filter filter = bundleContext.createFilter(fs);
         factoriesImporter.startReq(filter).call();
     }
+    */
 }
