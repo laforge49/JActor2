@@ -47,11 +47,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>jactor-test-iface</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <!-- Karaf Test Framework Version -->
         <dependency>

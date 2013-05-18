@@ -1,6 +1,5 @@
 package org.apache.karaf;
 
-import org.agilewiki.jactor.testIface.Hello;
 import org.apache.karaf.tooling.exam.options.LogLevelOption;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,13 +24,15 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 
 /**
  * from http://karaf.apache.org/manual/latest-2.3.x/developers-guide/writing-tests.html
+ * And then modified using
+ * http://svn.apache.org/viewvc/karaf/trunk/tooling/exam/regression/src/test/java/org/apache/karaf/tooling/exam/regression/KarafWithBundleTest.java?view=markup
  */
 @RunWith(JUnit4TestRunner.class)
-//@ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class VersionAsInProjectKarafTest {
+@ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
+public class KarafWithBundleTest {
 
     @Inject
-    private Hello helloService;
+    private BundleContext bundleContext;
 
     @Configuration
     public Option[] config() {
@@ -40,24 +41,18 @@ public class VersionAsInProjectKarafTest {
                 .karafVersion("2.2.4").name("Apache Karaf"),
 
                 logLevel(LogLevelOption.LogLevel.INFO),
-
                 mavenBundle("org.agilewiki.jactor", "jactor-api", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-impl", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-util", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-test-iface", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-test-service", "0.0.1-SNAPSHOT")
-
         };
-    }
-
-    @Before
-    public void setup() throws Exception {
-        Thread.sleep(10000);
     }
 
     @Test
     public void test() throws Exception {
-        assertNotNull(helloService);
-        assertEquals("Hello Pax!", helloService.getMessage());
+        System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbb");
+        Thread.sleep(10000);
+        System.out.println("ccccccccccccccccccccccccccc");
     }
 }
