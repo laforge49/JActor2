@@ -3,18 +3,12 @@ package org.agilewiki.jactor.kdriver;
 import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
-import org.agilewiki.jactor.util.osgi.serviceTracker.JAServiceTracker;
 import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
-import org.agilewiki.jactor.util.osgi.serviceTracker.ServiceChangeReceiver;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Hashtable;
-import java.util.Map;
 
 public class Activator extends MailboxFactoryActivator {
     private Mailbox mailbox;
@@ -27,30 +21,41 @@ public class Activator extends MailboxFactoryActivator {
         startReq().signal();
     }
 
-    public Request<Void> startReq() {
+    Request<Void> startReq() {
         return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _transport) throws Exception {
                 mailbox.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(Throwable throwable) throws Throwable {
+                        _transport.processResponse(null);
                         log.error("test failure", throwable);
                         getMailboxFactory().close();
                     }
                 });
-                LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
-               locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
-                   @Override
-                   public void processResponse(Hello response) throws Exception {
-                       _transport.processResponse(null);
-                       success();
-                   }
-               });
+                test1(_transport);
             }
         };
     }
 
-    public void success() {
+    void test1(final Transport<Void> t) throws Exception {
+        LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
+        locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
+            @Override
+            public void processResponse(Hello response) throws Exception {
+                String r = response.getMessage();
+                if (!"Hello Pax!".equals(r)) {
+                    t.processResponse(null);
+                    log.error("Unexpected response from Hello.getMessage(): " + r);
+                    getMailboxFactory().close();
+                }
+                success(t);
+            }
+        });
+    }
+
+    void success(final Transport<Void> t) throws Exception {
+        t.processResponse(null);
         Hashtable<String, String> p = new Hashtable<String, String>();
         p.put("kdriverSuccess", "true");
         bundleContext.registerService(
