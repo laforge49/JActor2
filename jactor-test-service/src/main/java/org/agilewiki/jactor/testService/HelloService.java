@@ -15,34 +15,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class HelloService extends ActorBase implements Hello/*, ServiceChangeReceiver*/ {
+public class HelloService extends ActorBase implements Hello {
     private final Logger logger = LoggerFactory.getLogger(HelloService.class);
     private BundleContext context;
 
     public HelloService(final BundleContext _context, Mailbox mailbox) throws Exception {
         initialize(mailbox);
         context = _context;
-        /*
-        String filter = "(&(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)(&(bundleName=jactor-util)(bundleVersion=0.0.1.SNAPSHOT)))";
-        JAServiceTracker<Object> st = new JAServiceTracker(getMailbox(), context.createFilter(filter));
-        Map<ServiceReference, Object> m = st.startReq(this).call();
-        System.out.println("..................."+m.size());
-        */
     }
 
     @Override
     public String getMessage() throws Exception {
-        System.out.println("!!!!!!!!!!!!! ");
-        System.out.println(context.getBundle().getVersion());
-        System.out.println(context.getBundle().getLocation());
-        logger.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         return "Hello Pax!";
     }
-
-    /*
-    @Override
-    public void serviceChange(ServiceEvent _event, Map _tracked, Transport _transport) throws Exception {
-        System.out.println(">>>>>>>>>>>>>>>>>> Service change <<<<<<<<<<<<<<<<<< " + _tracked.size() + " -> "+_event.getType());
-    }
-    */
 }

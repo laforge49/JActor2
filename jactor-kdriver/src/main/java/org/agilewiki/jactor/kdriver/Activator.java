@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,8 @@ public class Activator extends MailboxFactoryActivator {
     }
 
     void test1(final Transport<Void> t) throws Exception {
+        Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/0.0.1-SNAPSHOT");
+        service.start();
         LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
         locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
             @Override
