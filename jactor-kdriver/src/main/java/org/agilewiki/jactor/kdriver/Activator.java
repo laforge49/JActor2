@@ -40,7 +40,7 @@ public class Activator extends MailboxFactoryActivator {
     }
 
     void test1(final Transport<Void> t) throws Exception {
-        Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/0.0.1-SNAPSHOT");
+        final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/0.0.1-SNAPSHOT");
         service.start();
         LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
         locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
@@ -52,6 +52,8 @@ public class Activator extends MailboxFactoryActivator {
                     log.error("Unexpected response from Hello.getMessage(): " + r);
                     getMailboxFactory().close();
                 }
+                service.stop();
+                service.uninstall();
                 success(t);
             }
         });
