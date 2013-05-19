@@ -112,14 +112,14 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
     /**
      * Creates the start request, passing the listener as a parameter.
      */
-    public Request<Map<ServiceReference, T>> startReq(
+    public Request<Void> startReq(
             final ServiceChangeReceiver<T> _serviceChangeReceiver)
             throws Exception {
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
-        return new RequestBase<Map<ServiceReference, T>>(getMailbox()) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(
-                    final Transport<Map<ServiceReference, T>> _transport)
+                    final Transport<Void> _transport)
                     throws Exception {
                 // We just received the start request. We can only receive one.
                 if (started)
@@ -165,7 +165,9 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                 // Sending initial service(s) found as response.
                 final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
                         tracked);
-                _transport.processResponse(m);
+                new ServiceChange<T>(null, m).signal(
+                        getMailbox(), serviceChangeReceiver);
+                _transport.processResponse(null);
             }
         };
     }

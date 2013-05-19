@@ -21,7 +21,7 @@ public class ServiceChange<T> extends
     /** Creates a ServiceChange request */
     public ServiceChange(final ServiceEvent _event,
             final Map<ServiceReference, T> _tracked) {
-        event = Objects.requireNonNull(_event, "_event");
+        event = _event;
         tracked = Objects.requireNonNull(_tracked, "_tracked");
     }
 

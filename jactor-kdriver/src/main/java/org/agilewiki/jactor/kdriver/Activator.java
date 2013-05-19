@@ -28,13 +28,8 @@ public class Activator extends MailboxFactoryActivator implements ServiceChangeR
             @Override
             public void processRequest(final Transport<Void> _transport) throws Exception {
                 JAServiceTracker<Hello> tracker = new JAServiceTracker(mailbox, Hello.class.getName());
-               tracker.startReq(Activator.this).send(mailbox, new ResponseProcessor<Map<ServiceReference, Hello>>() {
-                    @Override
-                    public void processResponse(Map<ServiceReference, Hello> response) throws Exception {
-                        processService(response);
-                        _transport.processResponse(null);
-                    }
-                });
+               tracker.startReq(Activator.this).signal(mailbox);
+                _transport.processResponse(null);
             }
         };
     }
@@ -51,10 +46,6 @@ public class Activator extends MailboxFactoryActivator implements ServiceChangeR
     @Override
     public void serviceChange(ServiceEvent _event, Map<ServiceReference, Hello> _tracked, Transport _transport) throws Exception {
         _transport.processResponse(null);
-        processService(_tracked);
-    }
-
-    private void processService(Map<ServiceReference, Hello> _tracked) throws Exception {
         if (_tracked.size() > 0) {
             success();
         }

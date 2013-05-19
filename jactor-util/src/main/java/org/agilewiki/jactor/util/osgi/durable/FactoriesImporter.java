@@ -78,38 +78,7 @@ public class FactoriesImporter extends ActorBase implements
                 // at initial registration.
                 startTransport = _transport;
                 tracker.startReq(FactoriesImporter.this)
-                        .send(getMailbox(),
-                                // Damn you! Auto-formatter!
-                                new ResponseProcessor<Map<ServiceReference, FactoryLocator>>() {
-                                    @Override
-                                    public void processResponse(
-                                            final Map<ServiceReference, FactoryLocator> response)
-                                            throws Exception {
-                                        if (response.size() > 1) {
-                                            tracker.close();
-                                            tracker = null;
-                                            startTransport = null;
-                                            // We got too many services in the initial registration: Fail.
-                                            // startTransport will get this exception as a response,
-                                            // because the Mailbox will cascade it upward.
-                                            throw new IllegalStateException(
-                                                    "ambiguous filter--number of matches = "
-                                                            + response.size());
-                                        }
-                                        if (response.size() == 1) {
-                                            final FactoryLocator fl = response
-                                                    .values().iterator().next();
-                                            factoryLocator.importFactories(fl);
-                                            // We got exactly one service in the initial registration
-                                            // startTransport will get a response. :)
-                                            startTransport = null;
-                                            _transport.processResponse(null);
-                                        }
-                                        // We got zero services. Let's wait until
-                                        // we get more service events. So we do
-                                        // not answer startTransport yet ...
-                                    }
-                                });
+                        .signal(getMailbox());
             }
         };
     }
