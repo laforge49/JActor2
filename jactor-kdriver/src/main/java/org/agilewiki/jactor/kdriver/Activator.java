@@ -10,12 +10,15 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Hashtable;
 import java.util.Map;
 
 public class Activator extends MailboxFactoryActivator {
     private Mailbox mailbox;
+    private final Logger log = LoggerFactory.getLogger(Activator.class);
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
@@ -28,6 +31,13 @@ public class Activator extends MailboxFactoryActivator {
         return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _transport) throws Exception {
+                mailbox.setExceptionHandler(new ExceptionHandler() {
+                    @Override
+                    public void processException(Throwable throwable) throws Throwable {
+                        log.error("test failure", throwable);
+                        getMailboxFactory().close();
+                    }
+                });
                 LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
                locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
                    @Override
