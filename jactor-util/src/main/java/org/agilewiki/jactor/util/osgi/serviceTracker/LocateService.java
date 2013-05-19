@@ -17,7 +17,8 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     JAServiceTracker<T> tracker;
     Transport<T> transport;
 
-    public LocateService(String clazz) throws Exception {
+    public LocateService(Mailbox _mailbox, String clazz) throws Exception {
+        mailbox = _mailbox;
         tracker = new JAServiceTracker(mailbox, clazz);
     }
 

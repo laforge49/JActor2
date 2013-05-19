@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.JAServiceTracker;
+import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
 import org.agilewiki.jactor.util.osgi.serviceTracker.ServiceChangeReceiver;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
@@ -13,7 +14,7 @@ import org.osgi.framework.ServiceRegistration;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class Activator extends MailboxFactoryActivator implements ServiceChangeReceiver<Hello> {
+public class Activator extends MailboxFactoryActivator {
     private Mailbox mailbox;
 
     @Override
@@ -27,9 +28,14 @@ public class Activator extends MailboxFactoryActivator implements ServiceChangeR
         return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _transport) throws Exception {
-                JAServiceTracker<Hello> tracker = new JAServiceTracker(mailbox, Hello.class.getName());
-               tracker.startReq(Activator.this).signal(mailbox);
-                _transport.processResponse(null);
+                LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
+               locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
+                   @Override
+                   public void processResponse(Hello response) throws Exception {
+                       _transport.processResponse(null);
+                       success();
+                   }
+               });
             }
         };
     }
@@ -41,18 +47,5 @@ public class Activator extends MailboxFactoryActivator implements ServiceChangeR
                 KDriverSuccess.class.getName(),
                 new KDriverSuccess(),
                 p);
-    }
-
-    @Override
-    public void serviceChange(ServiceEvent _event, Map<ServiceReference, Hello> _tracked, Transport _transport) throws Exception {
-        _transport.processResponse(null);
-        if (_tracked.size() > 0) {
-            success();
-        }
-    }
-
-    @Override
-    public Mailbox getMailbox() {
-        return mailbox;
     }
 }
