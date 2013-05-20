@@ -18,14 +18,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Hashtable;
 
-public class Activator extends MailboxFactoryActivator {
+public class Activator extends FactoryLocatorActivator {
     private final Logger logger = LoggerFactory.getLogger(Activator.class);
     private Mailbox mailbox;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         super.start(_bundleContext);
-//        factoryLocator.setEssentialService(getMailboxFactory());
+        factoryLocator.setEssentialService(getMailboxFactory());
         mailbox = getMailboxFactory().createMailbox();
         HelloService hello = new HelloService(_bundleContext, mailbox);
         ServiceRegistration sr = _bundleContext.registerService(
@@ -34,15 +34,16 @@ public class Activator extends MailboxFactoryActivator {
                 new Hashtable<String, String>());
     }
 
-    /*
     @Override
     protected void createFactoryLocator() throws Exception {
         super.createFactoryLocator();
         Mailbox mailbox = getMailboxFactory().createMailbox();
         FactoriesImporter factoriesImporter = new FactoriesImporter(mailbox);
-        String fs = "(&(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)(&(bundleName=jactor-util)(bundleVersion=0.0.1.SNAPSHOT)))";
+        String fs = "(&" +
+                "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
+                "(&(bundleName=jactor-util)(bundleVersion=0.0.1.SNAPSHOT))" +
+                ")";
         Filter filter = bundleContext.createFilter(fs);
         factoriesImporter.startReq(filter).call();
     }
-    */
 }
