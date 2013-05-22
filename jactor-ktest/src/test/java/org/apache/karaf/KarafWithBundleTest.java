@@ -4,9 +4,11 @@ import org.apache.karaf.tooling.exam.options.LogLevelOption;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 import org.osgi.framework.*;
 
@@ -27,6 +29,17 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
 public class KarafWithBundleTest implements BundleListener, ServiceListener {
     private boolean success;
+
+    /*
+    The code below causes this:
+    java.lang.NoClassDefFoundError: org/osgi/framework/BundleListener
+
+    @ProbeBuilder
+    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*;status=provisional");
+        return probe;
+    }
+    */
 
     @Inject
     private BundleContext bundleContext;
