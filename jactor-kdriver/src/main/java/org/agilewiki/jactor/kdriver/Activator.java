@@ -15,7 +15,7 @@ import java.util.Hashtable;
 public class Activator extends MailboxFactoryActivator {
     private Mailbox mailbox;
     private final Logger log = LoggerFactory.getLogger(Activator.class);
-    CommandProcessor cp;
+    CommandProcessor commandProcessor;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
@@ -36,7 +36,15 @@ public class Activator extends MailboxFactoryActivator {
                         getMailboxFactory().close();
                     }
                 });
-                test1(_transport);
+                LocateService<CommandProcessor> locateService = new LocateService(mailbox,
+                        CommandProcessor.class.getName());
+                locateService.getReq().send(mailbox, new ResponseProcessor<CommandProcessor>() {
+                    @Override
+                    public void processResponse(CommandProcessor response) throws Exception {
+                        commandProcessor = response;
+                        test1(_transport);
+                    }
+                });
             }
         };
     }
