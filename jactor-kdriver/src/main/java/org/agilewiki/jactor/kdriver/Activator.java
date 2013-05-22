@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
+import org.apache.felix.service.command.CommandProcessor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import java.util.Hashtable;
 public class Activator extends MailboxFactoryActivator {
     private Mailbox mailbox;
     private final Logger log = LoggerFactory.getLogger(Activator.class);
+    CommandProcessor cp;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {

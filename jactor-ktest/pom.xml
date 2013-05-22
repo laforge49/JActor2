@@ -67,7 +67,6 @@
             <artifactId>apache-karaf</artifactId>
             <version>2.3.1</version>
             <type>zip</type>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

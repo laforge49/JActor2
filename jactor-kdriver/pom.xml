@@ -48,6 +48,7 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Bundle-Activator>org.agilewiki.jactor.kdriver.Activator</Bundle-Activator>
                         <Import-Package>
+                            org.apache.felix.service.command,
                             org.agilewiki.jactor.api;version=${project.version},
                             org.agilewiki.jactor.util*;version=${project.version},
                             org.osgi.service.cm,
@@ -112,16 +113,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.core</artifactId>
-            <version>4.3.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.compendium</artifactId>
-            <version>4.3.1</version>
+            <groupId>org.apache.karaf</groupId>
+            <artifactId>apache-karaf</artifactId>
+            <version>2.3.1</version>
+            <type>zip</type>
         </dependency>
 
     </dependencies>

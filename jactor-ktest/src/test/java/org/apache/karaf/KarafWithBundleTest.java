@@ -4,11 +4,9 @@ import org.apache.karaf.tooling.exam.options.LogLevelOption;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 import org.osgi.framework.*;
 
@@ -30,17 +28,6 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 public class KarafWithBundleTest implements BundleListener, ServiceListener {
     private boolean success;
 
-    /*
-    The code below causes this:
-    java.lang.NoClassDefFoundError: org/osgi/framework/BundleListener
-
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*;status=provisional");
-        return probe;
-    }
-    */
-
     @Inject
     private BundleContext bundleContext;
 
@@ -51,12 +38,6 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
                 .karafVersion("2.2.4").name("Apache Karaf"),
 
                 logLevel(LogLevelOption.LogLevel.INFO),
-
-                /*
-                This did not help with provisional:
-
-                mavenBundle("org.osgi", "org.osgi.core", "4.3.1"),
-                */
 
                 mavenBundle("org.agilewiki.jactor", "jactor-api", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-impl", "0.0.1-SNAPSHOT"),
