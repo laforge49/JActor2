@@ -51,6 +51,13 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
                 .karafVersion("2.2.4").name("Apache Karaf"),
 
                 logLevel(LogLevelOption.LogLevel.INFO),
+
+                /*
+                This did not help with provisional:
+
+                mavenBundle("org.osgi", "org.osgi.core", "4.3.1"),
+                */
+
                 mavenBundle("org.agilewiki.jactor", "jactor-api", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-impl", "0.0.1-SNAPSHOT"),
                 mavenBundle("org.agilewiki.jactor", "jactor-util", "0.0.1-SNAPSHOT"),
