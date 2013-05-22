@@ -5,11 +5,14 @@ import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
 import org.apache.felix.service.command.CommandProcessor;
+import org.apache.felix.service.command.CommandSession;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Hashtable;
 
 public class Activator extends MailboxFactoryActivator {
@@ -49,7 +52,25 @@ public class Activator extends MailboxFactoryActivator {
         };
     }
 
+    protected String executeCommands(final String ...commands) throws Exception {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        final PrintStream printStream = new PrintStream(byteArrayOutputStream);
+        final CommandSession commandSession = commandProcessor.createSession(System.in, printStream, System.err);
+        String cmds = "";
+        try {
+            for(String command:commands) {
+                log.info(command);
+                cmds = cmds + command + " || ";
+                commandSession.execute(command);
+            }
+        } catch (Exception e) {
+            log.error(cmds, e);
+        }
+        return byteArrayOutputStream.toString();
+    }
+
     void test1(final Transport<Void> t) throws Exception {
+        System.out.println(">>>>>>>>>>>>>>>>>> "+executeCommands("features:listUrl"));
         final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/0.0.1-SNAPSHOT");
         service.start();
         LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
