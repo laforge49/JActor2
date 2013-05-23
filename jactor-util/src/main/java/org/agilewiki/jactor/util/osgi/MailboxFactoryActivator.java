@@ -27,6 +27,13 @@ public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
         return (BundleContext) p.getProperty("bundleContext");
     }
 
+    /**
+     * Returns the version in the form major.minor.micro or major.minor.micro-qualifier.
+     * This is in contrast to Version.toString, which uses a . rather than a - with a qualifier.
+     *
+     * @param version The version.
+     * @return The formatted version.
+     */
     public static String niceVersion(Version version) {
         int q = version.getQualifier().length();
         StringBuffer result = new StringBuffer(20 + q);
