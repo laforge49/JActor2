@@ -7,6 +7,7 @@ import org.agilewiki.jactor.util.JAProperties;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 
 /**
  * A basic activator with a MailboxFactory,
@@ -24,6 +25,21 @@ public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
     public static BundleContext getBundleContext(final MailboxFactory _mailboxFactory) {
         Properties p = _mailboxFactory.getProperties();
         return (BundleContext) p.getProperty("bundleContext");
+    }
+
+    public static String niceVersion(Version version) {
+        int q = version.getQualifier().length();
+        StringBuffer result = new StringBuffer(20 + q);
+        result.append(version.getMajor());
+        result.append(".");
+        result.append(version.getMinor());
+        result.append(".");
+        result.append(version.getMicro());
+        if (q > 0) {
+            result.append("-");
+            result.append(version.getQualifier());
+        }
+        return result.toString();
     }
 
     /**

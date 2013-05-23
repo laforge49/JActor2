@@ -18,7 +18,8 @@ import java.util.Hashtable;
 public class Activator extends MailboxFactoryActivator {
     private Mailbox mailbox;
     private final Logger log = LoggerFactory.getLogger(Activator.class);
-    CommandProcessor commandProcessor;
+    private CommandProcessor commandProcessor;
+    private String niceVersion;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
@@ -31,6 +32,7 @@ public class Activator extends MailboxFactoryActivator {
         return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _transport) throws Exception {
+                niceVersion = niceVersion(bundleContext.getBundle().getVersion());
                 mailbox.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(Throwable throwable) throws Throwable {
@@ -71,7 +73,7 @@ public class Activator extends MailboxFactoryActivator {
 
     void test1(final Transport<Void> t) throws Exception {
         System.out.println(">>>>>>>>>>>>>>>>>> "+executeCommands("features:listUrl"));
-        final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/0.0.1-SNAPSHOT");
+        final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/" + niceVersion);
         service.start();
         LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
         locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
