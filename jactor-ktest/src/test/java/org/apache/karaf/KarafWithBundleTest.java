@@ -55,6 +55,7 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
             wait(20000);
         }
         assertTrue(success);
+        Thread.sleep(1000); //may get more log messages
     }
 
     @Override
