@@ -19,7 +19,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
 
     private CopyOnWriteArrayList<FactoryLocator> factoryImports = new CopyOnWriteArrayList();
     private String bundleName = "";
-    private String version = "";
+    private String niceVersion = "";
     private String location = "";
     private String locatorKey;
     private String descriptor;
@@ -30,9 +30,9 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
      */
     private ConcurrentSkipListMap<String, Factory> types = new ConcurrentSkipListMap();
 
-    public void configure(final String _bundleName, final String _version, final String _location) {
+    public void configure(final String _bundleName, final String _niceVersion, final String _location) {
         bundleName = _bundleName;
-        version = _version;
+        niceVersion = _niceVersion;
         location = _location;
     }
 
@@ -40,8 +40,8 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         return bundleName;
     }
 
-    public String getVersion() {
-        return version;
+    public String getNiceVersion() {
+        return niceVersion;
     }
 
     public String getLocation() {
@@ -56,7 +56,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
 
     public String getLocatorKey() {
         if (locatorKey == null)
-            locatorKey = bundleName + "|" + getVersion();
+            locatorKey = bundleName + "|" + getNiceVersion();
         return locatorKey;
     }
 
@@ -102,7 +102,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         if (actorType.contains("|")) {
             factoryKey = actorType;
         } else {
-            factoryKey = actorType + "|" + bundleName + "|" + version;
+            factoryKey = actorType + "|" + bundleName + "|" + niceVersion;
         }
         Factory af = types.get(factoryKey);
         if (af == null) {
@@ -130,7 +130,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         if (closed)
             throw new FactoryLocatorClosedException();
         String actorType = factory.getName();
-        String factoryKey = actorType + "|" + bundleName + "|" + version;
+        String factoryKey = actorType + "|" + bundleName + "|" + niceVersion;
         Factory old = types.get(factoryKey);
         ((FactoryImpl) factory).configure(factoryKey);
         if (old == null) {

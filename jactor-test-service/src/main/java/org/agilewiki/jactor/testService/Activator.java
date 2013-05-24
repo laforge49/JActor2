@@ -41,7 +41,7 @@ public class Activator extends FactoryLocatorActivator {
         FactoriesImporter factoriesImporter = new FactoriesImporter(mailbox);
         String fs = "(&" +
                 "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
-                "(&(bundleName=jactor-util)(bundleVersion=0.0.1.SNAPSHOT))" +
+                "(&(bundleName=jactor-util)(bundleVersion=0.0.1-SNAPSHOT))" +
                 ")";
         Filter filter = bundleContext.createFilter(fs);
         factoriesImporter.startReq(filter).call();
