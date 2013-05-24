@@ -73,16 +73,16 @@ public class Activator extends MailboxFactoryActivator {
 
     void test1(final Transport<Void> t) throws Exception {
         log.info(">>>>>>>>>>>>>>>>>> "+executeCommands(
-                "config:edit org.agilewiki.jactor.kdriver.jactor-test-service",
+                "config:edit org.agilewiki.jactor.testService",
                 "config:propset msg Aloha!",
                 "config:update"));
-        log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("config:list"));
         final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/" + niceVersion);
         service.start();
         LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
         locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
             @Override
             public void processResponse(Hello response) throws Exception {
+                log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
                 String r = response.getMessage();
                 if (!"Hello Pax!".equals(r)) {
                     t.processResponse(null);
