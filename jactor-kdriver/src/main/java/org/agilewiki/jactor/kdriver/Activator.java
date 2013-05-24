@@ -8,6 +8,7 @@ import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ public class Activator extends MailboxFactoryActivator {
     private final Logger log = LoggerFactory.getLogger(Activator.class);
     private CommandProcessor commandProcessor;
     private String niceVersion;
+    private Version version;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
@@ -32,7 +34,8 @@ public class Activator extends MailboxFactoryActivator {
         return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _transport) throws Exception {
-                niceVersion = niceVersion(bundleContext.getBundle().getVersion());
+                version = bundleContext.getBundle().getVersion();
+                niceVersion = niceVersion(version);
                 mailbox.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(Throwable throwable) throws Throwable {
@@ -73,7 +76,7 @@ public class Activator extends MailboxFactoryActivator {
 
     void test1(final Transport<Void> t) throws Exception {
         log.info(">>>>>>>>>>>>>>>>>> "+executeCommands(
-                "config:edit org.agilewiki.jactor.testService",
+                "config:edit org.agilewiki.jactor.testService." + version.toString(),
                 "config:propset msg Aloha!",
                 "config:update"));
         final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/" + niceVersion);
@@ -84,10 +87,11 @@ public class Activator extends MailboxFactoryActivator {
             public void processResponse(Hello response) throws Exception {
                 log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
                 String r = response.getMessage();
-                if (!"Hello Pax!".equals(r)) {
+                if (!"Aloha!".equals(r)) {
                     t.processResponse(null);
                     log.error("Unexpected response from Hello.getMessage(): " + r);
                     getMailboxFactory().close();
+                    return;
                 }
                 service.stop();
                 service.uninstall();

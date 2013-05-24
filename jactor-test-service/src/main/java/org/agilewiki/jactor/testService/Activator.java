@@ -9,10 +9,8 @@ import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.util.osgi.durable.FactoriesImporter;
 import org.agilewiki.jactor.util.osgi.durable.FactoryLocatorActivator;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Filter;
-import org.osgi.framework.ServiceRegistration;
+import org.osgi.framework.*;
+import org.osgi.service.cm.ManagedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,10 +26,17 @@ public class Activator extends FactoryLocatorActivator {
         factoryLocator.setEssentialService(getMailboxFactory());
         mailbox = getMailboxFactory().createMailbox();
         HelloService hello = new HelloService(_bundleContext, mailbox);
-        ServiceRegistration sr = _bundleContext.registerService(
+        ServiceRegistration hsr = _bundleContext.registerService(
                 Hello.class.getName(),
                 hello,
                 new Hashtable<String, String>());
+        Version version = bundleContext.getBundle().getVersion();
+        Hashtable<String, String> mp = new Hashtable<String, String>();
+        mp.put(Constants.SERVICE_PID, "org.agilewiki.jactor.testService." + version.toString());
+        ServiceRegistration msr = _bundleContext.registerService(
+                ManagedService.class.getName(),
+                hello,
+                mp);
     }
 
     @Override
