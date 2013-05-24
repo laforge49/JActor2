@@ -72,8 +72,11 @@ public class Activator extends MailboxFactoryActivator {
     }
 
     void test1(final Transport<Void> t) throws Exception {
-        log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("features:listUrl"));
-        log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("features:list", "config:list"));
+        log.info(">>>>>>>>>>>>>>>>>> "+executeCommands(
+                "config:edit org.agilewiki.jactor.kdriver.jactor-test-service",
+                "config:propset msg Aloha!",
+                "config:update"));
+        log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("config:list"));
         final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/" + niceVersion);
         service.start();
         LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
