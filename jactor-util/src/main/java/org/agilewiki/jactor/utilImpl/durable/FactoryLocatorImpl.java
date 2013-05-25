@@ -60,7 +60,7 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         return locatorKey;
     }
 
-    public void importFactories(final FactoryLocator _factoryLocator) {
+    public void importFactoryLocator(final FactoryLocator _factoryLocator) {
         factoryImports.add(_factoryLocator);
     }
 

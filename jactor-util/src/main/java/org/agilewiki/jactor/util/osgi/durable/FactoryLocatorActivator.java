@@ -1,6 +1,7 @@
 package org.agilewiki.jactor.util.osgi.durable;
 
 import org.agilewiki.jactor.api.Properties;
+import org.agilewiki.jactor.api.Transport;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -12,7 +13,14 @@ public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
     public void start(final BundleContext _bundleContext) throws Exception {
         setBundleContext(_bundleContext);
         mailboxFactoryStart();
-        factoryLocatorStart();
+        createFactoryLocator();
+        beginReq().signal();
+    }
+
+    @Override
+    protected void begin(final Transport<Void> _transport) throws Exception {
+        factoryLocator.register(bundleContext);
+        _transport.processResponse(null);
     }
 
     protected void createFactoryLocator() throws Exception {

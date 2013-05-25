@@ -7,14 +7,18 @@ import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.cm.ConfigurationException;
+import org.osgi.service.cm.ManagedService;
 
+import java.util.Dictionary;
 import java.util.Hashtable;
 
 /**
  * A factory locator that works with OSGi.
  */
-public class OsgiFactoryLocator extends FactoryLocatorImpl {
+public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedService {
 
+    private Dictionary<String, ?> properties;
     /**
      * The service registration.
      */
@@ -42,7 +46,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl {
      *
      * @param _bundleContext The bundle context.
      */
-    protected void register(final BundleContext _bundleContext) {
+    public void register(final BundleContext _bundleContext) {
         Bundle bundle = _bundleContext.getBundle();
         configure(
                 bundle.getSymbolicName(),
@@ -61,5 +65,10 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl {
             essentialService.close();
         } else
             serviceRegistration.unregister();
+    }
+
+    @Override
+    public void updated(final Dictionary<String, ?> _properties) throws ConfigurationException {
+
     }
 }

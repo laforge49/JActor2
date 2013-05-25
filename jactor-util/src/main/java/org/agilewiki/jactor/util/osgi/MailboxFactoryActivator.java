@@ -1,7 +1,6 @@
 package org.agilewiki.jactor.util.osgi;
 
-import org.agilewiki.jactor.api.MailboxFactory;
-import org.agilewiki.jactor.api.Properties;
+import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.JAProperties;
 import org.osgi.framework.Bundle;
@@ -14,7 +13,7 @@ import org.osgi.framework.Version;
  * with a reference to the BundleContext stored in the bundleContext property
  * in the MailboxFactory.
  */
-public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
+public class MailboxFactoryActivator extends ActorBase implements BundleActivator, AutoCloseable {
 
     /**
      * Returns the BundleContext saved in the bundleContext property of a MailboxFactory.
@@ -73,6 +72,20 @@ public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
     public void start(final BundleContext _bundleContext) throws Exception {
         setBundleContext(_bundleContext);
         mailboxFactoryStart();
+        beginReq().signal();
+    }
+
+    protected Request<Void> beginReq() {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(final Transport<Void> _transport) throws Exception {
+                begin(_transport);
+            }
+        };
+    }
+
+    protected void begin(final Transport<Void> _transport) throws Exception {
+
     }
 
     @Override
@@ -108,6 +121,7 @@ public class MailboxFactoryActivator implements BundleActivator, AutoCloseable {
         mailboxFactory.addAutoClosable(this);
         jaProperties = new JAProperties(mailboxFactory, null);
         jaProperties.putProperty("bundleContext", bundleContext);
+        initialize(mailboxFactory.createMailbox(true));
     }
 
     /**

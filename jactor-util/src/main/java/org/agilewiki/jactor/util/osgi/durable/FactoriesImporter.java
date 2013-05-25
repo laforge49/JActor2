@@ -114,7 +114,7 @@ public class FactoriesImporter extends ActorBase implements
         if (_tracked.size() == 1) {
             // Yeah! success!
             final FactoryLocator fl = _tracked.values().iterator().next();
-            factoryLocator.importFactories(fl);
+            factoryLocator.importFactoryLocator(fl);
             startTransport.processResponse(null);
             startTransport = null;
             // But we keep tracking, in case it goes down later ...

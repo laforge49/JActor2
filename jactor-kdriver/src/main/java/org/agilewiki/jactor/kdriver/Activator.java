@@ -17,44 +17,32 @@ import java.io.PrintStream;
 import java.util.Hashtable;
 
 public class Activator extends MailboxFactoryActivator {
-    private Mailbox mailbox;
     private final Logger log = LoggerFactory.getLogger(Activator.class);
     private CommandProcessor commandProcessor;
     private String niceVersion;
     private Version version;
 
     @Override
-    public void start(final BundleContext _bundleContext) throws Exception {
-        super.start(_bundleContext);
-        mailbox = getMailboxFactory().createMailbox();
-        startReq().signal();
-    }
-
-    Request<Void> startReq() {
-        return new RequestBase<Void>(mailbox) {
+    protected void begin(final Transport<Void> _transport) throws Exception {
+        version = bundleContext.getBundle().getVersion();
+        niceVersion = niceVersion(version);
+        getMailbox().setExceptionHandler(new ExceptionHandler() {
             @Override
-            public void processRequest(final Transport<Void> _transport) throws Exception {
-                version = bundleContext.getBundle().getVersion();
-                niceVersion = niceVersion(version);
-                mailbox.setExceptionHandler(new ExceptionHandler() {
-                    @Override
-                    public void processException(Throwable throwable) throws Throwable {
-                        _transport.processResponse(null);
-                        log.error("test failure", throwable);
-                        getMailboxFactory().close();
-                    }
-                });
-                LocateService<CommandProcessor> locateService = new LocateService(mailbox,
-                        CommandProcessor.class.getName());
-                locateService.getReq().send(mailbox, new ResponseProcessor<CommandProcessor>() {
-                    @Override
-                    public void processResponse(CommandProcessor response) throws Exception {
-                        commandProcessor = response;
-                        test1(_transport);
-                    }
-                });
+            public void processException(Throwable throwable) throws Throwable {
+                _transport.processResponse(null);
+                log.error("test failure", throwable);
+                getMailboxFactory().close();
             }
-        };
+        });
+        LocateService<CommandProcessor> locateService = new LocateService(getMailbox(),
+                CommandProcessor.class.getName());
+        locateService.getReq().send(getMailbox(), new ResponseProcessor<CommandProcessor>() {
+            @Override
+            public void processResponse(CommandProcessor response) throws Exception {
+                commandProcessor = response;
+                test1(_transport);
+            }
+        });
     }
 
     protected String executeCommands(final String ...commands) throws Exception {
@@ -81,8 +69,8 @@ public class Activator extends MailboxFactoryActivator {
                 "config:update"));
         final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/" + niceVersion);
         service.start();
-        LocateService<Hello> locateService = new LocateService(mailbox, Hello.class.getName());
-        locateService.getReq().send(mailbox, new ResponseProcessor<Hello>() {
+        LocateService<Hello> locateService = new LocateService(getMailbox(), Hello.class.getName());
+        locateService.getReq().send(getMailbox(), new ResponseProcessor<Hello>() {
             @Override
             public void processResponse(Hello response) throws Exception {
                 log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
