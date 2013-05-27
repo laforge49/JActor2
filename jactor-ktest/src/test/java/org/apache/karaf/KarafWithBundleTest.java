@@ -9,6 +9,8 @@ import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 import org.osgi.framework.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
@@ -27,6 +29,7 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
 public class KarafWithBundleTest implements BundleListener, ServiceListener {
     private boolean success;
+    private final Logger log = LoggerFactory.getLogger(KarafWithBundleTest.class);
 
     @Inject
     private BundleContext bundleContext;
@@ -52,7 +55,7 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
         bundleContext.addBundleListener(this);
         bundleContext.addServiceListener(this);
         synchronized (this) {
-            wait(20000);
+            wait(30000);
         }
         assertTrue(success);
         Thread.sleep(1000); //may get more log messages
@@ -62,6 +65,9 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
     public void bundleChanged(BundleEvent bundleEvent) {
         if (bundleEvent.getType() == BundleEvent.STOPPED) {
             if (bundleEvent.getBundle().getSymbolicName().equals("jactor-kdriver")) {
+                try {
+                    Thread.sleep(10000);
+                } catch (Exception e) {}
                 synchronized (this) {
                     this.notify();
                 }

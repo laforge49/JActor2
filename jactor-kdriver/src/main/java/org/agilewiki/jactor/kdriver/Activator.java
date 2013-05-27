@@ -20,12 +20,11 @@ public class Activator extends MailboxFactoryActivator {
     private final Logger log = LoggerFactory.getLogger(Activator.class);
     private CommandProcessor commandProcessor;
     private String niceVersion;
-    private Version version;
 
     @Override
     protected void begin(final Transport<Void> _transport) throws Exception {
-        version = bundleContext.getBundle().getVersion();
-        niceVersion = niceVersion(version);
+        Thread.sleep(2000);
+        niceVersion = niceVersion(getVersion());
         getMailbox().setExceptionHandler(new ExceptionHandler() {
             @Override
             public void processException(Throwable throwable) throws Throwable {
@@ -64,8 +63,8 @@ public class Activator extends MailboxFactoryActivator {
     }
 
     void test1(final Transport<Void> t) throws Exception {
-        log.info(">>>>>>>>>>>>>>>>>> "+executeCommands(
-                "config:edit org.agilewiki.jactor.testService.Activator." + version.toString(),
+        log.info(">>>>>>>>1>>>>>>>>>> "+executeCommands(
+                "config:edit org.agilewiki.jactor.testService.Activator." + getVersion().toString(),
                 "config:propset msg Aloha!",
                 "config:update"));
         final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/" + niceVersion);
@@ -74,7 +73,9 @@ public class Activator extends MailboxFactoryActivator {
         locateService.getReq().send(getMailbox(), new ResponseProcessor<Hello>() {
             @Override
             public void processResponse(Hello response) throws Exception {
-                log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
+                //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
+                Thread.sleep(2000);
+                log.info("---------------------> getMessage");
                 String r = response.getMessage();
                 if (!"Aloha!".equals(r)) {
                     t.processResponse(null);
@@ -82,8 +83,8 @@ public class Activator extends MailboxFactoryActivator {
                     getMailboxFactory().close();
                     return;
                 }
-                service.stop();
-                service.uninstall();
+                //service.stop();
+                //service.uninstall();
                 success(t);
             }
         });
@@ -97,5 +98,6 @@ public class Activator extends MailboxFactoryActivator {
                 KDriverSuccess.class.getName(),
                 new KDriverSuccess(),
                 p);
+        log.info("=========================> Success");
     }
 }
