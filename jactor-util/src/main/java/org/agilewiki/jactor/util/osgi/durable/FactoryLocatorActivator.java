@@ -7,11 +7,11 @@ import org.osgi.framework.BundleContext;
 /**
  * An activator that provides both a mailbox factory and a registered factory locator service.
  */
-public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
+abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
-        setBundleContext(_bundleContext);
+        initializeActivator(_bundleContext);
         mailboxFactoryStart();
         createFactoryLocator();
         beginReq().signal();
@@ -20,6 +20,7 @@ public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
     @Override
     protected void begin(final Transport<Void> _transport) throws Exception {
         factoryLocator.register(bundleContext);
+        managedServiceRegistration();
         _transport.processResponse(null);
     }
 

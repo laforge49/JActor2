@@ -3,17 +3,20 @@ package org.agilewiki.jactor.util.osgi;
 import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.JAProperties;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Version;
+import org.osgi.framework.*;
+import org.osgi.service.cm.ConfigurationException;
+import org.osgi.service.cm.ManagedService;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 /**
  * A basic activator with a MailboxFactory,
  * with a reference to the BundleContext stored in the bundleContext property
  * in the MailboxFactory.
  */
-public class MailboxFactoryActivator extends ActorBase implements BundleActivator, AutoCloseable {
+abstract public class MailboxFactoryActivator
+        extends ActorBase implements BundleActivator, ManagedService, AutoCloseable {
 
     /**
      * Returns the BundleContext saved in the bundleContext property of a MailboxFactory.
@@ -49,6 +52,16 @@ public class MailboxFactoryActivator extends ActorBase implements BundleActivato
     }
 
     /**
+     * The version of the bundle.
+     */
+    private Version version;
+
+    /**
+     * Config properties, or null.
+     */
+    private Dictionary<String, ?> config;
+
+    /**
      * The mailbox factory used by the bundle.
      */
     private MailboxFactory mailboxFactory;
@@ -70,7 +83,7 @@ public class MailboxFactoryActivator extends ActorBase implements BundleActivato
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
-        setBundleContext(_bundleContext);
+        initializeActivator(_bundleContext);
         mailboxFactoryStart();
         beginReq().signal();
     }
@@ -85,7 +98,7 @@ public class MailboxFactoryActivator extends ActorBase implements BundleActivato
     }
 
     protected void begin(final Transport<Void> _transport) throws Exception {
-
+        managedServiceRegistration();
     }
 
     @Override
@@ -95,11 +108,22 @@ public class MailboxFactoryActivator extends ActorBase implements BundleActivato
     }
 
     /**
-     * Save the bundle context.
+     * Initialize the activator.
+     *
      * @param _bundleContext    The bundle context.
      */
-    protected final void setBundleContext(final BundleContext _bundleContext) {
+    protected final void initializeActivator(final BundleContext _bundleContext) {
         bundleContext = _bundleContext;
+        version = bundleContext.getBundle().getVersion();
+    }
+
+    /**
+     * Returns the bundle version.
+     *
+     * @return The bundle version.
+     */
+    protected Version getVersion() {
+        return version;
     }
 
     /**
@@ -114,7 +138,8 @@ public class MailboxFactoryActivator extends ActorBase implements BundleActivato
      * Create and initialize the mailbox factory.
      * The Properties object of the mailbox factory is created
      * and a bundleContext is added to it.
-     * This activator is also added to the close set of the mailbox factory.
+     * The activator is also added to the close set of the mailbox factory
+     * and the activator is given a mailbox that may block.
      */
     protected final void mailboxFactoryStart() throws Exception {
         mailboxFactory = new DefaultMailboxFactoryImpl();
@@ -149,5 +174,28 @@ public class MailboxFactoryActivator extends ActorBase implements BundleActivato
             return;
         Bundle bundle = bundleContext.getBundle();
         bundle.stop(Bundle.STOP_TRANSIENT);
+    }
+
+    protected void managedServiceRegistration() {
+        Hashtable<String, String> mp = new Hashtable<String, String>();
+        mp.put(Constants.SERVICE_PID, this.getClass().getName() + "." + getVersion().toString());
+        ServiceRegistration msr = bundleContext.registerService(
+                ManagedService.class.getName(),
+                this,
+                mp);
+    }
+
+    /**
+     * Returns the config properties.
+     *
+     * @return The config properties, or null.
+     */
+    protected Dictionary<String, ?> getConfig() {
+        return config;
+    }
+
+    @Override
+    public void updated(final Dictionary<String, ?> _config) throws ConfigurationException {
+        config = _config;
     }
 }

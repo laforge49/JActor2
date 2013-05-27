@@ -40,6 +40,7 @@ public class Activator extends MailboxFactoryActivator {
             @Override
             public void processResponse(CommandProcessor response) throws Exception {
                 commandProcessor = response;
+                managedServiceRegistration();
                 test1(_transport);
             }
         });
@@ -64,7 +65,7 @@ public class Activator extends MailboxFactoryActivator {
 
     void test1(final Transport<Void> t) throws Exception {
         log.info(">>>>>>>>>>>>>>>>>> "+executeCommands(
-                "config:edit org.agilewiki.jactor.testService." + version.toString(),
+                "config:edit org.agilewiki.jactor.testService.Activator." + version.toString(),
                 "config:propset msg Aloha!",
                 "config:update"));
         final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/" + niceVersion);

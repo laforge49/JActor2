@@ -6,9 +6,9 @@ import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * A basic activator with a registered factory locator service but no mailbox.
+ * A basic activator with a registered factory locator service but no mailbox factory.
  */
-public class FactoryLocatorActivator0 extends MailboxFactoryActivator {
+abstract public class FactoryLocatorActivator0 extends MailboxFactoryActivator {
 
     /**
      * The factory locator service.
@@ -17,14 +17,10 @@ public class FactoryLocatorActivator0 extends MailboxFactoryActivator {
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
-        setBundleContext(_bundleContext);
+        initializeActivator(_bundleContext);
         createFactoryLocator();
         factoryLocator.register(bundleContext);
-    }
-
-    @Override
-    protected void begin(final Transport<Void> _transport) throws Exception {
-        throw new UnsupportedOperationException();
+        managedServiceRegistration();
     }
 
     @Override
