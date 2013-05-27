@@ -88,6 +88,11 @@ abstract public class MailboxFactoryActivator
         beginReq().signal();
     }
 
+    /**
+     * Returns the request used to begin async processing.
+     *
+     * @return The request.
+     */
     protected Request<Void> beginReq() {
         return new RequestBase<Void>(getMailbox()) {
             @Override
@@ -97,6 +102,11 @@ abstract public class MailboxFactoryActivator
         };
     }
 
+    /**
+     * Begins the activator's asynchronous processing.
+     *
+     * @param _transport    The transport.
+     */
     protected void begin(final Transport<Void> _transport) throws Exception {
         managedServiceRegistration();
     }
@@ -176,6 +186,9 @@ abstract public class MailboxFactoryActivator
         bundle.stop(Bundle.STOP_TRANSIENT);
     }
 
+    /**
+     * Register the activator as a managed service.
+     */
     protected void managedServiceRegistration() {
         Hashtable<String, String> mp = new Hashtable<String, String>();
         mp.put(Constants.SERVICE_PID, this.getClass().getName() + "." + getVersion().toString());
@@ -183,15 +196,6 @@ abstract public class MailboxFactoryActivator
                 ManagedService.class.getName(),
                 this,
                 mp);
-    }
-
-    /**
-     * Returns the config properties.
-     *
-     * @return The config properties, or null.
-     */
-    protected Dictionary<String, ?> getConfig() {
-        return config;
     }
 
     @Override
