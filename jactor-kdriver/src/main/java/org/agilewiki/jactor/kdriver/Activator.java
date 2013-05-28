@@ -22,6 +22,11 @@ public class Activator extends FactoryLocatorActivator {
     private CommandProcessor commandProcessor;
 
     @Override
+    protected boolean configImports() {
+        return false;
+    }
+
+    @Override
     protected void begin(final Transport<Void> _transport) throws Exception {
         Thread.sleep(2000);
         getMailbox().setExceptionHandler(new ExceptionHandler() {
@@ -65,6 +70,7 @@ public class Activator extends FactoryLocatorActivator {
         log.info(">>>>>>>>1>>>>>>>>>> "+executeCommands(
                 "config:edit org.agilewiki.jactor.testService.Activator." + getVersion().toString(),
                 "config:propset msg Aloha!",
+                "config:propset import_a jactor-util\\|" + getNiceVersion(),
                 "config:update"));
         String bundleLocation = "mvn:org.agilewiki.jactor/JActor-test-service/" + getNiceVersion();
         FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());

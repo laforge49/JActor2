@@ -63,7 +63,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
         super.close();
         if (essentialService != null) {
             essentialService.close();
-        } else
+        } else if (serviceRegistration != null)
             serviceRegistration.unregister();
     }
 

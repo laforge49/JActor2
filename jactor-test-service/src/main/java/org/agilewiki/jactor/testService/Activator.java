@@ -24,6 +24,7 @@ public class Activator extends FactoryLocatorActivator {
 
     @Override
     protected void configInitialized() {
+        super.configInitialized();
         ServiceRegistration hsr = bundleContext.registerService(
                 Hello.class.getName(),
                 hello,

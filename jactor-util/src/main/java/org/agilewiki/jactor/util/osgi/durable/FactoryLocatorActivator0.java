@@ -1,6 +1,5 @@
 package org.agilewiki.jactor.util.osgi.durable;
 
-import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.osgi.framework.BundleContext;
@@ -15,12 +14,23 @@ abstract public class FactoryLocatorActivator0 extends MailboxFactoryActivator {
      */
     protected OsgiFactoryLocator factoryLocator;
 
+    protected boolean configImports() {
+        return true;
+    }
+
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         initializeActivator(_bundleContext);
         createFactoryLocator();
-        factoryLocator.register(bundleContext);
+        if (!configImports())
+            factoryLocator.register(bundleContext);
         managedServiceRegistration();
+    }
+
+    @Override
+    protected void configInitialized() {
+        if (configImports())
+            factoryLocator.register(bundleContext);
     }
 
     @Override

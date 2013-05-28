@@ -179,6 +179,6 @@ public class FactoriesImporter extends ActorBase implements
         }
         // A serviceChange without any service? Despite the fact that we should
         // only come here when we did not find any services either at registration?
-        log.info("strange case");
+        //log.info("strange case");
     }
 }

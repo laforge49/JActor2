@@ -19,7 +19,8 @@ abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
 
     @Override
     protected void begin(final Transport<Void> _transport) throws Exception {
-        factoryLocator.register(bundleContext);
+        if (!configImports())
+            factoryLocator.register(bundleContext);
         managedServiceRegistration();
         _transport.processResponse(null);
     }

@@ -9,6 +9,11 @@ import org.agilewiki.jactor.util.durable.Durables;
 public class Activator extends FactoryLocatorActivator0 {
 
     @Override
+    protected boolean configImports() {
+        return false;
+    }
+
+    @Override
     protected void createFactoryLocator() throws Exception {
         super.createFactoryLocator();
         Durables.registerFactories(getFactoryLocator());
