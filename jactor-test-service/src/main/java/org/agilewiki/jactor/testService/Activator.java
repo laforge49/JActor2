@@ -18,8 +18,15 @@ public class Activator extends FactoryLocatorActivator {
 
     @Override
     public void updated(final Dictionary<String, ?> _config) throws ConfigurationException {
+        Dictionary<String, ?> oldConfig = getConfig();
         hello.updated(_config);
         super.updated(_config);
+        if (oldConfig == null && _config != null) {
+            ServiceRegistration hsr = bundleContext.registerService(
+                    Hello.class.getName(),
+                    hello,
+                    new Hashtable<String, String>());
+        }
     }
 
     @Override
@@ -31,10 +38,6 @@ public class Activator extends FactoryLocatorActivator {
                 factoryLocator.register(bundleContext);
                 factoryLocator.setEssentialService(getMailboxFactory());
                 hello = new HelloService(bundleContext, getMailbox());
-                ServiceRegistration hsr = bundleContext.registerService(
-                        Hello.class.getName(),
-                        hello,
-                        new Hashtable<String, String>());
                 managedServiceRegistration();
                 _transport.processResponse(null);
             }

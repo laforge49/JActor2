@@ -76,7 +76,6 @@ public class Activator extends FactoryLocatorActivator {
                     @Override
                     public void processResponse(Hello response) throws Exception {
                         //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
-                        Thread.sleep(2000);
                         String r = response.getMessage();
                         if (!"Aloha!".equals(r)) {
                             t.processResponse(null);

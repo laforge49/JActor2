@@ -206,4 +206,8 @@ abstract public class MailboxFactoryActivator
     public void updated(final Dictionary<String, ?> _config) throws ConfigurationException {
         config = _config;
     }
+
+    protected Dictionary<String, ?> getConfig() {
+        return config;
+    }
 }
