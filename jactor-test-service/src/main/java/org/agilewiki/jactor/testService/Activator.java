@@ -18,15 +18,16 @@ public class Activator extends FactoryLocatorActivator {
 
     @Override
     public void updated(final Dictionary<String, ?> _config) throws ConfigurationException {
-        Dictionary<String, ?> oldConfig = getConfig();
         hello.updated(_config);
         super.updated(_config);
-        if (oldConfig == null && _config != null) {
-            ServiceRegistration hsr = bundleContext.registerService(
-                    Hello.class.getName(),
-                    hello,
-                    new Hashtable<String, String>());
-        }
+    }
+
+    @Override
+    protected void configInitialized() {
+        ServiceRegistration hsr = bundleContext.registerService(
+                Hello.class.getName(),
+                hello,
+                new Hashtable<String, String>());
     }
 
     @Override

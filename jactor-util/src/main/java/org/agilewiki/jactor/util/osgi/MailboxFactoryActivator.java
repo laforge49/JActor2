@@ -204,7 +204,14 @@ abstract public class MailboxFactoryActivator
 
     @Override
     public void updated(final Dictionary<String, ?> _config) throws ConfigurationException {
+        Dictionary<String, ?> oldConfig = config;
         config = _config;
+        if (oldConfig == null && config != null)
+            configInitialized();
+    }
+
+    protected void configInitialized() {
+
     }
 
     protected Dictionary<String, ?> getConfig() {
