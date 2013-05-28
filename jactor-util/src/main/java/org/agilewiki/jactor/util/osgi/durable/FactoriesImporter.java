@@ -121,6 +121,25 @@ public class FactoriesImporter extends ActorBase implements
         start(_bundleName, niceVersion, _transport);
     }
 
+    public Request<Void> startReq(final String _bundleLocation) {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(Transport<Void> _transport) throws Exception {
+                start(_bundleLocation, _transport);
+            }
+        };
+    }
+
+    private void start(final String _bundleLocation, final Transport<Void> _transport)
+            throws Exception {
+        BundleContext bundleContext = MailboxFactoryActivator.getBundleContext(getMailbox().getMailboxFactory());
+        Bundle bundle = bundleContext.installBundle(_bundleLocation);
+        bundle.start();
+        String bundleName = bundle.getSymbolicName();
+        Version version = bundle.getVersion();
+        start(bundleName, version, _transport);
+    }
+
     /**
      * Got a service registration change. Probably either we finally get the
      * service we were waiting for, or we had it, and now it's gone.
