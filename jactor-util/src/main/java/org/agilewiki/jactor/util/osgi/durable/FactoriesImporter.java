@@ -86,6 +86,26 @@ public class FactoriesImporter extends ActorBase implements
                 .signal(getMailbox());
     }
 
+    public Request<Void> startReq(final String _bundleName, final String _niceVersion) {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(Transport<Void> _transport) throws Exception {
+                start(_bundleName, _niceVersion, _transport);
+            }
+        };
+    }
+
+    private void start(final String _bundleName, final String _niceVersion, final Transport<Void> _transport)
+            throws Exception {
+        BundleContext bundleContext = MailboxFactoryActivator.getBundleContext(getMailbox().getMailboxFactory());
+        String fs = "(&" +
+                "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
+                "(&(bundleName="+_bundleName+")(bundleVersion="+_niceVersion+"))" +
+                ")";
+        Filter filter = bundleContext.createFilter(fs);
+        start(filter, _transport);
+    }
+
     public Request<Void> startReq(final String _bundleName, final Version _version) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
@@ -97,14 +117,8 @@ public class FactoriesImporter extends ActorBase implements
 
     private void start(final String _bundleName, final Version _version, final Transport<Void> _transport)
             throws Exception {
-        BundleContext bundleContext = MailboxFactoryActivator.getBundleContext(getMailbox().getMailboxFactory());
         String niceVersion = MailboxFactoryActivator.getNiceVersion(_version);
-        String fs = "(&" +
-                "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
-                "(&(bundleName="+_bundleName+")(bundleVersion="+niceVersion+"))" +
-                ")";
-        Filter filter = bundleContext.createFilter(fs);
-        start(filter, _transport);
+        start(_bundleName, niceVersion, _transport);
     }
 
     /**
