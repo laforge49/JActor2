@@ -3,10 +3,13 @@ package org.agilewiki.jactor.kdriver;
 import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
+import org.agilewiki.jactor.util.osgi.durable.FactoriesImporter;
+import org.agilewiki.jactor.util.osgi.durable.FactoryLocatorActivator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Hashtable;
 
-public class Activator extends MailboxFactoryActivator {
+public class Activator extends FactoryLocatorActivator {
     private final Logger log = LoggerFactory.getLogger(Activator.class);
     private CommandProcessor commandProcessor;
 
@@ -63,25 +66,27 @@ public class Activator extends MailboxFactoryActivator {
                 "config:edit org.agilewiki.jactor.testService.Activator." + getVersion().toString(),
                 "config:propset msg Aloha!",
                 "config:update"));
-        final Bundle service = bundleContext.installBundle(
-                "mvn:org.agilewiki.jactor/JActor-test-service/" + getNiceVersion());
-        service.start();
-        LocateService<Hello> locateService = new LocateService(getMailbox(), Hello.class.getName());
-        locateService.getReq().send(getMailbox(), new ResponseProcessor<Hello>() {
+        String bundleLocation = "mvn:org.agilewiki.jactor/JActor-test-service/" + getNiceVersion();
+        FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
+        factoriesImporter.startReq(bundleLocation).send(getMailbox(), new ResponseProcessor<Void>() {
             @Override
-            public void processResponse(Hello response) throws Exception {
-                //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
-                Thread.sleep(2000);
-                String r = response.getMessage();
-                if (!"Aloha!".equals(r)) {
-                    t.processResponse(null);
-                    log.error("Unexpected response from Hello.getMessage(): " + r);
-                    getMailboxFactory().close();
-                    return;
-                }
-                //service.stop();
-                //service.uninstall();
-                success(t);
+            public void processResponse(Void response) throws Exception {
+                LocateService<Hello> locateService = new LocateService(getMailbox(), Hello.class.getName());
+                locateService.getReq().send(getMailbox(), new ResponseProcessor<Hello>() {
+                    @Override
+                    public void processResponse(Hello response) throws Exception {
+                        //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
+                        Thread.sleep(2000);
+                        String r = response.getMessage();
+                        if (!"Aloha!".equals(r)) {
+                            t.processResponse(null);
+                            log.error("Unexpected response from Hello.getMessage(): " + r);
+                            getMailboxFactory().close();
+                            return;
+                        }
+                        success(t);
+                    }
+                });
             }
         });
     }
