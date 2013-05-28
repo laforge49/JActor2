@@ -36,7 +36,7 @@ abstract public class MailboxFactoryActivator
      * @param version The version.
      * @return The formatted version.
      */
-    public static String niceVersion(Version version) {
+    public static String getNiceVersion(Version version) {
         int q = version.getQualifier().length();
         StringBuffer result = new StringBuffer(20 + q);
         result.append(version.getMajor());
@@ -128,15 +128,6 @@ abstract public class MailboxFactoryActivator
     }
 
     /**
-     * Returns the bundle version.
-     *
-     * @return The bundle version.
-     */
-    protected Version getVersion() {
-        return version;
-    }
-
-    /**
      * Returns the mailbox factory used by the bundle.
      * @return The mailbox factory.
      */
@@ -184,6 +175,19 @@ abstract public class MailboxFactoryActivator
             return;
         Bundle bundle = bundleContext.getBundle();
         bundle.stop(Bundle.STOP_TRANSIENT);
+    }
+
+    /**
+     * Returns the bundle version.
+     *
+     * @return The bundle version.
+     */
+    protected Version getVersion() {
+        return version;
+    }
+
+    protected String getNiceVersion() {
+        return getNiceVersion(getVersion());
     }
 
     /**

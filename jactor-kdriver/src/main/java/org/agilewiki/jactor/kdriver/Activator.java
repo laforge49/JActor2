@@ -7,8 +7,6 @@ import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,12 +17,10 @@ import java.util.Hashtable;
 public class Activator extends MailboxFactoryActivator {
     private final Logger log = LoggerFactory.getLogger(Activator.class);
     private CommandProcessor commandProcessor;
-    private String niceVersion;
 
     @Override
     protected void begin(final Transport<Void> _transport) throws Exception {
         Thread.sleep(2000);
-        niceVersion = niceVersion(getVersion());
         getMailbox().setExceptionHandler(new ExceptionHandler() {
             @Override
             public void processException(Throwable throwable) throws Throwable {
@@ -67,7 +63,8 @@ public class Activator extends MailboxFactoryActivator {
                 "config:edit org.agilewiki.jactor.testService.Activator." + getVersion().toString(),
                 "config:propset msg Aloha!",
                 "config:update"));
-        final Bundle service = bundleContext.installBundle("mvn:org.agilewiki.jactor/JActor-test-service/" + niceVersion);
+        final Bundle service = bundleContext.installBundle(
+                "mvn:org.agilewiki.jactor/JActor-test-service/" + getNiceVersion());
         service.start();
         LocateService<Hello> locateService = new LocateService(getMailbox(), Hello.class.getName());
         locateService.getReq().send(getMailbox(), new ResponseProcessor<Hello>() {
@@ -75,7 +72,6 @@ public class Activator extends MailboxFactoryActivator {
             public void processResponse(Hello response) throws Exception {
                 //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
                 Thread.sleep(2000);
-                log.info("---------------------> getMessage");
                 String r = response.getMessage();
                 if (!"Aloha!".equals(r)) {
                     t.processResponse(null);
@@ -98,6 +94,5 @@ public class Activator extends MailboxFactoryActivator {
                 KDriverSuccess.class.getName(),
                 new KDriverSuccess(),
                 p);
-        log.info("=========================> Success");
     }
 }

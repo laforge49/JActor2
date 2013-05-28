@@ -50,7 +50,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
         Bundle bundle = _bundleContext.getBundle();
         configure(
                 bundle.getSymbolicName(),
-                MailboxFactoryActivator.niceVersion(bundle.getVersion()),
+                MailboxFactoryActivator.getNiceVersion(bundle.getVersion()),
                 bundle.getLocation());
         Hashtable<String, String> p = new Hashtable<String, String>();
         p.put("bundleName", getBundleName());

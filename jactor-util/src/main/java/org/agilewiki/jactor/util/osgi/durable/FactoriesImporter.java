@@ -3,12 +3,11 @@ package org.agilewiki.jactor.util.osgi.durable;
 import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.JAServiceTracker;
 import org.agilewiki.jactor.util.osgi.serviceTracker.ServiceChangeReceiver;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
-import org.osgi.framework.Filter;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceReference;
+import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,20 +66,45 @@ public class FactoriesImporter extends ActorBase implements
             @Override
             public void processRequest(final Transport<Void> _transport)
                     throws Exception {
-                // We're got a start-request!
-                // We only accept one start request.
-                if (tracker != null)
-                    throw new IllegalStateException("already started");
-                // Create a service tracker for the given filter.
-                tracker = new JAServiceTracker<FactoryLocator>(getMailbox(),
-                        _filter);
-                // Keep _transport for later, in case we do not find out service
-                // at initial registration.
-                startTransport = _transport;
-                tracker.startReq(FactoriesImporter.this)
-                        .signal(getMailbox());
+                start(_filter, _transport);
             }
         };
+    }
+
+    private void start(final Filter _filter, final Transport<Void> _transport) throws Exception {
+        // We're got a start-request!
+        // We only accept one start request.
+        if (tracker != null)
+            throw new IllegalStateException("already started");
+        // Create a service tracker for the given filter.
+        tracker = new JAServiceTracker<FactoryLocator>(getMailbox(),
+                _filter);
+        // Keep _transport for later, in case we do not find out service
+        // at initial registration.
+        startTransport = _transport;
+        tracker.startReq(FactoriesImporter.this)
+                .signal(getMailbox());
+    }
+
+    public Request<Void> startReq(final String _bundleName, final Version _version) {
+        return new RequestBase<Void>(getMailbox()) {
+            @Override
+            public void processRequest(Transport<Void> _transport) throws Exception {
+                start(_bundleName, _version, _transport);
+            }
+        };
+    }
+
+    private void start(final String _bundleName, final Version _version, final Transport<Void> _transport)
+            throws Exception {
+        BundleContext bundleContext = MailboxFactoryActivator.getBundleContext(getMailbox().getMailboxFactory());
+        String niceVersion = MailboxFactoryActivator.getNiceVersion(_version);
+        String fs = "(&" +
+                "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
+                "(&(bundleName="+_bundleName+")(bundleVersion="+niceVersion+"))" +
+                ")";
+        Filter filter = bundleContext.createFilter(fs);
+        start(filter, _transport);
     }
 
     /**

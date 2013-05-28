@@ -25,12 +25,7 @@ public class Activator extends FactoryLocatorActivator {
     @Override
     protected void begin(final Transport<Void> _transport) throws Exception {
         FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
-        String fs = "(&" +
-                "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
-                "(&(bundleName=jactor-util)(bundleVersion=0.0.1-SNAPSHOT))" +
-                ")";
-        Filter filter = bundleContext.createFilter(fs);
-        factoriesImporter.startReq(filter).send(getMailbox(), new ResponseProcessor<Void>() {
+        factoriesImporter.startReq("jactor-util", getVersion()).send(getMailbox(), new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {
                 factoryLocator.register(bundleContext);
