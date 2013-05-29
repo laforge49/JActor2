@@ -21,7 +21,7 @@ abstract public class MailboxFactoryActivator
     /**
      * Returns the BundleContext saved in the bundleContext property of a MailboxFactory.
      *
-     * @param _mailboxFactory    The mailbox factory.
+     * @param _mailboxFactory The mailbox factory.
      * @return The BundleContext.
      */
     public static BundleContext getBundleContext(final MailboxFactory _mailboxFactory) {
@@ -105,7 +105,7 @@ abstract public class MailboxFactoryActivator
     /**
      * Begins the activator's asynchronous processing.
      *
-     * @param _transport    The transport.
+     * @param _transport The transport.
      */
     protected void begin(final Transport<Void> _transport) throws Exception {
         managedServiceRegistration();
@@ -120,7 +120,7 @@ abstract public class MailboxFactoryActivator
     /**
      * Initialize the activator.
      *
-     * @param _bundleContext    The bundle context.
+     * @param _bundleContext The bundle context.
      */
     protected final void initializeActivator(final BundleContext _bundleContext) {
         bundleContext = _bundleContext;
@@ -129,6 +129,7 @@ abstract public class MailboxFactoryActivator
 
     /**
      * Returns the mailbox factory used by the bundle.
+     *
      * @return The mailbox factory.
      */
     protected MailboxFactory getMailboxFactory() {

@@ -2,7 +2,6 @@ package org.agilewiki.jactor.utilImpl.durable.incDes.collection.smap;
 
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.utilImpl.durable.incDes.IncDesImpl;
 

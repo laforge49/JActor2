@@ -1,12 +1,12 @@
 package org.agilewiki.jactor.util.osgi.serviceTracker;
 
-import java.util.Map;
-import java.util.Objects;
-
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.api.UnboundRequestBase;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Request used to pass the changed list of services to the listener.
@@ -18,17 +18,21 @@ public class ServiceChange<T> extends
     private final ServiceEvent event;
     private final Map<ServiceReference, T> tracked;
 
-    /** Creates a ServiceChange request */
+    /**
+     * Creates a ServiceChange request
+     */
     public ServiceChange(final ServiceEvent _event,
-            final Map<ServiceReference, T> _tracked) {
+                         final Map<ServiceReference, T> _tracked) {
         event = _event;
         tracked = Objects.requireNonNull(_tracked, "_tracked");
     }
 
-    /** Process the request, by calling serviceChange() on the listener. */
+    /**
+     * Process the request, by calling serviceChange() on the listener.
+     */
     @Override
     public void processRequest(final ServiceChangeReceiver _targetActor,
-            final Transport<Void> _transport) throws Exception {
+                               final Transport<Void> _transport) throws Exception {
         _targetActor.serviceChange(event, tracked, _transport);
     }
 }

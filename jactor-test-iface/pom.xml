@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-	<parent>
+    <parent>
         <groupId>org.agilewiki.jactor</groupId>
         <artifactId>jactor</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-	</parent>
-	
+    </parent>
+
     <artifactId>jactor-test-iface</artifactId>
     <name>JActor-test-iface</name>
     <packaging>bundle</packaging>
@@ -94,17 +94,17 @@
             <scope>test</scope>
         </dependency>
 
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>1.3.9</version>
-		</dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>1.3.9</version>
+        </dependency>
 
-		<dependency>
-			<groupId>com.kenai.nbpwr</groupId>
-			<artifactId>edu-umd-cs-findbugs-annotations</artifactId>
-			<version>1.3.2-201002241900</version>
-		</dependency>
+        <dependency>
+            <groupId>com.kenai.nbpwr</groupId>
+            <artifactId>edu-umd-cs-findbugs-annotations</artifactId>
+            <version>1.3.2-201002241900</version>
+        </dependency>
 
         <dependency>
             <groupId>org.osgi</groupId>

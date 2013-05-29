@@ -1,10 +1,6 @@
 package org.agilewiki.jactor.impl;
 
-import org.agilewiki.jactor.api.Actor;
-import org.agilewiki.jactor.api.ExceptionHandler;
-import org.agilewiki.jactor.api.ResponseProcessor;
-import org.agilewiki.jactor.api.ServiceClosedException;
-import org.agilewiki.jactor.api._Request;
+import org.agilewiki.jactor.api.*;
 
 /**
  * <p>
@@ -102,9 +98,9 @@ public class Message implements AutoCloseable {
     }
 
     public <E, A extends Actor> Message(final boolean _foreign,
-            final MessageSource _source, final A _targetActor,
-            final Message _old, final _Request<E, A> _request,
-            final ExceptionHandler _handler, final ResponseProcessor<E> _rp) {
+                                        final MessageSource _source, final A _targetActor,
+                                        final Message _old, final _Request<E, A> _request,
+                                        final ExceptionHandler _handler, final ResponseProcessor<E> _rp) {
         messageSource = _source;
         foreign = _foreign;
         targetActor = _targetActor;

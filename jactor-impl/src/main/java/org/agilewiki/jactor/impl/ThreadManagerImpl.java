@@ -1,11 +1,11 @@
 package org.agilewiki.jactor.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A high performance implementation of ThreadManager.
@@ -58,7 +58,7 @@ final public class ThreadManagerImpl implements ThreadManager {
      * @return A new JAThreadManager.
      */
     public static ThreadManager newThreadManager(final int threadCount,
-            final ThreadFactory threadFactory) {
+                                                 final ThreadFactory threadFactory) {
         final ThreadManager threadManager = new ThreadManagerImpl();
         threadManager.start(threadCount, threadFactory);
         return threadManager;
@@ -72,7 +72,7 @@ final public class ThreadManagerImpl implements ThreadManager {
      */
     @Override
     final public void start(final int threadCount,
-            final ThreadFactory threadFactory) {
+                            final ThreadFactory threadFactory) {
         this.threadCount = threadCount;
         final Runnable runnable = new Runnable() {
             @Override

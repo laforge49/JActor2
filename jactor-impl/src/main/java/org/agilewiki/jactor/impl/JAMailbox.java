@@ -1,8 +1,8 @@
 package org.agilewiki.jactor.impl;
 
-import java.util.Queue;
-
 import org.agilewiki.jactor.api.Mailbox;
+
+import java.util.Queue;
 
 public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource {
 

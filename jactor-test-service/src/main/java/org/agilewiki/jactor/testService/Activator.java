@@ -1,10 +1,11 @@
 package org.agilewiki.jactor.testService;
 
-import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.testIface.Hello;
 import org.agilewiki.jactor.util.osgi.durable.FactoriesImporter;
 import org.agilewiki.jactor.util.osgi.durable.FactoryLocatorActivator;
-import org.osgi.framework.*;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

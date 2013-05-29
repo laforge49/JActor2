@@ -1,6 +1,5 @@
 package org.agilewiki.jactor.util.durable.block;
 
-import org.agilewiki.jactor.util.durable.block.LTBlock;
 import org.agilewiki.jactor.util.durable.incDes.JALong;
 import org.agilewiki.jactor.utilImpl.durable.AppendableBytes;
 

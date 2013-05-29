@@ -1,13 +1,13 @@
 package org.agilewiki.jactor.impl;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import org.agilewiki.jactor.api.Actor;
 import org.agilewiki.jactor.api.ExceptionHandler;
 import org.agilewiki.jactor.api.ResponseProcessor;
 import org.agilewiki.jactor.api._Request;
+
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A default <code>MessageQueue</code> implementation, using a
@@ -43,9 +43,9 @@ public class DefaultMessageQueue extends ConcurrentLinkedQueue<Object>
      */
     @Override
     public <E, A extends Actor> Message createMessage(final boolean foreign,
-            final MessageSource source, final A targetActor, final Message old,
-            final _Request<E, A> _request, final ExceptionHandler handler,
-            final ResponseProcessor<E> rp) {
+                                                      final MessageSource source, final A targetActor, final Message old,
+                                                      final _Request<E, A> _request, final ExceptionHandler handler,
+                                                      final ResponseProcessor<E> rp) {
         return new Message(foreign, source, targetActor, old, _request,
                 handler, rp);
     }

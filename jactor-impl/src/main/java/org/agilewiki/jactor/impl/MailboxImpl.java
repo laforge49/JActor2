@@ -1,15 +1,11 @@
 package org.agilewiki.jactor.impl;
 
-import java.util.ArrayDeque;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.agilewiki.jactor.api.*;
 import org.slf4j.Logger;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MailboxImpl implements JAMailbox, Runnable {
 
@@ -42,9 +38,9 @@ public class MailboxImpl implements JAMailbox, Runnable {
      * messageQueue can be null to use the default queue implementation.
      */
     public MailboxImpl(final boolean _mayBlock, final Runnable _onIdle,
-            final Runnable _messageProcessor, final JAMailboxFactory factory,
-            final MessageQueue messageQueue, final Logger _log,
-            final int _initialBufferSize) {
+                       final Runnable _messageProcessor, final JAMailboxFactory factory,
+                       final MessageQueue messageQueue, final Logger _log,
+                       final int _initialBufferSize) {
         mayBlock = _mayBlock;
         onIdle = _onIdle;
         messageProcessor = _messageProcessor;
@@ -115,7 +111,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
 
     @Override
     public final <A extends Actor> void signal(final _Request<Void, A> request,
-            final A targetActor) throws Exception {
+                                               final A targetActor) throws Exception {
         final Message message = inbox.createMessage(false, null, targetActor,
                 null, request, null, EventResponseProcessor.SINGLETON);
         // No source mean never local and no buffering.
@@ -127,7 +123,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
      */
     @Override
     public final <A extends Actor> void signal(final _Request<Void, A> request,
-            final Mailbox source, final A targetActor) throws Exception {
+                                               final Mailbox source, final A targetActor) throws Exception {
         final MessageSource sourceMailbox = (MessageSource) source;
         if (!sourceMailbox.isRunning())
             throw new IllegalStateException(
@@ -139,8 +135,8 @@ public class MailboxImpl implements JAMailbox, Runnable {
 
     @Override
     public final <E, A extends Actor> void send(final _Request<E, A> request,
-            final Mailbox source, final A targetActor,
-            final ResponseProcessor<E> responseProcessor) throws Exception {
+                                                final Mailbox source, final A targetActor,
+                                                final ResponseProcessor<E> responseProcessor) throws Exception {
         final JAMailbox sourceMailbox = (JAMailbox) source;
         if (!sourceMailbox.isRunning())
             throw new IllegalStateException(
@@ -172,7 +168,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
     @SuppressWarnings("unchecked")
     @Override
     public final <E, A extends Actor> E call(final _Request<E, A> request,
-            final A targetActor) throws Exception {
+                                             final A targetActor) throws Exception {
         final Caller caller = new Caller();
         final Message message = inbox.createMessage(true, caller, targetActor,
                 null, request, null,
@@ -198,7 +194,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
     }
 
     private void addMessage(final MessageSource sourceMailbox,
-            final Message message, final boolean local) throws Exception {
+                            final Message message, final boolean local) throws Exception {
         // sourceMailbox is either null, or running ...
         if ((sourceMailbox == null) || local
                 || !sourceMailbox.buffer(message, this)) {
@@ -340,7 +336,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
         return true;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private void processRequestMessage(final Message message) {
         if (message.isForeign())
             mailboxFactory.addAutoClosable(message);
@@ -458,7 +454,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
 
     @Override
     public final void incomingResponse(final Message message,
-            final JAMailbox responseSource) {
+                                       final JAMailbox responseSource) {
 //        final MailboxImpl sourceMailbox = (MailboxImpl) responseSource;
 //        if (!sourceMailbox.running.get())
 //            throw new IllegalStateException(
@@ -489,7 +485,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
      * Called before running processXXXMessage(Message).
      */
     protected void beforeProcessMessage(final boolean request,
-            final Message message) {
+                                        final Message message) {
         // NOP
     }
 
@@ -497,7 +493,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
      * Called after running processXXXMessage(Message).
      */
     protected void afterProcessMessage(final boolean request,
-            final Message message) {
+                                       final Message message) {
         // NOP
     }
 }

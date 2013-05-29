@@ -1,15 +1,14 @@
 package org.agilewiki.jactor.kdriver;
 
-import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.api.ExceptionHandler;
+import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.testIface.Hello;
-import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.agilewiki.jactor.util.osgi.durable.FactoriesImporter;
 import org.agilewiki.jactor.util.osgi.durable.FactoryLocatorActivator;
 import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,13 +48,13 @@ public class Activator extends FactoryLocatorActivator {
         });
     }
 
-    protected String executeCommands(final String ...commands) throws Exception {
+    protected String executeCommands(final String... commands) throws Exception {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         final PrintStream printStream = new PrintStream(byteArrayOutputStream);
         final CommandSession commandSession = commandProcessor.createSession(System.in, printStream, System.err);
         String cmds = "";
         try {
-            for(String command:commands) {
+            for (String command : commands) {
                 log.info(command);
                 cmds = cmds + command + " || ";
                 commandSession.execute(command);
@@ -67,7 +66,7 @@ public class Activator extends FactoryLocatorActivator {
     }
 
     void test1(final Transport<Void> t) throws Exception {
-        log.info(">>>>>>>>1>>>>>>>>>> "+executeCommands(
+        log.info(">>>>>>>>1>>>>>>>>>> " + executeCommands(
                 "config:edit org.agilewiki.jactor.testService.Activator." + getVersion().toString(),
                 "config:propset msg Aloha!",
                 "config:propset import_a jactor-util\\|" + getNiceVersion(),

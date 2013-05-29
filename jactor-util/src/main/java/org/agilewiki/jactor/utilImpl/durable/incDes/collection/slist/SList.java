@@ -6,7 +6,6 @@ import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor.util.durable.incDes.JAList;

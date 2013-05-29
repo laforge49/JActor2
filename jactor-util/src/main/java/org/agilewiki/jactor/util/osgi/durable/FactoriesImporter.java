@@ -100,7 +100,7 @@ public class FactoriesImporter extends ActorBase implements
         BundleContext bundleContext = MailboxFactoryActivator.getBundleContext(getMailbox().getMailboxFactory());
         String fs = "(&" +
                 "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
-                "(&(bundleName="+_bundleName+")(bundleVersion="+_niceVersion+"))" +
+                "(&(bundleName=" + _bundleName + ")(bundleVersion=" + _niceVersion + "))" +
                 ")";
         Filter filter = bundleContext.createFilter(fs);
         start(filter, _transport);

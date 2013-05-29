@@ -7,7 +7,6 @@ import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.Ancestor;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
-import org.agilewiki.jactor.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor.util.durable.JASerializable;
 import org.agilewiki.jactor.util.durable.incDes.Collection;
 import org.agilewiki.jactor.util.durable.incDes.JAMap;

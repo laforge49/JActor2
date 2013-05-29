@@ -22,7 +22,7 @@ public interface JAMailboxFactory extends MailboxFactory {
 
     @Override
     JAMailbox createMailbox(final boolean mayBlock,
-            final int initialBufferSize, final Runnable onIdle);
+                            final int initialBufferSize, final Runnable onIdle);
 
     @Override
     JAMailbox createThreadBoundMailbox(final Runnable _messageProcessor);

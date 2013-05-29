@@ -29,8 +29,10 @@ abstract public class FactoryLocatorActivator0 extends MailboxFactoryActivator {
 
     @Override
     protected void configInitialized() {
-        if (configImports())
+        if (configImports()) {
+            //todo
             factoryLocator.register(bundleContext);
+        }
     }
 
     @Override

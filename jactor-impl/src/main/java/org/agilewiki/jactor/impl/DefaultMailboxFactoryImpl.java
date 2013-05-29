@@ -1,16 +1,16 @@
 package org.agilewiki.jactor.impl;
 
+import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.api.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.agilewiki.jactor.api.MailboxFactory;
-import org.agilewiki.jactor.api.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -58,8 +58,8 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     public DefaultMailboxFactoryImpl(final ThreadManager blockingThreadManager,
-            final MessageQueueFactory messageQueueFactory,
-            final int initialLocalMessageQueueSize, final int initialBufferSize) {
+                                     final MessageQueueFactory messageQueueFactory,
+                                     final int initialLocalMessageQueueSize, final int initialBufferSize) {
         this.threadManager = ThreadManagerImpl.newThreadManager(Runtime
                 .getRuntime().availableProcessors() + 1);
         this.blockingThreadManager = (blockingThreadManager == null) ? new ExecutorServiceWrapper(
@@ -95,13 +95,13 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
 
     @Override
     public final M createMailbox(final boolean _mayBlock,
-            final int initialBufferSize) {
+                                 final int initialBufferSize) {
         return createMailbox(_mayBlock, initialBufferSize, null);
     }
 
     @Override
     public final M createMailbox(final boolean _mayBlock,
-            final int initialBufferSize, final Runnable _onIdle) {
+                                 final int initialBufferSize, final Runnable _onIdle) {
         return createMailbox(_mayBlock, _onIdle, null,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
@@ -117,7 +117,7 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     public final M createMailbox(final boolean _mayBlock,
-            final Runnable _onIdle, final MessageQueue messageQueue) {
+                                 final Runnable _onIdle, final MessageQueue messageQueue) {
         return createMailbox(_mayBlock, _onIdle, null, messageQueue,
                 mailboxLog, initialBufferSize);
     }
@@ -183,10 +183,10 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
      * Actually instantiate the Mailbox.
      * Can be overridden, to create application-specific Mailbox instances.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     protected M createMailbox(final boolean _mayBlock, final Runnable _onIdle,
-            final Runnable _messageProcessor, final MessageQueue messageQueue,
-            final Logger _log, final int _initialBufferSize) {
+                              final Runnable _messageProcessor, final MessageQueue messageQueue,
+                              final Logger _log, final int _initialBufferSize) {
         return (M) new MailboxImpl(_mayBlock, _onIdle, _messageProcessor, this,
                 messageQueue, _log, _initialBufferSize);
     }

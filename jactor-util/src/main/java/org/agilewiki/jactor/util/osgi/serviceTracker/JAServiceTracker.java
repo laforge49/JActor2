@@ -1,23 +1,14 @@
 package org.agilewiki.jactor.util.osgi.serviceTracker;
 
+import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
+import org.osgi.framework.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import org.agilewiki.jactor.api.ActorBase;
-import org.agilewiki.jactor.api.Mailbox;
-import org.agilewiki.jactor.api.Request;
-import org.agilewiki.jactor.api.RequestBase;
-import org.agilewiki.jactor.api.Transport;
-import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
-import org.osgi.framework.Filter;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tracks OSGi services, reacting to OSGi's Service events, and publishes all
@@ -202,39 +193,39 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                     final int typ = _event.getType();
                     final ServiceReference ref = _event.getServiceReference();
                     switch (typ) {
-                    case ServiceEvent.REGISTERED:
-                        // New (?) service registration.
-                        final T s = (T) bundleContext.getService(ref);
-                        if (tracked.put(ref, s) != ref) {
-                            // Send new service map if something changed.
-                            final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
+                        case ServiceEvent.REGISTERED:
+                            // New (?) service registration.
+                            final T s = (T) bundleContext.getService(ref);
+                            if (tracked.put(ref, s) != ref) {
+                                // Send new service map if something changed.
+                                final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
+                                        tracked);
+                                new ServiceChange<T>(_event, m).signal(
+                                        getMailbox(), serviceChangeReceiver);
+                            }
+                            break;
+                        case ServiceEvent.MODIFIED:
+                            // The properties on the service reference changed. Send
+                            // new service map to the listener, just in case.
+                            final T sm = (T) bundleContext.getService(ref);
+                            tracked.put(ref, sm);
+                            final Map<ServiceReference, T> ma = new HashMap<ServiceReference, T>(
                                     tracked);
-                            new ServiceChange<T>(_event, m).signal(
-                                    getMailbox(), serviceChangeReceiver);
-                        }
-                        break;
-                    case ServiceEvent.MODIFIED:
-                        // The properties on the service reference changed. Send
-                        // new service map to the listener, just in case.
-                        final T sm = (T) bundleContext.getService(ref);
-                        tracked.put(ref, sm);
-                        final Map<ServiceReference, T> ma = new HashMap<ServiceReference, T>(
-                                tracked);
-                        new ServiceChange<T>(_event, ma).signal(getMailbox(),
-                                serviceChangeReceiver);
-                        break;
-                    case ServiceEvent.MODIFIED_ENDMATCH:
-                    case ServiceEvent.UNREGISTERING:
-                        // Service gone or no longer applies due to a change in the properties
-                        //on the service reference.
-                        if (tracked.remove(ref) == ref) {
-                            // Send new service map if something changed.
-                            final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
-                                    tracked);
-                            new ServiceChange<T>(_event, m).signal(
-                                    getMailbox(), serviceChangeReceiver);
-                        }
-                        break;
+                            new ServiceChange<T>(_event, ma).signal(getMailbox(),
+                                    serviceChangeReceiver);
+                            break;
+                        case ServiceEvent.MODIFIED_ENDMATCH:
+                        case ServiceEvent.UNREGISTERING:
+                            // Service gone or no longer applies due to a change in the properties
+                            //on the service reference.
+                            if (tracked.remove(ref) == ref) {
+                                // Send new service map if something changed.
+                                final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
+                                        tracked);
+                                new ServiceChange<T>(_event, m).signal(
+                                        getMailbox(), serviceChangeReceiver);
+                            }
+                            break;
                     }
                     // We're done processing our own request.
                     _transport.processResponse(null);

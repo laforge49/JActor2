@@ -1,10 +1,10 @@
 package org.agilewiki.jactor.impl;
 
-import java.util.concurrent.Semaphore;
-
 import org.agilewiki.jactor.api.Actor;
 import org.agilewiki.jactor.api.ResponseProcessor;
 import org.agilewiki.jactor.api._Request;
+
+import java.util.concurrent.Semaphore;
 
 final class Caller implements MessageSource {
     private final Semaphore done = new Semaphore(0);
@@ -21,7 +21,7 @@ final class Caller implements MessageSource {
 
     @Override
     public void incomingResponse(final Message message,
-            final JAMailbox responseSource) {
+                                 final JAMailbox responseSource) {
         this.result = message.getResponse();
         done.release();
     }
@@ -38,8 +38,8 @@ final class Caller implements MessageSource {
 
     @Override
     public <E, A extends Actor> Message createMessage(final boolean _foreign,
-            final MessageQueue inbox, final _Request<E, A> request,
-            final A targetActor, final ResponseProcessor<E> responseProcessor) {
+                                                      final MessageQueue inbox, final _Request<E, A> request,
+                                                      final A targetActor, final ResponseProcessor<E> responseProcessor) {
         throw new UnsupportedOperationException();
     }
 }

@@ -12,7 +12,7 @@
     <artifactId>jactor-api</artifactId>
     <name>JActor-API</name>
     <packaging>bundle</packaging>
- 
+
     <build>
         <plugins>
             <plugin>
@@ -73,16 +73,16 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>1.3.9</version>
-		</dependency>
-		<dependency>
-			<groupId>com.kenai.nbpwr</groupId>
-			<artifactId>edu-umd-cs-findbugs-annotations</artifactId>
-			<version>1.3.2-201002241900</version>
-		</dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>1.3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kenai.nbpwr</groupId>
+            <artifactId>edu-umd-cs-findbugs-annotations</artifactId>
+            <version>1.3.2-201002241900</version>
+        </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>

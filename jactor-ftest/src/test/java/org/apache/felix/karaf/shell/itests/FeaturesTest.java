@@ -17,14 +17,9 @@ import org.osgi.service.command.CommandProcessor;
 import org.osgi.service.command.CommandSession;
 
 import static org.junit.Assert.assertNotNull;
-import static org.ops4j.pax.exam.CoreOptions.equinox;
-import static org.ops4j.pax.exam.CoreOptions.felix;
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.systemProperty;
-import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
+import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
-
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory;
 
 @RunWith(JUnit4TestRunner.class)
@@ -44,7 +39,7 @@ public class FeaturesTest extends AbstractIntegrationTest {
     }
 
     @Configuration
-    public static Option[] configuration() throws Exception{
+    public static Option[] configuration() throws Exception {
         return combine(
                 // Default karaf environment
                 Helper.getDefaultOptions(

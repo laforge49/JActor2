@@ -58,7 +58,7 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
             wait(30000);
         }
         assertTrue(success);
-        Thread.sleep(1000); //may get more log messages
+        Thread.sleep(1000);
     }
 
     @Override
@@ -67,7 +67,8 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
             if (bundleEvent.getBundle().getSymbolicName().equals("jactor-kdriver")) {
                 try {
                     Thread.sleep(10000);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
                 synchronized (this) {
                     this.notify();
                 }

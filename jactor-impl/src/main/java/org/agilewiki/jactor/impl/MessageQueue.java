@@ -1,11 +1,11 @@
 package org.agilewiki.jactor.impl;
 
-import java.util.Queue;
-
 import org.agilewiki.jactor.api.Actor;
 import org.agilewiki.jactor.api.ExceptionHandler;
 import org.agilewiki.jactor.api.ResponseProcessor;
 import org.agilewiki.jactor.api._Request;
+
+import java.util.Queue;
 
 /**
  * A concurrent message queue, used in the Mailbox.
@@ -27,9 +27,9 @@ public interface MessageQueue {
      * Creates a new Message instance.
      */
     <E, A extends Actor> Message createMessage(final boolean _foreign,
-            final MessageSource _source, final A _targetActor,
-            final Message _old, final _Request<E, A> _request,
-            final ExceptionHandler _handler, final ResponseProcessor<E> _rp);
+                                               final MessageSource _source, final A _targetActor,
+                                               final Message _old, final _Request<E, A> _request,
+                                               final ExceptionHandler _handler, final ResponseProcessor<E> _rp);
 
     /**
      * Is the queue empty?

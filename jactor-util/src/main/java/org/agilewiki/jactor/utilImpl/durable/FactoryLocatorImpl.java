@@ -109,9 +109,9 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
             Iterator<FactoryLocator> it = factoryImports.iterator();
             while (it.hasNext()) {
                 try {
-                af = ((FactoryLocatorImpl) it.next())._getFactory(actorType);
-                if (af != null)
-                    return af;
+                    af = ((FactoryLocatorImpl) it.next())._getFactory(actorType);
+                    if (af != null)
+                        return af;
                 } catch (FactoryLocatorClosedException flce) {
                     close();
                     throw flce;
