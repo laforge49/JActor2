@@ -21,11 +21,6 @@ public class Activator extends FactoryLocatorActivator {
     private CommandProcessor commandProcessor;
 
     @Override
-    protected boolean configImports() {
-        return false;
-    }
-
-    @Override
     protected void begin(final Transport<Void> _transport) throws Exception {
         Thread.sleep(2000);
         getMailbox().setExceptionHandler(new ExceptionHandler() {
