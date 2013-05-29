@@ -46,7 +46,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Activator>org.agilewiki.jactor.util.osgi.durable.Activator</Bundle-Activator>
+                        <Bundle-Activator>org.agilewiki.jactor.util.osgi.Activator</Bundle-Activator>
                         <Export-Package>
                             org.agilewiki.jactor.util*;version=${project.version}
                         </Export-Package>
