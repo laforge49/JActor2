@@ -3,6 +3,7 @@ package org.agilewiki.jactor.util.osgi.durable;
 import org.agilewiki.jactor.api.Properties;
 import org.agilewiki.jactor.api.Transport;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.cm.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,13 @@ abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
     }
 
     @Override
+    public void updated(final Dictionary<String, ?> _config) throws ConfigurationException {
+        Dictionary<String, ?> oldConfig = getConfig();
+        super.updated(_config);
+        if (oldConfig == null && _config != null)
+            configInitialized();
+    }
+
     protected void configInitialized() {
         if (configImports()) {
             Dictionary<String, ?> config = getConfig();
