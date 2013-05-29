@@ -62,23 +62,22 @@ abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
                 imports.put(key, value);
             }
             Iterator<Map.Entry<String, String>> it = imports.entrySet().iterator();
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 Map.Entry<String, String> entry = it.next();
                 String key = entry.getKey();
                 String value = entry.getValue();
                 int i = value.indexOf('|');
-                if (i > -1) {
-                    String bundleName = value.substring(0, i);
-                    String niceVersion = value.substring(i + 1);
-                    try {
-                        FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
+                try {
+                    FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
+                    if (i > -1) {
+                        String bundleName = value.substring(0, i);
+                        String niceVersion = value.substring(i + 1);
                         factoriesImporter.startReq(bundleName, niceVersion).call();
-                    } catch (Exception e) {
-                        throw new ConfigurationException(key, "unable to process", e);
+                    } else {
+                        factoriesImporter.startReq(value).call();
                     }
-                    log.info("******************* "+bundleName+" | "+niceVersion);
-                } else {
-                    //todo
+                } catch (Exception e) {
+                    throw new ConfigurationException(key, "unable to process", e);
                 }
             }
             factoryLocator.setEssentialService(getMailboxFactory());
