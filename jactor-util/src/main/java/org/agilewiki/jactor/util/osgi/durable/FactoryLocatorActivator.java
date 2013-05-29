@@ -47,6 +47,8 @@ abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
         super.updated(_config);
         if (oldConfig == null && _config != null)
             configInitialized();
+        //else
+
     }
 
     protected void configInitialized() throws ConfigurationException {
