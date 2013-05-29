@@ -2,6 +2,8 @@ package org.agilewiki.jactor.util.osgi.durable;
 
 import org.agilewiki.jactor.api.Properties;
 import org.agilewiki.jactor.api.Transport;
+import org.agilewiki.jactor.util.durable.FactoryLocator;
+import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;
 import org.slf4j.Logger;
@@ -12,8 +14,13 @@ import java.util.*;
 /**
  * An activator that provides both a mailbox factory and a registered factory locator service.
  */
-abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
+abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
     private final Logger log = LoggerFactory.getLogger(FactoryLocatorActivator.class);
+
+    /**
+     * The factory locator service.
+     */
+    protected OsgiFactoryLocator factoryLocator;
 
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
@@ -36,9 +43,18 @@ abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
     }
 
     protected void createFactoryLocator() throws Exception {
-        super.createFactoryLocator();
+        factoryLocator = new OsgiFactoryLocator();
         Properties properties = getMailboxFactory().getProperties();
         properties.putProperty("factoryLocator", factoryLocator);
+    }
+
+    /**
+     * Returns the factory locator of the bundle.
+     *
+     * @return The factory locator.
+     */
+    protected final FactoryLocator getFactoryLocator() {
+        return factoryLocator;
     }
 
     @Override
