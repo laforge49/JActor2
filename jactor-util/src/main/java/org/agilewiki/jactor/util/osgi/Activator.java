@@ -16,6 +16,6 @@ public class Activator extends FactoryLocatorActivator {
     @Override
     protected void createFactoryLocator() throws Exception {
         super.createFactoryLocator();
-        Durables.registerFactories(getFactoryLocator());
+        Durables.registerFactories(factoryLocator);
     }
 }

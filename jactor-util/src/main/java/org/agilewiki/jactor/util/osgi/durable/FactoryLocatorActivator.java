@@ -48,15 +48,6 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
         properties.putProperty("factoryLocator", factoryLocator);
     }
 
-    /**
-     * Returns the factory locator of the bundle.
-     *
-     * @return The factory locator.
-     */
-    protected final FactoryLocator getFactoryLocator() {
-        return factoryLocator;
-    }
-
     @Override
     public void updated(final Dictionary<String, ?> _config) throws ConfigurationException {
         Dictionary<String, ?> oldConfig = getConfig();
