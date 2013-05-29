@@ -1,9 +1,7 @@
 package org.agilewiki.jactor.testService;
 
-import org.agilewiki.jactor.api.ResponseProcessor;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.testIface.Hello;
-import org.agilewiki.jactor.util.osgi.durable.FactoriesImporter;
 import org.agilewiki.jactor.util.osgi.durable.FactoryLocatorActivator;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
@@ -24,7 +22,7 @@ public class Activator extends FactoryLocatorActivator {
     }
 
     @Override
-    protected void configInitialized() {
+    protected void configInitialized() throws ConfigurationException {
         super.configInitialized();
         ServiceRegistration hsr = bundleContext.registerService(
                 Hello.class.getName(),
@@ -34,16 +32,8 @@ public class Activator extends FactoryLocatorActivator {
 
     @Override
     protected void begin(final Transport<Void> _transport) throws Exception {
-        FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
-        factoriesImporter.startReq("jactor-util", getVersion()).send(getMailbox(), new ResponseProcessor<Void>() {
-            @Override
-            public void processResponse(Void response) throws Exception {
-                factoryLocator.register(bundleContext);
-                factoryLocator.setEssentialService(getMailboxFactory());
-                hello = new HelloService(bundleContext, getMailbox());
-                managedServiceRegistration();
-                _transport.processResponse(null);
-            }
-        });
+        hello = new HelloService(bundleContext, getMailbox());
+        managedServiceRegistration();
+        _transport.processResponse(null);
     }
 }

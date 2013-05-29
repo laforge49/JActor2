@@ -7,10 +7,7 @@ import org.osgi.service.cm.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * An activator that provides both a mailbox factory and a registered factory locator service.
@@ -52,7 +49,7 @@ abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
             configInitialized();
     }
 
-    protected void configInitialized() {
+    protected void configInitialized() throws ConfigurationException {
         if (configImports()) {
             Dictionary<String, ?> config = getConfig();
             Enumeration<String> keys = config.keys();
@@ -64,19 +61,27 @@ abstract public class FactoryLocatorActivator extends FactoryLocatorActivator0 {
                 String value = (String) config.get(key);
                 imports.put(key, value);
             }
-            Iterator<String> it = imports.values().iterator();
+            Iterator<Map.Entry<String, String>> it = imports.entrySet().iterator();
             while(it.hasNext()) {
-                String value = it.next();
+                Map.Entry<String, String> entry = it.next();
+                String key = entry.getKey();
+                String value = entry.getValue();
                 int i = value.indexOf('|');
                 if (i > -1) {
                     String bundleName = value.substring(0, i);
                     String niceVersion = value.substring(i + 1);
+                    try {
+                        FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
+                        factoriesImporter.startReq(bundleName, niceVersion).call();
+                    } catch (Exception e) {
+                        throw new ConfigurationException(key, "unable to process", e);
+                    }
                     log.info("******************* "+bundleName+" | "+niceVersion);
                 } else {
                     //todo
                 }
             }
-            //todo
+            factoryLocator.setEssentialService(getMailboxFactory());
             factoryLocator.register(bundleContext);
         }
     }
