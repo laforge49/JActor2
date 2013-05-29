@@ -54,7 +54,8 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
         super.updated(_config);
         if (oldConfig == null && _config != null)
             configInitialized();
-        //else
+        else
+            factoryLocator.updated(_config);
 
     }
 

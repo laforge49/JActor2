@@ -69,6 +69,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
 
     @Override
     public void updated(final Dictionary<String, ?> _properties) throws ConfigurationException {
-
+        if (_properties != null)
+            throw new IllegalStateException("bundle restart required");
     }
 }
