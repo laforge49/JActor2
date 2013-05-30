@@ -2,6 +2,7 @@ package org.agilewiki.jactor.util.osgi.serviceTracker;
 
 import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
+import org.agilewiki.jactor.util.osgi.Osgi;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +79,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         initialize(_mailbox);
         // We use the bundle context of the *mailbox's bundle*, so that we can
         // be used in any bundle.
-        bundleContext = MailboxFactoryActivator.getBundleContext(_mailbox
+        bundleContext = Osgi.getBundleContext(_mailbox
                 .getMailboxFactory());
         // Creates a filter based on the class.
         listenerFilter = "(" + Constants.OBJECTCLASS + "=" + _clazz + ")";
@@ -95,7 +96,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         initialize(_mailbox);
         // We use the bundle context of the *mailbox's bundle*, so that we can
         // be used in any bundle.
-        bundleContext = MailboxFactoryActivator.getBundleContext(_mailbox
+        bundleContext = Osgi.getBundleContext(_mailbox
                 .getMailboxFactory());
         listenerFilter = _Filter.toString();
     }

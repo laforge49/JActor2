@@ -3,6 +3,7 @@ package org.agilewiki.jactor.util.osgi.durable;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
+import org.agilewiki.jactor.util.osgi.Osgi;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -50,7 +51,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
         Bundle bundle = _bundleContext.getBundle();
         configure(
                 bundle.getSymbolicName(),
-                MailboxFactoryActivator.getNiceVersion(bundle.getVersion()),
+                Osgi.getNiceVersion(bundle.getVersion()),
                 bundle.getLocation());
         Hashtable<String, String> p = new Hashtable<String, String>();
         p.put("bundleName", getBundleName());

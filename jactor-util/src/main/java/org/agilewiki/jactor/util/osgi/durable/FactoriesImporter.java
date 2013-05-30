@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
+import org.agilewiki.jactor.util.osgi.Osgi;
 import org.agilewiki.jactor.util.osgi.serviceTracker.JAServiceTracker;
 import org.agilewiki.jactor.util.osgi.serviceTracker.ServiceChangeReceiver;
 import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
@@ -97,7 +98,7 @@ public class FactoriesImporter extends ActorBase implements
 
     private void start(final String _bundleName, final String _niceVersion, final Transport<Void> _transport)
             throws Exception {
-        BundleContext bundleContext = MailboxFactoryActivator.getBundleContext(getMailbox().getMailboxFactory());
+        BundleContext bundleContext = Osgi.getBundleContext(getMailbox().getMailboxFactory());
         String fs = "(&" +
                 "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
                 "(&(bundleName=" + _bundleName + ")(bundleVersion=" + _niceVersion + "))" +
@@ -117,7 +118,7 @@ public class FactoriesImporter extends ActorBase implements
 
     private void start(final String _bundleName, final Version _version, final Transport<Void> _transport)
             throws Exception {
-        String niceVersion = MailboxFactoryActivator.getNiceVersion(_version);
+        String niceVersion = Osgi.getNiceVersion(_version);
         start(_bundleName, niceVersion, _transport);
     }
 
@@ -132,7 +133,7 @@ public class FactoriesImporter extends ActorBase implements
 
     private void start(final String _bundleLocation, final Transport<Void> _transport)
             throws Exception {
-        BundleContext bundleContext = MailboxFactoryActivator.getBundleContext(getMailbox().getMailboxFactory());
+        BundleContext bundleContext = Osgi.getBundleContext(getMailbox().getMailboxFactory());
         Bundle bundle = bundleContext.installBundle(_bundleLocation);
         bundle.start();
         String bundleName = bundle.getSymbolicName();
