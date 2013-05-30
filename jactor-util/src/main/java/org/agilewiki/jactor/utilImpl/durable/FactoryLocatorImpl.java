@@ -48,12 +48,6 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         return location;
     }
 
-    public String getDescriptor() {
-        if (descriptor == null)
-            descriptor = getLocatorKey() + "|" + location;
-        return descriptor;
-    }
-
     public String getLocatorKey() {
         if (locatorKey == null)
             locatorKey = bundleName + "|" + getNiceVersion();

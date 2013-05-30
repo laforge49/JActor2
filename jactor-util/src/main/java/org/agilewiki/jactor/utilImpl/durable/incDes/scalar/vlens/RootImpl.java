@@ -31,12 +31,12 @@ public class RootImpl extends BoxImpl implements Root {
         });
     }
 
-    private JAString descriptor;
+    private JAString bundleLocation;
 
     @Override
-    public String getDescriptor()
+    public String getBundleLocation()
             throws Exception {
-        return descriptor.getValue();
+        return bundleLocation.getValue();
     }
 
     @Override
@@ -44,8 +44,8 @@ public class RootImpl extends BoxImpl implements Root {
             throws Exception {
         super.initialize(mailbox, parent, factory);
         FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
-        descriptor = (JAString) Durables.newSerializable(JAString.FACTORY_NAME, mailbox);
-        descriptor.setValue(((FactoryLocatorImpl) factoryLocator).getDescriptor());
+        bundleLocation = (JAString) Durables.newSerializable(JAString.FACTORY_NAME, mailbox);
+        bundleLocation.setValue(((FactoryLocatorImpl) factoryLocator).getLocation());
     }
 
     /**
@@ -68,7 +68,7 @@ public class RootImpl extends BoxImpl implements Root {
     @Override
     protected int loadLen(ReadableBytes readableBytes)
             throws Exception {
-        ((JAStringImpl) descriptor).load(readableBytes);
+        ((JAStringImpl) bundleLocation).load(readableBytes);
         int l = readableBytes.remaining();
         if (l == 0)
             return -1;
@@ -83,7 +83,7 @@ public class RootImpl extends BoxImpl implements Root {
     @Override
     protected void skipLen(ReadableBytes readableBytes)
             throws Exception {
-        readableBytes.skip(descriptor.getSerializedLength());
+        readableBytes.skip(bundleLocation.getSerializedLength());
     }
 
     /**
@@ -94,7 +94,7 @@ public class RootImpl extends BoxImpl implements Root {
     @Override
     protected void saveLen(AppendableBytes appendableBytes)
             throws Exception {
-        ((IncDesImpl) descriptor).save(appendableBytes);
+        ((IncDesImpl) bundleLocation).save(appendableBytes);
     }
 
     /**
@@ -106,8 +106,8 @@ public class RootImpl extends BoxImpl implements Root {
     public int getSerializedLength()
             throws Exception {
         if (len == -1)
-            return descriptor.getSerializedLength();
-        return descriptor.getSerializedLength() + len;
+            return bundleLocation.getSerializedLength();
+        return bundleLocation.getSerializedLength() + len;
     }
 
     public JASerializable copy(Mailbox m)

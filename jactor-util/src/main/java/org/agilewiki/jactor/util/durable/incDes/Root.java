@@ -11,11 +11,10 @@ public interface Root extends Box {
     public static final String FACTORY_NAME = "root";
 
     /**
-     * Returns the descriptor of the bundle whose factoryLocator can instantiate the objects
-     * in this tree.
+     * Returns the location of the bundle needed to deserialize the Root contents.
      *
-     * @return A descriptor in the form bundleName|version|location.
+     * @return The associated bundle location.
      */
-    String getDescriptor()
+    String getBundleLocation()
             throws Exception;
 }
