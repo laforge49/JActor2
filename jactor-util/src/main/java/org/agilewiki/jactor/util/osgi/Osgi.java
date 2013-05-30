@@ -4,6 +4,7 @@ import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.incDes.Root;
 import org.agilewiki.jactor.util.osgi.durable.OsgiFactoryLocator;
+import org.agilewiki.jactor.util.osgi.serviceTracker.LocateService;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -64,13 +65,21 @@ final public class Osgi {
     public static Request<Root> contextCopyReq(final Root _root) throws Exception {
         return new RequestBase<Root>(_root.getMailbox()) {
             @Override
-            public void processRequest(Transport<Root> _transport) throws Exception {
+            public void processRequest(final Transport<Root> _transport) throws Exception {
                 String location = _root.getBundleLocation();
                 BundleContext bundleContext = getBundleContext(_root.getMailbox().getMailboxFactory());
                 Bundle bundle = bundleContext.installBundle(location);
                 bundle.start();
                 Version version = bundle.getVersion();
-                //todo
+                LocateService<OsgiFactoryLocator> locateService = new LocateService<OsgiFactoryLocator>(
+                        _root.getMailbox(), OsgiFactoryLocator.class.getName());
+                locateService.getReq().send(_root.getMailbox(), new ResponseProcessor<OsgiFactoryLocator>() {
+                    @Override
+                    public void processResponse(OsgiFactoryLocator response) throws Exception {
+                        Mailbox newMailbox = response.getMailboxFactory().createMailbox();
+                        _root.copyReq(newMailbox).send(_root.getMailbox(), (Transport) _transport);
+                    }
+                });
             }
         };
     }
