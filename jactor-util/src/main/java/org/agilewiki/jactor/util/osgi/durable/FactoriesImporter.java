@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- * Imports a FactoryLocator from another bundle into the factory locator of the current bundle.
+ * Imports an OsgiFactoryLocator from another bundle into the factory locator of the current bundle.
  */
 public class FactoriesImporter extends ActorBase implements
-        ServiceChangeReceiver<FactoryLocator> {
+        ServiceChangeReceiver<OsgiFactoryLocator> {
 
     /**
      * Logger for this object.
@@ -28,7 +28,7 @@ public class FactoriesImporter extends ActorBase implements
     /**
      * The service tracker used to find and then monitor the set of matching services.
      */
-    private JAServiceTracker<FactoryLocator> tracker;
+    private JAServiceTracker<OsgiFactoryLocator> tracker;
 
     /**
      * The transport for the start request. Once a match is found,
@@ -39,7 +39,7 @@ public class FactoriesImporter extends ActorBase implements
     /**
      * The factory locator of the current bundle.
      */
-    private final FactoryLocatorImpl factoryLocator;
+    private final OsgiFactoryLocator factoryLocator;
 
     /**
      * Create and initialize a factories importer.
@@ -48,8 +48,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     public FactoriesImporter(final Mailbox _mailbox) throws Exception {
         initialize(_mailbox);
-        factoryLocator = (FactoryLocatorImpl) Durables
-                .getFactoryLocator(_mailbox.getMailboxFactory());
+        factoryLocator = Osgi.getOsgiFactoryLocator(_mailbox.getMailboxFactory());
     }
 
     /**
@@ -78,7 +77,7 @@ public class FactoriesImporter extends ActorBase implements
         if (tracker != null)
             throw new IllegalStateException("already started");
         // Create a service tracker for the given filter.
-        tracker = new JAServiceTracker<FactoryLocator>(getMailbox(),
+        tracker = new JAServiceTracker<OsgiFactoryLocator>(getMailbox(),
                 _filter);
         // Keep _transport for later, in case we do not find out service
         // at initial registration.
@@ -100,7 +99,7 @@ public class FactoriesImporter extends ActorBase implements
             throws Exception {
         BundleContext bundleContext = Osgi.getBundleContext(getMailbox().getMailboxFactory());
         String fs = "(&" +
-                "(objectClass=org.agilewiki.jactor.util.durable.FactoryLocator)" +
+                "(objectClass=org.agilewiki.jactor.util.osgi.durable.OsgiFactoryLocator)" +
                 "(&(bundleName=" + _bundleName + ")(bundleVersion=" + _niceVersion + "))" +
                 ")";
         Filter filter = bundleContext.createFilter(fs);
@@ -147,7 +146,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     @Override
     public void serviceChange(final ServiceEvent _event,
-                              final Map<ServiceReference, FactoryLocator> _tracked,
+                              final Map<ServiceReference, OsgiFactoryLocator> _tracked,
                               final Transport _transport) throws Exception {
         _transport.processResponse(null);
         if (startTransport == null) {
@@ -171,7 +170,7 @@ public class FactoriesImporter extends ActorBase implements
         }
         if (_tracked.size() == 1) {
             // Yeah! success!
-            final FactoryLocator fl = _tracked.values().iterator().next();
+            final OsgiFactoryLocator fl = _tracked.values().iterator().next();
             factoryLocator.importFactoryLocator(fl);
             startTransport.processResponse(null);
             startTransport = null;

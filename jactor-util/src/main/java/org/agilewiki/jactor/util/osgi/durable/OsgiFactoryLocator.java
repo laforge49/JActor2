@@ -23,7 +23,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     /**
      * The service registration.
      */
-    private ServiceRegistration<FactoryLocator> serviceRegistration;
+    private ServiceRegistration<OsgiFactoryLocator> serviceRegistration;
 
     /**
      * The mailbox factory to be closed when the factory locator is closed.
@@ -56,7 +56,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
         Hashtable<String, String> p = new Hashtable<String, String>();
         p.put("bundleName", getBundleName());
         p.put("bundleVersion", getNiceVersion());
-        serviceRegistration = _bundleContext.registerService(FactoryLocator.class, this, p);
+        serviceRegistration = _bundleContext.registerService(OsgiFactoryLocator.class, this, p);
     }
 
     @Override

@@ -44,11 +44,11 @@ final public class Osgi {
         return result.toString();
     }
 
-    public OsgiFactoryLocator getOsgiFactoryLocator(final Mailbox _mailbox) {
+    public static OsgiFactoryLocator getOsgiFactoryLocator(final Mailbox _mailbox) {
         return (OsgiFactoryLocator) Durables.getFactoryLocator(_mailbox);
     }
 
-    public OsgiFactoryLocator getOsgiFactoryLocator(final MailboxFactory _mailboxFactory) {
+    public static OsgiFactoryLocator getOsgiFactoryLocator(final MailboxFactory _mailboxFactory) {
         return (OsgiFactoryLocator) Durables.getFactoryLocator(_mailboxFactory);
     }
 
