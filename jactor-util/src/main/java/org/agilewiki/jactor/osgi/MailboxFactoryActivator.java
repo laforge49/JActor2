@@ -1,4 +1,4 @@
-package org.agilewiki.jactor.util.osgi;
+package org.agilewiki.jactor.osgi;
 
 import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;

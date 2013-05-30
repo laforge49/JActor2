@@ -53,6 +53,7 @@
                         <Import-Package>
                             org.agilewiki.jactor.api;version=${project.version},
                             org.agilewiki.jactor.util*;version=${project.version},
+                            org.agilewiki.jactor.osgi*;version=${project.version},
                             org.agilewiki.jactor.testIface;version=${project.version},
                             org.osgi.service.cm,
                             *

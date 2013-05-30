@@ -52,6 +52,7 @@
                         <Import-Package>
                             org.agilewiki.jactor.api;version=${project.version},
                             org.agilewiki.jactor.util*;version=${project.version}
+                            org.agilewiki.jactor.osgi*;version=${project.version}
                             *
                         </Import-Package>
                     </instructions>

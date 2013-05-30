@@ -1,8 +1,7 @@
-package org.agilewiki.jactor.util.osgi.serviceTracker;
+package org.agilewiki.jactor.osgi.serviceTracker;
 
 import org.agilewiki.jactor.api.*;
-import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
-import org.agilewiki.jactor.util.osgi.Osgi;
+import org.agilewiki.jactor.osgi.Osgi;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

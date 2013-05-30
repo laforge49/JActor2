@@ -1,13 +1,9 @@
-package org.agilewiki.jactor.util.osgi.durable;
+package org.agilewiki.jactor.osgi.durable;
 
 import org.agilewiki.jactor.api.*;
-import org.agilewiki.jactor.util.durable.Durables;
-import org.agilewiki.jactor.util.durable.FactoryLocator;
-import org.agilewiki.jactor.util.osgi.MailboxFactoryActivator;
-import org.agilewiki.jactor.util.osgi.Osgi;
-import org.agilewiki.jactor.util.osgi.serviceTracker.JAServiceTracker;
-import org.agilewiki.jactor.util.osgi.serviceTracker.ServiceChangeReceiver;
-import org.agilewiki.jactor.utilImpl.durable.FactoryLocatorImpl;
+import org.agilewiki.jactor.osgi.Osgi;
+import org.agilewiki.jactor.osgi.serviceTracker.JAServiceTracker;
+import org.agilewiki.jactor.osgi.serviceTracker.ServiceChangeReceiver;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
