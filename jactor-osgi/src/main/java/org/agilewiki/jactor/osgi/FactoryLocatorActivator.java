@@ -1,8 +1,7 @@
-package org.agilewiki.jactor.osgi.durable;
+package org.agilewiki.jactor.osgi;
 
 import org.agilewiki.jactor.api.Properties;
 import org.agilewiki.jactor.api.Transport;
-import org.agilewiki.jactor.osgi.MailboxFactoryActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;
 import org.slf4j.Logger;

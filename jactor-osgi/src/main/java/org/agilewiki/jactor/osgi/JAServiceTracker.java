@@ -1,7 +1,6 @@
-package org.agilewiki.jactor.osgi.serviceTracker;
+package org.agilewiki.jactor.osgi;
 
 import org.agilewiki.jactor.api.*;
-import org.agilewiki.jactor.osgi.Osgi;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

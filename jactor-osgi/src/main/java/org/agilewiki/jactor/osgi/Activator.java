@@ -1,7 +1,6 @@
 package org.agilewiki.jactor.osgi;
 
 import org.agilewiki.jactor.util.durable.Durables;
-import org.agilewiki.jactor.osgi.durable.FactoryLocatorActivator;
 
 /**
  * Activator for the jactor-util bundle,

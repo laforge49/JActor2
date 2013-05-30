@@ -3,8 +3,6 @@ package org.agilewiki.jactor.osgi;
 import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.incDes.Root;
-import org.agilewiki.jactor.osgi.durable.OsgiFactoryLocator;
-import org.agilewiki.jactor.osgi.serviceTracker.LocateService;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -57,7 +55,7 @@ final public class Osgi {
                                               final String _bundleName,
                                               final String _niceVersion) throws Exception {
         return _bundleContext.createFilter("(&" +
-                "(objectClass=org.agilewiki.jactor.osgi.durable.OsgiFactoryLocator)" +
+                "(objectClass=org.agilewiki.jactor.osgi.OsgiFactoryLocator)" +
                 "(&(bundleName=" + _bundleName + ")(bundleVersion=" + _niceVersion + "))" +
                 ")");
     }

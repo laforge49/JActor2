@@ -1,4 +1,4 @@
-package org.agilewiki.jactor.osgi.serviceTracker;
+package org.agilewiki.jactor.osgi;
 
 import org.agilewiki.jactor.api.Actor;
 import org.agilewiki.jactor.api.Transport;

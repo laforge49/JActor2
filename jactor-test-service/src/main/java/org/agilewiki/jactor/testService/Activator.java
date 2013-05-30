@@ -2,7 +2,7 @@ package org.agilewiki.jactor.testService;
 
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.testIface.Hello;
-import org.agilewiki.jactor.osgi.durable.FactoryLocatorActivator;
+import org.agilewiki.jactor.osgi.FactoryLocatorActivator;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
 import org.slf4j.Logger;

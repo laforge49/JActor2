@@ -1,4 +1,4 @@
-package org.agilewiki.jactor.osgi.serviceTracker;
+package org.agilewiki.jactor.osgi;
 
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.Request;
