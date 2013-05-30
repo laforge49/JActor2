@@ -44,6 +44,7 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
 
     protected void createFactoryLocator() throws Exception {
         factoryLocator = new OsgiFactoryLocator();
+        factoryLocator.setMailboxFactory(getMailboxFactory());
         Properties properties = getMailboxFactory().getProperties();
         properties.putProperty("factoryLocator", factoryLocator);
     }
@@ -90,7 +91,7 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
                     throw new ConfigurationException(key, "unable to process", e);
                 }
             }
-            factoryLocator.setEssentialService(getMailboxFactory());
+            factoryLocator.setEssentialService();
             factoryLocator.register(bundleContext);
         }
     }

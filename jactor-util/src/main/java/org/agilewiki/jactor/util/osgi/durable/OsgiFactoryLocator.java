@@ -19,6 +19,8 @@ import java.util.Hashtable;
  */
 public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedService {
 
+    private MailboxFactory mailboxFactory;
+
     private Dictionary<String, ?> properties;
     /**
      * The service registration.
@@ -28,17 +30,25 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     /**
      * The mailbox factory to be closed when the factory locator is closed.
      */
-    private MailboxFactory essentialService;
+    private boolean essentialService;
 
     /**
      * Mark the factory locator as essential.
      * When not null, closing the factory locator stops the bundle.
      * Otherwise, closing the factory locator just unregisters it.
-     *
-     * @param _mailboxFactory The mailbox factory of the bundle.
      */
-    public void setEssentialService(final MailboxFactory _mailboxFactory) {
-        essentialService = _mailboxFactory;
+    public void setEssentialService() {
+        essentialService = true;
+    }
+
+    public MailboxFactory getMailboxFactory() {
+        return mailboxFactory;
+    }
+
+    public void setMailboxFactory(final MailboxFactory _mailboxFactory) {
+        if (mailboxFactory != null)
+            throw new IllegalStateException("mailbox factory already set");
+        mailboxFactory = _mailboxFactory;
     }
 
     /**
@@ -62,8 +72,8 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     @Override
     public void close() throws Exception {
         super.close();
-        if (essentialService != null) {
-            essentialService.close();
+        if (essentialService) {
+            mailboxFactory.close();
         } else if (serviceRegistration != null)
             serviceRegistration.unregister();
     }
