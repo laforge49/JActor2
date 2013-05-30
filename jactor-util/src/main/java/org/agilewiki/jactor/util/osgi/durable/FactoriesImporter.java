@@ -98,11 +98,7 @@ public class FactoriesImporter extends ActorBase implements
     private void start(final String _bundleName, final String _niceVersion, final Transport<Void> _transport)
             throws Exception {
         BundleContext bundleContext = Osgi.getBundleContext(getMailbox().getMailboxFactory());
-        String fs = "(&" +
-                "(objectClass=org.agilewiki.jactor.util.osgi.durable.OsgiFactoryLocator)" +
-                "(&(bundleName=" + _bundleName + ")(bundleVersion=" + _niceVersion + "))" +
-                ")";
-        Filter filter = bundleContext.createFilter(fs);
+        Filter filter = Osgi.factoryLocatorFilter(bundleContext, _bundleName, _niceVersion);
         start(filter, _transport);
     }
 

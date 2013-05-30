@@ -1,12 +1,12 @@
 package org.agilewiki.jactor.util.osgi;
 
-import org.agilewiki.jactor.api.Mailbox;
-import org.agilewiki.jactor.api.MailboxFactory;
-import org.agilewiki.jactor.api.Properties;
+import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.incDes.Root;
 import org.agilewiki.jactor.util.osgi.durable.OsgiFactoryLocator;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Filter;
 import org.osgi.framework.Version;
 
 final public class Osgi {
@@ -52,8 +52,26 @@ final public class Osgi {
         return (OsgiFactoryLocator) Durables.getFactoryLocator(_mailboxFactory);
     }
 
-    public static Root contextualize(Root root) throws Exception {
-        //todo
-        return null;
+    public static Filter factoryLocatorFilter(final BundleContext _bundleContext,
+                                              final String _bundleName,
+                                              final String _niceVersion) throws Exception {
+        return _bundleContext.createFilter("(&" +
+                "(objectClass=org.agilewiki.jactor.util.osgi.durable.OsgiFactoryLocator)" +
+                "(&(bundleName=" + _bundleName + ")(bundleVersion=" + _niceVersion + "))" +
+                ")");
+    }
+
+    public static Request<Root> contextCopyReq(final Root _root) throws Exception {
+        return new RequestBase<Root>(_root.getMailbox()) {
+            @Override
+            public void processRequest(Transport<Root> _transport) throws Exception {
+                String location = _root.getBundleLocation();
+                BundleContext bundleContext = getBundleContext(_root.getMailbox().getMailboxFactory());
+                Bundle bundle = bundleContext.installBundle(location);
+                bundle.start();
+                Version version = bundle.getVersion();
+                //todo
+            }
+        };
     }
 }
