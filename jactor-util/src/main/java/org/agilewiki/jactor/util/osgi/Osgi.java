@@ -1,7 +1,11 @@
 package org.agilewiki.jactor.util.osgi;
 
+import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.api.Properties;
+import org.agilewiki.jactor.util.durable.Durables;
+import org.agilewiki.jactor.util.durable.incDes.Root;
+import org.agilewiki.jactor.util.osgi.durable.OsgiFactoryLocator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 
@@ -38,5 +42,18 @@ final public class Osgi {
             result.append(version.getQualifier());
         }
         return result.toString();
+    }
+
+    public OsgiFactoryLocator getOsgiFactoryLocator(final Mailbox _mailbox) {
+        return (OsgiFactoryLocator) Durables.getFactoryLocator(_mailbox);
+    }
+
+    public OsgiFactoryLocator getOsgiFactoryLocator(final MailboxFactory _mailboxFactory) {
+        return (OsgiFactoryLocator) Durables.getFactoryLocator(_mailboxFactory);
+    }
+
+    public static Root contextualize(Root root) throws Exception {
+        //todo
+        return null;
     }
 }
