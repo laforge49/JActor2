@@ -4,9 +4,9 @@ import org.agilewiki.jactor.api.ExceptionHandler;
 import org.agilewiki.jactor.api.ResponseProcessor;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.testIface.Hello;
-import org.agilewiki.jactor.osgi.durable.FactoriesImporter;
-import org.agilewiki.jactor.osgi.durable.FactoryLocatorActivator;
-import org.agilewiki.jactor.osgi.serviceTracker.LocateService;
+import org.agilewiki.jactor.osgi.FactoriesImporter;
+import org.agilewiki.jactor.osgi.FactoryLocatorActivator;
+import org.agilewiki.jactor.osgi.LocateService;
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.slf4j.Logger;
@@ -64,7 +64,7 @@ public class Activator extends FactoryLocatorActivator {
         log.info(">>>>>>>>1>>>>>>>>>> " + executeCommands(
                 "config:edit org.agilewiki.jactor.testService.Activator." + getVersion().toString(),
                 "config:propset msg Aloha!",
-                "config:propset import_a jactor-util\\|" + getNiceVersion(),
+                "config:propset import_a jactor-osgi\\|" + getNiceVersion(),
                 "config:update"));
         String bundleLocation = "mvn:org.agilewiki.jactor/JActor-test-service/" + getNiceVersion();
         FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
