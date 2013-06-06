@@ -3,7 +3,7 @@ package org.agilewiki.jactor.osgi;
 import org.agilewiki.jactor.util.durable.Durables;
 
 /**
- * Activator for the jactor-util bundle,
+ * Activator for the jactor-osgi bundle,
  * that provides all the pre-defined durable factories.
  */
 public class Activator extends FactoryLocatorActivator {

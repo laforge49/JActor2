@@ -45,10 +45,7 @@ public class FactoriesImporter extends ActorBase implements
     }
 
     /**
-     * Wait for a matching factory locator, unless one is already registered.
-     * If more than one is found, reject the request.
-     * But once a match has been made and the factory locator is imported,
-     * any change to the set of matching factory locator's will stop the current bundle.
+     * Returns a request to import a matching factory locator.
      *
      * @param _filter A filter that should identify the single factory locator to be imported into the
      *                factory locator of the current bundle.
@@ -64,6 +61,16 @@ public class FactoriesImporter extends ActorBase implements
         };
     }
 
+    /**
+     * Wait for a matching factory locator, unless one is already registered.
+     * If more than one is found, reject the request.
+     * But once a match has been made and the factory locator is imported,
+     * any change to the set of matching factory locator's will stop the current bundle.
+     *
+     * @param _filter    A filter that should identify the single factory locator to be imported into the
+     *                   factory locator of the current bundle.
+     * @param _transport The Transport used to signal completion.
+     */
     private void start(final Filter _filter, final Transport<Void> _transport) throws Exception {
         // We're got a start-request!
         // We only accept one start request.
@@ -79,6 +86,13 @@ public class FactoriesImporter extends ActorBase implements
                 .signal(getMailbox());
     }
 
+    /**
+     * Returns a request to import a matching factory locator.
+     *
+     * @param _bundleName  The symbolic name of the bundle.
+     * @param _niceVersion Bundle version in the form 1.2.3 or 1.2.3-SNAPSHOT
+     * @return The request.
+     */
     public Request<Void> startReq(final String _bundleName, final String _niceVersion) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
@@ -88,6 +102,16 @@ public class FactoriesImporter extends ActorBase implements
         };
     }
 
+    /**
+     * Wait for a matching factory locator, unless one is already registered.
+     * If more than one is found, reject the request.
+     * But once a match has been made and the factory locator is imported,
+     * any change to the set of matching factory locator's will stop the current bundle.
+     *
+     * @param _bundleName  The symbolic name of the bundle.
+     * @param _niceVersion Bundle version in the form 1.2.3 or 1.2.3-SNAPSHOT
+     * @param _transport   The Transport used to signal completion.
+     */
     private void start(final String _bundleName, final String _niceVersion, final Transport<Void> _transport)
             throws Exception {
         BundleContext bundleContext = Osgi.getBundleContext(getMailbox().getMailboxFactory());
@@ -95,6 +119,13 @@ public class FactoriesImporter extends ActorBase implements
         start(filter, _transport);
     }
 
+    /**
+     * Returns a request to import a matching factory locator.
+     *
+     * @param _bundleName The symbolic name of the bundle.
+     * @param _version    Bundle version.
+     * @return The request.
+     */
     public Request<Void> startReq(final String _bundleName, final Version _version) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
@@ -104,12 +135,28 @@ public class FactoriesImporter extends ActorBase implements
         };
     }
 
+    /**
+     * Wait for a matching factory locator, unless one is already registered.
+     * If more than one is found, reject the request.
+     * But once a match has been made and the factory locator is imported,
+     * any change to the set of matching factory locator's will stop the current bundle.
+     *
+     * @param _bundleName The symbolic name of the bundle.
+     * @param _version    Bundle version.
+     * @param _transport   The Transport used to signal completion.
+     */
     private void start(final String _bundleName, final Version _version, final Transport<Void> _transport)
             throws Exception {
         String niceVersion = Osgi.getNiceVersion(_version);
         start(_bundleName, niceVersion, _transport);
     }
 
+    /**
+     * Returns a request to import a matching factory locator.
+     *
+     * @param _bundleLocation    The location of the bundle (URL).
+     * @return The request.
+     */
     public Request<Void> startReq(final String _bundleLocation) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
@@ -119,6 +166,15 @@ public class FactoriesImporter extends ActorBase implements
         };
     }
 
+    /**
+     * Wait for a matching factory locator, unless one is already registered.
+     * If more than one is found, reject the request.
+     * But once a match has been made and the factory locator is imported,
+     * any change to the set of matching factory locator's will stop the current bundle.
+     *
+     * @param _bundleLocation    The location of the bundle (URL).
+     * @param _transport   The Transport used to signal completion.
+     */
     private void start(final String _bundleLocation, final Transport<Void> _transport)
             throws Exception {
         BundleContext bundleContext = Osgi.getBundleContext(getMailbox().getMailboxFactory());

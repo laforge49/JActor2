@@ -28,6 +28,10 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
         beginReq().signal();
     }
 
+    /**
+     * Returns true (the default) when a config file is used to define the imports of the factory locator.
+     * @return True.
+     */
     protected boolean configImports() {
         return true;
     }
@@ -40,6 +44,9 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
         _transport.processResponse(null);
     }
 
+    /**
+     * Creates a factory locator and adds it to the mailbox factory's properties.
+     */
     protected void createFactoryLocator() throws Exception {
         factoryLocator = new OsgiFactoryLocator();
         factoryLocator.setMailboxFactory(getMailboxFactory());
@@ -58,6 +65,12 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
 
     }
 
+    /**
+     * Adds the imports to the bundle's factory locator when the first version of the
+     * config file is encountered.
+     *
+     * @throws ConfigurationException Indicates an error with an import parameter.
+     */
     protected void configInitialized() throws ConfigurationException {
         if (configImports()) {
             Dictionary<String, ?> config = getConfig();

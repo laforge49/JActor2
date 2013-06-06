@@ -16,16 +16,23 @@ import java.util.Hashtable;
  */
 public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedService {
 
+    /**
+     * The mailbox factory to which the factory locator is bound.
+     */
     private MailboxFactory mailboxFactory;
 
-    private Dictionary<String, ?> properties;
     /**
-     * The service registration.
+     * The contents of the bundle's config file.
+     */
+    private Dictionary<String, ?> properties;
+
+    /**
+     * The service registration returned when this service was registered.
      */
     private ServiceRegistration<OsgiFactoryLocator> serviceRegistration;
 
     /**
-     * The mailbox factory to be closed when the factory locator is closed.
+     * True when the mailbox factory is to be closed when the factory locator is closed.
      */
     private boolean essentialService;
 
@@ -38,10 +45,20 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
         essentialService = true;
     }
 
+    /**
+     * Returns the mailbox factory to which this factory locator is bound.
+     *
+     * @return The mailbox factory.
+     */
     public MailboxFactory getMailboxFactory() {
         return mailboxFactory;
     }
 
+    /**
+     * Bind this factory locator to a mailbox factory.
+     *
+     * @param _mailboxFactory    The mailbox factory.
+     */
     public void setMailboxFactory(final MailboxFactory _mailboxFactory) {
         if (mailboxFactory != null)
             throw new IllegalStateException("mailbox factory already set");

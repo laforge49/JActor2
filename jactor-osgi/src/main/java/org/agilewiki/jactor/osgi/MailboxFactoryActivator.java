@@ -154,6 +154,11 @@ abstract public class MailboxFactoryActivator
         return version;
     }
 
+    /**
+     * Returns the bundle version in the form 1.2.3 or 1.2.3-SNAPSHOT.
+     *
+     * @return The nice form of the version.
+     */
     protected String getNiceVersion() {
         return Osgi.getNiceVersion(getVersion());
     }
@@ -175,6 +180,11 @@ abstract public class MailboxFactoryActivator
         config = _config;
     }
 
+    /**
+     * Returns the contents of the config file.
+     *
+     * @return The contents of the config file.
+     */
     protected Dictionary<String, ?> getConfig() {
         return config;
     }

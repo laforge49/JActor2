@@ -19,6 +19,7 @@ import java.util.Map;
  * @param <T> The type of the service expected.
  */
 public interface ServiceChangeReceiver<T> extends Actor {
+
     /**
      * Called from within the actor's own mailbox, using a request, when
      * registering with a JAServiceTracker, or when some service goes up or

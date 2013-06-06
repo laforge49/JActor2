@@ -10,18 +10,41 @@ import org.osgi.framework.ServiceReference;
 import java.util.Map;
 
 /**
- * A simplified service tracker.
+ * Locates (or waits for) a service.
  */
 public class LocateService<T> implements ServiceChangeReceiver<T> {
-    private Mailbox mailbox;
-    JAServiceTracker<T> tracker;
-    Transport<T> transport;
 
+    /**
+     * The mailbox.
+     */
+    private Mailbox mailbox;
+
+    /**
+     * The service tracker actor.
+     */
+    private JAServiceTracker<T> tracker;
+
+    /**
+     * The transport for returning the service.
+     */
+    private Transport<T> transport;
+
+    /**
+     * Create a LocateService actor.
+     *
+     * @param _mailbox    The actor mailbox.
+     * @param clazz       Class name of the desired service.
+     */
     public LocateService(Mailbox _mailbox, String clazz) throws Exception {
         mailbox = _mailbox;
         tracker = new JAServiceTracker(mailbox, clazz);
     }
 
+    /**
+     * Returns a request to locate the service.
+     *
+     * @return The request.
+     */
     public Request<T> getReq() {
         return new RequestBase<T>(mailbox) {
             @Override
