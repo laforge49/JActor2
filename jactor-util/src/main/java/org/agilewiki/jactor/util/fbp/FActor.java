@@ -11,7 +11,7 @@ abstract public class FActor extends Thread implements Actor, AutoCloseable {
 
     private Mailbox mailbox;
 
-    private Activity activity;
+    protected Activity activity;
 
     protected Idle idle;
 
@@ -95,8 +95,8 @@ abstract public class FActor extends Thread implements Actor, AutoCloseable {
     abstract public void gotNext(final InPort _inport, final Object _e);
 
     public void write(final OutPort _outPort, final Object _e) {
-        _outPort.write(_e);
         activity = _outPort;
+        _outPort.write(_e);
     }
 
     abstract public void wrote(final OutPort _outPort);

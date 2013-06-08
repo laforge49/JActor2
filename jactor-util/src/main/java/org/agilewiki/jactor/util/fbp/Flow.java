@@ -18,10 +18,10 @@ public class Flow implements AutoCloseable {
         this(1, _source, _target);
     }
 
-    public Flow(int i, final FActor _source, final FActor _target) {
+    public Flow(final int _capacity, final FActor _source, final FActor _target) {
         source = _source;
         target = _target;
-        queue = new ArrayBlockingQueue(i);
+        queue = new ArrayBlockingQueue(_capacity);
         inPort = new InPort() {
 
             @Override
@@ -51,7 +51,7 @@ public class Flow implements AutoCloseable {
             public void run() {
                 try {
                     queue.put(e);
-                    target.wrote(this);
+                    source.wrote(this);
                 } catch (InterruptedException e1) {
                 }
             }
@@ -59,6 +59,11 @@ public class Flow implements AutoCloseable {
             @Override
             public FActor getTarget() {
                 return target;
+            }
+
+            @Override
+            public boolean full() {
+                return queue.size() == _capacity;
             }
 
             @Override
