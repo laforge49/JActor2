@@ -2,19 +2,21 @@ package org.agilewiki.jactor.util.fbp;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.MailboxFactory;
-import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
-public class FActorTest extends TestCase {
+import java.util.ArrayList;
+import java.util.List;
+
+public class FActorBTest extends TestCase {
     public void test1() throws Exception {
-        int count = 10000000;
+        int count = 100000000;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
-            final SrcFActor srcFActor = new SrcFActor(count, testMBF);
-            final TrgtFActor trgtFActor = new TrgtFActor(count, testMBF, Thread.currentThread());
-            new Flow(1000000, srcFActor, trgtFActor);
+            final SrcFActorB srcFActor = new SrcFActorB(count, testMBF);
+            final TrgtFActorB trgtFActor = new TrgtFActorB(count, testMBF, Thread.currentThread());
+            new Flow(100000, srcFActor, trgtFActor);
             long t0 = System.currentTimeMillis();
             new RequestBase<Void>(srcFActor.getMailbox()){
                 @Override
@@ -34,14 +36,14 @@ public class FActorTest extends TestCase {
             }
             long t1 = System.currentTimeMillis();
             long d = t1 - t0;
-            System.out.println("per second = " + (count * 1000 / d));
+            System.out.println("per second = " + (count * 1000L / d));
         } finally {
             testMBF.close();
         }
     }
 }
 
-class SrcFActor extends FActor {
+class SrcFActorB extends FActor {
 
     int i;
 
@@ -49,7 +51,7 @@ class SrcFActor extends FActor {
 
     int count;
 
-    public SrcFActor(final int _count, final MailboxFactory _mailboxFactory) {
+    public SrcFActorB(final int _count, final MailboxFactory _mailboxFactory) {
         super(_mailboxFactory);
         count = _count;
     }
@@ -70,12 +72,16 @@ class SrcFActor extends FActor {
 
     @Override
     public void wrote(final OutPort _outPort) {
-        if (i < count) {
+        int s = 10000;
+        List<Integer> lst = new ArrayList<Integer>(s);
+        while (i < count && lst.size() < s && !_outPort.full()) {
             i += 1;
-            write(_outPort, i);
-        } else
+            lst.add(i);
+        }
+        if (lst.size() > 0)
+            write(_outPort, lst);
+        else if (i >= count)
             activity = idle;
-
     }
 
     @Override
@@ -85,7 +91,7 @@ class SrcFActor extends FActor {
     }
 }
 
-class TrgtFActor extends FActor {
+class TrgtFActorB extends FActor {
 
     InPort inPort;
 
@@ -93,7 +99,7 @@ class TrgtFActor extends FActor {
 
     int count;
 
-    public TrgtFActor(final int _count, final MailboxFactory _mailboxFactory, final Thread _thread) {
+    public TrgtFActorB(final int _count, final MailboxFactory _mailboxFactory, final Thread _thread) {
         super(_mailboxFactory);
         count = _count;
         thread = _thread;
@@ -111,7 +117,8 @@ class TrgtFActor extends FActor {
 
     @Override
     public void gotNext(final InPort _inport, final Object _e) {
-        int i = (Integer) _e;
+        List<Integer> lst = (List<Integer>) _e;
+        int i = lst.get(lst.size() - 1);
         if (i == count) {
             thread.interrupt();
         }
