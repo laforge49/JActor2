@@ -74,7 +74,8 @@ class SrcFActorB extends FActor {
     public void wrote(final OutPort _outPort) {
         int s = 10000;
         List<Integer> lst = new ArrayList<Integer>(s);
-        while (i < count && lst.size() < s && !_outPort.full()) {
+//        while (i < count && lst.size() < s && !_outPort.full()) {
+        while (i < count && lst.size() < s) {
             i += 1;
             lst.add(i);
         }
