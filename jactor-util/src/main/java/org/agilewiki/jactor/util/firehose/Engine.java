@@ -41,6 +41,7 @@ public class Engine extends Thread {
                 break;
             }
             data = stage.process(data);
+            stage.release();
             i += 1;
             if (i == stages.length) {
                 i = 0;
