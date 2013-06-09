@@ -12,7 +12,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
 
     public final Mailbox mailbox;
 
-    public Engine(final MailboxFactory _mailboxFactory, final Stage[] _stages) {
+    public Engine(final MailboxFactory _mailboxFactory, final Stage... _stages) {
         super();
         mailboxFactory = _mailboxFactory;
         stages = _stages;
@@ -41,7 +41,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
                 }
                 break;
             }
-            data = stage.process(data);
+            data = stage.process(mailbox, data);
             stage.release();
             i += 1;
             if (i == stages.length) {
