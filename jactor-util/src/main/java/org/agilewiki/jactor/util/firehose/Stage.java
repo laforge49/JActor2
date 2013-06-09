@@ -2,11 +2,11 @@ package org.agilewiki.jactor.util.firehose;
 
 import java.util.concurrent.Semaphore;
 
-abstract public class Stage extends Semaphore {
+public interface Stage {
 
-    public Stage(final boolean _fairness) {
-        super(1, _fairness);
-    }
+    Object process(final Object data);
 
-    abstract public Object process(final Object data);
+    void acquire() throws InterruptedException;
+
+    void release();
 }

@@ -1,9 +1,10 @@
 package org.agilewiki.jactor.util.firehose;
 
+import org.agilewiki.jactor.api.Actor;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
 
-public class Engine extends Thread {
+public class Engine extends Thread implements Actor, AutoCloseable {
 
     public final MailboxFactory mailboxFactory;
 
@@ -48,5 +49,15 @@ public class Engine extends Thread {
                 data = null;
             }
         }
+    }
+
+    @Override
+    public Mailbox getMailbox() {
+        return mailbox;
+    }
+
+    @Override
+    public void close() throws Exception {
+        throw new InterruptedException("closed");
     }
 }
