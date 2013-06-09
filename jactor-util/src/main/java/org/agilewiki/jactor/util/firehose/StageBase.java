@@ -10,12 +10,14 @@ abstract public class StageBase extends Semaphore implements Stage {
         super(1);
     }
 
+    @Override
     public void makeReservation(final Engine _engine) {
         while (!reservation.compareAndSet(null, _engine)) {
             Thread.yield();
         }
     }
 
+    @Override
     public void clearReservation() {
         reservation.set(null);
     }

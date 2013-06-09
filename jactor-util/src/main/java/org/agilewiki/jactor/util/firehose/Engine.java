@@ -12,6 +12,12 @@ public class Engine extends Thread implements Actor, AutoCloseable {
 
     public final Mailbox mailbox;
 
+    private Stage nextStage;
+
+    public boolean isNextStageAvailable() {
+        return nextStage.availablePermits() > 0;
+    }
+
     public Engine(final MailboxFactory _mailboxFactory, final Stage... _stages) {
         super();
         mailboxFactory = _mailboxFactory;
@@ -46,7 +52,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
             if (i == stages.length) {
                 i = 0;
             }
-            Stage nextStage = stages[i];
+            nextStage = stages[i];
             data = stage.process(this, data);
             if (i == 0) {
                 data = null;
