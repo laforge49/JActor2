@@ -14,16 +14,30 @@ public class FirehoseBTest extends TestCase {
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
             GenerateB generate = new GenerateB(count);
+            PasserB passer1 = new PasserB();
+            PasserB passer2 = new PasserB();
+            PasserB passer3 = new PasserB();
+            PasserB passer4 = new PasserB();
+            PasserB passer5 = new PasserB();
+            PasserB passer6 = new PasserB();
             TerminateB terminate = new TerminateB(count, Thread.currentThread());
             long t0 = System.currentTimeMillis();
-            new Engine(testMBF, generate, terminate);
+            new Engine(testMBF,
+                    generate,
+                    passer1,
+                    passer2,
+                    passer3,
+                    passer4,
+                    passer5,
+                    passer6,
+                    terminate);
             try {
                 Thread.sleep(1000*60*60);
             } catch (Exception ex) {
             }
             long t1 = System.currentTimeMillis();
             long d = t1 - t0;
-            System.out.println("per second = " + (count * 1000 / d));
+            System.out.println("per second = " + (7 * count * 1000 / d));
         } finally {
             testMBF.close();
         }
@@ -49,6 +63,14 @@ class GenerateB extends StageBase {
             lst.add(ndx);
         }
         return lst;
+    }
+}
+
+class PasserB extends StageBase {
+
+    @Override
+    public Object process(Engine _engine, Object data) {
+        return data;
     }
 }
 
