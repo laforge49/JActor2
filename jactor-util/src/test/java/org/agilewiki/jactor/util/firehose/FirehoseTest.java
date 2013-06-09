@@ -34,12 +34,11 @@ class Generate extends StageBase {
     private long ndx;
 
     public Generate(final long _count) {
-        super(false);
         count = _count;
     }
 
     @Override
-    public Object process(final Mailbox _mailbox, Object data) {
+    public Object process(final Engine _engine, Object data) {
         if (ndx < count) {
             ndx += 1;
             return ndx;
@@ -55,13 +54,12 @@ class Terminate extends StageBase {
     private Thread thread;
 
     public Terminate(final long _count, final Thread _thread) {
-        super(true);
         count = _count;
         thread = _thread;
     }
 
     @Override
-    public Object process(Mailbox _mailbox, Object data) {
+    public Object process(Engine _engine, Object data) {
         if (data == null)
             return null;
         long i = (Long) data;

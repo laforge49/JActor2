@@ -28,8 +28,8 @@ public class Engine extends Thread implements Actor, AutoCloseable {
     public void run() {
         int i = 0;
         Object data = null;
+        Stage stage = stages[0];
         while (true) {
-            Stage stage = stages[i];
             while (true) {
                 try {
                     stage.acquire();
@@ -41,13 +41,19 @@ public class Engine extends Thread implements Actor, AutoCloseable {
                 }
                 break;
             }
-            data = stage.process(mailbox, data);
-            stage.release();
+            stage.clearReservation();
             i += 1;
             if (i == stages.length) {
                 i = 0;
+            }
+            Stage nextStage = stages[i];
+            data = stage.process(this, data);
+            if (i == 0) {
                 data = null;
             }
+            nextStage.makeReservation(this);
+            stage.release();
+            stage = nextStage;
         }
     }
 

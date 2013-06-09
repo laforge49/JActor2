@@ -37,12 +37,11 @@ class GenerateB extends StageBase {
     private long ndx;
 
     public GenerateB(final long _count) {
-        super(false);
         count = _count;
     }
 
     @Override
-    public Object process(final Mailbox _mailbox, Object data) {
+    public Object process(final Engine _engine, Object data) {
         int s = 100000;
         List<Long> lst = new ArrayList<Long>(s);
         while (ndx < count && lst.size() < s) {
@@ -60,13 +59,12 @@ class TerminateB extends StageBase {
     private Thread thread;
 
     public TerminateB(final long _count, final Thread _thread) {
-        super(true);
         count = _count;
         thread = _thread;
     }
 
     @Override
-    public Object process(Mailbox _mailbox, Object data) {
+    public Object process(Engine _engine, Object data) {
         List<Long> lst = (List<Long>) data;
         if (lst.size() == 0)
             return null;

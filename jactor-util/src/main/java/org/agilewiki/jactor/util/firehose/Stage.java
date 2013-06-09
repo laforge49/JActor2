@@ -7,12 +7,15 @@ import java.util.concurrent.TimeUnit;
 
 public interface Stage {
 
-    Object process(final Mailbox _mailbox, final Object data);
+    Object process(final Engine _engine, final Object data);
 
     void acquire() throws InterruptedException;
 
     void release();
 
-    boolean tryAcquire(long timeout, TimeUnit unit)
-            throws InterruptedException;
+    int availablePermits();
+
+    void makeReservation(final Engine _engine);
+
+    void clearReservation();
 }
