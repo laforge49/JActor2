@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FirehoseBTest extends TestCase {
     public void test1() throws Exception {
-        long count = 100000000;
+        long count = 1000000000;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
             GenerateB generate = new GenerateB(count);
