@@ -21,6 +21,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
     public Engine(final MailboxFactory _mailboxFactory, final Stage... _stages) {
         super();
         mailboxFactory = _mailboxFactory;
+        mailboxFactory.addAutoClosable(this);
         stages = _stages;
         mailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
             @Override
@@ -70,6 +71,6 @@ public class Engine extends Thread implements Actor, AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        throw new InterruptedException("closed");
+        this.interrupt();
     }
 }

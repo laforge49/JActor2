@@ -9,8 +9,8 @@ import java.util.List;
 
 public class FirehoseBTest extends TestCase {
     public void test1() throws Exception {
-//        long count = 10;
-        long count = 1000000000;
+        long count = 10;
+//        long count = 1000000000;
         int threads = 8;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
