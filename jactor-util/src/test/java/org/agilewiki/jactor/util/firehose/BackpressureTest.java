@@ -7,14 +7,13 @@ import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirehoseBTest extends TestCase {
+public class BackpressureTest extends TestCase {
     public void test1() throws Exception {
-//        long count = 10;
-        long count = 1000000000;
+        long count = 10;
         int threads = 8;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
-            GenerateB generate = new GenerateB(count);
+            Backpressure backpressure = new Backpressure(count);
             Passer passer1 = new Passer();
             Passer passer2 = new Passer();
             Passer passer3 = new Passer();
@@ -26,7 +25,7 @@ public class FirehoseBTest extends TestCase {
             int i = 0;
             while (i < threads) {
                 new Engine(testMBF,
-                        generate,
+                        backpressure,
                         passer1,
                         passer2,
                         passer3,
@@ -49,13 +48,13 @@ public class FirehoseBTest extends TestCase {
     }
 }
 
-class GenerateB extends StageBase {
+class Backpressure extends StageBase {
 
     private long count;
 
     private long ndx;
 
-    public GenerateB(final long _count) {
+    public Backpressure(final long _count) {
         count = _count;
     }
 
