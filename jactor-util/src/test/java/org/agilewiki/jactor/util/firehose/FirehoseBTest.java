@@ -42,7 +42,8 @@ public class FirehoseBTest extends TestCase {
             }
             long t1 = System.currentTimeMillis();
             long d = t1 - t0;
-            System.out.println("per second = " + (7 * count * 1000 / d));
+            if (d > 0)
+                System.out.println("per second = " + (7 * count * 1000 / d));
         } finally {
             testMBF.close();
         }

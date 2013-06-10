@@ -9,8 +9,8 @@ import java.util.List;
 
 public class BackpressureTest extends TestCase {
     public void test1() throws Exception {
-        long count = 10;
-        int threads = 1;
+        long count = 10000000;
+        int threads = 8;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
             Backpressure backpressure = new Backpressure(count);
@@ -54,18 +54,22 @@ class Backpressure extends StageBase {
 
     private long ndx;
 
+    private int sz = 1;
+
     public Backpressure(final long _count) {
         count = _count;
     }
 
     @Override
     public Object process(final Engine _engine, Object data) {
-        int s = 100000;
-        List<Long> lst = new ArrayList<Long>(s);
-        while (ndx < count && lst.size() < s) {
+        List<Long> lst = new ArrayList<Long>(sz);
+        while (ndx < count) {
             ndx += 1;
             lst.add(ndx);
+            if (_engine.isNextStageAvailable())
+                break;
         }
+        sz = lst.size();
         return lst;
     }
 }
