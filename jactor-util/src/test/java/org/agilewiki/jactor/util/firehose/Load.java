@@ -1,5 +1,7 @@
 package org.agilewiki.jactor.util.firehose;
 
+import org.agilewiki.jactor.api.Mailbox;
+
 public class Load extends StageBase {
 
     @Override
@@ -8,9 +10,12 @@ public class Load extends StageBase {
             Thread.sleep(2);
         } catch (InterruptedException ie) {
             try {
-                _engine.close();
+                Mailbox mailbox = _engine.mailbox;
+                if (!mailbox.getMailboxFactory().isClosing())
+                    mailbox.run();
+                else
+                    _engine.close();
             } catch (Exception e) {
-
             }
         }
         return data;

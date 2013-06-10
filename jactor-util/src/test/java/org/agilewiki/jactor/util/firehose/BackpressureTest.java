@@ -18,8 +18,8 @@ public class BackpressureTest extends TestCase {
             Passer passer2 = new Passer();
             Passer passer3 = new Passer();
             Passer passer4 = new Passer();
-            Passer passer5 = new Passer();
-            Load load = new Load();
+            Load load1 = new Load();
+            Load load2 = new Load();
             TerminateB terminate = new TerminateB(count, Thread.currentThread());
             long t0 = System.currentTimeMillis();
             int i = 0;
@@ -30,8 +30,8 @@ public class BackpressureTest extends TestCase {
                         passer2,
                         passer3,
                         passer4,
-                        passer5,
-                        load,
+                        load1,
+                        load2,
                         terminate);
                 i += 1;
             }
