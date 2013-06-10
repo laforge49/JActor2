@@ -40,13 +40,13 @@ public class Engine extends Thread implements Actor, AutoCloseable {
             while (true) {
                 try {
                     stage.acquire();
+                    break;
                 } catch (InterruptedException e) {
                     if (mailboxFactory.isClosing())
                         return;
                     mailbox.run();
                     continue;
                 }
-                break;
             }
             stage.clearReservation();
             i += 1;

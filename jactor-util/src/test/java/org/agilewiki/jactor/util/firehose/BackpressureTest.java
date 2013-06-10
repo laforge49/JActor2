@@ -9,7 +9,7 @@ import java.util.List;
 
 public class BackpressureTest extends TestCase {
     public void test1() throws Exception {
-        long count = 100000;
+        long count = 100000000;
         int threads = 16;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
