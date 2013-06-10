@@ -9,8 +9,8 @@ import java.util.List;
 
 public class BackpressureTest extends TestCase {
     public void test1() throws Exception {
-        long count = 10000000;
-        int threads = 8;
+        long count = 100000;
+        int threads = 16;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
             Backpressure backpressure = new Backpressure(count);
@@ -19,7 +19,7 @@ public class BackpressureTest extends TestCase {
             Passer passer3 = new Passer();
             Passer passer4 = new Passer();
             Passer passer5 = new Passer();
-            Passer passer6 = new Passer();
+            Load load = new Load();
             TerminateB terminate = new TerminateB(count, Thread.currentThread());
             long t0 = System.currentTimeMillis();
             int i = 0;
@@ -31,7 +31,7 @@ public class BackpressureTest extends TestCase {
                         passer3,
                         passer4,
                         passer5,
-                        passer6,
+                        load,
                         terminate);
                 i += 1;
             }
@@ -41,7 +41,8 @@ public class BackpressureTest extends TestCase {
             }
             long t1 = System.currentTimeMillis();
             long d = t1 - t0;
-            System.out.println("per second = " + (7 * count * 1000 / d));
+            System.out.println("passed per second = " + (7 * count * 1000 / d));
+            System.out.println("processed per second = " + (count * 1000 / d));
         } finally {
             testMBF.close();
         }
