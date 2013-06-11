@@ -35,7 +35,7 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     /**
      * How big should the initial local queue size be?
      */
-    private final int initialLocalMessageQueueSize;
+    protected final int initialLocalMessageQueueSize;
     /**
      * How big should the initial (per target Mailbox) buffer size be?
      */

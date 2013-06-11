@@ -34,9 +34,6 @@ public class MailboxImpl implements JAMailbox, Runnable {
     private ExceptionHandler exceptionHandler;
     private Message currentMessage;
 
-    /**
-     * messageQueue can be null to use the default queue implementation.
-     */
     public MailboxImpl(final boolean _mayBlock, final Runnable _onIdle,
                        final Runnable _messageProcessor, final JAMailboxFactory factory,
                        final MessageQueue messageQueue, final Logger _log,
