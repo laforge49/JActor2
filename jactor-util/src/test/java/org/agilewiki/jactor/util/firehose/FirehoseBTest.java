@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.firehose;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.MailboxFactory;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class FirehoseBTest extends TestCase {
         long count = 10;
 //        long count = 1000000000;
         int threads = 8;
-        MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
+        MailboxFactory testMBF = new UtilMailboxFactory();
         try {
             GenerateB generate = new GenerateB(count);
             Passer passer1 = new Passer();

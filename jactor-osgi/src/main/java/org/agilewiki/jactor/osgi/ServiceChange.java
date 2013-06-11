@@ -29,8 +29,8 @@ public class ServiceChange<T> extends
     /**
      * Creates a ServiceChange request.
      *
-     * @param _event      The service event to be passed.
-     * @param _tracked    The tracked services to be passed.
+     * @param _event   The service event to be passed.
+     * @param _tracked The tracked services to be passed.
      */
     public ServiceChange(final ServiceEvent _event,
                          final Map<ServiceReference, T> _tracked) {

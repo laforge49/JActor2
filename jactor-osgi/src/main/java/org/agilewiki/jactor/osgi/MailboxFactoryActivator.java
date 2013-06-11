@@ -1,8 +1,8 @@
 package org.agilewiki.jactor.osgi;
 
 import org.agilewiki.jactor.api.*;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.JAProperties;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -111,7 +111,7 @@ abstract public class MailboxFactoryActivator
      * and the activator is given a mailbox that may block.
      */
     protected final void mailboxFactoryStart() throws Exception {
-        mailboxFactory = new DefaultMailboxFactoryImpl();
+        mailboxFactory = new UtilMailboxFactory();
         mailboxFactory.addAutoClosable(this);
         jaProperties = new JAProperties(mailboxFactory, null);
         jaProperties.putProperty("bundleContext", bundleContext);

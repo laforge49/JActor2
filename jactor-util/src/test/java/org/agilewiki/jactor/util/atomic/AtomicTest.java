@@ -2,15 +2,15 @@ package org.agilewiki.jactor.util.atomic;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.*;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 import org.agilewiki.jactor.util.Delay;
 import org.agilewiki.jactor.util.ResponseCounter;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 public class AtomicTest extends TestCase {
     int count = 0;
 
     public void test1() throws Exception {
-        MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        MailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             int _count = startReq1(mailboxFactory.createMailbox()).call();
             assertEquals(5, _count);
@@ -66,7 +66,7 @@ public class AtomicTest extends TestCase {
     }
 
     public void test2() throws Exception {
-        MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        MailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             final FifoRequestProcessor fp = new FifoRequestProcessor();
             fp.initialize(mailboxFactory.createMailbox(true, fp));

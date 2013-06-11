@@ -29,7 +29,7 @@ public class Flow implements AutoCloseable {
                 try {
                     Object e = queue.take();
                     target.gotNext(this, e);
-                } catch(InterruptedException ie) {
+                } catch (InterruptedException ie) {
                 }
             }
 

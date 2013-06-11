@@ -143,7 +143,7 @@ public class FactoriesImporter extends ActorBase implements
      *
      * @param _bundleName The symbolic name of the bundle.
      * @param _version    Bundle version.
-     * @param _transport   The Transport used to signal completion.
+     * @param _transport  The Transport used to signal completion.
      */
     private void start(final String _bundleName, final Version _version, final Transport<Void> _transport)
             throws Exception {
@@ -154,7 +154,7 @@ public class FactoriesImporter extends ActorBase implements
     /**
      * Returns a request to import a matching factory locator.
      *
-     * @param _bundleLocation    The location of the bundle (URL).
+     * @param _bundleLocation The location of the bundle (URL).
      * @return The request.
      */
     public Request<Void> startReq(final String _bundleLocation) {
@@ -172,8 +172,8 @@ public class FactoriesImporter extends ActorBase implements
      * But once a match has been made and the factory locator is imported,
      * any change to the set of matching factory locator's will stop the current bundle.
      *
-     * @param _bundleLocation    The location of the bundle (URL).
-     * @param _transport   The Transport used to signal completion.
+     * @param _bundleLocation The location of the bundle (URL).
+     * @param _transport      The Transport used to signal completion.
      */
     private void start(final String _bundleLocation, final Transport<Void> _transport)
             throws Exception {

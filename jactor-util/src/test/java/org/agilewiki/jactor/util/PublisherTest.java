@@ -5,11 +5,10 @@ import org.agilewiki.jactor.api.ActorBase;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.api.UnboundRequestBase;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        MailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             Publisher p = new Publisher();
             p.initialize(mailboxFactory.createMailbox());

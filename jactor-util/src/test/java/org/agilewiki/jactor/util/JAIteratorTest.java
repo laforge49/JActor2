@@ -2,7 +2,6 @@ package org.agilewiki.jactor.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.*;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 public class JAIteratorTest extends TestCase {
     private Mailbox mailbox;
@@ -19,7 +18,7 @@ public class JAIteratorTest extends TestCase {
 //                Messages per second: 24,509,803
 
         System.out.println("shared mailbox test");
-        MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        MailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             mailbox = mailboxFactory.createMailbox();
             counterMailbox = mailbox;
@@ -39,7 +38,7 @@ public class JAIteratorTest extends TestCase {
 //        Messages per second: 1,447,178
 
         System.out.println("async mailbox test");
-        MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        MailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             mailbox = mailboxFactory.createMailbox();
             counterMailbox = mailboxFactory.createMailbox(true);

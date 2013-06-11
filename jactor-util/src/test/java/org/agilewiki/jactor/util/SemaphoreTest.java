@@ -2,14 +2,13 @@ package org.agilewiki.jactor.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.*;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 /**
  * Test code.
  */
 public class SemaphoreTest extends TestCase {
     public void testI() throws Exception {
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        final MailboxFactory mailboxFactory = new UtilMailboxFactory();
         final PASemaphore semaphore = new PASemaphore(
                 mailboxFactory.createMailbox(), 1);
         semaphore.acquireReq().call();
@@ -17,7 +16,7 @@ public class SemaphoreTest extends TestCase {
     }
 
     public void testII() throws Exception {
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        final MailboxFactory mailboxFactory = new UtilMailboxFactory();
         final PASemaphore semaphore = new PASemaphore(
                 mailboxFactory.createMailbox(), 0);
         semaphore.releaseReq().signal();
@@ -46,7 +45,7 @@ public class SemaphoreTest extends TestCase {
     }
 
     public void testIII() throws Exception {
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        final MailboxFactory mailboxFactory = new UtilMailboxFactory();
         final PASemaphore semaphore = new PASemaphore(
                 mailboxFactory.createMailbox(), 0);
         final long d = 100;
@@ -87,7 +86,7 @@ public class SemaphoreTest extends TestCase {
     }
 
     public void testIV() throws Exception {
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        final MailboxFactory mailboxFactory = new UtilMailboxFactory();
         final PASemaphore semaphore = new PASemaphore(
                 mailboxFactory.createMailbox(), 0);
         final long d = 100;

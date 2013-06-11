@@ -57,7 +57,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     /**
      * Bind this factory locator to a mailbox factory.
      *
-     * @param _mailboxFactory    The mailbox factory.
+     * @param _mailboxFactory The mailbox factory.
      */
     public void setMailboxFactory(final MailboxFactory _mailboxFactory) {
         if (mailboxFactory != null)

@@ -1,21 +1,20 @@
 package org.agilewiki.jactor.util.firehose;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 public class FirehoseTest extends TestCase {
     public void test1() throws Exception {
         long count = 10;
-        MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
+        MailboxFactory testMBF = new UtilMailboxFactory();
         try {
             Generate generate = new Generate(count);
             Terminate terminate = new Terminate(count, Thread.currentThread());
             long t0 = System.currentTimeMillis();
             new Engine(testMBF, generate, terminate);
             try {
-                Thread.sleep(1000*60*60);
+                Thread.sleep(1000 * 60 * 60);
             } catch (Exception ex) {
             }
             long t1 = System.currentTimeMillis();

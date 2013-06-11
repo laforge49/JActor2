@@ -59,7 +59,7 @@ final public class Osgi {
     /**
      * Returns the OsgiFactoryLocator associated with a mailbox factory.
      *
-     * @param _mailboxFactory    The mailbox factory.
+     * @param _mailboxFactory The mailbox factory.
      * @return The OsgiFactoryLocator.
      */
     public static OsgiFactoryLocator getOsgiFactoryLocator(final MailboxFactory _mailboxFactory) {
@@ -69,9 +69,9 @@ final public class Osgi {
     /**
      * Returns a filter for locating the factory locator service of another bundle.
      *
-     * @param _bundleContext    The current bundle context.
-     * @param _bundleName       The symbolic name of the bundle of the desired factory locator service.
-     * @param _niceVersion      The nice form of the version of the bundle of the desired factory locator service.
+     * @param _bundleContext The current bundle context.
+     * @param _bundleName    The symbolic name of the bundle of the desired factory locator service.
+     * @param _niceVersion   The nice form of the version of the bundle of the desired factory locator service.
      * @return The filter.
      */
     public static Filter factoryLocatorFilter(final BundleContext _bundleContext,
@@ -86,7 +86,7 @@ final public class Osgi {
     /**
      * Returns a request to create a copy of a root bound to the factory locator that can deserialize it.
      *
-     * @param _root    The root.
+     * @param _root The root.
      * @return A copy of the root with the appropriate mailbox.
      */
     public static Request<Root> contextCopyReq(final Root _root) throws Exception {

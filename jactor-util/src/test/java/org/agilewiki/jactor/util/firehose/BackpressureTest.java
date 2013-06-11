@@ -2,7 +2,7 @@ package org.agilewiki.jactor.util.firehose;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.MailboxFactory;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ public class BackpressureTest extends TestCase {
     public void test1() throws Exception {
 //        long count = 100000000;
         long count = 100000;
-        MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
+        MailboxFactory testMBF = new UtilMailboxFactory();
         try {
             Backpressure backpressure = new Backpressure(count);
             Passer passer1 = new Passer();

@@ -30,6 +30,7 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
 
     /**
      * Returns true (the default) when a config file is used to define the imports of the factory locator.
+     *
      * @return True.
      */
     protected boolean configImports() {

@@ -2,7 +2,6 @@ package org.agilewiki.jactor.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.*;
-import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 /**
  * Test code.
@@ -16,7 +15,7 @@ public class ParallelTest extends TestCase {
     private Request<Void> start;
 
     public void test() throws Exception {
-        mailboxFactory = new DefaultMailboxFactoryImpl();
+        mailboxFactory = new UtilMailboxFactory();
         mailbox = mailboxFactory.createMailbox();
 
         start = new RequestBase<Void>(mailbox) {

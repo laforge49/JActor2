@@ -32,8 +32,8 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     /**
      * Create a LocateService actor.
      *
-     * @param _mailbox    The actor mailbox.
-     * @param clazz       Class name of the desired service.
+     * @param _mailbox The actor mailbox.
+     * @param clazz    Class name of the desired service.
      */
     public LocateService(Mailbox _mailbox, String clazz) throws Exception {
         mailbox = _mailbox;

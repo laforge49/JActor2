@@ -1,6 +1,8 @@
 package org.agilewiki.jactor.util.fbp;
 
-import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.api.Actor;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.MailboxFactory;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,7 +43,7 @@ abstract public class FActor extends Thread implements Actor, AutoCloseable {
 
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             activity.run();
             if (mailboxFactory.isClosing())
                 return;
