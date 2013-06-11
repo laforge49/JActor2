@@ -22,13 +22,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
         JAMailboxFactory {
-    private final Logger mailboxLog = LoggerFactory.getLogger(JAMailbox.class);
+    protected final Logger mailboxLog = LoggerFactory.getLogger(JAMailbox.class);
 
     private final Logger log = LoggerFactory.getLogger(MailboxFactory.class);
 
     private final ThreadManager threadManager;
     private final ThreadManager blockingThreadManager;
-    private final MessageQueueFactory messageQueueFactory;
+    protected final MessageQueueFactory messageQueueFactory;
     private final Set<AutoCloseable> closables = Collections
             .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
     private final AtomicBoolean shuttingDown = new AtomicBoolean();
@@ -39,7 +39,7 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     /**
      * How big should the initial (per target Mailbox) buffer size be?
      */
-    private final int initialBufferSize;
+    protected final int initialBufferSize;
 
     /**
      * effectively final properties set manager.
