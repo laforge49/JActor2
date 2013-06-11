@@ -10,7 +10,6 @@ import java.util.List;
 public class BackpressureTest extends TestCase {
     public void test1() throws Exception {
         long count = 100000000;
-        int threads = 16;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
             Backpressure backpressure = new Backpressure(count);
@@ -18,19 +17,19 @@ public class BackpressureTest extends TestCase {
             Passer passer2 = new Passer();
             Passer passer3 = new Passer();
             Passer passer4 = new Passer();
-            Load load1 = new Load();
-            Load load2 = new Load();
+            Passer passer5 = new Passer();
+            Load load2 = new Load(1);
             TerminateB terminate = new TerminateB(count, Thread.currentThread());
             long t0 = System.currentTimeMillis();
             int i = 0;
-            while (i < threads) {
+            while (i < 7) {
                 new Engine(testMBF,
                         backpressure,
                         passer1,
                         passer2,
                         passer3,
                         passer4,
-                        load1,
+                        passer5,
                         load2,
                         terminate);
                 i += 1;

@@ -14,8 +14,4 @@ public interface Stage {
     void release();
 
     int availablePermits();
-
-    void makeReservation(final Engine _engine);
-
-    void clearReservation();
 }

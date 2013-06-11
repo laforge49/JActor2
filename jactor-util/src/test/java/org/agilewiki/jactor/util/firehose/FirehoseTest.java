@@ -7,7 +7,7 @@ import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 public class FirehoseTest extends TestCase {
     public void test1() throws Exception {
-        long count = 10000000;
+        long count = 10;
         MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
         try {
             Generate generate = new Generate(count);
@@ -20,7 +20,8 @@ public class FirehoseTest extends TestCase {
             }
             long t1 = System.currentTimeMillis();
             long d = t1 - t0;
-            System.out.println("per second = " + (count * 1000 / d));
+            if (d > 0)
+                System.out.println("per second = " + (count * 1000 / d));
         } finally {
             testMBF.close();
         }

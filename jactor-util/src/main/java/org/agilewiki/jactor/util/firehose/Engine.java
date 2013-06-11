@@ -36,7 +36,10 @@ public class Engine extends Thread implements Actor, AutoCloseable {
         int i = 0;
         Object data = null;
         Stage stage = stages[0];
+        Stage oldStage = null;
         while (true) {
+            if (mailboxFactory.isClosing())
+                return;
             while (true) {
                 try {
                     stage.acquire();
@@ -48,7 +51,8 @@ public class Engine extends Thread implements Actor, AutoCloseable {
                     continue;
                 }
             }
-            stage.clearReservation();
+            if (oldStage != null)
+                oldStage.release();
             i += 1;
             if (i == stages.length) {
                 i = 0;
@@ -57,9 +61,11 @@ public class Engine extends Thread implements Actor, AutoCloseable {
             data = stage.process(this, data);
             if (i == 0) {
                 data = null;
+                stage.release();
+                oldStage = null;
+            } else {
+                oldStage = stage;
             }
-            nextStage.makeReservation(this);
-            stage.release();
             stage = nextStage;
         }
     }
