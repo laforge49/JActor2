@@ -469,11 +469,6 @@ public class MailboxImpl implements JAMailbox, Runnable {
     }
 
     @Override
-    public JAMailbox createPort(final Mailbox _source, final int size) {
-        return this;
-    }
-
-    @Override
     public boolean isFull() {
         return false;
     }

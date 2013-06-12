@@ -1,6 +1,9 @@
 package org.agilewiki.jactor.util.firehose;
 
-public interface Stage {
+import org.agilewiki.jactor.api.Actor;
+import org.agilewiki.jactor.api.Mailbox;
+
+public interface Stage extends Actor {
 
     Object process(final Engine _engine, final Object data);
 
@@ -9,4 +12,7 @@ public interface Stage {
     void release();
 
     int availablePermits();
+
+    @Override
+    public FirehoseMailbox getMailbox();
 }

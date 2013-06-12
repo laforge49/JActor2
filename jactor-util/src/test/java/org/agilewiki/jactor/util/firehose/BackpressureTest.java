@@ -11,16 +11,19 @@ public class BackpressureTest extends TestCase {
     public void test1() throws Exception {
 //        long count = 100000000;
         long count = 100000;
-        MailboxFactory testMBF = new UtilMailboxFactory();
+        UtilMailboxFactory testMBF = new UtilMailboxFactory();
         try {
-            Backpressure backpressure = new Backpressure(count);
-            Passer passer1 = new Passer();
-            Passer passer2 = new Passer();
-            Passer passer3 = new Passer();
-            Passer passer4 = new Passer();
-            Passer passer5 = new Passer();
-            Load load2 = new Load(1);
-            TerminateB terminate = new TerminateB(count, Thread.currentThread());
+            Backpressure backpressure = new Backpressure(testMBF.createFirehoseMailbox(), count);
+            Passer passer1 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer2 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer3 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer4 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer5 = new Passer(testMBF.createFirehoseMailbox());
+            Load load2 = new Load(testMBF.createFirehoseMailbox(), 1);
+            TerminateB terminate = new TerminateB(
+                    testMBF.createFirehoseMailbox(),
+                    count,
+                    Thread.currentThread());
             long t0 = System.currentTimeMillis();
             int i = 0;
             while (i < 7) {
@@ -57,7 +60,8 @@ class Backpressure extends StageBase {
 
     private int sz = 1;
 
-    public Backpressure(final long _count) {
+    public Backpressure(FirehoseMailbox _mailbox, final long _count) {
+        super(_mailbox);
         count = _count;
     }
 

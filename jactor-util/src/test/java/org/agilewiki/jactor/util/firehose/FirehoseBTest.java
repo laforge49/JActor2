@@ -12,16 +12,16 @@ public class FirehoseBTest extends TestCase {
         long count = 10;
 //        long count = 1000000000;
         int threads = 8;
-        MailboxFactory testMBF = new UtilMailboxFactory();
+        UtilMailboxFactory testMBF = new UtilMailboxFactory();
         try {
-            GenerateB generate = new GenerateB(count);
-            Passer passer1 = new Passer();
-            Passer passer2 = new Passer();
-            Passer passer3 = new Passer();
-            Passer passer4 = new Passer();
-            Passer passer5 = new Passer();
-            Passer passer6 = new Passer();
-            TerminateB terminate = new TerminateB(count, Thread.currentThread());
+            GenerateB generate = new GenerateB(testMBF.createFirehoseMailbox(), count);
+            Passer passer1 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer2 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer3 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer4 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer5 = new Passer(testMBF.createFirehoseMailbox());
+            Passer passer6 = new Passer(testMBF.createFirehoseMailbox());
+            TerminateB terminate = new TerminateB(testMBF.createFirehoseMailbox(), count, Thread.currentThread());
             long t0 = System.currentTimeMillis();
             int i = 0;
             while (i < threads) {
@@ -56,7 +56,8 @@ class GenerateB extends StageBase {
 
     private long ndx;
 
-    public GenerateB(final long _count) {
+    public GenerateB(FirehoseMailbox _mailbox, final long _count) {
+        super(_mailbox);
         count = _count;
     }
 

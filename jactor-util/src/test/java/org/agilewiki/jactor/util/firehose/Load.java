@@ -5,7 +5,8 @@ import org.agilewiki.jactor.api.Mailbox;
 public class Load extends StageBase {
     int delay;
 
-    public Load(final int _delay) {
+    public Load(final FirehoseMailbox _mailbox, final int _delay) {
+        super(_mailbox);
         delay = _delay;
     }
 

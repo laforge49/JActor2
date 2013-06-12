@@ -7,10 +7,13 @@ import org.agilewiki.jactor.util.UtilMailboxFactory;
 public class FirehoseTest extends TestCase {
     public void test1() throws Exception {
         long count = 10;
-        MailboxFactory testMBF = new UtilMailboxFactory();
+        UtilMailboxFactory testMBF = new UtilMailboxFactory();
         try {
-            Generate generate = new Generate(count);
-            Terminate terminate = new Terminate(count, Thread.currentThread());
+            Generate generate = new Generate(testMBF.createFirehoseMailbox(), count);
+            Terminate terminate = new Terminate(
+                    testMBF.createFirehoseMailbox(),
+                    count,
+                    Thread.currentThread());
             long t0 = System.currentTimeMillis();
             new Engine(testMBF, generate, terminate);
             try {
@@ -33,7 +36,8 @@ class Generate extends StageBase {
 
     private long ndx;
 
-    public Generate(final long _count) {
+    public Generate(FirehoseMailbox _mailbox, final long _count) {
+        super(_mailbox);
         count = _count;
     }
 
@@ -53,7 +57,8 @@ class Terminate extends StageBase {
 
     private Thread thread;
 
-    public Terminate(final long _count, final Thread _thread) {
+    public Terminate(FirehoseMailbox _mailbox, final long _count, final Thread _thread) {
+        super(_mailbox);
         count = _count;
         thread = _thread;
     }
