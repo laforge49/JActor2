@@ -24,20 +24,16 @@ public class BackpressureTest extends TestCase {
                     testMBF.createFirehoseMailbox(),
                     count,
                     Thread.currentThread());
+            Stage[] stages = {backpressure,
+                    passer1,
+                    passer2,
+                    passer3,
+                    passer4,
+                    passer5,
+                    load2,
+                    terminate};
             long t0 = System.currentTimeMillis();
-            int i = 0;
-            while (i < 7) {
-                new Engine(testMBF,
-                        backpressure,
-                        passer1,
-                        passer2,
-                        passer3,
-                        passer4,
-                        passer5,
-                        load2,
-                        terminate);
-                i += 1;
-            }
+            new Firehose(testMBF, stages);
             try {
                 Thread.sleep(1000 * 60 * 60);
             } catch (Exception ex) {

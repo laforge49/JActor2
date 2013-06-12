@@ -21,21 +21,18 @@ public class FirehoseBTest extends TestCase {
             Passer passer4 = new Passer(testMBF.createFirehoseMailbox());
             Passer passer5 = new Passer(testMBF.createFirehoseMailbox());
             Passer passer6 = new Passer(testMBF.createFirehoseMailbox());
-            TerminateB terminate = new TerminateB(testMBF.createFirehoseMailbox(), count, Thread.currentThread());
+            TerminateB terminate = new TerminateB(
+                    testMBF.createFirehoseMailbox(), count, Thread.currentThread());
+            Stage[] stages = {generate,
+                    passer1,
+                    passer2,
+                    passer3,
+                    passer4,
+                    passer5,
+                    passer6,
+                    terminate};
             long t0 = System.currentTimeMillis();
-            int i = 0;
-            while (i < threads) {
-                new Engine(testMBF,
-                        generate,
-                        passer1,
-                        passer2,
-                        passer3,
-                        passer4,
-                        passer5,
-                        passer6,
-                        terminate);
-                i += 1;
-            }
+            new Firehose(testMBF, stages);
             try {
                 Thread.sleep(1000 * 60 * 60);
             } catch (Exception ex) {

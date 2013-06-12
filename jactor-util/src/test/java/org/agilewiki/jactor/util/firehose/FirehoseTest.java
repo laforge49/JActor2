@@ -6,7 +6,8 @@ import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 public class FirehoseTest extends TestCase {
     public void test1() throws Exception {
-        long count = 10;
+        long count = 100000;
+//        long count = 100000000;
         UtilMailboxFactory testMBF = new UtilMailboxFactory();
         try {
             Generate generate = new Generate(testMBF.createFirehoseMailbox(), count);
@@ -14,8 +15,9 @@ public class FirehoseTest extends TestCase {
                     testMBF.createFirehoseMailbox(),
                     count,
                     Thread.currentThread());
+            Stage[] stages = {generate, terminate};
             long t0 = System.currentTimeMillis();
-            new Engine(testMBF, generate, terminate);
+            new Firehose(testMBF, stages);
             try {
                 Thread.sleep(1000 * 60 * 60);
             } catch (Exception ex) {

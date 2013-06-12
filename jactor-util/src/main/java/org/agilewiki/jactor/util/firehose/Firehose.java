@@ -5,9 +5,9 @@ import org.agilewiki.jactor.api.MailboxFactory;
 public class Firehose {
 
     public Firehose(final MailboxFactory _mailboxFactory,
-                    final Stage[] _stages) {
+                    final Stage... _stages) {
         int i = 0;
-        while (i < _stages.length) {
+        while (i < _stages.length - 1) {
             new Engine(_mailboxFactory, _stages);
             i += 1;
         }
