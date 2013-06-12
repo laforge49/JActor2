@@ -281,7 +281,7 @@ public class MailboxImpl implements JAMailbox, Runnable {
     }
 
     @Override
-    public final void run() {
+    public void run() {
         if (messageProcessor != null)
             while (true) {
                 final Message message = inbox.poll();

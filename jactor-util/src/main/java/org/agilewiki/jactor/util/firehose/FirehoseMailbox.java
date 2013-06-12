@@ -30,4 +30,13 @@ public class FirehoseMailbox extends MailboxImpl {
         return semaphore.availablePermits();
     }
 
+    public void run() {
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            return; //closing
+        }
+        super.run();
+        semaphore.release();
+    }
 }
