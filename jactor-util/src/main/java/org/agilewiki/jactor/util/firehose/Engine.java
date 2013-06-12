@@ -4,13 +4,11 @@ import org.agilewiki.jactor.api.Actor;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
 
-public class Engine extends Thread implements Actor, AutoCloseable {
+public class Engine extends Thread implements AutoCloseable {
 
     public final MailboxFactory mailboxFactory;
 
     public final Stage[] stages;
-
-    public final Mailbox mailbox;
 
     private Stage nextStage;
 
@@ -23,12 +21,6 @@ public class Engine extends Thread implements Actor, AutoCloseable {
         mailboxFactory = _mailboxFactory;
         mailboxFactory.addAutoClosable(this);
         stages = _stages;
-        mailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
-            @Override
-            public void run() {
-                interrupt();
-            }
-        });
         start();
     }
 
@@ -45,10 +37,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
                     stage.getMailbox().acquire();
                     break;
                 } catch (InterruptedException e) {
-                    if (mailboxFactory.isClosing())
-                        return;
-                    mailbox.run();
-                    continue;
+                    return;
                 }
             }
             if (oldStage != null)
@@ -68,11 +57,6 @@ public class Engine extends Thread implements Actor, AutoCloseable {
             }
             stage = nextStage;
         }
-    }
-
-    @Override
-    public Mailbox getMailbox() {
-        return mailbox;
     }
 
     @Override
