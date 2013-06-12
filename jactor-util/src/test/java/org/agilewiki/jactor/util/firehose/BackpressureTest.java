@@ -9,8 +9,8 @@ import java.util.List;
 
 public class BackpressureTest extends TestCase {
     public void test1() throws Exception {
-//        long count = 1000000000;
-        long count = 100000;
+        long count = 1000000000;
+//        long count = 100000;
         UtilMailboxFactory testMBF = new UtilMailboxFactory();
         try {
             Backpressure backpressure = new Backpressure(testMBF.createFirehoseMailbox(), count);
@@ -32,8 +32,10 @@ public class BackpressureTest extends TestCase {
                     passer5,
                     load2,
                     terminate};
+            Firehose firehose = new Firehose(testMBF, stages);
+            backpressure.setFirehose(firehose);
             long t0 = System.currentTimeMillis();
-            new Firehose(testMBF, stages);
+            firehose.start();
             try {
                 Thread.sleep(1000 * 60 * 60);
             } catch (Exception ex) {
@@ -56,9 +58,15 @@ class Backpressure extends StageBase {
 
     private int sz = 1;
 
+    private Firehose firehose;
+
     public Backpressure(FirehoseMailbox _mailbox, final long _count) {
         super(_mailbox);
         count = _count;
+    }
+
+    public void setFirehose(final Firehose _firehose) {
+        firehose = _firehose;
     }
 
     @Override
@@ -70,6 +78,8 @@ class Backpressure extends StageBase {
             if (_engine.isNextStageAvailable())
                 break;
         }
+        if (ndx == count)
+            firehose.stop();
         sz = lst.size();
         return lst;
     }

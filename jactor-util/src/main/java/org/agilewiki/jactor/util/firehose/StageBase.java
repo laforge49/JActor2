@@ -6,7 +6,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
 abstract public class StageBase implements Stage {
-    private FirehoseMailbox mailbox;
+
+    public final FirehoseMailbox mailbox;
 
     public StageBase(final FirehoseMailbox _mailbox) {
         mailbox = _mailbox;

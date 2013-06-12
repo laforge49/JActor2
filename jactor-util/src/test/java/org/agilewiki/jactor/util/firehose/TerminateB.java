@@ -8,7 +8,9 @@ public class TerminateB extends StageBase {
 
     private Thread thread;
 
-    public TerminateB(FirehoseMailbox _mailbox, final long _count, final Thread _thread) {
+    public TerminateB(FirehoseMailbox _mailbox,
+                      final long _count,
+                      final Thread _thread) {
         super(_mailbox);
         count = _count;
         thread = _thread;

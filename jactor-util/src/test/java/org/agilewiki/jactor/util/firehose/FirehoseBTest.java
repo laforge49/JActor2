@@ -31,8 +31,10 @@ public class FirehoseBTest extends TestCase {
                     passer5,
                     passer6,
                     terminate};
+            Firehose firehose = new Firehose(testMBF, stages);
+            generate.setFirehose(firehose);
             long t0 = System.currentTimeMillis();
-            new Firehose(testMBF, stages);
+            firehose.start();
             try {
                 Thread.sleep(1000 * 60 * 60);
             } catch (Exception ex) {
@@ -53,9 +55,15 @@ class GenerateB extends StageBase {
 
     private long ndx;
 
+    private Firehose firehose;
+
     public GenerateB(FirehoseMailbox _mailbox, final long _count) {
         super(_mailbox);
         count = _count;
+    }
+
+    public void setFirehose(final Firehose _firehose) {
+        firehose = _firehose;
     }
 
     @Override
@@ -66,6 +74,8 @@ class GenerateB extends StageBase {
             ndx += 1;
             lst.add(ndx);
         }
+        if (ndx == count)
+            firehose.stop();
         return lst;
     }
 }
