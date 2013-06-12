@@ -5,11 +5,10 @@ import org.agilewiki.jactor.api.Mailbox;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
-abstract public class StageBase extends Semaphore implements Stage {
+abstract public class StageBase implements Stage {
     private FirehoseMailbox mailbox;
 
     public StageBase(final FirehoseMailbox _mailbox) {
-        super(1);
         mailbox = _mailbox;
     }
 

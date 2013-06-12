@@ -7,12 +7,6 @@ public interface Stage extends Actor {
 
     Object process(final Engine _engine, final Object data);
 
-    void acquire() throws InterruptedException;
-
-    void release();
-
-    int availablePermits();
-
     @Override
     public FirehoseMailbox getMailbox();
 }

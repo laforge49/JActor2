@@ -15,7 +15,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
     private Stage nextStage;
 
     public boolean isNextStageAvailable() {
-        return nextStage.availablePermits() > 0;
+        return nextStage.getMailbox().availablePermits() > 0;
     }
 
     public Engine(final MailboxFactory _mailboxFactory, final Stage... _stages) {
@@ -42,7 +42,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
                 return;
             while (true) {
                 try {
-                    stage.acquire();
+                    stage.getMailbox().acquire();
                     break;
                 } catch (InterruptedException e) {
                     if (mailboxFactory.isClosing())
@@ -52,7 +52,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
                 }
             }
             if (oldStage != null)
-                oldStage.release();
+                oldStage.getMailbox().release();
             i += 1;
             if (i == stages.length) {
                 i = 0;
@@ -61,7 +61,7 @@ public class Engine extends Thread implements Actor, AutoCloseable {
             data = stage.process(this, data);
             if (i == 0) {
                 data = null;
-                stage.release();
+                stage.getMailbox().release();
                 oldStage = null;
             } else {
                 oldStage = stage;
