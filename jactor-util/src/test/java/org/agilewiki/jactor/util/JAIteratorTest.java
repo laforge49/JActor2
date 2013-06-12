@@ -18,7 +18,7 @@ public class JAIteratorTest extends TestCase {
 //                Messages per second: 24,509,803
 
         System.out.println("shared mailbox test");
-        MailboxFactory mailboxFactory = new UtilMailboxFactory();
+        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             mailbox = mailboxFactory.createMailbox();
             counterMailbox = mailbox;
@@ -38,7 +38,7 @@ public class JAIteratorTest extends TestCase {
 //        Messages per second: 1,447,178
 
         System.out.println("async mailbox test");
-        MailboxFactory mailboxFactory = new UtilMailboxFactory();
+        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             mailbox = mailboxFactory.createMailbox();
             counterMailbox = mailboxFactory.createMailbox(true);

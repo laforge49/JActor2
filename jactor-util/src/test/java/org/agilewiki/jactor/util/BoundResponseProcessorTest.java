@@ -5,7 +5,7 @@ import org.agilewiki.jactor.api.*;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
-        final MailboxFactory mailboxFactory = new UtilMailboxFactory();
+        final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             final Driver driver = new Driver();
             driver.initialize(mailboxFactory.createMailbox());

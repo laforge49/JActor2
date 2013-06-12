@@ -1,12 +1,12 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 
 public class StringTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAString jaString1 = (JAString) Durables.newSerializable(mailboxFactory, JAString.FACTORY_NAME);
             JAString jaString2 = (JAString) jaString1.copyReq(null).call();

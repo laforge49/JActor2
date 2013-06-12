@@ -1,7 +1,6 @@
 package org.agilewiki.jactor.util.firehose;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 import java.util.ArrayList;

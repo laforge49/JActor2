@@ -2,14 +2,14 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.Mailbox;
-import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 import org.agilewiki.jactor.util.durable.Factory;
 import org.agilewiki.jactor.util.durable.FactoryLocator;
 
 public class TupleTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             Durables.registerTupleFactory(factoryLocator,

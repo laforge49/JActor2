@@ -1,12 +1,12 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 
 public class FloatTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAFloat float1 = (JAFloat) Durables.newSerializable(mailboxFactory, JAFloat.FACTORY_NAME);
             JAFloat float2 = (JAFloat) float1.copyReq(null).call();

@@ -1,6 +1,9 @@
 package org.agilewiki.jactor.osgi;
 
-import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.api.ActorBase;
+import org.agilewiki.jactor.api.Request;
+import org.agilewiki.jactor.api.RequestBase;
+import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.util.JAProperties;
 import org.agilewiki.jactor.util.UtilMailboxFactory;
 import org.osgi.framework.*;
@@ -31,7 +34,7 @@ abstract public class MailboxFactoryActivator
     /**
      * The mailbox factory used by the bundle.
      */
-    private MailboxFactory mailboxFactory;
+    private UtilMailboxFactory mailboxFactory;
 
     /**
      * The properties held by the mailbox factory.
@@ -99,7 +102,7 @@ abstract public class MailboxFactoryActivator
      *
      * @return The mailbox factory.
      */
-    protected MailboxFactory getMailboxFactory() {
+    protected UtilMailboxFactory getMailboxFactory() {
         return mailboxFactory;
     }
 

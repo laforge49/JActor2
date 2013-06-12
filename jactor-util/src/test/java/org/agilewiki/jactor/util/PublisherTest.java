@@ -2,13 +2,12 @@ package org.agilewiki.jactor.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.ActorBase;
-import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.api.Transport;
 import org.agilewiki.jactor.api.UnboundRequestBase;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = new UtilMailboxFactory();
+        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             Publisher p = new Publisher();
             p.initialize(mailboxFactory.createMailbox());

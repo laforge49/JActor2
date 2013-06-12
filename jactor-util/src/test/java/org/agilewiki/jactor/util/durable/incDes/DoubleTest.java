@@ -1,12 +1,12 @@
 package org.agilewiki.jactor.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 
 public class DoubleTest extends TestCase {
     public void test() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JADouble double1 = (JADouble) Durables.newSerializable(mailboxFactory, JADouble.FACTORY_NAME);
             JADouble double2 = (JADouble) double1.copy(null);

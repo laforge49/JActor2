@@ -2,12 +2,11 @@ package org.agilewiki.jactor.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.ActorBase;
-import org.agilewiki.jactor.api.MailboxFactory;
 
 public class PropertiesTest extends TestCase {
     public void test() throws Exception {
-        final MailboxFactory mailboxFactory1 = new UtilMailboxFactory();
-        final MailboxFactory mailboxFactory2 = new UtilMailboxFactory();
+        final UtilMailboxFactory mailboxFactory1 = new UtilMailboxFactory();
+        final UtilMailboxFactory mailboxFactory2 = new UtilMailboxFactory();
         try {
             JAProperties p1 = new JAProperties(mailboxFactory1, null);
             JAProperties p2 = new JAProperties(mailboxFactory2, p1);

@@ -15,14 +15,6 @@ public class Load extends StageBase {
         try {
             Thread.sleep(delay);
         } catch (InterruptedException ie) {
-            try {
-                Mailbox mailbox = _engine.mailbox;
-                if (!mailbox.getMailboxFactory().isClosing())
-                    mailbox.run();
-                else
-                    _engine.close();
-            } catch (Exception e) {
-            }
         }
         return data;
     }

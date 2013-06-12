@@ -10,7 +10,7 @@ public class AtomicTest extends TestCase {
     int count = 0;
 
     public void test1() throws Exception {
-        MailboxFactory mailboxFactory = new UtilMailboxFactory();
+        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             int _count = startReq1(mailboxFactory.createMailbox()).call();
             assertEquals(5, _count);
@@ -66,7 +66,7 @@ public class AtomicTest extends TestCase {
     }
 
     public void test2() throws Exception {
-        MailboxFactory mailboxFactory = new UtilMailboxFactory();
+        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             final FifoRequestProcessor fp = new FifoRequestProcessor();
             fp.initialize(mailboxFactory.createMailbox(true, fp));

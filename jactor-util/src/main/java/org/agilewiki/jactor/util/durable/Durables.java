@@ -29,8 +29,8 @@ public final class Durables {
      *
      * @return A mailbox factory whose properties include the factoryLocator.
      */
-    public static MailboxFactory createMailboxFactory() throws Exception {
-        MailboxFactory mailboxFactory = new UtilMailboxFactory();
+    public static UtilMailboxFactory createMailboxFactory() throws Exception {
+        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         FactoryLocator factoryLocator =
                 createFactoryLocator(mailboxFactory, "org.agilewiki.jactor.util.durable", "", "");
         registerFactories(factoryLocator);

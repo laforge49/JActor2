@@ -1,7 +1,10 @@
 package org.agilewiki.jactor.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.api.Mailbox;
+import org.agilewiki.jactor.api.Request;
+import org.agilewiki.jactor.api.RequestBase;
+import org.agilewiki.jactor.api.Transport;
 
 /**
  * Test code.
@@ -11,7 +14,7 @@ public class ParallelTest extends TestCase {
     private static final long DELAY = 200;
 
     private Mailbox mailbox;
-    private MailboxFactory mailboxFactory;
+    private UtilMailboxFactory mailboxFactory;
     private Request<Void> start;
 
     public void test() throws Exception {

@@ -2,12 +2,12 @@ package org.agilewiki.jactor.util.durable.incDes;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor.api.Mailbox;
-import org.agilewiki.jactor.api.MailboxFactory;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 import org.agilewiki.jactor.util.durable.Durables;
 
 public class IntegerJAIntegerBMapTest extends TestCase {
     public void test1() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
@@ -34,7 +34,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
     }
 
     public void test2() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
@@ -58,7 +58,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
     }
 
     public void test3() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
@@ -82,7 +82,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
     }
 
     public void test4() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
@@ -106,7 +106,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
     }
 
     public void test5() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
@@ -130,7 +130,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
     }
 
     public void test6() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
@@ -153,7 +153,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
     }
 
     public void test7() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
@@ -176,7 +176,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
     }
 
     public void test8() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
@@ -199,7 +199,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
     }
 
     public void test9() throws Exception {
-        MailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
