@@ -20,11 +20,9 @@ public interface Message<TARGET extends Actor> extends Runnable {
     void setExceptionHandler(final ExceptionHandler _exceptionHandler);
 
     /**
-     * Execute a Message on another thread.
-     *
-     * @param _Message The message to be executed on another thread.
+     * Execute the Message on another thread.
      */
-    void execute(final Message _Message);
+    void execute();
 
     /**
      * Returns the target actor.

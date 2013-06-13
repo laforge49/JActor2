@@ -50,7 +50,8 @@ abstract public class MessageImpl<TARGET extends Actor> implements Message<TARGE
     }
 
     @Override
-    public void execute(final Message _Message) {
+    public void execute() {
+        sameThread = false;
         throw new UnsupportedOperationException();
     }
 

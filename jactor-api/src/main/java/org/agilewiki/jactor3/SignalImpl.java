@@ -8,8 +8,8 @@ abstract public class SignalImpl<TARGET extends Actor>
     /**
      * Create a Signal message.
      *
-     * @param _message        The message that provides the context.
-     * @param _targetActor    The target actor.
+     * @param _message     The message that provides the context.
+     * @param _targetActor The target actor.
      */
     SignalImpl(final Message _message, final TARGET _targetActor) {
         super(_message, _targetActor);
@@ -17,27 +17,32 @@ abstract public class SignalImpl<TARGET extends Actor>
 
     @Override
     public void run() {
+        Semaphore sourceSemaphore = getSourceSemaphore();
         TARGET targetActor = getTargetActor();
-        try {
-            targetActor.getSemaphore().acquire();
-        } catch (InterruptedException e) {
-            return;
+        Semaphore targetSemaphore = getTargetActor().getSemaphore();
+        boolean sameSemaphore = sourceSemaphore == targetSemaphore;
+        if (!sameSemaphore) {
+            try {
+                targetSemaphore.acquire();
+            } catch (InterruptedException e) {
+                return;
+            }
+            if (isSameThread())
+                sourceSemaphore.release();
         }
-        if (isSameThread())
-            getSourceSemaphore().release();
         Message message = null;
         try {
             message = processSignal(targetActor);
-        } catch(Throwable e1) {
+        } catch (Throwable e1) {
             ExceptionHandler exceptionHandler = getExceptionHandler();
             if (exceptionHandler == null) {
-                targetActor.getSemaphore().release();
+                targetSemaphore.release();
                 e1.printStackTrace();
             } else
                 try {
                     exceptionHandler.processException(e1);
                 } catch (Throwable e2) {
-                    targetActor.getSemaphore().release();
+                    targetSemaphore.release();
                     e2.printStackTrace();
                 }
         }
