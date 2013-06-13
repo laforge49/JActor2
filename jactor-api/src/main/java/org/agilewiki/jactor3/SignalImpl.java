@@ -30,12 +30,14 @@ abstract public class SignalImpl<TARGET extends Actor>
             message = processSignal(targetActor);
         } catch(Throwable e1) {
             ExceptionHandler exceptionHandler = getExceptionHandler();
-            if (exceptionHandler == null)
+            if (exceptionHandler == null) {
+                targetActor.getSemaphore().release();
                 e1.printStackTrace();
-            else
+            } else
                 try {
                     exceptionHandler.processException(e1);
                 } catch (Throwable e2) {
+                    targetActor.getSemaphore().release();
                     e2.printStackTrace();
                 }
         }
