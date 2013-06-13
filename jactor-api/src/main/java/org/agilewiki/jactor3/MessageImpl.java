@@ -24,6 +24,12 @@ abstract public class MessageImpl<TARGET extends Actor> implements Message<TARGE
      */
     private boolean sameThread = true;
 
+    /**
+     * Create a message.
+     *
+     * @param _message        The message that provides the context.
+     * @param _targetActor    The target actor.
+     */
     MessageImpl(final Message _message, final TARGET _targetActor) {
         setSourceSemaphore(_message.getTargetActor().getSemaphore());
         setTargetActor(_targetActor);

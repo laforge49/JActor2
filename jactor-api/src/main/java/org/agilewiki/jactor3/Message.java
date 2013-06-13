@@ -26,5 +26,10 @@ public interface Message<TARGET extends Actor> extends Runnable {
      */
     void execute(final Message _Message);
 
+    /**
+     * Returns the target actor.
+     *
+     * @return The target actor.
+     */
     TARGET getTargetActor();
 }

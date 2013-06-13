@@ -5,6 +5,12 @@ import java.util.concurrent.Semaphore;
 abstract public class SignalImpl<TARGET extends Actor>
         extends MessageImpl<TARGET> implements Signal<TARGET> {
 
+    /**
+     * Create a Signal message.
+     *
+     * @param _message        The message that provides the context.
+     * @param _targetActor    The target actor.
+     */
     SignalImpl(final Message _message, final TARGET _targetActor) {
         super(_message, _targetActor);
     }
