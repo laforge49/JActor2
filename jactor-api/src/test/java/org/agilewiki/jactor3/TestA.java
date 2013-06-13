@@ -9,10 +9,7 @@ public class TestA extends TestCase implements Actor {
 
     public void test1() throws Exception {
         semaphore = new Semaphore(0);
-        SignalA signalA = new SignalA();
-        signalA.setSourceSemaphore(semaphore);
-        signalA.setTargetActor(new TargetA(new Semaphore(1)));
-        signalA.run();
+        new SignalA(semaphore, new TargetA(new Semaphore(1))).run();
         try {
             Thread.sleep(1000 * 60 * 60);
         } catch (Exception ex) {
@@ -27,6 +24,10 @@ public class TestA extends TestCase implements Actor {
 
 class SignalA extends SignalImpl<TargetA> {
 
+    SignalA(final Semaphore _sourceSemaphore, final TargetA _targetActor) {
+        super(_sourceSemaphore, _targetActor);
+    }
+
     @Override
     public Message processSignal(TargetA _targetActor) {
         return _targetActor.done(this);
@@ -40,7 +41,7 @@ class TargetA extends ActorBase {
      *
      * @param _semaphore The semaphore of the actor.
      */
-    public TargetA(Semaphore _semaphore) {
+    TargetA(Semaphore _semaphore) {
         super(_semaphore);
     }
 
