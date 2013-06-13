@@ -3,7 +3,7 @@ package org.agilewiki.jactor3;
 /**
  * A message is sent to another Actor and can be a Request or a Signal.
  */
-public interface Message {
+public interface Message extends Runnable {
 
     /**
      * Returns the active exception handler, if any.
