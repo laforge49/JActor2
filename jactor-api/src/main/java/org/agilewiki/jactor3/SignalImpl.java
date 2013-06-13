@@ -5,8 +5,8 @@ import java.util.concurrent.Semaphore;
 abstract public class SignalImpl<TARGET extends Actor>
         extends MessageImpl<TARGET> implements Signal<TARGET> {
 
-    SignalImpl(final Semaphore _sourceSemaphore, final TARGET _targetActor) {
-        super(_sourceSemaphore, _targetActor);
+    SignalImpl(final Message _message, final TARGET _targetActor) {
+        super(_message, _targetActor);
     }
 
     @Override
@@ -17,8 +17,22 @@ abstract public class SignalImpl<TARGET extends Actor>
         } catch (InterruptedException e) {
             return;
         }
-        getSourceSemaphore().release();
-        Message message = processSignal(targetActor);
+        if (isSameThread())
+            getSourceSemaphore().release();
+        Message message = null;
+        try {
+            message = processSignal(targetActor);
+        } catch(Throwable e1) {
+            ExceptionHandler exceptionHandler = getExceptionHandler();
+            if (exceptionHandler == null)
+                e1.printStackTrace();
+            else
+                try {
+                    exceptionHandler.processException(e1);
+                } catch (Throwable e2) {
+                    e2.printStackTrace();
+                }
+        }
         if (message == null)
             targetActor.getSemaphore().release();
         else

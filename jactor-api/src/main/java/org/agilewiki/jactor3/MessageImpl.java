@@ -2,7 +2,7 @@ package org.agilewiki.jactor3;
 
 import java.util.concurrent.Semaphore;
 
-abstract public class MessageImpl<TARGET extends Actor> implements Message {
+abstract public class MessageImpl<TARGET extends Actor> implements Message<TARGET> {
 
     /**
      * The current exception handler, or null.
@@ -19,8 +19,17 @@ abstract public class MessageImpl<TARGET extends Actor> implements Message {
      */
     private TARGET targetActor;
 
-    MessageImpl(final Semaphore _sourceSemaphore, final TARGET _targetActor) {
-        setSourceSemaphore(_sourceSemaphore);
+    /**
+     * True if message was not sent to another thread.
+     */
+    private boolean sameThread = true;
+
+    MessageImpl(final Message _message, final TARGET _targetActor) {
+        setSourceSemaphore(_message.getTargetActor().getSemaphore());
+        setTargetActor(_targetActor);
+    }
+
+    MessageImpl(final TARGET _targetActor) {
         setTargetActor(_targetActor);
     }
 
@@ -51,7 +60,12 @@ abstract public class MessageImpl<TARGET extends Actor> implements Message {
         targetActor = _targetActor;
     }
 
+    @Override
     public TARGET getTargetActor() {
         return targetActor;
+    }
+
+    protected boolean isSameThread() {
+        return sameThread;
     }
 }

@@ -3,7 +3,7 @@ package org.agilewiki.jactor3;
 /**
  * A message is sent to another Actor and can be a Request or a Signal.
  */
-public interface Message extends Runnable {
+public interface Message<TARGET extends Actor> extends Runnable {
 
     /**
      * Returns the active exception handler, if any.
@@ -25,4 +25,6 @@ public interface Message extends Runnable {
      * @param _Message The message to be executed on another thread.
      */
     void execute(final Message _Message);
+
+    TARGET getTargetActor();
 }

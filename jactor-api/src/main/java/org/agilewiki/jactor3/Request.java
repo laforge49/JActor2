@@ -3,7 +3,7 @@ package org.agilewiki.jactor3;
 /**
  * A Request is sent to another Actor and subsequently returned with a response.
  */
-public interface Request<TARGET extends Actor, RESPONSE> extends Message {
+public interface Request<TARGET extends Actor, RESPONSE> extends Message<TARGET> {
 
     /**
      * Calls a method on the target actor to process the Request.

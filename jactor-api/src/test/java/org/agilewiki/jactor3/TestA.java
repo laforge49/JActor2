@@ -9,7 +9,8 @@ public class TestA extends TestCase implements Actor {
 
     public void test1() throws Exception {
         semaphore = new Semaphore(0);
-        new SignalA(semaphore, new TargetA(new Semaphore(1))).run();
+        MainContext mainContext = new MainContext(this);
+        new SignalA(mainContext, new TargetA(new Semaphore(1))).run();
         try {
             Thread.sleep(1000 * 60 * 60);
         } catch (Exception ex) {
@@ -24,8 +25,8 @@ public class TestA extends TestCase implements Actor {
 
 class SignalA extends SignalImpl<TargetA> {
 
-    SignalA(final Semaphore _sourceSemaphore, final TargetA _targetActor) {
-        super(_sourceSemaphore, _targetActor);
+    SignalA(final Message _message, final TargetA _targetActor) {
+        super(_message, _targetActor);
     }
 
     @Override
