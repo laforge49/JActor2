@@ -8,9 +8,9 @@ public class TestA extends TestCase implements Actor {
     public Semaphore semaphore;
 
     public void test1() throws Exception {
-        semaphore = new Semaphore(0);
+        semaphore = new Semaphore(0, true);
         MainContext mainContext = new MainContext(this);
-        new SignalA(mainContext, new TargetA(new Semaphore(1))).run();
+        new SignalA(mainContext, new TargetA(new Semaphore(1, true))).run();
         try {
             Thread.sleep(1000 * 60 * 60);
         } catch (Exception ex) {

@@ -33,9 +33,9 @@ public class Loop2Test extends TestCase implements Loop2I {
     private Loop2Other other;
 
     public void test1() throws Exception {
-        semaphore = new Semaphore(0);
+        semaphore = new Semaphore(0, true);
         MainContext mainContext = new MainContext(this);
-        other = new Loop2Other(new Semaphore(1), this);
+        other = new Loop2Other(new Semaphore(1, true), this);
         long t0 = System.currentTimeMillis();
         new Loop2Signal(mainContext, other).run();
         try {

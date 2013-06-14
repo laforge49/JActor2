@@ -19,7 +19,7 @@ abstract public class SignalImpl<TARGET extends Actor>
     public Message iteration() {
         Semaphore sourceSemaphore = getSourceSemaphore();
         TARGET targetActor = getTargetActor();
-        Semaphore targetSemaphore = getTargetActor().getSemaphore();
+        Semaphore targetSemaphore = targetActor.getSemaphore();
         boolean sameSemaphore = sourceSemaphore == targetSemaphore;
         if (sameSemaphore) {
             if (!isSameThread()) {
@@ -30,18 +30,23 @@ abstract public class SignalImpl<TARGET extends Actor>
                 }
             }
         } else {
+            if (isSameThread()) {
+                sourceSemaphore.release();
+            }
             try {
                 targetSemaphore.acquire();
             } catch (InterruptedException e) {
                 return null;
             }
-            if (isSameThread()) {
-                sourceSemaphore.release();
-            }
         }
+        return process(targetActor);
+    }
+
+    private Message process(final TARGET _targetActor) {
+        Semaphore targetSemaphore = _targetActor.getSemaphore();
         Message message = null;
         try {
-            message = processSignal(targetActor);
+            message = processSignal(_targetActor);
         } catch (Throwable e1) {
             ExceptionHandler exceptionHandler = getExceptionHandler();
             if (exceptionHandler == null) {
@@ -56,7 +61,7 @@ abstract public class SignalImpl<TARGET extends Actor>
                 }
         }
         if (message == null) {
-            targetActor.getSemaphore().release();
+            targetSemaphore.release();
             return null;
         }
         return message;

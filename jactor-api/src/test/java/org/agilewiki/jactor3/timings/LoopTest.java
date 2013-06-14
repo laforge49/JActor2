@@ -7,15 +7,15 @@ import java.util.concurrent.Semaphore;
 
 public class LoopTest extends TestCase implements Actor {
 
-    private long count = 1;
-//    private long count = 1000000000;
+//    private long count = 1000;
+    private long count = 100000000;
 
     private int i;
 
     private Semaphore semaphore;
 
     public void test1() throws Exception {
-        semaphore = new Semaphore(0);
+        semaphore = new Semaphore(0, false);
         MainContext mainContext = new MainContext(this);
         long t0 = System.currentTimeMillis();
         new LoopSignal(mainContext, this).run();

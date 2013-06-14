@@ -38,10 +38,10 @@ public class Loop3Test extends TestCase implements Loop3I {
 
     public void test1() throws Exception {
         thread = Thread.currentThread();
-        semaphore = new Semaphore(1);
+        semaphore = new Semaphore(1, true);
         threadManager = ThreadManagerImpl.newThreadManager(10);
         MainContext mainContext = new MainContext(this);
-        other = new Loop3Other(new Semaphore(1), threadManager, this);
+        other = new Loop3Other(new Semaphore(1, true), threadManager, this);
         long t0 = System.currentTimeMillis();
         new Loop3Signal(mainContext, other).execute();
         try {
