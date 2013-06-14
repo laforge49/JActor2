@@ -21,6 +21,11 @@ public class TestA extends TestCase implements Actor {
     public Semaphore getSemaphore() {
         return semaphore;
     }
+
+    @Override
+    public ThreadManager getThreadManager() {
+        return null;
+    }
 }
 
 class SignalA extends SignalImpl<TargetA> {

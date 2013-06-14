@@ -13,4 +13,11 @@ public interface Actor {
      * @return The semaphore.
      */
     Semaphore getSemaphore();
+
+    /**
+     * Returns the thread manager associated with the actor.
+     *
+     * @return
+     */
+    ThreadManager getThreadManager();
 }

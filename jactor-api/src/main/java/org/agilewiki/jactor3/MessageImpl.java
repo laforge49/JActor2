@@ -52,7 +52,10 @@ abstract public class MessageImpl<TARGET extends Actor> implements Message<TARGE
     @Override
     public void execute() {
         sameThread = false;
-        throw new UnsupportedOperationException();
+        ThreadManager threadManager = targetActor.getThreadManager();
+        if (threadManager == null)
+            throw new UnsupportedOperationException("target actor does not have a thread manager");
+        threadManager.execute(this);
     }
 
     public void setSourceSemaphore(final Semaphore _sourceSemaphore) {
