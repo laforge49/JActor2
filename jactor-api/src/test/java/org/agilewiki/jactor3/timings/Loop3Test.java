@@ -23,7 +23,8 @@ class Loop3Signal extends SignalImpl<Loop3I> {
 
 public class Loop3Test extends TestCase implements Loop3I {
 
-    private long count = 10000000;
+    private long count = 1;
+//    private long count = 10000000;
 
     private int i;
 

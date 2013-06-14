@@ -23,7 +23,8 @@ class Loop2Signal extends SignalImpl<Loop2I> {
 
 public class Loop2Test extends TestCase implements Loop2I {
 
-    private long count = 100000000;
+//    private long count = 100000000;
+    private long count = 1;
 
     private int i;
 
