@@ -21,7 +21,15 @@ abstract public class SignalImpl<TARGET extends Actor>
         TARGET targetActor = getTargetActor();
         Semaphore targetSemaphore = getTargetActor().getSemaphore();
         boolean sameSemaphore = sourceSemaphore == targetSemaphore;
-        if (!sameSemaphore) {
+        if (sameSemaphore) {
+            if (!isSameThread()) {
+                try {
+                    targetSemaphore.acquire();
+                } catch (InterruptedException e) {
+                    return null;
+                }
+            }
+        } else {
             try {
                 targetSemaphore.acquire();
             } catch (InterruptedException e) {
