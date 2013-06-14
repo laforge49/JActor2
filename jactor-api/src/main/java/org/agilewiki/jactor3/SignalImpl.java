@@ -27,8 +27,9 @@ abstract public class SignalImpl<TARGET extends Actor>
             } catch (InterruptedException e) {
                 return null;
             }
-            if (isSameThread())
+            if (isSameThread()) {
                 sourceSemaphore.release();
+            }
         }
         Message message = null;
         try {
@@ -46,10 +47,10 @@ abstract public class SignalImpl<TARGET extends Actor>
                     e2.printStackTrace();
                 }
         }
-        if (message == null)
+        if (message == null) {
             targetActor.getSemaphore().release();
-        else
-            return message;
-        return null;
+            return null;
+        }
+        return message;
     }
 }

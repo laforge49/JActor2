@@ -9,7 +9,7 @@ public class MainContext extends MessageImpl<Actor> {
     }
 
     @Override
-    public void run() {
+    public Message iteration() {
         throw new UnsupportedOperationException();
     }
 }

@@ -82,7 +82,8 @@ abstract public class MessageImpl<TARGET extends Actor> implements Message<TARGE
     @Override
     public void run() {
         Message message = this;
-        while (message != null)
-            message = iteration();
+        while (message != null) {
+            message = message.iteration();
+        }
     }
 }
