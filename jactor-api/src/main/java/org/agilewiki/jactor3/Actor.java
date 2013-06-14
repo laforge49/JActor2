@@ -17,7 +17,7 @@ public interface Actor {
     /**
      * Returns the thread manager associated with the actor.
      *
-     * @return
+     * @return A thread manager, or null.
      */
     ThreadManager getThreadManager();
 }
