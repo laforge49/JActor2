@@ -30,4 +30,11 @@ public interface Message<TARGET extends Actor> extends Runnable {
      * @return The target actor.
      */
     TARGET getTargetActor();
+
+    /**
+     * Process a single message.
+     *
+     * @return The next message to process, or null.
+     */
+    Message iteration();
 }

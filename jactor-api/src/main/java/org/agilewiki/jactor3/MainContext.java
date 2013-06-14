@@ -4,7 +4,7 @@ import java.util.concurrent.Semaphore;
 
 public class MainContext extends MessageImpl<Actor> {
 
-    MainContext(Actor _targetActor) {
+    public MainContext(Actor _targetActor) {
         super(_targetActor);
     }
 

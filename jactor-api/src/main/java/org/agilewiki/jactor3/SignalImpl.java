@@ -11,12 +11,12 @@ abstract public class SignalImpl<TARGET extends Actor>
      * @param _message     The message that provides the context.
      * @param _targetActor The target actor.
      */
-    SignalImpl(final Message _message, final TARGET _targetActor) {
+    public SignalImpl(final Message _message, final TARGET _targetActor) {
         super(_message, _targetActor);
     }
 
     @Override
-    public void run() {
+    public Message iteration() {
         Semaphore sourceSemaphore = getSourceSemaphore();
         TARGET targetActor = getTargetActor();
         Semaphore targetSemaphore = getTargetActor().getSemaphore();
@@ -25,7 +25,7 @@ abstract public class SignalImpl<TARGET extends Actor>
             try {
                 targetSemaphore.acquire();
             } catch (InterruptedException e) {
-                return;
+                return null;
             }
             if (isSameThread())
                 sourceSemaphore.release();
@@ -49,6 +49,7 @@ abstract public class SignalImpl<TARGET extends Actor>
         if (message == null)
             targetActor.getSemaphore().release();
         else
-            message.run();
+            return message;
+        return null;
     }
 }

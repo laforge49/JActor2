@@ -78,4 +78,11 @@ abstract public class MessageImpl<TARGET extends Actor> implements Message<TARGE
     protected boolean isSameThread() {
         return sameThread;
     }
+
+    @Override
+    public void run() {
+        Message message = this;
+        while (message != null)
+            message = iteration();
+    }
 }
