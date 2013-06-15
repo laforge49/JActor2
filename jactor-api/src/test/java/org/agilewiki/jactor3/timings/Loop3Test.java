@@ -37,22 +37,27 @@ public class Loop3Test extends TestCase implements Loop3I {
     private Thread thread;
 
     public void test1() throws Exception {
-        thread = Thread.currentThread();
-        semaphore = new Semaphore(1, true);
+        System.gc();
         threadManager = ThreadManagerImpl.newThreadManager(10);
-        MainContext mainContext = new MainContext(this);
-        other = new Loop3Other(new Semaphore(1, true), threadManager, this);
-        long t0 = System.currentTimeMillis();
-        new Loop3Signal(mainContext, other).execute();
         try {
-            Thread.sleep(1000 * 60 * 60);
-        } catch (Exception ex) {
+            thread = Thread.currentThread();
+            semaphore = new Semaphore(1, true);
+            MainContext mainContext = new MainContext(this);
+            other = new Loop3Other(new Semaphore(1, true), threadManager, this);
+            long t0 = System.currentTimeMillis();
+            new Loop3Signal(mainContext, other).execute();
+            try {
+                Thread.sleep(1000 * 60 * 60);
+            } catch (Exception ex) {
+            }
+            long t1 = System.currentTimeMillis();
+            long d = t1 - t0;
+            System.out.println("elapsed time (ms): " + d);
+            if (d > 0)
+                System.out.println("messages per second: " + (2 * count * 1000 / d));
+        } finally {
+            threadManager.close();
         }
-        long t1 = System.currentTimeMillis();
-        long d = t1 - t0;
-        System.out.println("elapsed time (ms): " + d);
-        if (d > 0)
-            System.out.println("messages per second: " + (2 * count * 1000/d));
     }
 
     public Message again(final Signal _signal) {

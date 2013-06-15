@@ -33,6 +33,7 @@ public class Loop2Test extends TestCase implements Loop2I {
     private Loop2Other other;
 
     public void test1() throws Exception {
+        System.gc();
         semaphore = new Semaphore(0, true);
         MainContext mainContext = new MainContext(this);
         other = new Loop2Other(new Semaphore(1, true), this);
