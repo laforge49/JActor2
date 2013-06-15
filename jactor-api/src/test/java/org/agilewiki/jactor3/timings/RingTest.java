@@ -35,13 +35,18 @@ class RingOther extends ActorBase implements RingI {
 
     @Override
     public Message again(final Signal _signal, final long _i) {
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            return null;
+        }
         return new RingSignal(_signal, next, _i);
     }
 }
 
 public class RingTest extends TestCase implements RingI {
 
-//    private long count = 100000;
+//    private long count = 1000;
     private long count = 1;
 
     private long i;
@@ -81,6 +86,7 @@ public class RingTest extends TestCase implements RingI {
             next = new RingOther(new Semaphore(1), threadManager, next);
             next = new RingOther(new Semaphore(1), threadManager, next);
             long t0 = System.currentTimeMillis();
+            new RingSignal(mainContext, this, 0).execute();
             new RingSignal(mainContext, this, 0).execute();
             new RingSignal(mainContext, this, 0).execute();
             new RingSignal(mainContext, this, 0).execute();
