@@ -7,8 +7,8 @@ import java.util.concurrent.Semaphore;
 
 public class LoopTest extends TestCase implements Actor {
 
-//    private long count = 1000;
-    private long count = 1000000000;
+    private long count = 1000;
+//    private long count = 1000000000;
 
     private int i;
 
