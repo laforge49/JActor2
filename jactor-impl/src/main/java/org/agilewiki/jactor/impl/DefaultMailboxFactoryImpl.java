@@ -47,23 +47,40 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     private Properties properties;
 
     public DefaultMailboxFactoryImpl() {
-        this(null, null, MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
-                MessageQueue.INITIAL_BUFFER_SIZE);
+        this(
+                null,
+                null,
+                MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
+                MessageQueue.INITIAL_BUFFER_SIZE,
+                20);
+    }
+
+    public DefaultMailboxFactoryImpl(final int maxBlockingThreads) {
+        this(
+                null,
+                null,
+                MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
+                MessageQueue.INITIAL_BUFFER_SIZE,
+                maxBlockingThreads);
     }
 
     public DefaultMailboxFactoryImpl(final ThreadManager blockingThreadManager) {
-        this(blockingThreadManager, null,
+        this(
+                blockingThreadManager,
+                null,
                 MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
-                MessageQueue.INITIAL_BUFFER_SIZE);
+                MessageQueue.INITIAL_BUFFER_SIZE,
+                0);
     }
 
     public DefaultMailboxFactoryImpl(final ThreadManager blockingThreadManager,
                                      final MessageQueueFactory messageQueueFactory,
-                                     final int initialLocalMessageQueueSize, final int initialBufferSize) {
+                                     final int initialLocalMessageQueueSize,
+                                     final int initialBufferSize, final int maxBlockingThreads) {
         this.threadManager = ThreadManagerImpl.newThreadManager(Runtime
                 .getRuntime().availableProcessors() + 1);
-        this.blockingThreadManager = (blockingThreadManager == null) ? new ExecutorServiceWrapper(
-                Executors.newCachedThreadPool()) : blockingThreadManager;
+        this.blockingThreadManager = (blockingThreadManager == null) ? ThreadManagerImpl.newThreadManager(
+                maxBlockingThreads) : blockingThreadManager;
         this.messageQueueFactory = (messageQueueFactory == null) ? new DefaultMessageQueueFactoryImpl()
                 : messageQueueFactory;
         this.initialLocalMessageQueueSize = initialLocalMessageQueueSize;
