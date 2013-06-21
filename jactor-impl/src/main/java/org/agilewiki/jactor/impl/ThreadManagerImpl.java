@@ -22,7 +22,8 @@ final public class ThreadManagerImpl implements ThreadManager {
     /**
      * The tasks queue holds the tasks waiting to be processed.
      */
-    final private ConcurrentLinkedQueue<Runnable> tasks = new ConcurrentLinkedQueue<Runnable>();
+    final private ConcurrentLinkedQueue<JAMailbox> tasks =
+            new ConcurrentLinkedQueue<JAMailbox>();
 
     /**
      * When closing is true, concurrent exit as they finish their assigned tasks.
@@ -82,13 +83,13 @@ final public class ThreadManagerImpl implements ThreadManager {
                         taskRequest.acquire();
                         if (closing)
                             return;
-                        final Runnable task = tasks.poll();
-                        if (task != null)
+                        final JAMailbox mailbox = tasks.poll();
+                        if (mailbox != null)
                             try {
-                                task.run();
+                                mailbox.run();
                             } catch (final Throwable e) {
                                 logger.error(
-                                        "Exception thrown by a task's run method",
+                                        "Exception thrown by a mailbox's run method",
                                         e);
                             }
                     } catch (final InterruptedException e) {
@@ -107,11 +108,11 @@ final public class ThreadManagerImpl implements ThreadManager {
     /**
      * Begin running a task.
      *
-     * @param task A task to be processed on another thread.
+     * @param mailbox A task to be processed on another thread.
      */
     @Override
-    final public void execute(final Runnable task) {
-        tasks.add(task);
+    final public void execute(final JAMailbox mailbox) {
+        tasks.add(mailbox);
         taskRequest.release();
     }
 

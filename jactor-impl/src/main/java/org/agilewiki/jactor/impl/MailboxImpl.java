@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class MailboxImpl implements JAMailbox, Runnable {
+public class MailboxImpl implements JAMailbox {
 
     private final Logger log;
 

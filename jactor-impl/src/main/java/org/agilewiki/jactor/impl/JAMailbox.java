@@ -4,7 +4,7 @@ import org.agilewiki.jactor.api.Mailbox;
 
 import java.util.Queue;
 
-public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource {
+public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnable {
 
     public boolean isFull();
 

@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadFactory;
  * ThreadManager is a thread pool, but with a simplified API and
  * assumes that the thread pool has a fixed number of threads.
  */
-public interface ThreadManager extends Executor, AutoCloseable {
+public interface ThreadManager extends AutoCloseable {
     /**
      * Create and start the concurrent.
      *
@@ -18,12 +18,11 @@ public interface ThreadManager extends Executor, AutoCloseable {
     public void start(final int threadCount, final ThreadFactory threadFactory);
 
     /**
-     * Begin running a task.
+     * Begin running a mailbox.
      *
-     * @param runnable The run method is to be called by another thread.
+     * @param mailbox The run method is to be called by another thread.
      */
-    @Override
-    public void execute(final Runnable runnable);
+    public void execute(final JAMailbox mailbox);
 
     /**
      * Stop all the threads as they complete their tasks.

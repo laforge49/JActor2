@@ -140,10 +140,10 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     @Override
-    public final void submit(final Runnable task, final boolean willBlock)
+    public final void submit(final JAMailbox mailbox, final boolean willBlock)
             throws Exception {
         try {
-            (willBlock ? blockingThreadManager : threadManager).execute(task);
+            (willBlock ? blockingThreadManager : threadManager).execute(mailbox);
         } catch (final Exception e) {
             if (!isClosing())
                 throw e;
