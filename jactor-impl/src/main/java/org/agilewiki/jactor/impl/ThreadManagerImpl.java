@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A high performance implementation of ThreadManager.
@@ -78,20 +79,26 @@ final public class ThreadManagerImpl implements ThreadManager {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                final Thread currentThread = Thread.currentThread();
                 while (true) {
                     try {
                         taskRequest.acquire();
                         if (closing)
                             return;
                         final JAMailbox mailbox = tasks.poll();
-                        if (mailbox != null)
-                            try {
-                                mailbox.run();
-                            } catch (final Throwable e) {
-                                logger.error(
-                                        "Exception thrown by a mailbox's run method",
-                                        e);
-                            }
+                        if (mailbox != null) {
+                            final AtomicReference<Thread> threadReference = mailbox.getThreadReference();
+                            if (threadReference.get() == null && threadReference.compareAndSet(null, currentThread))
+                                try {
+                                    mailbox.run();
+                                } catch (final Throwable e) {
+                                    logger.error(
+                                            "Exception thrown by a mailbox's run method",
+                                            e);
+                                } finally {
+                                    threadReference.set(null);
+                                }
+                        }
                     } catch (final InterruptedException e) {
                     }
                 }

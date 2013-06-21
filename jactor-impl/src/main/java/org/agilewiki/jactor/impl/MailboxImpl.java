@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MailboxImpl implements JAMailbox {
 
@@ -13,7 +13,7 @@ public class MailboxImpl implements JAMailbox {
 
     private final JAMailboxFactory mailboxFactory;
     private final MessageQueue inbox;
-    private final AtomicBoolean running = new AtomicBoolean();
+    private final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
     private final Runnable onIdle;
     private final Runnable messageProcessor;
     private final int initialBufferSize;
@@ -34,6 +34,11 @@ public class MailboxImpl implements JAMailbox {
     private ExceptionHandler exceptionHandler;
     private Message currentMessage;
 
+    @Override
+    public AtomicReference<Thread> getThreadReference() {
+        return threadReference;
+    }
+
     public MailboxImpl(final boolean _mayBlock, final Runnable _onIdle,
                        final Runnable _messageProcessor, final JAMailboxFactory factory,
                        final MessageQueue messageQueue, final Logger _log,
@@ -41,7 +46,6 @@ public class MailboxImpl implements JAMailbox {
         mayBlock = _mayBlock;
         onIdle = _onIdle;
         messageProcessor = _messageProcessor;
-        running.set(messageProcessor != null);
         mailboxFactory = factory;
         inbox = messageQueue;
         log = _log;
@@ -150,7 +154,7 @@ public class MailboxImpl implements JAMailbox {
      */
     @Override
     public final boolean isRunning() {
-        return running.get();
+        return messageProcessor != null || threadReference.get() != null;
     }
 
     @Override
@@ -182,7 +186,7 @@ public class MailboxImpl implements JAMailbox {
     @Override
     public final ExceptionHandler setExceptionHandler(
             final ExceptionHandler handler) {
-        if (!running.get())
+        if (!isRunning())
             throw new IllegalStateException(
                     "Attempt to set an exception handler on an idle mailbox");
         final ExceptionHandler rv = this.exceptionHandler;
@@ -246,13 +250,11 @@ public class MailboxImpl implements JAMailbox {
          * The compareAndSet method is a moderately expensive operation,
          * so we use a guard expression to reduce the number of times it is called.
          */
-        if (!running.get() && running.compareAndSet(false, true)) {
-            if (inbox.isNonEmpty())
-                mailboxFactory.submit(this, mayBlock);
-            else
-                running.set(false);
-        } else if (messageProcessor != null)
+        if (messageProcessor != null)
             messageProcessor.run();
+        else if (threadReference.get() == null && inbox.isNonEmpty()) {
+            mailboxFactory.submit(this, mayBlock);
+        }
     }
 
     /**
@@ -282,45 +284,25 @@ public class MailboxImpl implements JAMailbox {
 
     @Override
     public void run() {
-        if (messageProcessor != null)
-            while (true) {
-                final Message message = inbox.poll();
-                if (message == null)
-                    if (onIdle())
-                        return;
-                if (message.isResponsePending())
-                    processRequestMessage(message);
-                else
-                    processResponseMessage(message);
+        while (true) {
+            final Message message = inbox.poll();
+            if (message == null) {
+                onIdle();
+                if (inbox.isNonEmpty())
+                    continue;
+                return;
             }
-        else
-            while (true) {
-                final Message message = inbox.poll();
-                if (message == null) {
-                    if (!onIdle())
-                        continue;
-                    running.set(false);
-                    // If inbox.isNonEmpty() was ever to throw an Exception,
-                    // we should still be in a consistent state, since there
-                    // was no unprocessed message, and running was set to false.
-                    if (inbox.isNonEmpty()) {
-                        if (!running.compareAndSet(false, true))
-                            return;
-                        continue;
-                    }
-                    return;
-                }
-                if (message.isResponsePending())
-                    processRequestMessage(message);
-                else
-                    processResponseMessage(message);
-            }
+            if (message.isResponsePending())
+                processRequestMessage(message);
+            else
+                processResponseMessage(message);
+        }
     }
 
     /**
      * Called when all pending messages have been processed.
      */
-    private boolean onIdle() {
+    private void onIdle() {
         try {
             flush();
         } catch (final Throwable t) {
@@ -328,9 +310,7 @@ public class MailboxImpl implements JAMailbox {
         }
         if (onIdle != null) {
             onIdle.run();
-            return !inbox.isNonEmpty();
         }
-        return true;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
