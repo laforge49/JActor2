@@ -39,9 +39,7 @@ public class FirstStage extends ActorBase implements Runnable {
             public void processResponse(Void response) throws Exception {
                 ackCount -= 1;
                 if (list != null) {
-                    next.processDataReq(firehoseData).signal(getMailbox());
-                    list = null;
-                    firehoseData = null;
+                    send();
                 }
             }
         });
@@ -54,15 +52,43 @@ public class FirstStage extends ActorBase implements Runnable {
         firehoseData = new FirehoseData(ack, list);
     }
 
+    private void send() throws Exception {
+        next.processDataReq(firehoseData).signal(getMailbox());
+        list = null;
+        firehoseData = null;
+    }
+
+    private void exception(Exception e) {
+        e.printStackTrace();
+        try {
+            getMailbox().getMailboxFactory().close();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            return;
+        }
+    }
+
+    private void add() {
+        ndx += 1;
+        list.add(ndx);
+    }
+
     @Override
     public void run() {
-        /*
+        while (ndx < count && ackCount < maxWindowSize) {
+            createList();
+            add();
+            try {
+                send();
+            } catch (Exception e) {
+                exception(e);
+            }
+        }
         if (ndx >= count)
             return;
         createList();
-        while (getMailbox().isEmpty() && ) {
-
+        while (getMailbox().isEmpty()) {
+            add();
         }
-        */
     }
 }
