@@ -86,30 +86,6 @@ public class MailboxImpl implements JAMailbox {
         }
     }
 
-    /**
-     * Flushes buffered messages, if any.
-     * Returns true if there was any.
-     *
-     * @throws Exception
-     */
-    @Override
-    public final boolean flush() throws Exception {
-        boolean result = false;
-        if (sendBuffer != null) {
-            final Iterator<Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
-                    .entrySet().iterator();
-            while (iter.hasNext()) {
-                result = true;
-                final Entry<JAMailbox, ArrayDeque<Message>> entry = iter.next();
-                final JAMailbox target = entry.getKey();
-                final ArrayDeque<Message> messages = entry.getValue();
-                iter.remove();
-                target.addUnbufferedMessages(messages);
-            }
-        }
-        return result;
-    }
-
     @Override
     public final <A extends Actor> void signal(final _Request<Void, A> request,
                                                final A targetActor) throws Exception {
@@ -303,14 +279,39 @@ public class MailboxImpl implements JAMailbox {
      * Called when all pending messages have been processed.
      */
     private void onIdle() {
-        try {
-            flush();
-        } catch (final Throwable t) {
-            log.error("Exception thrown by flush", t);
-        }
+        flush();
         if (onIdle != null) {
             onIdle.run();
+            flush();
         }
+    }
+
+    /**
+     * Flushes buffered messages, if any.
+     * Returns true if there was any.
+     *
+     * @throws Exception
+     */
+    @Override
+    public final boolean flush() {
+        boolean result = false;
+        if (sendBuffer != null) {
+            final Iterator<Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
+                    .entrySet().iterator();
+            while (iter.hasNext()) {
+                result = true;
+                final Entry<JAMailbox, ArrayDeque<Message>> entry = iter.next();
+                final JAMailbox target = entry.getKey();
+                final ArrayDeque<Message> messages = entry.getValue();
+                iter.remove();
+                try {
+                    target.addUnbufferedMessages(messages);
+                } catch (Exception e) {
+                    log.error("Exception thrown by flush", e);
+                }
+            }
+        }
+        return result;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
