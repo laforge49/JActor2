@@ -18,6 +18,7 @@ public class NullStage extends ActorBase implements DataProcessor {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 next.processDataReq(_firehoseData).signal(getMailbox());
+                _transport.processResponse(null);
             }
         };
     }

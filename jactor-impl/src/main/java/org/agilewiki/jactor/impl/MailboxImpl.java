@@ -279,18 +279,16 @@ public class MailboxImpl implements JAMailbox {
      * Called when all pending messages have been processed.
      */
     private void onIdle() {
-        flush();
         if (onIdle != null) {
-            onIdle.run();
             flush();
+            onIdle.run();
         }
+        flush();
     }
 
     /**
      * Flushes buffered messages, if any.
      * Returns true if there was any.
-     *
-     * @throws Exception
      */
     @Override
     public final boolean flush() {
@@ -433,10 +431,6 @@ public class MailboxImpl implements JAMailbox {
     @Override
     public final void incomingResponse(final Message message,
                                        final JAMailbox responseSource) {
-//        final MailboxImpl sourceMailbox = (MailboxImpl) responseSource;
-//        if (!sourceMailbox.running.get())
-//            throw new IllegalStateException(
-//                    "A valid source mailbox can not be idle");
         try {
             addMessage(null, message, this == responseSource);
         } catch (final Throwable t) {

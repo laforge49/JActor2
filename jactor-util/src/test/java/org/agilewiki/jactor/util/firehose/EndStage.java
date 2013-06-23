@@ -13,6 +13,7 @@ public class EndStage extends ActorBase implements DataProcessor {
             public void processRequest(Transport<Void> _transport) throws Exception {
                 Thread.sleep(1);
                 _firehoseData.getAck().processResponse(getMailbox(), null);
+                _transport.processResponse(null);
             }
         };
     }
