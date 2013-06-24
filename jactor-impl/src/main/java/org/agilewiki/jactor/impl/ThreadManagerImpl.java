@@ -83,23 +83,29 @@ final public class ThreadManagerImpl implements ThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        if (closing)
-                            return;
-                        final JAMailbox mailbox = tasks.poll();
+                        JAMailbox mailbox = tasks.poll();
                         if (mailbox != null) {
-                            final AtomicReference<Thread> threadReference = mailbox.getThreadReference();
-                            if (threadReference.get() == null && threadReference.compareAndSet(null, currentThread))
-                                try {
-                                    mailbox.run();
-                                } catch (final Throwable e) {
-                                    logger.error(
-                                            "Exception thrown by a mailbox's run method",
-                                            e);
-                                } finally {
-                                    threadReference.set(null);
-                                }
+                            while (true) {
+                                final AtomicReference<Thread> threadReference = mailbox.getThreadReference();
+                                if (threadReference.get() == null && threadReference.compareAndSet(null, currentThread))
+                                    try {
+                                        mailbox.run();
+                                    } catch (final MigrateException me) {
+                                        mailbox = me.mailbox;
+                                        continue;
+                                    } catch (final Throwable e) {
+                                        logger.error(
+                                                "Exception thrown by a mailbox's run method",
+                                                e);
+                                    } finally {
+                                        threadReference.set(null);
+                                    }
+                                break;
+                            }
                         }
                     } catch (final InterruptedException e) {
+                        if (closing)
+                            return;
                     }
                 }
             }

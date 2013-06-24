@@ -1,7 +1,12 @@
 package org.agilewiki.jactor.impl;
 
-public class MigrateException extends Exception {
-    public MigrateException singleton = new MigrateException();
+public class MigrateException extends RuntimeException {
+
+    public JAMailbox mailbox;
+
+    public MigrateException(final JAMailbox _mailbox) {
+        mailbox = _mailbox;
+    }
 
     /**
      * Speeds things up by not filling in the stack trace.
