@@ -1,7 +1,6 @@
 package org.agilewiki.jactor.util.firehose;
 
-import org.agilewiki.jactor.api.ActorBase;
-import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api.*;
 import org.agilewiki.jactor.util.BoundResponseProcessor;
 import org.agilewiki.jactor.util.UtilMailboxFactory;
 
@@ -26,11 +25,15 @@ public class FirstStage extends ActorBase implements Runnable {
 
     private BoundResponseProcessor<Void> ack;
 
+    Thread mainThread;
+
     public FirstStage(final UtilMailboxFactory _mailboxFactory,
                       final DataProcessor _next,
                       final long _count,
                       final int _maxWindowSize)
             throws Exception {
+        System.out.println("create");//todo
+        mainThread = Thread.currentThread();
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
@@ -38,12 +41,22 @@ public class FirstStage extends ActorBase implements Runnable {
         ack = new BoundResponseProcessor<Void>(getMailbox(), new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {
+                System.out.println("got ack, ackCount = "+ackCount);//todo
                 ackCount -= 1;
                 if (list != null) {
                     send();
                 }
+                if (ackCount == 0 && ndx >= _count)
+                    mainThread.interrupt();
             }
         });
+        System.out.println("created");//todo
+        new RequestBase<Void>(getMailbox()) {
+
+            @Override
+            public void processRequest(Transport<Void> _transport) throws Exception {
+            }
+        }.signal();
     }
 
     private void createList() {
@@ -55,8 +68,10 @@ public class FirstStage extends ActorBase implements Runnable {
 
     private void send() throws Exception {
         next.processDataReq(firehoseData).signal(getMailbox());
+        System.out.println("sent "+list.size());//todo
         list = null;
         firehoseData = null;
+        ackCount += 1;
     }
 
     private void exception(Exception e) {
@@ -76,6 +91,7 @@ public class FirstStage extends ActorBase implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("run");
         while (ndx < count && ackCount < maxWindowSize) {
             createList();
             add();
@@ -89,7 +105,7 @@ public class FirstStage extends ActorBase implements Runnable {
         if (ndx >= count)
             return;
         createList();
-        while (getMailbox().isEmpty()) {
+        while (getMailbox().isEmpty() && ndx < count) {
             add();
         }
     }
