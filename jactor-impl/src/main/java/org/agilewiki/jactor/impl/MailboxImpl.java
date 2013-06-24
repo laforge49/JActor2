@@ -268,7 +268,13 @@ public class MailboxImpl implements JAMailbox {
         while (true) {
             final Message message = inbox.poll();
             if (message == null) {
-                onIdle();
+                try {
+                    onIdle();
+                } catch (final MigrateException me) {
+                    throw me;
+                } catch (Exception e) {
+                    log.error("Exception thrown by onIdle", e);
+                }
                 if (inbox.isNonEmpty())
                     continue;
                 return;
@@ -283,7 +289,7 @@ public class MailboxImpl implements JAMailbox {
     /**
      * Called when all pending messages have been processed.
      */
-    private void onIdle() {
+    private void onIdle() throws Exception {
         if (onIdle != null) {
             flush();
             onIdle.run();
@@ -291,12 +297,16 @@ public class MailboxImpl implements JAMailbox {
         flush();
     }
 
+    @Override
+    public final boolean flush() throws Exception {
+        return flush(false);
+    }
+
     /**
      * Flushes buffered messages, if any.
      * Returns true if there was any.
      */
-    @Override
-    public final boolean flush() {
+    public final boolean flush(boolean mayMigrate) throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
             final Iterator<Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
@@ -307,11 +317,7 @@ public class MailboxImpl implements JAMailbox {
                 final JAMailbox target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
-                try {
-                    target.addUnbufferedMessages(messages);
-                } catch (Exception e) {
-                    log.error("Exception thrown by flush", e);
-                }
+                target.addUnbufferedMessages(messages);
             }
         }
         return result;
