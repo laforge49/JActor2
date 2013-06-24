@@ -318,6 +318,8 @@ public class MailboxImpl implements JAMailbox {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.addUnbufferedMessages(messages);
+                if (!iter.hasNext() && mayMigrate && target.isEmpty())
+                    throw new MigrateException(target);
             }
         }
         return result;
