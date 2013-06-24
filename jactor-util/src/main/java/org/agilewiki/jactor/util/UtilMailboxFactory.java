@@ -6,4 +6,11 @@ import org.agilewiki.jactor.impl.MessageQueue;
 import org.slf4j.Logger;
 
 public final class UtilMailboxFactory<M extends JAMailbox> extends DefaultMailboxFactoryImpl<M> {
+    public UtilMailboxFactory() {
+        super();
+    }
+
+    public UtilMailboxFactory(final int maxBlockingThreads) {
+        super(maxBlockingThreads);
+    }
 }

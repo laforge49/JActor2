@@ -27,12 +27,13 @@ public class FirstStage extends ActorBase implements Runnable {
 
     Thread mainThread;
 
+    long t0;
+
     public FirstStage(final UtilMailboxFactory _mailboxFactory,
                       final DataProcessor _next,
                       final long _count,
                       final int _maxWindowSize)
             throws Exception {
-        System.out.println("create");//todo
         mainThread = Thread.currentThread();
         next = _next;
         count = _count;
@@ -41,16 +42,25 @@ public class FirstStage extends ActorBase implements Runnable {
         ack = new BoundResponseProcessor<Void>(getMailbox(), new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {
-                System.out.println("got ack, ackCount = "+ackCount);//todo
                 ackCount -= 1;
                 if (list != null) {
                     send();
                 }
-                if (ackCount == 0 && ndx >= _count)
+                if (ackCount == 0 && ndx >= _count) {
+                    long t1 = System.currentTimeMillis();
+                    long d = t1 - t0;
+                    System.out.println("time in millis: " + d);
+                    System.out.println("number of Long: " + count);
+                    System.out.println("window size: " + maxWindowSize);
+                    if (d > 0) {
+                        System.out.println("Longs/second through the firehose: " + count*1000L/d);
+                        System.out.println("Longs/second passed between stages: " + 10L*count*1000L/d);
+                    }
                     mainThread.interrupt();
+                }
             }
         });
-        System.out.println("created");//todo
+        t0 = System.currentTimeMillis();
         new RequestBase<Void>(getMailbox()) {
 
             @Override
@@ -68,7 +78,6 @@ public class FirstStage extends ActorBase implements Runnable {
 
     private void send() throws Exception {
         next.processDataReq(firehoseData).signal(getMailbox());
-        System.out.println("sent "+list.size());//todo
         list = null;
         firehoseData = null;
         ackCount += 1;
@@ -91,7 +100,6 @@ public class FirstStage extends ActorBase implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("run");
         while (ndx < count && ackCount < maxWindowSize) {
             createList();
             add();
