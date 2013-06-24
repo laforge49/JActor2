@@ -104,9 +104,9 @@ final public class ThreadManagerImpl implements ThreadManager {
                             }
                         }
                     } catch (final InterruptedException e) {
-                        if (closing)
-                            return;
                     }
+                    if (closing)
+                        return;
                 }
             }
         };
