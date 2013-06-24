@@ -8,7 +8,7 @@ import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 public class EndStage extends ActorBase implements DataProcessor {
 
-    public EndStage(final UtilMailboxFactory _mailboxFactory, final DataProcessor _next)
+    public EndStage(final UtilMailboxFactory _mailboxFactory)
             throws Exception {
         initialize(_mailboxFactory.createMailbox(true));
     }

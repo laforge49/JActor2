@@ -28,7 +28,8 @@ public class FirstStage extends ActorBase implements Runnable {
 
     public FirstStage(final UtilMailboxFactory _mailboxFactory,
                       final DataProcessor _next,
-                      final long _count, final int _maxWindowSize)
+                      final long _count,
+                      final int _maxWindowSize)
             throws Exception {
         next = _next;
         count = _count;
