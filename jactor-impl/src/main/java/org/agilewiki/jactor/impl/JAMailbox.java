@@ -20,4 +20,6 @@ public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnab
      * @return
      */
     AtomicReference<Thread> getThreadReference();
+
+    boolean isIdler();
 }

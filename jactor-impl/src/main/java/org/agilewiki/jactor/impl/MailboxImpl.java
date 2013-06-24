@@ -35,6 +35,11 @@ public class MailboxImpl implements JAMailbox {
     private Message currentMessage;
 
     @Override
+    public boolean isIdler() {
+        return onIdle != null;
+    }
+
+    @Override
     public AtomicReference<Thread> getThreadReference() {
         return threadReference;
     }
