@@ -1,6 +1,7 @@
 package org.agilewiki.jactor.util.firehose;
 
 import org.agilewiki.jactor.api.*;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 import java.util.List;
 
@@ -10,10 +11,10 @@ public class NullStage extends ActorBase implements DataProcessor {
 
     public long total;
 
-    public NullStage(final Mailbox _mailbox, final DataProcessor _next)
+    public NullStage(final UtilMailboxFactory _mailboxFactory, final DataProcessor _next)
             throws Exception {
         next = _next;
-        initialize(_mailbox);
+        initialize(_mailboxFactory.createMailbox(true));
     }
 
     @Override

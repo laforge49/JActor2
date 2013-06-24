@@ -4,8 +4,15 @@ import org.agilewiki.jactor.api.ActorBase;
 import org.agilewiki.jactor.api.Request;
 import org.agilewiki.jactor.api.RequestBase;
 import org.agilewiki.jactor.api.Transport;
+import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 public class EndStage extends ActorBase implements DataProcessor {
+
+    public EndStage(final UtilMailboxFactory _mailboxFactory, final DataProcessor _next)
+            throws Exception {
+        initialize(_mailboxFactory.createMailbox(true));
+    }
+
     @Override
     public Request<Void> processDataReq(final FirehoseData _firehoseData) {
         return new RequestBase<Void>(getMailbox()) {
