@@ -295,10 +295,10 @@ public class MailboxImpl implements JAMailbox {
      */
     private void onIdle() throws Exception {
         if (onIdle != null) {
-            flush();
+            flush(true);
             onIdle.run();
         }
-        flush();
+        flush(true);
     }
 
     @Override
@@ -337,7 +337,6 @@ public class MailboxImpl implements JAMailbox {
                         throw new MigrateException(target);
                     }
                 }
-                System.out.println("!");
                 target.addUnbufferedMessages(messages);
             }
         }

@@ -22,6 +22,7 @@ public class NullStage extends ActorBase implements DataProcessor {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
+                //Thread.sleep(1);
                 List<Long> list = _firehoseData.getContent();
                 int s = list.size();
                 total = 0;

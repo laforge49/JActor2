@@ -10,6 +10,7 @@ import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
  */
 public class Test2 extends TestCase {
     public void testI() throws Exception {
+        System.out.println("testI");
         final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
         final Mailbox mailbox = mailboxFactory.createMailbox(true);
         final ActorA actorA = new ActorA(mailbox);
@@ -20,10 +21,12 @@ public class Test2 extends TestCase {
             mailboxFactory.close();
             return;
         }
+        mailboxFactory.close();
         throw new Exception("Security exception was not caught");
     }
 
     public void testIII() throws Exception {
+        System.out.println("testIII");
         final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
         final ActorA actorA = new ActorA(mailboxFactory.createMailbox(true));
         final ActorB actorB = new ActorB(mailboxFactory.createMailbox(true));
@@ -33,6 +36,7 @@ public class Test2 extends TestCase {
             mailboxFactory.close();
             return;
         }
+        mailboxFactory.close();
         throw new Exception("Security exception was not caught");
     }
 }

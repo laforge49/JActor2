@@ -84,16 +84,18 @@ final public class ThreadManagerImpl implements ThreadManager {
                     try {
                         taskRequest.acquire();
                         JAMailbox mailbox = tasks.poll();
-                        JAMailbox oldMailbox = null;
                         if (mailbox != null) {
-                            final AtomicReference<Thread> threadReference = mailbox.getThreadReference();
+                            AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                             while (true) {
-                                if (threadReference.get() == null && threadReference.compareAndSet(null, currentThread))
+                                if (threadReference.get() == null && threadReference.compareAndSet(null, currentThread)) {
                                     try {
                                         mailbox.run();
                                     } catch (final MigrateException me) {
-                                        oldMailbox = mailbox;
+                                        threadReference.set(null);
+                                        if (mailbox.isIdler())
+                                            execute(mailbox);
                                         mailbox = me.mailbox;
+                                        threadReference = mailbox.getThreadReference();
                                         continue;
                                     } catch (final Throwable e) {
                                         logger.error(
@@ -101,9 +103,8 @@ final public class ThreadManagerImpl implements ThreadManager {
                                                 e);
                                     } finally {
                                         threadReference.set(null);
-                                        if (oldMailbox != null && oldMailbox.isIdler())
-                                            execute(oldMailbox);
                                     }
+                                }
                                 break;
                             }
                         }

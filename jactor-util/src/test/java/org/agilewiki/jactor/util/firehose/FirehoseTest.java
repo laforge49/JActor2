@@ -5,6 +5,7 @@ import org.agilewiki.jactor.util.UtilMailboxFactory;
 
 public class FirehoseTest extends TestCase {
     public void test() throws Exception {
+        System.gc();
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             DataProcessor next = new EndStage(mailboxFactory);
