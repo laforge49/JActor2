@@ -85,8 +85,8 @@ final public class ThreadManagerImpl implements ThreadManager {
                         taskRequest.acquire();
                         JAMailbox mailbox = tasks.poll();
                         if (mailbox != null) {
+                            final AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                             while (true) {
-                                final AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                                 if (threadReference.get() == null && threadReference.compareAndSet(null, currentThread))
                                     try {
                                         mailbox.run();

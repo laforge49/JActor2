@@ -321,15 +321,20 @@ public class MailboxImpl implements JAMailbox {
                 final JAMailbox target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
-                target.addUnbufferedMessages(messages);
                 AtomicReference<Thread> targetThreadReference = target.getThreadReference();
                 Thread targetThread = targetThreadReference.get();
                 if (!iter.hasNext() &&
                         mayMigrate &&
                         mayBlock &&
                         target.mayBlock() &&
-                        targetThread == null)
-                    throw new MigrateException(target);
+                        targetThread == null) {
+                    Thread currentThread = threadReference.get();
+                    if (targetThreadReference.compareAndSet(null, currentThread)) {
+                        target.addUnbufferedMessages(messages);
+                        throw new MigrateException(target);
+                    }
+                }
+                target.addUnbufferedMessages(messages);
             }
         }
         return result;
