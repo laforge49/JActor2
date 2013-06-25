@@ -84,6 +84,7 @@ final public class ThreadManagerImpl implements ThreadManager {
                     try {
                         taskRequest.acquire();
                         JAMailbox mailbox = tasks.poll();
+                        JAMailbox oldMailbox = null;
                         if (mailbox != null) {
                             final AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                             while (true) {
@@ -91,6 +92,7 @@ final public class ThreadManagerImpl implements ThreadManager {
                                     try {
                                         mailbox.run();
                                     } catch (final MigrateException me) {
+                                        oldMailbox = mailbox;
                                         mailbox = me.mailbox;
                                         continue;
                                     } catch (final Throwable e) {
@@ -99,6 +101,8 @@ final public class ThreadManagerImpl implements ThreadManager {
                                                 e);
                                     } finally {
                                         threadReference.set(null);
+                                        if (oldMailbox != null && oldMailbox.isIdler())
+                                            execute(oldMailbox);
                                     }
                                 break;
                             }

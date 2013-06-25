@@ -324,22 +324,20 @@ public class MailboxImpl implements JAMailbox {
                 AtomicReference<Thread> targetThreadReference = target.getThreadReference();
                 Thread targetThread = targetThreadReference.get();
                 if (!iter.hasNext() &&
-                        !messages.isEmpty() &&
                         mayMigrate &&
                         mayBlock &&
                         target.mayBlock() &&
                         targetThread == null) {
                     Thread currentThread = threadReference.get();
                     if (targetThreadReference.compareAndSet(null, currentThread)) {
-                        if (messages.size() > 1)
-                            target.addUnbufferedMessages(messages);
-                        else {
-                            Message m = messages.getFirst();
+                        while (!messages.isEmpty()) {
+                            Message m = messages.poll();
                             target.addUnbufferedMessage(m, true);
                         }
                         throw new MigrateException(target);
                     }
                 }
+                System.out.println("!");
                 target.addUnbufferedMessages(messages);
             }
         }
