@@ -63,6 +63,10 @@ public class MailboxImpl implements JAMailbox {
         return !inbox.isNonEmpty();
     }
 
+    public final boolean mayBlock() {
+        return mayBlock;
+    }
+
     @Override
     public void close() throws Exception {
         if (sendBuffer == null)
@@ -318,7 +322,11 @@ public class MailboxImpl implements JAMailbox {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.addUnbufferedMessages(messages);
-                if (!iter.hasNext() && mayMigrate && target.isEmpty())
+                if (!iter.hasNext() &&
+                        mayMigrate &&
+                        mayBlock &&
+                        target.mayBlock() &&
+                        target.isEmpty())
                     throw new MigrateException(target);
             }
         }
