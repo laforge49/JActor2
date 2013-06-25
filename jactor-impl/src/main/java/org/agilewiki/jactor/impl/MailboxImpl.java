@@ -322,11 +322,13 @@ public class MailboxImpl implements JAMailbox {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.addUnbufferedMessages(messages);
+                AtomicReference<Thread> targetThreadReference = target.getThreadReference();
+                Thread targetThread = targetThreadReference.get();
                 if (!iter.hasNext() &&
                         mayMigrate &&
                         mayBlock &&
                         target.mayBlock() &&
-                        target.isEmpty())
+                        targetThread == null)
                     throw new MigrateException(target);
             }
         }
