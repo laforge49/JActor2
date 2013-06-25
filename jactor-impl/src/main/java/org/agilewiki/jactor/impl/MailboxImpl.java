@@ -116,7 +116,11 @@ public class MailboxImpl implements JAMailbox {
                     "A valid source mailbox can not be idle");
         final Message message = sourceMailbox.createMessage(false, inbox,
                 request, targetActor, EventResponseProcessor.SINGLETON);
-        addMessage(sourceMailbox, message, this == source);
+        boolean local = false;
+        if (source instanceof JAMailbox)
+            local = this == source ||
+                    (source != null && threadReference.get() == ((JAMailbox) source).getThreadReference().get());
+        addMessage(sourceMailbox, message, local);
     }
 
     @Override
@@ -131,7 +135,8 @@ public class MailboxImpl implements JAMailbox {
                 this != sourceMailbox
                         && mailboxFactory != sourceMailbox.getMailboxFactory(),
                 inbox, request, targetActor, responseProcessor);
-        addMessage(sourceMailbox, message, this == sourceMailbox);
+        addMessage(sourceMailbox, message, this == sourceMailbox ||
+                (sourceMailbox != null && threadReference.get() == sourceMailbox.getThreadReference().get()));
     }
 
     /**
@@ -463,7 +468,8 @@ public class MailboxImpl implements JAMailbox {
     public final void incomingResponse(final Message message,
                                        final JAMailbox responseSource) {
         try {
-            addMessage(null, message, this == responseSource);
+            addMessage(null, message, this == responseSource ||
+                    (responseSource != null && threadReference.get() == responseSource.getThreadReference().get()));
         } catch (final Throwable t) {
             log.error("unable to add response message", t);
         }
