@@ -14,6 +14,9 @@ public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnab
      */
     void addUnbufferedMessages(final Queue<Message> messages) throws Exception;
 
+    void addUnbufferedMessage(final Message message, final boolean local)
+            throws Exception;
+
     /**
      * Returns the atomic reference to the current thread.
      *

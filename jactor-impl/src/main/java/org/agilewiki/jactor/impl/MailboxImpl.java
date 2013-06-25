@@ -191,7 +191,7 @@ public class MailboxImpl implements JAMailbox {
     /**
      * Adds a message to the queue.
      */
-    private void addUnbufferedMessage(final Message message, final boolean local)
+    public void addUnbufferedMessage(final Message message, final boolean local)
             throws Exception {
         if (mailboxFactory.isClosing()) {
             if (message.isForeign() && message.isResponsePending())
@@ -324,13 +324,19 @@ public class MailboxImpl implements JAMailbox {
                 AtomicReference<Thread> targetThreadReference = target.getThreadReference();
                 Thread targetThread = targetThreadReference.get();
                 if (!iter.hasNext() &&
+                        !messages.isEmpty() &&
                         mayMigrate &&
                         mayBlock &&
                         target.mayBlock() &&
                         targetThread == null) {
                     Thread currentThread = threadReference.get();
                     if (targetThreadReference.compareAndSet(null, currentThread)) {
-                        target.addUnbufferedMessages(messages);
+                        if (messages.size() > 1)
+                            target.addUnbufferedMessages(messages);
+                        else {
+                            Message m = messages.getFirst();
+                            target.addUnbufferedMessage(m, true);
+                        }
                         throw new MigrateException(target);
                     }
                 }
