@@ -55,7 +55,8 @@ public class DefaultMessageQueue extends ConcurrentLinkedQueue<Object>
      */
     @Override
     public boolean isNonEmpty() {
-        return !localQueue.isEmpty() || !isEmpty();
+        //ConcurrentLinkedQueue.isEmpty() is not accurate enough
+        return !localQueue.isEmpty() || peek() != null;
     }
 
     /**
