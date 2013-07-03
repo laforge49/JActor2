@@ -344,8 +344,7 @@ public class MailboxImpl implements JAMailbox {
                 Thread targetThread = targetThreadReference.get();
                 if (!iter.hasNext() &&
                         mayMigrate &&
-                        mayBlock &&
-                        target.mayBlock() &&
+                        getMailboxFactory() == target.getMailboxFactory() &&
                         targetThread == null) {
                     Thread currentThread = threadReference.get();
                     if (targetThreadReference.compareAndSet(null, currentThread)) {

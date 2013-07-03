@@ -87,7 +87,8 @@ final public class ThreadManagerImpl implements ThreadManager {
                         if (mailbox != null) {
                             AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                             while (true) {
-                                if (threadReference.get() == null && threadReference.compareAndSet(null, currentThread)) {
+                                if (threadReference.get() == null &&
+                                        threadReference.compareAndSet(null, currentThread)) {
                                     try {
                                         mailbox.run();
                                     } catch (final MigrateException me) {
