@@ -124,14 +124,6 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
                 mailboxLog, initialBufferSize);
     }
 
-    @Override
-    public final M createThreadBoundMailbox(final Runnable _messageProcessor) {
-        return createMailbox(true, null, _messageProcessor,
-                messageQueueFactory
-                        .createMessageQueue(initialLocalMessageQueueSize),
-                mailboxLog, initialBufferSize);
-    }
-
     public final M createMailbox(final boolean _mayBlock,
                                  final Runnable _onIdle, final MessageQueue messageQueue) {
         return createMailbox(_mayBlock, _onIdle, null, messageQueue,
@@ -203,8 +195,16 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     protected M createMailbox(final boolean _mayBlock, final Runnable _onIdle,
                               final Runnable _messageProcessor, final MessageQueue messageQueue,
                               final Logger _log, final int _initialBufferSize) {
-        return (M) new MailboxImpl(_mayBlock, _onIdle, _messageProcessor, this,
+        return (M) new BaseMailbox(_mayBlock, _onIdle, _messageProcessor, this,
                 messageQueue, _log, _initialBufferSize);
+    }
+
+    @Override
+    public final M createThreadBoundMailbox(final Runnable _messageProcessor) {
+        return (M) new BaseMailbox(true, null, _messageProcessor, this,
+                messageQueueFactory
+                        .createMessageQueue(initialLocalMessageQueueSize),
+                mailboxLog, initialBufferSize);
     }
 
     @Override
