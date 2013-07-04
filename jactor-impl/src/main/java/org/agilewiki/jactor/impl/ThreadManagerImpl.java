@@ -104,6 +104,8 @@ final public class ThreadManagerImpl implements ThreadManager {
                                                 e);
                                     }
                                     threadReference.set(null);
+                                    if (!mailbox.isEmpty())
+                                        execute(mailbox);
                                     break;
                                 }
                             }
