@@ -86,9 +86,9 @@ final public class ThreadManagerImpl implements ThreadManager {
                         JAMailbox mailbox = tasks.poll();
                         if (mailbox != null) {
                             AtomicReference<Thread> threadReference = mailbox.getThreadReference();
-                            while (true) {
-                                if (threadReference.get() == null &&
-                                        threadReference.compareAndSet(null, currentThread)) {
+                            if (threadReference.get() == null &&
+                                    threadReference.compareAndSet(null, currentThread)) {
+                                while (true) {
                                     try {
                                         mailbox.run();
                                     } catch (final MigrateException me) {
@@ -102,11 +102,10 @@ final public class ThreadManagerImpl implements ThreadManager {
                                         logger.error(
                                                 "Exception thrown by a mailbox's run method",
                                                 e);
-                                    } finally {
-                                        threadReference.set(null);
                                     }
+                                    threadReference.set(null);
+                                    break;
                                 }
-                                break;
                             }
                         }
                     } catch (final InterruptedException e) {
