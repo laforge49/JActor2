@@ -340,13 +340,14 @@ public class MailboxImpl implements JAMailbox {
                 final JAMailbox target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
-                AtomicReference<Thread> targetThreadReference = target.getThreadReference();
-                Thread targetThread = targetThreadReference.get();
                 if (!iter.hasNext() &&
                         mayMigrate &&
                         getMailboxFactory() == target.getMailboxFactory() &&
-                        targetThread == null) {
+                        messageProcessor == null &&
+                        !target.isRunning()) {
                     Thread currentThread = threadReference.get();
+                    AtomicReference<Thread> targetThreadReference = target.getThreadReference();
+                    Thread targetThread = targetThreadReference.get();
                     if (targetThreadReference.compareAndSet(null, currentThread)) {
                         while (!messages.isEmpty()) {
                             Message m = messages.poll();
