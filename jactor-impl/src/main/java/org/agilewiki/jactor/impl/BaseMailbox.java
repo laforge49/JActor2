@@ -292,12 +292,6 @@ public class BaseMailbox implements JAMailbox {
                 try {
                     flush(true);
                 } catch (final MigrateException me) {
-                    try {
-                        if (inbox.isNonEmpty())
-                            mailboxFactory.submit(this, mayBlock);
-                    } catch (Exception e) {
-                        log.error("Exception thrown by submit", e);
-                    }
                     throw me;
                 } catch (Exception e) {
                     log.error("Exception thrown by onIdle", e);

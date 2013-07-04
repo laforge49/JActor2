@@ -93,7 +93,7 @@ final public class ThreadManagerImpl implements ThreadManager {
                                         mailbox.run();
                                     } catch (final MigrateException me) {
                                         threadReference.set(null);
-                                        if (mailbox.isIdler())
+                                        if (mailbox.isIdler() || !mailbox.isEmpty())
                                             execute(mailbox);
                                         mailbox = me.mailbox;
                                         threadReference = mailbox.getThreadReference();
