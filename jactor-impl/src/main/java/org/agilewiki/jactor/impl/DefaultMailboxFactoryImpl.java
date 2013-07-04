@@ -98,7 +98,7 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
 
     @Override
     public final M createMailbox(final boolean _mayBlock, final Runnable _onIdle) {
-        return createMailbox(_mayBlock, _onIdle, null,
+        return createMailbox(_mayBlock, _onIdle,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 mailboxLog, initialBufferSize);
@@ -118,7 +118,7 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     @Override
     public final M createMailbox(final boolean _mayBlock,
                                  final int initialBufferSize, final Runnable _onIdle) {
-        return createMailbox(_mayBlock, _onIdle, null,
+        return createMailbox(_mayBlock, _onIdle,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 mailboxLog, initialBufferSize);
@@ -126,7 +126,7 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
 
     public final M createMailbox(final boolean _mayBlock,
                                  final Runnable _onIdle, final MessageQueue messageQueue) {
-        return createMailbox(_mayBlock, _onIdle, null, messageQueue,
+        return createMailbox(_mayBlock, _onIdle, messageQueue,
                 mailboxLog, initialBufferSize);
     }
 
@@ -193,15 +193,15 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected M createMailbox(final boolean _mayBlock, final Runnable _onIdle,
-                              final Runnable _messageProcessor, final MessageQueue messageQueue,
+                              final MessageQueue messageQueue,
                               final Logger _log, final int _initialBufferSize) {
-        return (M) new BaseMailbox(_mayBlock, _onIdle, _messageProcessor, this,
+        return (M) new BaseMailbox(_mayBlock, _onIdle, this,
                 messageQueue, _log, _initialBufferSize);
     }
 
     @Override
     public final M createThreadBoundMailbox(final Runnable _messageProcessor) {
-        return (M) new BaseMailbox(true, null, _messageProcessor, this,
+        return (M) new ThreadBoundMailbox(_messageProcessor, this,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 mailboxLog, initialBufferSize);

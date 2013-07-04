@@ -15,7 +15,6 @@ public class BaseMailbox implements JAMailbox {
     private final MessageQueue inbox;
     private final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
     private final Runnable onIdle;
-    private final Runnable messageProcessor;
     private final int initialBufferSize;
     /**
      * For performance reasons, we want to differentiate between Mailboxes that
@@ -29,7 +28,7 @@ public class BaseMailbox implements JAMailbox {
     /**
      * Send buffer
      */
-    private Map<JAMailbox, ArrayDeque<Message>> sendBuffer;
+    protected Map<JAMailbox, ArrayDeque<Message>> sendBuffer;
 
     private ExceptionHandler exceptionHandler;
     private Message currentMessage;
@@ -45,12 +44,11 @@ public class BaseMailbox implements JAMailbox {
     }
 
     public BaseMailbox(final boolean _mayBlock, final Runnable _onIdle,
-                       final Runnable _messageProcessor, final JAMailboxFactory factory,
+                       final JAMailboxFactory factory,
                        final MessageQueue messageQueue, final Logger _log,
                        final int _initialBufferSize) {
         mayBlock = _mayBlock;
         onIdle = _onIdle;
-        messageProcessor = _messageProcessor;
         mailboxFactory = factory;
         inbox = messageQueue;
         log = _log;
@@ -143,8 +141,8 @@ public class BaseMailbox implements JAMailbox {
      * Returns true, if this message source is currently processing messages.
      */
     @Override
-    public final boolean isRunning() {
-        return messageProcessor != null || threadReference.get() != null;
+    public boolean isRunning() {
+        return threadReference.get() != null;
     }
 
     @Override
@@ -235,14 +233,12 @@ public class BaseMailbox implements JAMailbox {
     /**
      * Should be called after adding some message(s) to the queue.
      */
-    private void afterAdd() throws Exception {
+    protected void afterAdd() throws Exception {
         /**
          * The compareAndSet method is a moderately expensive operation,
          * so we use a guard expression to reduce the number of times it is called.
          */
-        if (messageProcessor != null)
-            messageProcessor.run();
-        else if (threadReference.get() == null && inbox.isNonEmpty()) {
+        if (threadReference.get() == null && inbox.isNonEmpty()) {
             mailboxFactory.submit(this, mayBlock);
         }
     }
@@ -329,7 +325,7 @@ public class BaseMailbox implements JAMailbox {
      * Flushes buffered messages, if any.
      * Returns true if there was any.
      */
-    public final boolean flush(boolean mayMigrate) throws Exception {
+    public boolean flush(boolean mayMigrate) throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
             final Iterator<Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
@@ -343,7 +339,6 @@ public class BaseMailbox implements JAMailbox {
                 if (!iter.hasNext() &&
                         mayMigrate &&
                         getMailboxFactory() == target.getMailboxFactory() &&
-                        messageProcessor == null &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();
                     AtomicReference<Thread> targetThreadReference = target.getThreadReference();
