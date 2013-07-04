@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class MailboxImpl implements JAMailbox {
+public class BaseMailbox implements JAMailbox {
 
     private final Logger log;
 
@@ -44,7 +44,7 @@ public class MailboxImpl implements JAMailbox {
         return threadReference;
     }
 
-    public MailboxImpl(final boolean _mayBlock, final Runnable _onIdle,
+    public BaseMailbox(final boolean _mayBlock, final Runnable _onIdle,
                        final Runnable _messageProcessor, final JAMailboxFactory factory,
                        final MessageQueue messageQueue, final Logger _log,
                        final int _initialBufferSize) {
@@ -385,7 +385,7 @@ public class MailboxImpl implements JAMailbox {
                                     message.setResponse(response);
                                     message.getMessageSource()
                                             .incomingResponse(message,
-                                                    MailboxImpl.this);
+                                                    BaseMailbox.this);
                                 } else {
                                     if (response instanceof Throwable) {
                                         log.warn("Uncaught throwable",
@@ -435,7 +435,7 @@ public class MailboxImpl implements JAMailbox {
                         return;
                     currentMessage.setResponse(u);
                     message.getMessageSource().incomingResponse(message,
-                            MailboxImpl.this);
+                            BaseMailbox.this);
                 } else {
                     log.error("Thrown by exception handler and uncaught "
                             + exceptionHandler.getClass().getName(), t);
@@ -447,7 +447,7 @@ public class MailboxImpl implements JAMailbox {
             currentMessage.setResponse(t);
             if (!(message.getResponseProcessor() instanceof EventResponseProcessor))
                 message.getMessageSource().incomingResponse(message,
-                        MailboxImpl.this);
+                        BaseMailbox.this);
             else {
                 log.warn("Uncaught throwable", t);
             }
