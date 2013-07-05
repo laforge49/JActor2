@@ -332,12 +332,14 @@ public class BaseMailbox implements JAMailbox {
                 iter.remove();
                 if (!iter.hasNext() &&
                         mayMigrate &&
+                        mayBlock &&
+                        target.mayBlock() &&
                         getMailboxFactory() == target.getMailboxFactory() &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();
                     AtomicReference<Thread> targetThreadReference = target.getThreadReference();
-                    Thread targetThread = targetThreadReference.get();
-                    if (targetThreadReference.compareAndSet(null, currentThread)) {
+                    if (targetThreadReference.get() == null &&
+                            targetThreadReference.compareAndSet(null, currentThread)) {
                         while (!messages.isEmpty()) {
                             Message m = messages.poll();
                             target.addUnbufferedMessage(m, true);
