@@ -28,9 +28,7 @@ public class ThreadBoundMailboxImpl extends BaseMailbox implements ThreadBoundMa
         return true;
     }
 
-    /**
-     * Should be called after adding some message(s) to the queue.
-     */
+    @Override
     protected void afterAdd() throws Exception {
         messageProcessor.run();
     }

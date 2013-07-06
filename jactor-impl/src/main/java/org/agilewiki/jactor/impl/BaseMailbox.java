@@ -11,9 +11,9 @@ abstract public class BaseMailbox implements JAMailbox {
 
     private final Logger log;
 
-    private final JAMailboxFactory mailboxFactory;
-    private final MessageQueue inbox;
-    private final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
+    protected final JAMailboxFactory mailboxFactory;
+    protected final MessageQueue inbox;
+    protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
     private final Runnable onIdle;
     private final int initialBufferSize;
     /**
@@ -229,15 +229,7 @@ abstract public class BaseMailbox implements JAMailbox {
     /**
      * Should be called after adding some message(s) to the queue.
      */
-    protected void afterAdd() throws Exception {
-        /**
-         * The compareAndSet method is a moderately expensive operation,
-         * so we use a guard expression to reduce the number of times it is called.
-         */
-        if (threadReference.get() == null && inbox.isNonEmpty()) {
-            mailboxFactory.submit(this, mayBlock);
-        }
-    }
+    abstract protected void afterAdd() throws Exception;
 
     /**
      * Returns true, if the message could be buffered before sending.
