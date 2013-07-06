@@ -92,8 +92,8 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     @Override
-    public final M createMailbox(final boolean _mayBlock) {
-        return createMailbox(_mayBlock, initialBufferSize, null);
+    public final MayBlockMailboxImpl createMayBlockMailbox() {
+        return (MayBlockMailboxImpl) createMailbox(true, initialBufferSize, null);
     }
 
     @Override

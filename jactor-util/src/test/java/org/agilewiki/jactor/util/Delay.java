@@ -6,7 +6,7 @@ public class Delay {
     private final Mailbox mailbox;
 
     public Delay(final MailboxFactory mailboxFactory) {
-        mailbox = mailboxFactory.createMailbox(true);
+        mailbox = mailboxFactory.createMayBlockMailbox();
     }
 
     public Request<Void> sleepReq(final long _delay) {

@@ -13,19 +13,18 @@ package org.agilewiki.jactor.api;
 public interface MailboxFactory extends AutoCloseable {
 
     /**
-     * Creates a Mailbox which is only used to process non-blocking requests.
+     * Creates a Mailbox which is only used to process non-blocking messages.
      *
-     * @return A new mailbox.
+     * @return A new non-blocking mailbox.
      */
     NonBlockingMailbox createNonBlockingMailbox();
 
     /**
-     * Creates a Mailbox.
+     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
      *
-     * @param mayBlock True when requests are CPU intensive or may block the thread.
-     * @return A new mailbox.
+     * @return A new may block mailbox.
      */
-    Mailbox createMailbox(final boolean mayBlock);
+    Mailbox createMayBlockMailbox();
 
     /**
      * Creates a Mailbox which is only used to process non-blocking requests.

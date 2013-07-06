@@ -14,7 +14,7 @@ public class NullStage extends ActorBase implements DataProcessor {
     public NullStage(final UtilMailboxFactory _mailboxFactory, final DataProcessor _next)
             throws Exception {
         next = _next;
-        initialize(_mailboxFactory.createMailbox(true));
+        initialize(_mailboxFactory.createMayBlockMailbox());
     }
 
     @Override

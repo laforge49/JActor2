@@ -10,7 +10,7 @@ public class EndStage extends ActorBase implements DataProcessor {
 
     public EndStage(final UtilMailboxFactory _mailboxFactory)
             throws Exception {
-        initialize(_mailboxFactory.createMailbox(true));
+        initialize(_mailboxFactory.createMayBlockMailbox());
     }
 
     @Override

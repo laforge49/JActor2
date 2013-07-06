@@ -41,7 +41,7 @@ public class JAIteratorTest extends TestCase {
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             mailbox = mailboxFactory.createNonBlockingMailbox();
-            counterMailbox = mailboxFactory.createMailbox(true);
+            counterMailbox = mailboxFactory.createMayBlockMailbox();
             runReq().call();
         } finally {
             mailboxFactory.close();
