@@ -19,7 +19,7 @@ public class FifoRequestProcessor extends AtomicRequestProcessor {
     public static FifoRequestProcessor create(
             final MailboxFactory _mailboxFactory) throws Exception {
         FifoRequestProcessor arp = new FifoRequestProcessor();
-        arp.initialize(_mailboxFactory.createMailbox(false, arp));
+        arp.initialize(_mailboxFactory.createNonBlockingMailbox(arp));
         return arp;
     }
 

@@ -88,45 +88,70 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
 
     @Override
     public final NonBlockingMailboxImpl createNonBlockingMailbox() {
-        return (NonBlockingMailboxImpl) createMailbox(false, initialBufferSize, null);
-    }
-
-    @Override
-    public final MayBlockMailboxImpl createMayBlockMailbox() {
-        return (MayBlockMailboxImpl) createMailbox(true, initialBufferSize, null);
-    }
-
-    @Override
-    public final M createMailbox(final boolean _mayBlock, final Runnable _onIdle) {
-        return createMailbox(_mayBlock, _onIdle,
-                messageQueueFactory
-                        .createMessageQueue(initialLocalMessageQueueSize),
-                mailboxLog, initialBufferSize);
+        return createNonBlockingMailbox(initialBufferSize, null);
     }
 
     @Override
     public final NonBlockingMailboxImpl createNonBlockingMailbox(final int initialBufferSize) {
-        return (NonBlockingMailboxImpl) createMailbox(false, initialBufferSize, null);
+        return createNonBlockingMailbox(initialBufferSize, null);
     }
 
     @Override
-    public final M createMailbox(final boolean _mayBlock,
-                                 final int initialBufferSize) {
-        return createMailbox(_mayBlock, initialBufferSize, null);
-    }
-
-    @Override
-    public final M createMailbox(final boolean _mayBlock,
-                                 final int initialBufferSize, final Runnable _onIdle) {
-        return createMailbox(_mayBlock, _onIdle,
+    public final NonBlockingMailboxImpl createNonBlockingMailbox(final Runnable _onIdle) {
+        return createNonBlockingMailbox(
+                _onIdle,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 mailboxLog, initialBufferSize);
     }
 
-    public final M createMailbox(final boolean _mayBlock,
-                                 final Runnable _onIdle, final MessageQueue messageQueue) {
-        return createMailbox(_mayBlock, _onIdle, messageQueue,
+    @Override
+    public final NonBlockingMailboxImpl createNonBlockingMailbox(final int initialBufferSize,
+                                                                 final Runnable _onIdle) {
+        return createNonBlockingMailbox(_onIdle,
+                messageQueueFactory
+                        .createMessageQueue(initialLocalMessageQueueSize),
+                mailboxLog, initialBufferSize);
+    }
+
+    public final NonBlockingMailboxImpl createNonBlockingMailbox(final Runnable _onIdle,
+                                                                 final MessageQueue messageQueue) {
+        return createNonBlockingMailbox(_onIdle, messageQueue,
+                mailboxLog, initialBufferSize);
+    }
+
+    @Override
+    public final MayBlockMailboxImpl createMayBlockMailbox() {
+        return createMayBlockMailbox(initialBufferSize, null);
+    }
+
+    @Override
+    public final MayBlockMailboxImpl createMayBlockMailbox(final int initialBufferSize) {
+        return createMayBlockMailbox(initialBufferSize, null);
+    }
+
+    @Override
+    public final MayBlockMailboxImpl createMayBlockMailbox(final Runnable _onIdle) {
+        return createMayBlockMailbox(
+                _onIdle,
+                messageQueueFactory
+                        .createMessageQueue(initialLocalMessageQueueSize),
+                mailboxLog, initialBufferSize);
+    }
+
+    @Override
+    public final MayBlockMailboxImpl createMayBlockMailbox(final int initialBufferSize,
+                                                           final Runnable _onIdle) {
+        return createMayBlockMailbox(
+                _onIdle,
+                messageQueueFactory
+                        .createMessageQueue(initialLocalMessageQueueSize),
+                mailboxLog, initialBufferSize);
+    }
+
+    public final MayBlockMailboxImpl createMayBlockMailbox(final Runnable _onIdle,
+                                                           final MessageQueue messageQueue) {
+        return createMayBlockMailbox(_onIdle, messageQueue,
                 mailboxLog, initialBufferSize);
     }
 
@@ -185,16 +210,6 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     @Override
     public final boolean isClosing() {
         return shuttingDown.get();
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Deprecated
-    protected M createMailbox(final boolean _mayBlock, final Runnable _onIdle,
-                              final MessageQueue messageQueue,
-                              final Logger _log, final int _initialBufferSize) {
-        return (M) (_mayBlock ?
-                new MayBlockMailboxImpl(_onIdle, this, messageQueue, _log, _initialBufferSize) :
-                new NonBlockingMailboxImpl(_onIdle, this, messageQueue, _log, _initialBufferSize));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

@@ -19,7 +19,7 @@ public class PriorityRequestProcessor extends AtomicRequestProcessor {
     public static PriorityRequestProcessor create(
             final MailboxFactory _mailboxFactory) throws Exception {
         PriorityRequestProcessor arp = new PriorityRequestProcessor();
-        arp.initialize(_mailboxFactory.createMailbox(false, arp));
+        arp.initialize(_mailboxFactory.createNonBlockingMailbox(arp));
         return arp;
     }
 

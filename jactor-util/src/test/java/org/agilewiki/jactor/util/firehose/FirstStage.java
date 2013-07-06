@@ -38,7 +38,7 @@ public class FirstStage extends ActorBase implements Runnable {
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(_mailboxFactory.createMailbox(true, this));
+        initialize(_mailboxFactory.createMayBlockMailbox(this));
         ack = new BoundResponseProcessor<Void>(getMailbox(), new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {

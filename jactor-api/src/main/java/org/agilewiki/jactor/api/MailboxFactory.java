@@ -20,48 +20,63 @@ public interface MailboxFactory extends AutoCloseable {
     NonBlockingMailbox createNonBlockingMailbox();
 
     /**
-     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
+     * Creates a Mailbox which is only used to process non-blocking requests.
      *
-     * @return A new may block mailbox.
+     * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @return A new non-blocking mailbox.
      */
-    Mailbox createMayBlockMailbox();
+    NonBlockingMailbox createNonBlockingMailbox(final int initialBufferSize);
+
+    /**
+     * Creates a Mailbox which is only used to process non-blocking requests.
+     *
+     * @param onIdle The run method is called when the input queue is empty.
+     * @return A new non-blocking mailbox.
+     */
+    NonBlockingMailbox createNonBlockingMailbox(final Runnable onIdle);
 
     /**
      * Creates a Mailbox which is only used to process non-blocking requests.
      *
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
-     * @return A new mailbox.
+     * @param onIdle            The run method is called when the input queue is empty.
+     * @return A new non-blocking mailbox.
      */
-    NonBlockingMailbox createNonBlockingMailbox(final int initialBufferSize);
+    NonBlockingMailbox createNonBlockingMailbox(final int initialBufferSize,
+                                                final Runnable onIdle);
 
     /**
-     * Creates a Mailbox.
+     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
      *
-     * @param mayBlock          True when requests are CPU intensive or may block the thread.
+     * @return A new may block mailbox.
+     */
+    MayBlockMailbox createMayBlockMailbox();
+
+    /**
+     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
+     *
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
-     * @return A new mailbox.
+     * @return A new may block mailbox.
      */
-    Mailbox createMailbox(final boolean mayBlock, final int initialBufferSize);
+    MayBlockMailbox createMayBlockMailbox(final int initialBufferSize);
 
     /**
-     * Creates a Mailbox.
+     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
      *
-     * @param mayBlock True when requests are CPU intensive or may block the thread.
-     * @param onIdle   The run method is called when the input queue is empty.
-     * @return A new mailbox.
+     * @param onIdle The run method is called when the input queue is empty.
+     * @return A new may block mailbox.
      */
-    Mailbox createMailbox(final boolean mayBlock, final Runnable onIdle);
+    MayBlockMailbox createMayBlockMailbox(final Runnable onIdle);
 
     /**
-     * Creates a Mailbox.
+     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
      *
-     * @param mayBlock          True when requests are CPU intensive or may block the thread.
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @param onIdle            The run method is called when the input queue is empty.
-     * @return A new mailbox.
+     * @return A new may block mailbox.
      */
-    Mailbox createMailbox(final boolean mayBlock, final int initialBufferSize,
-                          final Runnable onIdle);
+    MayBlockMailbox createMayBlockMailbox(final int initialBufferSize,
+                                          final Runnable onIdle);
 
     /**
      * Creates a mailbox that runs on an existing thread.
