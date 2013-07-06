@@ -9,21 +9,13 @@ import java.util.concurrent.atomic.AtomicReference;
 
 abstract public class BaseMailbox implements JAMailbox {
 
-    private final Logger log;
+    protected final Logger log;
 
     protected final JAMailboxFactory mailboxFactory;
     protected final MessageQueue inbox;
     protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
     private final Runnable onIdle;
     private final int initialBufferSize;
-    /**
-     * For performance reasons, we want to differentiate between Mailboxes that
-     * usually block their thread, and Mailboxes that usually don't block, and
-     * return quickly.
-     * <p/>
-     * TODO: disable commandeering when true
-     */
-    private final boolean mayBlock;
 
     /**
      * Send buffer
@@ -43,11 +35,11 @@ abstract public class BaseMailbox implements JAMailbox {
         return threadReference;
     }
 
-    public BaseMailbox(final boolean _mayBlock, final Runnable _onIdle,
+    public BaseMailbox(final Runnable _onIdle,
                        final JAMailboxFactory factory,
-                       final MessageQueue messageQueue, final Logger _log,
+                       final MessageQueue messageQueue,
+                       final Logger _log,
                        final int _initialBufferSize) {
-        mayBlock = _mayBlock;
         onIdle = _onIdle;
         mailboxFactory = factory;
         inbox = messageQueue;
@@ -276,14 +268,6 @@ abstract public class BaseMailbox implements JAMailbox {
                 processRequestMessage(message);
             else
                 processResponseMessage(message);
-            if (mayBlock)
-                try {
-                    flush(true);
-                } catch (final MigrateException me) {
-                    throw me;
-                } catch (Exception e) {
-                    log.error("Exception thrown by onIdle", e);
-                }
         }
     }
 
@@ -318,23 +302,6 @@ abstract public class BaseMailbox implements JAMailbox {
                 final JAMailbox target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
-                if (!iter.hasNext() &&
-                        mayMigrate &&
-                        mayBlock &&
-                        target instanceof MayBlockMailbox &&
-                        getMailboxFactory() == target.getMailboxFactory() &&
-                        !target.isRunning()) {
-                    Thread currentThread = threadReference.get();
-                    AtomicReference<Thread> targetThreadReference = target.getThreadReference();
-                    if (targetThreadReference.get() == null &&
-                            targetThreadReference.compareAndSet(null, currentThread)) {
-                        while (!messages.isEmpty()) {
-                            Message m = messages.poll();
-                            target.addUnbufferedMessage(m, true);
-                        }
-                        throw new MigrateException(target);
-                    }
-                }
                 target.addUnbufferedMessages(messages);
             }
         }
@@ -491,6 +458,5 @@ abstract public class BaseMailbox implements JAMailbox {
      */
     protected void afterProcessMessage(final boolean request,
                                        final Message message) {
-        // NOP
     }
 }
