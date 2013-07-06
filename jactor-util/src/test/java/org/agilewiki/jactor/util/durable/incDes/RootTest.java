@@ -13,7 +13,7 @@ public class RootTest extends TestCase {
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            Mailbox mailbox = mailboxFactory.createMailbox();
+            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
             Root root1 = (Root) rootFactory.newSerializable(mailbox, factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);

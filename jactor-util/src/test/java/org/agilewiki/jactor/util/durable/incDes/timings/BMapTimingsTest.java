@@ -46,7 +46,7 @@ public class BMapTimingsTest extends TestCase {
             m1.getSerializedBytes();
             int j = 0;
             i = s / 2;
-            Mailbox mailbox = mailboxFactory.createMailbox();
+            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
             long t0 = System.currentTimeMillis();
             while (j < r) {
                 JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(mailbox);

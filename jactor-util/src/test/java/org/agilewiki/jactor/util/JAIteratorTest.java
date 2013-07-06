@@ -20,7 +20,7 @@ public class JAIteratorTest extends TestCase {
         System.out.println("shared mailbox test");
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
-            mailbox = mailboxFactory.createMailbox();
+            mailbox = mailboxFactory.createNonBlockingMailbox();
             counterMailbox = mailbox;
             runReq().call();
         } finally {
@@ -40,7 +40,7 @@ public class JAIteratorTest extends TestCase {
         System.out.println("async mailbox test");
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
-            mailbox = mailboxFactory.createMailbox();
+            mailbox = mailboxFactory.createNonBlockingMailbox();
             counterMailbox = mailboxFactory.createMailbox(true);
             runReq().call();
         } finally {

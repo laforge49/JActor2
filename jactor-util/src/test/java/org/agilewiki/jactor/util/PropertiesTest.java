@@ -13,7 +13,7 @@ public class PropertiesTest extends TestCase {
             p1.putProperty("a", "foo");
             p2.putProperty("b", "bar");
             ActorBase z = new ActorBase();
-            z.initialize(mailboxFactory2.createMailbox());
+            z.initialize(mailboxFactory2.createNonBlockingMailbox());
             String a = (String) JAProperties.getProperty(z, "a");
             assertEquals("foo", a);
             String b = (String) JAProperties.getProperty(z, "b");

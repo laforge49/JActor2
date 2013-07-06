@@ -11,9 +11,9 @@ public class ServiceTest extends TestCase {
         MailboxFactory clientMBF = new DefaultMailboxFactoryImpl();
         final MailboxFactory serverMBF = new DefaultMailboxFactoryImpl();
         try {
-            Mailbox testMailbox = testMBF.createMailbox();
-            Server server = new Server(serverMBF.createMailbox());
-            final Client client = new Client(clientMBF.createMailbox(), server);
+            Mailbox testMailbox = testMBF.createNonBlockingMailbox();
+            Server server = new Server(serverMBF.createNonBlockingMailbox());
+            final Client client = new Client(clientMBF.createNonBlockingMailbox(), server);
             new RequestBase<Void>(testMailbox) {
                 @Override
                 public void processRequest(final Transport<Void> _transport) throws Exception {

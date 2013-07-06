@@ -8,7 +8,7 @@ public class BoundResponseProcessorTest extends TestCase {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             final Driver driver = new Driver();
-            driver.initialize(mailboxFactory.createMailbox());
+            driver.initialize(mailboxFactory.createNonBlockingMailbox());
             assertEquals("Hello world!", driver.doitReq().call());
         } finally {
             mailboxFactory.close();

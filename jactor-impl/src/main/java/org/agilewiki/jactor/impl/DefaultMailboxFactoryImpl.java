@@ -87,7 +87,7 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     @Override
-    public final NonBlockingMailboxImpl createMailbox() {
+    public final NonBlockingMailboxImpl createNonBlockingMailbox() {
         return (NonBlockingMailboxImpl) createMailbox(false, initialBufferSize, null);
     }
 
@@ -105,7 +105,7 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     @Override
-    public final NonBlockingMailboxImpl createMailbox(final int initialBufferSize) {
+    public final NonBlockingMailboxImpl createNonBlockingMailbox(final int initialBufferSize) {
         return (NonBlockingMailboxImpl) createMailbox(false, initialBufferSize, null);
     }
 

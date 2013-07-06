@@ -10,7 +10,7 @@ public class SemaphoreTest extends TestCase {
     public void testI() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         final PASemaphore semaphore = new PASemaphore(
-                mailboxFactory.createMailbox(), 1);
+                mailboxFactory.createNonBlockingMailbox(), 1);
         semaphore.acquireReq().call();
         mailboxFactory.close();
     }
@@ -18,7 +18,7 @@ public class SemaphoreTest extends TestCase {
     public void testII() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         final PASemaphore semaphore = new PASemaphore(
-                mailboxFactory.createMailbox(), 0);
+                mailboxFactory.createNonBlockingMailbox(), 0);
         semaphore.releaseReq().signal();
         semaphore.acquireReq().call();
         mailboxFactory.close();
@@ -26,7 +26,7 @@ public class SemaphoreTest extends TestCase {
 
     private Request<Void> delayedRelease(final PASemaphore semaphore,
                                          final long delay, final MailboxFactory mailboxFactory) {
-        return new RequestBase<Void>(mailboxFactory.createMailbox()) {
+        return new RequestBase<Void>(mailboxFactory.createNonBlockingMailbox()) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
@@ -47,7 +47,7 @@ public class SemaphoreTest extends TestCase {
     public void testIII() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         final PASemaphore semaphore = new PASemaphore(
-                mailboxFactory.createMailbox(), 0);
+                mailboxFactory.createNonBlockingMailbox(), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, mailboxFactory).signal();
@@ -88,12 +88,12 @@ public class SemaphoreTest extends TestCase {
     public void testIV() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         final PASemaphore semaphore = new PASemaphore(
-                mailboxFactory.createMailbox(), 0);
+                mailboxFactory.createNonBlockingMailbox(), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, mailboxFactory).signal();
         final boolean result = acquireException(semaphore,
-                mailboxFactory.createMailbox()).call();
+                mailboxFactory.createNonBlockingMailbox()).call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
         assertTrue(result);

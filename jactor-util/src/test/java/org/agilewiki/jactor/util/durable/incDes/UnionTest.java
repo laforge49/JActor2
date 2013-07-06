@@ -14,7 +14,7 @@ public class UnionTest extends TestCase {
             Durables.registerUnionFactory(factoryLocator, "siUnion", JAString.FACTORY_NAME, "siUnion");
             Union siu1 = (Union) Durables.newSerializable(mailboxFactory, "siUnion");
             assertNull(siu1.getValue());
-            Mailbox mailbox = mailboxFactory.createMailbox();
+            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
             Union siu2 = (Union) siu1.copy(mailbox);
             assertNull(siu2.getValue());
             siu2.setValue(JAString.FACTORY_NAME);

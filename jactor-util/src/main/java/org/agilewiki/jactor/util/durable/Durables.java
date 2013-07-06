@@ -299,7 +299,7 @@ public final class Durables {
                                                  final String _factoryName,
                                                  final MailboxFactory _mailboxFactory)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createNonBlockingMailbox(), null);
     }
 
     /**
@@ -316,7 +316,7 @@ public final class Durables {
                                                  final MailboxFactory _mailboxFactory,
                                                  final Ancestor _parent)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createMailbox(), _parent);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createNonBlockingMailbox(), _parent);
     }
 
     /**

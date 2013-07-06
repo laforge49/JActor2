@@ -13,7 +13,7 @@ public class BoxTest extends TestCase {
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             Factory boxAFactory = factoryLocator.getFactory(Box.FACTORY_NAME);
-            Mailbox mailbox = mailboxFactory.createMailbox();
+            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
             Box box1 = (Box) boxAFactory.newSerializable(mailbox);
             int sl = box1.getSerializedLength();
             assertEquals(4, sl);

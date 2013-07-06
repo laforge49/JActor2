@@ -19,7 +19,7 @@ public class ParallelTest extends TestCase {
 
     public void test() throws Exception {
         mailboxFactory = new UtilMailboxFactory();
-        mailbox = mailboxFactory.createMailbox();
+        mailbox = mailboxFactory.createNonBlockingMailbox();
 
         start = new RequestBase<Void>(mailbox) {
             @Override

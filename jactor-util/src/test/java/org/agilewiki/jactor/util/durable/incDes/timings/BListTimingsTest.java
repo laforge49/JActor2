@@ -36,7 +36,7 @@ public class BListTimingsTest extends TestCase {
         UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JAINTEGER_LIST);
-            Mailbox mailbox = mailboxFactory.createMailbox();
+            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
             int i = 0;
             while (i < s) {
                 intList1.iAdd(-1);

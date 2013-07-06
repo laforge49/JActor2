@@ -12,7 +12,7 @@ public class AtomicTest extends TestCase {
     public void test1() throws Exception {
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
-            int _count = startReq1(mailboxFactory.createMailbox()).call();
+            int _count = startReq1(mailboxFactory.createNonBlockingMailbox()).call();
             assertEquals(5, _count);
         } finally {
             mailboxFactory.close();

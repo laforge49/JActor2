@@ -103,7 +103,7 @@ final public class Osgi {
                 locateService.getReq().send(_root.getMailbox(), new ResponseProcessor<OsgiFactoryLocator>() {
                     @Override
                     public void processResponse(OsgiFactoryLocator response) throws Exception {
-                        Mailbox newMailbox = response.getMailboxFactory().createMailbox();
+                        Mailbox newMailbox = response.getMailboxFactory().createNonBlockingMailbox();
                         _root.copyReq(newMailbox).send(_root.getMailbox(), (Transport) _transport);
                     }
                 });

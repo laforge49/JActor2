@@ -53,7 +53,7 @@ public class IncDesTest extends TestCase {
         try {
             IncDes jid1 = (IncDes) Durables.newSerializable(mailboxFactory, IncDes.FACTORY_NAME);
             jid1.load(new byte[0]);
-            Mailbox mailbox = mailboxFactory.createMailbox();
+            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
             IncDes jid2 = (IncDes) jid1.copyReq(mailbox).call();
             int l = jid2.getDurable().getSerializedLengthReq().call();
             System.err.println(l);

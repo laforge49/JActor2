@@ -19,7 +19,7 @@ public class BListTest extends TestCase {
             sj0.setValue("a");
             sj1.setValue("b");
             sj2.setValue("c");
-            Mailbox mailbox = mailboxFactory.createMailbox();
+            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
             JAList<JAString> stringList2 = (JAList) stringList1.copy(mailbox);
             JAString s0 = stringList2.iGet(0);
             JAString s1 = stringList2.iGet(1);

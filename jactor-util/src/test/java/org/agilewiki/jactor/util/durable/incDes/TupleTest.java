@@ -15,7 +15,7 @@ public class TupleTest extends TestCase {
             Durables.registerTupleFactory(factoryLocator,
                     "sst", JAString.FACTORY_NAME, JAString.FACTORY_NAME);
             Factory tjf = factoryLocator.getFactory("sst");
-            Mailbox mailbox = mailboxFactory.createMailbox();
+            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
             Tuple t0 = (Tuple) tjf.newSerializable(mailbox, factoryLocator);
             JAString e0 = (JAString) t0.iGetReq(0).call();
             assertNull(e0.getValueReq().call());
