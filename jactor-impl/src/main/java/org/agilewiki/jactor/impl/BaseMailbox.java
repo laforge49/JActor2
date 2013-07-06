@@ -61,10 +61,6 @@ abstract public class BaseMailbox implements JAMailbox {
         return !inbox.isNonEmpty();
     }
 
-    public final boolean mayBlock() {
-        return mayBlock;
-    }
-
     @Override
     public void close() throws Exception {
         if (sendBuffer == null)
@@ -333,7 +329,7 @@ abstract public class BaseMailbox implements JAMailbox {
                 if (!iter.hasNext() &&
                         mayMigrate &&
                         mayBlock &&
-                        target.mayBlock() &&
+                        target instanceof MayBlockMailbox &&
                         getMailboxFactory() == target.getMailboxFactory() &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();
