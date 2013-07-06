@@ -200,8 +200,8 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     @Override
-    public final M createThreadBoundMailbox(final Runnable _messageProcessor) {
-        return (M) new ThreadBoundMailboxImpl(_messageProcessor, this,
+    public final ThreadBoundMailboxImpl createThreadBoundMailbox(final Runnable _messageProcessor) {
+        return new ThreadBoundMailboxImpl(_messageProcessor, this,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 mailboxLog, initialBufferSize);

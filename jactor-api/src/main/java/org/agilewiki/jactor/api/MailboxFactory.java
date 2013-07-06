@@ -90,7 +90,7 @@ public interface MailboxFactory extends AutoCloseable {
      *                          to be processed.
      * @return The thread bounded mailbox.
      */
-    Mailbox createThreadBoundMailbox(final Runnable _messageProcessor);
+    ThreadBoundMailbox createThreadBoundMailbox(final Runnable _messageProcessor);
 
     /**
      * Adds an auto closeable, to be closed when the MailboxFactory closes.

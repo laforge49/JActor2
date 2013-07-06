@@ -4,13 +4,14 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor.api.Mailbox;
 import org.agilewiki.jactor.api.MailboxFactory;
 import org.agilewiki.jactor.api.ResponseProcessor;
+import org.agilewiki.jactor.api.ThreadBoundMailbox;
 import org.agilewiki.jactor.impl.DefaultMailboxFactoryImpl;
 
 /**
  * Test code.
  */
 public class ThreadBoundTest extends TestCase {
-    Mailbox boundMailbox;
+    ThreadBoundMailbox boundMailbox;
     MailboxFactory mailboxFactory;
 
     public void testa() throws Exception {

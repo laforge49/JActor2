@@ -1,12 +1,13 @@
 package org.agilewiki.jactor.impl;
 
+import org.agilewiki.jactor.api.ThreadBoundMailbox;
 import org.slf4j.Logger;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ThreadBoundMailboxImpl extends BaseMailbox {
+public class ThreadBoundMailboxImpl extends BaseMailbox implements ThreadBoundMailbox {
 
     private final Runnable messageProcessor;
 
