@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class BaseMailbox implements JAMailbox {
+abstract public class BaseMailbox implements JAMailbox {
 
     private final Logger log;
 

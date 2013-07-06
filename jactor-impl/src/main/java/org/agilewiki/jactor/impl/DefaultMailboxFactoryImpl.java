@@ -87,8 +87,8 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     @Override
-    public final M createMailbox() {
-        return createMailbox(false, initialBufferSize, null);
+    public final NonBlockingMailboxImpl createMailbox() {
+        return (NonBlockingMailboxImpl) createMailbox(false, initialBufferSize, null);
     }
 
     @Override
@@ -105,8 +105,8 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
     }
 
     @Override
-    public final M createMailbox(final int initialBufferSize) {
-        return createMailbox(false, initialBufferSize, null);
+    public final NonBlockingMailboxImpl createMailbox(final int initialBufferSize) {
+        return (NonBlockingMailboxImpl) createMailbox(false, initialBufferSize, null);
     }
 
     @Override
@@ -187,16 +187,30 @@ public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
         return shuttingDown.get();
     }
 
-    /**
-     * Actually instantiate the Mailbox.
-     * Can be overridden, to create application-specific Mailbox instances.
-     */
     @SuppressWarnings({"unchecked", "rawtypes"})
+    @Deprecated
     protected M createMailbox(final boolean _mayBlock, final Runnable _onIdle,
                               final MessageQueue messageQueue,
                               final Logger _log, final int _initialBufferSize) {
-        return (M) new BaseMailbox(_mayBlock, _onIdle, this,
-                messageQueue, _log, _initialBufferSize);
+        return (M) (_mayBlock ?
+                new MayBlockMailboxImpl(_onIdle, this, messageQueue, _log, _initialBufferSize) :
+                new NonBlockingMailboxImpl(_onIdle, this, messageQueue, _log, _initialBufferSize));
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    protected NonBlockingMailboxImpl createNonBlockingMailbox(
+            final Runnable _onIdle,
+            final MessageQueue messageQueue,
+            final Logger _log, final int _initialBufferSize) {
+        return new NonBlockingMailboxImpl(_onIdle, this, messageQueue, _log, _initialBufferSize);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    protected MayBlockMailboxImpl createMayBlockMailbox(
+            final Runnable _onIdle,
+            final MessageQueue messageQueue,
+            final Logger _log, final int _initialBufferSize) {
+        return new MayBlockMailboxImpl(_onIdle, this, messageQueue, _log, _initialBufferSize);
     }
 
     @Override

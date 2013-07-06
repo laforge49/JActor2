@@ -17,7 +17,7 @@ public interface MailboxFactory extends AutoCloseable {
      *
      * @return A new mailbox.
      */
-    Mailbox createMailbox();
+    NonBlockingMailbox createMailbox();
 
     /**
      * Creates a Mailbox.
@@ -33,7 +33,7 @@ public interface MailboxFactory extends AutoCloseable {
      * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @return A new mailbox.
      */
-    Mailbox createMailbox(final int initialBufferSize);
+    NonBlockingMailbox createMailbox(final int initialBufferSize);
 
     /**
      * Creates a Mailbox.
