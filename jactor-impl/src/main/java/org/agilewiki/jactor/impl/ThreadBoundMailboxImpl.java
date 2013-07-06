@@ -5,17 +5,16 @@ import org.slf4j.Logger;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class ThreadBoundMailbox extends BaseMailbox {
+public class ThreadBoundMailboxImpl extends BaseMailbox {
 
     private final Runnable messageProcessor;
 
-    public ThreadBoundMailbox(Runnable _messageProcessor,
-                              JAMailboxFactory factory,
-                              MessageQueue messageQueue,
-                              Logger _log,
-                              int _initialBufferSize) {
+    public ThreadBoundMailboxImpl(Runnable _messageProcessor,
+                                  JAMailboxFactory factory,
+                                  MessageQueue messageQueue,
+                                  Logger _log,
+                                  int _initialBufferSize) {
         super(true, null, factory, messageQueue, _log, _initialBufferSize);
         messageProcessor = _messageProcessor;
     }
