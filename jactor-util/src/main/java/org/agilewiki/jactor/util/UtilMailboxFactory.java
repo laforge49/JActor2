@@ -7,10 +7,9 @@ import org.slf4j.Logger;
 
 /**
  * A Mailbox factory
- * @param <M>    The type of mailbox.
  */
-public final class UtilMailboxFactory<M extends JAMailbox>
-        extends DefaultMailboxFactoryImpl<M> {
+public final class UtilMailboxFactory
+        extends DefaultMailboxFactoryImpl {
 
     /**
      * Create a mailbox factory with the default thread pool size for mailboxes that may block.

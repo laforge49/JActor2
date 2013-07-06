@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * </p>
  */
 
-public class DefaultMailboxFactoryImpl<M extends JAMailbox> implements
+public class DefaultMailboxFactoryImpl implements
         JAMailboxFactory {
     protected final Logger mailboxLog = LoggerFactory.getLogger(JAMailbox.class);
 
