@@ -8,15 +8,28 @@ public class JAIteratorTest extends TestCase {
     private Mailbox counterMailbox;
     private long runs;
 
+    /*
+shared mailbox test
+Number of runs: 100000000
+Count: 100000000
+Test time in milliseconds: 4126
+Messages per second: 24236548
+----------------------------------------
+commandeering mailbox test
+Number of runs: 100000000
+Count: 100000000
+Test time in milliseconds: 7246
+Messages per second: 13800717
+----------------------------------------
+async mailbox test
+Number of runs: 1000000
+Count: 1000000
+Test time in milliseconds: 5830
+Messages per second: 171526
+     */
     public void test1() throws Exception {
-        runs = 100;
-
-//                shared mailbox test
-//                Number of runs: 100,000,000
-//                Count: 100,000,000
-//                Test time in milliseconds: 4080
-//                Messages per second: 24,509,803
-
+        System.gc();
+        runs = 10;
         System.out.println("shared mailbox test");
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
@@ -29,14 +42,22 @@ public class JAIteratorTest extends TestCase {
     }
 
     public void test2() throws Exception {
+        System.gc();
         runs = 10;
+        System.out.println("commandeering mailbox test");
+        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        try {
+            mailbox = mailboxFactory.createNonBlockingMailbox();
+            counterMailbox = mailboxFactory.createNonBlockingMailbox();
+            runReq().call();
+        } finally {
+            mailboxFactory.close();
+        }
+    }
 
-//        async mailbox test
-//        Number of runs: 1000000
-//        Count: 1000000
-//       Test time in milliseconds: 691
-//        Messages per second: 1,447,178
-
+    public void test3() throws Exception {
+        System.gc();
+        runs = 10;
         System.out.println("async mailbox test");
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
