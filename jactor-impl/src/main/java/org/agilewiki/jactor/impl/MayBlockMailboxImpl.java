@@ -51,7 +51,6 @@ public class MayBlockMailboxImpl extends BaseMailbox implements MayBlockMailbox 
                 iter.remove();
                 if (!iter.hasNext() &&
                         mayMigrate &&
-                        target instanceof MayBlockMailbox &&
                         getMailboxFactory() == target.getMailboxFactory() &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();
