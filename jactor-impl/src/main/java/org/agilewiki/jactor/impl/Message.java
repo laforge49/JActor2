@@ -24,6 +24,18 @@ public class Message implements AutoCloseable {
     private boolean responsePending = true;
     private Object response;
 
+    public Mailbox activeMailbox() {
+        if (!responsePending) {
+            if (targetActor == null)
+                return null;
+            else
+                return targetActor.getMailbox();
+        } else if (messageSource instanceof Mailbox)
+            return (Mailbox) messageSource;
+        else
+            return null;
+    }
+
     /**
      * Returns true when the response is to be sent to another mailbox factory.
      *
