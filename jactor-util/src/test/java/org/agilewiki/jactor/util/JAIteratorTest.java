@@ -57,7 +57,7 @@ Messages per second: 13715539
 
     public void test3() throws Exception {
         System.gc();
-        runs = 100000000;
+        runs = 10;
         System.out.println("migration mailbox test");
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
