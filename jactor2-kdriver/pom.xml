@@ -46,12 +46,12 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Activator>org.agilewiki.jactor.kdriver.Activator</Bundle-Activator>
+                        <Bundle-Activator>org.agilewiki.jactor2.kdriver.Activator</Bundle-Activator>
                         <Import-Package>
                             org.apache.felix.service.command,
-                            org.agilewiki.jactor.api;version=${project.version},
-                            org.agilewiki.jactor.util*;version=${project.version},
-                            org.agilewiki.jactor.osgi*;version=${project.version},
+                            org.agilewiki.jactor2.api;version=${project.version},
+                            org.agilewiki.jactor2.util*;version=${project.version},
+                            org.agilewiki.jactor2.osgi*;version=${project.version},
                             org.osgi.service.cm,
                             *
                         </Import-Package>

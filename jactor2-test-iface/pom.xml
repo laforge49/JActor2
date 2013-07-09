@@ -47,12 +47,12 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>
-                            org.agilewiki.jactor.testIface;version=${project.version}
+                            org.agilewiki.jactor2.testIface;version=${project.version}
                         </Export-Package>
                         <Import-Package>
-                            org.agilewiki.jactor.api;version=${project.version},
-                            org.agilewiki.jactor.util*;version=${project.version}
-                            org.agilewiki.jactor.osgi*;version=${project.version}
+                            org.agilewiki.jactor2.api;version=${project.version},
+                            org.agilewiki.jactor2.util*;version=${project.version}
+                            org.agilewiki.jactor2.osgi*;version=${project.version}
                             *
                         </Import-Package>
                     </instructions>
