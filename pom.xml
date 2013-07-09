@@ -48,7 +48,7 @@
     </properties>
 
     <modules>
-        <module>jactor-api</module>
+        <module>jactor2-api</module>
         <module>jactor2-impl</module>
         <module>jactor2-util</module>
         <module>jactor2-osgi</module>

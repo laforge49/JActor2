@@ -64,7 +64,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jactor-api</artifactId>
+            <artifactId>jactor2-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
