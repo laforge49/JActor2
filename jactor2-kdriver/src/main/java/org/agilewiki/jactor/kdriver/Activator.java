@@ -66,7 +66,7 @@ public class Activator extends FactoryLocatorActivator {
                 "config:propset msg Aloha!",
                 "config:propset import_a jactor-osgi\\|" + getNiceVersion(),
                 "config:update"));
-        String bundleLocation = "mvn:org.agilewiki.jactor/JActor-test-service/" + getNiceVersion();
+        String bundleLocation = "mvn:org.agilewiki.jactor2/jactor2-test-service/" + getNiceVersion();
         FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
         factoriesImporter.startReq(bundleLocation).send(getMailbox(), new ResponseProcessor<Void>() {
             @Override

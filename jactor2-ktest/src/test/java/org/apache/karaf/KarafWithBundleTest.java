@@ -42,12 +42,12 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
 
                 logLevel(LogLevelOption.LogLevel.INFO),
 
-                mavenBundle("org.agilewiki.jactor", "jactor-api", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor", "jactor-impl", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor", "jactor-util", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor", "jactor-osgi", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor", "jactor-test-iface", "0.0.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor", "jactor-kdriver", "0.0.1-SNAPSHOT")
+                mavenBundle("org.agilewiki.jactor2", "jactor-api", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor2", "jactor-impl", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor2", "jactor-util", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor2", "jactor-osgi", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor2", "jactor-test-iface", "0.0.1-SNAPSHOT"),
+                mavenBundle("org.agilewiki.jactor2", "jactor2-kdriver", "0.0.1-SNAPSHOT")
         };
     }
 
@@ -65,7 +65,8 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
     @Override
     public void bundleChanged(BundleEvent bundleEvent) {
         if (bundleEvent.getType() == BundleEvent.STOPPED) {
-            if (bundleEvent.getBundle().getSymbolicName().equals("jactor-kdriver")) {
+            if (bundleEvent.getBundle().getSymbolicName().equals("jactor2-kdriver")) {
+
                 try {
                     Thread.sleep(10000);
                 } catch (Exception e) {

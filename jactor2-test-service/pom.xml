@@ -9,8 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jactor-test-service</artifactId>
-    <name>JActor-test-service</name>
+    <artifactId>jactor2-test-service</artifactId>
+    <name>JActor2-test-service</name>
     <packaging>bundle</packaging>
 
     <build>

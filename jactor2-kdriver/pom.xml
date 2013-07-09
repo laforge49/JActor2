@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jactor-kdriver</artifactId>
-    <name>JActor-kdriver</name>
+    <artifactId>jactor2-kdriver</artifactId>
+    <name>JActor2-kdriver</name>
     <packaging>bundle</packaging>
 
     <build>
