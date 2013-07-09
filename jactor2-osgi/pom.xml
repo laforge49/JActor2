@@ -9,8 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jactor-osgi</artifactId>
-    <name>JActor-osgi</name>
+    <artifactId>jactor2-osgi</artifactId>
+    <name>JActor2-osgi</name>
     <packaging>bundle</packaging>
 
     <build>

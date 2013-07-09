@@ -80,7 +80,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jactor-osgi</artifactId>
+            <artifactId>jactor2-osgi</artifactId>
             <version>${project.version}</version>
         </dependency>
 

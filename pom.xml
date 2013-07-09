@@ -51,7 +51,7 @@
         <module>jactor-api</module>
         <module>jactor-impl</module>
         <module>jactor-util</module>
-        <module>jactor-osgi</module>
+        <module>jactor2-osgi</module>
         <module>jactor2-test-iface</module>
         <module>jactor2-test-service</module>
         <module>jactor2-kdriver</module>
