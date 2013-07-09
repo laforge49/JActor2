@@ -83,7 +83,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jactor-test-iface</artifactId>
+            <artifactId>jactor2-test-iface</artifactId>
             <version>${project.version}</version>
         </dependency>
 

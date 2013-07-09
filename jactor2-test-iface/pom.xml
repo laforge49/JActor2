@@ -9,8 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jactor-test-iface</artifactId>
-    <name>JActor-test-iface</name>
+    <artifactId>jactor2-test-iface</artifactId>
+    <name>JActor2-test-iface</name>
     <packaging>bundle</packaging>
 
     <build>
