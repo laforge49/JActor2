@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>org.agilewiki.jactor2</groupId>
-        <artifactId>jactor</artifactId>
+        <artifactId>jactor2</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 

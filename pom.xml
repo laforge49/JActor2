@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.agilewiki.jactor2</groupId>
-    <artifactId>jactor</artifactId>
+    <artifactId>jactor2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>JActor</name>
+    <name>JActor2</name>
     <description>POJO Actors</description>
     <url>https://github.com/laforge49/JActor2</url>
 
