@@ -69,7 +69,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jactor-impl</artifactId>
+            <artifactId>jactor2-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
