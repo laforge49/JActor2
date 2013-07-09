@@ -9,8 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jactor-util</artifactId>
-    <name>JActor-util</name>
+    <artifactId>jactor2-util</artifactId>
+    <name>JActor2-util</name>
     <packaging>bundle</packaging>
 
     <build>

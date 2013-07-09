@@ -74,7 +74,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jactor-util</artifactId>
+            <artifactId>jactor2-util</artifactId>
             <version>${project.version}</version>
         </dependency>
 
