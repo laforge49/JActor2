@@ -21,11 +21,11 @@ Count: 100000000
 Test time in milliseconds: 7246
 Messages per second: 13800717
 ----------------------------------------
-async mailbox test
-Number of runs: 1000000
-Count: 1000000
-Test time in milliseconds: 5830
-Messages per second: 171526
+migration mailbox test
+Number of runs: 100000000
+Count: 100000000
+Test time in milliseconds: 7291
+Messages per second: 13715539
      */
     public void test1() throws Exception {
         System.gc();
@@ -57,12 +57,12 @@ Messages per second: 171526
 
     public void test3() throws Exception {
         System.gc();
-        runs = 10;
-        System.out.println("async mailbox test");
+        runs = 100000000;
+        System.out.println("migration mailbox test");
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             mailbox = mailboxFactory.createNonBlockingMailbox();
-            counterMailbox = mailboxFactory.createMayBlockMailbox();
+            counterMailbox = mailboxFactory.createNonBlockingMailbox();
             runReq().call();
         } finally {
             mailboxFactory.close();
