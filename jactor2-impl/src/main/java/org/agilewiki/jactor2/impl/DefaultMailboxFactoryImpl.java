@@ -25,8 +25,8 @@ public class DefaultMailboxFactoryImpl implements
 
     private final Logger log = LoggerFactory.getLogger(MailboxFactory.class);
 
-    private final ThreadManager threadManager;
-    private final ThreadManager blockingThreadManager;
+    private final ThreadManager nonBlockingThreadManager;
+    private final ThreadManager mayBlockThreadManager;
     protected final MessageQueueFactory messageQueueFactory;
     private final Set<AutoCloseable> closables = Collections
             .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
@@ -48,42 +48,49 @@ public class DefaultMailboxFactoryImpl implements
     public DefaultMailboxFactoryImpl() {
         this(
                 null,
-                null,
                 MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
                 MessageQueue.INITIAL_BUFFER_SIZE,
                 20);
     }
 
-    public DefaultMailboxFactoryImpl(final int maxBlockingThreads) {
+    public DefaultMailboxFactoryImpl(final int mayBlockThreadCount) {
         this(
-                null,
                 null,
                 MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
                 MessageQueue.INITIAL_BUFFER_SIZE,
-                maxBlockingThreads);
+                mayBlockThreadCount);
     }
 
-    public DefaultMailboxFactoryImpl(final ThreadManager blockingThreadManager) {
+    public DefaultMailboxFactoryImpl(final ThreadManager mayBlockThreadManager) {
         this(
-                blockingThreadManager,
                 null,
                 MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
                 MessageQueue.INITIAL_BUFFER_SIZE,
                 0);
     }
 
-    public DefaultMailboxFactoryImpl(final ThreadManager blockingThreadManager,
-                                     final MessageQueueFactory messageQueueFactory,
-                                     final int initialLocalMessageQueueSize,
-                                     final int initialBufferSize, final int maxBlockingThreads) {
-        this.threadManager = ThreadManagerImpl.newThreadManager(Runtime
+    public DefaultMailboxFactoryImpl(final MessageQueueFactory _messageQueueFactory,
+                                     final int _initialLocalMessageQueueSize,
+                                     final int _initialBufferSize,
+                                     final int _mayBlockThreadCount) {
+        if (_mayBlockThreadCount == 0) {
+            nonBlockingThreadManager = ThreadManagerImpl.newThreadManager(Runtime
                 .getRuntime().availableProcessors() + 1);
-        this.blockingThreadManager = (blockingThreadManager == null) ? ThreadManagerImpl.newThreadManager(
-                maxBlockingThreads) : blockingThreadManager;
-        this.messageQueueFactory = (messageQueueFactory == null) ? new DefaultMessageQueueFactoryImpl()
-                : messageQueueFactory;
-        this.initialLocalMessageQueueSize = initialLocalMessageQueueSize;
-        this.initialBufferSize = initialBufferSize;
+            mayBlockThreadManager = nonBlockingThreadManager;
+        } else if (_mayBlockThreadCount > 0) {
+            nonBlockingThreadManager = ThreadManagerImpl.newThreadManager(Runtime
+                    .getRuntime().availableProcessors() + 1);
+            mayBlockThreadManager = ThreadManagerImpl.newThreadManager(
+                _mayBlockThreadCount);
+        } else {
+            mayBlockThreadManager = ThreadManagerImpl.newThreadManager(
+                    - _mayBlockThreadCount);
+            nonBlockingThreadManager = mayBlockThreadManager;
+        }
+        messageQueueFactory = (_messageQueueFactory == null) ? new DefaultMessageQueueFactoryImpl()
+                : _messageQueueFactory;
+        initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
+        initialBufferSize = _initialBufferSize;
     }
 
     @Override
@@ -156,10 +163,10 @@ public class DefaultMailboxFactoryImpl implements
     }
 
     @Override
-    public final void submit(final JAMailbox mailbox, final boolean willBlock)
+    public final void submit(final JAMailbox mailbox, final boolean _mayBlock)
             throws Exception {
         try {
-            (willBlock ? blockingThreadManager : threadManager).execute(mailbox);
+            (_mayBlock ? mayBlockThreadManager : nonBlockingThreadManager).execute(mailbox);
         } catch (final Exception e) {
             if (!isClosing())
                 throw e;
@@ -194,8 +201,8 @@ public class DefaultMailboxFactoryImpl implements
     @Override
     public final void close() throws Exception {
         if (shuttingDown.compareAndSet(false, true)) {
-            threadManager.close();
-            blockingThreadManager.close();
+            nonBlockingThreadManager.close();
+            mayBlockThreadManager.close();
             final Iterator<AutoCloseable> it = closables.iterator();
             while (it.hasNext()) {
                 try {

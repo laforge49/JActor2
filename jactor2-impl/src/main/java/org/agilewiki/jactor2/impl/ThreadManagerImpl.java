@@ -144,6 +144,8 @@ final public class ThreadManagerImpl implements ThreadManager {
      */
     @Override
     final public void close() {
+        if (closing)
+            return;
         closing = true;
         taskRequest.release(threadCount);
         final Thread ct = Thread.currentThread();
