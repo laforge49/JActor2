@@ -4,6 +4,11 @@ import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.NonBlockingMailbox;
 import org.slf4j.Logger;
 
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class NonBlockingMailboxImpl extends BaseMailbox implements NonBlockingMailbox {
 
     public NonBlockingMailboxImpl(Runnable _onIdle, JAMailboxFactory factory, MessageQueue messageQueue, Logger _log, int _initialBufferSize) {
@@ -17,43 +22,40 @@ public class NonBlockingMailboxImpl extends BaseMailbox implements NonBlockingMa
          * so we use a guard expression to reduce the number of times it is called.
          */
         if (threadReference.get() == null && inbox.isNonEmpty()) {
-            mailboxFactory.submit(this, false);
+            mailboxFactory.submit(this, true);
         }
     }
 
     @Override
-    public void addUnbufferedMessage(final Message message, final boolean local)
-            throws Exception {
-        if (mailboxFactory.isClosing()) {
-            if (message.isForeign() && message.isResponsePending())
-                try {
-                    message.close();
-                } catch (final Throwable t) {
-                }
-            return;
-        }
-        if (local)
-            inbox.offer(true, message);
-        else if (message.isForeign() || isRunning())
-            inbox.offer(false, message);
-        else {
-            Mailbox activeMailbox = message.activeMailbox();
-            if (activeMailbox == null || !(activeMailbox instanceof NonBlockingMailbox))
-                inbox.offer(false, message);
-            else {
-                Thread activeThread = ((JAMailbox)activeMailbox).getThreadReference().get();
-                if (!threadReference.compareAndSet(null, activeThread))
-                    inbox.offer(false, message);
-                else {
-                    try {
-                        inbox.offer(true, message);
-                        run();
-                    } finally {
-                        threadReference.set(null);
+    public boolean flush(boolean mayMigrate) throws Exception {
+        boolean result = false;
+        if (sendBuffer != null) {
+            final Iterator<Map.Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
+                    .entrySet().iterator();
+            while (iter.hasNext()) {
+                result = true;
+                final Map.Entry<JAMailbox, ArrayDeque<Message>> entry = iter.next();
+                final JAMailbox target = entry.getKey();
+                final ArrayDeque<Message> messages = entry.getValue();
+                iter.remove();
+                if (!iter.hasNext() &&
+                        mayMigrate &&
+                        getMailboxFactory() == target.getMailboxFactory() &&
+                        !target.isRunning()) {
+                    Thread currentThread = threadReference.get();
+                    AtomicReference<Thread> targetThreadReference = target.getThreadReference();
+                    if (targetThreadReference.get() == null &&
+                            targetThreadReference.compareAndSet(null, currentThread)) {
+                        while (!messages.isEmpty()) {
+                            Message m = messages.poll();
+                            target.addUnbufferedMessage(m, true);
+                        }
+                        throw new MigrateException(target);
                     }
                 }
+                target.addUnbufferedMessages(messages);
             }
         }
-        afterAdd();
+        return result;
     }
 }
