@@ -16,8 +16,18 @@ public class ThreadBoundMailboxImpl extends BaseMailbox implements ThreadBoundMa
                                   MessageQueue messageQueue,
                                   Logger _log,
                                   int _initialBufferSize) {
-        super(null, factory, messageQueue, _log, _initialBufferSize);
+        super(factory, messageQueue, _log, _initialBufferSize);
         messageProcessor = _messageProcessor;
+    }
+
+    @Override
+    public boolean isIdler() {
+        return false;
+    }
+
+    @Override
+    protected void onIdle() throws Exception {
+        flush(true);
     }
 
     /**

@@ -2,9 +2,9 @@ package org.agilewiki.jactor2.impl;
 
 public class MigrateException extends RuntimeException {
 
-    public JAMailbox mailbox;
+    public UnboundMailbox mailbox;
 
-    public MigrateException(final JAMailbox _mailbox) {
+    public MigrateException(final UnboundMailbox _mailbox) {
         mailbox = _mailbox;
     }
 

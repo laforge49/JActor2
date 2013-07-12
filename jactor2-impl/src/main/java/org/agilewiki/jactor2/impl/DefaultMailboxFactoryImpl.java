@@ -164,7 +164,7 @@ public class DefaultMailboxFactoryImpl implements
     }
 
     @Override
-    public final void submit(final JAMailbox mailbox, final boolean _mayBlock)
+    public final void submit(final UnboundMailbox mailbox, final boolean _mayBlock)
             throws Exception {
         try {
             (_mayBlock ? mayBlockThreadManager : nonBlockingThreadManager).execute(mailbox);

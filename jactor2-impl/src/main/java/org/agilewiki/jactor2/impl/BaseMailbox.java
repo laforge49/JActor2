@@ -28,16 +28,6 @@ abstract public class BaseMailbox implements JAMailbox {
     protected final MessageQueue inbox;
 
     /**
-     * A reference to the thread that is executing this mailbox.
-     */
-    protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
-
-    /**
-     * The object to be run when the mailbox is emptied and before the threadReference is cleared.
-     */
-    private final Runnable onIdle;
-
-    /**
      * Initial size of the outbox for each unique message destination.
      */
     private final int initialBufferSize;
@@ -57,31 +47,18 @@ abstract public class BaseMailbox implements JAMailbox {
      */
     private Message currentMessage;
 
-    @Override
-    public boolean isIdler() {
-        return onIdle != null;
-    }
-
-    @Override
-    public AtomicReference<Thread> getThreadReference() {
-        return threadReference;
-    }
-
     /**
      * Create a mailbox.
      *
-     * @param _onIdle            Object to be run when the inbox is emptied, or null.
      * @param _factory            The factory of this object.
      * @param _messageQueue       The inbox.
      * @param _log               The Mailbox log.
      * @param _initialBufferSize Initial size of the outbox for each unique message destination.
      */
-    public BaseMailbox(final Runnable _onIdle,
-                       final JAMailboxFactory _factory,
+    public BaseMailbox(final JAMailboxFactory _factory,
                        final MessageQueue _messageQueue,
                        final Logger _log,
                        final int _initialBufferSize) {
-        onIdle = _onIdle;
         mailboxFactory = _factory;
         inbox = _messageQueue;
         log = _log;
@@ -144,7 +121,7 @@ abstract public class BaseMailbox implements JAMailbox {
         boolean local = false;
         if (_source instanceof JAMailbox)
             local = this == _source ||
-                    (_source != null && threadReference.get() == ((JAMailbox) _source).getThreadReference().get());
+                    (_source != null && this == _source);
         addMessage(sourceMailbox, message, local);
     }
 
@@ -161,12 +138,7 @@ abstract public class BaseMailbox implements JAMailbox {
                         && mailboxFactory != sourceMailbox.getMailboxFactory(),
                 inbox, _request, _targetActor, _responseProcessor);
         addMessage(sourceMailbox, message, this == sourceMailbox ||
-                (sourceMailbox != null && threadReference.get() == sourceMailbox.getThreadReference().get()));
-    }
-
-    @Override
-    public boolean isRunning() {
-        return threadReference.get() != null;
+                (sourceMailbox != null && this == sourceMailbox));
     }
 
     @Override
@@ -302,13 +274,7 @@ abstract public class BaseMailbox implements JAMailbox {
     /**
      * Called when all pending messages have been processed.
      */
-    private void onIdle() throws Exception {
-        if (onIdle != null) {
-            flush(true);
-            onIdle.run();
-        }
-        flush(true);
-    }
+    abstract protected void onIdle() throws Exception;
 
     @Override
     public final boolean flush() throws Exception {
@@ -460,7 +426,7 @@ abstract public class BaseMailbox implements JAMailbox {
                                        final JAMailbox _responseSource) {
         try {
             addMessage(null, _message, this == _responseSource ||
-                    (_responseSource != null && threadReference.get() == _responseSource.getThreadReference().get()));
+                    (_responseSource != null && this == _responseSource));
         } catch (final Throwable t) {
             log.error("unable to add response message", t);
         }

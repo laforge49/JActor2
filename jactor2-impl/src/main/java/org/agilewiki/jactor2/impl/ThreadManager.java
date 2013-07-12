@@ -21,7 +21,7 @@ public interface ThreadManager extends AutoCloseable {
      *
      * @param mailbox The run method is to be called by another thread.
      */
-    public void execute(final JAMailbox mailbox);
+    public void execute(final UnboundMailbox mailbox);
 
     /**
      * Stop all the threads as they complete their tasks.

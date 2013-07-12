@@ -23,8 +23,8 @@ final public class ThreadManagerImpl implements ThreadManager {
     /**
      * The tasks queue holds the tasks waiting to be processed.
      */
-    final private ConcurrentLinkedQueue<JAMailbox> tasks =
-            new ConcurrentLinkedQueue<JAMailbox>();
+    final private ConcurrentLinkedQueue<UnboundMailbox> tasks =
+            new ConcurrentLinkedQueue<UnboundMailbox>();
 
     /**
      * When closing is true, concurrent exit as they finish their assigned tasks.
@@ -83,7 +83,7 @@ final public class ThreadManagerImpl implements ThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        JAMailbox mailbox = tasks.poll();
+                        UnboundMailbox mailbox = tasks.poll();
                         if (mailbox != null) {
                             AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                             if (threadReference.get() == null &&
@@ -131,7 +131,7 @@ final public class ThreadManagerImpl implements ThreadManager {
      * @param mailbox A task to be processed on another thread.
      */
     @Override
-    final public void execute(final JAMailbox mailbox) {
+    final public void execute(final UnboundMailbox mailbox) {
         tasks.add(mailbox);
         taskRequest.release();
     }

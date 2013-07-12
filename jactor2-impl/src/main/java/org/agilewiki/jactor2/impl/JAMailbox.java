@@ -18,13 +18,6 @@ public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnab
             throws Exception;
 
     /**
-     * Returns the atomic reference to the current thread.
-     *
-     * @return
-     */
-    AtomicReference<Thread> getThreadReference();
-
-    /**
      * Returns true when there is code to be executed when the inbox is emptied.
      *
      * @return True when there is code to be executed when the inbox is emptied.
