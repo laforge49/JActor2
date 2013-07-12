@@ -37,7 +37,7 @@ public class ThreadBoundMailboxImpl extends BaseMailbox implements ThreadBoundMa
      * Flushes buffered messages, if any.
      * Returns true if there was any.
      */
-    public final boolean flush(boolean mayMigrate) throws Exception {
+    public final boolean flush(boolean _mayMigrate) throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
             final Iterator<Map.Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer

@@ -27,7 +27,7 @@ public class NonBlockingMailboxImpl extends BaseMailbox implements NonBlockingMa
     }
 
     @Override
-    public boolean flush(boolean mayMigrate) throws Exception {
+    public boolean flush(boolean _mayMigrate) throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
             final Iterator<Map.Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
@@ -39,7 +39,7 @@ public class NonBlockingMailboxImpl extends BaseMailbox implements NonBlockingMa
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() &&
-                        mayMigrate &&
+                        _mayMigrate &&
                         getMailboxFactory() == target.getMailboxFactory() &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();

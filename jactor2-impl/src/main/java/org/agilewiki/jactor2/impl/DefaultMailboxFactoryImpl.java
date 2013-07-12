@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.impl;
 
+import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.MailboxFactory;
 import org.agilewiki.jactor2.api.Properties;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DefaultMailboxFactoryImpl implements
         JAMailboxFactory {
-    protected final Logger mailboxLog = LoggerFactory.getLogger(JAMailbox.class);
+    protected final Logger mailboxLog = LoggerFactory.getLogger(Mailbox.class);
 
     private final Logger log = LoggerFactory.getLogger(MailboxFactory.class);
 
@@ -109,7 +110,7 @@ public class DefaultMailboxFactoryImpl implements
                 _onIdle,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
-                mailboxLog, initialBufferSize);
+                initialBufferSize);
     }
 
     @Override
@@ -118,13 +119,13 @@ public class DefaultMailboxFactoryImpl implements
         return createNonBlockingMailbox(_onIdle,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
-                mailboxLog, initialBufferSize);
+                initialBufferSize);
     }
 
     public final NonBlockingMailboxImpl createNonBlockingMailbox(final Runnable _onIdle,
                                                                  final MessageQueue messageQueue) {
         return createNonBlockingMailbox(_onIdle, messageQueue,
-                mailboxLog, initialBufferSize);
+                initialBufferSize);
     }
 
     @Override
@@ -143,7 +144,7 @@ public class DefaultMailboxFactoryImpl implements
                 _onIdle,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
-                mailboxLog, initialBufferSize);
+                initialBufferSize);
     }
 
     @Override
@@ -153,13 +154,13 @@ public class DefaultMailboxFactoryImpl implements
                 _onIdle,
                 messageQueueFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
-                mailboxLog, initialBufferSize);
+                initialBufferSize);
     }
 
     public final MayBlockMailboxImpl createMayBlockMailbox(final Runnable _onIdle,
                                                            final MessageQueue messageQueue) {
         return createMayBlockMailbox(_onIdle, messageQueue,
-                mailboxLog, initialBufferSize);
+                initialBufferSize);
     }
 
     @Override
@@ -222,17 +223,17 @@ public class DefaultMailboxFactoryImpl implements
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected NonBlockingMailboxImpl createNonBlockingMailbox(
             final Runnable _onIdle,
-            final MessageQueue messageQueue,
-            final Logger _log, final int _initialBufferSize) {
-        return new NonBlockingMailboxImpl(_onIdle, this, messageQueue, _log, _initialBufferSize);
+            final MessageQueue _messageQueue,
+            final int _initialBufferSize) {
+        return new NonBlockingMailboxImpl(_onIdle, this, _messageQueue, mailboxLog, _initialBufferSize);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected MayBlockMailboxImpl createMayBlockMailbox(
             final Runnable _onIdle,
-            final MessageQueue messageQueue,
-            final Logger _log, final int _initialBufferSize) {
-        return new MayBlockMailboxImpl(_onIdle, this, messageQueue, _log, _initialBufferSize);
+            final MessageQueue _messageQueue,
+            final int _initialBufferSize) {
+        return new MayBlockMailboxImpl(_onIdle, this, _messageQueue, mailboxLog, _initialBufferSize);
     }
 
     @Override
