@@ -21,11 +21,6 @@ public class ThreadBoundMailboxImpl extends JAMailboxImpl implements ThreadBound
     }
 
     @Override
-    public boolean isIdler() {
-        return false;
-    }
-
-    @Override
     protected void onIdle() throws Exception {
         flush();
     }

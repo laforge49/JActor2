@@ -16,11 +16,4 @@ public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnab
 
     void addUnbufferedMessage(final Message message, final boolean local)
             throws Exception;
-
-    /**
-     * Returns true when there is code to be executed when the inbox is emptied.
-     *
-     * @return True when there is code to be executed when the inbox is emptied.
-     */
-    boolean isIdler();
 }

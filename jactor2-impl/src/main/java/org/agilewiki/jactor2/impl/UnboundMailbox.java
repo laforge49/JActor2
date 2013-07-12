@@ -13,4 +13,11 @@ public interface UnboundMailbox extends JAMailbox {
      * @return
      */
     AtomicReference<Thread> getThreadReference();
+
+    /**
+     * Returns true when there is code to be executed when the inbox is emptied.
+     *
+     * @return True when there is code to be executed when the inbox is emptied.
+     */
+    boolean isIdler();
 }
