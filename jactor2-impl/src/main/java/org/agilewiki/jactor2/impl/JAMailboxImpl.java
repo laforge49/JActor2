@@ -5,12 +5,11 @@ import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for mailboxes.
  */
-abstract public class BaseMailbox implements JAMailbox {
+abstract public class JAMailboxImpl implements JAMailbox {
 
     /**
      * Mailbox logger.
@@ -55,10 +54,10 @@ abstract public class BaseMailbox implements JAMailbox {
      * @param _log               The Mailbox log.
      * @param _initialBufferSize Initial size of the outbox for each unique message destination.
      */
-    public BaseMailbox(final JAMailboxFactory _factory,
-                       final MessageQueue _messageQueue,
-                       final Logger _log,
-                       final int _initialBufferSize) {
+    public JAMailboxImpl(final JAMailboxFactory _factory,
+                         final MessageQueue _messageQueue,
+                         final Logger _log,
+                         final int _initialBufferSize) {
         mailboxFactory = _factory;
         inbox = _messageQueue;
         log = _log;
@@ -318,7 +317,7 @@ abstract public class BaseMailbox implements JAMailbox {
                                     _message.setResponse(response);
                                     _message.getMessageSource()
                                             .incomingResponse(_message,
-                                                    BaseMailbox.this);
+                                                    JAMailboxImpl.this);
                                 } else {
                                     if (response instanceof Throwable) {
                                         log.warn("Uncaught throwable",
@@ -373,7 +372,7 @@ abstract public class BaseMailbox implements JAMailbox {
                         return;
                     currentMessage.setResponse(u);
                     message.getMessageSource().incomingResponse(message,
-                            BaseMailbox.this);
+                            JAMailboxImpl.this);
                 } else {
                     log.error("Thrown by exception handler and uncaught "
                             + exceptionHandler.getClass().getName(), _t);
@@ -385,7 +384,7 @@ abstract public class BaseMailbox implements JAMailbox {
             currentMessage.setResponse(_t);
             if (!(message.getResponseProcessor() instanceof EventResponseProcessor))
                 message.getMessageSource().incomingResponse(message,
-                        BaseMailbox.this);
+                        JAMailboxImpl.this);
             else {
                 log.warn("Uncaught throwable", _t);
             }

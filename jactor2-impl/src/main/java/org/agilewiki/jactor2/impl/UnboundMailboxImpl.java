@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Implements mailbox that is not bound to a single thread.
  */
-abstract public class UnboundMailboxImpl extends BaseMailbox implements UnboundMailbox {
+abstract public class UnboundMailboxImpl extends JAMailboxImpl implements UnboundMailbox {
 
     /**
      * A reference to the thread that is executing this mailbox.

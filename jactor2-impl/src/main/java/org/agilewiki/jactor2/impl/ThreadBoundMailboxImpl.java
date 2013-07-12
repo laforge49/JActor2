@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ThreadBoundMailboxImpl extends BaseMailbox implements ThreadBoundMailbox {
+public class ThreadBoundMailboxImpl extends JAMailboxImpl implements ThreadBoundMailbox {
 
     private final Runnable messageProcessor;
 
