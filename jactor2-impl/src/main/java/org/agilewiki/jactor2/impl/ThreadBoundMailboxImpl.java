@@ -27,7 +27,7 @@ public class ThreadBoundMailboxImpl extends JAMailboxImpl implements ThreadBound
 
     @Override
     protected void onIdle() throws Exception {
-        flush(true);
+        flush();
     }
 
     /**
@@ -47,7 +47,7 @@ public class ThreadBoundMailboxImpl extends JAMailboxImpl implements ThreadBound
      * Flushes buffered messages, if any.
      * Returns true if there was any.
      */
-    public final boolean flush(boolean _mayMigrate) throws Exception {
+    public final boolean flush() throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
             final Iterator<Map.Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer

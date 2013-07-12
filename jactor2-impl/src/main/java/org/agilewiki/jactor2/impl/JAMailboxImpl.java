@@ -275,20 +275,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
      */
     abstract protected void onIdle() throws Exception;
 
-    @Override
-    public final boolean flush() throws Exception {
-        return flush(false);
-    }
-
-    /**
-     * Flushes buffered messages, if any.
-     * Returns true if there was any.
-     *
-     * @param _mayMigrate True when thread migration is allowed.
-     * @return True when one or more buffered request/result was delivered.
-     */
-    abstract public boolean flush(final boolean _mayMigrate) throws Exception;
-
     /**
      * Process a request or signal message.
      *
