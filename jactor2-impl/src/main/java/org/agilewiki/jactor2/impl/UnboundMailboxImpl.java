@@ -112,7 +112,7 @@ abstract public class UnboundMailboxImpl extends JAMailboxImpl implements Unboun
                             Message m = messages.poll();
                             targ.unbufferedAddMessages(m, true);
                         }
-                        throw new MigrateException(targ);
+                        throw new MigrationException(targ);
                     }
                 }
                 target.unbufferedAddMessages(messages);
