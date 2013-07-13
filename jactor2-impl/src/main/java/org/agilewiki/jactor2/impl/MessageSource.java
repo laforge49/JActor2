@@ -1,9 +1,5 @@
 package org.agilewiki.jactor2.impl;
 
-import org.agilewiki.jactor2.api.Actor;
-import org.agilewiki.jactor2.api.ResponseProcessor;
-import org.agilewiki.jactor2.api._Request;
-
 /**
  * A source of requests, which must be able to handle a response.
  */
