@@ -7,8 +7,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnable {
 
-    public boolean isFull();
-
     /**
      * Adds messages to the queue.
      */

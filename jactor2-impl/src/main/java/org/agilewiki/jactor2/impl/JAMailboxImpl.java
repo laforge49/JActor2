@@ -422,11 +422,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
         return mailboxFactory;
     }
 
-    @Override
-    public boolean isFull() {
-        return false;
-    }
-
     /**
      * Called before running processXXXMessage(Message).
      *
