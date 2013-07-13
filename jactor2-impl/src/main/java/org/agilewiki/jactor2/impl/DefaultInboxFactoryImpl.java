@@ -5,7 +5,7 @@ package org.agilewiki.jactor2.impl;
  *
  * @author monster
  */
-public class DefaultMessageQueueFactoryImpl implements MessageQueueFactory {
+public class DefaultInboxFactoryImpl implements InboxFactory {
     /**
      * Creates a new Inbox instance.
      *
@@ -13,6 +13,6 @@ public class DefaultMessageQueueFactoryImpl implements MessageQueueFactory {
      */
     @Override
     public Inbox createMessageQueue(final int initialLocalQueueSize) {
-        return new DefaultMessageQueue(initialLocalQueueSize);
+        return new DefaultInbox(initialLocalQueueSize);
     }
 }

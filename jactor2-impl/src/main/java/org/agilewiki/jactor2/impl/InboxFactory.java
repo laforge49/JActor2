@@ -5,7 +5,7 @@ package org.agilewiki.jactor2.impl;
  *
  * @author monster
  */
-public interface MessageQueueFactory {
+public interface InboxFactory {
     /**
      * Creates a new Inbox instance.
      *

@@ -28,7 +28,7 @@ public class DefaultMailboxFactoryImpl implements
 
     private final ThreadManager nonBlockingThreadManager;
     private final ThreadManager mayBlockThreadManager;
-    protected final MessageQueueFactory messageQueueFactory;
+    protected final InboxFactory inboxFactory;
     private final Set<AutoCloseable> closables = Collections
             .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
     private final AtomicBoolean shuttingDown = new AtomicBoolean();
@@ -70,7 +70,7 @@ public class DefaultMailboxFactoryImpl implements
                 0);
     }
 
-    public DefaultMailboxFactoryImpl(final MessageQueueFactory _messageQueueFactory,
+    public DefaultMailboxFactoryImpl(final InboxFactory _inboxFactory,
                                      final int _initialLocalMessageQueueSize,
                                      final int _initialBufferSize,
                                      final int _mayBlockThreadCount) {
@@ -88,8 +88,8 @@ public class DefaultMailboxFactoryImpl implements
                     -_mayBlockThreadCount);
             nonBlockingThreadManager = mayBlockThreadManager;
         }
-        messageQueueFactory = (_messageQueueFactory == null) ? new DefaultMessageQueueFactoryImpl()
-                : _messageQueueFactory;
+        inboxFactory = (_inboxFactory == null) ? new DefaultInboxFactoryImpl()
+                : _inboxFactory;
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
         initialBufferSize = _initialBufferSize;
     }
@@ -108,7 +108,7 @@ public class DefaultMailboxFactoryImpl implements
     public final NonBlockingMailboxImpl createNonBlockingMailbox(final Runnable _onIdle) {
         return createNonBlockingMailbox(
                 _onIdle,
-                messageQueueFactory
+                inboxFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 initialBufferSize);
     }
@@ -117,7 +117,7 @@ public class DefaultMailboxFactoryImpl implements
     public final NonBlockingMailboxImpl createNonBlockingMailbox(final int initialBufferSize,
                                                                  final Runnable _onIdle) {
         return createNonBlockingMailbox(_onIdle,
-                messageQueueFactory
+                inboxFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 initialBufferSize);
     }
@@ -142,7 +142,7 @@ public class DefaultMailboxFactoryImpl implements
     public final MayBlockMailboxImpl createMayBlockMailbox(final Runnable _onIdle) {
         return createMayBlockMailbox(
                 _onIdle,
-                messageQueueFactory
+                inboxFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 initialBufferSize);
     }
@@ -152,7 +152,7 @@ public class DefaultMailboxFactoryImpl implements
                                                            final Runnable _onIdle) {
         return createMayBlockMailbox(
                 _onIdle,
-                messageQueueFactory
+                inboxFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 initialBufferSize);
     }
@@ -239,7 +239,7 @@ public class DefaultMailboxFactoryImpl implements
     @Override
     public final ThreadBoundMailboxImpl createThreadBoundMailbox(final Runnable _messageProcessor) {
         return new ThreadBoundMailboxImpl(_messageProcessor, this,
-                messageQueueFactory
+                inboxFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
                 mailboxLog, initialBufferSize);
     }

@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author monster
  */
-public class DefaultMessageQueue extends ConcurrentLinkedQueue<Object>
+public class DefaultInbox extends ConcurrentLinkedQueue<Object>
         implements Inbox {
     /**
      * serialVersionUID
@@ -24,9 +24,9 @@ public class DefaultMessageQueue extends ConcurrentLinkedQueue<Object>
     private final ArrayDeque<Object> localQueue;
 
     /**
-     * Creates a DefaultMessageQueue, with the given local queue initial size.
+     * Creates a DefaultInbox, with the given local queue initial size.
      */
-    public DefaultMessageQueue(final int initialLocalQueueSize) {
+    public DefaultInbox(final int initialLocalQueueSize) {
         if (initialLocalQueueSize > INITIAL_LOCAL_QUEUE_SIZE)
             localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
         else
