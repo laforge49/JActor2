@@ -7,12 +7,12 @@ package org.agilewiki.jactor2.impl;
  */
 public class DefaultMessageQueueFactoryImpl implements MessageQueueFactory {
     /**
-     * Creates a new MessageQueue instance.
+     * Creates a new Inbox instance.
      *
      * @param initialLocalQueueSize The initial number of slots in the local queue.
      */
     @Override
-    public MessageQueue createMessageQueue(final int initialLocalQueueSize) {
+    public Inbox createMessageQueue(final int initialLocalQueueSize) {
         return new DefaultMessageQueue(initialLocalQueueSize);
     }
 }

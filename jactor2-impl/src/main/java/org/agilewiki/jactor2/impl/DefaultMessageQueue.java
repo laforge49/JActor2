@@ -1,23 +1,18 @@
 package org.agilewiki.jactor2.impl;
 
-import org.agilewiki.jactor2.api.Actor;
-import org.agilewiki.jactor2.api.ExceptionHandler;
-import org.agilewiki.jactor2.api.ResponseProcessor;
-import org.agilewiki.jactor2.api._Request;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * A default <code>MessageQueue</code> implementation, using a
+ * A default <code>Inbox</code> implementation, using a
  * ConcurrentLinkedQueue for cross-mailbox message exchanges, and a ArrayDeque
  * for same-mailbox message exchanges.
  *
  * @author monster
  */
 public class DefaultMessageQueue extends ConcurrentLinkedQueue<Object>
-        implements MessageQueue {
+        implements Inbox {
     /**
      * serialVersionUID
      */
@@ -36,21 +31,6 @@ public class DefaultMessageQueue extends ConcurrentLinkedQueue<Object>
             localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
         else
             localQueue = new ArrayDeque<Object>(INITIAL_LOCAL_QUEUE_SIZE);
-    }
-
-    /**
-     * Creates a new Message instance.
-     */
-    @Override
-    public <E, A extends Actor> Message createMessage(final boolean foreign,
-                                                      final MessageSource source,
-                                                      final A targetActor,
-                                                      final Message old,
-                                                      final _Request<E, A> _request,
-                                                      final ExceptionHandler handler,
-                                                      final ResponseProcessor<E> rp) {
-        return new Message(foreign, source, targetActor, old, _request,
-                handler, rp);
     }
 
     /**

@@ -49,24 +49,24 @@ public class DefaultMailboxFactoryImpl implements
     public DefaultMailboxFactoryImpl() {
         this(
                 null,
-                MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
-                MessageQueue.INITIAL_BUFFER_SIZE,
+                Inbox.INITIAL_LOCAL_QUEUE_SIZE,
+                Inbox.INITIAL_BUFFER_SIZE,
                 20);
     }
 
     public DefaultMailboxFactoryImpl(final int mayBlockThreadCount) {
         this(
                 null,
-                MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
-                MessageQueue.INITIAL_BUFFER_SIZE,
+                Inbox.INITIAL_LOCAL_QUEUE_SIZE,
+                Inbox.INITIAL_BUFFER_SIZE,
                 mayBlockThreadCount);
     }
 
     public DefaultMailboxFactoryImpl(final ThreadManager mayBlockThreadManager) {
         this(
                 null,
-                MessageQueue.INITIAL_LOCAL_QUEUE_SIZE,
-                MessageQueue.INITIAL_BUFFER_SIZE,
+                Inbox.INITIAL_LOCAL_QUEUE_SIZE,
+                Inbox.INITIAL_BUFFER_SIZE,
                 0);
     }
 
@@ -123,8 +123,8 @@ public class DefaultMailboxFactoryImpl implements
     }
 
     public final NonBlockingMailboxImpl createNonBlockingMailbox(final Runnable _onIdle,
-                                                                 final MessageQueue messageQueue) {
-        return createNonBlockingMailbox(_onIdle, messageQueue,
+                                                                 final Inbox inbox) {
+        return createNonBlockingMailbox(_onIdle, inbox,
                 initialBufferSize);
     }
 
@@ -158,8 +158,8 @@ public class DefaultMailboxFactoryImpl implements
     }
 
     public final MayBlockMailboxImpl createMayBlockMailbox(final Runnable _onIdle,
-                                                           final MessageQueue messageQueue) {
-        return createMayBlockMailbox(_onIdle, messageQueue,
+                                                           final Inbox inbox) {
+        return createMayBlockMailbox(_onIdle, inbox,
                 initialBufferSize);
     }
 
@@ -223,17 +223,17 @@ public class DefaultMailboxFactoryImpl implements
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected NonBlockingMailboxImpl createNonBlockingMailbox(
             final Runnable _onIdle,
-            final MessageQueue _messageQueue,
+            final Inbox _inbox,
             final int _initialBufferSize) {
-        return new NonBlockingMailboxImpl(_onIdle, this, _messageQueue, mailboxLog, _initialBufferSize);
+        return new NonBlockingMailboxImpl(_onIdle, this, _inbox, mailboxLog, _initialBufferSize);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected MayBlockMailboxImpl createMayBlockMailbox(
             final Runnable _onIdle,
-            final MessageQueue _messageQueue,
+            final Inbox _inbox,
             final int _initialBufferSize) {
-        return new MayBlockMailboxImpl(_onIdle, this, _messageQueue, mailboxLog, _initialBufferSize);
+        return new MayBlockMailboxImpl(_onIdle, this, _inbox, mailboxLog, _initialBufferSize);
     }
 
     @Override

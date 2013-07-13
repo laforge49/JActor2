@@ -24,6 +24,22 @@ public class Message implements AutoCloseable {
     private boolean responsePending = true;
     private Object response;
 
+    public <E, A extends Actor> Message(final boolean _foreign,
+                                        final MessageSource _source,
+                                        final A _targetActor,
+                                        final Message _old,
+                                        final _Request<E, A> _request,
+                                        final ExceptionHandler _handler,
+                                        final ResponseProcessor<E> _rp) {
+        messageSource = _source;
+        foreign = _foreign;
+        targetActor = _targetActor;
+        oldMessage = _old;
+        request = (_Request<?, Actor>) _request;
+        sourceExceptionHandler = _handler;
+        responseProcessor = _rp;
+    }
+
     public Mailbox activeMailbox() {
         if (!responsePending) {
             if (targetActor == null)
@@ -107,19 +123,6 @@ public class Message implements AutoCloseable {
      */
     public ResponseProcessor<?> getResponseProcessor() {
         return responseProcessor;
-    }
-
-    public <E, A extends Actor> Message(final boolean _foreign,
-                                        final MessageSource _source, final A _targetActor,
-                                        final Message _old, final _Request<E, A> _request,
-                                        final ExceptionHandler _handler, final ResponseProcessor<E> _rp) {
-        messageSource = _source;
-        foreign = _foreign;
-        targetActor = _targetActor;
-        oldMessage = _old;
-        request = (_Request<?, Actor>) _request;
-        sourceExceptionHandler = _handler;
-        responseProcessor = _rp;
     }
 
     @Override

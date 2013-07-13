@@ -8,11 +8,11 @@ import org.agilewiki.jactor2.api._Request;
 import java.util.Queue;
 
 /**
- * A concurrent message queue, used in the Mailbox.
+ * A message queue used in the Mailbox.
  *
  * @author monster
  */
-public interface MessageQueue {
+public interface Inbox {
     /**
      * How big should the initial local queue size be?
      */
@@ -24,14 +24,6 @@ public interface MessageQueue {
     int INITIAL_BUFFER_SIZE = 16;
 
     /**
-     * Creates a new Message instance.
-     */
-    <E, A extends Actor> Message createMessage(final boolean _foreign,
-                                               final MessageSource _source, final A _targetActor,
-                                               final Message _old, final _Request<E, A> _request,
-                                               final ExceptionHandler _handler, final ResponseProcessor<E> _rp);
-
-    /**
      * Is the queue empty?
      */
     boolean isNonEmpty();
@@ -39,18 +31,18 @@ public interface MessageQueue {
     /**
      * Inserts a new message in the queue.
      *
-     * @param local Should be true for same-mailbox exchanges
-     * @param msg   The new message
+     * @param _local Should be true for same-mailbox exchanges
+     * @param _msg   The new message
      */
-    void offer(final boolean local, final Message msg);
+    void offer(final boolean _local, final Message _msg);
 
     /**
      * Inserts a new message in the queue.
      * Multi-offer assumes the messages are not local.
      *
-     * @param msgs The new messages
+     * @param _msgs The new messages
      */
-    void offer(final Queue<Message> msgs);
+    void offer(final Queue<Message> _msgs);
 
     /**
      * Retrieves and removes the head of this queue, or returns null if this queue is empty.
