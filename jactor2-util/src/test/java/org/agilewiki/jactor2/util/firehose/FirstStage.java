@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.util.firehose;
 
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.ActorBase;
+import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.ResponseProcessor;
+import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.BoundResponseProcessor;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 
@@ -53,8 +56,8 @@ public class FirstStage extends ActorBase implements Runnable {
                     System.out.println("number of Long: " + count);
                     System.out.println("window size: " + maxWindowSize);
                     if (d > 0) {
-                        System.out.println("Longs/second through the firehose: " + count*1000L/d);
-                        System.out.println("Longs/second passed between stages: " + 10L*count*1000L/d);
+                        System.out.println("Longs/second through the firehose: " + count * 1000L / d);
+                        System.out.println("Longs/second passed between stages: " + 10L * count * 1000L / d);
                     }
                     mainThread.interrupt();
                 }

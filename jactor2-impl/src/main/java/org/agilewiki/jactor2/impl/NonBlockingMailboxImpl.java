@@ -9,8 +9,8 @@ public class NonBlockingMailboxImpl extends UnboundMailboxImpl implements NonBlo
      * Create a mailbox.
      *
      * @param _onIdle            Object to be run when the inbox is emptied, or null.
-     * @param _factory            The factory of this object.
-     * @param _messageQueue       The inbox.
+     * @param _factory           The factory of this object.
+     * @param _messageQueue      The inbox.
      * @param _log               The Mailbox log.
      * @param _initialBufferSize Initial size of the outbox for each unique message destination.
      */

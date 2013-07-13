@@ -27,7 +27,7 @@ public final class UtilMailboxFactory
      * with a size = - mayBlockThreadCount and a may-block thread pool is created
      * with a size = mayBlockThreadCount.
      *
-     * @param mayBlockThreadCount    The thread pool size for mailboxes that may block.
+     * @param mayBlockThreadCount The thread pool size for mailboxes that may block.
      */
     public UtilMailboxFactory(final int mayBlockThreadCount) {
         super(mayBlockThreadCount);

@@ -76,16 +76,16 @@ public class DefaultMailboxFactoryImpl implements
                                      final int _mayBlockThreadCount) {
         if (_mayBlockThreadCount == 0) {
             nonBlockingThreadManager = ThreadManagerImpl.newThreadManager(Runtime
-                .getRuntime().availableProcessors() + 1);
+                    .getRuntime().availableProcessors() + 1);
             mayBlockThreadManager = nonBlockingThreadManager;
         } else if (_mayBlockThreadCount > 0) {
             nonBlockingThreadManager = ThreadManagerImpl.newThreadManager(Runtime
                     .getRuntime().availableProcessors() + 1);
             mayBlockThreadManager = ThreadManagerImpl.newThreadManager(
-                _mayBlockThreadCount);
+                    _mayBlockThreadCount);
         } else {
             mayBlockThreadManager = ThreadManagerImpl.newThreadManager(
-                    - _mayBlockThreadCount);
+                    -_mayBlockThreadCount);
             nonBlockingThreadManager = mayBlockThreadManager;
         }
         messageQueueFactory = (_messageQueueFactory == null) ? new DefaultMessageQueueFactoryImpl()

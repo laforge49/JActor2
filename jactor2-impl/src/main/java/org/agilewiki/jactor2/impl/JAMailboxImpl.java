@@ -49,8 +49,8 @@ abstract public class JAMailboxImpl implements JAMailbox {
     /**
      * Create a mailbox.
      *
-     * @param _factory            The factory of this object.
-     * @param _messageQueue       The inbox.
+     * @param _factory           The factory of this object.
+     * @param _messageQueue      The inbox.
      * @param _log               The Mailbox log.
      * @param _initialBufferSize Initial size of the outbox for each unique message destination.
      */
