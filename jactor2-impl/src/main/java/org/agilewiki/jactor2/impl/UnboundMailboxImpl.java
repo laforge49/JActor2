@@ -110,12 +110,12 @@ abstract public class UnboundMailboxImpl extends JAMailboxImpl implements Unboun
                             targetThreadReference.compareAndSet(null, currentThread)) {
                         while (!messages.isEmpty()) {
                             Message m = messages.poll();
-                            targ.addUnbufferedMessage(m, true);
+                            targ.unbufferedAddMessages(m, true);
                         }
                         throw new MigrateException(targ);
                     }
                 }
-                target.addUnbufferedMessages(messages);
+                target.unbufferedAddMessages(messages);
             }
         }
         return result;

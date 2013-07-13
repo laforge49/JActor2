@@ -53,7 +53,7 @@ public class ThreadBoundMailboxImpl extends JAMailboxImpl implements ThreadBound
                 final JAMailbox target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
-                target.addUnbufferedMessages(messages);
+                target.unbufferedAddMessages(messages);
             }
         }
         return result;

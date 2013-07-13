@@ -82,7 +82,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
             if (target.getMailboxFactory() != mailboxFactory) {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
-                target.addUnbufferedMessages(messages);
+                target.unbufferedAddMessages(messages);
             } else
                 iter.remove();
         }
@@ -186,11 +186,11 @@ abstract public class JAMailboxImpl implements JAMailbox {
                             final boolean _local) throws Exception {
         if ((_messageSource == null) || _local
                 || !_messageSource.buffer(_message, this)) {
-            addUnbufferedMessage(_message, _local);
+            unbufferedAddMessages(_message, _local);
         }
     }
 
-    public void addUnbufferedMessage(final Message _message, final boolean _local)
+    public void unbufferedAddMessages(final Message _message, final boolean _local)
             throws Exception {
         if (mailboxFactory.isClosing()) {
             if (_message.isForeign() && _message.isResponsePending())
@@ -205,7 +205,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
-    public void addUnbufferedMessages(final Queue<Message> _messages)
+    public void unbufferedAddMessages(final Queue<Message> _messages)
             throws Exception {
         if (mailboxFactory.isClosing()) {
             final Iterator<Message> itm = _messages.iterator();

@@ -4,13 +4,24 @@ import org.agilewiki.jactor2.api.Mailbox;
 
 import java.util.Queue;
 
+/**
+ * The extended Mailbox interface for use in the implementation.
+ */
 public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnable {
 
     /**
-     * Adds messages to the queue.
+     * Adds messages directly to the queue.
+     *
+     * @param messages Previously buffered messages.
      */
-    void addUnbufferedMessages(final Queue<Message> messages) throws Exception;
+    void unbufferedAddMessages(final Queue<Message> messages) throws Exception;
 
-    void addUnbufferedMessage(final Message message, final boolean local)
+    /**
+     * Add a message directly to the queue.
+     *
+     * @param message A message.
+     * @param local   True when the current thread is bound to the mailbox.
+     */
+    void unbufferedAddMessages(final Message message, final boolean local)
             throws Exception;
 }
