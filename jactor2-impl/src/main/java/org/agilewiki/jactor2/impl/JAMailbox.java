@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.impl;
 
+import org.agilewiki.jactor2.api.Actor;
 import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.ResponseProcessor;
+import org.agilewiki.jactor2.api._Request;
 
 import java.util.Queue;
 
@@ -24,4 +27,15 @@ public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnab
      */
     void unbufferedAddMessages(final Message message, final boolean local)
             throws Exception;
+
+    <E, A extends Actor> Message createMessage(final boolean _foreign,
+                                               final MessageQueue _inbox,
+                                               final _Request<E, A> _request,
+                                               final A _targetActor,
+                                               final ResponseProcessor<E> _responseProcessor);
+
+    /**
+     * Returns true, if this mailbox is currently processing messages.
+     */
+    boolean isRunning();
 }

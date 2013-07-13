@@ -30,16 +30,4 @@ final class Caller implements MessageSource {
     public boolean buffer(final Message message, final JAMailbox target) {
         return false;
     }
-
-    @Override
-    public boolean isRunning() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public <E, A extends Actor> Message createMessage(final boolean _foreign,
-                                                      final MessageQueue inbox, final _Request<E, A> request,
-                                                      final A targetActor, final ResponseProcessor<E> responseProcessor) {
-        throw new UnsupportedOperationException();
-    }
 }

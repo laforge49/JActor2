@@ -4,6 +4,9 @@ import org.agilewiki.jactor2.api.Actor;
 import org.agilewiki.jactor2.api.ResponseProcessor;
 import org.agilewiki.jactor2.api._Request;
 
+/**
+ * A source of requests, which must be able to handle a response.
+ */
 public interface MessageSource {
 
     /**
@@ -12,20 +15,11 @@ public interface MessageSource {
     void incomingResponse(final Message message, final JAMailbox responseSource);
 
     /**
-     * Returns true, if the message could be buffered before sending.
+     * Returns true, if the message was buffered for sending later.
      *
      * @param message Message to send-buffer
      * @param target  The MessageSource that should eventually receive this message
      * @return true, if buffered
      */
     boolean buffer(final Message message, final JAMailbox target);
-
-    /**
-     * Returns true, if this message source is currently processing messages.
-     */
-    boolean isRunning();
-
-    <E, A extends Actor> Message createMessage(final boolean _foreign,
-                                               final MessageQueue inbox, final _Request<E, A> request,
-                                               final A targetActor, final ResponseProcessor<E> responseProcessor);
 }

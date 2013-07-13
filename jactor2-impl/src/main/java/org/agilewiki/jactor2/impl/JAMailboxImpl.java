@@ -111,7 +111,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
     public final <A extends Actor> void signal(final _Request<Void, A> _request,
                                                final Mailbox _source,
                                                final A _targetActor) throws Exception {
-        final MessageSource sourceMailbox = (MessageSource) _source;
+        final JAMailbox sourceMailbox = (JAMailbox) _source;
         if (!sourceMailbox.isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
@@ -126,15 +126,15 @@ abstract public class JAMailboxImpl implements JAMailbox {
 
     @Override
     public final <E, A extends Actor> void send(final _Request<E, A> _request,
-                                                final Mailbox source, final A _targetActor,
+                                                final Mailbox _source,
+                                                final A _targetActor,
                                                 final ResponseProcessor<E> _responseProcessor) throws Exception {
-        final JAMailbox sourceMailbox = (JAMailbox) source;
+        final JAMailbox sourceMailbox = (JAMailbox) _source;
         if (!sourceMailbox.isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
         final Message message = sourceMailbox.createMessage(
-                this != sourceMailbox
-                        && mailboxFactory != sourceMailbox.getMailboxFactory(),
+                mailboxFactory != sourceMailbox.getMailboxFactory(),
                 inbox, _request, _targetActor, _responseProcessor);
         addMessage(sourceMailbox, message, this == sourceMailbox ||
                 (sourceMailbox != null && this == sourceMailbox));
