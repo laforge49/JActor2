@@ -41,7 +41,7 @@ public abstract class UnboundRequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extend
     public void send(final Mailbox _source,
                      final TARGET_ACTOR_TYPE _targetActor,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
-        _targetActor.getMailbox().send(this, _source, _targetActor, _rp);
+        _source.sendTo(this, _targetActor.getMailbox(), _targetActor, _rp);
     }
 
     @Override

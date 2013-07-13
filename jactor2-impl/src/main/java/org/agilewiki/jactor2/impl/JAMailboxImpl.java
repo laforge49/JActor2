@@ -122,18 +122,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
-    public final <E, A extends Actor> void send(final _Request<E, A> _request,
-                                                final Mailbox _source,
-                                                final A _targetActor,
-                                                final ResponseProcessor<E> _responseProcessor) throws Exception {
-        final JAMailbox sourceMailbox = (JAMailbox) _source;
-        final Message message = sourceMailbox.createRequestMessage(
-                _request, _targetActor, mailboxFactory, _responseProcessor);
-        addMessage(sourceMailbox, message, this == sourceMailbox ||
-                (sourceMailbox != null && this == sourceMailbox));
-    }
-
-    @Override
     public final <E, A extends Actor> Message createSignalMessage(
             final _Request<E, A> _request,
             final A _targetActor,
@@ -146,7 +134,17 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
-    public final <E, A extends Actor> Message createRequestMessage(
+    public final <E, A extends Actor> void sendTo(final _Request<E, A> _request,
+                                                final Mailbox _targetMailbox,
+                                                final A _targetActor,
+                                                final ResponseProcessor<E> _responseProcessor) throws Exception {
+        final JAMailbox targetMailbox = (JAMailbox) _targetMailbox;
+        final Message message = createRequestMessage(
+                _request, _targetActor, _targetMailbox.getMailboxFactory(), _responseProcessor);
+        targetMailbox.addMessage(this, message, this == targetMailbox);
+    }
+
+    private final <E, A extends Actor> Message createRequestMessage(
             final _Request<E, A> _request,
             final A _targetActor,
             final MailboxFactory _targetMailboxFactory,
@@ -194,7 +192,8 @@ abstract public class JAMailboxImpl implements JAMailbox {
      * @param _message       The message to be processed or the returned results.
      * @param _local         True when the active thread controls the mailbox.
      */
-    private void addMessage(final MessageSource _messageSource,
+    @Override
+    public void addMessage(final MessageSource _messageSource,
                             final Message _message,
                             final boolean _local) throws Exception {
         if ((_messageSource == null) || _local

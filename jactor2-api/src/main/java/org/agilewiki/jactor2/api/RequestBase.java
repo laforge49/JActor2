@@ -63,7 +63,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     @Override
     public void send(final Mailbox _source,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
-        mailbox.send(this, _source, null, _rp);
+        _source.sendTo(this, mailbox, null, _rp);
     }
 
     @Override

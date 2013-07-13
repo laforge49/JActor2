@@ -26,18 +26,23 @@ public interface JAMailbox extends Mailbox, AutoCloseable, MessageSource, Runnab
             throws Exception;
 
     <E, A extends Actor> Message createSignalMessage(
-                                               final _Request<E, A> _request,
-                                               final A _targetActor,
-                                               final ResponseProcessor<E> _responseProcessor);
-
-    <E, A extends Actor> Message createRequestMessage(
-                                               final _Request<E, A> _request,
-                                               final A _targetActor,
-                                               final MailboxFactory _targetMailboxFactory,
-                                               final ResponseProcessor<E> _responseProcessor);
+            final _Request<E, A> _request,
+            final A _targetActor,
+            final ResponseProcessor<E> _responseProcessor);
 
     /**
      * Returns true, if this mailbox is currently processing messages.
      */
     boolean isRunning();
+
+    /**
+     * Buffer a message to be processed later or add it to the inbox local queue for processing.
+     *
+     * @param _messageSource The source of the message, or null.
+     * @param _message       The message to be processed or the returned results.
+     * @param _local         True when the active thread controls the mailbox.
+     */
+    void addMessage(final MessageSource _messageSource,
+                            final Message _message,
+                            final boolean _local) throws Exception;
 }
