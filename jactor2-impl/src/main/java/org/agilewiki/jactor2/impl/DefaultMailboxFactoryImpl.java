@@ -164,10 +164,10 @@ public class DefaultMailboxFactoryImpl implements
     }
 
     @Override
-    public final void submit(final UnboundMailbox mailbox, final boolean _mayBlock)
+    public final void submit(final UnboundMailbox _mailbox, final boolean _mayBlock)
             throws Exception {
         try {
-            (_mayBlock ? mayBlockThreadManager : nonBlockingThreadManager).execute(mailbox);
+            (_mayBlock ? mayBlockThreadManager : nonBlockingThreadManager).execute(_mailbox);
         } catch (final Exception e) {
             if (!isClosing())
                 throw e;
