@@ -139,27 +139,18 @@ abstract public class JAMailboxImpl implements JAMailbox {
                                                 final A _targetActor,
                                                 final ResponseProcessor<E> _responseProcessor) throws Exception {
         final JAMailbox targetMailbox = (JAMailbox) _targetMailbox;
-        final Message message = createRequestMessage(
-                _request, _targetActor, _targetMailbox.getMailboxFactory(), _responseProcessor);
-        targetMailbox.addMessage(this, message, this == targetMailbox);
-    }
-
-    private final <E, A extends Actor> Message createRequestMessage(
-            final _Request<E, A> _request,
-            final A _targetActor,
-            final MailboxFactory _targetMailboxFactory,
-            final ResponseProcessor<E> _responseProcessor) {
         if (!isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
-        return new Message(
-                mailboxFactory != _targetMailboxFactory,
+        final Message message = new Message(
+                mailboxFactory != _targetMailbox.getMailboxFactory(),
                 this,
                 _targetActor,
                 currentMessage,
                 _request,
                 exceptionHandler,
                 _responseProcessor);
+        targetMailbox.addMessage(this, message, this == targetMailbox);
     }
 
     @SuppressWarnings("unchecked")
