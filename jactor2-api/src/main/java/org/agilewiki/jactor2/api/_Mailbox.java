@@ -54,14 +54,14 @@ interface _Mailbox {
      * Otherwise the exception is enqueued by this mailbox in place of the result.
      * </p>
      *
-     * @param _request       Defines the operation to be applied to the target actor.
-     * @param _targetMailbox The target mailbox where the request is to be sent.
-     * @param _targetActor   For Request's (bound requests), _targetActor is null.
-     *                       For UnboundRequest's, _targetActor is the actor
-     *                       to which the request is applied.
-     * @param _responseProcessor            The callback used to receive the result of the request.
-     * @param <E>            The result type.
-     * @param <A>            The target actor type.
+     * @param _request           Defines the operation to be applied to the target actor.
+     * @param _targetMailbox     The target mailbox where the request is to be sent.
+     * @param _targetActor       For Request's (bound requests), _targetActor is null.
+     *                           For UnboundRequest's, _targetActor is the actor
+     *                           to which the request is applied.
+     * @param _responseProcessor The callback used to receive the result of the request.
+     * @param <E>                The result type.
+     * @param <A>                The target actor type.
      */
 
     <E, A extends Actor> void sendTo(final _Request<E, A> _request,

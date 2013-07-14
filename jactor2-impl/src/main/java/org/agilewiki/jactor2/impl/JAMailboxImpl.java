@@ -50,7 +50,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
      * Create a mailbox.
      *
      * @param _factory           The factory of this object.
-     * @param _inbox      The inbox.
+     * @param _inbox             The inbox.
      * @param _log               The Mailbox log.
      * @param _initialBufferSize Initial size of the outbox for each unique message destination.
      */
@@ -112,8 +112,11 @@ abstract public class JAMailboxImpl implements JAMailbox {
                                                final Mailbox _source,
                                                final A _targetActor) throws Exception {
         final JAMailbox sourceMailbox = (JAMailbox) _source;
-        final Message message = sourceMailbox.createSignalMessage(
-                _request, _targetActor, EventResponseProcessor.SINGLETON);
+        if (!sourceMailbox.isRunning())
+            throw new IllegalStateException(
+                    "A valid source mailbox can not be idle");
+        final Message message = new Message(false, sourceMailbox, _targetActor, null,
+                _request, null, EventResponseProcessor.SINGLETON);
         boolean local = false;
         if (_source instanceof JAMailbox)
             local = this == _source ||
@@ -122,22 +125,10 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
-    public final <E, A extends Actor> Message createSignalMessage(
-            final _Request<E, A> _request,
-            final A _targetActor,
-            final ResponseProcessor<E> _responseProcessor) {
-        if (!isRunning())
-            throw new IllegalStateException(
-                    "A valid source mailbox can not be idle");
-        return new Message(false, this, _targetActor, currentMessage,
-                _request, exceptionHandler, _responseProcessor);
-    }
-
-    @Override
     public final <E, A extends Actor> void sendTo(final _Request<E, A> _request,
-                                                final Mailbox _targetMailbox,
-                                                final A _targetActor,
-                                                final ResponseProcessor<E> _responseProcessor) throws Exception {
+                                                  final Mailbox _targetMailbox,
+                                                  final A _targetActor,
+                                                  final ResponseProcessor<E> _responseProcessor) throws Exception {
         final JAMailbox targetMailbox = (JAMailbox) _targetMailbox;
         if (!isRunning())
             throw new IllegalStateException(
@@ -185,8 +176,8 @@ abstract public class JAMailboxImpl implements JAMailbox {
      */
     @Override
     public void addMessage(final MessageSource _messageSource,
-                            final Message _message,
-                            final boolean _local) throws Exception {
+                           final Message _message,
+                           final boolean _local) throws Exception {
         if ((_messageSource == null) || _local
                 || !_messageSource.buffer(_message, this)) {
             unbufferedAddMessages(_message, _local);

@@ -27,7 +27,7 @@ abstract public class UnboundMailboxImpl extends JAMailboxImpl implements Unboun
      *
      * @param _onIdle            Object to be run when the inbox is emptied, or null.
      * @param _factory           The factory of this object.
-     * @param _inbox      The inbox.
+     * @param _inbox             The inbox.
      * @param _log               The Mailbox log.
      * @param _initialBufferSize Initial size of the outbox for each unique message destination.
      */
