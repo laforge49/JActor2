@@ -103,7 +103,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
                                                final A _targetActor) throws Exception {
         final Message message = new Message(false, null, _targetActor,
                 null, _request, null, EventResponseProcessor.SINGLETON);
-        // No source mean never local and no buffering.
+        // No source means never local and no buffering.
         addMessage(null, message, false);
     }
 
@@ -117,11 +117,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
                     "A valid source mailbox can not be idle");
         final Message message = new Message(false, sourceMailbox, _targetActor, null,
                 _request, null, EventResponseProcessor.SINGLETON);
-        boolean local = false;
-        if (_source instanceof JAMailbox)
-            local = this == _source ||
-                    (_source != null && this == _source);
-        addMessage(sourceMailbox, message, local);
+        addMessage(sourceMailbox, message, this == _source);
     }
 
     @Override
