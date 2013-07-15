@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.BoundRequest;
+import org.agilewiki.jactor2.api.BoundRequestBase;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -26,9 +25,9 @@ public class JAStringImpl
         });
     }
 
-    private Request<String> getStringReq;
+    private BoundRequest<String> getStringReq;
 
-    public Request<String> getValueReq() {
+    public BoundRequest<String> getValueReq() {
         return getStringReq;
     }
 
@@ -48,10 +47,10 @@ public class JAStringImpl
         change(c);
     }
 
-    public Request<Void> setValueReq(final String v) {
+    public BoundRequest<Void> setValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new RequestBase<Void>(getMailbox()) {
+        return new BoundRequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(v);
@@ -63,7 +62,7 @@ public class JAStringImpl
     /**
      * Assign a value unless one is already present.
      *
-     * @param v The MakeValue request.
+     * @param v The MakeValue boundRequest.
      * @return True if a new value is created.
      */
     @Override
@@ -80,10 +79,10 @@ public class JAStringImpl
         return true;
     }
 
-    public Request<Boolean> makeValueReq(final String v) {
+    public BoundRequest<Boolean> makeValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new RequestBase<Boolean>(getMailbox()) {
+        return new BoundRequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(makeValue(v));
@@ -138,7 +137,7 @@ public class JAStringImpl
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getStringReq = new RequestBase<String>(getMailbox()) {
+        getStringReq = new BoundRequestBase<String>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

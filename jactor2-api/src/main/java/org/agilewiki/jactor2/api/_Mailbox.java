@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * _Mailbox defines the internal API used by RequestBase and UnboundRequestBase
+ * _Mailbox defines the internal API used by BoundRequestBase and UnboundRequestBase
  * to pass _Request's to a target mailbox.
  */
 interface _Mailbox {
@@ -14,7 +14,7 @@ interface _Mailbox {
      * are logged as a warning.
      *
      * @param _request     Defines the operation to be applied to the target actor.
-     * @param _targetActor For Request's (bound requests), _targetActor is null.
+     * @param _targetActor For BoundRequest's (bound requests), _targetActor is null.
      *                     For UnboundRequest's, _targetActor is the actor
      *                     to which the request is applied.
      * @param <A>          The target actor type.
@@ -32,7 +32,7 @@ interface _Mailbox {
      *
      * @param _request       Defines the operation to be applied to the target actor.
      * @param _targetMailbox The target mailbox where the signal is to be processed.
-     * @param _targetActor   For Request's (bound requests), _targetActor is null.
+     * @param _targetActor   For BoundRequest's (bound requests), _targetActor is null.
      *                       For UnboundRequest's, _targetActor is the actor
      *                       to which the request is applied.
      * @param <A>            The target actor type.
@@ -56,7 +56,7 @@ interface _Mailbox {
      *
      * @param _request           Defines the operation to be applied to the target actor.
      * @param _targetMailbox     The target mailbox where the request is to be sent.
-     * @param _targetActor       For Request's (bound requests), _targetActor is null.
+     * @param _targetActor       For BoundRequest's (bound requests), _targetActor is null.
      *                           For UnboundRequest's, _targetActor is the actor
      *                           to which the request is applied.
      * @param _responseProcessor The callback used to receive the result of the request.
@@ -86,7 +86,7 @@ interface _Mailbox {
      * </p>
      *
      * @param _request     Defines the operation to be applied to the target actor.
-     * @param _targetActor For Request's (bound requests), _targetActor is null.
+     * @param _targetActor For BoundRequest's (bound requests), _targetActor is null.
      *                     For UnboundRequest's, _targetActor is the actor
      *                     to which the request is applied.
      * @param <E>          The result type.

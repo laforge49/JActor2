@@ -14,7 +14,7 @@ public class ServiceTest extends TestCase {
             Mailbox testMailbox = testMBF.createNonBlockingMailbox();
             Server server = new Server(serverMBF.createNonBlockingMailbox());
             final Client client = new Client(clientMBF.createNonBlockingMailbox(), server);
-            new RequestBase<Void>(testMailbox) {
+            new BoundRequestBase<Void>(testMailbox) {
                 @Override
                 public void processRequest(final Transport<Void> _transport) throws Exception {
                     client.crossReq().send(getMailbox(), new ResponseProcessor<Boolean>() {
@@ -44,8 +44,8 @@ class Client extends ActorBase {
         server = _server;
     }
 
-    Request<Boolean> crossReq() {
-        return new RequestBase<Boolean>(getMailbox()) {
+    BoundRequest<Boolean> crossReq() {
+        return new BoundRequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Boolean> _transport) throws Exception {
                 getMailbox().setExceptionHandler(new ExceptionHandler() {
@@ -73,8 +73,8 @@ class Server extends ActorBase {
         initialize(mailbox);
     }
 
-    Request<Void> hangReq() {
-        return new RequestBase<Void>(getMailbox()) {
+    BoundRequest<Void> hangReq() {
+        return new BoundRequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
             }

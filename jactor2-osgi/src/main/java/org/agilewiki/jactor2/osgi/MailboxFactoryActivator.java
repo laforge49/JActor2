@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.BoundRequest;
+import org.agilewiki.jactor2.api.BoundRequestBase;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
@@ -59,12 +59,12 @@ abstract public class MailboxFactoryActivator
     }
 
     /**
-     * Returns the request used to begin async processing.
+     * Returns the boundRequest used to begin async processing.
      *
-     * @return The request.
+     * @return The boundRequest.
      */
-    protected Request<Void> beginReq() {
-        return new RequestBase<Void>(getMailbox()) {
+    protected BoundRequest<Void> beginReq() {
+        return new BoundRequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Void> _transport) throws Exception {
                 begin(_transport);

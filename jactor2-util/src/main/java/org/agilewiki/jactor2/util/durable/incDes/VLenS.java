@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.BoundRequest;
 
 /**
  * Variable-length scalar
@@ -10,11 +10,11 @@ import org.agilewiki.jactor2.api.Request;
 public interface VLenS<RESPONSE_TYPE> extends FLenS<RESPONSE_TYPE> {
 
     /**
-     * Returns a request to set the contents to null.
+     * Returns a boundRequest to set the contents to null.
      *
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Void> clearReq();
+    BoundRequest<Void> clearReq();
 
     /**
      * Sets the contents to null.
@@ -22,12 +22,12 @@ public interface VLenS<RESPONSE_TYPE> extends FLenS<RESPONSE_TYPE> {
     void clear();
 
     /**
-     * Returns a request to assign new value if the old value was null.
+     * Returns a boundRequest to assign new value if the old value was null.
      *
      * @param _value The new value.
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Boolean> makeValueReq(final RESPONSE_TYPE _value);
+    BoundRequest<Boolean> makeValueReq(final RESPONSE_TYPE _value);
 
     /**
      * Assign a new value if the old value was null.

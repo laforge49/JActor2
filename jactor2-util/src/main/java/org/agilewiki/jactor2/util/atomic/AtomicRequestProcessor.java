@@ -6,7 +6,7 @@ import java.util.Queue;
 
 /**
  * An actor which processes a requests one at a time, waiting for each
- * request to complete before starting the next.
+ * boundRequest to complete before starting the next.
  */
 public abstract class AtomicRequestProcessor extends ActorBase implements
         Runnable {
@@ -16,7 +16,7 @@ public abstract class AtomicRequestProcessor extends ActorBase implements
     private Queue<AtomicEntry> entries;
 
     /**
-     * True while a request is being processed.
+     * True while a boundRequest is being processed.
      */
     private boolean busy;
 
@@ -34,19 +34,19 @@ public abstract class AtomicRequestProcessor extends ActorBase implements
     }
 
     /**
-     * The atomicReq is used to request that another request, typically bound to
+     * The atomicReq is used to boundRequest that another boundRequest, typically bound to
      * a different actor, is processed to completion before continuing with the
-     * next request.
+     * next boundRequest.
      *
-     * @param _request The request to be processed to completion.
-     * @return The atomic request.
+     * @param _Bound_request The boundRequest to be processed to completion.
+     * @return The atomic boundRequest.
      */
-    public Request<?> atomicReq(final Request _request) {
-        return new RequestBase<Object>(getMailbox()) {
+    public BoundRequest<?> atomicReq(final BoundRequest _Bound_request) {
+        return new BoundRequestBase<Object>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Object> _rp)
                     throws Exception {
-                entries.offer(new AtomicEntry(_request, _rp));
+                entries.offer(new AtomicEntry(_Bound_request, _rp));
             }
         };
     }
@@ -58,7 +58,7 @@ public abstract class AtomicRequestProcessor extends ActorBase implements
     public void run() {
         if (!busy && !entries.isEmpty()) {
             final AtomicEntry entry = entries.remove();
-            final Request request = entry.request;
+            final BoundRequest boundRequest = entry.boundRequest;
             final ResponseProcessor<Object> _rp = new ResponseProcessor<Object>() {
                 @Override
                 public void processResponse(Object response) throws Exception {
@@ -76,7 +76,7 @@ public abstract class AtomicRequestProcessor extends ActorBase implements
             });
             busy = true;
             try {
-                request.send(getMailbox(), _rp);
+                boundRequest.send(getMailbox(), _rp);
             } catch (Exception ex) {
                 try {
                     busy = false;
@@ -89,28 +89,28 @@ public abstract class AtomicRequestProcessor extends ActorBase implements
 }
 
 /**
- * Holds a request to be processed and the ResponseProcessor that gets the result.
+ * Holds a boundRequest to be processed and the ResponseProcessor that gets the result.
  */
 class AtomicEntry {
     /**
-     * A request to be processed to completion before the next such request is processed.
+     * A boundRequest to be processed to completion before the next such boundRequest is processed.
      */
-    public Request request;
+    public BoundRequest boundRequest;
 
     /**
-     * The ResponseProcessor that gets the response from the request, or the exception if one occurs.
+     * The ResponseProcessor that gets the response from the boundRequest, or the exception if one occurs.
      */
     public ResponseProcessor<Object> rp;
 
     /**
      * Create a pending atomic entry.
      *
-     * @param _request A request to be processed to completion before the next such request is processed.
-     * @param _rp      The ResponseProcessor that gets the response from the request, or the exception if one occurs.
+     * @param _Bound_request A boundRequest to be processed to completion before the next such boundRequest is processed.
+     * @param _rp      The ResponseProcessor that gets the response from the boundRequest, or the exception if one occurs.
      */
-    public AtomicEntry(final Request _request,
+    public AtomicEntry(final BoundRequest _Bound_request,
                        final ResponseProcessor<Object> _rp) {
-        request = _request;
+        boundRequest = _Bound_request;
         rp = _rp;
     }
 }

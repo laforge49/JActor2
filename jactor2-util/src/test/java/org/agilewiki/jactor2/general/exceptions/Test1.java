@@ -14,7 +14,7 @@ public class Test1 extends TestCase {
         final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
         final ActorA actorA = new ActorA(mailbox);
         try {
-            actorA.throwRequest.call();
+            actorA.throwBoundRequest.call();
         } catch (final SecurityException se) {
             mailboxFactory.close();
             return;

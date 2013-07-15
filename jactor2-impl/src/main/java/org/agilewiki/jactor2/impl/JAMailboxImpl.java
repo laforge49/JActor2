@@ -103,7 +103,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
                                                final A _targetActor) throws Exception {
         final Message message = new Message(false, null, _targetActor,
                 null, _request, null, EventResponseProcessor.SINGLETON);
-        // No source means never local and no buffering.
         unbufferedAddMessages(message, false);
     }
 

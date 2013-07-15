@@ -20,7 +20,7 @@ public interface _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
      * The processRequest method is always executed on the target actor's light-weight
      * thread (mailbox). Thread safety is not a requirement.
      *
-     * @param _targetActor Null for Request objects,
+     * @param _targetActor Null for BoundRequest objects,
      *                     this is the target actor for a BoundRequest.
      * @param _transport   A callback for processing the response on the appropriate thread.
      */

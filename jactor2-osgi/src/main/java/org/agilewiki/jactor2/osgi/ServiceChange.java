@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Unbound request used to pass the changed list of services to the listener.
+ * Unbound boundRequest used to pass the changed list of services to the listener.
  *
  * @param <T> The expected service type.
  */
@@ -27,7 +27,7 @@ public class ServiceChange<T> extends
     private final Map<ServiceReference, T> tracked;
 
     /**
-     * Creates a ServiceChange request.
+     * Creates a ServiceChange boundRequest.
      *
      * @param _event   The service event to be passed.
      * @param _tracked The tracked services to be passed.

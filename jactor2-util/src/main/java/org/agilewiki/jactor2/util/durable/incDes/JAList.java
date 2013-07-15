@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.BoundRequest;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 /**
@@ -51,11 +51,11 @@ public interface JAList<ENTRY_TYPE extends JASerializable> extends Collection<EN
     public final static String JABOOLEAN_LIST = "boolList";
 
     /**
-     * Returns a request to empty the list.
+     * Returns a boundRequest to empty the list.
      *
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Void> emptyReq();
+    BoundRequest<Void> emptyReq();
 
     /**
      * Empties the list.
@@ -64,12 +64,12 @@ public interface JAList<ENTRY_TYPE extends JASerializable> extends Collection<EN
             throws Exception;
 
     /**
-     * Returns a request to insert a new serializable object into the list.
+     * Returns a boundRequest to insert a new serializable object into the list.
      *
      * @param _i An index, where 0 is the first element and -1 is the last element.
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Void> iAddReq(final int _i);
+    BoundRequest<Void> iAddReq(final int _i);
 
     /**
      * Insert a new serializable object into the list.
@@ -80,13 +80,13 @@ public interface JAList<ENTRY_TYPE extends JASerializable> extends Collection<EN
             throws Exception;
 
     /**
-     * Returns a request to insert and initialize a new serializable object into the list.
+     * Returns a boundRequest to insert and initialize a new serializable object into the list.
      *
      * @param _i     An index, where 0 is the first element and -1 is the last element.
      * @param _bytes The serialized data used to initialize the new serializable object.
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Void> iAddReq(final int _i, final byte[] _bytes);
+    BoundRequest<Void> iAddReq(final int _i, final byte[] _bytes);
 
     /**
      * Insert and initialize a new serializable object into the list.
@@ -98,12 +98,12 @@ public interface JAList<ENTRY_TYPE extends JASerializable> extends Collection<EN
             throws Exception;
 
     /**
-     * Returns a request to remove an object from the list.
+     * Returns a boundRequest to remove an object from the list.
      *
      * @param _i An index, where 0 is the first element and -1 is the last element.
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Void> iRemoveReq(final int _i);
+    BoundRequest<Void> iRemoveReq(final int _i);
 
     /**
      * Removes an object from the list.

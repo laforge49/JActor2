@@ -4,12 +4,12 @@ import org.agilewiki.jactor2.api.*;
 
 public class ActorC {
     private final Mailbox mailbox;
-    public final Request<String> throwRequest;
+    public final BoundRequest<String> throwBoundRequest;
 
     public ActorC(final Mailbox mbox) {
         this.mailbox = mbox;
 
-        throwRequest = new RequestBase<String>(mailbox) {
+        throwBoundRequest = new BoundRequestBase<String>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<String> responseProcessor)
@@ -21,7 +21,7 @@ public class ActorC {
                         responseProcessor.processResponse(throwable.toString());
                     }
                 });
-                throw new SecurityException("thrown on request");
+                throw new SecurityException("thrown on boundRequest");
             }
         };
     }

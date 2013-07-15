@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection;
 
+import org.agilewiki.jactor2.api.BoundRequest;
 import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.BoundRequestBase;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.JASerializable;
@@ -25,16 +25,16 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
      */
     protected int len;
 
-    private Request<Integer> sizeReq;
+    private BoundRequest<Integer> sizeReq;
 
     @Override
-    public Request<Integer> sizeReq() {
+    public BoundRequest<Integer> sizeReq() {
         return sizeReq;
     }
 
     @Override
-    public Request<ENTRY_TYPE> iGetReq(final int _i) {
-        return new RequestBase<ENTRY_TYPE>(getMailbox()) {
+    public BoundRequest<ENTRY_TYPE> iGetReq(final int _i) {
+        return new BoundRequestBase<ENTRY_TYPE>(getMailbox()) {
             @Override
             public void processRequest(Transport<ENTRY_TYPE> _rp) throws Exception {
                 _rp.processResponse(iGet(_i));
@@ -43,8 +43,8 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public Request<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new RequestBase<Void>(getMailbox()) {
+    public BoundRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
+        return new BoundRequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport _rp) throws Exception {
                 iSet(_i, _bytes);
@@ -127,7 +127,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        sizeReq = new RequestBase<Integer>(getMailbox()) {
+        sizeReq = new BoundRequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport<Integer> _rp) throws Exception {
                 _rp.processResponse(size());

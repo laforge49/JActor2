@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.flens;
 
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.BoundRequest;
+import org.agilewiki.jactor2.api.BoundRequestBase;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -28,10 +27,10 @@ public class JAFloatImpl
         });
     }
 
-    private Request<Float> getFloatReq;
+    private BoundRequest<Float> getFloatReq;
 
     @Override
-    public Request<Float> getValueReq() {
+    public BoundRequest<Float> getValueReq() {
         return getFloatReq;
     }
 
@@ -60,8 +59,8 @@ public class JAFloatImpl
     }
 
     @Override
-    public Request<Void> setValueReq(final Float v) {
-        return new RequestBase<Void>(getMailbox()) {
+    public BoundRequest<Void> setValueReq(final Float v) {
+        return new BoundRequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(v);
@@ -94,7 +93,7 @@ public class JAFloatImpl
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getFloatReq = new RequestBase<Float>(getMailbox()) {
+        getFloatReq = new BoundRequestBase<Float>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

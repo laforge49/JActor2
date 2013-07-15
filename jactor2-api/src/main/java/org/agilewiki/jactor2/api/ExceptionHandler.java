@@ -23,8 +23,8 @@ package org.agilewiki.jactor2.api;
  * Exception handlers can also return a result.
  * </p>
  * <pre>
- * public Request&lt;byte[]&gt; readReq() {
- *     return new RequestBase&lt;byte[]&gt;(getMailbox()) {
+ * public BoundRequest&lt;byte[]&gt; readReq() {
+ *     return new BoundRequestBase&lt;byte[]&gt;(getMailbox()) {
  *         public void processRequest(final ResponseProcessor _rp) throws Exception {
  *             getMailbox().setExceptionHandler(new ExceptionHandler() {
  *                 public void processException(final Throwable _t) throws Throwable {

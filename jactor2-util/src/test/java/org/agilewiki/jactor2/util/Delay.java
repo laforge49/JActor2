@@ -9,8 +9,8 @@ public class Delay {
         mailbox = mailboxFactory.createMayBlockMailbox();
     }
 
-    public Request<Void> sleepReq(final long _delay) {
-        return new RequestBase<Void>(mailbox) {
+    public BoundRequest<Void> sleepReq(final long _delay) {
+        return new BoundRequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

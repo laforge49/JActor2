@@ -1,18 +1,18 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * Request objects are typically created as an anonymous class within the targeted Actor and bound
+ * BoundRequest objects are typically created as an anonymous class within the targeted Actor and bound
  * to that actor's mailbox. By this means the request can update an actor's state in a thread-safe way.
  * <p/>
  * <pre>
  *     public class ActorA {
  *         private final Mailbox mailbox;
- *         public final Request&lt;String&gt; hi1;
+ *         public final BoundRequest&lt;String&gt; hi1;
  *
  *         public Actor1(final Mailbox _mailbox) {
  *             mailbox = _mailbox;
  *
- *             hi1 = new RequestBase&lt;String&gt;(mailbox) {
+ *             hi1 = new BoundRequestBase&lt;String&gt;(mailbox) {
  *                 public void processRequest(final ResponseProcessor&lt;String&gt; _rp)
  *                         throws Exception {
  *                     responseProcessor.processResponse("Hello world!");
@@ -22,23 +22,24 @@ package org.agilewiki.jactor2.api;
  *     }
  * </pre>
  *
- * @param <RESPONSE_TYPE> The class of the result returned when this Request is processed.
+ * @param <RESPONSE_TYPE> The class of the result returned when this BoundRequest is processed.
  */
-public abstract class RequestBase<RESPONSE_TYPE> implements
-        Request<RESPONSE_TYPE>, _Request<RESPONSE_TYPE, Actor> {
+@Deprecated
+public abstract class BoundRequestBase<RESPONSE_TYPE> implements
+        BoundRequest<RESPONSE_TYPE>, _Request<RESPONSE_TYPE, Actor> {
     /**
-     * The mailbox where this Request Objects is passed for processing. The thread
-     * owned by this mailbox will process this Request.
+     * The mailbox where this BoundRequest Objects is passed for processing. The thread
+     * owned by this mailbox will process this BoundRequest.
      */
     private final Mailbox mailbox;
 
     /**
-     * Create an Request and bind it to its target mailbox.
+     * Create an BoundRequest and bind it to its target mailbox.
      *
-     * @param _targetMailbox The mailbox where this Request Objects is passed for processing.
-     *                       The thread owned by this mailbox will process this Request.
+     * @param _targetMailbox The mailbox where this BoundRequest Objects is passed for processing.
+     *                       The thread owned by this mailbox will process this BoundRequest.
      */
-    public RequestBase(final Mailbox _targetMailbox) {
+    public BoundRequestBase(final Mailbox _targetMailbox) {
         if (_targetMailbox == null) {
             throw new NullPointerException("targetMailbox");
         }

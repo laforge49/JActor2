@@ -45,7 +45,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
     private final HashMap<ServiceReference, T> tracked = new HashMap<ServiceReference, T>();
 
     /**
-     * Have we received the start request?
+     * Have we received the start boundRequest?
      */
     private boolean started;
 
@@ -55,7 +55,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
     private boolean closed;
 
     /**
-     * The ServiceChangeReceiver that sent the start request.
+     * The ServiceChangeReceiver that sent the start boundRequest.
      */
     private ServiceChangeReceiver<T> serviceChangeReceiver;
 
@@ -100,24 +100,24 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
     }
 
     /**
-     * Creates the start request, passing the listener as a parameter.
+     * Creates the start boundRequest, passing the listener as a parameter.
      */
-    public Request<Void> startReq(
+    public BoundRequest<Void> startReq(
             final ServiceChangeReceiver<T> _serviceChangeReceiver)
             throws Exception {
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
-        return new RequestBase<Void>(getMailbox()) {
+        return new BoundRequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(
                     final Transport<Void> _transport)
                     throws Exception {
-                // We just received the start request. We can only receive one.
+                // We just received the start boundRequest. We can only receive one.
                 if (started)
                     throw new IllegalStateException("already started");
                 // Closed before even starting!
                 if (closed)
                     throw new IllegalStateException("closed");
-                // OK. We are started, so we can never accept this request again.
+                // OK. We are started, so we can never accept this boundRequest again.
                 started = true;
                 // The serviceChangeReceiver, that we need to inform of changes
                 serviceChangeReceiver = _serviceChangeReceiver;
@@ -183,9 +183,9 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
             // Sorry, we're closed!
             return;
         try {
-            // Create service change request, to be run in our own mailbox,
+            // Create service change boundRequest, to be run in our own mailbox,
             // because this method is not running in our actor thread.
-            new RequestBase<Void>(getMailbox()) {
+            new BoundRequestBase<Void>(getMailbox()) {
                 @Override
                 public void processRequest(final Transport<Void> _transport)
                         throws Exception {
@@ -226,10 +226,10 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                             }
                             break;
                     }
-                    // We're done processing our own request.
+                    // We're done processing our own boundRequest.
                     _transport.processResponse(null);
                 }
-                // send service change request to listener
+                // send service change boundRequest to listener
             }.signal();
         } catch (final Exception exception) {
             // Most likely, a failure in signal() ...

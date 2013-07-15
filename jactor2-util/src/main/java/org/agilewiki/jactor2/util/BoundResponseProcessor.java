@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.BoundRequestBase;
 import org.agilewiki.jactor2.api.ResponseProcessor;
 import org.agilewiki.jactor2.api.Transport;
 
 /**
  * A thread-safe wrapper for ResponseProcessor.
- * When a request is processed, the ResponseProcessor given must only be used by the
- * same thread that is processing the request. In contrast, the processResult method
+ * When a boundRequest is processed, the ResponseProcessor given must only be used by the
+ * same thread that is processing the boundRequest. In contrast, the processResult method
  * of BoundResponseProcessor can be called from any thread.
  *
  * @param <RESPONSE_TYPE>
@@ -64,12 +64,12 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
 }
 
 /**
- * The request used to pass the response and the wrapped ResponseProcessor back to the
+ * The boundRequest used to pass the response and the wrapped ResponseProcessor back to the
  * original target mailbox.
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
-class ContinuationRequest<RESPONSE_TYPE> extends RequestBase<Void> {
+class ContinuationRequest<RESPONSE_TYPE> extends BoundRequestBase<Void> {
     /**
      * The wrapped ResponseProcessor.
      */
@@ -81,7 +81,7 @@ class ContinuationRequest<RESPONSE_TYPE> extends RequestBase<Void> {
     private final RESPONSE_TYPE rsp;
 
     /**
-     * Creates the request used to pass the response and wrapped ResponseProcessor
+     * Creates the boundRequest used to pass the response and wrapped ResponseProcessor
      * back to the original target mailbox.
      *
      * @param targetMailbox The original target mailbox.

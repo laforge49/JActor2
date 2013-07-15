@@ -18,9 +18,9 @@ public class Test5 extends TestCase {
         try {
             actorE.throwRequest(actorA).call();
         } catch (final SecurityException se) {
-            // It's magic! We get the SecurityException, although our request
+            // It's magic! We get the SecurityException, although our boundRequest
             // did not throw it, or return it as response. This shows that
-            // child request exceptions are passed up to the parent request.
+            // child boundRequest exceptions are passed up to the parent boundRequest.
             mailboxFactory.close();
             return;
         }

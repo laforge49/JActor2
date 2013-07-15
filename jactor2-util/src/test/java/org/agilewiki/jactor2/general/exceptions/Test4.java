@@ -13,8 +13,8 @@ public class Test4 extends TestCase {
         final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
         final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
         final ActorD actorD = new ActorD(mailbox);
-        final String result = actorD.throwRequest.call();
-        assertEquals("java.lang.SecurityException: thrown on request", result);
+        final String result = actorD.throwBoundRequest.call();
+        assertEquals("java.lang.SecurityException: thrown on boundRequest", result);
         mailboxFactory.close();
     }
 }

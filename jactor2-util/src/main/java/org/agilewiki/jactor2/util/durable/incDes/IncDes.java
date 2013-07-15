@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import org.agilewiki.jactor2.api.Actor;
+import org.agilewiki.jactor2.api.BoundRequest;
 import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.JASerializable;
@@ -18,11 +18,11 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
     public static final String FACTORY_NAME = "incdes";
 
     /**
-     * Returns a request to get the serialized length.
+     * Returns a boundRequest to get the serialized length.
      *
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Integer> getSerializedLengthReq();
+    BoundRequest<Integer> getSerializedLengthReq();
 
     /**
      * Returns the number of bytes needed to serialize the persistent data.
@@ -33,12 +33,12 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
             throws Exception;
 
     /**
-     * Returns a request to get the serialized data.
+     * Returns a boundRequest to get the serialized data.
      * (References to the serialized data are retained, so the byte array must not be updated.)
      *
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<byte[]> getSerializedBytesReq();
+    BoundRequest<byte[]> getSerializedBytesReq();
 
     /**
      * Returns the serialized data.
@@ -50,13 +50,13 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
             throws Exception;
 
     /**
-     * Returns a request to copy the serialized data into a byte array.
+     * Returns a boundRequest to copy the serialized data into a byte array.
      *
      * @param bytes  The destination byte array.
      * @param offset The starting offset into the array.
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Integer> getSerializedBytesReq(byte[] bytes, int offset);
+    BoundRequest<Integer> getSerializedBytesReq(byte[] bytes, int offset);
 
     /**
      * Copies the serialized data into a byte array.
@@ -87,12 +87,12 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
             throws Exception;
 
     /**
-     * Returns a request to resolve a pathname.
+     * Returns a boundRequest to resolve a pathname.
      *
      * @param _pathname The pathname to the serializable object of interest.
      * @return The specified serializable object.
      */
-    Request<JASerializable> resolvePathnameReq(final String _pathname);
+    BoundRequest<JASerializable> resolvePathnameReq(final String _pathname);
 
     /**
      * Resolves a pathname, returning a serializable object or null.
@@ -118,12 +118,12 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
     String getFactoryName();
 
     /**
-     * Returns a request to copy the serializable object.
+     * Returns a boundRequest to copy the serializable object.
      *
      * @param _mailbox The mailbox to be used by the new serializable object.
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<JASerializable> copyReq(final Mailbox _mailbox);
+    BoundRequest<JASerializable> copyReq(final Mailbox _mailbox);
 
     /**
      * Copy the serializable object.
@@ -139,5 +139,5 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
      * @param _serializable
      * @return True when of the same type and has the same durable content.
      */
-    Request<Boolean> isEqualReq(final JASerializable _serializable);
+    BoundRequest<Boolean> isEqualReq(final JASerializable _serializable);
 }

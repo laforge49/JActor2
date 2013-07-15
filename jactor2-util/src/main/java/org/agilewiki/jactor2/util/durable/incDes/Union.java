@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.BoundRequest;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 /**
@@ -9,11 +9,11 @@ import org.agilewiki.jactor2.util.durable.JASerializable;
 public interface Union extends IncDes {
 
     /**
-     * Returns a request for getting the serializable object held by the union.
+     * Returns a boundRequest for getting the serializable object held by the union.
      *
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<JASerializable> getValueReq();
+    BoundRequest<JASerializable> getValueReq();
 
     /**
      * Returns the serializable object held by the union.
@@ -23,11 +23,11 @@ public interface Union extends IncDes {
     JASerializable getValue() throws Exception;
 
     /**
-     * Returns a request for clearing the union.
+     * Returns a boundRequest for clearing the union.
      *
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Void> clearReq();
+    BoundRequest<Void> clearReq();
 
     /**
      * Clears the union.
@@ -36,12 +36,12 @@ public interface Union extends IncDes {
             throws Exception;
 
     /**
-     * Returns a request for creating a new serializable object and put it in the union.
+     * Returns a boundRequest for creating a new serializable object and put it in the union.
      *
      * @param _factoryName The type of the new serializable object.
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Void> setValueReq(final String _factoryName);
+    BoundRequest<Void> setValueReq(final String _factoryName);
 
     /**
      * Create a new serializable object and put it in the union.
@@ -52,14 +52,14 @@ public interface Union extends IncDes {
             throws Exception;
 
     /**
-     * Returns a request for creating and initializing a serializable object and put it in the union.
+     * Returns a boundRequest for creating and initializing a serializable object and put it in the union.
      * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _factoryName The type of the new serializable object.
      * @param _bytes       The content of the serializable object.
-     * @return The request.
+     * @return The boundRequest.
      */
-    Request<Void> setValueReq(final String _factoryName, final byte[] _bytes);
+    BoundRequest<Void> setValueReq(final String _factoryName, final byte[] _bytes);
 
     /**
      * Create and initialize a serialize object and put it in the union.
@@ -72,12 +72,12 @@ public interface Union extends IncDes {
             throws Exception;
 
     /**
-     * Returns a request to create a new serializable object and put it in the union if the union was empty.
+     * Returns a boundRequest to create a new serializable object and put it in the union if the union was empty.
      *
      * @param _factoryName The type of the new serializable object.
      * @return True if a new serializable object was created.
      */
-    Request<Boolean> makeValueReq(final String _factoryName);
+    BoundRequest<Boolean> makeValueReq(final String _factoryName);
 
     /**
      * Create a new serializable object and put it in the union if the union was empty.
@@ -89,14 +89,14 @@ public interface Union extends IncDes {
             throws Exception;
 
     /**
-     * Returns a request to create and initialize a serializable object and put it in the union if the union was empty.
+     * Returns a boundRequest to create and initialize a serializable object and put it in the union if the union was empty.
      * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _factoryName The type of the new serializable object.
      * @param _bytes       The content of the new serializable object.
      * @return True if a new serializable object was created.
      */
-    Request<Boolean> makeValueReq(final String _factoryName, final byte[] _bytes);
+    BoundRequest<Boolean> makeValueReq(final String _factoryName, final byte[] _bytes);
 
     /**
      * Create and initialize a serializable object and put it in the union if the union was empty.
