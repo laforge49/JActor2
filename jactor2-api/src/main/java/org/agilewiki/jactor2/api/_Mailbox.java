@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * _Mailbox defines the internal API used by BoundRequestBase and RequestBase
+ * _Mailbox defines the internal API used by BoundRequestBase and EventBase
  * to pass _Request's to a target mailbox.
  */
 interface _Mailbox {
@@ -15,7 +15,7 @@ interface _Mailbox {
      *
      * @param _request     Defines the operation to be applied to the target actor.
      * @param _targetActor For BoundRequest's (bound requests), _targetActor is null.
-     *                     For Request's, _targetActor is the actor
+     *                     For Event's, _targetActor is the actor
      *                     to which the request is applied.
      * @param <A>          The target actor type.
      */
@@ -37,7 +37,7 @@ interface _Mailbox {
      * @param _request           Defines the operation to be applied to the target actor.
      * @param _targetMailbox     The target mailbox where the request is to be sent.
      * @param _targetActor       For BoundRequest's (bound requests), _targetActor is null.
-     *                           For Request's, _targetActor is the actor
+     *                           For Event's, _targetActor is the actor
      *                           to which the request is applied.
      * @param _responseProcessor The callback used to receive the result of the request.
      * @param <E>                The result type.
@@ -67,7 +67,7 @@ interface _Mailbox {
      *
      * @param _request     Defines the operation to be applied to the target actor.
      * @param _targetActor For BoundRequest's (bound requests), _targetActor is null.
-     *                     For Request's, _targetActor is the actor
+     *                     For Event's, _targetActor is the actor
      *                     to which the request is applied.
      * @param <E>          The result type.
      * @param <A>          The target actor type.

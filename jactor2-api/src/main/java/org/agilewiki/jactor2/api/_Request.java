@@ -11,7 +11,7 @@ package org.agilewiki.jactor2.api;
  * </p>
  *
  * @param <RESPONSE_TYPE>     the type of response to be returned.
- * @param <TARGET_ACTOR_TYPE> For Request's, this is the class of the target actor.
+ * @param <TARGET_ACTOR_TYPE> For Event's, this is the class of the target actor.
  *                            For BoundRequest's, this is the class Actor.
  */
 public interface _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {

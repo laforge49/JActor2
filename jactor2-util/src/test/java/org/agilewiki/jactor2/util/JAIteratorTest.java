@@ -125,7 +125,7 @@ Messages per second: 13715539
     }
 }
 
-class AddReq extends RequestBase<Void, CounterActor> {
+class AddReq extends EventBase<Void, CounterActor> {
     private final long inc;
 
     AddReq(final long _inc) {
@@ -140,7 +140,7 @@ class AddReq extends RequestBase<Void, CounterActor> {
     }
 }
 
-class ResetReq extends RequestBase<Long, CounterActor> {
+class ResetReq extends EventBase<Long, CounterActor> {
 
     @Override
     public void processRequest(final CounterActor _targetActor,

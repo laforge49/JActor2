@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.EventBase;
 import org.agilewiki.jactor2.api.Transport;
 
 public class PublisherTest extends TestCase {
@@ -64,7 +64,7 @@ class Printer extends ActorBase implements Named {
     }
 }
 
-class Print extends RequestBase<Void, Printer> {
+class Print extends EventBase<Void, Printer> {
     final String msg;
 
     Print(final String _msg) {

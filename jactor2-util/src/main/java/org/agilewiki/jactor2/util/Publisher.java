@@ -56,11 +56,11 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * unbound boundRequest.
      * Exceptions thrown by subscribers when processign the unbound boundRequest are simply ignored.
      *
-     * @param request The boundRequest to be published.
+     * @param event The boundRequest to be published.
      * @return The boundRequest.
      */
     public BoundRequest<Void> publishReq(
-            final Request<Void, TARGET_ACTOR_TYPE> request) {
+            final Event<Void, TARGET_ACTOR_TYPE> event) {
         return new BoundRequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Void> _rp)
@@ -78,7 +78,7 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
                 for (final Object object : subs) {
                     @SuppressWarnings("unchecked")
                     final TARGET_ACTOR_TYPE subscriber = (TARGET_ACTOR_TYPE) object;
-                    request.send(getMailbox(), subscriber, rc);
+                    event.send(getMailbox(), subscriber, rc);
                 }
             }
         };
