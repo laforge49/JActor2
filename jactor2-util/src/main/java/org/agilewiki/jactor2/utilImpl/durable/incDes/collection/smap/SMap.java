@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.smap;
 
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -24,14 +24,14 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     public Factory valueFactory;
 
-    private BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq;
-    private BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq;
+    private Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq;
+    private Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq;
 
-    public BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq() {
+    public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq() {
         return getFirstReq;
     }
 
-    public BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq() {
+    public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq() {
         return getLastReq;
     }
 
@@ -146,8 +146,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public BoundRequest<Boolean> kMakeReq(final KEY_TYPE _key) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public Request<Boolean> kMakeReq(final KEY_TYPE _key) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport<Boolean> _rp) throws Exception {
                 _rp.processResponse(kMake(_key));
@@ -175,8 +175,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public BoundRequest<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public Request<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport<Boolean> _rp) throws Exception {
                 _rp.processResponse(kMake(_key, _bytes));
@@ -208,8 +208,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public BoundRequest<VALUE_TYPE> kGetReq(final KEY_TYPE _key) {
-        return new BoundRequestBase<VALUE_TYPE>(getMailbox()) {
+    public Request<VALUE_TYPE> kGetReq(final KEY_TYPE _key) {
+        return new RequestBase<VALUE_TYPE>(getMailbox()) {
             @Override
             public void processRequest(Transport<VALUE_TYPE> _rp) throws Exception {
                 _rp.processResponse(kGet(_key));
@@ -233,8 +233,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key) {
-        return new BoundRequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
+    public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key) {
+        return new RequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
             @Override
             public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
                 _rp.processResponse(getHigher(_key));
@@ -258,8 +258,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key) {
-        return new BoundRequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
+    public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key) {
+        return new RequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
             @Override
             public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
                 _rp.processResponse(getCeiling(_key));
@@ -283,8 +283,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public BoundRequest<Boolean> kRemoveReq(final KEY_TYPE _key) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public Request<Boolean> kRemoveReq(final KEY_TYPE _key) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport<Boolean> _rp) throws Exception {
                 _rp.processResponse(kRemove(_key));
@@ -350,8 +350,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public BoundRequest<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 kSet(_key, _bytes);
@@ -372,13 +372,13 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getFirstReq = new BoundRequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
+        getFirstReq = new RequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
             @Override
             public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
                 _rp.processResponse(getFirst());
             }
         };
-        getLastReq = new BoundRequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
+        getLastReq = new RequestBase<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
             @Override
             public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
                 _rp.processResponse(getLast());

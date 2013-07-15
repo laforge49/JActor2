@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.blist;
 
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -31,15 +30,15 @@ public class BList<ENTRY_TYPE extends JASerializable>
     protected Factory entryFactory;
     protected FactoryLocator factoryLocator;
 
-    private BoundRequest<Integer> sizeReq;
-    private BoundRequest<Void> emptyReq;
+    private Request<Integer> sizeReq;
+    private Request<Void> emptyReq;
 
     @Override
-    public BoundRequest<Integer> sizeReq() {
+    public Request<Integer> sizeReq() {
         return sizeReq;
     }
 
-    public BoundRequest<Void> emptyReq() {
+    public Request<Void> emptyReq() {
         return emptyReq;
     }
 
@@ -127,8 +126,8 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public BoundRequest<ENTRY_TYPE> iGetReq(final int _i) {
-        return new BoundRequestBase<ENTRY_TYPE>(getMailbox()) {
+    public Request<ENTRY_TYPE> iGetReq(final int _i) {
+        return new RequestBase<ENTRY_TYPE>(getMailbox()) {
             @Override
             public void processRequest(Transport<ENTRY_TYPE> _rp) throws Exception {
                 _rp.processResponse(iGet(_i));
@@ -167,8 +166,8 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public BoundRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> iSetReq(final int _i, final byte[] _bytes) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport _rp) throws Exception {
                 iSet(_i, _bytes);
@@ -242,8 +241,8 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public BoundRequest<Void> iAddReq(final int _i) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> iAddReq(final int _i) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iAdd(_i);
@@ -259,8 +258,8 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public BoundRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> iAddReq(final int _i, final byte[] _bytes) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iAdd(_i, _bytes);
@@ -398,8 +397,8 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public BoundRequest<Void> iRemoveReq(final int _i) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> iRemoveReq(final int _i) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iRemove(_i);
@@ -494,13 +493,13 @@ public class BList<ENTRY_TYPE extends JASerializable>
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        sizeReq = new BoundRequestBase<Integer>(getMailbox()) {
+        sizeReq = new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport<Integer> _rp) throws Exception {
                 _rp.processResponse(size());
             }
         };
-        emptyReq = new BoundRequestBase<Void>(getMailbox()) {
+        emptyReq = new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 empty();

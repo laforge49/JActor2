@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.util.firehose;
 
 import org.agilewiki.jactor2.api.Actor;
-import org.agilewiki.jactor2.api.BoundRequest;
+import org.agilewiki.jactor2.api.Request;
 
 public interface DataProcessor extends Actor {
 
-    BoundRequest<Void> processDataReq(final FirehoseData _firehoseData);
+    Request<Void> processDataReq(final FirehoseData _firehoseData);
 }

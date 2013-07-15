@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 /**
- * Blocks boundRequest processing, not threads.
+ * Blocks request processing, not threads.
  */
 public class PASemaphore {
     /**
@@ -25,14 +25,14 @@ public class PASemaphore {
     private final Queue<ResponseProcessor<Void>> queue = new ArrayDeque<ResponseProcessor<Void>>();
 
     /**
-     * The acquire boundRequest.
+     * The acquire request.
      */
-    private final BoundRequest<Void> acquire;
+    private final Request<Void> acquire;
 
     /**
-     * The release boundRequest.
+     * The release request.
      */
-    private final BoundRequest<Void> release;
+    private final Request<Void> release;
 
     /**
      * Create a semaphore manager.
@@ -44,7 +44,7 @@ public class PASemaphore {
         this.mailbox = mbox;
         this.permits = permitCount;
 
-        acquire = new BoundRequestBase<Void>(mailbox) {
+        acquire = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
@@ -58,7 +58,7 @@ public class PASemaphore {
             }
         };
 
-        release = new BoundRequestBase<Void>(mailbox) {
+        release = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
@@ -75,22 +75,22 @@ public class PASemaphore {
     }
 
     /**
-     * A boundRequest to acquire a semaphore.
+     * A request to acquire a semaphore.
      * The release pends until a semaphore is available.
      *
-     * @return The boundRequest.
+     * @return The request.
      */
-    public BoundRequest<Void> acquireReq() {
+    public Request<Void> acquireReq() {
         return acquire;
     }
 
     /**
-     * A boundRequest to release a boundRequest.
-     * If there is a pending boundRequest, a release will allow that boundRequest to complete.
+     * A request to release a request.
+     * If there is a pending request, a release will allow that request to complete.
      *
-     * @return The boundRequest.
+     * @return The request.
      */
-    public BoundRequest<Void> releaseReq() {
+    public Request<Void> releaseReq() {
         return release;
     }
 }

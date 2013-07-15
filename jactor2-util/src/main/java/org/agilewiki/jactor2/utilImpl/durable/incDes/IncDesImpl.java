@@ -42,8 +42,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      */
     protected int serializedOffset;
 
-    private BoundRequest<byte[]> getSerializedBytesReq;
-    private BoundRequest<Integer> getSerializedLengthReq;
+    private Request<byte[]> getSerializedBytesReq;
+    private Request<Integer> getSerializedLengthReq;
 
     @Override
     public IncDes getDurable() {
@@ -51,12 +51,12 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    public BoundRequest<byte[]> getSerializedBytesReq() {
+    public Request<byte[]> getSerializedBytesReq() {
         return getSerializedBytesReq;
     }
 
     @Override
-    public BoundRequest<Integer> getSerializedLengthReq() {
+    public Request<Integer> getSerializedLengthReq() {
         return getSerializedLengthReq;
     }
 
@@ -237,8 +237,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         }
     }
 
-    final public BoundRequest<Void> saveReq(final AppendableBytes appendableBytes) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    final public Request<Void> saveReq(final AppendableBytes appendableBytes) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 save(appendableBytes);
@@ -261,8 +261,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    final public BoundRequest<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
-        return new BoundRequestBase<Integer>(getMailbox()) {
+    final public Request<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
+        return new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(save(bytes, offset));
@@ -318,8 +318,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    public BoundRequest<JASerializable> resolvePathnameReq(final String pathname) {
-        return new BoundRequestBase<JASerializable>(getMailbox()) {
+    public Request<JASerializable> resolvePathnameReq(final String pathname) {
+        return new RequestBase<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(resolvePathname(pathname));
@@ -345,8 +345,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return serializable;
     }
 
-    public final BoundRequest<JASerializable> copyReq(final Mailbox m) {
-        return new BoundRequestBase<JASerializable>(getMailbox()) {
+    public final Request<JASerializable> copyReq(final Mailbox m) {
+        return new RequestBase<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(copy(m));
@@ -354,8 +354,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         };
     }
 
-    public final BoundRequest<Boolean> isEqualReq(final JASerializable jidA) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public final Request<Boolean> isEqualReq(final JASerializable jidA) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(final Transport rp) throws Exception {
                 getSerializedLengthReq.send(getMailbox(), new ResponseProcessor<Integer>() {
@@ -413,14 +413,14 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         mailbox = _mailbox;
         factory = _factory;
 
-        getSerializedLengthReq = new BoundRequestBase<Integer>(getMailbox()) {
+        getSerializedLengthReq = new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getSerializedLength());
             }
         };
 
-        getSerializedBytesReq = new BoundRequestBase<byte[]>(getMailbox()) {
+        getSerializedBytesReq = new RequestBase<byte[]>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getSerializedBytes());

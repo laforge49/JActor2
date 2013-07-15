@@ -69,8 +69,8 @@ Messages per second: 13715539
         }
     }
 
-    BoundRequest<Void> runReq() {
-        return new BoundRequestBase<Void>(mailbox) {
+    Request<Void> runReq() {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {

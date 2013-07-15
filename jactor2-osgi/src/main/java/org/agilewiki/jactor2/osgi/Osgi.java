@@ -84,13 +84,13 @@ final public class Osgi {
     }
 
     /**
-     * Returns a boundRequest to create a copy of a root bound to the factory locator that can deserialize it.
+     * Returns a request to create a copy of a root bound to the factory locator that can deserialize it.
      *
      * @param _root The root.
      * @return A copy of the root with the appropriate mailbox.
      */
-    public static BoundRequest<Root> contextCopyReq(final Root _root) throws Exception {
-        return new BoundRequestBase<Root>(_root.getMailbox()) {
+    public static Request<Root> contextCopyReq(final Root _root) throws Exception {
+        return new RequestBase<Root>(_root.getMailbox()) {
             @Override
             public void processRequest(final Transport<Root> _transport) throws Exception {
                 String location = _root.getBundleLocation();

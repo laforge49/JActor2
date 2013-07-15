@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
- * Create an atomic boundRequest processor which processes requests from least to greatest.
+ * Create an atomic request processor which processes requests from least to greatest.
  * (Requests must be Comparable.)
  */
 public class PriorityRequestProcessor extends AtomicRequestProcessor {

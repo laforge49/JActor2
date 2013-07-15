@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.flens;
 
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -28,10 +27,10 @@ public class JABooleanImpl
         });
     }
 
-    private BoundRequest<Boolean> getBooleanReq;
+    private Request<Boolean> getBooleanReq;
 
     @Override
-    public BoundRequest<Boolean> getValueReq() {
+    public Request<Boolean> getValueReq() {
         return getBooleanReq;
     }
 
@@ -60,8 +59,8 @@ public class JABooleanImpl
     }
 
     @Override
-    public BoundRequest<Void> setValueReq(final Boolean v) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> setValueReq(final Boolean v) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(v);
@@ -94,7 +93,7 @@ public class JABooleanImpl
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getBooleanReq = new BoundRequestBase<Boolean>(getMailbox()) {
+        getBooleanReq = new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

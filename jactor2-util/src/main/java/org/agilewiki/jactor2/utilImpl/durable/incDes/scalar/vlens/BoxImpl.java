@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -57,16 +56,16 @@ public class BoxImpl
         return stringLength(_s.length());
     }
 
-    private BoundRequest<Void> clearReq;
-    private BoundRequest<JASerializable> getPAIDReq;
+    private Request<Void> clearReq;
+    private Request<JASerializable> getPAIDReq;
 
     @Override
-    public BoundRequest<Void> clearReq() {
+    public Request<Void> clearReq() {
         return clearReq;
     }
 
     @Override
-    public BoundRequest<JASerializable> getValueReq() {
+    public Request<JASerializable> getValueReq() {
         return getPAIDReq;
     }
 
@@ -91,7 +90,7 @@ public class BoxImpl
     /**
      * Assign a value unless one is already present.
      *
-     * @param jidType The MakeValue boundRequest.
+     * @param jidType The MakeValue request.
      * @return True if a new value is created.
      */
     @Override
@@ -104,8 +103,8 @@ public class BoxImpl
     }
 
     @Override
-    public BoundRequest<Boolean> makeValueReq(final String jidType) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public Request<Boolean> makeValueReq(final String jidType) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(makeValue(jidType));
@@ -130,8 +129,8 @@ public class BoxImpl
     }
 
     @Override
-    public BoundRequest<Void> setValueReq(final String actorType) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> setValueReq(final String actorType) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(actorType);
@@ -155,8 +154,8 @@ public class BoxImpl
     }
 
     @Override
-    public BoundRequest<Void> setValueReq(final String jidType, final byte[] bytes) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> setValueReq(final String jidType, final byte[] bytes) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(jidType, bytes);
@@ -182,8 +181,8 @@ public class BoxImpl
     }
 
     @Override
-    public BoundRequest<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public Request<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(makeValue(jidType, bytes));
@@ -288,14 +287,14 @@ public class BoxImpl
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        clearReq = new BoundRequestBase<Void>(getMailbox()) {
+        clearReq = new RequestBase<Void>(getMailbox()) {
             public void processRequest(Transport rp) throws Exception {
                 clear();
                 rp.processResponse(null);
             }
         };
 
-        getPAIDReq = new BoundRequestBase<JASerializable>(getMailbox()) {
+        getPAIDReq = new RequestBase<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

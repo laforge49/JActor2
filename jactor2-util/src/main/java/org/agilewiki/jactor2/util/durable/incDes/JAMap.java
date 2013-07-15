@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.api.BoundRequest;
+import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 /**
@@ -133,11 +133,11 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
     public final static String LONG_JABOOLEAN_MAP = "longBoolMap";
 
     /**
-     * Returns a boundRequest to get the first entry.
+     * Returns a request to get the first entry.
      *
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq();
+    Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq();
 
     /**
      * Returns the first entry.
@@ -148,11 +148,11 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
             throws Exception;
 
     /**
-     * Returns a boundRequest to get the last entry.
+     * Returns a request to get the last entry.
      *
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq();
+    Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq();
 
     /**
      * Returns the last entry.
@@ -163,12 +163,12 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
             throws Exception;
 
     /**
-     * Returns a boundRequest to get the serializable object assigned to a given key.
+     * Returns a request to get the serializable object assigned to a given key.
      *
      * @param _key The key.
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<VALUE_TYPE> kGetReq(final KEY_TYPE _key);
+    Request<VALUE_TYPE> kGetReq(final KEY_TYPE _key);
 
     /**
      * Returns the serializable object assigned to a given key.
@@ -180,12 +180,12 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
             throws Exception;
 
     /**
-     * Returns a boundRequest to get an entry with a higher key.
+     * Returns a request to get an entry with a higher key.
      *
      * @param _key The key.
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key);
+    Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key);
 
     /**
      * Returns the entry with a higher key.
@@ -197,12 +197,12 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
             throws Exception;
 
     /**
-     * Returns a boundRequest to get an entry with a key greater or equal to the given key.
+     * Returns a request to get an entry with a key greater or equal to the given key.
      *
      * @param _key The key.
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key);
+    Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key);
 
     /**
      * Returns an entry with a key greater or equal to the given key.
@@ -214,14 +214,14 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
             throws Exception;
 
     /**
-     * Returns a boundRequest to update an existing serializable object.
+     * Returns a request to update an existing serializable object.
      * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _key   The key of the serializable object.
      * @param _bytes The serialized data used to update the object.
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes);
+    Request<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes);
 
     /**
      * Updates an existing serializable object.
@@ -234,14 +234,14 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
             throws Exception;
 
     /**
-     * Returns a boundRequest to create a new serializable object and add it to the map, unless there is
+     * Returns a request to create a new serializable object and add it to the map, unless there is
      * already an entry with the same key.
      * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _key The key.
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<Boolean> kMakeReq(final KEY_TYPE _key);
+    Request<Boolean> kMakeReq(final KEY_TYPE _key);
 
     /**
      * Create a new serializable object and add it to the map, unless there is
@@ -255,15 +255,15 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
             throws Exception;
 
     /**
-     * Returns a boundRequest to create a new serializable object and add it to the map, unless there is
+     * Returns a request to create a new serializable object and add it to the map, unless there is
      * already an entry with the same key.
      * (The byte array is not copied and should not be subsequently modified.)
      *
      * @param _key   The key.
      * @param _bytes The serialized data used to initialize the new object.
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes);
+    Request<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes);
 
     /**
      * Create a new serializable object and add it to the map, unless there is
@@ -278,12 +278,12 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
             throws Exception;
 
     /**
-     * Returns a boundRequest to remove an entry with a given key.
+     * Returns a request to remove an entry with a given key.
      *
      * @param _key The key.
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<Boolean> kRemoveReq(final KEY_TYPE _key);
+    Request<Boolean> kRemoveReq(final KEY_TYPE _key);
 
     /**
      * Removes the entry with the given key.

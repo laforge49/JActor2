@@ -9,16 +9,16 @@ public class ActorE {
         this.mailbox = mbox;
     }
 
-    public BoundRequest<Void> throwRequest(final ActorA actorA) {
-        return new BoundRequestBase<Void>(mailbox) {
+    public Request<Void> throwRequest(final ActorA actorA) {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> responseProcessor)
                     throws Exception {
                 // Note: we only respond to responseProcessor if we get a
-                // response to our own boundRequest, which should NOT happen.
+                // response to our own request, which should NOT happen.
                 // Therefore, responseProcessor is NOT called.
                 try {
-                    actorA.throwBoundRequest.send(mailbox,
+                    actorA.throwRequest.send(mailbox,
                             new ResponseProcessor<Void>() {
 
                                 @Override

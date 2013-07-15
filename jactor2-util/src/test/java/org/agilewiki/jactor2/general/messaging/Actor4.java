@@ -12,8 +12,8 @@ public class Actor4 {
         this.mailbox = mbox;
     }
 
-    public BoundRequest<Void> hi4(final Actor1 actor1) {
-        return new BoundRequestBase<Void>(mailbox) {
+    public Request<Void> hi4(final Actor1 actor1) {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

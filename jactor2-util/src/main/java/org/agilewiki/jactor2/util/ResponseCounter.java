@@ -45,7 +45,7 @@ public class ResponseCounter<RESPONSE_TYPE> implements
     }
 
     /**
-     * When an additional boundRequest has been sent, incrementCount needs to be called.
+     * When an additional request has been sent, incrementCount needs to be called.
      */
     public void incrementCount() {
         if (active)
@@ -86,7 +86,7 @@ public class ResponseCounter<RESPONSE_TYPE> implements
     }
 
     /**
-     * This method is called as each boundRequest completes.
+     * This method is called as each request completes.
      *
      * @param response The response given, which is ignored.
      */

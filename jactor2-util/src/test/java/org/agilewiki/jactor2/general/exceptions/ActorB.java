@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.general.exceptions;
 
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.Request;
 
 public class ActorB {
     private final Mailbox mailbox;
@@ -12,13 +11,13 @@ public class ActorB {
         this.mailbox = mbox;
     }
 
-    public BoundRequest<Void> throwRequest(final ActorA actorA) {
-        return new BoundRequestBase<Void>(mailbox) {
+    public Request<Void> throwRequest(final ActorA actorA) {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
                     throws Exception {
-                actorA.throwBoundRequest.send(mailbox, responseProcessor);
+                actorA.throwRequest.send(mailbox, responseProcessor);
             }
         };
     }

@@ -24,9 +24,9 @@ public class SemaphoreTest extends TestCase {
         mailboxFactory.close();
     }
 
-    private BoundRequest<Void> delayedRelease(final PASemaphore semaphore,
+    private Request<Void> delayedRelease(final PASemaphore semaphore,
                                               final long delay, final MailboxFactory mailboxFactory) {
-        return new BoundRequestBase<Void>(mailboxFactory.createNonBlockingMailbox()) {
+        return new RequestBase<Void>(mailboxFactory.createNonBlockingMailbox()) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
@@ -57,9 +57,9 @@ public class SemaphoreTest extends TestCase {
         mailboxFactory.close();
     }
 
-    private BoundRequest<Boolean> acquireException(final PASemaphore semaphore,
+    private Request<Boolean> acquireException(final PASemaphore semaphore,
                                                    final Mailbox mailbox) {
-        return new BoundRequestBase<Boolean>(mailbox) {
+        return new RequestBase<Boolean>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Boolean> responseProcessor)

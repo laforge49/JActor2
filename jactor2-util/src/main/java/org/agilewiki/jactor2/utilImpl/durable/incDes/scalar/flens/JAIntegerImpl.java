@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.flens;
 
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -28,10 +28,10 @@ public class JAIntegerImpl
         });
     }
 
-    private BoundRequest<Integer> getIntegerReq;
+    private Request<Integer> getIntegerReq;
 
     @Override
-    public BoundRequest<Integer> getValueReq() {
+    public Request<Integer> getValueReq() {
         return getIntegerReq;
     }
 
@@ -80,8 +80,8 @@ public class JAIntegerImpl
     }
 
     @Override
-    public BoundRequest<Void> setValueReq(final Integer v) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> setValueReq(final Integer v) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> rp) throws Exception {
                 setValue(v);
@@ -94,7 +94,7 @@ public class JAIntegerImpl
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getIntegerReq = new BoundRequestBase<Integer>(getMailbox()) {
+        getIntegerReq = new RequestBase<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

@@ -4,13 +4,13 @@ import org.agilewiki.jactor2.api.*;
 
 public class ActorD {
     private final Mailbox mailbox;
-    final BoundRequest<Void> doSomethin;
-    public final BoundRequest<String> throwBoundRequest;
+    final Request<Void> doSomethin;
+    public final Request<String> throwRequest;
 
     public ActorD(final Mailbox mbox) {
         this.mailbox = mbox;
 
-        doSomethin = new BoundRequestBase<Void>(mailbox) {
+        doSomethin = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
@@ -19,7 +19,7 @@ public class ActorD {
             }
         };
 
-        throwBoundRequest = new BoundRequestBase<String>(mailbox) {
+        throwRequest = new RequestBase<String>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<String> responseProcessor)
@@ -35,7 +35,7 @@ public class ActorD {
                     @Override
                     public void processResponse(final Void response)
                             throws Exception {
-                        throw new SecurityException("thrown on boundRequest");
+                        throw new SecurityException("thrown on request");
                     }
                 });
             }

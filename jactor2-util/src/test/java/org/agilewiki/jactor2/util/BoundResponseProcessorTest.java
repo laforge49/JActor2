@@ -17,9 +17,9 @@ public class BoundResponseProcessorTest extends TestCase {
 }
 
 class Driver extends ActorBase {
-    private BoundRequest<String> doitReq;
+    private Request<String> doitReq;
 
-    public BoundRequest<String> doitReq() {
+    public Request<String> doitReq() {
         return doitReq;
     }
 
@@ -27,7 +27,7 @@ class Driver extends ActorBase {
     public void initialize(final Mailbox _mailbox) throws Exception {
         super.initialize(_mailbox);
 
-        doitReq = new BoundRequestBase<String>(_mailbox) {
+        doitReq = new RequestBase<String>(_mailbox) {
             @Override
             public void processRequest(final Transport<String> rp)
                     throws Exception {

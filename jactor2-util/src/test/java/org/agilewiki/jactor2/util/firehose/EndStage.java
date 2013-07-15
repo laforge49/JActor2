@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.util.firehose;
 
-import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 
 public class EndStage extends ActorBase implements DataProcessor {
@@ -14,8 +13,8 @@ public class EndStage extends ActorBase implements DataProcessor {
     }
 
     @Override
-    public BoundRequest<Void> processDataReq(final FirehoseData _firehoseData) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> processDataReq(final FirehoseData _firehoseData) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 Thread.sleep(1);

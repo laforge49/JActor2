@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Transport;
 
@@ -15,13 +15,13 @@ public class ParallelTest extends TestCase {
 
     private Mailbox mailbox;
     private UtilMailboxFactory mailboxFactory;
-    private BoundRequest<Void> start;
+    private Request<Void> start;
 
     public void test() throws Exception {
         mailboxFactory = new UtilMailboxFactory();
         mailbox = mailboxFactory.createNonBlockingMailbox();
 
-        start = new BoundRequestBase<Void>(mailbox) {
+        start = new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

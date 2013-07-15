@@ -12,7 +12,7 @@ package org.agilewiki.jactor2.api;
  *
  * @param <RESPONSE_TYPE>     the type of response to be returned.
  * @param <TARGET_ACTOR_TYPE> For Event's, this is the class of the target actor.
- *                            For BoundRequest's, this is the class Actor.
+ *                            For Request's, this is the class Actor.
  */
 public interface _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
 
@@ -20,8 +20,8 @@ public interface _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
      * The processRequest method is always executed on the target actor's light-weight
      * thread (mailbox). Thread safety is not a requirement.
      *
-     * @param _targetActor Null for BoundRequest objects,
-     *                     this is the target actor for a BoundRequest.
+     * @param _targetActor Null for Request objects,
+     *                     this is the target actor for a Request.
      * @param _transport   A callback for processing the response on the appropriate thread.
      */
     public void processRequest(final TARGET_ACTOR_TYPE _targetActor,

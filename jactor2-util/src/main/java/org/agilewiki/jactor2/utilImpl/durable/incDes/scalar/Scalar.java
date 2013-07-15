@@ -11,7 +11,7 @@ abstract public class Scalar<SET_TYPE, RESPONSE_TYPE>
     /**
      * Assign a value.
      *
-     * @param request The MakeValue boundRequest.
+     * @param request The MakeValue request.
      * @throws Exception Any uncaught exception raised.
      */
     abstract public void setValue(SET_TYPE request)

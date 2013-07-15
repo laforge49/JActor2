@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.api.BoundRequest;
+import org.agilewiki.jactor2.api.Request;
 
 /**
  * Fixed-length scalar
@@ -10,11 +10,11 @@ import org.agilewiki.jactor2.api.BoundRequest;
 public interface FLenS<RESPONSE_TYPE> extends IncDes {
 
     /**
-     * Returns a boundRequest to get the value.
+     * Returns a request to get the value.
      *
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<RESPONSE_TYPE> getValueReq();
+    Request<RESPONSE_TYPE> getValueReq();
 
     /**
      * Returns the value.
@@ -24,12 +24,12 @@ public interface FLenS<RESPONSE_TYPE> extends IncDes {
     RESPONSE_TYPE getValue() throws Exception;
 
     /**
-     * Returns a boundRequest to assign a value.
+     * Returns a request to assign a value.
      *
      * @param _value The new value.
-     * @return The boundRequest.
+     * @return The request.
      */
-    BoundRequest<Void> setValueReq(final RESPONSE_TYPE _value);
+    Request<Void> setValueReq(final RESPONSE_TYPE _value);
 
     /**
      * Assigns a value.

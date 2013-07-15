@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 /**
- * Create an atomic boundRequest processor which processes requests successively and in
+ * Create an atomic request processor which processes requests successively and in
  * the order received.
  */
 public class FifoRequestProcessor extends AtomicRequestProcessor {

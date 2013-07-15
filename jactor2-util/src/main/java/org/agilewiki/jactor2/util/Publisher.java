@@ -17,14 +17,14 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     private final Set<TARGET_ACTOR_TYPE> subscribers = new HashSet<TARGET_ACTOR_TYPE>();
 
     /**
-     * A boundRequest to add a subscriber.
-     * The result of the boundRequest is true when the subscriber list was changed.
+     * A request to add a subscriber.
+     * The result of the request is true when the subscriber list was changed.
      *
      * @param _subscriber The actor to be added.
-     * @return The boundRequest.
+     * @return The request.
      */
-    public BoundRequest<Boolean> subscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public Request<Boolean> subscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Boolean> _rp)
                     throws Exception {
@@ -34,14 +34,14 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     }
 
     /**
-     * A boundRequest to remove a subscriber.
-     * The result of the boundRequest is true when the subscriber list was changed.
+     * A request to remove a subscriber.
+     * The result of the request is true when the subscriber list was changed.
      *
      * @param _subscriber The actor to be removed.
-     * @return The boundRequest.
+     * @return The request.
      */
-    public BoundRequest<Boolean> unsubscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public Request<Boolean> unsubscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Boolean> _rp)
                     throws Exception {
@@ -51,17 +51,17 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     }
 
     /**
-     * A boundRequest to publish an unbound boundRequest to all the subscribers.
-     * The boundRequest completes with a null result only when all subscribers have processed the
-     * unbound boundRequest.
-     * Exceptions thrown by subscribers when processign the unbound boundRequest are simply ignored.
+     * A request to publish an unbound request to all the subscribers.
+     * The request completes with a null result only when all subscribers have processed the
+     * unbound request.
+     * Exceptions thrown by subscribers when processign the unbound request are simply ignored.
      *
-     * @param event The boundRequest to be published.
-     * @return The boundRequest.
+     * @param event The request to be published.
+     * @return The request.
      */
-    public BoundRequest<Void> publishReq(
+    public Request<Void> publishReq(
             final Event<Void, TARGET_ACTOR_TYPE> event) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {

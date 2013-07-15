@@ -11,8 +11,8 @@ public interface Event<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
         extends _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
 
     /**
-     * Passes this BoundRequest to the target Mailbox without a return address.
-     * No result is passed back and if an exception is thrown while processing this BoundRequest,
+     * Passes this Request to the target Mailbox without a return address.
+     * No result is passed back and if an exception is thrown while processing this Request,
      * that exception is simply logged as a warning.
      *
      * @param _targetActor The actor being operated on.
@@ -20,10 +20,10 @@ public interface Event<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
     public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 
     /**
-     * Passes this BoundRequest together with the ResponseProcessor to the target actor's Mailbox.
+     * Passes this Request together with the ResponseProcessor to the target actor's Mailbox.
      *
      * @param _source      The mailbox on whose thread this method was invoked and which
-     *                     will buffer this BoundRequest and subsequently receive the result for
+     *                     will buffer this Request and subsequently receive the result for
      *                     processing on the same thread.
      * @param _targetActor The actor being operated on.
      * @param _rp          Passed with this request and then returned with the result, the

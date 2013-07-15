@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
-import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.BoundRequestBase;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -33,10 +33,10 @@ public class BytesImpl
         });
     }
 
-    private BoundRequest<byte[]> getBytesReq;
+    private Request<byte[]> getBytesReq;
 
     @Override
-    public BoundRequest<byte[]> getValueReq() {
+    public Request<byte[]> getValueReq() {
         return getBytesReq;
     }
 
@@ -57,8 +57,8 @@ public class BytesImpl
     }
 
     @Override
-    public BoundRequest<Void> setValueReq(final byte[] v) {
-        return new BoundRequestBase<Void>(getMailbox()) {
+    public Request<Void> setValueReq(final byte[] v) {
+        return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(v);
@@ -80,7 +80,7 @@ public class BytesImpl
     /**
      * Assign a value unless one is already present.
      *
-     * @param v The MakeValue boundRequest.
+     * @param v The MakeValue request.
      * @return True if a new value is created.
      * @throws Exception Any uncaught exception raised.
      */
@@ -99,8 +99,8 @@ public class BytesImpl
     }
 
     @Override
-    public BoundRequest<Boolean> makeValueReq(final byte[] v) {
-        return new BoundRequestBase<Boolean>(getMailbox()) {
+    public Request<Boolean> makeValueReq(final byte[] v) {
+        return new RequestBase<Boolean>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(makeValue(v));
@@ -156,7 +156,7 @@ public class BytesImpl
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        getBytesReq = new BoundRequestBase<byte[]>(getMailbox()) {
+        getBytesReq = new RequestBase<byte[]>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

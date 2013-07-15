@@ -19,8 +19,8 @@ public class AtomicTest extends TestCase {
         }
     }
 
-    BoundRequest<Integer> startReq1(final Mailbox _mailbox) {
-        return new BoundRequestBase<Integer>(_mailbox) {
+    Request<Integer> startReq1(final Mailbox _mailbox) {
+        return new RequestBase<Integer>(_mailbox) {
             @Override
             public void processRequest(final Transport<Integer> _rp)
                     throws Exception {
@@ -43,9 +43,9 @@ public class AtomicTest extends TestCase {
         };
     }
 
-    BoundRequest<Void> aReq(final FifoRequestProcessor ap, final int msg) {
+    Request<Void> aReq(final FifoRequestProcessor ap, final int msg) {
         final Mailbox mailbox = ap.getMailbox();
-        return new BoundRequestBase<Void>(mailbox) {
+        return new RequestBase<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
@@ -78,8 +78,8 @@ public class AtomicTest extends TestCase {
         throw new IllegalStateException();
     }
 
-    BoundRequest<Void> bReq(final Mailbox _mailbox) {
-        return new BoundRequestBase<Void>(_mailbox) {
+    Request<Void> bReq(final Mailbox _mailbox) {
+        return new RequestBase<Void>(_mailbox) {
             @Override
             public void processRequest(Transport<Void> responseProcessor)
                     throws Exception {
