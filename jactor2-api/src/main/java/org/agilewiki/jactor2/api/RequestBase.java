@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * UnboundRequestBase is typically subclassed to create requests that are targeted to a class
+ * RequestBase is typically subclassed to create requests that are targeted to a class
  * of actors or to an interface, rather than to a specific instance. The target class must however
  * implement the Actor interface.
  * <p/>
@@ -10,7 +10,7 @@ package org.agilewiki.jactor2.api;
  *     public String getDuddly();
  * }
  *
- * public class DuddlyReq extends UnboundRequestBase&lt;String, DudActor&gt; {
+ * public class DuddlyReq extends RequestBase&lt;String, DudActor&gt; {
  *     public void processRequest(final DudActor _targetActor, final ResponseProcessor&lt;String response&gt; _rp)
  *             throws Exception {
  *         _rp.processResponse(_targetActor.getDuddly());
@@ -18,11 +18,11 @@ package org.agilewiki.jactor2.api;
  * }
  * </pre>
  *
- * @param <RESPONSE_TYPE>     The class of the result returned when this UnboundRequest is processed.
- * @param <TARGET_ACTOR_TYPE> The class of the actor that will be used when this UnboundRequest is processed.
+ * @param <RESPONSE_TYPE>     The class of the result returned when this Request is processed.
+ * @param <TARGET_ACTOR_TYPE> The class of the actor that will be used when this Request is processed.
  */
-public abstract class UnboundRequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
-        implements UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
+public abstract class RequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
+        implements Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
 
     @Override
     public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {

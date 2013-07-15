@@ -76,8 +76,8 @@ Messages per second: 13715539
                     throws Exception {
                 final CounterActor counterActor = new CounterActor();
                 counterActor.initialize(counterMailbox);
-                final UnboundAddReq uar = new UnboundAddReq(1);
-                final UnboundResetReq urr = new UnboundResetReq();
+                final AddReq uar = new AddReq(1);
+                final ResetReq urr = new ResetReq();
                 JAIterator pait = new JAIterator() {
                     long i = 0;
 
@@ -125,10 +125,10 @@ Messages per second: 13715539
     }
 }
 
-class UnboundAddReq extends UnboundRequestBase<Void, CounterActor> {
+class AddReq extends RequestBase<Void, CounterActor> {
     private final long inc;
 
-    UnboundAddReq(final long _inc) {
+    AddReq(final long _inc) {
         inc = _inc;
     }
 
@@ -140,7 +140,7 @@ class UnboundAddReq extends UnboundRequestBase<Void, CounterActor> {
     }
 }
 
-class UnboundResetReq extends UnboundRequestBase<Long, CounterActor> {
+class ResetReq extends RequestBase<Long, CounterActor> {
 
     @Override
     public void processRequest(final CounterActor _targetActor,

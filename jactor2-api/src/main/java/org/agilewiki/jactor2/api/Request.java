@@ -1,13 +1,13 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * An UnboundRequest implements an operation that is to be performed on an actor in a thread-safe way,
+ * An Request implements an operation that is to be performed on an actor in a thread-safe way,
  * without having been bound to a specific target.
  *
- * @param <RESPONSE_TYPE>     The class of the result returned when this UnboundRequest is processed.
- * @param <TARGET_ACTOR_TYPE> The class of the actor that will be used when this UnboundRequest is processed.
+ * @param <RESPONSE_TYPE>     The class of the result returned when this Request is processed.
+ * @param <TARGET_ACTOR_TYPE> The class of the actor that will be used when this Request is processed.
  */
-public interface UnboundRequest<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
+public interface Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
         extends _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
 
     /**
