@@ -137,7 +137,9 @@ abstract public class JAMailboxImpl implements JAMailbox {
                 _request,
                 exceptionHandler,
                 _responseProcessor);
-        targetMailbox.addMessage(this, message, this == targetMailbox);
+        boolean local = this == targetMailbox;
+        if (local || !buffer(message, targetMailbox))
+            targetMailbox.unbufferedAddMessages(message, local);
     }
 
     @SuppressWarnings("unchecked")
