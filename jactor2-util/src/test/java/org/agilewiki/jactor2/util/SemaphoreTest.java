@@ -25,7 +25,7 @@ public class SemaphoreTest extends TestCase {
     }
 
     private BoundRequest<Void> delayedRelease(final PASemaphore semaphore,
-                                         final long delay, final MailboxFactory mailboxFactory) {
+                                              final long delay, final MailboxFactory mailboxFactory) {
         return new BoundRequestBase<Void>(mailboxFactory.createNonBlockingMailbox()) {
             @Override
             public void processRequest(
@@ -58,7 +58,7 @@ public class SemaphoreTest extends TestCase {
     }
 
     private BoundRequest<Boolean> acquireException(final PASemaphore semaphore,
-                                              final Mailbox mailbox) {
+                                                   final Mailbox mailbox) {
         return new BoundRequestBase<Boolean>(mailbox) {
             @Override
             public void processRequest(

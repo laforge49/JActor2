@@ -18,7 +18,7 @@ public class Actor4 {
             public void processRequest(
                     final Transport<Void> responseProcessor)
                     throws Exception {
-                actor1.hi1.send(mailbox, new ResponseProcessor<String>() {
+               new Hi1().send(mailbox, actor1, new ResponseProcessor<String>() {
                     @Override
                     public void processResponse(final String response)
                             throws Exception {

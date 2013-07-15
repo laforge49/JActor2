@@ -1,8 +1,9 @@
 package org.agilewiki.jactor2.general.exceptions;
 
-import org.agilewiki.jactor2.api.*;
 import org.agilewiki.jactor2.api.BoundRequest;
 import org.agilewiki.jactor2.api.BoundRequestBase;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Transport;
 
 public class ActorB {
     private final Mailbox mailbox;

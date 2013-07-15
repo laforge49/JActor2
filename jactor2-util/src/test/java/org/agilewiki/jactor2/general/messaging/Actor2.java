@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.general.messaging;
 
 import org.agilewiki.jactor2.api.BoundRequest;
-import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.BoundRequestBase;
+import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Transport;
 
 /**
@@ -21,7 +21,7 @@ public class Actor2 {
             public void processRequest(
                     final Transport<String> responseProcessor)
                     throws Exception {
-                actor1.hi1.send(mailbox, responseProcessor);
+                new Hi1().send(mailbox, actor1, responseProcessor);
             }
         };
     }

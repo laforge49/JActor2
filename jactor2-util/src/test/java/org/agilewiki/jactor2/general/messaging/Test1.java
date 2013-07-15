@@ -13,7 +13,7 @@ public class Test1 extends TestCase {
         final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
         final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
-        final String result = actor1.hi1.call();
+        final String result = new Hi1().call(actor1);
         assertEquals("Hello world!", result);
         mailboxFactory.close();
     }

@@ -106,7 +106,7 @@ class AtomicEntry {
      * Create a pending atomic entry.
      *
      * @param _Bound_request A boundRequest to be processed to completion before the next such boundRequest is processed.
-     * @param _rp      The ResponseProcessor that gets the response from the boundRequest, or the exception if one occurs.
+     * @param _rp            The ResponseProcessor that gets the response from the boundRequest, or the exception if one occurs.
      */
     public AtomicEntry(final BoundRequest _Bound_request,
                        final ResponseProcessor<Object> _rp) {

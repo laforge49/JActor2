@@ -28,7 +28,7 @@ public class ThreadBoundTest extends TestCase {
         });
         final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
-        actor1.hi1.send(boundMailbox, new ResponseProcessor<String>() {
+        new Hi1().send(boundMailbox, actor1, new ResponseProcessor<String>() {
             @Override
             public void processResponse(final String response) throws Exception {
                 System.out.println(response);
