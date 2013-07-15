@@ -104,7 +104,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
         final Message message = new Message(false, null, _targetActor,
                 null, _request, null, EventResponseProcessor.SINGLETON);
         // No source means never local and no buffering.
-        addMessage(null, message, false);
+        unbufferedAddMessages(message, false);
     }
 
     @Override
@@ -148,7 +148,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
         final Message message = new Message(true, caller, _targetActor,
                 null, _request, null,
                 (ResponseProcessor<E>) DummyResponseProcessor.SINGLETON);
-        addMessage(null, message, false);
+        unbufferedAddMessages(message, false);
         return (E) caller.call();
     }
 
@@ -400,7 +400,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
     public final void incomingResponse(final Message _message,
                                        final JAMailbox _responseSource) {
         try {
-            addMessage(null, _message, this == _responseSource ||
+            unbufferedAddMessages(_message, this == _responseSource ||
                     (_responseSource != null && this == _responseSource));
         } catch (final Throwable t) {
             log.error("unable to add response message", t);
