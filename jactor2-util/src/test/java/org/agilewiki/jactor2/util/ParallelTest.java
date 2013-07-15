@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.api.RequestBase;
-import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Transport;
 
 /**

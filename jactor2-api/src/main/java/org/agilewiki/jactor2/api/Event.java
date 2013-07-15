@@ -18,19 +18,4 @@ public interface Event<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
      * @param _targetActor The actor being operated on.
      */
     public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
-
-    /**
-     * Passes this Request together with the ResponseProcessor to the target actor's Mailbox.
-     *
-     * @param _source      The mailbox on whose thread this method was invoked and which
-     *                     will buffer this Request and subsequently receive the result for
-     *                     processing on the same thread.
-     * @param _targetActor The actor being operated on.
-     * @param _rp          Passed with this request and then returned with the result, the
-     *                     ResponseProcessor is used to process the result on the same thread
-     *                     that originally invoked this method.
-     */
-    public void send(final Mailbox _source,
-                     final TARGET_ACTOR_TYPE _targetActor,
-                     final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception;
 }

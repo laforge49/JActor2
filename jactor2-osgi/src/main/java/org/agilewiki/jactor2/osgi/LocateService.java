@@ -1,8 +1,9 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.api.*;
-import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.Transport;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 

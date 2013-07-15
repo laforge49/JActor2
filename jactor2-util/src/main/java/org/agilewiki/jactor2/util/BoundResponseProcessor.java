@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.ResponseProcessor;
 import org.agilewiki.jactor2.api.Transport;
 

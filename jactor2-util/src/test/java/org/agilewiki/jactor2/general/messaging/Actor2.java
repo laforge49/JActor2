@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.general.messaging;
 
+import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.api.RequestBase;
-import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Transport;
 
 /**

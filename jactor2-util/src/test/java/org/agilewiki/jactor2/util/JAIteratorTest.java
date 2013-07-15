@@ -74,10 +74,9 @@ Messages per second: 13715539
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
-                final CounterActor counterActor = new CounterActor();
-                counterActor.initialize(counterMailbox);
-                final AddReq uar = new AddReq(1);
-                final ResetReq urr = new ResetReq();
+                final CounterActor counterActor = new CounterActor(counterMailbox);
+                final RequestBase urr = counterActor.resetReq;
+                final AddEvent uar = new AddEvent(1);
                 JAIterator pait = new JAIterator() {
                     long i = 0;
 
@@ -88,7 +87,8 @@ Messages per second: 13715539
                             rp1.processResponse(this);
                         else {
                             i += 1;
-                            uar.send(mailbox, counterActor, rp1);
+                            uar.signal(counterActor);
+                            rp1.processResponse(null);
                         }
                     }
                 };
@@ -97,7 +97,7 @@ Messages per second: 13715539
                     @Override
                     public void processResponse(Object response)
                             throws Exception {
-                        urr.send(mailbox, counterActor,
+                        urr.send(mailbox,
                                 new ResponseProcessor<Long>() {
                                     @Override
                                     public void processResponse(final Long count)
@@ -125,10 +125,10 @@ Messages per second: 13715539
     }
 }
 
-class AddReq extends EventBase<Void, CounterActor> {
+class AddEvent extends EventBase<Void, CounterActor> {
     private final long inc;
 
-    AddReq(final long _inc) {
+    AddEvent(final long _inc) {
         inc = _inc;
     }
 
@@ -140,17 +140,20 @@ class AddReq extends EventBase<Void, CounterActor> {
     }
 }
 
-class ResetReq extends EventBase<Long, CounterActor> {
-
-    @Override
-    public void processRequest(final CounterActor _targetActor,
-                               final Transport<Long> _rp) throws Exception {
-        _rp.processResponse(_targetActor.reset());
-    }
-}
-
 class CounterActor extends ActorBase {
     private long count = 0L;
+
+    public RequestBase<Long> resetReq;
+
+    CounterActor(Mailbox mailbox) throws Exception {
+        initialize(mailbox);
+        resetReq = new RequestBase<Long>(getMailbox()) {
+            @Override
+            public void processRequest(Transport<Long> _transport) throws Exception {
+                _transport.processResponse(reset());
+            }
+        };
+    }
 
     public void add(long inc) {
         count += inc;

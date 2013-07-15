@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.general.exceptions;
 
+import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Request;
 import org.agilewiki.jactor2.api.RequestBase;
-import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Transport;
 
 public class ActorA {
