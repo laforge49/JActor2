@@ -117,7 +117,9 @@ abstract public class JAMailboxImpl implements JAMailbox {
                     "A valid source mailbox can not be idle");
         final Message message = new Message(false, this, _targetActor, null,
                 _request, null, EventResponseProcessor.SINGLETON);
-        targetMailbox.addMessage(this, message, this == _targetMailbox);
+        boolean local = this == targetMailbox;
+        if (local || !buffer(message, targetMailbox))
+            targetMailbox.unbufferedAddMessages(message, local);
     }
 
     @Override
@@ -163,23 +165,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
         final ExceptionHandler rv = this.exceptionHandler;
         this.exceptionHandler = _handler;
         return rv;
-    }
-
-    /**
-     * Buffer a message to be processed later or add it to the inbox local queue for processing.
-     *
-     * @param _messageSource The source of the message, or null.
-     * @param _message       The message to be processed or the returned results.
-     * @param _local         True when the active thread controls the mailbox.
-     */
-    @Override
-    public void addMessage(final MessageSource _messageSource,
-                           final Message _message,
-                           final boolean _local) throws Exception {
-        if ((_messageSource == null) || _local
-                || !_messageSource.buffer(_message, this)) {
-            unbufferedAddMessages(_message, _local);
-        }
     }
 
     public void unbufferedAddMessages(final Message _message, final boolean _local)
