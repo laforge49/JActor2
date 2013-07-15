@@ -21,7 +21,7 @@ public class Actor2 {
             public void processRequest(
                     final Transport<String> responseProcessor)
                     throws Exception {
-                new Hi1().send(mailbox, actor1, responseProcessor);
+                actor1.hi.send(mailbox, responseProcessor);
             }
         };
     }
