@@ -57,7 +57,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public void signal(final Mailbox _source) throws Exception {
-        mailbox.signal((_Request<Void, Actor>) this, _source, null);
+        _source.signalTo((_Request<Void, Actor>) this, mailbox, null);
     }
 
     @Override

@@ -33,7 +33,7 @@ public abstract class UnboundRequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extend
     @Override
     public void signal(final Mailbox _source,
                        final TARGET_ACTOR_TYPE _targetActor) throws Exception {
-        _targetActor.getMailbox().signal((_Request<Void, Actor>) this, _source,
+        _source.signalTo((_Request<Void, Actor>) this, _targetActor.getMailbox(),
                 _targetActor);
     }
 
