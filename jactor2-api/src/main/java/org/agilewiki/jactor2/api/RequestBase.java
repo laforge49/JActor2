@@ -31,14 +31,6 @@ public abstract class RequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor
     }
 
     @Override
-    @Deprecated
-    public void signal(final Mailbox _source,
-                       final TARGET_ACTOR_TYPE _targetActor) throws Exception {
-        _source.signalTo((_Request<Void, Actor>) this, _targetActor.getMailbox(),
-                _targetActor);
-    }
-
-    @Override
     public void send(final Mailbox _source,
                      final TARGET_ACTOR_TYPE _targetActor,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {

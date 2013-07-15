@@ -156,7 +156,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                 final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
                         tracked);
                 new ServiceChange<T>(null, m).signal(
-                        getMailbox(), serviceChangeReceiver);
+                        serviceChangeReceiver);
                 _transport.processResponse(null);
             }
         };
@@ -200,7 +200,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                                 final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
                                         tracked);
                                 new ServiceChange<T>(_event, m).signal(
-                                        getMailbox(), serviceChangeReceiver);
+                                        serviceChangeReceiver);
                             }
                             break;
                         case ServiceEvent.MODIFIED:
@@ -210,7 +210,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                             tracked.put(ref, sm);
                             final Map<ServiceReference, T> ma = new HashMap<ServiceReference, T>(
                                     tracked);
-                            new ServiceChange<T>(_event, ma).signal(getMailbox(),
+                            new ServiceChange<T>(_event, ma).signal(
                                     serviceChangeReceiver);
                             break;
                         case ServiceEvent.MODIFIED_ENDMATCH:
@@ -222,7 +222,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                                 final Map<ServiceReference, T> m = new HashMap<ServiceReference, T>(
                                         tracked);
                                 new ServiceChange<T>(_event, m).signal(
-                                        getMailbox(), serviceChangeReceiver);
+                                        serviceChangeReceiver);
                             }
                             break;
                     }

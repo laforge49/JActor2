@@ -20,19 +20,6 @@ public interface Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
     public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 
     /**
-     * Passes this BoundRequest to the target actor's Mailbox without a return address.
-     * No result is passed back and if an exception is thrown while processing this BoundRequest,
-     * that exception is simply logged as a warning.
-     *
-     * @param _source      The mailbox on whose thread this method was invoked and which
-     *                     will buffer this BoundRequest.
-     * @param _targetActor The actor being operated on.
-     */
-    @Deprecated
-    public void signal(final Mailbox _source,
-                       final TARGET_ACTOR_TYPE _targetActor) throws Exception;
-
-    /**
      * Passes this BoundRequest together with the ResponseProcessor to the target actor's Mailbox.
      *
      * @param _source      The mailbox on whose thread this method was invoked and which
