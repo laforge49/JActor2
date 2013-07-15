@@ -59,7 +59,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     public void processResponse(final Mailbox source, final RESPONSE_TYPE rsp)
             throws Exception {
         new ContinuationRequest<RESPONSE_TYPE>(targetMailbox, rp, rsp)
-                .signal(source);
+                .signal();
     }
 }
 

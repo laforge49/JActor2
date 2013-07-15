@@ -83,7 +83,7 @@ public class FactoriesImporter extends ActorBase implements
         // at initial registration.
         startTransport = _transport;
         tracker.startReq(FactoriesImporter.this)
-                .signal(getMailbox());
+                .signal();
     }
 
     /**

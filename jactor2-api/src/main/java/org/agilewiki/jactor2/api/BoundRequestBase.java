@@ -57,11 +57,6 @@ public abstract class BoundRequestBase<RESPONSE_TYPE> implements
     }
 
     @Override
-    public void signal(final Mailbox _source) throws Exception {
-        _source.signalTo((_Request<Void, Actor>) this, mailbox, null);
-    }
-
-    @Override
     public void send(final Mailbox _source,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
         _source.sendTo(this, mailbox, null, _rp);

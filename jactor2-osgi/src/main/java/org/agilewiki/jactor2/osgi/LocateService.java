@@ -49,7 +49,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
         return new BoundRequestBase<T>(mailbox) {
             @Override
             public void processRequest(final Transport<T> _transport) throws Exception {
-                tracker.startReq(LocateService.this).signal(mailbox);
+                tracker.startReq(LocateService.this).signal();
                 transport = _transport;
             }
         };
