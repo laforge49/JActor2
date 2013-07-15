@@ -33,15 +33,4 @@ public interface Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
     public void send(final Mailbox _source,
                      final TARGET_ACTOR_TYPE _targetActor,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception;
-
-    /**
-     * Passes this BoundRequest to the target actor's Mailbox and blocks the current thread until
-     * a result is returned.
-     *
-     * @param _targetActor The actor being operated on.
-     * @return The result from processing this BoundRequest.
-     * @throws Exception If the result is an exception, it is thrown rather than being returned.
-     */
-    public RESPONSE_TYPE call(final TARGET_ACTOR_TYPE _targetActor)
-            throws Exception;
 }

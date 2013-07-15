@@ -36,11 +36,4 @@ public abstract class RequestBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
         _source.sendTo(this, _targetActor.getMailbox(), _targetActor, _rp);
     }
-
-    @Override
-    public RESPONSE_TYPE call(final TARGET_ACTOR_TYPE _targetActor)
-            throws Exception {
-        return _targetActor.getMailbox().call(this,
-                _targetActor);
-    }
 }
