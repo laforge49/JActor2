@@ -66,20 +66,12 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
                 final Object[] subs = subscribers.toArray();
-                final ResponseCounter<Void> rc = new ResponseCounter<Void>(
-                        subs.length, null, _rp);
-                getMailbox().setExceptionHandler(new ExceptionHandler() {
-                    @Override
-                    public void processException(final Throwable throwable)
-                            throws Exception {
-                        rc.decrementCount();
-                    }
-                });
                 for (final Object object : subs) {
                     @SuppressWarnings("unchecked")
                     final TARGET_ACTOR_TYPE subscriber = (TARGET_ACTOR_TYPE) object;
-                    event.send(getMailbox(), subscriber, rc);
+                    event.signal(subscriber);
                 }
+                _rp.processResponse(null);
             }
         };
     }
