@@ -28,6 +28,7 @@ public interface Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
      *                     will buffer this BoundRequest.
      * @param _targetActor The actor being operated on.
      */
+    @Deprecated
     public void signal(final Mailbox _source,
                        final TARGET_ACTOR_TYPE _targetActor) throws Exception;
 
