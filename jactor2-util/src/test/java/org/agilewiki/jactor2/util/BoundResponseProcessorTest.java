@@ -32,7 +32,7 @@ class Driver extends ActorBase {
             public void processRequest(final Transport<String> rp)
                     throws Exception {
                 final BoundResponseProcessor<String> boundResponseProcessor = new BoundResponseProcessor<String>(
-                        _mailbox, rp);
+                        Driver.this, rp);
                 final Application application = new Application(
                         boundResponseProcessor);
                 application.start();

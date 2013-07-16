@@ -42,7 +42,7 @@ public class FirstStage extends ActorBase implements Runnable {
         count = _count;
         maxWindowSize = _maxWindowSize;
         initialize(_mailboxFactory.createMayBlockMailbox(this));
-        ack = new BoundResponseProcessor<Void>(getMailbox(), new ResponseProcessor<Void>() {
+        ack = new BoundResponseProcessor<Void>(this, new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {
                 ackCount -= 1;

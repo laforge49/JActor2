@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.Actor;
+import org.agilewiki.jactor2.api.EventBase;
 import org.agilewiki.jactor2.api.ResponseProcessor;
 import org.agilewiki.jactor2.api.Transport;
 
@@ -18,7 +18,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     /**
      * The mailbox on whose thread the wrapped ResponseProcessor object can be used.
      */
-    private final Mailbox targetMailbox;
+    private final Actor targetActor;
 
     /**
      * The wrapped ResponseProcessor.
@@ -28,13 +28,13 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     /**
      * Create a thread-safe wrapper for a ResponseProcessor.
      *
-     * @param _targetMailbox The mailbox on whose thread the wrapped ResponseProcessor
-     *                       can be used.
-     * @param _rp            The wrapped ResponseProcessor.
+     * @param _actor The mailbox on whose thread the wrapped ResponseProcessor
+     *               can be used.
+     * @param _rp    The wrapped ResponseProcessor.
      */
-    public BoundResponseProcessor(final Mailbox _targetMailbox,
+    public BoundResponseProcessor(final Actor _actor,
                                   final ResponseProcessor<RESPONSE_TYPE> _rp) {
-        targetMailbox = _targetMailbox;
+        targetActor = _actor;
         rp = _rp;
     }
 
@@ -46,20 +46,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
      */
     @Override
     public void processResponse(final RESPONSE_TYPE rsp) throws Exception {
-        new ContinuationRequest<RESPONSE_TYPE>(targetMailbox, rp, rsp).signal();
-    }
-
-    /**
-     * This method processes the response by passing the wrapped response and ResponseProcessor
-     * via a buffered signal back to the appropriate mailbox.
-     *
-     * @param source The mailbox of the actor passing the signal.
-     * @param rsp    The response.
-     */
-    public void processResponse(final Mailbox source, final RESPONSE_TYPE rsp)
-            throws Exception {
-        new ContinuationRequest<RESPONSE_TYPE>(targetMailbox, rp, rsp)
-                .signal(source);
+        new ContinuationRequest<RESPONSE_TYPE>(rp, rsp).signal(targetActor);
     }
 }
 
@@ -69,7 +56,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
-class ContinuationRequest<RESPONSE_TYPE> extends RequestBase<Void> {
+class ContinuationRequest<RESPONSE_TYPE> extends EventBase<Void, Actor> {
     /**
      * The wrapped ResponseProcessor.
      */
@@ -84,28 +71,17 @@ class ContinuationRequest<RESPONSE_TYPE> extends RequestBase<Void> {
      * Creates the request used to pass the response and wrapped ResponseProcessor
      * back to the original target mailbox.
      *
-     * @param targetMailbox The original target mailbox.
-     * @param _rp           The wrapped ResponseProcessor.
-     * @param _rsp          The response.
+     * @param _rp  The wrapped ResponseProcessor.
+     * @param _rsp The response.
      */
-    public ContinuationRequest(final Mailbox targetMailbox,
-                               final ResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
-        super(targetMailbox);
+    public ContinuationRequest(final ResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
         rp = _rp;
         rsp = _rsp;
     }
 
-    /**
-     * Called when the signal is received by the original target mailbox, the
-     * processResponse method of the wrapped ResponseProcessor can finally be called
-     * on the appropriate thread.
-     *
-     * @param _rp The ResponseProcessor for the signal.
-     */
     @Override
-    public void processRequest(final Transport<Void> _rp)
-            throws Exception {
+    public void processRequest(Actor _targetActor, Transport<Void> _transport) throws Exception {
         rp.processResponse(rsp);
-        _rp.processResponse(null);
+        _transport.processResponse(null);
     }
 }
