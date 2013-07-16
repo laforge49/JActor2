@@ -82,8 +82,7 @@ public class FactoriesImporter extends ActorBase implements
         // Keep _transport for later, in case we do not find out service
         // at initial registration.
         startTransport = _transport;
-        tracker.startReq(FactoriesImporter.this)
-                .signal();
+        tracker.start(FactoriesImporter.this);
     }
 
     /**

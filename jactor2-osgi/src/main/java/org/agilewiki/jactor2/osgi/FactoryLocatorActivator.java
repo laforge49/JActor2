@@ -25,7 +25,7 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
         initializeActivator(_bundleContext);
         mailboxFactoryStart();
         createFactoryLocator();
-        beginReq().signal();
+        begin();
     }
 
     /**

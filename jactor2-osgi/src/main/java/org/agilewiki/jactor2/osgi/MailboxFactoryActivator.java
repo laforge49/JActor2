@@ -1,8 +1,7 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
+import org.agilewiki.jactor2.api.EventBase;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
@@ -55,7 +54,7 @@ abstract public class MailboxFactoryActivator
     public void start(final BundleContext _bundleContext) throws Exception {
         initializeActivator(_bundleContext);
         mailboxFactoryStart();
-        beginReq().signal();
+        begin();
     }
 
     /**
@@ -63,13 +62,13 @@ abstract public class MailboxFactoryActivator
      *
      * @return The request.
      */
-    protected Request<Void> beginReq() {
-        return new RequestBase<Void>(getMailbox()) {
+    protected void begin() throws Exception {
+        new EventBase<Void, MailboxFactoryActivator>() {
             @Override
-            public void processRequest(final Transport<Void> _transport) throws Exception {
+            public void processRequest(MailboxFactoryActivator _targetActor, Transport<Void> _transport) throws Exception {
                 begin(_transport);
             }
-        };
+        }.signal(this);
     }
 
     /**

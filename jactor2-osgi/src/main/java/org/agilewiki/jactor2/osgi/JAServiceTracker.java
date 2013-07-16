@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.ActorBase;
+import org.agilewiki.jactor2.api.EventBase;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Transport;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,15 +105,13 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
     /**
      * Creates the start request, passing the listener as a parameter.
      */
-    public Request<Void> startReq(
+    public void start(
             final ServiceChangeReceiver<T> _serviceChangeReceiver)
             throws Exception {
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
-        return new RequestBase<Void>(getMailbox()) {
+        new EventBase<Void, JAServiceTracker<T>>() {
             @Override
-            public void processRequest(
-                    final Transport<Void> _transport)
-                    throws Exception {
+            public void processRequest(JAServiceTracker<T> _targetActor, Transport<Void> _transport) throws Exception {
                 // We just received the start request. We can only receive one.
                 if (started)
                     throw new IllegalStateException("already started");
@@ -159,7 +160,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                         serviceChangeReceiver);
                 _transport.processResponse(null);
             }
-        };
+        }.signal(this);
     }
 
     /**
@@ -185,10 +186,9 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         try {
             // Create service change request, to be run in our own mailbox,
             // because this method is not running in our actor thread.
-            new RequestBase<Void>(getMailbox()) {
+            new EventBase<Void, JAServiceTracker<T>>() {
                 @Override
-                public void processRequest(final Transport<Void> _transport)
-                        throws Exception {
+                public void processRequest(JAServiceTracker<T> _targetActor, Transport<Void> _transport) throws Exception {
                     final int typ = _event.getType();
                     final ServiceReference ref = _event.getServiceReference();
                     switch (typ) {
@@ -230,7 +230,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                     _transport.processResponse(null);
                 }
                 // send service change request to listener
-            }.signal();
+            }.signal(this);
         } catch (final Exception exception) {
             // Most likely, a failure in signal() ...
             log.error("Unable to signal", exception);
