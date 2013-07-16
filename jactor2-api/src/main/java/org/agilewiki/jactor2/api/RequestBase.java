@@ -26,6 +26,7 @@ package org.agilewiki.jactor2.api;
  */
 public abstract class RequestBase<RESPONSE_TYPE> implements
         Request<RESPONSE_TYPE>, _Request<RESPONSE_TYPE, Actor> {
+
     /**
      * The mailbox where this Request Objects is passed for processing. The thread
      * owned by this mailbox will process this Request.
@@ -54,6 +55,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     @Override
     public void signal() throws Exception {
         mailbox.signal((_Request<Void, Actor>) this, null);
+    }
+
+    @Override
+    public void signal(final Mailbox _source) throws Exception {
+        _source.signalTo((_Request<Void, Actor>) this, mailbox, null);
     }
 
     @Override

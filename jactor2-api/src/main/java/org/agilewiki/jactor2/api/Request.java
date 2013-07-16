@@ -24,6 +24,16 @@ public interface Request<RESPONSE_TYPE> {
     public void signal() throws Exception;
 
     /**
+     * Passes this Request to the target Mailbox without a return address.
+     * No result is passed back and if an exception is thrown while processing this Request,
+     * that exception is simply logged as a warning.
+     *
+     * @param _source The mailbox on whose thread this method was invoked and which
+     *                will buffer this Request.
+     */
+    public void signal(final Mailbox _source) throws Exception;
+
+    /**
      * Passes this Request together with the ResponseProcessor to the target Mailbox.
      *
      * @param _source The mailbox on whose thread this method was invoked and which

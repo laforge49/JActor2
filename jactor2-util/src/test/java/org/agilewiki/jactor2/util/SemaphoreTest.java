@@ -36,7 +36,7 @@ public class SemaphoreTest extends TestCase {
                             @Override
                             public void processResponse(final Void response)
                                     throws Exception {
-                                semaphore.releaseReq().signal();
+                                semaphore.releaseReq().signal(getMailbox());
                                 responseProcessor.processResponse(null);
                             }
                         });

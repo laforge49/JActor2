@@ -107,6 +107,21 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
+    public final <A extends Actor> void signalTo(final _Request<Void, A> _request,
+                                                 final Mailbox _targetMailbox,
+                                                 final A _targetActor) throws Exception {
+        final JAMailbox targetMailbox = (JAMailbox) _targetMailbox;
+        if (!isRunning())
+            throw new IllegalStateException(
+                    "A valid source mailbox can not be idle");
+        final Message message = new Message(false, this, _targetActor, null,
+                _request, null, EventResponseProcessor.SINGLETON);
+        boolean local = this == targetMailbox;
+        if (local || !buffer(message, targetMailbox))
+            targetMailbox.unbufferedAddMessages(message, local);
+    }
+
+    @Override
     public final <E, A extends Actor> void sendTo(final _Request<E, A> _request,
                                                   final Mailbox _targetMailbox,
                                                   final A _targetActor,
