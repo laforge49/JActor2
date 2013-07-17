@@ -1,5 +1,9 @@
 package org.agilewiki.jactor2.impl;
 
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Message;
+import org.agilewiki.jactor2.api.MessageSource;
+
 import java.util.concurrent.Semaphore;
 
 /**
@@ -34,13 +38,13 @@ final class Caller implements MessageSource {
 
     @Override
     public void incomingResponse(final Message _message,
-                                 final JAMailbox _responseSource) {
+                                 final Mailbox _responseSource) {
         this.result = _message.getResponse();
         done.release();
     }
 
     @Override
-    public boolean buffer(final Message _message, final JAMailbox _target) {
+    public boolean buffer(final Message _message, final Mailbox _target) {
         return false;
     }
 }

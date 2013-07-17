@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.impl;
 
+import org.agilewiki.jactor2.api.Message;
 import org.agilewiki.jactor2.api.ThreadBoundMailbox;
 import org.slf4j.Logger;
 

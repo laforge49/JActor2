@@ -1,6 +1,4 @@
-package org.agilewiki.jactor2.impl;
-
-import org.agilewiki.jactor2.api.*;
+package org.agilewiki.jactor2.api;
 
 /**
  * <p>
@@ -38,18 +36,6 @@ public class Message implements AutoCloseable {
         request = (_Request<?, Actor>) _request;
         sourceExceptionHandler = _handler;
         responseProcessor = _rp;
-    }
-
-    public Mailbox activeMailbox() {
-        if (!responsePending) {
-            if (targetActor == null)
-                return null;
-            else
-                return targetActor.getMailbox();
-        } else if (messageSource instanceof Mailbox)
-            return (Mailbox) messageSource;
-        else
-            return null;
     }
 
     /**

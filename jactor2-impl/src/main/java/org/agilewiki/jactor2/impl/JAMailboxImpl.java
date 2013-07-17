@@ -205,7 +205,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
     abstract protected void afterAdd() throws Exception;
 
     @Override
-    public boolean buffer(final Message _message, final JAMailbox _target) {
+    public boolean buffer(final Message _message, final Mailbox _target) {
         if (mailboxFactory.isClosing())
             return false;
         ArrayDeque<Message> buffer;
@@ -217,7 +217,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
         }
         if (buffer == null) {
             buffer = new ArrayDeque<Message>(initialBufferSize);
-            sendBuffer.put(_target, buffer);
+            sendBuffer.put((JAMailbox) _target, buffer);
         }
         buffer.add(_message);
         return true;
@@ -384,7 +384,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
 
     @Override
     public final void incomingResponse(final Message _message,
-                                       final JAMailbox _responseSource) {
+                                       final Mailbox _responseSource) {
         try {
             unbufferedAddMessages(_message, this == _responseSource ||
                     (_responseSource != null && this == _responseSource));

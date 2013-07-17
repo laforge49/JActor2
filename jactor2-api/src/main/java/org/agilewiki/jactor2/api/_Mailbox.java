@@ -4,7 +4,7 @@ package org.agilewiki.jactor2.api;
  * _Mailbox defines the internal API used by RequestBase and EventBase
  * to pass _Request's to a target mailbox.
  */
-interface _Mailbox {
+interface _Mailbox extends MessageSource {
 
     /**
      * A _Request object is enqueued by this mailbox for subsequent processing.

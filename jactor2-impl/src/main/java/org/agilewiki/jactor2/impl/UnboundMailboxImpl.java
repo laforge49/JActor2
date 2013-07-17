@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.impl;
 
+import org.agilewiki.jactor2.api.Message;
 import org.slf4j.Logger;
 
 import java.util.ArrayDeque;

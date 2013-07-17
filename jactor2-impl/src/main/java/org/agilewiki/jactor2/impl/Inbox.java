@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.impl;
 
+import org.agilewiki.jactor2.api.Message;
+
 import java.util.Queue;
 
 /**

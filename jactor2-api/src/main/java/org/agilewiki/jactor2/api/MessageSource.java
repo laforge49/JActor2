@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.impl;
+package org.agilewiki.jactor2.api;
 
 /**
  * A source of requests, which must be able to handle a response.
@@ -8,7 +8,7 @@ public interface MessageSource {
     /**
      * Process an incoming response.
      */
-    void incomingResponse(final Message message, final JAMailbox responseSource);
+    void incomingResponse(final Message message, final Mailbox responseSource);
 
     /**
      * Returns true, if the message was buffered for sending later.
@@ -17,5 +17,5 @@ public interface MessageSource {
      * @param target  The MessageSource that should eventually receive this message
      * @return true, if buffered
      */
-    boolean buffer(final Message message, final JAMailbox target);
+    boolean buffer(final Message message, final Mailbox target);
 }

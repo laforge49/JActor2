@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.impl;
 
 import org.agilewiki.jactor2.api.MayBlockMailbox;
+import org.agilewiki.jactor2.api.Message;
 import org.slf4j.Logger;
 
 public class MayBlockMailboxImpl extends UnboundMailboxImpl implements MayBlockMailbox {
