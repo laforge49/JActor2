@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.api.*;
 public class SemaphoreTest extends TestCase {
     public void testI() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
-        final PASemaphore semaphore = new PASemaphore(
+        final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 1);
         semaphore.acquireReq().call();
         mailboxFactory.close();
@@ -17,14 +17,14 @@ public class SemaphoreTest extends TestCase {
 
     public void testII() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
-        final PASemaphore semaphore = new PASemaphore(
+        final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
-        semaphore.releaseReq().signal();
+        semaphore.release();
         semaphore.acquireReq().call();
         mailboxFactory.close();
     }
 
-    private Request<Void> delayedRelease(final PASemaphore semaphore,
+    private Request<Void> delayedRelease(final JASemaphore semaphore,
                                          final long delay, final MailboxFactory mailboxFactory) {
         return new RequestBase<Void>(mailboxFactory.createNonBlockingMailbox()) {
             @Override
@@ -36,7 +36,7 @@ public class SemaphoreTest extends TestCase {
                             @Override
                             public void processResponse(final Void response)
                                     throws Exception {
-                                semaphore.releaseReq().signal(getMailbox());
+                                semaphore.release();
                                 responseProcessor.processResponse(null);
                             }
                         });
@@ -46,7 +46,7 @@ public class SemaphoreTest extends TestCase {
 
     public void testIII() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
-        final PASemaphore semaphore = new PASemaphore(
+        final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
@@ -57,7 +57,7 @@ public class SemaphoreTest extends TestCase {
         mailboxFactory.close();
     }
 
-    private Request<Boolean> acquireException(final PASemaphore semaphore,
+    private Request<Boolean> acquireException(final JASemaphore semaphore,
                                               final Mailbox mailbox) {
         return new RequestBase<Boolean>(mailbox) {
             @Override
@@ -87,7 +87,7 @@ public class SemaphoreTest extends TestCase {
 
     public void testIV() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
-        final PASemaphore semaphore = new PASemaphore(
+        final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();

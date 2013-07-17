@@ -8,11 +8,7 @@ import java.util.Queue;
 /**
  * Blocks request processing, not threads.
  */
-public class PASemaphore {
-    /**
-     * A mailbox is needed to handle requests.
-     */
-    private final Mailbox mailbox;
+public class JASemaphore extends ActorBase {
 
     /**
      * The number of available semaphores.
@@ -32,7 +28,7 @@ public class PASemaphore {
     /**
      * The release request.
      */
-    private final Request<Void> release;
+    private final Event<Void, JASemaphore> release;
 
     /**
      * Create a semaphore manager.
@@ -40,11 +36,11 @@ public class PASemaphore {
      * @param mbox        The mailbox used to handle requests.
      * @param permitCount The number of semaphores initially available.
      */
-    public PASemaphore(final Mailbox mbox, final int permitCount) {
-        this.mailbox = mbox;
+    public JASemaphore(final Mailbox mbox, final int permitCount) throws Exception {
+        initialize(mbox);
         this.permits = permitCount;
 
-        acquire = new RequestBase<Void>(mailbox) {
+        acquire = new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
@@ -58,18 +54,17 @@ public class PASemaphore {
             }
         };
 
-        release = new RequestBase<Void>(mailbox) {
+        release = new EventBase<Void, JASemaphore>() {
             @Override
-            public void processRequest(
-                    final Transport<Void> responseProcessor)
-                    throws Exception {
+            public void processRequest(JASemaphore _targetActor,
+                                       Transport<Void> _transport) throws Exception {
                 final ResponseProcessor<Void> rp = queue.poll();
                 if (rp == null) {
                     permits += 1;
                 } else {
                     rp.processResponse(null);
                 }
-                responseProcessor.processResponse(null);
+                _transport.processResponse(null);
             }
         };
     }
@@ -90,7 +85,7 @@ public class PASemaphore {
      *
      * @return The request.
      */
-    public Request<Void> releaseReq() {
-        return release;
+    public void release() throws Exception {
+        release.signal(this);
     }
 }
