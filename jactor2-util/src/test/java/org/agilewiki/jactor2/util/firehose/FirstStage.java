@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.util.firehose;
 import org.agilewiki.jactor2.api.ActorBase;
 import org.agilewiki.jactor2.api.EventBase;
 import org.agilewiki.jactor2.api.ResponseProcessor;
-import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.BoundResponseProcessor;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 
@@ -67,7 +66,7 @@ public class FirstStage extends ActorBase implements Runnable {
         new EventBase<Void, FirstStage>() {
 
             @Override
-            public void processRequest(FirstStage _targetActor, Transport<Void> _transport) throws Exception {
+            public void processSignal(FirstStage _targetActor) throws Exception {
             }
         }.signal(this);
     }

@@ -74,8 +74,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     }
 
     @Override
-    public void processRequest(final Actor _targetActor,
-                               final Transport<RESPONSE_TYPE> _transport) throws Exception {
+    public final void processRequest(final Actor _targetActor,
+                                     final Transport<RESPONSE_TYPE> _transport) throws Exception {
         processRequest(_transport);
     }
 }

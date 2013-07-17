@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.kdriver;
 
 import org.agilewiki.jactor2.api.ExceptionHandler;
 import org.agilewiki.jactor2.api.ResponseProcessor;
-import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.osgi.FactoriesImporter;
 import org.agilewiki.jactor2.osgi.FactoryLocatorActivator;
 import org.agilewiki.jactor2.osgi.LocateService;
@@ -21,12 +20,11 @@ public class Activator extends FactoryLocatorActivator {
     private CommandProcessor commandProcessor;
 
     @Override
-    protected void begin(final Transport<Void> _transport) throws Exception {
+    protected void process() throws Exception {
         Thread.sleep(2000);
         getMailbox().setExceptionHandler(new ExceptionHandler() {
             @Override
             public void processException(Throwable throwable) throws Throwable {
-                _transport.processResponse(null);
                 log.error("test failure", throwable);
                 getMailboxFactory().close();
             }
@@ -38,7 +36,7 @@ public class Activator extends FactoryLocatorActivator {
             public void processResponse(CommandProcessor response) throws Exception {
                 commandProcessor = response;
                 managedServiceRegistration();
-                test1(_transport);
+                test1();
             }
         });
     }
@@ -60,7 +58,7 @@ public class Activator extends FactoryLocatorActivator {
         return byteArrayOutputStream.toString();
     }
 
-    void test1(final Transport<Void> t) throws Exception {
+    void test1() throws Exception {
         log.info(">>>>>>>>1>>>>>>>>>> " + executeCommands(
                 "config:edit org.agilewiki.jactor2.testService.Activator." + getVersion().toString(),
                 "config:propset msg Aloha!",
@@ -78,20 +76,18 @@ public class Activator extends FactoryLocatorActivator {
                         //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));
                         String r = response.getMessage();
                         if (!"Aloha!".equals(r)) {
-                            t.processResponse(null);
                             log.error("Unexpected response from Hello.getMessage(): " + r);
                             getMailboxFactory().close();
                             return;
                         }
-                        success(t);
+                        success();
                     }
                 });
             }
         });
     }
 
-    void success(final Transport<Void> t) throws Exception {
-        t.processResponse(null);
+    void success() throws Exception {
         Hashtable<String, String> p = new Hashtable<String, String>();
         p.put("kdriverSuccess", "true");
         bundleContext.registerService(

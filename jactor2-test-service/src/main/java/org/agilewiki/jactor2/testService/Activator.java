@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.testService;
 
-import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.osgi.FactoryLocatorActivator;
 import org.agilewiki.jactor2.testIface.Hello;
 import org.osgi.framework.ServiceRegistration;
@@ -31,9 +30,8 @@ public class Activator extends FactoryLocatorActivator {
     }
 
     @Override
-    protected void begin(final Transport<Void> _transport) throws Exception {
+    protected void process() throws Exception {
         hello = new HelloService(bundleContext, getMailbox());
         managedServiceRegistration();
-        _transport.processResponse(null);
     }
 }

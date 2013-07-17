@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.osgi;
 import org.agilewiki.jactor2.api.ActorBase;
 import org.agilewiki.jactor2.api.EventBase;
 import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Transport;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +110,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
         new EventBase<Void, JAServiceTracker<T>>() {
             @Override
-            public void processRequest(JAServiceTracker<T> _targetActor, Transport<Void> _transport) throws Exception {
+            public void processSignal(JAServiceTracker<T> _targetActor) throws Exception {
                 // We just received the start request. We can only receive one.
                 if (started)
                     throw new IllegalStateException("already started");
@@ -158,7 +157,6 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                         tracked);
                 new ServiceChange<T>(null, m).signal(
                         serviceChangeReceiver);
-                _transport.processResponse(null);
             }
         }.signal(this);
     }
@@ -188,7 +186,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
             // because this method is not running in our actor thread.
             new EventBase<Void, JAServiceTracker<T>>() {
                 @Override
-                public void processRequest(JAServiceTracker<T> _targetActor, Transport<Void> _transport) throws Exception {
+                public void processSignal(JAServiceTracker<T> _targetActor) throws Exception {
                     final int typ = _event.getType();
                     final ServiceReference ref = _event.getServiceReference();
                     switch (typ) {
@@ -227,7 +225,6 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
                             break;
                     }
                     // We're done processing our own request.
-                    _transport.processResponse(null);
                 }
                 // send service change request to listener
             }.signal(this);

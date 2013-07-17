@@ -18,4 +18,13 @@ public interface Event<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
      * @param _targetActor The actor being operated on.
      */
     public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception;
+
+    /**
+     * The processRequest method will be invoked by the target Mailbox on its own thread
+     * when this Request is received for processing.
+     *
+     * @param _targetActor The target actor for an Event.
+     */
+    public void processSignal(final TARGET_ACTOR_TYPE _targetActor)
+            throws Exception;
 }

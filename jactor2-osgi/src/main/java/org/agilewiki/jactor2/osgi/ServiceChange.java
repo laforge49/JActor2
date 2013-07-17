@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.api.EventBase;
-import org.agilewiki.jactor2.api.Transport;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
@@ -39,8 +38,7 @@ public class ServiceChange<T> extends
     }
 
     @Override
-    public void processRequest(final ServiceChangeReceiver _targetActor,
-                               final Transport<Void> _transport) throws Exception {
-        _targetActor.serviceChange(event, tracked, _transport);
+    public void processSignal(final ServiceChangeReceiver _targetActor) throws Exception {
+        _targetActor.serviceChange(event, tracked);
     }
 }

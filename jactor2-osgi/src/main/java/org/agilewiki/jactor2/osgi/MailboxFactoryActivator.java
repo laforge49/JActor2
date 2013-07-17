@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.api.ActorBase;
 import org.agilewiki.jactor2.api.EventBase;
-import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 import org.osgi.framework.*;
@@ -58,25 +57,23 @@ abstract public class MailboxFactoryActivator
     }
 
     /**
-     * Returns the request used to begin async processing.
+     * Begins the activator's asynchronous processing.
      *
      * @return The request.
      */
     protected void begin() throws Exception {
         new EventBase<Void, MailboxFactoryActivator>() {
             @Override
-            public void processRequest(MailboxFactoryActivator _targetActor, Transport<Void> _transport) throws Exception {
-                begin(_transport);
+            public void processSignal(MailboxFactoryActivator _targetActor) throws Exception {
+                process();
             }
         }.signal(this);
     }
 
     /**
-     * Begins the activator's asynchronous processing.
-     *
-     * @param _transport The transport.
+     * The activator's asynchronous processing.
      */
-    protected void begin(final Transport<Void> _transport) throws Exception {
+    protected void process() throws Exception {
         managedServiceRegistration();
     }
 

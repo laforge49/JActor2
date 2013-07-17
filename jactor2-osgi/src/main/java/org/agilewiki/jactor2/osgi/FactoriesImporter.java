@@ -190,9 +190,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     @Override
     public void serviceChange(final ServiceEvent _event,
-                              final Map<ServiceReference, OsgiFactoryLocator> _tracked,
-                              final Transport _transport) throws Exception {
-        _transport.processResponse(null);
+                              final Map<ServiceReference, OsgiFactoryLocator> _tracked) throws Exception {
         if (startTransport == null) {
             // If we get here, that means we had it, and now it's gone. :(
             tracker.close();

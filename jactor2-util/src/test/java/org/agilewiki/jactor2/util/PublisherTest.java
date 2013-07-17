@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.api.ActorBase;
 import org.agilewiki.jactor2.api.EventBase;
-import org.agilewiki.jactor2.api.Transport;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {
@@ -72,9 +71,7 @@ class Print extends EventBase<Void, Printer> {
     }
 
     @Override
-    public void processRequest(final Printer _targetActor,
-                               final Transport<Void> _rp) throws Exception {
+    public void processSignal(final Printer _targetActor) throws Exception {
         _targetActor.print(msg);
-        _rp.processResponse(null);
     }
 }

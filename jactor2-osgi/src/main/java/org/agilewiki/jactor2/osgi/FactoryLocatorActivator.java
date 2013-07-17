@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.api.Properties;
-import org.agilewiki.jactor2.api.Transport;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;
 import org.slf4j.Logger;
@@ -38,11 +37,10 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
     }
 
     @Override
-    protected void begin(final Transport<Void> _transport) throws Exception {
+    protected void process() throws Exception {
         if (!configImports())
             factoryLocator.register(bundleContext);
         managedServiceRegistration();
-        _transport.processResponse(null);
     }
 
     /**

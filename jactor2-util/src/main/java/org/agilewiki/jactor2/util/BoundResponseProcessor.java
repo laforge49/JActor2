@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.util;
 import org.agilewiki.jactor2.api.Actor;
 import org.agilewiki.jactor2.api.EventBase;
 import org.agilewiki.jactor2.api.ResponseProcessor;
-import org.agilewiki.jactor2.api.Transport;
 
 /**
  * A thread-safe wrapper for ResponseProcessor.
@@ -46,7 +45,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
      */
     @Override
     public void processResponse(final RESPONSE_TYPE rsp) throws Exception {
-        new ContinuationRequest<RESPONSE_TYPE>(rp, rsp).signal(targetActor);
+        new ContinuationEvent<RESPONSE_TYPE>(rp, rsp).signal(targetActor);
     }
 }
 
@@ -56,7 +55,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
-class ContinuationRequest<RESPONSE_TYPE> extends EventBase<Void, Actor> {
+class ContinuationEvent<RESPONSE_TYPE> extends EventBase<Void, Actor> {
     /**
      * The wrapped ResponseProcessor.
      */
@@ -74,14 +73,13 @@ class ContinuationRequest<RESPONSE_TYPE> extends EventBase<Void, Actor> {
      * @param _rp  The wrapped ResponseProcessor.
      * @param _rsp The response.
      */
-    public ContinuationRequest(final ResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
+    public ContinuationEvent(final ResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
         rp = _rp;
         rsp = _rsp;
     }
 
     @Override
-    public void processRequest(Actor _targetActor, Transport<Void> _transport) throws Exception {
+    public void processSignal(Actor _targetActor) throws Exception {
         rp.processResponse(rsp);
-        _transport.processResponse(null);
     }
 }

@@ -133,10 +133,8 @@ class AddEvent extends EventBase<Void, CounterActor> {
     }
 
     @Override
-    public void processRequest(final CounterActor _targetActor,
-                               final Transport<Void> _rp) throws Exception {
+    public void processSignal(final CounterActor _targetActor) throws Exception {
         _targetActor.add(inc);
-        _rp.processResponse(null);
     }
 }
 

@@ -57,10 +57,8 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
 
     @Override
     public void serviceChange(ServiceEvent _event,
-                              Map<ServiceReference, T> _tracked,
-                              Transport _transport)
+                              Map<ServiceReference, T> _tracked)
             throws Exception {
-        _transport.processResponse(null);
         if (_tracked.size() > 0 && transport != null) {
             T service = _tracked.values().iterator().next();
             transport.processResponse(service);

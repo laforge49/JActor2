@@ -21,7 +21,7 @@ public interface _Request<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
      * thread (mailbox). Thread safety is not a requirement.
      *
      * @param _targetActor Null for Request objects,
-     *                     this is the target actor for a Request.
+     *                     this is the target actor for an Event.
      * @param _transport   A callback for processing the response on the appropriate thread.
      */
     public void processRequest(final TARGET_ACTOR_TYPE _targetActor,

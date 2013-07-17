@@ -29,4 +29,10 @@ public abstract class EventBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
         _targetActor.getMailbox().signal((_Request<Void, Actor>) this,
                 _targetActor);
     }
+
+    @Override
+    public final void processRequest(final TARGET_ACTOR_TYPE _targetActor,
+                                     final Transport<RESPONSE_TYPE> _transport) throws Exception {
+        processSignal(_targetActor);
+    }
 }

@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.api.Actor;
-import org.agilewiki.jactor2.api.Transport;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
@@ -23,14 +22,12 @@ public interface ServiceChangeReceiver<T> extends Actor {
     /**
      * Called from within the actor's own mailbox, using a request, when
      * registering with a JAServiceTracker, or when some service goes up or
-     * down. Remember to call _transport.processResponse(null) when done...
+     * down.
      *
-     * @param _event     The service event, will be null in the initial service change.
-     * @param _tracked   The available services.
-     * @param _transport The Transport.
+     * @param _event   The service event, will be null in the initial service change.
+     * @param _tracked The available services.
      */
     public void serviceChange(final ServiceEvent _event,
-                              final Map<ServiceReference, T> _tracked,
-                              final Transport _transport)
+                              final Map<ServiceReference, T> _tracked)
             throws Exception;
 }
