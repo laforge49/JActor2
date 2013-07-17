@@ -42,9 +42,4 @@ final class Caller implements MessageSource {
         this.result = _message.getResponse();
         done.release();
     }
-
-    @Override
-    public boolean buffer(final Message _message, final Mailbox _target) {
-        return false;
-    }
 }
