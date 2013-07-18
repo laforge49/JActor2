@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.impl;
+package org.agilewiki.jactor2.api;
 
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Message;
@@ -9,7 +9,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Waits for an incoming response.
  */
-final class Caller implements MessageSource {
+final public class Caller implements MessageSource {
 
     /**
      * Used to signal the arrival of a response.

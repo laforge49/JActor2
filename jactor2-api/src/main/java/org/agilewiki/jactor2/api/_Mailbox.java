@@ -8,26 +8,6 @@ interface _Mailbox extends MessageSource {
 
     /**
      * The request is buffered by this mailbox until it has no more
-     * requests or responses to process.
-     * The _Request is then enqueued on the target mailbox for subsequent processing.
-     * No result is returned.
-     * Any uncaught exceptions which occur while processing the request
-     * are logged as a warning.
-     *
-     * @param _request       Defines the operation to be applied to the target actor.
-     * @param _targetMailbox The target mailbox where the signal is to be processed.
-     * @param _targetActor   For BoundRequest's (bound requests), _targetActor is null.
-     *                       For Request's, _targetActor is the actor
-     *                       to which the request is applied.
-     * @param <A>            The target actor type.
-     */
-    <A extends Actor> void signalTo(final _Request<Void, A> _request,
-                                    final Mailbox _targetMailbox,
-                                    final A _targetActor)
-            throws Exception;
-
-    /**
-     * The request is buffered by this mailbox until it has no more
      * requests or responses to process, or flush is called.
      * _Request and ResponseProcessor objects are subsequently enqueued by _targetMailbox
      * for subsequent processing.
@@ -88,4 +68,18 @@ interface _Mailbox extends MessageSource {
      */
     void unbufferedAddMessages(final Message message, final boolean local)
             throws Exception;
+
+    /**
+     * Returns true, if the message was buffered for sending later.
+     *
+     * @param message Message to send-buffer
+     * @param target  The mailbox that should eventually receive this message
+     * @return true, if buffered
+     */
+    boolean buffer(final Message message, final Mailbox target);
+
+    /**
+     * Returns true, if this mailbox is currently processing messages.
+     */
+    boolean isRunning();
 }

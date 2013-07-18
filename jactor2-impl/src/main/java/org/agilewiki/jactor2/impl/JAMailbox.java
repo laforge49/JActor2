@@ -16,18 +16,4 @@ public interface JAMailbox extends Mailbox, AutoCloseable, Runnable {
      * @param messages Previously buffered messages.
      */
     void unbufferedAddMessages(final Queue<Message> messages) throws Exception;
-
-    /**
-     * Returns true, if this mailbox is currently processing messages.
-     */
-    boolean isRunning();
-
-    /**
-     * Returns true, if the message was buffered for sending later.
-     *
-     * @param message Message to send-buffer
-     * @param target  The mailbox that should eventually receive this message
-     * @return true, if buffered
-     */
-    boolean buffer(final Message message, final Mailbox target);
 }

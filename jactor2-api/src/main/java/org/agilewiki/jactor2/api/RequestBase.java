@@ -53,7 +53,12 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public void signal(final Mailbox _source) throws Exception {
-        _source.signalTo((_Request<Void, Actor>) this, mailbox, null);
+        if (!_source.isRunning())
+            throw new IllegalStateException(
+                    "A valid source mailbox can not be idle");
+        final Message message = new Message(false, mailbox, null, null,
+                this, null, EventResponseProcessor.SINGLETON);
+        message.signal(mailbox);
     }
 
     @Override
@@ -64,6 +69,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
 
     @Override
     public RESPONSE_TYPE call() throws Exception {
+        final Caller caller = new Caller();
+        final Message message = new Message(true, caller, null, null,
+                this, null, DummyResponseProcessor.SINGLETON);
         return mailbox.call(this, null);
     }
 

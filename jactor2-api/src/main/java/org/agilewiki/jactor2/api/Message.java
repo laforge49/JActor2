@@ -28,7 +28,7 @@ public class Message implements AutoCloseable {
                                         final Message _old,
                                         final _Request<E, A> _request,
                                         final ExceptionHandler _handler,
-                                        final ResponseProcessor<E> _rp) {
+                                        final ResponseProcessor _rp) {
         messageSource = _source;
         foreign = _foreign;
         targetActor = _targetActor;
@@ -120,8 +120,15 @@ public class Message implements AutoCloseable {
         messageSource.incomingResponse(this, null);
     }
 
-    public final <A extends Actor> void event()
+    public final void event()
             throws Exception {
         targetActor.getMailbox().unbufferedAddMessages(this, false);
+    }
+
+    public final void signal(final Mailbox _targetMailbox) throws Exception {
+        Mailbox sourceMailbox = (Mailbox) messageSource;
+        boolean local = sourceMailbox == _targetMailbox;
+        if (local || !sourceMailbox.buffer(this, _targetMailbox))
+            _targetMailbox.unbufferedAddMessages(this, local);
     }
 }
