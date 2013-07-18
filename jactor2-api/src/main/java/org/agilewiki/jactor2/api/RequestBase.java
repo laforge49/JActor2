@@ -64,6 +64,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     @Override
     public void send(final Mailbox _source,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
+        if (!_source.isRunning())
+            throw new IllegalStateException(
+                    "A valid source mailbox can not be idle");
         _source.sendTo(this, mailbox, null, _rp);
     }
 
@@ -72,7 +75,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
         final Caller caller = new Caller();
         final Message message = new Message(true, caller, null, null,
                 this, null, DummyResponseProcessor.SINGLETON);
-        return mailbox.call(this, null);
+        return (RESPONSE_TYPE) message.call(mailbox);
     }
 
     @Override

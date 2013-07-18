@@ -35,32 +35,6 @@ interface _Mailbox extends MessageSource {
             throws Exception;
 
     /**
-     * A _Request object is enqueued by this mailbox for subsequent processing and
-     * the current thread is blocked until there is a result from processing the request.
-     * The request is not buffered.
-     * <p>
-     * If no exception occurs while processing the request,
-     * a result object created when the request is processed is returned on the caller's thread.
-     * Otherwise the exception is thrown on the caller's thread.
-     * </p>
-     * <p>
-     * The result/exception are however not returned/thrown
-     * immediately. Rather, they are buffered by this mailbox until there are no more
-     * requests or results to process.
-     * </p>
-     *
-     * @param _request     Defines the operation to be applied to the target actor.
-     * @param _targetActor For Request's (bound requests), _targetActor is null.
-     *                     For Event's, _targetActor is the actor
-     *                     to which the request is applied.
-     * @param <E>          The result type.
-     * @param <A>          The target actor type.
-     * @return The result.
-     */
-    <E, A extends Actor> E call(final _Request<E, A> _request,
-                                final A _targetActor) throws Exception;
-
-    /**
      * Add a message directly to the queue.
      *
      * @param message A message.

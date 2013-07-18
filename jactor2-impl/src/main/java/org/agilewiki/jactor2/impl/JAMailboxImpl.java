@@ -120,18 +120,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
             targetMailbox.unbufferedAddMessages(message, local);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public final <E, A extends Actor> E call(final _Request<E, A> _request,
-                                             final A _targetActor) throws Exception {
-        final Caller caller = new Caller();
-        final Message message = new Message(true, caller, _targetActor,
-                null, _request, null,
-                DummyResponseProcessor.SINGLETON);
-        unbufferedAddMessages(message, false);
-        return (E) caller.call();
-    }
-
     @Override
     public final ExceptionHandler setExceptionHandler(
             final ExceptionHandler _handler) {

@@ -1,9 +1,5 @@
 package org.agilewiki.jactor2.api;
 
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Message;
-import org.agilewiki.jactor2.api.MessageSource;
-
 import java.util.concurrent.Semaphore;
 
 /**
