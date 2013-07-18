@@ -132,6 +132,13 @@ public class Message implements AutoCloseable {
             _targetMailbox.unbufferedAddMessages(this, local);
     }
 
+    public final void send(final Mailbox _targetMailbox) throws Exception {
+        Mailbox sourceMailbox = (Mailbox) messageSource;
+        boolean local = sourceMailbox == _targetMailbox;
+        if (local || !sourceMailbox.buffer(this, _targetMailbox))
+            _targetMailbox.unbufferedAddMessages(this, local);
+    }
+
     public final Object call(final Mailbox _targetMailbox) throws Exception {
         _targetMailbox.unbufferedAddMessages(this, false);
         return ((Caller) messageSource).call();

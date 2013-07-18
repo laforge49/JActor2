@@ -67,7 +67,15 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
         if (!_source.isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
-        _source.sendTo(this, mailbox, null, _rp);
+        final Message message = new Message(
+                _source.getMailboxFactory() != mailbox.getMailboxFactory(),
+                _source,
+                null,
+                _source.getCurrentMessage(),
+                this,
+                _source.getExceptionHandler(),
+                _rp);
+        message.send(mailbox);
     }
 
     @Override

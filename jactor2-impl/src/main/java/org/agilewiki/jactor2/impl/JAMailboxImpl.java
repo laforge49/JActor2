@@ -66,6 +66,11 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
+    public final Message getCurrentMessage() {
+        return currentMessage;
+    }
+
+    @Override
     public final boolean isEmpty() {
         return !inbox.isNonEmpty();
     }
@@ -99,28 +104,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
-    public final <E, A extends Actor> void sendTo(final _Request<E, A> _request,
-                                                  final Mailbox _targetMailbox,
-                                                  final A _targetActor,
-                                                  final ResponseProcessor<E> _responseProcessor) throws Exception {
-        final JAMailbox targetMailbox = (JAMailbox) _targetMailbox;
-        if (!isRunning())
-            throw new IllegalStateException(
-                    "A valid source mailbox can not be idle");
-        final Message message = new Message(
-                mailboxFactory != _targetMailbox.getMailboxFactory(),
-                this,
-                _targetActor,
-                currentMessage,
-                _request,
-                exceptionHandler,
-                _responseProcessor);
-        boolean local = this == targetMailbox;
-        if (local || !buffer(message, targetMailbox))
-            targetMailbox.unbufferedAddMessages(message, local);
-    }
-
-    @Override
     public final ExceptionHandler setExceptionHandler(
             final ExceptionHandler _handler) {
         if (!isRunning())
@@ -129,6 +112,11 @@ abstract public class JAMailboxImpl implements JAMailbox {
         final ExceptionHandler rv = this.exceptionHandler;
         this.exceptionHandler = _handler;
         return rv;
+    }
+
+    @Override
+    public final ExceptionHandler getExceptionHandler() {
+        return exceptionHandler;
     }
 
     public void unbufferedAddMessages(final Message _message, final boolean _local)
