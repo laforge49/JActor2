@@ -66,7 +66,7 @@ public class FirstStage extends ActorBase implements Runnable {
         new EventBase<FirstStage>() {
 
             @Override
-            public void processSignal(FirstStage _targetActor) throws Exception {
+            public void processEvent(FirstStage _targetActor) throws Exception {
             }
         }.signal(this);
     }

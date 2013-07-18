@@ -18,15 +18,6 @@ public interface JAMailbox extends Mailbox, AutoCloseable, Runnable {
     void unbufferedAddMessages(final Queue<Message> messages) throws Exception;
 
     /**
-     * Add a message directly to the queue.
-     *
-     * @param message A message.
-     * @param local   True when the current thread is bound to the mailbox.
-     */
-    void unbufferedAddMessages(final Message message, final boolean local)
-            throws Exception;
-
-    /**
      * Returns true, if this mailbox is currently processing messages.
      */
     boolean isRunning();

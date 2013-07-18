@@ -7,22 +7,6 @@ package org.agilewiki.jactor2.api;
 interface _Mailbox extends MessageSource {
 
     /**
-     * A _Request object is enqueued by this mailbox for subsequent processing.
-     * The request is not buffered.
-     * No result is returned.
-     * Any uncaught exceptions which occur while processing the request
-     * are logged as a warning.
-     *
-     * @param _request     Defines the operation to be applied to the target actor.
-     * @param _targetActor For Request's (bound requests), _targetActor is null.
-     *                     For Event's, _targetActor is the actor
-     *                     to which the request is applied.
-     * @param <A>          The target actor type.
-     */
-    <A extends Actor> void signal(final _Request<Void, A> _request,
-                                  final A _targetActor) throws Exception;
-
-    /**
      * The request is buffered by this mailbox until it has no more
      * requests or responses to process.
      * The _Request is then enqueued on the target mailbox for subsequent processing.
@@ -95,4 +79,13 @@ interface _Mailbox extends MessageSource {
      */
     <E, A extends Actor> E call(final _Request<E, A> _request,
                                 final A _targetActor) throws Exception;
+
+    /**
+     * Add a message directly to the queue.
+     *
+     * @param message A message.
+     * @param local   True when the current thread is bound to the mailbox.
+     */
+    void unbufferedAddMessages(final Message message, final boolean local)
+            throws Exception;
 }

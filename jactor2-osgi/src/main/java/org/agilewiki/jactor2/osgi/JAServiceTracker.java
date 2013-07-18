@@ -110,7 +110,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
         new EventBase<JAServiceTracker<T>>() {
             @Override
-            public void processSignal(JAServiceTracker<T> _targetActor) throws Exception {
+            public void processEvent(JAServiceTracker<T> _targetActor) throws Exception {
                 // We just received the start request. We can only receive one.
                 if (started)
                     throw new IllegalStateException("already started");
@@ -186,7 +186,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
             // because this method is not running in our actor thread.
             new EventBase<JAServiceTracker<T>>() {
                 @Override
-                public void processSignal(JAServiceTracker<T> _targetActor) throws Exception {
+                public void processEvent(JAServiceTracker<T> _targetActor) throws Exception {
                     final int typ = _event.getType();
                     final ServiceReference ref = _event.getServiceReference();
                     switch (typ) {

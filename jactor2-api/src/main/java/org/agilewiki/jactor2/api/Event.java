@@ -24,6 +24,6 @@ public interface Event<TARGET_ACTOR_TYPE extends Actor>
      *
      * @param _targetActor The target actor for an Event.
      */
-    public void processSignal(final TARGET_ACTOR_TYPE _targetActor)
+    public void processEvent(final TARGET_ACTOR_TYPE _targetActor)
             throws Exception;
 }

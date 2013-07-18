@@ -64,7 +64,7 @@ abstract public class MailboxFactoryActivator
     protected void begin() throws Exception {
         new EventBase<MailboxFactoryActivator>() {
             @Override
-            public void processSignal(MailboxFactoryActivator _targetActor) throws Exception {
+            public void processEvent(MailboxFactoryActivator _targetActor) throws Exception {
                 process();
             }
         }.signal(this);

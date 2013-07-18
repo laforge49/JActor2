@@ -38,7 +38,7 @@ public class ServiceChange<T> extends
     }
 
     @Override
-    public void processSignal(final ServiceChangeReceiver _targetActor) throws Exception {
+    public void processEvent(final ServiceChangeReceiver _targetActor) throws Exception {
         _targetActor.serviceChange(event, tracked);
     }
 }

@@ -133,7 +133,7 @@ class AddEvent extends EventBase<CounterActor> {
     }
 
     @Override
-    public void processSignal(final CounterActor _targetActor) throws Exception {
+    public void processEvent(final CounterActor _targetActor) throws Exception {
         _targetActor.add(inc);
     }
 }

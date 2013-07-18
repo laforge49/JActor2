@@ -51,12 +51,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
         return mailbox;
     }
 
-    @Deprecated
-    @Override
-    public void signal() throws Exception {
-        mailbox.signal((_Request<Void, Actor>) this, null);
-    }
-
     @Override
     public void signal(final Mailbox _source) throws Exception {
         _source.signalTo((_Request<Void, Actor>) this, mailbox, null);

@@ -99,14 +99,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
-    public final <A extends Actor> void signal(final _Request<Void, A> _request,
-                                               final A _targetActor) throws Exception {
-        final Message message = new Message(false, null, _targetActor,
-                null, _request, null, EventResponseProcessor.SINGLETON);
-        unbufferedAddMessages(message, false);
-    }
-
-    @Override
     public final <A extends Actor> void signalTo(final _Request<Void, A> _request,
                                                  final Mailbox _targetMailbox,
                                                  final A _targetActor) throws Exception {

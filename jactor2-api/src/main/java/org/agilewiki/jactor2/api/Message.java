@@ -119,4 +119,9 @@ public class Message implements AutoCloseable {
         response = new ServiceClosedException();
         messageSource.incomingResponse(this, null);
     }
+
+    public final <A extends Actor> void event()
+            throws Exception {
+        targetActor.getMailbox().unbufferedAddMessages(this, false);
+    }
 }

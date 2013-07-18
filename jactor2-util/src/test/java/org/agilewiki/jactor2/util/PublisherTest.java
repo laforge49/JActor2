@@ -71,7 +71,7 @@ class Print extends EventBase<Printer> {
     }
 
     @Override
-    public void processSignal(final Printer _targetActor) throws Exception {
+    public void processEvent(final Printer _targetActor) throws Exception {
         _targetActor.print(msg);
     }
 }

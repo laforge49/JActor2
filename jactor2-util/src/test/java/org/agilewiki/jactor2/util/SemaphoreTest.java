@@ -6,9 +6,17 @@ import org.agilewiki.jactor2.api.*;
 /**
  * Test code.
  */
-public class SemaphoreTest extends TestCase {
+public class SemaphoreTest extends TestCase implements Actor {
+    Mailbox mailbox;
+
+    @Override
+    public Mailbox getMailbox() {
+        return mailbox;
+    }
+
     public void testI() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 1);
         semaphore.acquireReq().call();
@@ -17,6 +25,7 @@ public class SemaphoreTest extends TestCase {
 
     public void testII() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
         semaphore.release();
@@ -24,12 +33,12 @@ public class SemaphoreTest extends TestCase {
         mailboxFactory.close();
     }
 
-    private Request<Void> delayedRelease(final JASemaphore semaphore,
-                                         final long delay, final MailboxFactory mailboxFactory) {
-        return new RequestBase<Void>(mailboxFactory.createNonBlockingMailbox()) {
+    private void delayedRelease(final JASemaphore semaphore,
+                                final long delay,
+                                final MailboxFactory mailboxFactory) throws Exception {
+        new EventBase<SemaphoreTest>() {
             @Override
-            public void processRequest(
-                    final Transport<Void> responseProcessor)
+            public void processEvent(final SemaphoreTest actor)
                     throws Exception {
                 new Delay(mailboxFactory).sleepReq(delay).send(getMailbox(),
                         new ResponseProcessor<Void>() {
@@ -37,20 +46,20 @@ public class SemaphoreTest extends TestCase {
                             public void processResponse(final Void response)
                                     throws Exception {
                                 semaphore.release();
-                                responseProcessor.processResponse(null);
                             }
                         });
             }
-        };
+        }.signal(this);
     }
 
     public void testIII() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
-        delayedRelease(semaphore, d, mailboxFactory).signal();
+        delayedRelease(semaphore, d, mailboxFactory);
         semaphore.acquireReq().call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
@@ -87,11 +96,12 @@ public class SemaphoreTest extends TestCase {
 
     public void testIV() throws Exception {
         final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
-        delayedRelease(semaphore, d, mailboxFactory).signal();
+        delayedRelease(semaphore, d, mailboxFactory);
         final boolean result = acquireException(semaphore,
                 mailboxFactory.createNonBlockingMailbox()).call();
         final long t1 = System.currentTimeMillis();

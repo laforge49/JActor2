@@ -79,7 +79,7 @@ class ContinuationEvent<RESPONSE_TYPE> extends EventBase<Actor> {
     }
 
     @Override
-    public void processSignal(Actor _targetActor) throws Exception {
+    public void processEvent(Actor _targetActor) throws Exception {
         rp.processResponse(rsp);
     }
 }
