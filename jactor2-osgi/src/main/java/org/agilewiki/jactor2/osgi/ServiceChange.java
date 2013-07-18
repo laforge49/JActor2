@@ -13,7 +13,7 @@ import java.util.Objects;
  * @param <T> The expected service type.
  */
 public class ServiceChange<T> extends
-        EventBase<Void, ServiceChangeReceiver> {
+        EventBase<ServiceChangeReceiver> {
 
     /**
      * The service event to be passed.

@@ -18,21 +18,22 @@ package org.agilewiki.jactor2.api;
  * }
  * </pre>
  *
- * @param <RESPONSE_TYPE>     The class of the result returned when this Event is processed.
  * @param <TARGET_ACTOR_TYPE> The class of the actor that will be used when this Event is processed.
  */
-public abstract class EventBase<RESPONSE_TYPE, TARGET_ACTOR_TYPE extends Actor>
-        implements Event<RESPONSE_TYPE, TARGET_ACTOR_TYPE> {
+public abstract class EventBase<TARGET_ACTOR_TYPE extends Actor>
+        implements Event<TARGET_ACTOR_TYPE> {
 
     @Override
     public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
+        //final Message message = new Message(false, null, _targetActor,
+        //        null, this, null, EventResponseProcessor.SINGLETON);
         _targetActor.getMailbox().signal((_Request<Void, Actor>) this,
                 _targetActor);
     }
 
     @Override
     public final void processRequest(final TARGET_ACTOR_TYPE _targetActor,
-                                     final Transport<RESPONSE_TYPE> _transport) throws Exception {
+                                     final Transport<Void> _transport) throws Exception {
         processSignal(_targetActor);
     }
 }

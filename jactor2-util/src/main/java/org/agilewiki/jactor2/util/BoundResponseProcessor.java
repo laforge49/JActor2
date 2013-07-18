@@ -55,7 +55,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
-class ContinuationEvent<RESPONSE_TYPE> extends EventBase<Void, Actor> {
+class ContinuationEvent<RESPONSE_TYPE> extends EventBase<Actor> {
     /**
      * The wrapped ResponseProcessor.
      */

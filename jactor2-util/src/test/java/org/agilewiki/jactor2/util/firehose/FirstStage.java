@@ -63,7 +63,7 @@ public class FirstStage extends ActorBase implements Runnable {
             }
         });
         t0 = System.currentTimeMillis();
-        new EventBase<Void, FirstStage>() {
+        new EventBase<FirstStage>() {
 
             @Override
             public void processSignal(FirstStage _targetActor) throws Exception {

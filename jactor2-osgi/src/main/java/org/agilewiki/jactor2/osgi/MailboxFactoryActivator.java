@@ -62,7 +62,7 @@ abstract public class MailboxFactoryActivator
      * @return The request.
      */
     protected void begin() throws Exception {
-        new EventBase<Void, MailboxFactoryActivator>() {
+        new EventBase<MailboxFactoryActivator>() {
             @Override
             public void processSignal(MailboxFactoryActivator _targetActor) throws Exception {
                 process();

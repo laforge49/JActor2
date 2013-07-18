@@ -108,7 +108,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
             final ServiceChangeReceiver<T> _serviceChangeReceiver)
             throws Exception {
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
-        new EventBase<Void, JAServiceTracker<T>>() {
+        new EventBase<JAServiceTracker<T>>() {
             @Override
             public void processSignal(JAServiceTracker<T> _targetActor) throws Exception {
                 // We just received the start request. We can only receive one.
@@ -184,7 +184,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         try {
             // Create service change request, to be run in our own mailbox,
             // because this method is not running in our actor thread.
-            new EventBase<Void, JAServiceTracker<T>>() {
+            new EventBase<JAServiceTracker<T>>() {
                 @Override
                 public void processSignal(JAServiceTracker<T> _targetActor) throws Exception {
                     final int typ = _event.getType();

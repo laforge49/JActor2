@@ -60,7 +60,7 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @return The request.
      */
     public Request<Void> publishReq(
-            final Event<Void, TARGET_ACTOR_TYPE> event) {
+            final Event<TARGET_ACTOR_TYPE> event) {
         return new RequestBase<Void>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Void> _rp)

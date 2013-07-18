@@ -28,7 +28,7 @@ public class JASemaphore extends ActorBase {
     /**
      * The release request.
      */
-    private final Event<Void, JASemaphore> release;
+    private final Event<JASemaphore> release;
 
     /**
      * Create a semaphore manager.
@@ -54,7 +54,7 @@ public class JASemaphore extends ActorBase {
             }
         };
 
-        release = new EventBase<Void, JASemaphore>() {
+        release = new EventBase<JASemaphore>() {
             @Override
             public void processSignal(JASemaphore _targetActor) throws Exception {
                 final ResponseProcessor<Void> rp = queue.poll();

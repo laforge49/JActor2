@@ -63,7 +63,7 @@ class Printer extends ActorBase implements Named {
     }
 }
 
-class Print extends EventBase<Void, Printer> {
+class Print extends EventBase<Printer> {
     final String msg;
 
     Print(final String _msg) {

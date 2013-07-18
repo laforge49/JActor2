@@ -1,6 +1,4 @@
-package org.agilewiki.jactor2.impl;
-
-import org.agilewiki.jactor2.api.ResponseProcessor;
+package org.agilewiki.jactor2.api;
 
 final public class EventResponseProcessor implements ResponseProcessor<Void> {
     public static final EventResponseProcessor SINGLETON = new EventResponseProcessor();
