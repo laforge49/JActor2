@@ -76,6 +76,11 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
+    public final void setCurrentMessage(Message message) {
+        currentMessage = message;
+    }
+
+    @Override
     public final boolean isEmpty() {
         return !inbox.isNonEmpty();
     }
@@ -197,11 +202,16 @@ abstract public class JAMailboxImpl implements JAMailbox {
                     continue;
                 return;
             }
+            //processMessage(message);
             if (message.isResponsePending())
                 processRequestMessage(message);
             else
                 processResponseMessage(message);
         }
+    }
+
+    protected void processMessage(final Message message) {
+        message.eval(this);
     }
 
     /**
@@ -277,8 +287,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
      * @param _t The Throwable response.
      */
     private void processThrowable(final Throwable _t) {
-        if (!currentMessage.isResponsePending())
-            return;
         final _Request<?, Actor> req = currentMessage.getRequest();
         if (exceptionHandler != null) {
             try {

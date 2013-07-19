@@ -36,4 +36,6 @@ interface _Mailbox extends MessageSource {
     ExceptionHandler getExceptionHandler();
 
     Logger getLogger();
+
+    void setCurrentMessage(Message message);
 }

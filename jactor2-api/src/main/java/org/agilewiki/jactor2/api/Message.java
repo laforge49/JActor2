@@ -144,10 +144,92 @@ public class Message implements AutoCloseable {
         return ((Caller) messageSource).call();
     }
 
+    public void eval(final Mailbox _targetMailbox) {
+        if (responsePending) {
+            processRequestMessage(_targetMailbox);
+        } else {
+            processResponseMessage(_targetMailbox);
+        }
+    }
+
+    private void processRequestMessage(final Mailbox _targetMailbox) {
+        System.out.println("processRequestMessage");
+        final MailboxFactory mailboxFactory = _targetMailbox.getMailboxFactory();
+        if (isForeign())
+            mailboxFactory.addAutoClosable(this);
+        _targetMailbox.setExceptionHandler(null);
+        _targetMailbox.setCurrentMessage(this);
+        final _Request<?, Actor> request = getRequest();
+        try {
+            request.processRequest(
+                    getTargetActor(),
+                    new Transport() {
+                        @Override
+                        public void processResponse(final Object response)
+                                throws Exception {
+                            if (isForeign())
+                                mailboxFactory.removeAutoClosable(Message.this);
+                            if (!isResponsePending())
+                                return;
+                            if (getResponseProcessor() != EventResponseProcessor.SINGLETON) {
+                                setResponse(response);
+                                getMessageSource().incomingResponse(Message.this, _targetMailbox);
+                            } else {
+                                if (response instanceof Throwable) {
+                                    _targetMailbox.getLogger().warn("Uncaught throwable",
+                                            (Throwable) response);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public MailboxFactory getMailboxFactory() {
+                            MessageSource ms = getMessageSource();
+                            if (ms == null)
+                                return null;
+                            if (!(ms instanceof Mailbox))
+                                return null;
+                            return ((Mailbox) ms).getMailboxFactory();
+                        }
+
+                        @Override
+                        public void processException(Exception response) throws Exception {
+                            processResponse((Object) response);
+                        }
+                    });
+        } catch (final Throwable t) {
+            if (isForeign())
+                mailboxFactory.removeAutoClosable(this);
+            processThrowable(_targetMailbox, t);
+        }
+    }
+
+    private void processResponseMessage(final Mailbox _targetMailbox) {
+        System.out.println("processResponseMessage");
+        final Object response = this.getResponse();
+        _targetMailbox.setExceptionHandler(getSourceExceptionHandler());
+        _targetMailbox.setCurrentMessage(getOldMessage());
+        if (response instanceof Throwable) {
+            System.out.println("response is a Throwable");
+            processThrowable(_targetMailbox, (Throwable) response);
+            return;
+        }
+        @SuppressWarnings("rawtypes")
+        final ResponseProcessor responseProcessor = this
+                .getResponseProcessor();
+        try {
+            responseProcessor.processResponse(response);
+        } catch (final Throwable t) {
+            processThrowable(_targetMailbox, t);
+        }
+    }
+
     private void processThrowable(final Mailbox _targetMailbox, final Throwable _t) {
+        System.out.println("processThrowable");
         final _Request<?, Actor> req = request;
         ExceptionHandler exceptionHandler = _targetMailbox.getExceptionHandler();
         if (exceptionHandler != null) {
+            System.out.println("has exception handler");
             try {
                 exceptionHandler.processException(_t);
             } catch (final Throwable u) {
@@ -164,8 +246,11 @@ public class Message implements AutoCloseable {
                 }
             }
         } else {
-            if (!responsePending)
+            System.out.println("no exception handler");
+            if (!responsePending) {
+                System.out.println("no response pending");
                 return;
+            }
             setResponse(_t);
             if (!(responseProcessor instanceof EventResponseProcessor))
                 messageSource.incomingResponse(this, _targetMailbox);
