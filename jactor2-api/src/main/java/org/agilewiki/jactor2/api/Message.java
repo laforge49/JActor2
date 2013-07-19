@@ -143,4 +143,36 @@ public class Message implements AutoCloseable {
         _targetMailbox.unbufferedAddMessages(this, false);
         return ((Caller) messageSource).call();
     }
+
+    private void processThrowable(final Mailbox _targetMailbox, final Throwable _t) {
+        final _Request<?, Actor> req = request;
+        ExceptionHandler exceptionHandler = _targetMailbox.getExceptionHandler();
+        if (exceptionHandler != null) {
+            try {
+                exceptionHandler.processException(_t);
+            } catch (final Throwable u) {
+                _targetMailbox.getLogger().error("Exception handler unable to process throwable "
+                        + exceptionHandler.getClass().getName(), u);
+                if (!(responseProcessor instanceof EventResponseProcessor)) {
+                    if (!responsePending)
+                        return;
+                    setResponse(u);
+                    messageSource.incomingResponse(this, _targetMailbox);
+                } else {
+                    _targetMailbox.getLogger().error("Thrown by exception handler and uncaught "
+                            + exceptionHandler.getClass().getName(), _t);
+                }
+            }
+        } else {
+            if (!responsePending)
+                return;
+            setResponse(_t);
+            if (!(responseProcessor instanceof EventResponseProcessor))
+                messageSource.incomingResponse(this, _targetMailbox);
+            else {
+                _targetMailbox.getLogger().warn("Uncaught throwable", _t);
+            }
+        }
+    }
+
 }

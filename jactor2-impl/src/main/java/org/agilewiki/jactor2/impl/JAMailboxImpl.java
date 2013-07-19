@@ -66,6 +66,11 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
+    public final Logger getLogger() {
+        return log;
+    }
+
+    @Override
     public final Message getCurrentMessage() {
         return currentMessage;
     }
@@ -274,19 +279,18 @@ abstract public class JAMailboxImpl implements JAMailbox {
     private void processThrowable(final Throwable _t) {
         if (!currentMessage.isResponsePending())
             return;
-        final Message message = currentMessage;
-        final _Request<?, Actor> req = message.getRequest();
+        final _Request<?, Actor> req = currentMessage.getRequest();
         if (exceptionHandler != null) {
             try {
                 exceptionHandler.processException(_t);
             } catch (final Throwable u) {
                 log.error("Exception handler unable to process throwable "
                         + exceptionHandler.getClass().getName(), u);
-                if (!(message.getResponseProcessor() instanceof EventResponseProcessor)) {
-                    if (!message.isResponsePending())
+                if (!(currentMessage.getResponseProcessor() instanceof EventResponseProcessor)) {
+                    if (!currentMessage.isResponsePending())
                         return;
                     currentMessage.setResponse(u);
-                    message.getMessageSource().incomingResponse(message,
+                    currentMessage.getMessageSource().incomingResponse(currentMessage,
                             JAMailboxImpl.this);
                 } else {
                     log.error("Thrown by exception handler and uncaught "
@@ -294,11 +298,11 @@ abstract public class JAMailboxImpl implements JAMailbox {
                 }
             }
         } else {
-            if (!message.isResponsePending())
+            if (!currentMessage.isResponsePending())
                 return;
             currentMessage.setResponse(_t);
-            if (!(message.getResponseProcessor() instanceof EventResponseProcessor))
-                message.getMessageSource().incomingResponse(message,
+            if (!(currentMessage.getResponseProcessor() instanceof EventResponseProcessor))
+                currentMessage.getMessageSource().incomingResponse(currentMessage,
                         JAMailboxImpl.this);
             else {
                 log.warn("Uncaught throwable", _t);
