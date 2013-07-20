@@ -70,41 +70,6 @@ public class Message implements AutoCloseable {
     }
 
     /**
-     * @return the messageSource
-     */
-    public MessageSource getMessageSource() {
-        return messageSource;
-    }
-
-    /**
-     * @return the messageSource
-     */
-    public Actor getTargetActor() {
-        return targetActor;
-    }
-
-    /**
-     * @return the oldMessage
-     */
-    public Message getOldMessage() {
-        return oldMessage;
-    }
-
-    /**
-     * @return the request
-     */
-    public _Request<?, Actor> getRequest() {
-        return request;
-    }
-
-    /**
-     * @return the sourceExceptionHandler
-     */
-    public ExceptionHandler getSourceExceptionHandler() {
-        return sourceExceptionHandler;
-    }
-
-    /**
      * @return the responseProcessor
      */
     public ResponseProcessor<?> getResponseProcessor() {
@@ -153,27 +118,25 @@ public class Message implements AutoCloseable {
     }
 
     private void processRequestMessage(final Mailbox _targetMailbox) {
-        System.out.println("processRequestMessage");
         final MailboxFactory mailboxFactory = _targetMailbox.getMailboxFactory();
-        if (isForeign())
+        if (foreign)
             mailboxFactory.addAutoClosable(this);
         _targetMailbox.setExceptionHandler(null);
         _targetMailbox.setCurrentMessage(this);
-        final _Request<?, Actor> request = getRequest();
         try {
             request.processRequest(
-                    getTargetActor(),
+                    targetActor,
                     new Transport() {
                         @Override
                         public void processResponse(final Object response)
                                 throws Exception {
-                            if (isForeign())
+                            if (foreign)
                                 mailboxFactory.removeAutoClosable(Message.this);
-                            if (!isResponsePending())
+                            if (!responsePending)
                                 return;
                             if (getResponseProcessor() != EventResponseProcessor.SINGLETON) {
                                 setResponse(response);
-                                getMessageSource().incomingResponse(Message.this, _targetMailbox);
+                                messageSource.incomingResponse(Message.this, _targetMailbox);
                             } else {
                                 if (response instanceof Throwable) {
                                     _targetMailbox.getLogger().warn("Uncaught throwable",
@@ -184,12 +147,11 @@ public class Message implements AutoCloseable {
 
                         @Override
                         public MailboxFactory getMailboxFactory() {
-                            MessageSource ms = getMessageSource();
-                            if (ms == null)
+                            if (messageSource == null)
                                 return null;
-                            if (!(ms instanceof Mailbox))
+                            if (!(messageSource instanceof Mailbox))
                                 return null;
-                            return ((Mailbox) ms).getMailboxFactory();
+                            return ((Mailbox) messageSource).getMailboxFactory();
                         }
 
                         @Override
@@ -198,20 +160,17 @@ public class Message implements AutoCloseable {
                         }
                     });
         } catch (final Throwable t) {
-            if (isForeign())
+            if (foreign)
                 mailboxFactory.removeAutoClosable(this);
             processThrowable(_targetMailbox, t);
         }
     }
 
-    private void processResponseMessage(final Mailbox _targetMailbox) {
-        System.out.println("processResponseMessage");
-        final Object response = this.getResponse();
-        _targetMailbox.setExceptionHandler(getSourceExceptionHandler());
-        _targetMailbox.setCurrentMessage(getOldMessage());
+    private void processResponseMessage(final Mailbox _sourceMailbox) {
+        _sourceMailbox.setExceptionHandler(sourceExceptionHandler);
+        _sourceMailbox.setCurrentMessage(oldMessage);
         if (response instanceof Throwable) {
-            System.out.println("response is a Throwable");
-            processThrowable(_targetMailbox, (Throwable) response);
+            oldMessage.processThrowable(_sourceMailbox, (Throwable) response);
             return;
         }
         @SuppressWarnings("rawtypes")
@@ -220,42 +179,38 @@ public class Message implements AutoCloseable {
         try {
             responseProcessor.processResponse(response);
         } catch (final Throwable t) {
-            processThrowable(_targetMailbox, t);
+            oldMessage.processThrowable(_sourceMailbox, t);
         }
     }
 
-    private void processThrowable(final Mailbox _targetMailbox, final Throwable _t) {
-        System.out.println("processThrowable");
+    private void processThrowable(final Mailbox _activeMailbox, final Throwable _t) {
         final _Request<?, Actor> req = request;
-        ExceptionHandler exceptionHandler = _targetMailbox.getExceptionHandler();
+        ExceptionHandler exceptionHandler = _activeMailbox.getExceptionHandler();
         if (exceptionHandler != null) {
-            System.out.println("has exception handler");
             try {
                 exceptionHandler.processException(_t);
             } catch (final Throwable u) {
-                _targetMailbox.getLogger().error("Exception handler unable to process throwable "
+                _activeMailbox.getLogger().error("Exception handler unable to process throwable "
                         + exceptionHandler.getClass().getName(), u);
                 if (!(responseProcessor instanceof EventResponseProcessor)) {
                     if (!responsePending)
                         return;
                     setResponse(u);
-                    messageSource.incomingResponse(this, _targetMailbox);
+                    messageSource.incomingResponse(this, _activeMailbox);
                 } else {
-                    _targetMailbox.getLogger().error("Thrown by exception handler and uncaught "
+                    _activeMailbox.getLogger().error("Thrown by exception handler and uncaught "
                             + exceptionHandler.getClass().getName(), _t);
                 }
             }
         } else {
-            System.out.println("no exception handler");
             if (!responsePending) {
-                System.out.println("no response pending");
                 return;
             }
             setResponse(_t);
             if (!(responseProcessor instanceof EventResponseProcessor))
-                messageSource.incomingResponse(this, _targetMailbox);
+                messageSource.incomingResponse(this, _activeMailbox);
             else {
-                _targetMailbox.getLogger().warn("Uncaught throwable", _t);
+                _activeMailbox.getLogger().warn("Uncaught throwable", _t);
             }
         }
     }

@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.impl;
 
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.ExceptionHandler;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Message;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -202,11 +204,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
                     continue;
                 return;
             }
-            //processMessage(message);
-            if (message.isResponsePending())
-                processRequestMessage(message);
-            else
-                processResponseMessage(message);
+            processMessage(message);
         }
     }
 
@@ -218,134 +216,6 @@ abstract public class JAMailboxImpl implements JAMailbox {
      * Called when all pending messages have been processed.
      */
     abstract protected void onIdle() throws Exception;
-
-    /**
-     * Process a request or signal message.
-     *
-     * @param _message The message to be processed.
-     */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private void processRequestMessage(final Message _message) {
-        if (_message.isForeign())
-            mailboxFactory.addAutoClosable(_message);
-        beforeProcessMessage(true, _message);
-        try {
-            exceptionHandler = null; //NOPMD
-            currentMessage = _message;
-            final _Request<?, Actor> request = _message.getRequest();
-            try {
-                request.processRequest(_message.getTargetActor(),
-                        new Transport() {
-                            @Override
-                            public void processResponse(final Object response)
-                                    throws Exception {
-                                if (_message.isForeign())
-                                    mailboxFactory.removeAutoClosable(_message);
-                                if (!_message.isResponsePending())
-                                    return;
-                                if (_message.getResponseProcessor() != EventResponseProcessor.SINGLETON) {
-                                    _message.setResponse(response);
-                                    _message.getMessageSource()
-                                            .incomingResponse(_message,
-                                                    JAMailboxImpl.this);
-                                } else {
-                                    if (response instanceof Throwable) {
-                                        log.warn("Uncaught throwable",
-                                                (Throwable) response);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public MailboxFactory getMailboxFactory() {
-                                MessageSource ms = _message.getMessageSource();
-                                if (ms == null)
-                                    return null;
-                                if (!(ms instanceof Mailbox))
-                                    return null;
-                                return ((Mailbox) ms).getMailboxFactory();
-                            }
-
-                            @Override
-                            public void processException(Exception response) throws Exception {
-                                processResponse((Object) response);
-                            }
-                        });
-            } catch (final Throwable t) {
-                if (_message.isForeign())
-                    mailboxFactory.removeAutoClosable(_message);
-                processThrowable(t);
-            }
-        } finally {
-            afterProcessMessage(true, _message);
-        }
-    }
-
-    /**
-     * Process a Throwable response.
-     *
-     * @param _t The Throwable response.
-     */
-    private void processThrowable(final Throwable _t) {
-        final _Request<?, Actor> req = currentMessage.getRequest();
-        if (exceptionHandler != null) {
-            try {
-                exceptionHandler.processException(_t);
-            } catch (final Throwable u) {
-                log.error("Exception handler unable to process throwable "
-                        + exceptionHandler.getClass().getName(), u);
-                if (!(currentMessage.getResponseProcessor() instanceof EventResponseProcessor)) {
-                    if (!currentMessage.isResponsePending())
-                        return;
-                    currentMessage.setResponse(u);
-                    currentMessage.getMessageSource().incomingResponse(currentMessage,
-                            JAMailboxImpl.this);
-                } else {
-                    log.error("Thrown by exception handler and uncaught "
-                            + exceptionHandler.getClass().getName(), _t);
-                }
-            }
-        } else {
-            if (!currentMessage.isResponsePending())
-                return;
-            currentMessage.setResponse(_t);
-            if (!(currentMessage.getResponseProcessor() instanceof EventResponseProcessor))
-                currentMessage.getMessageSource().incomingResponse(currentMessage,
-                        JAMailboxImpl.this);
-            else {
-                log.warn("Uncaught throwable", _t);
-            }
-        }
-    }
-
-    /**
-     * Process a response message.
-     *
-     * @param _message A request message holding the response.
-     */
-    @SuppressWarnings("unchecked")
-    private void processResponseMessage(final Message _message) {
-        beforeProcessMessage(false, _message);
-        try {
-            final Object response = _message.getResponse();
-            exceptionHandler = _message.getSourceExceptionHandler();
-            currentMessage = _message.getOldMessage();
-            if (response instanceof Throwable) {
-                processThrowable((Throwable) response);
-                return;
-            }
-            @SuppressWarnings("rawtypes")
-            final ResponseProcessor responseProcessor = _message
-                    .getResponseProcessor();
-            try {
-                responseProcessor.processResponse(response);
-            } catch (final Throwable t) {
-                processThrowable(t);
-            }
-        } finally {
-            afterProcessMessage(false, _message);
-        }
-    }
 
     @Override
     public final void incomingResponse(final Message _message,
@@ -361,25 +231,5 @@ abstract public class JAMailboxImpl implements JAMailbox {
     @Override
     public JAMailboxFactory getMailboxFactory() {
         return mailboxFactory;
-    }
-
-    /**
-     * Called before running processXXXMessage(Message).
-     *
-     * @param _request True if the message does not contain a response.
-     * @param _message The message about to be processed.
-     */
-    protected void beforeProcessMessage(final boolean _request,
-                                        final Message _message) {
-    }
-
-    /**
-     * Called after processing a message.
-     *
-     * @param _request True if the message did not previously contain a response.
-     * @param _message The message that has been processed.
-     */
-    protected void afterProcessMessage(final boolean _request,
-                                       final Message _message) {
     }
 }

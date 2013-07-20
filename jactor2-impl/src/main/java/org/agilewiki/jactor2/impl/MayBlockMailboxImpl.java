@@ -34,16 +34,4 @@ public class MayBlockMailboxImpl extends UnboundMailboxImpl implements MayBlockM
             log.error("Exception thrown by onIdle", e);
         }
     }
-
-    @Override
-    protected void afterProcessMessage(final boolean request,
-                                       final Message message) {
-        try {
-            flush(true);
-        } catch (final MigrationException me) {
-            throw me;
-        } catch (Exception e) {
-            log.error("Exception thrown by onIdle", e);
-        }
-    }
 }
