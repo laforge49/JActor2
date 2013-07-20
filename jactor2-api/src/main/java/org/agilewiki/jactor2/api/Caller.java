@@ -33,7 +33,7 @@ final public class Caller implements MessageSource {
     }
 
     @Override
-    public void incomingResponse(final Message _message,
+    public void incomingResponse(final RequestMessage _message,
                                  final Mailbox _responseSource) {
         this.result = _message.getResponse();
         done.release();

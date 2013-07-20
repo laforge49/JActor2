@@ -25,14 +25,7 @@ public abstract class EventBase<TARGET_ACTOR_TYPE extends Actor>
 
     @Override
     public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
-        final Message message = new Message(false, null, _targetActor,
-                null, this, null, EventResponseProcessor.SINGLETON);
+        final EventMessage message = new EventMessage(_targetActor, this);
         message.event();
-    }
-
-    @Override
-    public final void processRequest(final TARGET_ACTOR_TYPE _targetActor,
-                                     final Transport<Void> _transport) throws Exception {
-        processEvent(_targetActor);
     }
 }

@@ -6,8 +6,7 @@ package org.agilewiki.jactor2.api;
  *
  * @param <TARGET_ACTOR_TYPE> The class of the actor that will be used when this Event is processed.
  */
-public interface Event<TARGET_ACTOR_TYPE extends Actor>
-        extends _Request<Void, TARGET_ACTOR_TYPE> {
+public interface Event<TARGET_ACTOR_TYPE extends Actor> {
 
     /**
      * Passes this Request to the target Mailbox without a return address.

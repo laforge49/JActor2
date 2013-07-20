@@ -25,7 +25,7 @@ package org.agilewiki.jactor2.api;
  * @param <RESPONSE_TYPE> The class of the result returned when this Request is processed.
  */
 public abstract class RequestBase<RESPONSE_TYPE> implements
-        Request<RESPONSE_TYPE>, _Request<RESPONSE_TYPE, Actor> {
+        Request<RESPONSE_TYPE> {
 
     /**
      * The mailbox where this Request Objects is passed for processing. The thread
@@ -56,7 +56,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
         if (!_source.isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
-        final Message message = new Message(false, mailbox, null, null,
+        final RequestMessage message = new RequestMessage(false, mailbox, null,
                 this, null, EventResponseProcessor.SINGLETON);
         message.signal(mailbox);
     }
@@ -67,10 +67,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
         if (!_source.isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
-        final Message message = new Message(
+        final RequestMessage message = new RequestMessage(
                 _source.getMailboxFactory() != mailbox.getMailboxFactory(),
                 _source,
-                null,
                 _source.getCurrentMessage(),
                 this,
                 _source.getExceptionHandler(),
@@ -81,14 +80,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements
     @Override
     public RESPONSE_TYPE call() throws Exception {
         final Caller caller = new Caller();
-        final Message message = new Message(true, caller, null, null,
+        final RequestMessage message = new RequestMessage(true, caller, null,
                 this, null, DummyResponseProcessor.SINGLETON);
         return (RESPONSE_TYPE) message.call(mailbox);
-    }
-
-    @Override
-    public final void processRequest(final Actor _targetActor,
-                                     final Transport<RESPONSE_TYPE> _transport) throws Exception {
-        processRequest(_transport);
     }
 }

@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.impl;
 import org.agilewiki.jactor2.api.ExceptionHandler;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Message;
+import org.agilewiki.jactor2.api.RequestMessage;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -218,7 +219,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
     abstract protected void onIdle() throws Exception;
 
     @Override
-    public final void incomingResponse(final Message _message,
+    public final void incomingResponse(final RequestMessage _message,
                                        final Mailbox _responseSource) {
         try {
             unbufferedAddMessages(_message, this == _responseSource ||
