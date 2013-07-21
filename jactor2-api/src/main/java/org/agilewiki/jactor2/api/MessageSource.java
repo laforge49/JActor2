@@ -8,5 +8,5 @@ public interface MessageSource {
     /**
      * Process an incoming response.
      */
-    void incomingResponse(final RequestMessage message, final Mailbox responseSource);
+    void incomingResponse(final Message message, final Mailbox responseSource);
 }
