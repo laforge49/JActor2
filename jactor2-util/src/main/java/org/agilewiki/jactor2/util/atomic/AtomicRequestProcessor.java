@@ -42,7 +42,7 @@ public abstract class AtomicRequestProcessor extends ActorBase implements
      * @return The atomic request.
      */
     public Request<?> atomicReq(final Request _Bound_request) {
-        return new RequestBase<Object>(getMailbox()) {
+        return new Request<Object>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Object> _rp)
                     throws Exception {

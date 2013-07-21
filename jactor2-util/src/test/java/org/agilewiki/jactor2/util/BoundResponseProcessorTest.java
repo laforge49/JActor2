@@ -1,7 +1,10 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.ActorBase;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.Transport;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
@@ -27,7 +30,7 @@ class Driver extends ActorBase {
     public void initialize(final Mailbox _mailbox) throws Exception {
         super.initialize(_mailbox);
 
-        doitReq = new RequestBase<String>(_mailbox) {
+        doitReq = new Request<String>(_mailbox) {
             @Override
             public void processRequest(final Transport<String> rp)
                     throws Exception {

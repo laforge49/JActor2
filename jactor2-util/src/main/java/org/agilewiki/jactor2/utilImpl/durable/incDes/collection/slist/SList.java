@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.slist;
 
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -186,7 +185,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iAddReq(final int _i, final byte[] _bytes) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iAdd(_i, _bytes);
@@ -209,7 +208,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iAddReq(final int _i) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iAdd(_i);
@@ -248,7 +247,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iRemoveReq(final int _i) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iRemove(_i);
@@ -275,7 +274,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        emptyReq = new RequestBase<Void>(getMailbox()) {
+        emptyReq = new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 empty();

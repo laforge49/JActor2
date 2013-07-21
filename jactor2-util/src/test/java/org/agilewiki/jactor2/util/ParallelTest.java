@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Transport;
 
 /**
@@ -21,7 +20,7 @@ public class ParallelTest extends TestCase {
         mailboxFactory = new UtilMailboxFactory();
         mailbox = mailboxFactory.createNonBlockingMailbox();
 
-        start = new RequestBase<Void>(mailbox) {
+        start = new Request<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

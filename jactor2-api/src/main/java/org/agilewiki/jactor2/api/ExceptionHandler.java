@@ -24,7 +24,7 @@ package org.agilewiki.jactor2.api;
  * </p>
  * <pre>
  * public Request&lt;byte[]&gt; readReq() {
- *     return new RequestBase&lt;byte[]&gt;(getMailbox()) {
+ *     return new Request&lt;byte[]&gt;(getMailbox()) {
  *         public void processRequest(final ResponseProcessor _rp) throws Exception {
  *             getMailbox().setExceptionHandler(new ExceptionHandler() {
  *                 public void processException(final Throwable _t) throws Throwable {

@@ -1,7 +1,10 @@
 package org.agilewiki.jactor2.util.atomic;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.ResponseProcessor;
+import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.Delay;
 import org.agilewiki.jactor2.util.ResponseCounter;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
@@ -20,7 +23,7 @@ public class AtomicTest extends TestCase {
     }
 
     Request<Integer> startReq1(final Mailbox _mailbox) {
-        return new RequestBase<Integer>(_mailbox) {
+        return new Request<Integer>(_mailbox) {
             @Override
             public void processRequest(final Transport<Integer> _rp)
                     throws Exception {
@@ -45,7 +48,7 @@ public class AtomicTest extends TestCase {
 
     Request<Void> aReq(final FifoRequestProcessor ap, final int msg) {
         final Mailbox mailbox = ap.getMailbox();
-        return new RequestBase<Void>(mailbox) {
+        return new Request<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
@@ -79,7 +82,7 @@ public class AtomicTest extends TestCase {
     }
 
     Request<Void> bReq(final Mailbox _mailbox) {
-        return new RequestBase<Void>(_mailbox) {
+        return new Request<Void>(_mailbox) {
             @Override
             public void processRequest(Transport<Void> responseProcessor)
                     throws Exception {

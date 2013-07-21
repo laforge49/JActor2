@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Transport;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
@@ -46,7 +45,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
      * @return The request.
      */
     public Request<T> getReq() {
-        return new RequestBase<T>(mailbox) {
+        return new Request<T>(mailbox) {
             @Override
             public void processRequest(final Transport<T> _transport) throws Exception {
                 tracker.start(LocateService.this);

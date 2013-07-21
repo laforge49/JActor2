@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.api;
 import org.slf4j.Logger;
 
 /**
- * _Mailbox defines the internal API used by RequestBase and Event
+ * _Mailbox defines the internal API used by Request and Event
  * to pass _Request's to a target mailbox.
  */
 interface _Mailbox extends MessageSource {

@@ -40,7 +40,7 @@ public class JASemaphore extends ActorBase {
         initialize(mbox);
         this.permits = permitCount;
 
-        acquire = new RequestBase<Void>(getMailbox()) {
+        acquire = new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

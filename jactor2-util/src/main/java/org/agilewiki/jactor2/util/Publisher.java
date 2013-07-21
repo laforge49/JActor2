@@ -24,7 +24,7 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @return The request.
      */
     public Request<Boolean> subscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
-        return new RequestBase<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Boolean> _rp)
                     throws Exception {
@@ -41,7 +41,7 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @return The request.
      */
     public Request<Boolean> unsubscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
-        return new RequestBase<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Boolean> _rp)
                     throws Exception {
@@ -61,7 +61,7 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      */
     public Request<Void> publishReq(
             final Event<TARGET_ACTOR_TYPE> event) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {

@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.ActorBase;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.Transport;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +55,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public Request<Void> startReq(final Filter _filter) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(final Transport<Void> _transport)
                     throws Exception {
@@ -93,7 +96,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public Request<Void> startReq(final String _bundleName, final String _niceVersion) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 start(_bundleName, _niceVersion, _transport);
@@ -126,7 +129,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public Request<Void> startReq(final String _bundleName, final Version _version) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 start(_bundleName, _version, _transport);
@@ -157,7 +160,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public Request<Void> startReq(final String _bundleLocation) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 start(_bundleLocation, _transport);

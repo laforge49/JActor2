@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.general.messaging;
 
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.ResponseProcessor;
+import org.agilewiki.jactor2.api.Transport;
 
 /**
  * Test code.
@@ -13,7 +16,7 @@ public class Actor4 {
     }
 
     public Request<Void> hi4(final Actor1 actor1) {
-        return new RequestBase<Void>(mailbox) {
+        return new Request<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

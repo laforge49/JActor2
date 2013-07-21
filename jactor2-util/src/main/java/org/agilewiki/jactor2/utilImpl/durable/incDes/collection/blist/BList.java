@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.blist;
 
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -128,7 +127,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<ENTRY_TYPE> iGetReq(final int _i) {
-        return new RequestBase<ENTRY_TYPE>(getMailbox()) {
+        return new Request<ENTRY_TYPE>(getMailbox()) {
             @Override
             public void processRequest(Transport<ENTRY_TYPE> _rp) throws Exception {
                 _rp.processResponse(iGet(_i));
@@ -168,7 +167,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport _rp) throws Exception {
                 iSet(_i, _bytes);
@@ -243,7 +242,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iAddReq(final int _i) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iAdd(_i);
@@ -260,7 +259,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iAddReq(final int _i, final byte[] _bytes) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iAdd(_i, _bytes);
@@ -399,7 +398,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iRemoveReq(final int _i) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iRemove(_i);
@@ -494,13 +493,13 @@ public class BList<ENTRY_TYPE extends JASerializable>
     public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(mailbox, parent, factory);
-        sizeReq = new RequestBase<Integer>(getMailbox()) {
+        sizeReq = new Request<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport<Integer> _rp) throws Exception {
                 _rp.processResponse(size());
             }
         };
-        emptyReq = new RequestBase<Void>(getMailbox()) {
+        emptyReq = new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 empty();

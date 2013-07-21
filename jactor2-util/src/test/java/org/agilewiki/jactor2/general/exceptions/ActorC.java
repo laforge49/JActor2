@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.general.exceptions;
 
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.ExceptionHandler;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.Transport;
 
 public class ActorC {
     private final Mailbox mailbox;
@@ -9,7 +12,7 @@ public class ActorC {
     public ActorC(final Mailbox mbox) {
         this.mailbox = mbox;
 
-        throwRequest = new RequestBase<String>(mailbox) {
+        throwRequest = new Request<String>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<String> responseProcessor)

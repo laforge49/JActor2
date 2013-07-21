@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.util.firehose;
 
 import org.agilewiki.jactor2.api.ActorBase;
 import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.RequestBase;
 import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 
@@ -22,7 +21,7 @@ public class NullStage extends ActorBase implements DataProcessor {
 
     @Override
     public Request<Void> processDataReq(final FirehoseData _firehoseData) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 //Thread.sleep(1);

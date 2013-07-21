@@ -70,12 +70,12 @@ Messages per second: 13715539
     }
 
     Request<Void> runReq() {
-        return new RequestBase<Void>(mailbox) {
+        return new Request<Void>(mailbox) {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
                 final CounterActor counterActor = new CounterActor(counterMailbox);
-                final RequestBase urr = counterActor.resetReq;
+                final Request urr = counterActor.resetReq;
                 final AddEvent uar = new AddEvent(1);
                 JAIterator pait = new JAIterator() {
                     long i = 0;
@@ -141,11 +141,11 @@ class AddEvent extends Event<CounterActor> {
 class CounterActor extends ActorBase {
     private long count = 0L;
 
-    public RequestBase<Long> resetReq;
+    public Request<Long> resetReq;
 
     CounterActor(Mailbox mailbox) throws Exception {
         initialize(mailbox);
-        resetReq = new RequestBase<Long>(getMailbox()) {
+        resetReq = new Request<Long>(getMailbox()) {
             @Override
             public void processRequest(Transport<Long> _transport) throws Exception {
                 _transport.processResponse(reset());

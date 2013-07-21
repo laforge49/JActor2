@@ -10,7 +10,7 @@ public class ActorD {
     public ActorD(final Mailbox mbox) {
         this.mailbox = mbox;
 
-        doSomethin = new RequestBase<Void>(mailbox) {
+        doSomethin = new Request<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
@@ -19,7 +19,7 @@ public class ActorD {
             }
         };
 
-        throwRequest = new RequestBase<String>(mailbox) {
+        throwRequest = new Request<String>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<String> responseProcessor)

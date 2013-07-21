@@ -90,7 +90,7 @@ final public class Osgi {
      * @return A copy of the root with the appropriate mailbox.
      */
     public static Request<Root> contextCopyReq(final Root _root) throws Exception {
-        return new RequestBase<Root>(_root.getMailbox()) {
+        return new Request<Root>(_root.getMailbox()) {
             @Override
             public void processRequest(final Transport<Root> _transport) throws Exception {
                 String location = _root.getBundleLocation();

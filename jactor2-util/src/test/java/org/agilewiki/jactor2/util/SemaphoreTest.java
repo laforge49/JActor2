@@ -68,7 +68,7 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     private Request<Boolean> acquireException(final JASemaphore semaphore,
                                               final Mailbox mailbox) {
-        return new RequestBase<Boolean>(mailbox) {
+        return new Request<Boolean>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Boolean> responseProcessor)

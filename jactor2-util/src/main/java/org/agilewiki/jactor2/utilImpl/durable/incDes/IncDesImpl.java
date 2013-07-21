@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.api.ResponseProcessor;
+import org.agilewiki.jactor2.api.Transport;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -238,7 +241,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     final public Request<Void> saveReq(final AppendableBytes appendableBytes) {
-        return new RequestBase<Void>(getMailbox()) {
+        return new Request<Void>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 save(appendableBytes);
@@ -262,7 +265,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     final public Request<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
-        return new RequestBase<Integer>(getMailbox()) {
+        return new Request<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(save(bytes, offset));
@@ -319,7 +322,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public Request<JASerializable> resolvePathnameReq(final String pathname) {
-        return new RequestBase<JASerializable>(getMailbox()) {
+        return new Request<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(resolvePathname(pathname));
@@ -346,7 +349,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     public final Request<JASerializable> copyReq(final Mailbox m) {
-        return new RequestBase<JASerializable>(getMailbox()) {
+        return new Request<JASerializable>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(copy(m));
@@ -355,7 +358,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     public final Request<Boolean> isEqualReq(final JASerializable jidA) {
-        return new RequestBase<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMailbox()) {
             @Override
             public void processRequest(final Transport rp) throws Exception {
                 getSerializedLengthReq.send(getMailbox(), new ResponseProcessor<Integer>() {
@@ -413,14 +416,14 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         mailbox = _mailbox;
         factory = _factory;
 
-        getSerializedLengthReq = new RequestBase<Integer>(getMailbox()) {
+        getSerializedLengthReq = new Request<Integer>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getSerializedLength());
             }
         };
 
-        getSerializedBytesReq = new RequestBase<byte[]>(getMailbox()) {
+        getSerializedBytesReq = new Request<byte[]>(getMailbox()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getSerializedBytes());
