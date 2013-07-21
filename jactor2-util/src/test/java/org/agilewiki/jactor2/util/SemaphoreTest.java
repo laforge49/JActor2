@@ -36,7 +36,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     private void delayedRelease(final JASemaphore semaphore,
                                 final long delay,
                                 final MailboxFactory mailboxFactory) throws Exception {
-        new EventBase<SemaphoreTest>() {
+        new Event<SemaphoreTest>() {
             @Override
             public void processEvent(final SemaphoreTest actor)
                     throws Exception {

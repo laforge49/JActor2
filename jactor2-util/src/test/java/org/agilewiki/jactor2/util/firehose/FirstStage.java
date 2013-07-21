@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.firehose;
 
 import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.EventBase;
+import org.agilewiki.jactor2.api.Event;
 import org.agilewiki.jactor2.api.ResponseProcessor;
 import org.agilewiki.jactor2.util.BoundResponseProcessor;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
@@ -63,7 +63,7 @@ public class FirstStage extends ActorBase implements Runnable {
             }
         });
         t0 = System.currentTimeMillis();
-        new EventBase<FirstStage>() {
+        new Event<FirstStage>() {
 
             @Override
             public void processEvent(FirstStage _targetActor) throws Exception {

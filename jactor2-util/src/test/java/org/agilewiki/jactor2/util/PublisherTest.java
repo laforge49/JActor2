@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.EventBase;
+import org.agilewiki.jactor2.api.Event;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {
@@ -63,7 +63,7 @@ class Printer extends ActorBase implements Named {
     }
 }
 
-class Print extends EventBase<Printer> {
+class Print extends Event<Printer> {
     final String msg;
 
     Print(final String _msg) {

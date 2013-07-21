@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.api.Actor;
-import org.agilewiki.jactor2.api.EventBase;
+import org.agilewiki.jactor2.api.Event;
 import org.agilewiki.jactor2.api.ResponseProcessor;
 
 /**
@@ -55,7 +55,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
-class ContinuationEvent<RESPONSE_TYPE> extends EventBase<Actor> {
+class ContinuationEvent<RESPONSE_TYPE> extends Event<Actor> {
     /**
      * The wrapped ResponseProcessor.
      */

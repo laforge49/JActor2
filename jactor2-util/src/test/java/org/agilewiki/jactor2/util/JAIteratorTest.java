@@ -125,7 +125,7 @@ Messages per second: 13715539
     }
 }
 
-class AddEvent extends EventBase<CounterActor> {
+class AddEvent extends Event<CounterActor> {
     private final long inc;
 
     AddEvent(final long _inc) {

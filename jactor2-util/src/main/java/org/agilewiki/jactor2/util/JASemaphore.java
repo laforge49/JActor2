@@ -54,7 +54,7 @@ public class JASemaphore extends ActorBase {
             }
         };
 
-        release = new EventBase<JASemaphore>() {
+        release = new Event<JASemaphore>() {
             @Override
             public void processEvent(JASemaphore _targetActor) throws Exception {
                 final ResponseProcessor<Void> rp = queue.poll();

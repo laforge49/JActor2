@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.EventBase;
+import org.agilewiki.jactor2.api.Event;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
@@ -108,7 +108,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
             final ServiceChangeReceiver<T> _serviceChangeReceiver)
             throws Exception {
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
-        new EventBase<JAServiceTracker<T>>() {
+        new Event<JAServiceTracker<T>>() {
             @Override
             public void processEvent(JAServiceTracker<T> _targetActor) throws Exception {
                 // We just received the start request. We can only receive one.
@@ -184,7 +184,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         try {
             // Create service change request, to be run in our own mailbox,
             // because this method is not running in our actor thread.
-            new EventBase<JAServiceTracker<T>>() {
+            new Event<JAServiceTracker<T>>() {
                 @Override
                 public void processEvent(JAServiceTracker<T> _targetActor) throws Exception {
                     final int typ = _event.getType();

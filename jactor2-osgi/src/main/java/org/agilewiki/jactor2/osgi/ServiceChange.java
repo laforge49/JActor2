@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.api.EventBase;
+import org.agilewiki.jactor2.api.Event;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
@@ -13,7 +13,7 @@ import java.util.Objects;
  * @param <T> The expected service type.
  */
 public class ServiceChange<T> extends
-        EventBase<ServiceChangeReceiver> {
+        Event<ServiceChangeReceiver> {
 
     /**
      * The service event to be passed.
