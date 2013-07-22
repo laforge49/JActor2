@@ -159,7 +159,7 @@ class Caller implements MessageSource {
     }
 }
 
-class RequestMessage extends Message {
+class RequestMessage implements Message {
     protected final boolean foreign;
     protected final MessageSource messageSource;
     protected final Message oldMessage;
@@ -316,7 +316,8 @@ class RequestMessage extends Message {
         }
     }
 
-    protected void processThrowable(final Mailbox _activeMailbox, final Throwable _t) {
+    @Override
+    public void processThrowable(final Mailbox _activeMailbox, final Throwable _t) {
         ExceptionHandler exceptionHandler = _activeMailbox.getExceptionHandler();
         if (exceptionHandler != null) {
             try {

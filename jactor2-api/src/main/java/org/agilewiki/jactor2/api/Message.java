@@ -11,21 +11,21 @@ package org.agilewiki.jactor2.api;
  * </p>
  */
 
-abstract public class Message implements AutoCloseable {
+abstract public interface Message extends AutoCloseable {
 
     /**
      * Returns true when the response is to be sent to another mailbox factory.
      *
      * @return True when the response is to be sent to another mailbox factory.
      */
-    abstract public boolean isForeign();
+    boolean isForeign();
 
     /**
      * @return the responsePending
      */
-    abstract public boolean isResponsePending();
+    boolean isResponsePending();
 
-    abstract public void eval(final Mailbox _targetMailbox);
+    void eval(final Mailbox _targetMailbox);
 
-    abstract protected void processThrowable(final Mailbox _activeMailbox, final Throwable _t);
+    void processThrowable(final Mailbox _activeMailbox, final Throwable _t);
 }

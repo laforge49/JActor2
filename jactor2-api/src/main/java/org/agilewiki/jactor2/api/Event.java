@@ -29,7 +29,7 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
      *
      * @param _targetActor The actor being operated on.
      */
-    public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
+    final public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
         final EventMessage message = new EventMessage(_targetActor);
         message.event();
     }
@@ -43,10 +43,10 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
     abstract public void processEvent(final TARGET_ACTOR_TYPE _targetActor)
             throws Exception;
 
-    private class EventMessage extends Message {
-        protected final TARGET_ACTOR_TYPE targetActor;
+    final private class EventMessage implements Message {
+        final TARGET_ACTOR_TYPE targetActor;
 
-        public EventMessage(final TARGET_ACTOR_TYPE _targetActor) {
+        EventMessage(final TARGET_ACTOR_TYPE _targetActor) {
             targetActor = _targetActor;
         }
 
@@ -60,7 +60,7 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
             return false;
         }
 
-        public final void event()
+        void event()
                 throws Exception {
             targetActor.getMailbox().unbufferedAddMessages(this, false);
         }
@@ -79,7 +79,8 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
             }
         }
 
-        protected void processThrowable(final Mailbox _activeMailbox, final Throwable _t) {
+        @Override
+        public void processThrowable(final Mailbox _activeMailbox, final Throwable _t) {
             ExceptionHandler exceptionHandler = _activeMailbox.getExceptionHandler();
             if (exceptionHandler != null) {
                 try {
