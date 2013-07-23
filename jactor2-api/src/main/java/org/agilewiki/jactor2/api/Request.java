@@ -123,7 +123,7 @@ public abstract class Request<RESPONSE_TYPE> {
     abstract public void processRequest(final Transport<RESPONSE_TYPE> _transport)
             throws Exception;
 
-    private static class Pender implements MessageSource {
+    private static final class Pender implements MessageSource {
 
         /**
          * Used to signal the arrival of a response.
@@ -158,7 +158,18 @@ public abstract class Request<RESPONSE_TYPE> {
         }
     }
 
-    private static class RequestMessage implements Message {
+    final private static class DummyResponseProcessor implements ResponseProcessor<Object> {
+        public static final DummyResponseProcessor SINGLETON = new DummyResponseProcessor();
+
+        private DummyResponseProcessor() {
+        }
+
+        @Override
+        public void processResponse(final Object response) {
+        }
+    }
+
+    private static final class RequestMessage implements Message {
         protected final boolean foreign;
         protected final MessageSource messageSource;
         protected final Message oldMessage;
