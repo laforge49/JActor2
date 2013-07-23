@@ -32,6 +32,7 @@ interface _Mailbox extends MessageSource {
 
     /**
      * Returns the message currently being processed.
+     *
      * @return The message currently being processed.
      */
     Message getCurrentMessage();
@@ -45,12 +46,14 @@ interface _Mailbox extends MessageSource {
 
     /**
      * Returns the mailbox logger.
+     *
      * @return The mailbox logger.
      */
     Logger getLogger();
 
     /**
      * Identify the message currently being processed.
+     *
      * @param message The message currently being processed.
      */
     void setCurrentMessage(Message message);

@@ -4,48 +4,48 @@ package org.agilewiki.jactor2.api;
  * Event is typically subclassed to create requests that are targeted to a class
  * of actors or to an interface, rather than to a specific instance. The target class must however
  * implement the Actor interface.
- * <p/>
- * <pre>
- * public interface DudActor extends Actor {
- *     public String getDuddly();
- * }
  *
- * public class DuddlyReq extends Event&lt;String, DudActor&gt; {
- *     public void processRequest(final DudActor _targetActor, final ResponseProcessor&lt;String response&gt; _rp)
- *             throws Exception {
- *         _rp.processResponse(_targetActor.getDuddly());
- *     }
- * }
- * </pre>
- *
- * @param <TARGET_ACTOR_TYPE> The class of the actor that will be used when this Event is processed.
+ * @param <TARGET_ACTOR_TYPE> The class of the actor that will be targeted when this Event is processed.
  */
 public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
 
     /**
-     * Passes this Request to the target Mailbox without a return address.
-     * No result is passed back and if an exception is thrown while processing this Request,
+     * Passes an event message immediately to the target Mailbox for subsequent processing
+     * by the thread of the mailbox.
+     * No result is passed back and if an exception is thrown while processing the event,
      * that exception is simply logged as a warning.
      *
-     * @param _targetActor The actor being operated on.
+     * @param _targetActor The actor to be operated on.
      */
     final public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
         final EventMessage message = new EventMessage(_targetActor);
-        message.event();
+        _targetActor.getMailbox().unbufferedAddMessages(message, false);
     }
 
     /**
-     * The processRequest method will be invoked by the target Mailbox on its own thread
-     * when this Request is received for processing.
+     * The processEvent method will be invoked by the target Mailbox on its own thread
+     * when this event is processed.
      *
-     * @param _targetActor The target actor for an Event.
+     * @param _targetActor The actor to be operated on.
      */
     abstract public void processEvent(final TARGET_ACTOR_TYPE _targetActor)
             throws Exception;
 
+    /**
+     * The message class used to pass events.
+     */
     final private class EventMessage implements Message {
+
+        /**
+         * The actor to be operated on.
+         */
         final TARGET_ACTOR_TYPE targetActor;
 
+        /**
+         * Create an EventMessage.
+         *
+         * @param _targetActor The actor to be operated on.
+         */
         EventMessage(final TARGET_ACTOR_TYPE _targetActor) {
             targetActor = _targetActor;
         }
@@ -60,15 +60,15 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
             return false;
         }
 
-        void event()
-                throws Exception {
-            targetActor.getMailbox().unbufferedAddMessages(this, false);
-        }
-
         @Override
         public void close() throws Exception {
         }
 
+        /**
+         * Process the event with the target mailbox thread.
+         *
+         * @param _targetMailbox The mailbox of the target actor.
+         */
         public void eval(final Mailbox _targetMailbox) {
             _targetMailbox.setExceptionHandler(null);
             _targetMailbox.setCurrentMessage(this);
