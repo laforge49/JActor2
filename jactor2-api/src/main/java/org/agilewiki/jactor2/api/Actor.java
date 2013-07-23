@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * Actors which receive unbound requests must implement this interface, which is otherwise optional.
+ * Actors which receive events must implement this interface, which is otherwise optional.
  */
 public interface Actor {
     /**
