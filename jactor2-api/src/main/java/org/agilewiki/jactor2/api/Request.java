@@ -69,7 +69,7 @@ public abstract class Request<RESPONSE_TYPE> {
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
         final RequestMessage message = new RequestMessage(false, mailbox, null,
-                this, null, EventResponseProcessor.SINGLETON);
+                this, null, SignalResponseProcessor.SINGLETON);
         message.signal(mailbox);
     }
 
@@ -277,7 +277,7 @@ public abstract class Request<RESPONSE_TYPE> {
                                     mailboxFactory.removeAutoClosable(RequestMessage.this);
                                 if (!responsePending)
                                     return;
-                                if (getResponseProcessor() != EventResponseProcessor.SINGLETON) {
+                                if (getResponseProcessor() != SignalResponseProcessor.SINGLETON) {
                                     setResponse(response);
                                     messageSource.incomingResponse(RequestMessage.this, _targetMailbox);
                                 } else {
@@ -335,7 +335,7 @@ public abstract class Request<RESPONSE_TYPE> {
                 } catch (final Throwable u) {
                     _activeMailbox.getLogger().error("Exception handler unable to process throwable "
                             + exceptionHandler.getClass().getName(), u);
-                    if (!(responseProcessor instanceof EventResponseProcessor)) {
+                    if (!(responseProcessor instanceof SignalResponseProcessor)) {
                         if (!responsePending)
                             return;
                         setResponse(u);
@@ -350,7 +350,7 @@ public abstract class Request<RESPONSE_TYPE> {
                     return;
                 }
                 setResponse(_t);
-                if (!(responseProcessor instanceof EventResponseProcessor))
+                if (!(responseProcessor instanceof SignalResponseProcessor))
                     messageSource.incomingResponse(this, _activeMailbox);
                 else {
                     _activeMailbox.getLogger().warn("Uncaught throwable", _t);
