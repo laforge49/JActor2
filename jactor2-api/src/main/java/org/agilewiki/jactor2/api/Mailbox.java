@@ -1,8 +1,11 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * A mailbox is a light-weight thread. Requests/responses passed to a mailbox are enqueued and subsequently processed
- * when a thread is allocated to the mailbox. And when the queue is empty, the thread is released.
+ * A mailbox implements an inbox for incoming messages (events/requests)
+ * and buffers outgoing messages by destination mailbox.
+ * <p/>
+ * While a mailbox has a non-empty inbox, it has an assigned thread that processes
+ * the contents of its inbox. And only one message is processed at a time.
  */
 public interface Mailbox extends Runnable, _Mailbox {
 
@@ -14,23 +17,23 @@ public interface Mailbox extends Runnable, _Mailbox {
     MailboxFactory getMailboxFactory();
 
     /**
-     * Returns true when there no requests or responses enqueued for processing.
+     * Returns true when the inbox is empty.
      *
-     * @return True when there no requests or responses enqueued for processing.
+     * @return True when the inbox is empty.
      */
     boolean isEmpty();
 
     /**
-     * The flush method forwards all buffered requests to their target mailbox for
-     * processing and all buffered results/exceptions to their source
-     * mailbox. For results/exceptions originating from a call, the calling thread
+     * The flush method forwards all buffered message to their target mailbox for
+     * processing. For results/exceptions originating from a call, the calling thread
      * is unblocked and the results returned or the exception thrown.
      * <p>
-     * The flush method is called when the last enqueued request/result is processed.
-     * However, there may be special cases where an explicit flush may be needed.
+     * The flush method is automatically called either after processing each message or when there are
+     * no more messages to be processed, depending on the type of mailbox.
+     * However, there may be special cases where an explicit flush is needed.
      * </p>
      *
-     * @return True when one or more buffered request/result was delivered.
+     * @return True when one or more buffered messages were delivered.
      */
     boolean flush() throws Exception;
 
