@@ -3,12 +3,12 @@ package org.agilewiki.jactor2.api;
 /**
  * Exception handlers are used to alter how exceptions are processed.
  * <p>
- * By default, an exception which occurs while processing a request is
+ * By default, an exception which occurs while processing a call or send request is
  * returned as a result to the source mailbox or caller.
- * Exception processing is specific to the request being processed.
- * An application can set the exception handler for the request currently being processed using the
+ * And for events (or a Request signal), the default is to simply log the exception as a warning.
+ * Exception processing is specific to the request/event being processed.
+ * An application can set the exception handler for the request/event currently being processed using the
  * Mailbox.setExceptionHandler method.
- * (When a request is sent using a signal method, the default is to simply log the exception as a warning.)
  * </p>
  * <p>
  * When a mailbox receives an exception as a result, the exception is handled the same way as any other
@@ -18,29 +18,10 @@ package org.agilewiki.jactor2.api;
  * </p>
  * <p>
  * An exception handler can be selective in which classes of exceptions that it will handle.
- * Any exceptions that it does not handle are simply rethrown and are then
- * returned as a result to the source mailbox or caller.
+ * Any exceptions that it does not handle are simply rethrown, with default exception handling then
+ * processing the exception.
  * Exception handlers can also return a result.
  * </p>
- * <pre>
- * public Request&lt;byte[]&gt; readReq() {
- *     return new Request&lt;byte[]&gt;(getMailbox()) {
- *         public void processRequest(final ResponseProcessor _rp) throws Exception {
- *             getMailbox().setExceptionHandler(new ExceptionHandler() {
- *                 public void processException(final Throwable _t) throws Throwable {
- *                     if (_t instanceof IOException)
- *                         _rp.processResponse(null);
- *                     else
- *                         throw _t;
- *                 }
- *             });
- *             .
- *             .
- *             .
- *         }
- *     };
- * }
- * </pre>
  */
 public interface ExceptionHandler {
     /**
