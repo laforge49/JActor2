@@ -1,9 +1,7 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * A ResponseProcessor is either a callback sent with a _Request to another actor's mailbox
- * as a means of returning a response,
- * or a callback passed to the _Request.processRequest method.
+ * A ResponseProcessor is an application callback for a request.
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
@@ -11,10 +9,9 @@ public interface ResponseProcessor<RESPONSE_TYPE> {
     /**
      * The processResponse method accepts the response of a request.
      * <p>
-     * In the case of a ResponseProcessor object sent with a _Request,
-     * this method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (mailbox) that sent the
-     * _Request and ResponseProcessor objects.
+     * This method need not be thread-safe, as it
+     * is always invoked from the same light-weight thread (mailbox) that passed the
+     * Request and ResponseProcessor objects.
      * </p>
      *
      * @param response The response to a request.
