@@ -1,14 +1,9 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * MailboxFactory creates different types of mailboxes, including thread bound mailboxes.
+ * MailboxFactory creates NonBlocking, MayBlock and ThreadBound mailboxes.
  * This class is also responsible for closing everything down and managing a list of
  * auto closables to be called when MailboxFactory.close() is called.
- * <p>
- * Mailboxes should not normally process requests that are CPU intensive or block a thread.
- * But when that is the case,
- * the mailbox should be created with mayBlock set to true.
- * </p>
  */
 public interface MailboxFactory extends AutoCloseable {
 
@@ -80,25 +75,6 @@ public interface MailboxFactory extends AutoCloseable {
 
     /**
      * Creates a mailbox that runs on an existing thread.
-     * Sample usage:
-     * <pre>
-     *     public class CreateUiMailbox{
-     *         private Mailbox uiMailbox;
-     *
-     *         synchronized public Mailbox get(MailboxFactory mailboxFactory) {
-     *             if (uiMailbox == null) {
-     *                 uiMailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
-     *                     public void run() {
-     *                         SwingUtilities.invokeLater(uiMailbox);
-     *                     }
-     *                 });
-     *             }
-     *             return uiMailbox;
-     *         }
-     *     }
-     * The _messageProcessor.run method typically will call
-     * SwingUtilities.invokeLater(mailbox) to process pending messages on the UI thread.
-     * </pre>
      *
      * @param _messageProcessor The run method is called when there are messages
      *                          to be processed.
