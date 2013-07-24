@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * Event is typically subclassed to create requests that are targeted to a class
- * of actors or to an interface, rather than to a specific instance. The target class must however
- * implement the Actor interface.
+ * An Event instance is used to pass one-way messages to any number of Actor objects.
+ * Event messages are unbuffered and are sent immediately.
  *
  * @param <TARGET_ACTOR_TYPE> The class of the actor that will be targeted when this Event is processed.
  */
