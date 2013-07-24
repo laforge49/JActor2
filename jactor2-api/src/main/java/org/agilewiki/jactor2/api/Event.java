@@ -31,7 +31,7 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
             throws Exception;
 
     /**
-     * The message class used to pass events.
+     * The message subclass used to pass events.
      */
     final private class EventMessage implements Message {
 
