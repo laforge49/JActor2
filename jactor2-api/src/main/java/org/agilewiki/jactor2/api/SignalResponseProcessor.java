@@ -1,8 +1,17 @@
 package org.agilewiki.jactor2.api;
 
+/**
+ * Used to flag a message as a 1-way message.
+ */
 final public class SignalResponseProcessor implements ResponseProcessor<Void> {
+    /**
+     * The class singleton.
+     */
     public static final SignalResponseProcessor SINGLETON = new SignalResponseProcessor();
 
+    /**
+     * Restrict the class to creating only the class singleton.
+     */
     private SignalResponseProcessor() {
     }
 
