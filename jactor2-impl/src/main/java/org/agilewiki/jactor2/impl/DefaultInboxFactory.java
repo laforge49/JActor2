@@ -1,15 +1,15 @@
 package org.agilewiki.jactor2.impl;
 
 /**
- * Creates ArrayDeque MessageQueues instances.
+ * Creates an inbox.
  *
  * @author monster
  */
-public class DefaultInboxFactoryImpl implements InboxFactory {
+public class DefaultInboxFactory implements InboxFactory {
     /**
      * Creates a new Inbox instance.
      *
-     * @param initialLocalQueueSize The initial number of slots in the local queue.
+     * @param initialLocalQueueSize The initial size of the local queue.
      */
     @Override
     public Inbox createMessageQueue(final int initialLocalQueueSize) {

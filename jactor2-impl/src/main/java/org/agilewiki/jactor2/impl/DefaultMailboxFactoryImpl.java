@@ -88,7 +88,7 @@ public class DefaultMailboxFactoryImpl implements
                     -_mayBlockThreadCount);
             nonBlockingThreadManager = mayBlockThreadManager;
         }
-        inboxFactory = (_inboxFactory == null) ? new DefaultInboxFactoryImpl()
+        inboxFactory = (_inboxFactory == null) ? new DefaultInboxFactory()
                 : _inboxFactory;
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
         initialBufferSize = _initialBufferSize;
