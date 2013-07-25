@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * A callback passed to the _Request.processRequest method.
+ * A callback passed to the Request.processRequest method.
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
