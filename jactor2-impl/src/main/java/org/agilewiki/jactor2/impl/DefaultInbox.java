@@ -8,20 +8,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A default <code>Inbox</code> implementation, using a
- * ConcurrentLinkedQueue for cross-mailbox message exchanges, and a ArrayDeque
- * for same-mailbox message exchanges.
+ * ConcurrentLinkedQueue for cross-thread message exchanges, and a ArrayDeque
+ * for same-thread message exchanges.
  *
  * @author monster
  */
 public class DefaultInbox extends ConcurrentLinkedQueue<Object>
         implements Inbox {
-    /**
-     * serialVersionUID
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
-     * Local queue for same-mailbox exchanges.
+     * Local queue for same-thread exchanges.
      */
     private final ArrayDeque<Object> localQueue;
 
@@ -36,7 +32,7 @@ public class DefaultInbox extends ConcurrentLinkedQueue<Object>
     }
 
     /**
-     * Is the queue empty?
+     * Is the inbox NOT empty?
      */
     @Override
     public boolean isNonEmpty() {
@@ -45,9 +41,9 @@ public class DefaultInbox extends ConcurrentLinkedQueue<Object>
     }
 
     /**
-     * Inserts a new message in the queue.
+     * Adds a new message to the inbox.
      *
-     * @param local Should be true for same-mailbox exchanges
+     * @param local Should be true for same-thread exchanges
      * @param msg   The new message
      */
     @Override
@@ -60,7 +56,7 @@ public class DefaultInbox extends ConcurrentLinkedQueue<Object>
     }
 
     /**
-     * Inserts a new message in the queue.
+     * Adds a new message to the inbox.
      *
      * @param msgs The new messages
      */
@@ -72,7 +68,9 @@ public class DefaultInbox extends ConcurrentLinkedQueue<Object>
     }
 
     /**
-     * Returns one message, if any is available.
+     * Removes a message from the inbox, if the inbox is not empty.
+     *
+     * @return A message, or null.
      */
     @Override
     public Message poll() {
