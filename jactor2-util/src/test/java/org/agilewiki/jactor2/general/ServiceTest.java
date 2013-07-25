@@ -2,14 +2,14 @@ package org.agilewiki.jactor2.general;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.api.*;
-import org.agilewiki.jactor2.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 
 public class ServiceTest extends TestCase {
 
     public void test() throws Exception {
-        MailboxFactory testMBF = new DefaultMailboxFactoryImpl();
-        MailboxFactory clientMBF = new DefaultMailboxFactoryImpl();
-        final MailboxFactory serverMBF = new DefaultMailboxFactoryImpl();
+        MailboxFactory testMBF = new DefaultMailboxFactory();
+        MailboxFactory clientMBF = new DefaultMailboxFactory();
+        final MailboxFactory serverMBF = new DefaultMailboxFactory();
         try {
             Mailbox testMailbox = testMBF.createNonBlockingMailbox();
             Server server = new Server(serverMBF.createNonBlockingMailbox());

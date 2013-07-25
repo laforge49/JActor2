@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.general.exceptions;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.MailboxFactory;
-import org.agilewiki.jactor2.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 
 /**
  * Test code.
@@ -11,7 +11,7 @@ import org.agilewiki.jactor2.impl.DefaultMailboxFactoryImpl;
 public class Test2 extends TestCase {
     public void testI() throws Exception {
         System.out.println("testI");
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
         final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
         final ActorA actorA = new ActorA(mailbox);
         final ActorB actorB = new ActorB(mailbox);
@@ -27,7 +27,7 @@ public class Test2 extends TestCase {
 
     public void testIII() throws Exception {
         System.out.println("testIII");
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
         final ActorA actorA = new ActorA(mailboxFactory.createMayBlockMailbox());
         final ActorB actorB = new ActorB(mailboxFactory.createMayBlockMailbox());
         try {

@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 
 /**
  * A Mailbox factory
  */
 public final class UtilMailboxFactory
-        extends DefaultMailboxFactoryImpl {
+        extends DefaultMailboxFactory {
 
     /**
      * Create a mailbox factory with the default thread pool size for mailboxes that may block and
@@ -24,7 +24,7 @@ public final class UtilMailboxFactory
      * If the mayBlockThreadCount is < 0, then a common thread pool is created
      * with a size = - mayBlockThreadCount.
      * Otherwise a non-blocking thread pool is created
-     * with a size = - mayBlockThreadCount and a may-block thread pool is created
+     * with a size equal to the number of hardware threads + 1 and a may-block thread pool is created
      * with a size = mayBlockThreadCount.
      *
      * @param mayBlockThreadCount The thread pool size for mailboxes that may block.

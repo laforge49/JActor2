@@ -17,28 +17,28 @@ public interface MailboxFactory extends AutoCloseable {
     /**
      * Creates a Mailbox which is only used to process non-blocking requests.
      *
-     * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @return A new non-blocking mailbox.
      */
-    NonBlockingMailbox createNonBlockingMailbox(final int initialBufferSize);
+    NonBlockingMailbox createNonBlockingMailbox(final int _initialBufferSize);
 
     /**
      * Creates a Mailbox which is only used to process non-blocking requests.
      *
-     * @param onIdle The run method is called when the input queue is empty.
+     * @param _onIdle The run method is called when the input queue is empty.
      * @return A new non-blocking mailbox.
      */
-    NonBlockingMailbox createNonBlockingMailbox(final Runnable onIdle);
+    NonBlockingMailbox createNonBlockingMailbox(final Runnable _onIdle);
 
     /**
      * Creates a Mailbox which is only used to process non-blocking requests.
      *
-     * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
-     * @param onIdle            The run method is called when the input queue is empty.
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @param _onIdle            The run method is called when the input queue is empty.
      * @return A new non-blocking mailbox.
      */
-    NonBlockingMailbox createNonBlockingMailbox(final int initialBufferSize,
-                                                final Runnable onIdle);
+    NonBlockingMailbox createNonBlockingMailbox(final int _initialBufferSize,
+                                                final Runnable _onIdle);
 
     /**
      * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
@@ -50,28 +50,28 @@ public interface MailboxFactory extends AutoCloseable {
     /**
      * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
      *
-     * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @return A new may block mailbox.
      */
-    MayBlockMailbox createMayBlockMailbox(final int initialBufferSize);
+    MayBlockMailbox createMayBlockMailbox(final int _initialBufferSize);
 
     /**
      * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
      *
-     * @param onIdle The run method is called when the input queue is empty.
+     * @param _onIdle The run method is called when the input queue is empty.
      * @return A new may block mailbox.
      */
-    MayBlockMailbox createMayBlockMailbox(final Runnable onIdle);
+    MayBlockMailbox createMayBlockMailbox(final Runnable _onIdle);
 
     /**
      * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
      *
-     * @param initialBufferSize How big should the initial (per target Mailbox) buffer size be?
-     * @param onIdle            The run method is called when the input queue is empty.
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @param _onIdle            The run method is called when the input queue is empty.
      * @return A new may block mailbox.
      */
-    MayBlockMailbox createMayBlockMailbox(final int initialBufferSize,
-                                          final Runnable onIdle);
+    MayBlockMailbox createMayBlockMailbox(final int _initialBufferSize,
+                                          final Runnable _onIdle);
 
     /**
      * Creates a mailbox that runs on an existing thread.
@@ -85,18 +85,18 @@ public interface MailboxFactory extends AutoCloseable {
     /**
      * Adds an auto closeable, to be closed when the MailboxFactory closes.
      *
-     * @param closeable The autoclosable to be added to the list.
+     * @param _closeable The autoclosable to be added to the list.
      * @return True, if the list was updated.
      */
-    boolean addAutoClosable(final AutoCloseable closeable);
+    boolean addAutoClosable(final AutoCloseable _closeable);
 
     /**
      * Remove an auto closeable from the list of closables.
      *
-     * @param closeable The autoclosable to be removed from the list.
+     * @param _closeable The autoclosable to be removed from the list.
      * @return True, if the list was updated.
      */
-    boolean removeAutoClosable(final AutoCloseable closeable);
+    boolean removeAutoClosable(final AutoCloseable _closeable);
 
     /**
      * Returns true if close() has been called already.

@@ -13,40 +13,71 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * <p>
- * The MailboxFactory is the factory as the name suggests for the MailBoxes to be used with the PActor. In addition to
- * creation of the Mailboxes it also encapsulates the threads( threadpool) which would process the Requests added to
- * the mailbox in asynchronous mode.
- * </p>
+ * Creates non-blocking, may-block and thread-bound mailboxes and serves as a thread pool for
+ * non-blocking and may-block mailboxes. Multiple mailbox factories with independent life cycles
+ * are also supported.
+ * In addition, the mailbox factory maintains a set of AutoClosable objects that are closed at
+ * the end-of-life of the mailbox factory as well as a set of properties.
  */
 
-public class DefaultMailboxFactoryImpl implements
+public class DefaultMailboxFactory implements
         JAMailboxFactory {
-    protected final Logger mailboxLog = LoggerFactory.getLogger(Mailbox.class);
 
-    private final Logger log = LoggerFactory.getLogger(MailboxFactory.class);
+    /**
+     * The logger used by mailboxes.
+     */
+    protected final Logger mailboxLogger = LoggerFactory.getLogger(Mailbox.class);
 
+    /**
+     * The mailbox factory logger.
+     */
+    private final Logger logger = LoggerFactory.getLogger(MailboxFactory.class);
+
+    /**
+     * The thread pool used by non-blocking mailboxes.
+     */
     private final ThreadManager nonBlockingThreadManager;
+
+    /**
+     * The thread pool used by may-block mailboxes.
+     */
     private final ThreadManager mayBlockThreadManager;
+
+    /**
+     * The inbox factory used when creating mailboxes.
+     */
     protected final InboxFactory inboxFactory;
+
+    /**
+     * A hash set of AutoCloseable objects.
+     */
     private final Set<AutoCloseable> closables = Collections
             .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
-    private final AtomicBoolean shuttingDown = new AtomicBoolean();
+
     /**
-     * How big should the initial local queue size be?
+     * Set when the mailbox factory reaches end-of-life.
+     */
+    private final AtomicBoolean shuttingDown = new AtomicBoolean();
+
+    /**
+     * How big should the initial inbox local queue size be?
      */
     protected final int initialLocalMessageQueueSize;
+
     /**
-     * How big should the initial (per target Mailbox) buffer size be?
+     * How big should the initial outbox (per target Mailbox) buffer size be?
      */
     protected final int initialBufferSize;
 
     /**
-     * effectively final properties set manager.
+     * Mailbox factory properties.
      */
     private Properties properties;
 
-    public DefaultMailboxFactoryImpl() {
+    /**
+     * Create a mailbox factory.
+     */
+    public DefaultMailboxFactory() {
         this(
                 null,
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
@@ -54,26 +85,45 @@ public class DefaultMailboxFactoryImpl implements
                 20);
     }
 
-    public DefaultMailboxFactoryImpl(final int mayBlockThreadCount) {
+    /**
+     * Create a mailbox factory with one or two threadpools.
+     * If the mayBlockThreadCount is == 0, then a common thread pool is created
+     * with a size equal to the number of hardware threads + 1.
+     * If the mayBlockThreadCount is < 0, then a common thread pool is created
+     * with a size = - mayBlockThreadCount.
+     * Otherwise a non-blocking thread pool is created
+     * with a size equal to the number of hardware threads + 1 and a may-block thread pool is created
+     * with a size = mayBlockThreadCount.
+     *
+     * @param _mayBlockThreadCount The thread pool size for mailboxes that may block.
+     */
+    public DefaultMailboxFactory(final int _mayBlockThreadCount) {
         this(
                 null,
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
                 Inbox.INITIAL_BUFFER_SIZE,
-                mayBlockThreadCount);
+                _mayBlockThreadCount);
     }
 
-    public DefaultMailboxFactoryImpl(final ThreadManager mayBlockThreadManager) {
-        this(
-                null,
-                Inbox.INITIAL_LOCAL_QUEUE_SIZE,
-                Inbox.INITIAL_BUFFER_SIZE,
-                0);
-    }
-
-    public DefaultMailboxFactoryImpl(final InboxFactory _inboxFactory,
-                                     final int _initialLocalMessageQueueSize,
-                                     final int _initialBufferSize,
-                                     final int _mayBlockThreadCount) {
+    /**
+     * Create a mailbox factory with one or two threadpools.
+     * If the mayBlockThreadCount is == 0, then a common thread pool is created
+     * with a size equal to the number of hardware threads + 1.
+     * If the mayBlockThreadCount is < 0, then a common thread pool is created
+     * with a size = - mayBlockThreadCount.
+     * Otherwise a non-blocking thread pool is created
+     * with a size equal to the number of hardware threads + 1 and a may-block thread pool is created
+     * with a size = mayBlockThreadCount.
+     *
+     * @param _inboxFactory                 The inbox factory used when creating mailboxes.
+     * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
+     * @param _initialBufferSize            How big should the initial outbox (per target Mailbox) buffer size be?
+     * @param _mayBlockThreadCount          The thread pool size for mailboxes that may block.
+     */
+    public DefaultMailboxFactory(final InboxFactory _inboxFactory,
+                                 final int _initialLocalMessageQueueSize,
+                                 final int _initialBufferSize,
+                                 final int _mayBlockThreadCount) {
         if (_mayBlockThreadCount == 0) {
             nonBlockingThreadManager = ThreadManagerImpl.newThreadManager(Runtime
                     .getRuntime().availableProcessors() + 1);
@@ -100,8 +150,8 @@ public class DefaultMailboxFactoryImpl implements
     }
 
     @Override
-    public final NonBlockingMailboxImpl createNonBlockingMailbox(final int initialBufferSize) {
-        return createNonBlockingMailbox(initialBufferSize, null);
+    public final NonBlockingMailboxImpl createNonBlockingMailbox(final int _initialBufferSize) {
+        return createNonBlockingMailbox(_initialBufferSize, null);
     }
 
     @Override
@@ -114,7 +164,7 @@ public class DefaultMailboxFactoryImpl implements
     }
 
     @Override
-    public final NonBlockingMailboxImpl createNonBlockingMailbox(final int initialBufferSize,
+    public final NonBlockingMailboxImpl createNonBlockingMailbox(final int _initialBufferSize,
                                                                  final Runnable _onIdle) {
         return createNonBlockingMailbox(_onIdle,
                 inboxFactory
@@ -122,9 +172,16 @@ public class DefaultMailboxFactoryImpl implements
                 initialBufferSize);
     }
 
+    /**
+     * Creates a Mailbox which is only used to process non-blocking requests.
+     *
+     * @param _onIdle The run method is called when the input queue is empty.
+     * @param _inbox  The inbox to be used by the new mailbox.
+     * @return A new non-blocking mailbox.
+     */
     public final NonBlockingMailboxImpl createNonBlockingMailbox(final Runnable _onIdle,
-                                                                 final Inbox inbox) {
-        return createNonBlockingMailbox(_onIdle, inbox,
+                                                                 final Inbox _inbox) {
+        return createNonBlockingMailbox(_onIdle, _inbox,
                 initialBufferSize);
     }
 
@@ -157,9 +214,16 @@ public class DefaultMailboxFactoryImpl implements
                 initialBufferSize);
     }
 
+    /**
+     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
+     *
+     * @param _onIdle The run method is called when the input queue is empty.
+     * @param _inbox  The inbox to be used by the new mailbox.
+     * @return A new may-block mailbox.
+     */
     public final MayBlockMailboxImpl createMayBlockMailbox(final Runnable _onIdle,
-                                                           final Inbox inbox) {
-        return createMayBlockMailbox(_onIdle, inbox,
+                                                           final Inbox _inbox) {
+        return createMayBlockMailbox(_onIdle, _inbox,
                 initialBufferSize);
     }
 
@@ -172,7 +236,7 @@ public class DefaultMailboxFactoryImpl implements
             if (!isClosing())
                 throw e;
             else
-                log.warn(
+                logger.warn(
                         "Unable to process the request, as mailbox shutdown had been called in the application",
                         e);
         } catch (final Error e) {
@@ -182,18 +246,18 @@ public class DefaultMailboxFactoryImpl implements
     }
 
     @Override
-    public final boolean addAutoClosable(final AutoCloseable closeable) {
+    public final boolean addAutoClosable(final AutoCloseable _closeable) {
         if (!isClosing()) {
-            return closables.add(closeable);
+            return closables.add(_closeable);
         } else {
             throw new IllegalStateException("Shuting down ...");
         }
     }
 
     @Override
-    public final boolean removeAutoClosable(final AutoCloseable closeable) {
+    public final boolean removeAutoClosable(final AutoCloseable _closeable) {
         if (!isClosing()) {
-            return closables.remove(closeable);
+            return closables.remove(_closeable);
         } else {
             throw new IllegalStateException("Shuting down ...");
         }
@@ -220,20 +284,36 @@ public class DefaultMailboxFactoryImpl implements
         return shuttingDown.get();
     }
 
+    /**
+     * Creates a Mailbox which is only used to process non-blocking requests.
+     *
+     * @param _onIdle            The run method is called when the input queue is empty.
+     * @param _inbox             The inbox to be used by the new mailbox.
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @return A new non-blocking mailbox.
+     */
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected NonBlockingMailboxImpl createNonBlockingMailbox(
             final Runnable _onIdle,
             final Inbox _inbox,
             final int _initialBufferSize) {
-        return new NonBlockingMailboxImpl(_onIdle, this, _inbox, mailboxLog, _initialBufferSize);
+        return new NonBlockingMailboxImpl(_onIdle, this, _inbox, mailboxLogger, _initialBufferSize);
     }
 
+    /**
+     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
+     *
+     * @param _onIdle            The run method is called when the input queue is empty.
+     * @param _inbox             The inbox to be used by the new mailbox.
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @return A new may-block mailbox.
+     */
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected MayBlockMailboxImpl createMayBlockMailbox(
             final Runnable _onIdle,
             final Inbox _inbox,
             final int _initialBufferSize) {
-        return new MayBlockMailboxImpl(_onIdle, this, _inbox, mailboxLog, _initialBufferSize);
+        return new MayBlockMailboxImpl(_onIdle, this, _inbox, mailboxLogger, _initialBufferSize);
     }
 
     @Override
@@ -241,7 +321,7 @@ public class DefaultMailboxFactoryImpl implements
         return new ThreadBoundMailboxImpl(_messageProcessor, this,
                 inboxFactory
                         .createMessageQueue(initialLocalMessageQueueSize),
-                mailboxLog, initialBufferSize);
+                mailboxLogger, initialBufferSize);
     }
 
     @Override

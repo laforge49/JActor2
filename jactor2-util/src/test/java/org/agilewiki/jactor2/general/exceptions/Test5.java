@@ -3,14 +3,14 @@ package org.agilewiki.jactor2.general.exceptions;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.api.Mailbox;
 import org.agilewiki.jactor2.api.MailboxFactory;
-import org.agilewiki.jactor2.impl.DefaultMailboxFactoryImpl;
+import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 
 /**
  * Test code.
  */
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactoryImpl();
+        final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
         final Mailbox mailboxE = mailboxFactory.createMayBlockMailbox();
         final Mailbox mailboxA = mailboxFactory.createMayBlockMailbox();
         final ActorE actorE = new ActorE(mailboxE);
