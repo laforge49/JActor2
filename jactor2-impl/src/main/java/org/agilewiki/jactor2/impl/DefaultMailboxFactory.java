@@ -125,16 +125,16 @@ public class DefaultMailboxFactory implements
                                  final int _initialBufferSize,
                                  final int _mayBlockThreadCount) {
         if (_mayBlockThreadCount == 0) {
-            nonBlockingThreadManager = ThreadManagerImpl.newThreadManager(Runtime
+            nonBlockingThreadManager = ThreadManager.newThreadManager(Runtime
                     .getRuntime().availableProcessors() + 1);
             mayBlockThreadManager = nonBlockingThreadManager;
         } else if (_mayBlockThreadCount > 0) {
-            nonBlockingThreadManager = ThreadManagerImpl.newThreadManager(Runtime
+            nonBlockingThreadManager = ThreadManager.newThreadManager(Runtime
                     .getRuntime().availableProcessors() + 1);
-            mayBlockThreadManager = ThreadManagerImpl.newThreadManager(
+            mayBlockThreadManager = ThreadManager.newThreadManager(
                     _mayBlockThreadCount);
         } else {
-            mayBlockThreadManager = ThreadManagerImpl.newThreadManager(
+            mayBlockThreadManager = ThreadManager.newThreadManager(
                     -_mayBlockThreadCount);
             nonBlockingThreadManager = mayBlockThreadManager;
         }
