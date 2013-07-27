@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -82,7 +83,8 @@ public class DefaultMailboxFactory implements
                 null,
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
                 Inbox.INITIAL_BUFFER_SIZE,
-                20);
+                20,
+                new DefaultThreadFactory());
     }
 
     /**
@@ -102,7 +104,8 @@ public class DefaultMailboxFactory implements
                 null,
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
                 Inbox.INITIAL_BUFFER_SIZE,
-                _mayBlockThreadCount);
+                _mayBlockThreadCount,
+                new DefaultThreadFactory());
     }
 
     /**
@@ -123,19 +126,20 @@ public class DefaultMailboxFactory implements
     public DefaultMailboxFactory(final InboxFactory _inboxFactory,
                                  final int _initialLocalMessageQueueSize,
                                  final int _initialBufferSize,
-                                 final int _mayBlockThreadCount) {
+                                 final int _mayBlockThreadCount,
+                                 final ThreadFactory _threadFactory) {
         if (_mayBlockThreadCount == 0) {
             nonBlockingThreadManager = ThreadManager.newThreadManager(Runtime
-                    .getRuntime().availableProcessors() + 1);
+                    .getRuntime().availableProcessors() + 1, _threadFactory);
             mayBlockThreadManager = nonBlockingThreadManager;
         } else if (_mayBlockThreadCount > 0) {
             nonBlockingThreadManager = ThreadManager.newThreadManager(Runtime
-                    .getRuntime().availableProcessors() + 1);
+                    .getRuntime().availableProcessors() + 1, _threadFactory);
             mayBlockThreadManager = ThreadManager.newThreadManager(
-                    _mayBlockThreadCount);
+                    _mayBlockThreadCount, _threadFactory);
         } else {
             mayBlockThreadManager = ThreadManager.newThreadManager(
-                    -_mayBlockThreadCount);
+                    -_mayBlockThreadCount, _threadFactory);
             nonBlockingThreadManager = mayBlockThreadManager;
         }
         inboxFactory = (_inboxFactory == null) ? new DefaultInboxFactory()
