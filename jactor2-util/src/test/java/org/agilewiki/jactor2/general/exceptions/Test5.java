@@ -11,8 +11,8 @@ import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
-        final Mailbox mailboxE = mailboxFactory.createMayBlockMailbox();
-        final Mailbox mailboxA = mailboxFactory.createMayBlockMailbox();
+        final Mailbox mailboxE = mailboxFactory.createAtomicMailbox();
+        final Mailbox mailboxA = mailboxFactory.createAtomicMailbox();
         final ActorE actorE = new ActorE(mailboxE);
         final ActorA actorA = new ActorA(mailboxA);
         try {

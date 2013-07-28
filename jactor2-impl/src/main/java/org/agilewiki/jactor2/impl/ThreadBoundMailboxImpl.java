@@ -36,7 +36,7 @@ public class ThreadBoundMailboxImpl extends JAMailboxImpl implements ThreadBound
 
     @Override
     protected Inbox createInbox(int _initialLocalQueueSize) {
-        return new DefaultInbox(_initialLocalQueueSize);
+        return new AtomicInbox(_initialLocalQueueSize);
     }
 
     @Override

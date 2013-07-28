@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.api;
 
 /**
- * MailboxFactory creates NonBlocking, MayBlock and ThreadBound mailboxes.
+ * MailboxFactory creates NonBlocking, Atomic and ThreadBound mailboxes.
  * This class is also responsible for closing everything down and managing a list of
  * auto closables to be called when MailboxFactory.close() is called.
  */
@@ -41,37 +41,41 @@ public interface MailboxFactory extends AutoCloseable {
                                                 final Runnable _onIdle);
 
     /**
-     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
+     * Creates a Mailbox for processing messages that perform long computations
+     * or which may block the thread, or when requests must be processed atomically.
      *
-     * @return A new may block mailbox.
+     * @return A new atomic mailbox.
      */
-    MayBlockMailbox createMayBlockMailbox();
+    AtomicMailbox createAtomicMailbox();
 
     /**
-     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
+     * Creates a Mailbox for processing messages that perform long computations
+     * or which may block the thread, or when requests must be processed atomically.
      *
      * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
-     * @return A new may block mailbox.
+     * @return A new atomic mailbox.
      */
-    MayBlockMailbox createMayBlockMailbox(final int _initialBufferSize);
+    AtomicMailbox createAtomicMailbox(final int _initialBufferSize);
 
     /**
-     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
+     * Creates a Mailbox for processing messages that perform long computations
+     * or which may block the thread, or when requests must be processed atomically.
      *
      * @param _onIdle The run method is called when the input queue is empty.
-     * @return A new may block mailbox.
+     * @return A new atomic mailbox.
      */
-    MayBlockMailbox createMayBlockMailbox(final Runnable _onIdle);
+    AtomicMailbox createAtomicMailbox(final Runnable _onIdle);
 
     /**
-     * Creates a Mailbox for processing messages that perform long computations or which may block the thread.
+     * Creates a Mailbox for processing messages that perform long computations
+     * or which may block the thread, or when requests must be processed atomically.
      *
      * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
      * @param _onIdle            The run method is called when the input queue is empty.
-     * @return A new may block mailbox.
+     * @return A new atomic mailbox.
      */
-    MayBlockMailbox createMayBlockMailbox(final int _initialBufferSize,
-                                          final Runnable _onIdle);
+    AtomicMailbox createAtomicMailbox(final int _initialBufferSize,
+                                      final Runnable _onIdle);
 
     /**
      * Creates a mailbox that runs on an existing thread.

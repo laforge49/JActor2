@@ -11,7 +11,7 @@ import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 public class Test1 extends TestCase {
     public void testI() throws Exception {
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
-        final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
+        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
         final ActorA actorA = new ActorA(mailbox);
         try {
             actorA.throwRequest.call();

@@ -114,7 +114,7 @@ abstract public class MailboxFactoryActivator
         mailboxFactory.addAutoClosable(this);
         jaProperties = new JAProperties(mailboxFactory, null);
         jaProperties.putProperty("bundleContext", bundleContext);
-        initialize(mailboxFactory.createMayBlockMailbox());
+        initialize(mailboxFactory.createAtomicMailbox());
     }
 
     /**

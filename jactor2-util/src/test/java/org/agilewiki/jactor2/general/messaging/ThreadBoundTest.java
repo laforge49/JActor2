@@ -26,7 +26,7 @@ public class ThreadBoundTest extends TestCase {
                 }
             }
         });
-        final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
+        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
         actor1.hi.send(boundMailbox, new ResponseProcessor<String>() {
             @Override

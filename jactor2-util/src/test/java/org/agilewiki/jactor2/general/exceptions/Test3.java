@@ -11,7 +11,7 @@ import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 public class Test3 extends TestCase {
     public void testI() throws Exception {
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
-        final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
+        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
         final ActorC actorC = new ActorC(mailbox);
         final String result = actorC.throwRequest.call();
         assertEquals("java.lang.SecurityException: thrown on request", result);

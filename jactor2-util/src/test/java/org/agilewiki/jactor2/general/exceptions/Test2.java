@@ -12,7 +12,7 @@ public class Test2 extends TestCase {
     public void testI() throws Exception {
         System.out.println("testI");
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
-        final Mailbox mailbox = mailboxFactory.createMayBlockMailbox();
+        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
         final ActorA actorA = new ActorA(mailbox);
         final ActorB actorB = new ActorB(mailbox);
         try {
@@ -28,8 +28,8 @@ public class Test2 extends TestCase {
     public void testIII() throws Exception {
         System.out.println("testIII");
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
-        final ActorA actorA = new ActorA(mailboxFactory.createMayBlockMailbox());
-        final ActorB actorB = new ActorB(mailboxFactory.createMayBlockMailbox());
+        final ActorA actorA = new ActorA(mailboxFactory.createAtomicMailbox());
+        final ActorB actorB = new ActorB(mailboxFactory.createAtomicMailbox());
         try {
             actorB.throwRequest(actorA).call();
         } catch (final SecurityException se) {

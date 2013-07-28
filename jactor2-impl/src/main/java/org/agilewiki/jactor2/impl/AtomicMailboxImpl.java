@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.impl;
 
-import org.agilewiki.jactor2.api.MayBlockMailbox;
+import org.agilewiki.jactor2.api.AtomicMailbox;
 import org.agilewiki.jactor2.api.Message;
 import org.slf4j.Logger;
 
-public class MayBlockMailboxImpl extends UnboundMailboxImpl implements MayBlockMailbox {
+public class AtomicMailboxImpl extends UnboundMailboxImpl implements AtomicMailbox {
 
     /**
      * Create a mailbox.
@@ -15,17 +15,17 @@ public class MayBlockMailboxImpl extends UnboundMailboxImpl implements MayBlockM
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public MayBlockMailboxImpl(Runnable _onIdle,
-                               JAMailboxFactory _factory,
-                               Logger _log,
-                               int _initialBufferSize,
-                               final int _initialLocalQueueSize) {
+    public AtomicMailboxImpl(Runnable _onIdle,
+                             JAMailboxFactory _factory,
+                             Logger _log,
+                             int _initialBufferSize,
+                             final int _initialLocalQueueSize) {
         super(_onIdle, _factory, _log, _initialBufferSize, _initialLocalQueueSize);
     }
 
     @Override
     protected Inbox createInbox(int _initialLocalQueueSize) {
-        return new DefaultInbox(_initialLocalQueueSize);
+        return new AtomicInbox(_initialLocalQueueSize);
     }
 
     @Override

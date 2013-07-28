@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author monster
  */
-public class DefaultInbox extends ConcurrentLinkedQueue<Object>
+public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
         implements Inbox {
 
     /**
@@ -22,9 +22,9 @@ public class DefaultInbox extends ConcurrentLinkedQueue<Object>
     private final ArrayDeque<Object> localQueue;
 
     /**
-     * Creates a DefaultInbox, with the given local queue initial size.
+     * Creates a NonBlockingInbox, with the given local queue initial size.
      */
-    public DefaultInbox(final int initialLocalQueueSize) {
+    public NonBlockingInbox(final int initialLocalQueueSize) {
         if (initialLocalQueueSize > INITIAL_LOCAL_QUEUE_SIZE)
             localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
         else

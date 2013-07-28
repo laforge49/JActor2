@@ -72,7 +72,7 @@ public class AtomicTest extends TestCase {
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             final FifoRequestProcessor fp = new FifoRequestProcessor();
-            fp.initialize(mailboxFactory.createMayBlockMailbox(fp));
+            fp.initialize(mailboxFactory.createAtomicMailbox(fp));
             fp.atomicReq(bReq(fp.getMailbox())).call();
         } catch (UnsupportedOperationException uoe) {
             mailboxFactory.close();

@@ -129,24 +129,24 @@ public class DefaultMailboxFactory implements
     }
 
     @Override
-    public final MayBlockMailboxImpl createMayBlockMailbox() {
-        return createMayBlockMailbox(initialBufferSize, null);
+    public final AtomicMailboxImpl createAtomicMailbox() {
+        return createAtomicMailbox(initialBufferSize, null);
     }
 
     @Override
-    public final MayBlockMailboxImpl createMayBlockMailbox(final int initialBufferSize) {
-        return createMayBlockMailbox(initialBufferSize, null);
+    public final AtomicMailboxImpl createAtomicMailbox(final int initialBufferSize) {
+        return createAtomicMailbox(initialBufferSize, null);
     }
 
     @Override
-    public final MayBlockMailboxImpl createMayBlockMailbox(final Runnable _onIdle) {
-        return createMayBlockMailbox(initialBufferSize, _onIdle);
+    public final AtomicMailboxImpl createAtomicMailbox(final Runnable _onIdle) {
+        return createAtomicMailbox(initialBufferSize, _onIdle);
     }
 
     @Override
-    public final MayBlockMailboxImpl createMayBlockMailbox(final int _initialBufferSize,
-                                                           final Runnable _onIdle) {
-        return new MayBlockMailboxImpl(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
+    public final AtomicMailboxImpl createAtomicMailbox(final int _initialBufferSize,
+                                                       final Runnable _onIdle) {
+        return new AtomicMailboxImpl(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
     }
 
     @Override
