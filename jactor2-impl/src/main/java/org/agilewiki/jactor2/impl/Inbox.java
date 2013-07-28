@@ -21,9 +21,18 @@ public interface Inbox {
     int INITIAL_BUFFER_SIZE = 16;
 
     /**
-     * Is the queue empty?
+     * Is there work that can be done?
+     *
+     * @return True when there is work ready to be done.
      */
-    boolean isNonEmpty();
+    boolean hasWork();
+
+    /**
+     * Is nothing pending?
+     *
+     * @return True when there is no work pending.
+     */
+    boolean isIdle();
 
     /**
      * Inserts a new message in the queue.

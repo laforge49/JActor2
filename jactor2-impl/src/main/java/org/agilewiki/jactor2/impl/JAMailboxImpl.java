@@ -85,8 +85,13 @@ abstract public class JAMailboxImpl implements JAMailbox {
     }
 
     @Override
-    public final boolean isEmpty() {
-        return !inbox.isNonEmpty();
+    public final boolean hasWork() {
+        return inbox.hasWork();
+    }
+
+    @Override
+    public final boolean isIdle() {
+        return inbox.isIdle();
     }
 
     @Override
@@ -196,13 +201,13 @@ abstract public class JAMailboxImpl implements JAMailbox {
             final Message message = inbox.poll();
             if (message == null) {
                 try {
-                    onIdle();
+                    notBusy();
                 } catch (final MigrationException me) {
                     throw me;
                 } catch (Exception e) {
                     log.error("Exception thrown by onIdle", e);
                 }
-                if (inbox.isNonEmpty())
+                if (inbox.hasWork())
                     continue;
                 return;
             }
@@ -217,7 +222,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
     /**
      * Called when all pending messages have been processed.
      */
-    abstract protected void onIdle() throws Exception;
+    abstract protected void notBusy() throws Exception;
 
     @Override
     public final void incomingResponse(final Message _message,

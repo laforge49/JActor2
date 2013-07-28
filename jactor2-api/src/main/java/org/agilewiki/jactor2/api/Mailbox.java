@@ -17,11 +17,18 @@ public interface Mailbox extends Runnable, _Mailbox {
     MailboxFactory getMailboxFactory();
 
     /**
-     * Returns true when the inbox is empty.
+     * Is there work that can be done?
      *
-     * @return True when the inbox is empty.
+     * @return True when there is work ready to be done.
      */
-    boolean isEmpty();
+    boolean hasWork();
+
+    /**
+     * Is nothing pending?
+     *
+     * @return True when there is no work pending.
+     */
+    boolean isIdle();
 
     /**
      * The flush method forwards all buffered message to their target mailbox for

@@ -22,7 +22,7 @@ public class ThreadBoundMailboxImpl extends JAMailboxImpl implements ThreadBound
     }
 
     @Override
-    protected void onIdle() throws Exception {
+    protected void notBusy() throws Exception {
         flush();
     }
 

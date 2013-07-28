@@ -31,13 +31,15 @@ public class DefaultInbox extends ConcurrentLinkedQueue<Object>
             localQueue = new ArrayDeque<Object>(INITIAL_LOCAL_QUEUE_SIZE);
     }
 
-    /**
-     * Is the inbox NOT empty?
-     */
     @Override
-    public boolean isNonEmpty() {
+    public boolean hasWork() {
         //ConcurrentLinkedQueue.isEmpty() is not accurate enough
         return !localQueue.isEmpty() || peek() != null;
+    }
+
+    @Override
+    public boolean isIdle() {
+        return !hasWork();
     }
 
     /**

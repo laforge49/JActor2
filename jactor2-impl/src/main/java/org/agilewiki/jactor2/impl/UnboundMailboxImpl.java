@@ -52,8 +52,8 @@ abstract public class UnboundMailboxImpl extends JAMailboxImpl implements Unboun
     }
 
     @Override
-    protected void onIdle() throws Exception {
-        if (onIdle != null) {
+    protected void notBusy() throws Exception {
+        if (onIdle != null && isIdle()) {
             flush(true);
             onIdle.run();
         }
@@ -71,7 +71,7 @@ abstract public class UnboundMailboxImpl extends JAMailboxImpl implements Unboun
          * The compareAndSet method is a moderately expensive operation,
          * so we use a guard expression to reduce the number of times it is called.
          */
-        if (threadReference.get() == null && inbox.isNonEmpty()) {
+        if (threadReference.get() == null && inbox.hasWork()) {
             mailboxFactory.submit(this);
         }
     }

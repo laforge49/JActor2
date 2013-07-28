@@ -115,7 +115,7 @@ public class FirstStage extends ActorBase implements Runnable {
         if (ndx >= count)
             return;
         createList();
-        while (getMailbox().isEmpty() && ndx < count) {
+        while (!getMailbox().hasWork() && ndx < count) {
             add();
         }
     }

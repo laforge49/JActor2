@@ -96,7 +96,7 @@ final public class ThreadManager {
                                         mailbox.run();
                                     } catch (final MigrationException me) {
                                         threadReference.set(null);
-                                        if (mailbox.isIdler() || !mailbox.isEmpty())
+                                        if (mailbox.isIdler() || mailbox.hasWork())
                                             execute(mailbox);
                                         mailbox = me.mailbox;
                                         threadReference = mailbox.getThreadReference();
@@ -107,7 +107,7 @@ final public class ThreadManager {
                                                 e);
                                     }
                                     threadReference.set(null);
-                                    if (!mailbox.isEmpty())
+                                    if (mailbox.hasWork())
                                         execute(mailbox);
                                     break;
                                 }
