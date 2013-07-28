@@ -21,4 +21,9 @@ public class NonBlockingMailboxImpl extends UnboundMailboxImpl implements NonBlo
                                   final int _initialLocalQueueSize) {
         super(_onIdle, _factory, _log, _initialBufferSize, _initialLocalQueueSize);
     }
+
+    @Override
+    protected Inbox createInbox(int _initialLocalQueueSize) {
+        return new DefaultInbox(_initialLocalQueueSize);
+    }
 }

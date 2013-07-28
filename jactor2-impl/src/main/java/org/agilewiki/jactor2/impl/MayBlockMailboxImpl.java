@@ -24,6 +24,11 @@ public class MayBlockMailboxImpl extends UnboundMailboxImpl implements MayBlockM
     }
 
     @Override
+    protected Inbox createInbox(int _initialLocalQueueSize) {
+        return new DefaultInbox(_initialLocalQueueSize);
+    }
+
+    @Override
     protected void processMessage(final Message message) {
         message.eval(this);
         try {

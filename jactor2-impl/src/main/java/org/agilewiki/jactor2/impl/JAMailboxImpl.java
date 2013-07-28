@@ -61,11 +61,13 @@ abstract public class JAMailboxImpl implements JAMailbox {
                          final int _initialBufferSize,
                          final int _initialLocalQueueSize) {
         mailboxFactory = _factory;
-        inbox = new DefaultInbox(_initialLocalQueueSize);
+        inbox = createInbox(_initialLocalQueueSize);
         log = _log;
         initialBufferSize = _initialBufferSize;
         _factory.addAutoClosable(this);
     }
+
+    abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
     @Override
     public final Logger getLogger() {
