@@ -35,14 +35,9 @@ public class DefaultMailboxFactory implements
     private final Logger logger = LoggerFactory.getLogger(MailboxFactory.class);
 
     /**
-     * The thread pool used by non-blocking mailboxes.
+     * The thread pool used by mailboxes.
      */
-    private final ThreadManager nonBlockingThreadManager;
-
-    /**
-     * The thread pool used by may-block mailboxes.
-     */
-    private final ThreadManager mayBlockThreadManager;
+    private final ThreadManager threadManager;
 
     /**
      * The inbox factory used when creating mailboxes.
@@ -76,7 +71,7 @@ public class DefaultMailboxFactory implements
     private Properties properties;
 
     /**
-     * Create a mailbox factory.
+     * Create a mailbox factory and a threadpool.
      */
     public DefaultMailboxFactory() {
         this(
@@ -88,60 +83,35 @@ public class DefaultMailboxFactory implements
     }
 
     /**
-     * Create a mailbox factory with one or two threadpools.
-     * If the mayBlockThreadCount is == 0, then a common thread pool is created
-     * with a size equal to the number of hardware threads + 1.
-     * If the mayBlockThreadCount is < 0, then a common thread pool is created
-     * with a size = - mayBlockThreadCount.
-     * Otherwise a non-blocking thread pool is created
-     * with a size equal to the number of hardware threads + 1 and a may-block thread pool is created
-     * with a size = mayBlockThreadCount.
+     * Create a mailbox factory and a threadpool.
      *
-     * @param _mayBlockThreadCount The thread pool size for mailboxes that may block.
+     * @param _threadCount          The thread pool size for mailboxes.
      */
-    public DefaultMailboxFactory(final int _mayBlockThreadCount) {
+    public DefaultMailboxFactory(final int _threadCount) {
         this(
                 null,
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
                 Inbox.INITIAL_BUFFER_SIZE,
-                _mayBlockThreadCount,
+                _threadCount,
                 new DefaultThreadFactory());
     }
 
     /**
-     * Create a mailbox factory with one or two threadpools.
-     * If the mayBlockThreadCount is == 0, then a common thread pool is created
-     * with a size equal to the number of hardware threads + 1.
-     * If the mayBlockThreadCount is < 0, then a common thread pool is created
-     * with a size = - mayBlockThreadCount.
-     * Otherwise a non-blocking thread pool is created
-     * with a size equal to the number of hardware threads + 1 and a may-block thread pool is created
-     * with a size = mayBlockThreadCount.
+     * Create a mailbox factory and a threadpool.
      *
      * @param _inboxFactory                 The inbox factory used when creating mailboxes.
      * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
      * @param _initialBufferSize            How big should the initial outbox (per target Mailbox) buffer size be?
-     * @param _mayBlockThreadCount          The thread pool size for mailboxes that may block.
+     * @param _threadCount          The thread pool size for mailboxes.
+     * @param _threadFactory The factory used to create threads for the threadpool.
      */
     public DefaultMailboxFactory(final InboxFactory _inboxFactory,
                                  final int _initialLocalMessageQueueSize,
                                  final int _initialBufferSize,
-                                 final int _mayBlockThreadCount,
+                                 final int _threadCount,
                                  final ThreadFactory _threadFactory) {
-        if (_mayBlockThreadCount == 0) {
-            nonBlockingThreadManager = ThreadManager.newThreadManager(Runtime
-                    .getRuntime().availableProcessors() + 1, _threadFactory);
-            mayBlockThreadManager = nonBlockingThreadManager;
-        } else if (_mayBlockThreadCount > 0) {
-            nonBlockingThreadManager = ThreadManager.newThreadManager(Runtime
-                    .getRuntime().availableProcessors() + 1, _threadFactory);
-            mayBlockThreadManager = ThreadManager.newThreadManager(
-                    _mayBlockThreadCount, _threadFactory);
-        } else {
-            mayBlockThreadManager = ThreadManager.newThreadManager(
-                    -_mayBlockThreadCount, _threadFactory);
-            nonBlockingThreadManager = mayBlockThreadManager;
-        }
+        threadManager = ThreadManager.newThreadManager(
+                    _threadCount, _threadFactory);
         inboxFactory = (_inboxFactory == null) ? new DefaultInboxFactory()
                 : _inboxFactory;
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
@@ -232,10 +202,10 @@ public class DefaultMailboxFactory implements
     }
 
     @Override
-    public final void submit(final UnboundMailbox _mailbox, final boolean _mayBlock)
+    public final void submit(final UnboundMailbox _mailbox)
             throws Exception {
         try {
-            (_mayBlock ? mayBlockThreadManager : nonBlockingThreadManager).execute(_mailbox);
+            threadManager.execute(_mailbox);
         } catch (final Exception e) {
             if (!isClosing())
                 throw e;
@@ -270,8 +240,7 @@ public class DefaultMailboxFactory implements
     @Override
     public final void close() throws Exception {
         if (shuttingDown.compareAndSet(false, true)) {
-            nonBlockingThreadManager.close();
-            mayBlockThreadManager.close();
+            threadManager.close();
             final Iterator<AutoCloseable> it = closables.iterator();
             while (it.hasNext()) {
                 try {

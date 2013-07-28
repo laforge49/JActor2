@@ -72,7 +72,7 @@ abstract public class UnboundMailboxImpl extends JAMailboxImpl implements Unboun
          * so we use a guard expression to reduce the number of times it is called.
          */
         if (threadReference.get() == null && inbox.isNonEmpty()) {
-            mailboxFactory.submit(this, true);
+            mailboxFactory.submit(this);
         }
     }
 

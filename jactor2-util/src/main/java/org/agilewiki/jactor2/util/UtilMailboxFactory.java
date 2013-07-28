@@ -9,27 +9,18 @@ public final class UtilMailboxFactory
         extends DefaultMailboxFactory {
 
     /**
-     * Create a mailbox factory with the default thread pool size for mailboxes that may block and
-     * a second thread pool for the non-blocking mailboxes
-     * with a size equal to the number of hardware threads + 1.
+     * Create a mailbox factory with the default thread pool size for mailboxes.
      */
     public UtilMailboxFactory() {
         super();
     }
 
     /**
-     * Create a mailbox factory with one or two threadpools.
-     * If the mayBlockThreadCount is == 0, then a common thread pool is created
-     * with a size equal to the number of hardware threads + 1.
-     * If the mayBlockThreadCount is < 0, then a common thread pool is created
-     * with a size = - mayBlockThreadCount.
-     * Otherwise a non-blocking thread pool is created
-     * with a size equal to the number of hardware threads + 1 and a may-block thread pool is created
-     * with a size = mayBlockThreadCount.
+     * Create a mailbox factory and a threadpools.
      *
-     * @param mayBlockThreadCount The thread pool size for mailboxes that may block.
+     * @param _threadCount The thread pool size for mailboxes.
      */
-    public UtilMailboxFactory(final int mayBlockThreadCount) {
-        super(mayBlockThreadCount);
+    public UtilMailboxFactory(final int _threadCount) {
+        super(_threadCount);
     }
 }

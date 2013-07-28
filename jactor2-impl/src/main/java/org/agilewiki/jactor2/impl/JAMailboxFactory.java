@@ -9,11 +9,9 @@ public interface JAMailboxFactory extends MailboxFactory {
 
     /**
      * Submit a mailbox for subsequent execution.
-     * The _mayBlock parameter is used to select the appropriate thread pool.
      *
      * @param _mailbox  The mailbox to be run.
-     * @param _mayBlock True if the mailbox might block the thread.
      */
-    void submit(final UnboundMailbox _mailbox, final boolean _mayBlock)
+    void submit(final UnboundMailbox _mailbox)
             throws Exception;
 }
