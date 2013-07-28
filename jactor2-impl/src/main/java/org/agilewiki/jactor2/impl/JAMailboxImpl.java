@@ -51,17 +51,17 @@ abstract public class JAMailboxImpl implements JAMailbox {
     /**
      * Create a mailbox.
      *
-     * @param _factory           The factory of this object.
-     * @param _inbox             The inbox.
-     * @param _log               The Mailbox log.
-     * @param _initialBufferSize Initial size of the outbox for each unique message destination.
+     * @param _factory               The factory of this object.
+     * @param _log                   The Mailbox log.
+     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
+     * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
     public JAMailboxImpl(final JAMailboxFactory _factory,
-                         final Inbox _inbox,
                          final Logger _log,
-                         final int _initialBufferSize) {
+                         final int _initialBufferSize,
+                         final int _initialLocalQueueSize) {
         mailboxFactory = _factory;
-        inbox = _inbox;
+        inbox = new DefaultInbox(_initialLocalQueueSize);
         log = _log;
         initialBufferSize = _initialBufferSize;
         _factory.addAutoClosable(this);

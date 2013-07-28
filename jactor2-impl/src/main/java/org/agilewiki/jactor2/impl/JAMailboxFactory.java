@@ -10,7 +10,7 @@ public interface JAMailboxFactory extends MailboxFactory {
     /**
      * Submit a mailbox for subsequent execution.
      *
-     * @param _mailbox  The mailbox to be run.
+     * @param _mailbox The mailbox to be run.
      */
     void submit(final UnboundMailbox _mailbox)
             throws Exception;

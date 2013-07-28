@@ -13,11 +13,11 @@ public class ThreadBoundMailboxImpl extends JAMailboxImpl implements ThreadBound
     private final Runnable messageProcessor;
 
     public ThreadBoundMailboxImpl(Runnable _messageProcessor,
-                                  JAMailboxFactory factory,
-                                  Inbox inbox,
+                                  JAMailboxFactory _factory,
                                   Logger _log,
-                                  int _initialBufferSize) {
-        super(factory, inbox, _log, _initialBufferSize);
+                                  int _initialBufferSize,
+                                  final int _initialLocalQueueSize) {
+        super(_factory, _log, _initialBufferSize, _initialLocalQueueSize);
         messageProcessor = _messageProcessor;
     }
 

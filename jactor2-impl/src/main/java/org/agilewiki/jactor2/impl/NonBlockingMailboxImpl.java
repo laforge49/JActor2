@@ -8,15 +8,17 @@ public class NonBlockingMailboxImpl extends UnboundMailboxImpl implements NonBlo
     /**
      * Create a mailbox.
      *
-     * @param _onIdle            Object to be run when the inbox is emptied, or null.
-     * @param _factory           The factory of this object.
-     * @param _inbox             The inbox.
-     * @param _log               The Mailbox log.
-     * @param _initialBufferSize Initial size of the outbox for each unique message destination.
+     * @param _onIdle                Object to be run when the inbox is emptied, or null.
+     * @param _factory               The factory of this object.
+     * @param _log                   The Mailbox log.
+     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
+     * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
     public NonBlockingMailboxImpl(Runnable _onIdle,
                                   JAMailboxFactory _factory,
-                                  Inbox _inbox, Logger _log, int _initialBufferSize) {
-        super(_onIdle, _factory, _inbox, _log, _initialBufferSize);
+                                  Logger _log,
+                                  int _initialBufferSize,
+                                  final int _initialLocalQueueSize) {
+        super(_onIdle, _factory, _log, _initialBufferSize, _initialLocalQueueSize);
     }
 }
