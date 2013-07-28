@@ -108,4 +108,12 @@ public class DefaultInbox extends ConcurrentLinkedQueue<Object>
             }
         }
     }
+
+    @Override
+    public void requestBegin() {
+    }
+
+    @Override
+    public void requestEnd() {
+    }
 }

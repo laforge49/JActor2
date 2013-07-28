@@ -232,4 +232,14 @@ abstract public class JAMailboxImpl implements JAMailbox {
     public JAMailboxFactory getMailboxFactory() {
         return mailboxFactory;
     }
+
+    @Override
+    public void requestBegin() {
+        inbox.requestBegin();
+    }
+
+    @Override
+    public void requestEnd() {
+        inbox.requestEnd();
+    }
 }

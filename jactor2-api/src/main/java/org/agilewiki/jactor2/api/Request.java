@@ -352,12 +352,14 @@ public abstract class Request<RESPONSE_TYPE> {
                 mailboxFactory.addAutoClosable(this);
             _targetMailbox.setExceptionHandler(null);
             _targetMailbox.setCurrentMessage(this);
+            _targetMailbox.requestBegin();
             try {
                 request.processRequest(
                         new Transport() {
                             @Override
                             public void processResponse(final Object response)
                                     throws Exception {
+                                _targetMailbox.requestEnd();
                                 if (foreign)
                                     mailboxFactory.removeAutoClosable(RequestMessage.this);
                                 if (!responsePending)
@@ -388,6 +390,7 @@ public abstract class Request<RESPONSE_TYPE> {
                             }
                         });
             } catch (final Throwable t) {
+                _targetMailbox.requestEnd();
                 if (foreign)
                     mailboxFactory.removeAutoClosable(this);
                 processThrowable(_targetMailbox, t);

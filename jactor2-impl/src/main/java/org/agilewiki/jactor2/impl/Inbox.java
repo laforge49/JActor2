@@ -47,4 +47,14 @@ public interface Inbox {
      * @return the head of this queue, or null if this queue is empty
      */
     Message poll();
+
+    /**
+     * Signals the start of a request.
+     */
+    void requestBegin();
+
+    /**
+     * Signals that a request has completed.
+     */
+    void requestEnd();
 }

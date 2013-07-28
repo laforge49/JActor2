@@ -57,4 +57,14 @@ interface _Mailbox extends MessageSource {
      * @param message The message currently being processed.
      */
     void setCurrentMessage(Message message);
+
+    /**
+     * Signals the start of a request.
+     */
+    void requestBegin();
+
+    /**
+     * Signals that a request has completed.
+     */
+    void requestEnd();
 }
