@@ -262,7 +262,8 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * @param _response the response being returned
          */
-        void setResponse(final Object _response) {
+        void setResponse(final Object _response, final Mailbox _activeMailbox) {
+            _activeMailbox.requestEnd();
             responsePending = false;
             response = _response;
         }
@@ -359,13 +360,12 @@ public abstract class Request<RESPONSE_TYPE> {
                             @Override
                             public void processResponse(final Object response)
                                     throws Exception {
-                                _targetMailbox.requestEnd();
                                 if (foreign)
                                     mailboxFactory.removeAutoClosable(RequestMessage.this);
                                 if (!responsePending)
                                     return;
+                                setResponse(response, _targetMailbox);
                                 if (getResponseProcessor() != SignalResponseProcessor.SINGLETON) {
-                                    setResponse(response);
                                     messageSource.incomingResponse(RequestMessage.this, _targetMailbox);
                                 } else {
                                     if (response instanceof Throwable) {
@@ -390,7 +390,6 @@ public abstract class Request<RESPONSE_TYPE> {
                             }
                         });
             } catch (final Throwable t) {
-                _targetMailbox.requestEnd();
                 if (foreign)
                     mailboxFactory.removeAutoClosable(this);
                 processThrowable(_targetMailbox, t);
@@ -431,7 +430,7 @@ public abstract class Request<RESPONSE_TYPE> {
                     if (!(responseProcessor instanceof SignalResponseProcessor)) {
                         if (!responsePending)
                             return;
-                        setResponse(u);
+                        setResponse(u, _activeMailbox);
                         messageSource.incomingResponse(this, _activeMailbox);
                     } else {
                         _activeMailbox.getLogger().error("Thrown by exception handler and uncaught "
@@ -442,7 +441,7 @@ public abstract class Request<RESPONSE_TYPE> {
                 if (!responsePending) {
                     return;
                 }
-                setResponse(_t);
+                setResponse(_t, _activeMailbox);
                 if (!(responseProcessor instanceof SignalResponseProcessor))
                     messageSource.incomingResponse(this, _activeMailbox);
                 else {

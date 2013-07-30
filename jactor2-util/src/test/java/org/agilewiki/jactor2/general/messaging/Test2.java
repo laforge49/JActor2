@@ -10,8 +10,9 @@ import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
  */
 public class Test2 extends TestCase {
     public void testa() throws Exception {
+        System.out.println("testa");
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
-        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
+        final Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
         final Actor2 actor2 = new Actor2(mailbox);
         final String result = actor2.hi2(actor1).call();
@@ -20,6 +21,7 @@ public class Test2 extends TestCase {
     }
 
     public void testc() throws Exception {
+        System.out.println("testb");
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
         final Actor1 actor1 = new Actor1(mailboxFactory.createAtomicMailbox());
         final Actor2 actor2 = new Actor2(mailboxFactory.createAtomicMailbox());

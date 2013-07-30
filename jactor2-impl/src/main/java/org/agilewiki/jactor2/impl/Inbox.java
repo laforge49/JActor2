@@ -43,7 +43,7 @@ public interface Inbox {
     void offer(final boolean _local, final Message _msg);
 
     /**
-     * Inserts a new message in the queue.
+     * Inserts new messages in the queue.
      * Multi-offer assumes the messages are not local.
      *
      * @param _msgs The new messages

@@ -13,6 +13,7 @@ public class AtomicTest extends TestCase {
     int count = 0;
 
     public void test1() throws Exception {
+        System.out.println("test1");
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             int _count = startReq1(mailboxFactory.createNonBlockingMailbox()).call();
@@ -69,10 +70,11 @@ public class AtomicTest extends TestCase {
     }
 
     public void test2() throws Exception {
+        System.out.println("test2");
         UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
         try {
             final FifoRequestProcessor fp = new FifoRequestProcessor();
-            fp.initialize(mailboxFactory.createAtomicMailbox(fp));
+            fp.initialize(mailboxFactory.createNonBlockingMailbox(fp));
             fp.atomicReq(bReq(fp.getMailbox())).call();
         } catch (UnsupportedOperationException uoe) {
             mailboxFactory.close();

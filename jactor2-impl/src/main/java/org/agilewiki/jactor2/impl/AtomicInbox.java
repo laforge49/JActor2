@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class AtomicInbox extends ConcurrentLinkedQueue<Object>
         implements Inbox {
 
+    private boolean processingRequest;
+
     /**
      * Local response pending queue for same-thread exchanges.
      */
@@ -33,39 +35,28 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
     }
 
     @Override
-    public boolean hasWork() {
-        //ConcurrentLinkedQueue.isEmpty() is not accurate enough
-        return !localResponsePendingQueue.isEmpty() || !localNoResponsePendingQueue.isEmpty() || peek() != null;
-    }
-
-    @Override
-    public boolean isIdle() {
-        return !hasWork();
-    }
-
-    /**
-     * Adds a new message to the inbox.
-     *
-     * @param local Should be true for same-thread exchanges
-     * @param msg   The new message
-     */
-    @Override
     public void offer(final boolean local, final Message msg) {
         if (local) {
-            if (msg.isResponsePending())
-                localResponsePendingQueue.offer(msg);
-            else
-                localNoResponsePendingQueue.offer(msg);
+            offerLocal(msg);
         } else {
             super.offer(msg);
         }
     }
 
-    /**
-     * Adds a new message to the inbox.
-     *
-     * @param msgs The new messages
-     */
+    private void offerLocal(final Queue<Message> msgs) {
+        while (!msgs.isEmpty()) {
+            Message msg = msgs.poll();
+            offerLocal(msg);
+        }
+    }
+
+    private void offerLocal(final Message msg) {
+        if (msg.isResponsePending())
+            localResponsePendingQueue.offer(msg);
+        else
+            localNoResponsePendingQueue.offer(msg);
+    }
+
     @Override
     public void offer(final Queue<Message> msgs) {
         if (!msgs.isEmpty()) {
@@ -73,14 +64,30 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
         }
     }
 
-    private void offerLocal(final Queue<Message> msgs) {
-        while (!msgs.isEmpty()) {
-            Message msg = msgs.poll();
-            if (msg.isResponsePending())
-                localResponsePendingQueue.offer(msg);
-            else
-                localNoResponsePendingQueue.offer(msg);
+    @Override
+    public boolean isIdle() {
+        return !processingRequest &&
+                localResponsePendingQueue.isEmpty() &&
+                localNoResponsePendingQueue.isEmpty() &&
+                peek() == null;
+    }
+
+    @Override
+    public boolean hasWork() {
+        while (localNoResponsePendingQueue.isEmpty() &&
+                (processingRequest || localResponsePendingQueue.isEmpty())) {
+            Object obj = super.poll();
+            if (obj == null)
+                return false;
+            if (obj instanceof Message) {
+                Message msg = (Message) obj;
+                offerLocal(msg);
+            } else {
+                final Queue<Message> msgs = (Queue<Message>) obj;
+                offerLocal(msgs);
+            }
         }
+        return true;
     }
 
     /**
@@ -90,39 +97,27 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
      */
     @Override
     public Message poll() {
-        Message msg = localNoResponsePendingQueue.peek();
+        if (!hasWork())
+            return null;
+        Message msg = localNoResponsePendingQueue.poll();
         if (msg != null) {
-            return (Message) localNoResponsePendingQueue.poll();
+            return msg;
         } else {
-            msg = localResponsePendingQueue.peek();
-            if (msg != null) {
-                return (Message) localResponsePendingQueue.poll();
-            } else {
-                Object obj = super.poll();
-                if (obj == null) {
-                    return null;
-                } else {
-                    if (obj instanceof Message) {
-                        return (Message) obj;
-                    } else {
-                        @SuppressWarnings("unchecked")
-                        final Queue<Message> msgs = (Queue<Message>) obj;
-                        final Message result = msgs.poll();
-                        if (!msgs.isEmpty()) {
-                            offerLocal(msgs);
-                        }
-                        return result;
-                    }
-                }
-            }
+            return localResponsePendingQueue.poll();
         }
     }
 
     @Override
     public void requestBegin() {
+        if (processingRequest)
+            throw new IllegalStateException("already processing request");
+        processingRequest = true;
     }
 
     @Override
     public void requestEnd() {
+        if (!processingRequest)
+            throw new IllegalStateException("not processing request");
+        processingRequest = false;
     }
 }

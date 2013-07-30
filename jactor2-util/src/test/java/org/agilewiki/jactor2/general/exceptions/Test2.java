@@ -12,7 +12,7 @@ public class Test2 extends TestCase {
     public void testI() throws Exception {
         System.out.println("testI");
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
-        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
+        final Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
         final ActorA actorA = new ActorA(mailbox);
         final ActorB actorB = new ActorB(mailbox);
         try {
