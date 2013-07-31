@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.util.firehose;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 
 public class FirehoseTest extends TestCase {
     public void test() throws Exception {
         System.gc();
-        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         try {
             DataProcessor next = new EndStage(mailboxFactory);
             next = new NullStage(mailboxFactory, next);

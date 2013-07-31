@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.util.durable;
 
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.Mailbox;
 import org.agilewiki.jactor2.core.MailboxFactory;
 import org.agilewiki.jactor2.core.Properties;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.JAProperties;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
 import org.agilewiki.jactor2.util.durable.app.App;
 import org.agilewiki.jactor2.util.durable.incDes.*;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
@@ -29,8 +29,8 @@ public final class Durables {
      *
      * @return A mailbox factory whose properties include the factoryLocator.
      */
-    public static UtilMailboxFactory createMailboxFactory() throws Exception {
-        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+    public static DefaultMailboxFactory createMailboxFactory() throws Exception {
+        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         FactoryLocator factoryLocator =
                 createFactoryLocator(mailboxFactory, "org.agilewiki.jactor2.util.durable", "", "");
         registerFactories(factoryLocator);

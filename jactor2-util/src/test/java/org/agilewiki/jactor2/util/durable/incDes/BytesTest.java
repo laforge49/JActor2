@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BytesTest extends TestCase {
     public void test() throws Exception {
-        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             Bytes bytes1 = (Bytes) Durables.newSerializable(mailboxFactory, Bytes.FACTORY_NAME);
             Bytes bytes2 = (Bytes) bytes1.copyReq(null).call();

@@ -15,7 +15,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testI() throws Exception {
-        final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 1);
@@ -24,7 +24,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testII() throws Exception {
-        final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
@@ -53,7 +53,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testIII() throws Exception {
-        final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
@@ -95,7 +95,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testIV() throws Exception {
-        final UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);

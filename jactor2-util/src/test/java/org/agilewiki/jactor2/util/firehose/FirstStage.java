@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.util.firehose;
 
 import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.Event;
 import org.agilewiki.jactor2.core.ResponseProcessor;
 import org.agilewiki.jactor2.util.BoundResponseProcessor;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class FirstStage extends ActorBase implements Runnable {
 
     long t0;
 
-    public FirstStage(final UtilMailboxFactory _mailboxFactory,
+    public FirstStage(final DefaultMailboxFactory _mailboxFactory,
                       final DataProcessor _next,
                       final long _count,
                       final int _maxWindowSize)

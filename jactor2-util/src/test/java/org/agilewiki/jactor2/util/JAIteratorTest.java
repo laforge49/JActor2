@@ -31,7 +31,7 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("shared mailbox test");
-        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         try {
             mailbox = mailboxFactory.createNonBlockingMailbox();
             counterMailbox = mailbox;
@@ -45,7 +45,7 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("commandeering mailbox test");
-        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         try {
             mailbox = mailboxFactory.createNonBlockingMailbox();
             counterMailbox = mailboxFactory.createNonBlockingMailbox();
@@ -59,7 +59,7 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("migration mailbox test");
-        UtilMailboxFactory mailboxFactory = new UtilMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
         try {
             mailbox = mailboxFactory.createNonBlockingMailbox();
             counterMailbox = mailboxFactory.createNonBlockingMailbox();

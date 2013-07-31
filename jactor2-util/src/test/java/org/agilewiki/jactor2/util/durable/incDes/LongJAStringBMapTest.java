@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class LongJAStringBMapTest extends TestCase {
     public void test() throws Exception {
-        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Long, JAString> m = (JAMap) Durables.
                     newSerializable(mailboxFactory, JAMap.LONG_JASTRING_MAP);

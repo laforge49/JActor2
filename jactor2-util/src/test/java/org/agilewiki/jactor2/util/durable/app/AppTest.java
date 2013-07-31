@@ -2,14 +2,14 @@ package org.agilewiki.jactor2.util.durable.app;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.incDes.Box;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {
-        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             User.register(factoryLocator);
@@ -28,7 +28,7 @@ public class AppTest extends TestCase {
     }
 
     public void test2() throws Exception {
-        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             User.register(factoryLocator);

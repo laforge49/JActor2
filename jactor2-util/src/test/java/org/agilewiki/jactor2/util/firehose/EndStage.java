@@ -1,13 +1,13 @@
 package org.agilewiki.jactor2.util.firehose;
 
 import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.Request;
 import org.agilewiki.jactor2.core.Transport;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
 
 public class EndStage extends ActorBase implements DataProcessor {
 
-    public EndStage(final UtilMailboxFactory _mailboxFactory)
+    public EndStage(final DefaultMailboxFactory _mailboxFactory)
             throws Exception {
         initialize(_mailboxFactory.createAtomicMailbox());
     }

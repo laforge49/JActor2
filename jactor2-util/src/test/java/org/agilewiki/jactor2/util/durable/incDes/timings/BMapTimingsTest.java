@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.Mailbox;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.util.durable.incDes.JAMap;
@@ -33,7 +33,7 @@ public class BMapTimingsTest extends TestCase {
         //total run time (milliseconds) =  9871
         //time per update (microseconds) = 9871
 
-        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;

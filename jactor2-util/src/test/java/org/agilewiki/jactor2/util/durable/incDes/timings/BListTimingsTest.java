@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.Mailbox;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.util.durable.incDes.JAList;
@@ -33,7 +33,7 @@ public class BListTimingsTest extends TestCase {
         //total run time (milliseconds) = 2877
         //time per update (microseconds) = 2877
 
-        UtilMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JAINTEGER_LIST);
             Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
