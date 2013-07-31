@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 /**
  * Base class for mailboxes.
  */
-abstract public class JAMailboxImpl implements Mailbox {
+abstract public class MailboxBase implements Mailbox {
 
     /**
      * Mailbox logger.
@@ -57,10 +57,10 @@ abstract public class JAMailboxImpl implements Mailbox {
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public JAMailboxImpl(final JAMailboxFactory _factory,
-                         final Logger _log,
-                         final int _initialBufferSize,
-                         final int _initialLocalQueueSize) {
+    public MailboxBase(final JAMailboxFactory _factory,
+                       final Logger _log,
+                       final int _initialBufferSize,
+                       final int _initialLocalQueueSize) {
         mailboxFactory = _factory;
         inbox = createInbox(_initialLocalQueueSize);
         log = _log;
