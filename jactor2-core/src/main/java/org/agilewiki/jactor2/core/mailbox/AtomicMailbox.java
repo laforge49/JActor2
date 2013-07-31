@@ -1,10 +1,43 @@
 package org.agilewiki.jactor2.core.mailbox;
 
-/**
- * A mailbox for actors which may process messages requiring either long computations or which may block the thread,
- * or when requests need to be processed atomically.
- * Buffered messages are flushed to their target mailboxes after incoming message is processed,
- * the active thread migrating to the target mailbox of the last buffered message.
- */
-public interface AtomicMailbox extends Mailbox {
+import org.agilewiki.jactor2.core.context.JAMailboxFactory;
+import org.agilewiki.jactor2.core.context.MigrationException;
+import org.agilewiki.jactor2.core.messaging.Message;
+import org.slf4j.Logger;
+
+public class AtomicMailbox extends UnboundMailboxImpl {
+
+    /**
+     * Create a mailbox.
+     *
+     * @param _onIdle                Object to be run when the inbox is emptied, or null.
+     * @param _factory               The factory of this object.
+     * @param _log                   The Mailbox log.
+     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
+     * @param _initialLocalQueueSize The initial number of slots in the local queue.
+     */
+    public AtomicMailbox(Runnable _onIdle,
+                         JAMailboxFactory _factory,
+                         Logger _log,
+                         int _initialBufferSize,
+                         final int _initialLocalQueueSize) {
+        super(_onIdle, _factory, _log, _initialBufferSize, _initialLocalQueueSize);
+    }
+
+    @Override
+    protected Inbox createInbox(int _initialLocalQueueSize) {
+        return new AtomicInbox(_initialLocalQueueSize);
+    }
+
+    @Override
+    protected void processMessage(final Message message) {
+        message.eval(this);
+        try {
+            flush(true);
+        } catch (final MigrationException me) {
+            throw me;
+        } catch (Exception e) {
+            log.error("Exception thrown by onIdle", e);
+        }
+    }
 }

@@ -106,45 +106,45 @@ public class DefaultMailboxFactory implements
     }
 
     @Override
-    public final NonBlockingMailboxImpl createNonBlockingMailbox() {
+    public final NonBlockingMailbox createNonBlockingMailbox() {
         return createNonBlockingMailbox(initialBufferSize, null);
     }
 
     @Override
-    public final NonBlockingMailboxImpl createNonBlockingMailbox(final int _initialBufferSize) {
+    public final NonBlockingMailbox createNonBlockingMailbox(final int _initialBufferSize) {
         return createNonBlockingMailbox(_initialBufferSize, null);
     }
 
     @Override
-    public final NonBlockingMailboxImpl createNonBlockingMailbox(final Runnable _onIdle) {
+    public final NonBlockingMailbox createNonBlockingMailbox(final Runnable _onIdle) {
         return createNonBlockingMailbox(initialBufferSize, _onIdle);
     }
 
     @Override
-    public final NonBlockingMailboxImpl createNonBlockingMailbox(final int _initialBufferSize,
-                                                                 final Runnable _onIdle) {
-        return new NonBlockingMailboxImpl(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
+    public final NonBlockingMailbox createNonBlockingMailbox(final int _initialBufferSize,
+                                                             final Runnable _onIdle) {
+        return new NonBlockingMailbox(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
     }
 
     @Override
-    public final AtomicMailboxImpl createAtomicMailbox() {
+    public final AtomicMailbox createAtomicMailbox() {
         return createAtomicMailbox(initialBufferSize, null);
     }
 
     @Override
-    public final AtomicMailboxImpl createAtomicMailbox(final int initialBufferSize) {
+    public final AtomicMailbox createAtomicMailbox(final int initialBufferSize) {
         return createAtomicMailbox(initialBufferSize, null);
     }
 
     @Override
-    public final AtomicMailboxImpl createAtomicMailbox(final Runnable _onIdle) {
+    public final AtomicMailbox createAtomicMailbox(final Runnable _onIdle) {
         return createAtomicMailbox(initialBufferSize, _onIdle);
     }
 
     @Override
-    public final AtomicMailboxImpl createAtomicMailbox(final int _initialBufferSize,
-                                                       final Runnable _onIdle) {
-        return new AtomicMailboxImpl(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
+    public final AtomicMailbox createAtomicMailbox(final int _initialBufferSize,
+                                                   final Runnable _onIdle) {
+        return new AtomicMailbox(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
     }
 
     @Override
@@ -204,8 +204,8 @@ public class DefaultMailboxFactory implements
     }
 
     @Override
-    public final ThreadBoundMailboxImpl createThreadBoundMailbox(final Runnable _messageProcessor) {
-        return new ThreadBoundMailboxImpl(_messageProcessor, this,
+    public final ThreadBoundMailbox createThreadBoundMailbox(final Runnable _messageProcessor) {
+        return new ThreadBoundMailbox(_messageProcessor, this,
                 mailboxLogger, initialBufferSize, initialLocalMessageQueueSize);
     }
 

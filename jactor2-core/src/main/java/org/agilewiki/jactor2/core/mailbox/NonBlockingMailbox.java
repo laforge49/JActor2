@@ -1,9 +1,29 @@
 package org.agilewiki.jactor2.core.mailbox;
 
-/**
- * A mailbox for actors which neither block the thread nor perform long computations.
- * Buffered messages are flushed to their target mailboxes when the inbox is empty,
- * the active thread migrating to the target mailbox of the last buffered message.
- */
-public interface NonBlockingMailbox extends Mailbox {
+import org.agilewiki.jactor2.core.context.JAMailboxFactory;
+import org.slf4j.Logger;
+
+public class NonBlockingMailbox extends UnboundMailboxImpl {
+
+    /**
+     * Create a mailbox.
+     *
+     * @param _onIdle                Object to be run when the inbox is emptied, or null.
+     * @param _factory               The factory of this object.
+     * @param _log                   The Mailbox log.
+     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
+     * @param _initialLocalQueueSize The initial number of slots in the local queue.
+     */
+    public NonBlockingMailbox(Runnable _onIdle,
+                              JAMailboxFactory _factory,
+                              Logger _log,
+                              int _initialBufferSize,
+                              final int _initialLocalQueueSize) {
+        super(_onIdle, _factory, _log, _initialBufferSize, _initialLocalQueueSize);
+    }
+
+    @Override
+    protected Inbox createInbox(int _initialLocalQueueSize) {
+        return new NonBlockingInbox(_initialLocalQueueSize);
+    }
 }
