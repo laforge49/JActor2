@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
@@ -37,7 +37,7 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("shared mailbox test");
-        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        JAContext mailboxFactory = new JAContext();
         try {
             mailbox = mailboxFactory.createNonBlockingMailbox();
             counterMailbox = mailbox;
@@ -51,7 +51,7 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("commandeering mailbox test");
-        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        JAContext mailboxFactory = new JAContext();
         try {
             mailbox = mailboxFactory.createNonBlockingMailbox();
             counterMailbox = mailboxFactory.createNonBlockingMailbox();
@@ -65,7 +65,7 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("migration mailbox test");
-        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        JAContext mailboxFactory = new JAContext();
         try {
             mailbox = mailboxFactory.createNonBlockingMailbox();
             counterMailbox = mailboxFactory.createNonBlockingMailbox();

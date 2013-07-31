@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.firehose;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
 
@@ -13,7 +13,7 @@ public class NullStage extends ActorBase implements DataProcessor {
 
     public long total;
 
-    public NullStage(final DefaultMailboxFactory _mailboxFactory, final DataProcessor _next)
+    public NullStage(final JAContext _mailboxFactory, final DataProcessor _next)
             throws Exception {
         next = _next;
         initialize(_mailboxFactory.createAtomicMailbox());

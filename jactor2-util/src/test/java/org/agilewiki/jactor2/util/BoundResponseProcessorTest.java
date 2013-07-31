@@ -2,14 +2,14 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
-        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new JAContext();
         try {
             final Driver driver = new Driver();
             driver.initialize(mailboxFactory.createNonBlockingMailbox());

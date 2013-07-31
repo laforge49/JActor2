@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -11,7 +11,7 @@ public class AtomicTest extends TestCase {
     int count = 0;
 
     public void test() throws Exception {
-        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        JAContext mailboxFactory = new JAContext();
         try {
             int _count = startReq1(mailboxFactory.createAtomicMailbox()).call();
             assertEquals(5, _count);

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.block;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.incDes.Root;
@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.util.durable.incDes.Root;
 public class LBlockTest extends TestCase {
     public void test()
             throws Exception {
-        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        JAContext mailboxFactory = Durables.createMailboxFactory();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
             Root rj = (Root) Durables.newSerializable(

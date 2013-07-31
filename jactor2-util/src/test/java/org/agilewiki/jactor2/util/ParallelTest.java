@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
@@ -14,11 +14,11 @@ public class ParallelTest extends TestCase {
     private static final long DELAY = 200;
 
     private Mailbox mailbox;
-    private DefaultMailboxFactory mailboxFactory;
+    private JAContext mailboxFactory;
     private Request<Void> start;
 
     public void test() throws Exception {
-        mailboxFactory = new DefaultMailboxFactory();
+        mailboxFactory = new JAContext();
         mailbox = mailboxFactory.createNonBlockingMailbox();
 
         start = new Request<Void>(mailbox) {

@@ -2,12 +2,12 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Event;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {
-        DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        JAContext mailboxFactory = new JAContext();
         try {
             Publisher p = new Publisher();
             p.initialize(mailboxFactory.createNonBlockingMailbox());

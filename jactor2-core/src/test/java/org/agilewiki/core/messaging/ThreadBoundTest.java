@@ -1,7 +1,6 @@
 package org.agilewiki.core.messaging;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.mailbox.ThreadBoundMailbox;
@@ -15,7 +14,7 @@ public class ThreadBoundTest extends TestCase {
     JAContext mailboxFactory;
 
     public void testa() throws Exception {
-        mailboxFactory = new DefaultMailboxFactory();
+        mailboxFactory = new JAContext();
         boundMailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
             @Override
             public void run() {

@@ -1,7 +1,6 @@
 package org.agilewiki.core.exceptions;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
@@ -10,7 +9,7 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
  */
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
-        final JAContext mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new JAContext();
         final Mailbox mailboxE = mailboxFactory.createAtomicMailbox();
         final Mailbox mailboxA = mailboxFactory.createAtomicMailbox();
         final ActorE actorE = new ActorE(mailboxE);

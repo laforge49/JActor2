@@ -1,13 +1,13 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BListTest extends TestCase {
     public void test1() throws Exception {
-        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        JAContext mailboxFactory = Durables.createMailboxFactory();
         try {
             JAList<JAString> stringList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JASTRING_LIST);
             stringList1.iAdd(0);
@@ -33,7 +33,7 @@ public class BListTest extends TestCase {
     }
 
     public void test2() throws Exception {
-        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        JAContext mailboxFactory = Durables.createMailboxFactory();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JAINTEGER_LIST);
             int i = 0;
@@ -55,7 +55,7 @@ public class BListTest extends TestCase {
     }
 
     public void test3() throws Exception {
-        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        JAContext mailboxFactory = Durables.createMailboxFactory();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JAINTEGER_LIST);
             int i = 0;
@@ -77,7 +77,7 @@ public class BListTest extends TestCase {
     }
 
     public void test4() throws Exception {
-        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        JAContext mailboxFactory = Durables.createMailboxFactory();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JAINTEGER_LIST);
             int i = 0;
@@ -99,7 +99,7 @@ public class BListTest extends TestCase {
     }
 
     public void test5() throws Exception {
-        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        JAContext mailboxFactory = Durables.createMailboxFactory();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JAINTEGER_LIST);
             int i = 0;
@@ -121,7 +121,7 @@ public class BListTest extends TestCase {
     }
 
     public void test6() throws Exception {
-        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        JAContext mailboxFactory = Durables.createMailboxFactory();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(mailboxFactory, JAList.JAINTEGER_LIST);
             int i = 0;

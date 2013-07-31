@@ -1,7 +1,6 @@
 package org.agilewiki.core.messaging;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
@@ -11,7 +10,7 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
 public class Test2 extends TestCase {
     public void testa() throws Exception {
         System.out.println("testa");
-        final JAContext mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new JAContext();
         final Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
         final Actor2 actor2 = new Actor2(mailbox);
@@ -22,7 +21,7 @@ public class Test2 extends TestCase {
 
     public void testc() throws Exception {
         System.out.println("testb");
-        final JAContext mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new JAContext();
         final Actor1 actor1 = new Actor1(mailboxFactory.createAtomicMailbox());
         final Actor2 actor2 = new Actor2(mailboxFactory.createAtomicMailbox());
         final String result = actor2.hi2(actor1).call();

@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class LongTest extends TestCase {
     public void test() throws Exception {
-        DefaultMailboxFactory mailboxFactory = Durables.createMailboxFactory();
+        JAContext mailboxFactory = Durables.createMailboxFactory();
         try {
             JALong long1 = (JALong) Durables.newSerializable(mailboxFactory, JALong.FACTORY_NAME);
             JALong long2 = (JALong) long1.copyReq(null).call();

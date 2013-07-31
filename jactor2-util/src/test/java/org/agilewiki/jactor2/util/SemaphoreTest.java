@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.ExceptionHandler;
-import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
@@ -23,7 +22,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testI() throws Exception {
-        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new JAContext();
         mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 1);
@@ -32,7 +31,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testII() throws Exception {
-        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new JAContext();
         mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
@@ -61,7 +60,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testIII() throws Exception {
-        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new JAContext();
         mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
@@ -103,7 +102,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testIV() throws Exception {
-        final DefaultMailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new JAContext();
         mailbox = mailboxFactory.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
                 mailboxFactory.createNonBlockingMailbox(), 0);
