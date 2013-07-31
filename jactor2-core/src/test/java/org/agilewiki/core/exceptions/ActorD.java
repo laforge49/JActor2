@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.general.exceptions;
+package org.agilewiki.core.exceptions;
 
 import org.agilewiki.jactor2.core.*;
 

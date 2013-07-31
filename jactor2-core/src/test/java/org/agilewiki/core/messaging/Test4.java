@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.general.messaging;
+package org.agilewiki.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.DefaultMailboxFactory;
@@ -8,25 +8,21 @@ import org.agilewiki.jactor2.core.MailboxFactory;
 /**
  * Test code.
  */
-public class Test2 extends TestCase {
-    public void testa() throws Exception {
-        System.out.println("testa");
+public class Test4 extends TestCase {
+    public void testb() throws Exception {
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
         final Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
-        final Actor2 actor2 = new Actor2(mailbox);
-        final String result = actor2.hi2(actor1).call();
-        assertEquals("Hello world!", result);
+        final Actor4 actor4 = new Actor4(mailbox);
+        actor4.hi4(actor1).call();
         mailboxFactory.close();
     }
 
-    public void testc() throws Exception {
-        System.out.println("testb");
+    public void testd() throws Exception {
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
         final Actor1 actor1 = new Actor1(mailboxFactory.createAtomicMailbox());
-        final Actor2 actor2 = new Actor2(mailboxFactory.createAtomicMailbox());
-        final String result = actor2.hi2(actor1).call();
-        assertEquals("Hello world!", result);
+        final Actor4 actor4 = new Actor4(mailboxFactory.createAtomicMailbox());
+        actor4.hi4(actor1).call();
         mailboxFactory.close();
     }
 }

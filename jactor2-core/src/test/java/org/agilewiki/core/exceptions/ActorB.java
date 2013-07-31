@@ -1,26 +1,23 @@
-package org.agilewiki.jactor2.general.messaging;
+package org.agilewiki.core.exceptions;
 
 import org.agilewiki.jactor2.core.Mailbox;
 import org.agilewiki.jactor2.core.Request;
 import org.agilewiki.jactor2.core.Transport;
 
-/**
- * Test code.
- */
-public class Actor3 {
+public class ActorB {
     private final Mailbox mailbox;
-    public final Request<Void> hi3;
 
-    public Actor3(final Mailbox mbox) {
+    public ActorB(final Mailbox mbox) {
         this.mailbox = mbox;
+    }
 
-        hi3 = new Request<Void>(mailbox) {
+    public Request<Void> throwRequest(final ActorA actorA) {
+        return new Request<Void>(mailbox) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
                     throws Exception {
-                System.out.println("Hello world!");
-                responseProcessor.processResponse(null);
+                actorA.throwRequest.send(mailbox, responseProcessor);
             }
         };
     }

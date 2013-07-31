@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.general;
+package org.agilewiki.core;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.*;

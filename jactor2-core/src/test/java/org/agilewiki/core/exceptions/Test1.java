@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.general.messaging;
+package org.agilewiki.core.exceptions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.DefaultMailboxFactory;
@@ -9,12 +9,17 @@ import org.agilewiki.jactor2.core.MailboxFactory;
  * Test code.
  */
 public class Test1 extends TestCase {
-    public void testa() throws Exception {
+    public void testI() throws Exception {
         final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
         final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
-        final Actor1 actor1 = new Actor1(mailbox);
-        final String result = actor1.hi.call();
-        assertEquals("Hello world!", result);
-        mailboxFactory.close();
+        final ActorA actorA = new ActorA(mailbox);
+        try {
+            actorA.throwRequest.call();
+        } catch (final SecurityException se) {
+            mailboxFactory.close();
+            return;
+        }
+        throw new Exception("Security exception was not caught");
     }
+
 }
