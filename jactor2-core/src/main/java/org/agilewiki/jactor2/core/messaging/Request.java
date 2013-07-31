@@ -82,7 +82,7 @@ public abstract class Request<RESPONSE_TYPE> {
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
         final RequestMessage message = new RequestMessage(
-                _source.getContext() != mailbox.getContext(),
+                _source.getJAContext() != mailbox.getJAContext(),
                 _source,
                 _source.getCurrentMessage(),
                 this,
@@ -352,9 +352,9 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox whose thread is to evaluate the request.
          */
         private void processRequestMessage(final Mailbox _targetMailbox) {
-            final JAContext mailboxFactory = _targetMailbox.getContext();
+            final JAContext jaContext = _targetMailbox.getJAContext();
             if (foreign)
-                mailboxFactory.addAutoClosable(this);
+                jaContext.addAutoClosable(this);
             _targetMailbox.setExceptionHandler(null);
             _targetMailbox.setCurrentMessage(this);
             _targetMailbox.requestBegin();
@@ -365,7 +365,7 @@ public abstract class Request<RESPONSE_TYPE> {
                             public void processResponse(final Object response)
                                     throws Exception {
                                 if (foreign)
-                                    mailboxFactory.removeAutoClosable(RequestMessage.this);
+                                    jaContext.removeAutoClosable(RequestMessage.this);
                                 if (!responsePending)
                                     return;
                                 setResponse(response, _targetMailbox);
@@ -380,12 +380,12 @@ public abstract class Request<RESPONSE_TYPE> {
                             }
 
                             @Override
-                            public JAContext getMailboxFactory() {
+                            public JAContext getJAContext() {
                                 if (messageSource == null)
                                     return null;
                                 if (!(messageSource instanceof Mailbox))
                                     return null;
-                                return ((Mailbox) messageSource).getContext();
+                                return ((Mailbox) messageSource).getJAContext();
                             }
 
                             @Override
@@ -395,7 +395,7 @@ public abstract class Request<RESPONSE_TYPE> {
                         });
             } catch (final Throwable t) {
                 if (foreign)
-                    mailboxFactory.removeAutoClosable(this);
+                    jaContext.removeAutoClosable(this);
                 processThrowable(_targetMailbox, t);
             }
         }

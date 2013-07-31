@@ -9,13 +9,13 @@ import org.agilewiki.jactor2.core.messaging.Transport;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
+        final JAContext jaContext = new JAContext();
         try {
             final Driver driver = new Driver();
-            driver.initialize(mailboxFactory.createNonBlockingMailbox());
+            driver.initialize(jaContext.createNonBlockingMailbox());
             assertEquals("Hello world!", driver.doitReq().call());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

@@ -8,52 +8,52 @@ import org.agilewiki.jactor2.util.durable.Durables;
 public class IncDesTest extends TestCase {
     public void test1() throws Exception {
         System.err.println("\nTest 1");
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            IncDes a = (IncDes) Durables.newSerializable(mailboxFactory, IncDes.FACTORY_NAME);
+            IncDes a = (IncDes) Durables.newSerializable(jaContext, IncDes.FACTORY_NAME);
             int l = a.getSerializedLengthReq().call();
             System.err.println(l);
             assertEquals(l, 0);
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test4() throws Exception {
         System.err.println("\nTest 4");
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            IncDes a = (IncDes) Durables.newSerializable(mailboxFactory, IncDes.FACTORY_NAME);
+            IncDes a = (IncDes) Durables.newSerializable(jaContext, IncDes.FACTORY_NAME);
             byte[] bytes = a.getSerializedBytesReq().call();
             int l = bytes.length;
             System.err.println(l);
             assertEquals(l, 0);
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test5() throws Exception {
         System.err.println("\nTest 5");
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            IncDes a = (IncDes) Durables.newSerializable(mailboxFactory, IncDes.FACTORY_NAME);
+            IncDes a = (IncDes) Durables.newSerializable(jaContext, IncDes.FACTORY_NAME);
             a.load(new byte[0]);
             int l = a.getSerializedLengthReq().call();
             System.err.println(l);
             assertEquals(l, 0);
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test6() throws Exception {
         System.err.println("\nTest 6");
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            IncDes jid1 = (IncDes) Durables.newSerializable(mailboxFactory, IncDes.FACTORY_NAME);
+            IncDes jid1 = (IncDes) Durables.newSerializable(jaContext, IncDes.FACTORY_NAME);
             jid1.load(new byte[0]);
-            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
+            Mailbox mailbox = jaContext.createNonBlockingMailbox();
             IncDes jid2 = (IncDes) jid1.copyReq(mailbox).call();
             int l = jid2.getDurable().getSerializedLengthReq().call();
             System.err.println(l);
@@ -61,7 +61,7 @@ public class IncDesTest extends TestCase {
             boolean eq = jid1.isEqualReq(jid2).call();
             assertTrue(eq);
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

@@ -22,32 +22,32 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testI() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
-        mailbox = mailboxFactory.createNonBlockingMailbox();
+        final JAContext jaContext = new JAContext();
+        mailbox = jaContext.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
-                mailboxFactory.createNonBlockingMailbox(), 1);
+                jaContext.createNonBlockingMailbox(), 1);
         semaphore.acquireReq().call();
-        mailboxFactory.close();
+        jaContext.close();
     }
 
     public void testII() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
-        mailbox = mailboxFactory.createNonBlockingMailbox();
+        final JAContext jaContext = new JAContext();
+        mailbox = jaContext.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
-                mailboxFactory.createNonBlockingMailbox(), 0);
+                jaContext.createNonBlockingMailbox(), 0);
         semaphore.release();
         semaphore.acquireReq().call();
-        mailboxFactory.close();
+        jaContext.close();
     }
 
     private void delayedRelease(final JASemaphore semaphore,
                                 final long delay,
-                                final JAContext mailboxFactory) throws Exception {
+                                final JAContext jaContext) throws Exception {
         new Event<SemaphoreTest>() {
             @Override
             public void processEvent(final SemaphoreTest actor)
                     throws Exception {
-                new Delay(mailboxFactory).sleepReq(delay).send(getMailbox(),
+                new Delay(jaContext).sleepReq(delay).send(getMailbox(),
                         new ResponseProcessor<Void>() {
                             @Override
                             public void processResponse(final Void response)
@@ -60,17 +60,17 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testIII() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
-        mailbox = mailboxFactory.createNonBlockingMailbox();
+        final JAContext jaContext = new JAContext();
+        mailbox = jaContext.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
-                mailboxFactory.createNonBlockingMailbox(), 0);
+                jaContext.createNonBlockingMailbox(), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
-        delayedRelease(semaphore, d, mailboxFactory);
+        delayedRelease(semaphore, d, jaContext);
         semaphore.acquireReq().call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
-        mailboxFactory.close();
+        jaContext.close();
     }
 
     private Request<Boolean> acquireException(final JASemaphore semaphore,
@@ -102,18 +102,18 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testIV() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
-        mailbox = mailboxFactory.createNonBlockingMailbox();
+        final JAContext jaContext = new JAContext();
+        mailbox = jaContext.createNonBlockingMailbox();
         final JASemaphore semaphore = new JASemaphore(
-                mailboxFactory.createNonBlockingMailbox(), 0);
+                jaContext.createNonBlockingMailbox(), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
-        delayedRelease(semaphore, d, mailboxFactory);
+        delayedRelease(semaphore, d, jaContext);
         final boolean result = acquireException(semaphore,
-                mailboxFactory.createNonBlockingMailbox()).call();
+                jaContext.createNonBlockingMailbox()).call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
         assertTrue(result);
-        mailboxFactory.close();
+        jaContext.close();
     }
 }

@@ -37,13 +37,13 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("shared mailbox test");
-        JAContext mailboxFactory = new JAContext();
+        JAContext jaContext = new JAContext();
         try {
-            mailbox = mailboxFactory.createNonBlockingMailbox();
+            mailbox = jaContext.createNonBlockingMailbox();
             counterMailbox = mailbox;
             runReq().call();
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
@@ -51,13 +51,13 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("commandeering mailbox test");
-        JAContext mailboxFactory = new JAContext();
+        JAContext jaContext = new JAContext();
         try {
-            mailbox = mailboxFactory.createNonBlockingMailbox();
-            counterMailbox = mailboxFactory.createNonBlockingMailbox();
+            mailbox = jaContext.createNonBlockingMailbox();
+            counterMailbox = jaContext.createNonBlockingMailbox();
             runReq().call();
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
@@ -65,13 +65,13 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("migration mailbox test");
-        JAContext mailboxFactory = new JAContext();
+        JAContext jaContext = new JAContext();
         try {
-            mailbox = mailboxFactory.createNonBlockingMailbox();
-            counterMailbox = mailboxFactory.createNonBlockingMailbox();
+            mailbox = jaContext.createNonBlockingMailbox();
+            counterMailbox = jaContext.createNonBlockingMailbox();
             runReq().call();
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 

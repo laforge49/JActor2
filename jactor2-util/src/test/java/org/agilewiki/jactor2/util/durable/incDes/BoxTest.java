@@ -9,11 +9,11 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class BoxTest extends TestCase {
     public void test() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
             Factory boxAFactory = factoryLocator.getFactory(Box.FACTORY_NAME);
-            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
+            Mailbox mailbox = jaContext.createNonBlockingMailbox();
             Box box1 = (Box) boxAFactory.newSerializable(mailbox);
             int sl = box1.getSerializedLength();
             assertEquals(4, sl);
@@ -69,7 +69,7 @@ public class BoxTest extends TestCase {
             sl = rpa.getSerializedLength();
             assertEquals(0, sl);
 
-            Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, mailboxFactory);
+            Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, jaContext);
             sl = box3.getSerializedLength();
             assertEquals(4, sl);
             made = box3.makeValueReq(Box.FACTORY_NAME).call();
@@ -123,7 +123,7 @@ public class BoxTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

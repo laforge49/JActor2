@@ -7,10 +7,10 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IntegerJAIntegerBMapTest extends TestCase {
     public void test1() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             m.kMake(0);
             m.kMake(1);
             m.kMake(2);
@@ -20,7 +20,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             sj0.setValue(0);
             sj1.setValue(1);
             sj2.setValue(2);
-            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
+            Mailbox mailbox = jaContext.createNonBlockingMailbox();
             JAMap<Integer, JAInteger> n = (JAMap) m.copy(mailbox);
             JAInteger s0 = n.kGet(0);
             JAInteger s1 = n.kGet(1);
@@ -29,15 +29,15 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             assertEquals(1, (int) s1.getValue());
             assertEquals(2, (int) s2.getValue());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test2() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < 28) {
                 m.kMake(i);
@@ -53,15 +53,15 @@ public class IntegerJAIntegerBMapTest extends TestCase {
                 i += 1;
             }
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test3() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < 41) {
                 m.kMake(i);
@@ -77,15 +77,15 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             }
             assertEquals(41, m.size());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test4() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < 391) {
                 m.kMake(i);
@@ -101,15 +101,15 @@ public class IntegerJAIntegerBMapTest extends TestCase {
                 i += 1;
             }
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test5() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -125,15 +125,15 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             }
             assertEquals(10000, m.size());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test6() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -148,15 +148,15 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             }
             assertEquals(0, m.size());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test7() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -171,15 +171,15 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             }
             assertEquals(0, m.size());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test8() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -194,15 +194,15 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             }
             assertEquals(0, m.size());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test9() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Integer, JAInteger> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+                    newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < 10000) {
                 m.kMake(i);
@@ -217,7 +217,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             }
             assertEquals(0, m.size());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

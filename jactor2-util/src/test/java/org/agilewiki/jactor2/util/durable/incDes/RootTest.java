@@ -9,11 +9,11 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class RootTest extends TestCase {
     public void test() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
+            Mailbox mailbox = jaContext.createNonBlockingMailbox();
             Root root1 = (Root) rootFactory.newSerializable(mailbox, factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);
@@ -69,7 +69,7 @@ public class RootTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

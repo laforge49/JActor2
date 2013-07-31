@@ -14,7 +14,7 @@ public interface Transport<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_TYP
      * @return The JAContext of the request source, or null when the request was
      *         passed using signal or call.
      */
-    JAContext getMailboxFactory();
+    JAContext getJAContext();
 
     /**
      * Returns an exception as a response instead of throwing it.

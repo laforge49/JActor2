@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * An activator that provides both a mailbox factory and a registered factory locator service.
  */
-abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
+abstract public class FactoryLocatorActivator extends JAContextActivator {
     private final Logger log = LoggerFactory.getLogger(FactoryLocatorActivator.class);
 
     /**
@@ -22,7 +22,7 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         initializeActivator(_bundleContext);
-        mailboxFactoryStart();
+        jaContextStart();
         createFactoryLocator();
         begin();
     }
@@ -48,8 +48,8 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
      */
     protected void createFactoryLocator() throws Exception {
         factoryLocator = new OsgiFactoryLocator();
-        factoryLocator.setMailboxFactory(getMailboxFactory());
-        Properties properties = getMailboxFactory().getProperties();
+        factoryLocator.setJAContext(getJAContext());
+        Properties properties = getJAContext().getProperties();
         properties.putProperty("factoryLocator", factoryLocator);
     }
 
@@ -109,6 +109,6 @@ abstract public class FactoryLocatorActivator extends MailboxFactoryActivator {
     @Override
     public void stop(BundleContext context) throws Exception {
         setClosing();
-        getMailboxFactory().close();
+        getJAContext().close();
     }
 }

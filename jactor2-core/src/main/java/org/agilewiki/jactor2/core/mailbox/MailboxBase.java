@@ -22,7 +22,7 @@ abstract public class MailboxBase implements Mailbox {
     /**
      * The factory of this mailbox.
      */
-    protected final JAContext mailboxFactory;
+    protected final JAContext jaContext;
 
     /**
      * The inbox, implemented as a local queue and a concurrent queue.
@@ -61,7 +61,7 @@ abstract public class MailboxBase implements Mailbox {
                        final Logger _log,
                        final int _initialBufferSize,
                        final int _initialLocalQueueSize) {
-        mailboxFactory = _factory;
+        jaContext = _factory;
         inbox = createInbox(_initialLocalQueueSize);
         log = _log;
         initialBufferSize = _initialBufferSize;
@@ -104,7 +104,7 @@ abstract public class MailboxBase implements Mailbox {
         while (iter.hasNext()) {
             final Entry<Mailbox, ArrayDeque<Message>> entry = iter.next();
             final Mailbox target = entry.getKey();
-            if (target.getContext() != mailboxFactory) {
+            if (target.getJAContext() != jaContext) {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.unbufferedAddMessages(messages);
@@ -141,7 +141,7 @@ abstract public class MailboxBase implements Mailbox {
 
     public void unbufferedAddMessages(final Message _message, final boolean _local)
             throws Exception {
-        if (mailboxFactory.isClosing()) {
+        if (jaContext.isClosing()) {
             if (_message.isForeign() && _message.isResponsePending())
                 try {
                     _message.close();
@@ -156,7 +156,7 @@ abstract public class MailboxBase implements Mailbox {
     @Override
     public void unbufferedAddMessages(final Queue<Message> _messages)
             throws Exception {
-        if (mailboxFactory.isClosing()) {
+        if (jaContext.isClosing()) {
             final Iterator<Message> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final Message message = itm.next();
@@ -179,7 +179,7 @@ abstract public class MailboxBase implements Mailbox {
 
     @Override
     public boolean buffer(final Message _message, final Mailbox _target) {
-        if (mailboxFactory.isClosing())
+        if (jaContext.isClosing())
             return false;
         ArrayDeque<Message> buffer;
         if (sendBuffer == null) {
@@ -237,8 +237,8 @@ abstract public class MailboxBase implements Mailbox {
     }
 
     @Override
-    public JAContext getContext() {
-        return mailboxFactory;
+    public JAContext getJAContext() {
+        return jaContext;
     }
 
     @Override

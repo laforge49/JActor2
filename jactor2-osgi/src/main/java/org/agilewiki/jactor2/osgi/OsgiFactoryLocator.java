@@ -19,7 +19,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     /**
      * The mailbox factory to which the factory locator is bound.
      */
-    private JAContext mailboxFactory;
+    private JAContext jaContext;
 
     /**
      * The contents of the bundle's config file.
@@ -50,19 +50,19 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
      *
      * @return The mailbox factory.
      */
-    public JAContext getMailboxFactory() {
-        return mailboxFactory;
+    public JAContext getJAContext() {
+        return jaContext;
     }
 
     /**
      * Bind this factory locator to a mailbox factory.
      *
-     * @param _mailboxFactory The mailbox factory.
+     * @param _jaContext The mailbox factory.
      */
-    public void setMailboxFactory(final JAContext _mailboxFactory) {
-        if (mailboxFactory != null)
+    public void setJAContext(final JAContext _jaContext) {
+        if (jaContext != null)
             throw new IllegalStateException("mailbox factory already set");
-        mailboxFactory = _mailboxFactory;
+        jaContext = _jaContext;
     }
 
     /**
@@ -87,7 +87,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     public void close() throws Exception {
         super.close();
         if (essentialService) {
-            mailboxFactory.close();
+            jaContext.close();
         } else if (serviceRegistration != null)
             serviceRegistration.unregister();
     }

@@ -8,13 +8,13 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class UnionTest extends TestCase {
     public void test() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
             Durables.registerUnionFactory(factoryLocator, "siUnion", JAString.FACTORY_NAME, "siUnion");
-            Union siu1 = (Union) Durables.newSerializable(mailboxFactory, "siUnion");
+            Union siu1 = (Union) Durables.newSerializable(jaContext, "siUnion");
             assertNull(siu1.getValue());
-            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
+            Mailbox mailbox = jaContext.createNonBlockingMailbox();
             Union siu2 = (Union) siu1.copy(mailbox);
             assertNull(siu2.getValue());
             siu2.setValue(JAString.FACTORY_NAME);
@@ -24,7 +24,7 @@ public class UnionTest extends TestCase {
             JAString sj3 = (JAString) siu3.getValue();
             assertNotNull(sj3);
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

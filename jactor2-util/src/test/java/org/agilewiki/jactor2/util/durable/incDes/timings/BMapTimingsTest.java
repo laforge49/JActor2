@@ -33,9 +33,9 @@ public class BMapTimingsTest extends TestCase {
         //total run time (milliseconds) =  9871
         //time per update (microseconds) = 9871
 
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(mailboxFactory, JAMap.INTEGER_JAINTEGER_MAP);
+            JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(jaContext, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < s) {
                 m1.kMake(i);
@@ -46,7 +46,7 @@ public class BMapTimingsTest extends TestCase {
             m1.getSerializedBytes();
             int j = 0;
             i = s / 2;
-            Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
+            Mailbox mailbox = jaContext.createNonBlockingMailbox();
             long t0 = System.currentTimeMillis();
             while (j < r) {
                 JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(mailbox);
@@ -63,7 +63,7 @@ public class BMapTimingsTest extends TestCase {
             long tpu = rt * 1000L / r;
             System.out.println("time per update (microseconds) = " + tpu);
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

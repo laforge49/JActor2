@@ -11,12 +11,12 @@ public class AtomicTest extends TestCase {
     int count = 0;
 
     public void test() throws Exception {
-        JAContext mailboxFactory = new JAContext();
+        JAContext jaContext = new JAContext();
         try {
-            int _count = startReq1(mailboxFactory.createAtomicMailbox()).call();
+            int _count = startReq1(jaContext.createAtomicMailbox()).call();
             assertEquals(5, _count);
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
@@ -25,7 +25,7 @@ public class AtomicTest extends TestCase {
             @Override
             public void processRequest(final Transport<Integer> _rp)
                     throws Exception {
-                Mailbox mailbox = _mailbox.getContext().createAtomicMailbox();
+                Mailbox mailbox = _mailbox.getJAContext().createAtomicMailbox();
                 ResponseProcessor rc = new ResponseCounter(5, null,
                         new ResponseProcessor() {
                             @Override
@@ -48,7 +48,7 @@ public class AtomicTest extends TestCase {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
-                Delay delay = new Delay(_mailbox.getContext());
+                Delay delay = new Delay(_mailbox.getJAContext());
                 delay.sleepReq(100 - (msg * 20)).send(_mailbox,
                         new ResponseProcessor<Void>() {
                             @Override

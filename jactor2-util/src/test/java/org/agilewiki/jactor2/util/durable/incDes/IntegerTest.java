@@ -6,9 +6,9 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IntegerTest extends TestCase {
     public void test() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            JAInteger int1 = (JAInteger) Durables.newSerializable(mailboxFactory, JAInteger.FACTORY_NAME);
+            JAInteger int1 = (JAInteger) Durables.newSerializable(jaContext, JAInteger.FACTORY_NAME);
             JAInteger int2 = (JAInteger) int1.copyReq(null).call();
             int2.setValueReq(1).call();
             JAInteger int3 = (JAInteger) int2.copyReq(null).call();
@@ -27,7 +27,7 @@ public class IntegerTest extends TestCase {
             v = int3.getValueReq().call();
             assertEquals(1, v);
 
-            Box box1 = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
+            Box box1 = (Box) Durables.newSerializable(jaContext, Box.FACTORY_NAME);
             box1.setValueReq(JAInteger.FACTORY_NAME).call();
             JAInteger rpa = (JAInteger) box1.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();
@@ -38,7 +38,7 @@ public class IntegerTest extends TestCase {
             assertEquals(-1, v);
 
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

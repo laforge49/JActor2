@@ -16,7 +16,7 @@ import java.util.Hashtable;
  * with a reference to the BundleContext stored in the bundleContext property
  * in the JAContext.
  */
-abstract public class MailboxFactoryActivator
+abstract public class JAContextActivator
         extends ActorBase implements BundleActivator, ManagedService, AutoCloseable {
 
     /**
@@ -32,7 +32,7 @@ abstract public class MailboxFactoryActivator
     /**
      * The mailbox factory used by the bundle.
      */
-    private JAContext mailboxFactory;
+    private JAContext jaContext;
 
     /**
      * The properties held by the mailbox factory.
@@ -52,7 +52,7 @@ abstract public class MailboxFactoryActivator
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         initializeActivator(_bundleContext);
-        mailboxFactoryStart();
+        jaContextStart();
         begin();
     }
 
@@ -62,9 +62,9 @@ abstract public class MailboxFactoryActivator
      * @return The request.
      */
     protected void begin() throws Exception {
-        new Event<MailboxFactoryActivator>() {
+        new Event<JAContextActivator>() {
             @Override
-            public void processEvent(MailboxFactoryActivator _targetActor) throws Exception {
+            public void processEvent(JAContextActivator _targetActor) throws Exception {
                 process();
             }
         }.signal(this);
@@ -80,7 +80,7 @@ abstract public class MailboxFactoryActivator
     @Override
     public void stop(BundleContext context) throws Exception {
         setClosing();
-        mailboxFactory.close();
+        jaContext.close();
     }
 
     /**
@@ -98,8 +98,8 @@ abstract public class MailboxFactoryActivator
      *
      * @return The mailbox factory.
      */
-    protected JAContext getMailboxFactory() {
-        return mailboxFactory;
+    protected JAContext getJAContext() {
+        return jaContext;
     }
 
     /**
@@ -109,12 +109,12 @@ abstract public class MailboxFactoryActivator
      * The activator is also added to the close set of the mailbox factory
      * and the activator is given a mailbox that may block.
      */
-    protected final void mailboxFactoryStart() throws Exception {
-        mailboxFactory = new JAContext();
-        mailboxFactory.addAutoClosable(this);
-        jaProperties = new JAProperties(mailboxFactory, null);
+    protected final void jaContextStart() throws Exception {
+        jaContext = new JAContext();
+        jaContext.addAutoClosable(this);
+        jaProperties = new JAProperties(jaContext, null);
         jaProperties.putProperty("bundleContext", bundleContext);
-        initialize(mailboxFactory.createAtomicMailbox());
+        initialize(jaContext.createAtomicMailbox());
     }
 
     /**

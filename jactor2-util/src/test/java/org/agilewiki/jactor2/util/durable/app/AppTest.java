@@ -9,11 +9,11 @@ import org.agilewiki.jactor2.util.durable.incDes.Box;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
             User.register(factoryLocator);
-            User user1 = (User) Durables.newSerializable(mailboxFactory, "user");
+            User user1 = (User) Durables.newSerializable(jaContext, "user");
             user1.PAName().setValue("Joe");
             user1.PAAge().setValue(42);
             user1.PALocation().setValue("Boston");
@@ -23,16 +23,16 @@ public class AppTest extends TestCase {
             assertEquals(42, (int) user2.PAAge().getValue());
             Assert.assertEquals("Boston", user2.PALocation().getValue());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 
     public void test2() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
             User.register(factoryLocator);
-            Box box1 = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
+            Box box1 = (Box) Durables.newSerializable(jaContext, Box.FACTORY_NAME);
             box1.setValue("user");
             User user1 = (User) box1.getValue();
             user1.PAName().setValue("Joe");
@@ -45,7 +45,7 @@ public class AppTest extends TestCase {
             assertEquals(42, (int) user2.PAAge().getValue());
             Assert.assertEquals("Boston", user2.PALocation().getValue());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

@@ -9,13 +9,13 @@ import org.agilewiki.jactor2.util.durable.incDes.Root;
 public class LBlockTest extends TestCase {
     public void test()
             throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(mailboxFactory);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
             Root rj = (Root) Durables.newSerializable(
                     factoryLocator,
                     Root.FACTORY_NAME,
-                    mailboxFactory.createNonBlockingMailbox());
+                    jaContext.createNonBlockingMailbox());
             LBlock lb1 = new LBlock();
             lb1.setRootJid(rj);
             byte[] bs = lb1.serialize();
@@ -32,9 +32,9 @@ public class LBlockTest extends TestCase {
             LBlock lb2 = new LBlock();
             int rjl2 = lb2.setHeaderBytes(h);
             lb2.setRootBytes(sd);
-            Root rj2 = lb2.getRoot(factoryLocator, mailboxFactory.createNonBlockingMailbox(), null);
+            Root rj2 = lb2.getRoot(factoryLocator, jaContext.createNonBlockingMailbox(), null);
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

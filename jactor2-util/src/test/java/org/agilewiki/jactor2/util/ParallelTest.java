@@ -14,12 +14,12 @@ public class ParallelTest extends TestCase {
     private static final long DELAY = 200;
 
     private Mailbox mailbox;
-    private JAContext mailboxFactory;
+    private JAContext jaContext;
     private Request<Void> start;
 
     public void test() throws Exception {
-        mailboxFactory = new JAContext();
-        mailbox = mailboxFactory.createNonBlockingMailbox();
+        jaContext = new JAContext();
+        mailbox = jaContext.createNonBlockingMailbox();
 
         start = new Request<Void>(mailbox) {
             @Override
@@ -30,7 +30,7 @@ public class ParallelTest extends TestCase {
                         LOADS, null, responseProcessor);
                 int i = 0;
                 while (i < LOADS) {
-                    final Delay dly = new Delay(mailboxFactory);
+                    final Delay dly = new Delay(jaContext);
                     dly.sleepReq(ParallelTest.DELAY).send(mailbox,
                             responseCounter);
                     i += 1;
@@ -42,6 +42,6 @@ public class ParallelTest extends TestCase {
         start.call();
         final long t1 = System.currentTimeMillis();
         assertTrue((t1 - t0) < DELAY + DELAY / 2);
-        mailboxFactory.close();
+        jaContext.close();
     }
 }

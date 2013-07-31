@@ -41,7 +41,7 @@ public class JAProperties extends AncestorBase implements Properties {
      */
     public static Object getProperty(final Actor actor,
                                      final String propertyName) throws Exception {
-        Properties properties = actor.getMailbox().getContext()
+        Properties properties = actor.getMailbox().getJAContext()
                 .getProperties();
         if (properties == null)
             throw new UnsupportedOperationException("no Properties ancestor");
@@ -59,7 +59,7 @@ public class JAProperties extends AncestorBase implements Properties {
     public static void putProperty(final Actor actor,
                                    final String propertyName, final Object propertyValue)
             throws Exception {
-        Properties properties = actor.getMailbox().getContext()
+        Properties properties = actor.getMailbox().getJAContext()
                 .getProperties();
         if (properties == null)
             throw new UnsupportedOperationException("no Properties ancestor");
@@ -71,15 +71,15 @@ public class JAProperties extends AncestorBase implements Properties {
      */
     private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
-    public JAProperties(final JAContext _mailboxFactory) throws Exception {
-        this(_mailboxFactory, null);
+    public JAProperties(final JAContext _jaContext) throws Exception {
+        this(_jaContext, null);
     }
 
-    public JAProperties(final JAContext _mailboxFactory,
+    public JAProperties(final JAContext _jaContext,
                         final Ancestor _parent) throws Exception {
         initialize(_parent);
-        _mailboxFactory.setProperties(this);
-        putProperty("mailboxFactory", _mailboxFactory);
+        _jaContext.setProperties(this);
+        putProperty("jaContext", _jaContext);
     }
 
     @Override

@@ -11,21 +11,21 @@ import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
  */
 public class ThreadBoundTest extends TestCase {
     ThreadBoundMailbox boundMailbox;
-    JAContext mailboxFactory;
+    JAContext jaContext;
 
     public void testa() throws Exception {
-        mailboxFactory = new JAContext();
-        boundMailbox = mailboxFactory.createThreadBoundMailbox(new Runnable() {
+        jaContext = new JAContext();
+        boundMailbox = jaContext.createThreadBoundMailbox(new Runnable() {
             @Override
             public void run() {
                 boundMailbox.run();
                 try {
-                    mailboxFactory.close();
+                    jaContext.close();
                 } catch (final Throwable x) {
                 }
             }
         });
-        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
+        final Mailbox mailbox = jaContext.createAtomicMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
         actor1.hi.send(boundMailbox, new ResponseProcessor<String>() {
             @Override

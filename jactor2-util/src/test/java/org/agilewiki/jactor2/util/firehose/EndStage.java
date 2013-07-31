@@ -7,9 +7,9 @@ import org.agilewiki.jactor2.core.messaging.Transport;
 
 public class EndStage extends ActorBase implements DataProcessor {
 
-    public EndStage(final JAContext _mailboxFactory)
+    public EndStage(final JAContext _jaContext)
             throws Exception {
-        initialize(_mailboxFactory.createAtomicMailbox());
+        initialize(_jaContext.createAtomicMailbox());
     }
 
     @Override

@@ -9,13 +9,13 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
  */
 public class Test1 extends TestCase {
     public void testI() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
-        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
+        final JAContext jaContext = new JAContext();
+        final Mailbox mailbox = jaContext.createAtomicMailbox();
         final ActorA actorA = new ActorA(mailbox);
         try {
             actorA.throwRequest.call();
         } catch (final SecurityException se) {
-            mailboxFactory.close();
+            jaContext.close();
             return;
         }
         throw new Exception("Security exception was not caught");

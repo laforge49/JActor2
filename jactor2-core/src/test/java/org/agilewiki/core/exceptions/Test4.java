@@ -9,11 +9,11 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
  */
 public class Test4 extends TestCase {
     public void testI() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
-        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
+        final JAContext jaContext = new JAContext();
+        final Mailbox mailbox = jaContext.createAtomicMailbox();
         final ActorD actorD = new ActorD(mailbox);
         final String result = actorD.throwRequest.call();
         assertEquals("java.lang.SecurityException: thrown on request", result);
-        mailboxFactory.close();
+        jaContext.close();
     }
 }

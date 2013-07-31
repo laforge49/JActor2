@@ -9,9 +9,9 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
  */
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
-        final Mailbox mailboxE = mailboxFactory.createAtomicMailbox();
-        final Mailbox mailboxA = mailboxFactory.createAtomicMailbox();
+        final JAContext jaContext = new JAContext();
+        final Mailbox mailboxE = jaContext.createAtomicMailbox();
+        final Mailbox mailboxA = jaContext.createAtomicMailbox();
         final ActorE actorE = new ActorE(mailboxE);
         final ActorA actorA = new ActorA(mailboxA);
         try {
@@ -20,7 +20,7 @@ public class Test5 extends TestCase {
             // It's magic! We get the SecurityException, although our request
             // did not throw it, or return it as response. This shows that
             // child request exceptions are passed up to the parent request.
-            mailboxFactory.close();
+            jaContext.close();
             return;
         }
         throw new Exception("Security exception was not caught");

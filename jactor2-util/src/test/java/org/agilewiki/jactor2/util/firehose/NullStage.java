@@ -13,10 +13,10 @@ public class NullStage extends ActorBase implements DataProcessor {
 
     public long total;
 
-    public NullStage(final JAContext _mailboxFactory, final DataProcessor _next)
+    public NullStage(final JAContext _jaContext, final DataProcessor _next)
             throws Exception {
         next = _next;
-        initialize(_mailboxFactory.createAtomicMailbox());
+        initialize(_jaContext.createAtomicMailbox());
     }
 
     @Override

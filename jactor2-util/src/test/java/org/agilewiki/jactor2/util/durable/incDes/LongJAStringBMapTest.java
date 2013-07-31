@@ -6,10 +6,10 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class LongJAStringBMapTest extends TestCase {
     public void test() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
             JAMap<Long, JAString> m = (JAMap) Durables.
-                    newSerializable(mailboxFactory, JAMap.LONG_JASTRING_MAP);
+                    newSerializable(jaContext, JAMap.LONG_JASTRING_MAP);
             assertEquals(0, m.size());
             assertTrue(m.kMake(1L));
             assertFalse(m.kMake(1L));
@@ -39,7 +39,7 @@ public class LongJAStringBMapTest extends TestCase {
             assertTrue(m.kRemove(1L));
             assertEquals(0, m.size());
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

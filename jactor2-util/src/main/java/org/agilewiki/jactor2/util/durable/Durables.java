@@ -24,35 +24,35 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.*;
 public final class Durables {
 
     /**
-     * Creates a mailboxFactory with a factoryLocator that supports all the pre-defined factories.
+     * Creates a jaContext with a factoryLocator that supports all the pre-defined factories.
      *
      * @return A mailbox factory whose properties include the factoryLocator.
      */
-    public static JAContext createMailboxFactory() throws Exception {
-        JAContext mailboxFactory = new JAContext();
+    public static JAContext createJAContext() throws Exception {
+        JAContext jaContext = new JAContext();
         FactoryLocator factoryLocator =
-                createFactoryLocator(mailboxFactory, "org.agilewiki.jactor2.util.durable", "", "");
+                createFactoryLocator(jaContext, "org.agilewiki.jactor2.util.durable", "", "");
         registerFactories(factoryLocator);
-        return mailboxFactory;
+        return jaContext;
     }
 
     /**
-     * Create a factoryLocator and add it to the mailboxFactory properties.
+     * Create a factoryLocator and add it to the jaContext properties.
      *
-     * @param _mailboxFactory A mailboxFactory.
-     * @param _bundleName     The name of the OSGi bundle or an empty string.
-     * @param _version        The version of the OSGi bundle or an empty string.
-     * @param _location       The location of the OSGi bundle or an empty string.
+     * @param _jaContext  A jaContext.
+     * @param _bundleName The name of the OSGi bundle or an empty string.
+     * @param _version    The version of the OSGi bundle or an empty string.
+     * @param _location   The location of the OSGi bundle or an empty string.
      * @return The new factoryLocator.
      */
     public static FactoryLocator createFactoryLocator(
-            final JAContext _mailboxFactory,
+            final JAContext _jaContext,
             final String _bundleName,
             final String _version,
             final String _location) throws Exception {
-        Properties properties = _mailboxFactory.getProperties();
+        Properties properties = _jaContext.getProperties();
         if (properties == null) {
-            properties = new JAProperties(_mailboxFactory);
+            properties = new JAProperties(_jaContext);
         }
         FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
         factoryLocator.configure(_bundleName, _version, _location);
@@ -61,23 +61,23 @@ public final class Durables {
     }
 
     /**
-     * Returns the factoryLocator from the mailboxFactory's factoryLocator property.
+     * Returns the factoryLocator from the jaContext's factoryLocator property.
      *
      * @param _mailbox A mailbox.
      * @return The factoryLocator for that mailbox.
      */
     public static FactoryLocator getFactoryLocator(final Mailbox _mailbox) {
-        return getFactoryLocator(_mailbox.getContext());
+        return getFactoryLocator(_mailbox.getJAContext());
     }
 
     /**
-     * Returns the factoryLocator from the mailboxFactory's factoryLocator property.
+     * Returns the factoryLocator from the jaContext's factoryLocator property.
      *
-     * @param _mailboxFactory A mailboxFactory.
-     * @return The factoryLocator for that mailboxFactory.
+     * @param _jaContext A jaContext.
+     * @return The factoryLocator for that jaContext.
      */
-    public static FactoryLocator getFactoryLocator(final JAContext _mailboxFactory) {
-        return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");
+    public static FactoryLocator getFactoryLocator(final JAContext _jaContext) {
+        return (FactoryLocator) _jaContext.getProperties().getProperty("factoryLocator");
     }
 
     /**
@@ -291,14 +291,14 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _mailboxFactory The mailboxFactory to be used to create the new mailbox.
+     * @param _jaContext      The jaContext to be used to create the new mailbox.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final JAContext _mailboxFactory)
+                                                 final JAContext _jaContext)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createNonBlockingMailbox(), null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _jaContext.createNonBlockingMailbox(), null);
     }
 
     /**
@@ -306,53 +306,53 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _mailboxFactory The mailboxFactory to be used to create the new mailbox.
+     * @param _jaContext      The jaContext to be used to create the new mailbox.
      * @param _parent         The dependency to be injected, or null.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final JAContext _mailboxFactory,
+                                                 final JAContext _jaContext,
                                                  final Ancestor _parent)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createNonBlockingMailbox(), _parent);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _jaContext.createNonBlockingMailbox(), _parent);
     }
 
     /**
      * Create a new serializable object and a new mailbox to be used by that serializable object.
      *
-     * @param _factoryName    The type of object to be created.
-     * @param _mailboxFactory The mailboxFactory to be used to create the new mailbox
-     *                        and which has a factoryLocator property.
+     * @param _factoryName The type of object to be created.
+     * @param _jaContext   The jaContext to be used to create the new mailbox
+     *                     and which has a factoryLocator property.
      * @return A new serializable object.
      */
-    public static JASerializable newSerializable(final JAContext _mailboxFactory,
+    public static JASerializable newSerializable(final JAContext _jaContext,
                                                  final String _factoryName)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_mailboxFactory),
+                getFactoryLocator(_jaContext),
                 _factoryName,
-                _mailboxFactory,
+                _jaContext,
                 null);
     }
 
     /**
      * Create a new serializable object and a new mailbox to be used by that serializable object.
      *
-     * @param _factoryName    The type of object to be created.
-     * @param _mailboxFactory The mailboxFactory to be used to create the new mailbox
-     *                        and which has a factoryLocator property.
-     * @param _parent         The dependency to be injected, or null.
+     * @param _factoryName The type of object to be created.
+     * @param _jaContext   The jaContext to be used to create the new mailbox
+     *                     and which has a factoryLocator property.
+     * @param _parent      The dependency to be injected, or null.
      * @return A new serializable object.
      */
-    public static JASerializable newSerializable(final JAContext _mailboxFactory,
+    public static JASerializable newSerializable(final JAContext _jaContext,
                                                  final String _factoryName,
                                                  final Ancestor _parent)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_mailboxFactory),
+                getFactoryLocator(_jaContext),
                 _factoryName,
-                _mailboxFactory,
+                _jaContext,
                 _parent);
     }
 
@@ -361,14 +361,14 @@ public final class Durables {
      *
      * @param _factoryName The type of object to be created.
      * @param _mailbox     The mailbox to be used by the new serializable object
-     *                     and whose mailboxFactory has a factoryLocator property.
+     *                     and whose jaContext has a factoryLocator property.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final String _factoryName,
                                                  final Mailbox _mailbox)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_mailbox.getContext()),
+                getFactoryLocator(_mailbox.getJAContext()),
                 _factoryName,
                 _mailbox,
                 null);
@@ -379,7 +379,7 @@ public final class Durables {
      *
      * @param _factoryName The type of object to be created.
      * @param _mailbox     The mailbox to be used by the new serializable object
-     *                     and whose mailboxFactory has a factoryLocator property.
+     *                     and whose jaContext has a factoryLocator property.
      * @param _parent      The dependency to be injected, or null.
      * @return A new serializable object.
      */
@@ -387,6 +387,6 @@ public final class Durables {
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
             throws Exception {
-        return newSerializable(getFactoryLocator(_mailbox.getContext()), _factoryName, _mailbox, _parent);
+        return newSerializable(getFactoryLocator(_mailbox.getJAContext()), _factoryName, _mailbox, _parent);
     }
 }

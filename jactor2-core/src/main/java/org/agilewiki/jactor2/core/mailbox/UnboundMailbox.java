@@ -74,7 +74,7 @@ abstract public class UnboundMailbox extends MailboxBase {
          * so we use a guard expression to reduce the number of times it is called.
          */
         if (threadReference.get() == null && inbox.hasWork()) {
-            mailboxFactory.submit(this);
+            jaContext.submit(this);
         }
     }
 
@@ -103,7 +103,7 @@ abstract public class UnboundMailbox extends MailboxBase {
                 iter.remove();
                 if (!iter.hasNext() &&
                         _mayMigrate &&
-                        getContext() == target.getContext() &&
+                        getJAContext() == target.getJAContext() &&
                         target instanceof UnboundMailbox &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();

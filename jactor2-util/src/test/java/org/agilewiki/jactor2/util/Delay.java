@@ -8,8 +8,8 @@ import org.agilewiki.jactor2.core.messaging.Transport;
 public class Delay {
     private final Mailbox mailbox;
 
-    public Delay(final JAContext mailboxFactory) {
-        mailbox = mailboxFactory.createAtomicMailbox();
+    public Delay(final JAContext jaContext) {
+        mailbox = jaContext.createAtomicMailbox();
     }
 
     public Request<Void> sleepReq(final long _delay) {

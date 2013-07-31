@@ -7,27 +7,27 @@ import org.agilewiki.jactor2.core.messaging.Event;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {
-        JAContext mailboxFactory = new JAContext();
+        JAContext jaContext = new JAContext();
         try {
             Publisher p = new Publisher();
-            p.initialize(mailboxFactory.createNonBlockingMailbox());
+            p.initialize(jaContext.createNonBlockingMailbox());
             Printer a = new Printer();
-            a.initialize(mailboxFactory.createNonBlockingMailbox());
+            a.initialize(jaContext.createNonBlockingMailbox());
             a.setName("a");
             p.subscribeReq(a).call();
             Printer b = new Printer();
-            b.initialize(mailboxFactory.createNonBlockingMailbox());
+            b.initialize(jaContext.createNonBlockingMailbox());
             b.setName("b");
             p.subscribeReq(b).call();
             Printer c = new Printer();
-            c.initialize(mailboxFactory.createNonBlockingMailbox());
+            c.initialize(jaContext.createNonBlockingMailbox());
             c.setName("c");
             p.subscribeReq(c).call();
             p.publishReq(new Print("42")).call();
             p.publishReq(new Print("24")).call();
             p.publishReq(new Print("Hello world!")).call();
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

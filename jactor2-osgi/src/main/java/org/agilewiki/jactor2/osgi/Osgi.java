@@ -21,11 +21,11 @@ final public class Osgi {
     /**
      * Returns the BundleContext saved in the bundleContext property of a JAContext.
      *
-     * @param _mailboxFactory The mailbox factory.
+     * @param _jaContext The mailbox factory.
      * @return The BundleContext.
      */
-    public static BundleContext getBundleContext(final JAContext _mailboxFactory) {
-        Properties p = _mailboxFactory.getProperties();
+    public static BundleContext getBundleContext(final JAContext _jaContext) {
+        Properties p = _jaContext.getProperties();
         return (BundleContext) p.getProperty("bundleContext");
     }
 
@@ -64,11 +64,11 @@ final public class Osgi {
     /**
      * Returns the OsgiFactoryLocator associated with a mailbox factory.
      *
-     * @param _mailboxFactory The mailbox factory.
+     * @param _jaContext The mailbox factory.
      * @return The OsgiFactoryLocator.
      */
-    public static OsgiFactoryLocator getOsgiFactoryLocator(final JAContext _mailboxFactory) {
-        return (OsgiFactoryLocator) Durables.getFactoryLocator(_mailboxFactory);
+    public static OsgiFactoryLocator getOsgiFactoryLocator(final JAContext _jaContext) {
+        return (OsgiFactoryLocator) Durables.getFactoryLocator(_jaContext);
     }
 
     /**
@@ -99,7 +99,7 @@ final public class Osgi {
             @Override
             public void processRequest(final Transport<Root> _transport) throws Exception {
                 String location = _root.getBundleLocation();
-                BundleContext bundleContext = getBundleContext(_root.getMailbox().getContext());
+                BundleContext bundleContext = getBundleContext(_root.getMailbox().getJAContext());
                 Bundle bundle = bundleContext.installBundle(location);
                 bundle.start();
                 Version version = bundle.getVersion();
@@ -108,7 +108,7 @@ final public class Osgi {
                 locateService.getReq().send(_root.getMailbox(), new ResponseProcessor<OsgiFactoryLocator>() {
                     @Override
                     public void processResponse(OsgiFactoryLocator response) throws Exception {
-                        Mailbox newMailbox = response.getMailboxFactory().createNonBlockingMailbox();
+                        Mailbox newMailbox = response.getJAContext().createNonBlockingMailbox();
                         _root.copyReq(newMailbox).send(_root.getMailbox(), (Transport) _transport);
                     }
                 });

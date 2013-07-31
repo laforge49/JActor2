@@ -9,11 +9,11 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
  */
 public class Test1 extends TestCase {
     public void testa() throws Exception {
-        final JAContext mailboxFactory = new JAContext();
-        final Mailbox mailbox = mailboxFactory.createAtomicMailbox();
+        final JAContext jaContext = new JAContext();
+        final Mailbox mailbox = jaContext.createAtomicMailbox();
         final Actor1 actor1 = new Actor1(mailbox);
         final String result = actor1.hi.call();
         assertEquals("Hello world!", result);
-        mailboxFactory.close();
+        jaContext.close();
     }
 }

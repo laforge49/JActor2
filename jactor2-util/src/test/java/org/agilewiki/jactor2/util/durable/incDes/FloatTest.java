@@ -6,9 +6,9 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class FloatTest extends TestCase {
     public void test() throws Exception {
-        JAContext mailboxFactory = Durables.createMailboxFactory();
+        JAContext jaContext = Durables.createJAContext();
         try {
-            JAFloat float1 = (JAFloat) Durables.newSerializable(mailboxFactory, JAFloat.FACTORY_NAME);
+            JAFloat float1 = (JAFloat) Durables.newSerializable(jaContext, JAFloat.FACTORY_NAME);
             JAFloat float2 = (JAFloat) float1.copyReq(null).call();
             float2.setValueReq(1.0f).call();
             JAFloat float3 = (JAFloat) float2.copyReq(null).call();
@@ -27,7 +27,7 @@ public class FloatTest extends TestCase {
             v = float3.getValueReq().call();
             assertEquals(1.f, v);
 
-            Box box = (Box) Durables.newSerializable(mailboxFactory, Box.FACTORY_NAME);
+            Box box = (Box) Durables.newSerializable(jaContext, Box.FACTORY_NAME);
             box.setValueReq(JAFloat.FACTORY_NAME).call();
             JAFloat rpa = (JAFloat) box.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();
@@ -38,7 +38,7 @@ public class FloatTest extends TestCase {
             assertEquals(-1.f, v);
 
         } finally {
-            mailboxFactory.close();
+            jaContext.close();
         }
     }
 }

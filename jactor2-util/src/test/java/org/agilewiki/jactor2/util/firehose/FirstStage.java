@@ -31,7 +31,7 @@ public class FirstStage extends ActorBase implements Runnable {
 
     long t0;
 
-    public FirstStage(final JAContext _mailboxFactory,
+    public FirstStage(final JAContext _jaContext,
                       final DataProcessor _next,
                       final long _count,
                       final int _maxWindowSize)
@@ -40,7 +40,7 @@ public class FirstStage extends ActorBase implements Runnable {
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(_mailboxFactory.createAtomicMailbox(this));
+        initialize(_jaContext.createAtomicMailbox(this));
         ack = new BoundResponseProcessor<Void>(this, new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {
@@ -88,7 +88,7 @@ public class FirstStage extends ActorBase implements Runnable {
     private void exception(Exception e) {
         e.printStackTrace();
         try {
-            getMailbox().getContext().close();
+            getMailbox().getJAContext().close();
         } catch (Exception e1) {
             e1.printStackTrace();
             return;
