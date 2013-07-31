@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.mailbox;
 import org.agilewiki.jactor2.core.context.JAMailboxFactory;
 import org.slf4j.Logger;
 
-public class NonBlockingMailbox extends UnboundMailboxImpl {
+public class NonBlockingMailbox extends UnboundMailbox {
 
     /**
      * Create a mailbox.

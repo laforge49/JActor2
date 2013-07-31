@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.context;
 
-import org.agilewiki.jactor2.core.mailbox.UnboundMailbox;
+import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +28,8 @@ final public class ThreadManager {
     /**
      * The tasks queue holds the tasks waiting to be processed.
      */
-    final private ConcurrentLinkedQueue<UnboundMailbox> tasks =
-            new ConcurrentLinkedQueue<UnboundMailbox>();
+    final private ConcurrentLinkedQueue<Mailbox> tasks =
+            new ConcurrentLinkedQueue<Mailbox>();
 
     /**
      * When closing is true, concurrent exit as they finish their assigned tasks.
@@ -87,7 +87,7 @@ final public class ThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        UnboundMailbox mailbox = tasks.poll();
+                        Mailbox mailbox = tasks.poll();
                         if (mailbox != null) {
                             AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                             if (threadReference.get() == null &&
@@ -134,7 +134,7 @@ final public class ThreadManager {
      *
      * @param _mailbox The run method is to be called by the selected thread.
      */
-    final public void execute(final UnboundMailbox _mailbox) {
+    final public void execute(final Mailbox _mailbox) {
         tasks.add(_mailbox);
         taskRequest.release();
     }

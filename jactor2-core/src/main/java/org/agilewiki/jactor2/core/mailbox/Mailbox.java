@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.messaging.MessageSource;
 import org.slf4j.Logger;
 
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A mailbox implements an inbox for incoming messages (events/requests)
@@ -129,4 +130,18 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
      * @param messages Previously buffered messages.
      */
     void unbufferedAddMessages(final Queue<Message> messages) throws Exception;
+
+    /**
+     * Returns the atomic reference to the current thread.
+     *
+     * @return
+     */
+    AtomicReference<Thread> getThreadReference();
+
+    /**
+     * Returns true when there is code to be executed when the inbox is emptied.
+     *
+     * @return True when there is code to be executed when the inbox is emptied.
+     */
+    boolean isIdler();
 }

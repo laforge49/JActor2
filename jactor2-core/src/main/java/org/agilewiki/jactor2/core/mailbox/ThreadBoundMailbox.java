@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ThreadBoundMailbox extends MailboxBase {
 
@@ -32,6 +33,16 @@ public class ThreadBoundMailbox extends MailboxBase {
     @Override
     public final boolean isRunning() {
         return true;
+    }
+
+    @Override
+    public AtomicReference<Thread> getThreadReference() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isIdler() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

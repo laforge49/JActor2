@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
 import org.slf4j.Logger;
 
-public class AtomicMailbox extends UnboundMailboxImpl {
+public class AtomicMailbox extends UnboundMailbox {
 
     /**
      * Create a mailbox.

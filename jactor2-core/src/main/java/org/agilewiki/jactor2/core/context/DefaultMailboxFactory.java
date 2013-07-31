@@ -148,7 +148,7 @@ public class DefaultMailboxFactory implements
     }
 
     @Override
-    public final void submit(final UnboundMailbox _mailbox)
+    public final void submit(final Mailbox _mailbox)
             throws Exception {
         try {
             threadManager.execute(_mailbox);
