@@ -103,7 +103,7 @@ abstract public class UnboundMailbox extends MailboxBase {
                 iter.remove();
                 if (!iter.hasNext() &&
                         _mayMigrate &&
-                        getMailboxFactory() == target.getMailboxFactory() &&
+                        getContext() == target.getContext() &&
                         target instanceof UnboundMailbox &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();

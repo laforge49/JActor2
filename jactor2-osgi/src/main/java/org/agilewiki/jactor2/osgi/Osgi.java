@@ -99,7 +99,7 @@ final public class Osgi {
             @Override
             public void processRequest(final Transport<Root> _transport) throws Exception {
                 String location = _root.getBundleLocation();
-                BundleContext bundleContext = getBundleContext(_root.getMailbox().getMailboxFactory());
+                BundleContext bundleContext = getBundleContext(_root.getMailbox().getContext());
                 Bundle bundle = bundleContext.installBundle(location);
                 bundle.start();
                 Version version = bundle.getVersion();

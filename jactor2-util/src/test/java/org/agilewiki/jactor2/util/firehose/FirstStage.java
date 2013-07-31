@@ -88,7 +88,7 @@ public class FirstStage extends ActorBase implements Runnable {
     private void exception(Exception e) {
         e.printStackTrace();
         try {
-            getMailbox().getMailboxFactory().close();
+            getMailbox().getContext().close();
         } catch (Exception e1) {
             e1.printStackTrace();
             return;

@@ -25,7 +25,7 @@ public class AtomicTest extends TestCase {
             @Override
             public void processRequest(final Transport<Integer> _rp)
                     throws Exception {
-                Mailbox mailbox = _mailbox.getMailboxFactory().createAtomicMailbox();
+                Mailbox mailbox = _mailbox.getContext().createAtomicMailbox();
                 ResponseProcessor rc = new ResponseCounter(5, null,
                         new ResponseProcessor() {
                             @Override
@@ -48,7 +48,7 @@ public class AtomicTest extends TestCase {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
-                Delay delay = new Delay(_mailbox.getMailboxFactory());
+                Delay delay = new Delay(_mailbox.getContext());
                 delay.sleepReq(100 - (msg * 20)).send(_mailbox,
                         new ResponseProcessor<Void>() {
                             @Override

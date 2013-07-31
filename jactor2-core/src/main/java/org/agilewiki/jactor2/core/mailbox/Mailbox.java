@@ -23,7 +23,7 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
      *
      * @return The mailbox factory.
      */
-    JAContext getMailboxFactory();
+    JAContext getContext();
 
     /**
      * Is there work that can be done?

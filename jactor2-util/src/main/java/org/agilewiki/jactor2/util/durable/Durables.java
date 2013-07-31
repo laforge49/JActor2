@@ -67,7 +67,7 @@ public final class Durables {
      * @return The factoryLocator for that mailbox.
      */
     public static FactoryLocator getFactoryLocator(final Mailbox _mailbox) {
-        return getFactoryLocator(_mailbox.getMailboxFactory());
+        return getFactoryLocator(_mailbox.getContext());
     }
 
     /**
@@ -368,7 +368,7 @@ public final class Durables {
                                                  final Mailbox _mailbox)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_mailbox.getMailboxFactory()),
+                getFactoryLocator(_mailbox.getContext()),
                 _factoryName,
                 _mailbox,
                 null);
@@ -387,6 +387,6 @@ public final class Durables {
                                                  final Mailbox _mailbox,
                                                  final Ancestor _parent)
             throws Exception {
-        return newSerializable(getFactoryLocator(_mailbox.getMailboxFactory()), _factoryName, _mailbox, _parent);
+        return newSerializable(getFactoryLocator(_mailbox.getContext()), _factoryName, _mailbox, _parent);
     }
 }

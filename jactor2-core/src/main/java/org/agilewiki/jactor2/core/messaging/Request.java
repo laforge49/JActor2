@@ -82,7 +82,7 @@ public abstract class Request<RESPONSE_TYPE> {
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
         final RequestMessage message = new RequestMessage(
-                _source.getMailboxFactory() != mailbox.getMailboxFactory(),
+                _source.getContext() != mailbox.getContext(),
                 _source,
                 _source.getCurrentMessage(),
                 this,
@@ -352,7 +352,7 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox whose thread is to evaluate the request.
          */
         private void processRequestMessage(final Mailbox _targetMailbox) {
-            final JAContext mailboxFactory = _targetMailbox.getMailboxFactory();
+            final JAContext mailboxFactory = _targetMailbox.getContext();
             if (foreign)
                 mailboxFactory.addAutoClosable(this);
             _targetMailbox.setExceptionHandler(null);
@@ -385,7 +385,7 @@ public abstract class Request<RESPONSE_TYPE> {
                                     return null;
                                 if (!(messageSource instanceof Mailbox))
                                     return null;
-                                return ((Mailbox) messageSource).getMailboxFactory();
+                                return ((Mailbox) messageSource).getContext();
                             }
 
                             @Override

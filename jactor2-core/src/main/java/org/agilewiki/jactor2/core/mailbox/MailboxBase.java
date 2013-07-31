@@ -104,7 +104,7 @@ abstract public class MailboxBase implements Mailbox {
         while (iter.hasNext()) {
             final Entry<Mailbox, ArrayDeque<Message>> entry = iter.next();
             final Mailbox target = entry.getKey();
-            if (target.getMailboxFactory() != mailboxFactory) {
+            if (target.getContext() != mailboxFactory) {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.unbufferedAddMessages(messages);
@@ -237,7 +237,7 @@ abstract public class MailboxBase implements Mailbox {
     }
 
     @Override
-    public JAContext getMailboxFactory() {
+    public JAContext getContext() {
         return mailboxFactory;
     }
 
