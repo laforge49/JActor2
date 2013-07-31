@@ -2,7 +2,7 @@ package org.agilewiki.core.exceptions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 /**
@@ -11,7 +11,7 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
 public class Test2 extends TestCase {
     public void testI() throws Exception {
         System.out.println("testI");
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new DefaultMailboxFactory();
         final Mailbox mailbox = mailboxFactory.createNonBlockingMailbox();
         final ActorA actorA = new ActorA(mailbox);
         final ActorB actorB = new ActorB(mailbox);
@@ -27,7 +27,7 @@ public class Test2 extends TestCase {
 
     public void testIII() throws Exception {
         System.out.println("testIII");
-        final MailboxFactory mailboxFactory = new DefaultMailboxFactory();
+        final JAContext mailboxFactory = new DefaultMailboxFactory();
         final ActorA actorA = new ActorA(mailboxFactory.createAtomicMailbox());
         final ActorB actorB = new ActorB(mailboxFactory.createAtomicMailbox());
         try {

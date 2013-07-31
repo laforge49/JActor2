@@ -2,7 +2,7 @@ package org.agilewiki.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.mailbox.ThreadBoundMailbox;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -12,7 +12,7 @@ import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
  */
 public class ThreadBoundTest extends TestCase {
     ThreadBoundMailbox boundMailbox;
-    MailboxFactory mailboxFactory;
+    JAContext mailboxFactory;
 
     public void testa() throws Exception {
         mailboxFactory = new DefaultMailboxFactory();

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.mailbox;
 
-import org.agilewiki.jactor2.core.context.JAMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ public class AtomicMailbox extends UnboundMailbox {
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
     public AtomicMailbox(Runnable _onIdle,
-                         JAMailboxFactory _factory,
+                         JAContext _factory,
                          Logger _log,
                          int _initialBufferSize,
                          final int _initialLocalQueueSize) {

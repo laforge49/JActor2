@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class DefaultMailboxFactory implements
-        JAMailboxFactory {
+        JAContext {
 
     /**
      * The logger used by mailboxes.
@@ -30,7 +30,7 @@ public class DefaultMailboxFactory implements
     /**
      * The mailbox factory logger.
      */
-    private final Logger logger = LoggerFactory.getLogger(MailboxFactory.class);
+    private final Logger logger = LoggerFactory.getLogger(JAContext.class);
 
     /**
      * The thread pool used by mailboxes.
@@ -105,49 +105,97 @@ public class DefaultMailboxFactory implements
         initialBufferSize = _initialBufferSize;
     }
 
-    @Override
+    /**
+     * Creates a Mailbox which is only used to process non-blocking messages.
+     *
+     * @return A new non-blocking mailbox.
+     */
     public final NonBlockingMailbox createNonBlockingMailbox() {
         return createNonBlockingMailbox(initialBufferSize, null);
     }
 
-    @Override
+    /**
+     * Creates a Mailbox which is only used to process non-blocking requests.
+     *
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @return A new non-blocking mailbox.
+     */
     public final NonBlockingMailbox createNonBlockingMailbox(final int _initialBufferSize) {
         return createNonBlockingMailbox(_initialBufferSize, null);
     }
 
-    @Override
+    /**
+     * Creates a Mailbox which is only used to process non-blocking requests.
+     *
+     * @param _onIdle The run method is called when the input queue is empty.
+     * @return A new non-blocking mailbox.
+     */
     public final NonBlockingMailbox createNonBlockingMailbox(final Runnable _onIdle) {
         return createNonBlockingMailbox(initialBufferSize, _onIdle);
     }
 
-    @Override
+    /**
+     * Creates a Mailbox which is only used to process non-blocking requests.
+     *
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @param _onIdle            The run method is called when the input queue is empty.
+     * @return A new non-blocking mailbox.
+     */
     public final NonBlockingMailbox createNonBlockingMailbox(final int _initialBufferSize,
                                                              final Runnable _onIdle) {
         return new NonBlockingMailbox(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
     }
 
-    @Override
+    /**
+     * Creates a Mailbox for processing messages that perform long computations
+     * or which may block the thread, or when requests must be processed atomically.
+     *
+     * @return A new atomic mailbox.
+     */
     public final AtomicMailbox createAtomicMailbox() {
         return createAtomicMailbox(initialBufferSize, null);
     }
 
-    @Override
-    public final AtomicMailbox createAtomicMailbox(final int initialBufferSize) {
-        return createAtomicMailbox(initialBufferSize, null);
+    /**
+     * Creates a Mailbox for processing messages that perform long computations
+     * or which may block the thread, or when requests must be processed atomically.
+     *
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @return A new atomic mailbox.
+     */
+    public final AtomicMailbox createAtomicMailbox(final int _initialBufferSize) {
+        return createAtomicMailbox(_initialBufferSize, null);
     }
 
-    @Override
+    /**
+     * Creates a Mailbox for processing messages that perform long computations
+     * or which may block the thread, or when requests must be processed atomically.
+     *
+     * @param _onIdle The run method is called when the input queue is empty.
+     * @return A new atomic mailbox.
+     */
     public final AtomicMailbox createAtomicMailbox(final Runnable _onIdle) {
         return createAtomicMailbox(initialBufferSize, _onIdle);
     }
 
-    @Override
+    /**
+     * Creates a Mailbox for processing messages that perform long computations
+     * or which may block the thread, or when requests must be processed atomically.
+     *
+     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
+     * @param _onIdle            The run method is called when the input queue is empty.
+     * @return A new atomic mailbox.
+     */
     public final AtomicMailbox createAtomicMailbox(final int _initialBufferSize,
                                                    final Runnable _onIdle) {
         return new AtomicMailbox(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
     }
 
-    @Override
+    /**
+     * Submit a mailbox for subsequent execution.
+     *
+     * @param _mailbox The mailbox to be run.
+     */
     public final void submit(final Mailbox _mailbox)
             throws Exception {
         try {
@@ -165,7 +213,12 @@ public class DefaultMailboxFactory implements
         }
     }
 
-    @Override
+    /**
+     * Adds an auto closeable, to be closed when the JAContext closes.
+     *
+     * @param _closeable The autoclosable to be added to the list.
+     * @return True, if the list was updated.
+     */
     public final boolean addAutoClosable(final AutoCloseable _closeable) {
         if (!isClosing()) {
             return closables.add(_closeable);
@@ -174,7 +227,12 @@ public class DefaultMailboxFactory implements
         }
     }
 
-    @Override
+    /**
+     * Remove an auto closeable from the list of closables.
+     *
+     * @param _closeable The autoclosable to be removed from the list.
+     * @return True, if the list was updated.
+     */
     public final boolean removeAutoClosable(final AutoCloseable _closeable) {
         if (!isClosing()) {
             return closables.remove(_closeable);
@@ -198,25 +256,44 @@ public class DefaultMailboxFactory implements
         }
     }
 
-    @Override
+    /**
+     * Returns true if close() has been called already.
+     *
+     * @return true if close() has already been called.
+     */
     public final boolean isClosing() {
         return shuttingDown.get();
     }
 
-    @Override
+    /**
+     * Creates a mailbox that runs on an existing thread.
+     *
+     * @param _messageProcessor The run method is called when there are messages
+     *                          to be processed.
+     * @return The thread bounded mailbox.
+     */
     public final ThreadBoundMailbox createThreadBoundMailbox(final Runnable _messageProcessor) {
         return new ThreadBoundMailbox(_messageProcessor, this,
                 mailboxLogger, initialBufferSize, initialLocalMessageQueueSize);
     }
 
-    @Override
+    /**
+     * Assigns the effectively final properties set manager.
+     * Once assigned, it can not be updated.
+     *
+     * @param _properties The properties set manager.
+     */
     public void setProperties(final Properties _properties) {
         if (properties != null)
             throw new IllegalStateException("properties has already been set");
         properties = _properties;
     }
 
-    @Override
+    /**
+     * Returns the property set manager.
+     *
+     * @return The properties set manager.
+     */
     public Properties getProperties() {
         return properties;
     }

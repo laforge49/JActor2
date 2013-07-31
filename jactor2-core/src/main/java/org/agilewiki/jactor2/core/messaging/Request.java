@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ExceptionHandler;
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 import java.util.concurrent.Semaphore;
@@ -352,7 +352,7 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox whose thread is to evaluate the request.
          */
         private void processRequestMessage(final Mailbox _targetMailbox) {
-            final MailboxFactory mailboxFactory = _targetMailbox.getMailboxFactory();
+            final JAContext mailboxFactory = _targetMailbox.getMailboxFactory();
             if (foreign)
                 mailboxFactory.addAutoClosable(this);
             _targetMailbox.setExceptionHandler(null);
@@ -380,7 +380,7 @@ public abstract class Request<RESPONSE_TYPE> {
                             }
 
                             @Override
-                            public MailboxFactory getMailboxFactory() {
+                            public JAContext getMailboxFactory() {
                                 if (messageSource == null)
                                     return null;
                                 if (!(messageSource instanceof Mailbox))

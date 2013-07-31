@@ -12,9 +12,9 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 /**
- * A basic activator with a MailboxFactory,
+ * A basic activator with a JAContext,
  * with a reference to the BundleContext stored in the bundleContext property
- * in the MailboxFactory.
+ * in the JAContext.
  */
 abstract public class MailboxFactoryActivator
         extends ActorBase implements BundleActivator, ManagedService, AutoCloseable {

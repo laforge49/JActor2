@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable;
 
 import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.Properties;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -47,7 +47,7 @@ public final class Durables {
      * @return The new factoryLocator.
      */
     public static FactoryLocator createFactoryLocator(
-            final MailboxFactory _mailboxFactory,
+            final JAContext _mailboxFactory,
             final String _bundleName,
             final String _version,
             final String _location) throws Exception {
@@ -77,7 +77,7 @@ public final class Durables {
      * @param _mailboxFactory A mailboxFactory.
      * @return The factoryLocator for that mailboxFactory.
      */
-    public static FactoryLocator getFactoryLocator(final MailboxFactory _mailboxFactory) {
+    public static FactoryLocator getFactoryLocator(final JAContext _mailboxFactory) {
         return (FactoryLocator) _mailboxFactory.getProperties().getProperty("factoryLocator");
     }
 
@@ -297,7 +297,7 @@ public final class Durables {
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final MailboxFactory _mailboxFactory)
+                                                 final JAContext _mailboxFactory)
             throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createNonBlockingMailbox(), null);
     }
@@ -313,7 +313,7 @@ public final class Durables {
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final MailboxFactory _mailboxFactory,
+                                                 final JAContext _mailboxFactory,
                                                  final Ancestor _parent)
             throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailboxFactory.createNonBlockingMailbox(), _parent);
@@ -327,7 +327,7 @@ public final class Durables {
      *                        and which has a factoryLocator property.
      * @return A new serializable object.
      */
-    public static JASerializable newSerializable(final MailboxFactory _mailboxFactory,
+    public static JASerializable newSerializable(final JAContext _mailboxFactory,
                                                  final String _factoryName)
             throws Exception {
         return newSerializable(
@@ -346,7 +346,7 @@ public final class Durables {
      * @param _parent         The dependency to be injected, or null.
      * @return A new serializable object.
      */
-    public static JASerializable newSerializable(final MailboxFactory _mailboxFactory,
+    public static JASerializable newSerializable(final JAContext _mailboxFactory,
                                                  final String _factoryName,
                                                  final Ancestor _parent)
             throws Exception {

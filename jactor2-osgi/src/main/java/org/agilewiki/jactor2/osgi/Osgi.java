@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.Properties;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
@@ -19,12 +19,12 @@ import org.osgi.framework.Version;
 final public class Osgi {
 
     /**
-     * Returns the BundleContext saved in the bundleContext property of a MailboxFactory.
+     * Returns the BundleContext saved in the bundleContext property of a JAContext.
      *
      * @param _mailboxFactory The mailbox factory.
      * @return The BundleContext.
      */
-    public static BundleContext getBundleContext(final MailboxFactory _mailboxFactory) {
+    public static BundleContext getBundleContext(final JAContext _mailboxFactory) {
         Properties p = _mailboxFactory.getProperties();
         return (BundleContext) p.getProperty("bundleContext");
     }
@@ -67,7 +67,7 @@ final public class Osgi {
      * @param _mailboxFactory The mailbox factory.
      * @return The OsgiFactoryLocator.
      */
-    public static OsgiFactoryLocator getOsgiFactoryLocator(final MailboxFactory _mailboxFactory) {
+    public static OsgiFactoryLocator getOsgiFactoryLocator(final JAContext _mailboxFactory) {
         return (OsgiFactoryLocator) Durables.getFactoryLocator(_mailboxFactory);
     }
 

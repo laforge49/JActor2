@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.Properties;
 
 import java.util.Map;
@@ -71,11 +71,11 @@ public class JAProperties extends AncestorBase implements Properties {
      */
     private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
-    public JAProperties(final MailboxFactory _mailboxFactory) throws Exception {
+    public JAProperties(final JAContext _mailboxFactory) throws Exception {
         this(_mailboxFactory, null);
     }
 
-    public JAProperties(final MailboxFactory _mailboxFactory,
+    public JAProperties(final JAContext _mailboxFactory,
                         final Ancestor _parent) throws Exception {
         initialize(_parent);
         _mailboxFactory.setProperties(this);

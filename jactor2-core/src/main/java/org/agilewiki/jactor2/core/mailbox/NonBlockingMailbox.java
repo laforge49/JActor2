@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.mailbox;
 
-import org.agilewiki.jactor2.core.context.JAMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.slf4j.Logger;
 
 public class NonBlockingMailbox extends UnboundMailbox {
@@ -15,7 +15,7 @@ public class NonBlockingMailbox extends UnboundMailbox {
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
     public NonBlockingMailbox(Runnable _onIdle,
-                              JAMailboxFactory _factory,
+                              JAContext _factory,
                               Logger _log,
                               int _initialBufferSize,
                               final int _initialLocalQueueSize) {

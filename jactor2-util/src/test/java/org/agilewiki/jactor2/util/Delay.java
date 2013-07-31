@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.messaging.Transport;
 public class Delay {
     private final Mailbox mailbox;
 
-    public Delay(final MailboxFactory mailboxFactory) {
+    public Delay(final JAContext mailboxFactory) {
         mailbox = mailboxFactory.createAtomicMailbox();
     }
 

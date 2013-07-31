@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.ExceptionHandler;
 import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -14,9 +14,9 @@ import org.agilewiki.jactor2.core.messaging.Transport;
 public class ServiceTest extends TestCase {
 
     public void test() throws Exception {
-        MailboxFactory testMBF = new DefaultMailboxFactory();
-        MailboxFactory clientMBF = new DefaultMailboxFactory();
-        final MailboxFactory serverMBF = new DefaultMailboxFactory();
+        JAContext testMBF = new DefaultMailboxFactory();
+        JAContext clientMBF = new DefaultMailboxFactory();
+        final JAContext serverMBF = new DefaultMailboxFactory();
         try {
             Mailbox testMailbox = testMBF.createNonBlockingMailbox();
             Server server = new Server(serverMBF.createNonBlockingMailbox());

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.mailbox;
 
 import org.agilewiki.jactor2.core.ExceptionHandler;
-import org.agilewiki.jactor2.core.context.JAMailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ abstract public class MailboxBase implements Mailbox {
     /**
      * The factory of this mailbox.
      */
-    protected final JAMailboxFactory mailboxFactory;
+    protected final JAContext mailboxFactory;
 
     /**
      * The inbox, implemented as a local queue and a concurrent queue.
@@ -57,7 +57,7 @@ abstract public class MailboxBase implements Mailbox {
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public MailboxBase(final JAMailboxFactory _factory,
+    public MailboxBase(final JAContext _factory,
                        final Logger _log,
                        final int _initialBufferSize,
                        final int _initialLocalQueueSize) {
@@ -237,7 +237,7 @@ abstract public class MailboxBase implements Mailbox {
     }
 
     @Override
-    public JAMailboxFactory getMailboxFactory() {
+    public JAContext getMailboxFactory() {
         return mailboxFactory;
     }
 

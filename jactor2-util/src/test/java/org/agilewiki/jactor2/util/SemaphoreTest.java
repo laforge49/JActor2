@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.ExceptionHandler;
 import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
@@ -43,7 +43,7 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     private void delayedRelease(final JASemaphore semaphore,
                                 final long delay,
-                                final MailboxFactory mailboxFactory) throws Exception {
+                                final JAContext mailboxFactory) throws Exception {
         new Event<SemaphoreTest>() {
             @Override
             public void processEvent(final SemaphoreTest actor)

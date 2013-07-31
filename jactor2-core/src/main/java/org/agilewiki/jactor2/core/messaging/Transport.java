@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 
 /**
  * A callback passed to the Request.processRequest method.
@@ -9,12 +9,12 @@ import org.agilewiki.jactor2.core.context.MailboxFactory;
  */
 public interface Transport<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_TYPE> {
     /**
-     * Returns the MailboxFactory of the request source.
+     * Returns the JAContext of the request source.
      *
-     * @return The MailboxFactory of the request source, or null when the request was
+     * @return The JAContext of the request source, or null when the request was
      *         passed using signal or call.
      */
-    MailboxFactory getMailboxFactory();
+    JAContext getMailboxFactory();
 
     /**
      * Returns an exception as a response instead of throwing it.

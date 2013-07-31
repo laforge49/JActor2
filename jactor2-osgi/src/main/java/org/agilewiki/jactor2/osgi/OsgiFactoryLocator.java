@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -19,7 +19,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     /**
      * The mailbox factory to which the factory locator is bound.
      */
-    private MailboxFactory mailboxFactory;
+    private JAContext mailboxFactory;
 
     /**
      * The contents of the bundle's config file.
@@ -50,7 +50,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
      *
      * @return The mailbox factory.
      */
-    public MailboxFactory getMailboxFactory() {
+    public JAContext getMailboxFactory() {
         return mailboxFactory;
     }
 
@@ -59,7 +59,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
      *
      * @param _mailboxFactory The mailbox factory.
      */
-    public void setMailboxFactory(final MailboxFactory _mailboxFactory) {
+    public void setMailboxFactory(final JAContext _mailboxFactory) {
         if (mailboxFactory != null)
             throw new IllegalStateException("mailbox factory already set");
         mailboxFactory = _mailboxFactory;
