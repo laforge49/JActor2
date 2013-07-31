@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.mailbox;
 
-import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.context.JAMailboxFactory;
+import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
 import org.slf4j.Logger;
 
@@ -93,12 +93,12 @@ abstract public class UnboundMailboxImpl extends JAMailboxImpl implements Unboun
     public boolean flush(boolean _mayMigrate) throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
-            final Iterator<Map.Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
+            final Iterator<Map.Entry<Mailbox, ArrayDeque<Message>>> iter = sendBuffer
                     .entrySet().iterator();
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<JAMailbox, ArrayDeque<Message>> entry = iter.next();
-                final JAMailbox target = entry.getKey();
+                final Map.Entry<Mailbox, ArrayDeque<Message>> entry = iter.next();
+                final Mailbox target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() &&

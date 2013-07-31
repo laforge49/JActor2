@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.mailbox;
 
 import org.agilewiki.jactor2.core.ExceptionHandler;
-import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.context.JAMailboxFactory;
+import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
 import org.slf4j.Logger;
 
@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 /**
  * Base class for mailboxes.
  */
-abstract public class JAMailboxImpl implements JAMailbox {
+abstract public class JAMailboxImpl implements Mailbox {
 
     /**
      * Mailbox logger.
@@ -37,7 +37,7 @@ abstract public class JAMailboxImpl implements JAMailbox {
     /**
      * A table of outboxes, one for each unique message destination.
      */
-    protected Map<JAMailbox, ArrayDeque<Message>> sendBuffer;
+    protected Map<Mailbox, ArrayDeque<Message>> sendBuffer;
 
     /**
      * The currently active exception handler.
@@ -99,11 +99,11 @@ abstract public class JAMailboxImpl implements JAMailbox {
     public void close() throws Exception {
         if (sendBuffer == null)
             return;
-        final Iterator<Entry<JAMailbox, ArrayDeque<Message>>> iter = sendBuffer
+        final Iterator<Entry<Mailbox, ArrayDeque<Message>>> iter = sendBuffer
                 .entrySet().iterator();
         while (iter.hasNext()) {
-            final Entry<JAMailbox, ArrayDeque<Message>> entry = iter.next();
-            final JAMailbox target = entry.getKey();
+            final Entry<Mailbox, ArrayDeque<Message>> entry = iter.next();
+            final Mailbox target = entry.getKey();
             if (target.getMailboxFactory() != mailboxFactory) {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
@@ -183,14 +183,14 @@ abstract public class JAMailboxImpl implements JAMailbox {
             return false;
         ArrayDeque<Message> buffer;
         if (sendBuffer == null) {
-            sendBuffer = new IdentityHashMap<JAMailbox, ArrayDeque<Message>>();
+            sendBuffer = new IdentityHashMap<Mailbox, ArrayDeque<Message>>();
             buffer = null;
         } else {
             buffer = sendBuffer.get(_target);
         }
         if (buffer == null) {
             buffer = new ArrayDeque<Message>(initialBufferSize);
-            sendBuffer.put((JAMailbox) _target, buffer);
+            sendBuffer.put(_target, buffer);
         }
         buffer.add(_message);
         return true;

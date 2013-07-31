@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.messaging.Message;
 
 /**
  * A source of messages, which must be able to handle a response.

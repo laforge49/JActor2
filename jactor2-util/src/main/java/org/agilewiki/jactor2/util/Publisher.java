@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.core.*;
+import org.agilewiki.jactor2.core.Actor;
+import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;

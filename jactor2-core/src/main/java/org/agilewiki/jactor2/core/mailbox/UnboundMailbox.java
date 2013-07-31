@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * A mailbox that is not bound to a single thread.
  */
-public interface UnboundMailbox extends JAMailbox {
+public interface UnboundMailbox extends Mailbox {
 
     /**
      * Returns the atomic reference to the current thread.

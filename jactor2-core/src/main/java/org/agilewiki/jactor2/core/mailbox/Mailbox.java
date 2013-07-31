@@ -1,10 +1,12 @@
 package org.agilewiki.jactor2.core.mailbox;
 
 import org.agilewiki.jactor2.core.ExceptionHandler;
-import org.agilewiki.jactor2.core.messaging.MessageSource;
 import org.agilewiki.jactor2.core.context.MailboxFactory;
 import org.agilewiki.jactor2.core.messaging.Message;
+import org.agilewiki.jactor2.core.messaging.MessageSource;
 import org.slf4j.Logger;
+
+import java.util.Queue;
 
 /**
  * A mailbox implements an inbox for incoming messages (events/requests)
@@ -13,7 +15,7 @@ import org.slf4j.Logger;
  * While a mailbox has a non-empty inbox, it has an assigned thread that processes
  * the contents of its inbox. And only one message is processed at a time.
  */
-public interface Mailbox extends Runnable, MessageSource {
+public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
 
     /**
      * Returns the mailbox factory.
@@ -120,4 +122,11 @@ public interface Mailbox extends Runnable, MessageSource {
      * Signals that a request has completed.
      */
     void requestEnd();
+
+    /**
+     * Adds messages directly to the queue.
+     *
+     * @param messages Previously buffered messages.
+     */
+    void unbufferedAddMessages(final Queue<Message> messages) throws Exception;
 }

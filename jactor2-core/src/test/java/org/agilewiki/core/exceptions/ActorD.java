@@ -1,6 +1,6 @@
 package org.agilewiki.core.exceptions;
 
-import org.agilewiki.jactor2.core.*;
+import org.agilewiki.jactor2.core.ExceptionHandler;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
