@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.Event;
 import org.agilewiki.jactor2.util.JAProperties;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -32,7 +32,7 @@ abstract public class MailboxFactoryActivator
     /**
      * The mailbox factory used by the bundle.
      */
-    private UtilMailboxFactory mailboxFactory;
+    private DefaultMailboxFactory mailboxFactory;
 
     /**
      * The properties held by the mailbox factory.
@@ -98,7 +98,7 @@ abstract public class MailboxFactoryActivator
      *
      * @return The mailbox factory.
      */
-    protected UtilMailboxFactory getMailboxFactory() {
+    protected DefaultMailboxFactory getMailboxFactory() {
         return mailboxFactory;
     }
 
@@ -110,7 +110,7 @@ abstract public class MailboxFactoryActivator
      * and the activator is given a mailbox that may block.
      */
     protected final void mailboxFactoryStart() throws Exception {
-        mailboxFactory = new UtilMailboxFactory();
+        mailboxFactory = new DefaultMailboxFactory();
         mailboxFactory.addAutoClosable(this);
         jaProperties = new JAProperties(mailboxFactory, null);
         jaProperties.putProperty("bundleContext", bundleContext);
