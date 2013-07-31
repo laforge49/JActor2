@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.firehose;
 
-import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.Request;
+import org.agilewiki.jactor2.core.Transport;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 
 import java.util.List;

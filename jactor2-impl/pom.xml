@@ -50,7 +50,7 @@
                             org.agilewiki.jactor2.impl;version=${project.version}
                         </Export-Package>
                         <Import-Package>
-                            org.agilewiki.jactor2.api;version=${project.version},
+                            org.agilewiki.jactor2.core;version=${project.version},
                             *
                         </Import-Package>
                     </instructions>

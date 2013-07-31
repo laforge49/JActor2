@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.api;
+package org.agilewiki.jactor2.core;
 
 /**
  * Actors which receive events must implement this interface, which is otherwise optional.

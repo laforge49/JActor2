@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.core.Request;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {

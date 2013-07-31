@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.api;
+package org.agilewiki.jactor2.core;
 
 /**
  * An Event instance is used to pass one-way messages to any number of Actor objects.

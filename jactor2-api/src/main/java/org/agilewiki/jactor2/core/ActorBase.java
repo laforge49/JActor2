@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.api;
+package org.agilewiki.jactor2.core;
 
 /**
  * ActorBase implements an Actor bean, i.e. it no constructor arguments.

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.app;
 
-import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.core.Mailbox;
 import org.agilewiki.jactor2.util.Ancestor;
 
 /**

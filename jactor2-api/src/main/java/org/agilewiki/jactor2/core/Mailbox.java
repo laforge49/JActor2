@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.api;
+package org.agilewiki.jactor2.core;
 
 /**
  * A mailbox implements an inbox for incoming messages (events/requests)

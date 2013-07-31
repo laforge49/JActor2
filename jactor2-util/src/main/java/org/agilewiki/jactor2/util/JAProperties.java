@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.api.Actor;
-import org.agilewiki.jactor2.api.MailboxFactory;
-import org.agilewiki.jactor2.api.Properties;
+import org.agilewiki.jactor2.core.Actor;
+import org.agilewiki.jactor2.core.MailboxFactory;
+import org.agilewiki.jactor2.core.Properties;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;

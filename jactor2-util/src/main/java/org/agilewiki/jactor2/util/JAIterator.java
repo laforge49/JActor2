@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.api.ResponseProcessor;
+import org.agilewiki.jactor2.core.ResponseProcessor;
 
 /**
  * The JAIterator.process method is called repeatedly until it returns a non-null response,

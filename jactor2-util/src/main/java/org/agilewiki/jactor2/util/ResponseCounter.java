@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.api.ResponseProcessor;
+import org.agilewiki.jactor2.core.ResponseProcessor;
 
 /**
  * When multiple requests have been sent, ResponseCounter can be used to

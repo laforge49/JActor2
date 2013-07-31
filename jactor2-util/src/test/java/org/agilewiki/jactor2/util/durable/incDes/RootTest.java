@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.core.Mailbox;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;

@@ -1,13 +1,10 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.ResponseProcessor;
-import org.agilewiki.jactor2.api.Transport;
-import org.agilewiki.jactor2.util.Delay;
-import org.agilewiki.jactor2.util.ResponseCounter;
-import org.agilewiki.jactor2.util.UtilMailboxFactory;
+import org.agilewiki.jactor2.core.Mailbox;
+import org.agilewiki.jactor2.core.Request;
+import org.agilewiki.jactor2.core.ResponseProcessor;
+import org.agilewiki.jactor2.core.Transport;
 
 public class AtomicTest extends TestCase {
     int count = 0;

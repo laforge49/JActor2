@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.api.Actor;
+import org.agilewiki.jactor2.core.Actor;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 

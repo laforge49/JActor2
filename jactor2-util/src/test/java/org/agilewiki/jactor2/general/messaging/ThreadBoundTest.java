@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.general.messaging;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.MailboxFactory;
-import org.agilewiki.jactor2.api.ResponseProcessor;
-import org.agilewiki.jactor2.api.ThreadBoundMailbox;
+import org.agilewiki.jactor2.core.Mailbox;
+import org.agilewiki.jactor2.core.MailboxFactory;
+import org.agilewiki.jactor2.core.ResponseProcessor;
+import org.agilewiki.jactor2.core.ThreadBoundMailbox;
 import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 
 /**

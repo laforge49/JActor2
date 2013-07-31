@@ -49,7 +49,7 @@
                         <Bundle-Activator>org.agilewiki.jactor2.kdriver.Activator</Bundle-Activator>
                         <Import-Package>
                             org.apache.felix.service.command,
-                            org.agilewiki.jactor2.api;version=${project.version},
+                            org.agilewiki.jactor2.core;version=${project.version},
                             org.agilewiki.jactor2.util*;version=${project.version},
                             org.agilewiki.jactor2.osgi*;version=${project.version},
                             org.osgi.service.cm,

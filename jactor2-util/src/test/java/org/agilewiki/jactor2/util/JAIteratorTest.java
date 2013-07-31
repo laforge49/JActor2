@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.core.*;
 
 public class JAIteratorTest extends TestCase {
     private Mailbox mailbox;

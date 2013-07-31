@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.Event;
-import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.Event;
+import org.agilewiki.jactor2.core.Mailbox;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

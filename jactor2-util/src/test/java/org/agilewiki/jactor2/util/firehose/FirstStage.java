@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.firehose;
 
-import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.Event;
-import org.agilewiki.jactor2.api.ResponseProcessor;
+import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.Event;
+import org.agilewiki.jactor2.core.ResponseProcessor;
 import org.agilewiki.jactor2.util.BoundResponseProcessor;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.blist;
 
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Request;
-import org.agilewiki.jactor2.api.Transport;
+import org.agilewiki.jactor2.core.Mailbox;
+import org.agilewiki.jactor2.core.Request;
+import org.agilewiki.jactor2.core.Transport;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;

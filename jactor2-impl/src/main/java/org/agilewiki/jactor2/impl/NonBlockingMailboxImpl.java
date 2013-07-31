@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.impl;
 
-import org.agilewiki.jactor2.api.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.NonBlockingMailbox;
 import org.slf4j.Logger;
 
 public class NonBlockingMailboxImpl extends UnboundMailboxImpl implements NonBlockingMailbox {

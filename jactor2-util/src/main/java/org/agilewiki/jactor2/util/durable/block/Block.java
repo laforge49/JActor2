@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.block;
 
-import org.agilewiki.jactor2.api.Mailbox;
+import org.agilewiki.jactor2.core.Mailbox;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.incDes.Root;

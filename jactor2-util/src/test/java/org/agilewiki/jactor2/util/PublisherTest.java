@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.Event;
+import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.Event;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {

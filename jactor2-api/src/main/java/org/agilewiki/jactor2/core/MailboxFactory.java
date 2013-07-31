@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.api;
+package org.agilewiki.jactor2.core;
 
 /**
  * MailboxFactory creates NonBlocking, Atomic and ThreadBound mailboxes.

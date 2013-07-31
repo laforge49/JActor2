@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.general.exceptions;
 
-import org.agilewiki.jactor2.api.*;
+import org.agilewiki.jactor2.core.*;
 
 public class ActorD {
     private final Mailbox mailbox;

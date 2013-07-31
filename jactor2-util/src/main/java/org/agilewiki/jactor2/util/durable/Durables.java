@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable;
 
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.MailboxFactory;
-import org.agilewiki.jactor2.api.Properties;
+import org.agilewiki.jactor2.core.Mailbox;
+import org.agilewiki.jactor2.core.MailboxFactory;
+import org.agilewiki.jactor2.core.Properties;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.firehose;
 
-import org.agilewiki.jactor2.api.Actor;
-import org.agilewiki.jactor2.api.Request;
+import org.agilewiki.jactor2.core.Actor;
+import org.agilewiki.jactor2.core.Request;
 
 public interface DataProcessor extends Actor {
 

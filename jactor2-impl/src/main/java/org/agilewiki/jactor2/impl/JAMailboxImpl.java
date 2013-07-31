@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.impl;
 
-import org.agilewiki.jactor2.api.ExceptionHandler;
-import org.agilewiki.jactor2.api.Mailbox;
-import org.agilewiki.jactor2.api.Message;
+import org.agilewiki.jactor2.core.ExceptionHandler;
+import org.agilewiki.jactor2.core.Mailbox;
+import org.agilewiki.jactor2.core.Message;
 import org.slf4j.Logger;
 
 import java.util.*;

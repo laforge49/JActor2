@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.api.ActorBase;
-import org.agilewiki.jactor2.api.Event;
+import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.Event;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.UtilMailboxFactory;
 import org.osgi.framework.*;
