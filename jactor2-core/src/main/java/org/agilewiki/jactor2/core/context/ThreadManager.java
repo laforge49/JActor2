@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.context;
 
+import org.agilewiki.jactor2.core.mailbox.UnboundMailbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

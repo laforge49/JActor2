@@ -1,9 +1,9 @@
 package org.agilewiki.core.exceptions;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.DefaultMailboxFactory;
-import org.agilewiki.jactor2.core.Mailbox;
-import org.agilewiki.jactor2.core.MailboxFactory;
+import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.context.MailboxFactory;
 
 /**
  * Test code.

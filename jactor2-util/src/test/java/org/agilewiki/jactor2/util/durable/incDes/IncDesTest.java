@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.DefaultMailboxFactory;
-import org.agilewiki.jactor2.core.Mailbox;
+import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IncDesTest extends TestCase {

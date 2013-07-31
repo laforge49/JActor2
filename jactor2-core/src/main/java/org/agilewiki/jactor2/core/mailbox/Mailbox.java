@@ -1,5 +1,9 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.mailbox;
 
+import org.agilewiki.jactor2.core.ExceptionHandler;
+import org.agilewiki.jactor2.core.messaging.MessageSource;
+import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.messaging.Message;
 import org.slf4j.Logger;
 
 /**

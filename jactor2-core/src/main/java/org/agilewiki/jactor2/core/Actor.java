@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core;
 
+import org.agilewiki.jactor2.core.mailbox.Mailbox;
+
 /**
  * Actors which receive events must implement this interface, which is otherwise optional.
  */

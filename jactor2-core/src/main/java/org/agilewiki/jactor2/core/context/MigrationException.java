@@ -1,4 +1,6 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.context;
+
+import org.agilewiki.jactor2.core.mailbox.UnboundMailbox;
 
 /**
  * Signals a migration of the current thread to another mailbox.

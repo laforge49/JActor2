@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.messaging;
 
 /**
  * A ResponseProcessor is an application callback for a request.

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.firehose;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
 
 public class FirehoseTest extends TestCase {
     public void test() throws Exception {

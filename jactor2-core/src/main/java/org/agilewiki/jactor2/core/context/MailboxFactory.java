@@ -1,4 +1,8 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.context;
+
+import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.mailbox.ThreadBoundMailbox;
 
 /**
  * MailboxFactory creates NonBlocking, Atomic and ThreadBound mailboxes.

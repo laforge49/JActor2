@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core;
 
+import org.agilewiki.jactor2.core.mailbox.Mailbox;
+
 /**
  * ActorBase implements an Actor bean, i.e. it no constructor arguments.
  * Initialization is not thread-safe, so it should be done

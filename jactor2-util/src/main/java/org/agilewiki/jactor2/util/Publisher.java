@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.core.*;
+import org.agilewiki.jactor2.core.messaging.Event;
+import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.Transport;
 
 import java.util.HashSet;
 import java.util.Set;

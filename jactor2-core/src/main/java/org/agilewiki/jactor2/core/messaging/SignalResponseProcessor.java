@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.messaging;
 
 /**
  * Used to flag a message as a 1-way message.

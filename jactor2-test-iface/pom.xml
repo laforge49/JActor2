@@ -50,7 +50,7 @@
                             org.agilewiki.jactor2.testIface;version=${project.version}
                         </Export-Package>
                         <Import-Package>
-                            org.agilewiki.jactor2.core;version=${project.version},
+                            org.agilewiki.jactor2.core.*;version=${project.version},
                             org.agilewiki.jactor2.util*;version=${project.version}
                             org.agilewiki.jactor2.osgi*;version=${project.version}
                             *

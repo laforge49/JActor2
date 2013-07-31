@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.mailbox;
 
 /**
  * A mailbox for actors which neither block the thread nor perform long computations.

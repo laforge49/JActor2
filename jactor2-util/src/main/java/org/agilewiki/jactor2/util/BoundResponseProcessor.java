@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.Event;
-import org.agilewiki.jactor2.core.ResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.Event;
+import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 
 /**
  * A thread-safe wrapper for ResponseProcessor.

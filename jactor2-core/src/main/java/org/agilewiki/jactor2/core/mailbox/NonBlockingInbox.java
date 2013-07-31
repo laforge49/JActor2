@@ -1,4 +1,6 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.mailbox;
+
+import org.agilewiki.jactor2.core.messaging.Message;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

@@ -1,4 +1,6 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.context;
+
+import org.agilewiki.jactor2.core.mailbox.UnboundMailbox;
 
 /**
  * The extended MailboxFactory interface for use in the implementation.

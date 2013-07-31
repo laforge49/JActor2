@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.context;
 
 import java.util.concurrent.ThreadFactory;
 

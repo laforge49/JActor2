@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.DefaultMailboxFactory;
-import org.agilewiki.jactor2.core.Event;
+import org.agilewiki.jactor2.core.context.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;

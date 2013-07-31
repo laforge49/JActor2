@@ -1,4 +1,8 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.messaging;
+
+import org.agilewiki.jactor2.core.*;
+import org.agilewiki.jactor2.core.context.MailboxFactory;
+import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 import java.util.concurrent.Semaphore;
 

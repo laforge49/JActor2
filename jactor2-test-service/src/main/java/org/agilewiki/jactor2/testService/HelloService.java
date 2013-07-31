@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.testService;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.testIface.Hello;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;

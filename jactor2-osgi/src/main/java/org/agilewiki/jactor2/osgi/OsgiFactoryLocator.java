@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.MailboxFactory;
+import org.agilewiki.jactor2.core.context.MailboxFactory;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

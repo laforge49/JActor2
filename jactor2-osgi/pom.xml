@@ -52,7 +52,7 @@
                         </Export-Package>
                         <Import-Package>
                             org.agilewiki.jactor2.util*;version=${project.version},
-                            org.agilewiki.jactor2.core;version=${project.version},
+                            org.agilewiki.jactor2.core.*;version=${project.version},
                             *
                         </Import-Package>
                     </instructions>
