@@ -1,8 +1,5 @@
-package org.agilewiki.jactor2.impl;
+package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.Mailbox;
-import org.agilewiki.jactor2.core.MailboxFactory;
-import org.agilewiki.jactor2.core.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

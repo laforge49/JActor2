@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.general;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.*;
-import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 
 public class ServiceTest extends TestCase {
 

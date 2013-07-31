@@ -1,7 +1,5 @@
-package org.agilewiki.jactor2.impl;
+package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.AtomicMailbox;
-import org.agilewiki.jactor2.core.Message;
 import org.slf4j.Logger;
 
 public class AtomicMailboxImpl extends UnboundMailboxImpl implements AtomicMailbox {

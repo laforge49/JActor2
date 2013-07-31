@@ -1,7 +1,4 @@
-package org.agilewiki.jactor2.impl;
-
-import org.agilewiki.jactor2.core.Mailbox;
-import org.agilewiki.jactor2.core.Message;
+package org.agilewiki.jactor2.core;
 
 import java.util.Queue;
 

@@ -1,6 +1,4 @@
-package org.agilewiki.jactor2.impl;
-
-import org.agilewiki.jactor2.core.MailboxFactory;
+package org.agilewiki.jactor2.core;
 
 /**
  * The extended MailboxFactory interface for use in the implementation.

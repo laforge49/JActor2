@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.impl;
+package org.agilewiki.jactor2.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

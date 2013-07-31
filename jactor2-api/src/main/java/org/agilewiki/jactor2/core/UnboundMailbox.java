@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.impl;
+package org.agilewiki.jactor2.core;
 
 import java.util.concurrent.atomic.AtomicReference;
 

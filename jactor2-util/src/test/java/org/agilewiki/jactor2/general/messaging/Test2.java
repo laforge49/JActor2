@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.general.messaging;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 import org.agilewiki.jactor2.core.Mailbox;
 import org.agilewiki.jactor2.core.MailboxFactory;
-import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
 
 /**
  * Test code.

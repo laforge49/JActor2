@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.impl.DefaultMailboxFactory;
+import org.agilewiki.jactor2.core.DefaultMailboxFactory;
 
 /**
  * A Mailbox factory
