@@ -47,7 +47,7 @@ public class ThreadBoundMailbox extends MailboxBase {
 
     @Override
     protected Inbox createInbox(int _initialLocalQueueSize) {
-        return new AtomicInbox(_initialLocalQueueSize);
+        return new NonBlockingInbox(_initialLocalQueueSize);
     }
 
     @Override
