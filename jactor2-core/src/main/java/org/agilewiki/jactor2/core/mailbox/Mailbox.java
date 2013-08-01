@@ -134,7 +134,7 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
     /**
      * Returns the atomic reference to the current thread.
      *
-     * @return
+     * @return The atomic reference to the current thread.
      */
     AtomicReference<Thread> getThreadReference();
 

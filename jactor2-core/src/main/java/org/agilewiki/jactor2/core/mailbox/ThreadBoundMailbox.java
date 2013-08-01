@@ -13,10 +13,10 @@ public class ThreadBoundMailbox extends MailboxBase {
     private final Runnable messageProcessor;
 
     public ThreadBoundMailbox(JAContext _jaContext, Runnable _messageProcessor) {
-        this(_jaContext,
+        super(_jaContext,
                 _jaContext.getInitialBufferSize(),
-                _jaContext.getInitialLocalMessageQueueSize(),
-                _messageProcessor);
+                _jaContext.getInitialLocalMessageQueueSize());
+        messageProcessor = _messageProcessor;
     }
 
     public ThreadBoundMailbox(JAContext _jaContext,

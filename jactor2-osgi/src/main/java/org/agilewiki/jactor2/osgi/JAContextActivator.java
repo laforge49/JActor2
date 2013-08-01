@@ -59,8 +59,6 @@ abstract public class JAContextActivator
 
     /**
      * Begins the activator's asynchronous processing.
-     *
-     * @return The request.
      */
     protected void begin() throws Exception {
         new Event<JAContextActivator>() {

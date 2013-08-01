@@ -85,8 +85,6 @@ public class JASemaphore extends ActorBase {
     /**
      * A request to release a request.
      * If there is a pending request, a release will allow that request to complete.
-     *
-     * @return The request.
      */
     public void release() throws Exception {
         release.signal(this);
