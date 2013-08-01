@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.util.durable;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.Properties;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.durable.app.App;
@@ -298,7 +299,7 @@ public final class Durables {
                                                  final String _factoryName,
                                                  final JAContext _jaContext)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _jaContext.createNonBlockingMailbox(), null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, new NonBlockingMailbox(_jaContext), null);
     }
 
     /**
@@ -315,7 +316,8 @@ public final class Durables {
                                                  final JAContext _jaContext,
                                                  final Ancestor _parent)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _jaContext.createNonBlockingMailbox(), _parent);
+        return ((FactoryLocatorImpl) _factoryLocator).
+                newSerializable(_factoryName, new NonBlockingMailbox(_jaContext), _parent);
     }
 
     /**

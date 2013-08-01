@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.osgi;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.Properties;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
@@ -108,7 +109,7 @@ final public class Osgi {
                 locateService.getReq().send(_root.getMailbox(), new ResponseProcessor<OsgiFactoryLocator>() {
                     @Override
                     public void processResponse(OsgiFactoryLocator response) throws Exception {
-                        Mailbox newMailbox = response.getJAContext().createNonBlockingMailbox();
+                        Mailbox newMailbox = new NonBlockingMailbox(response.getJAContext());
                         _root.copyReq(newMailbox).send(_root.getMailbox(), (Transport) _transport);
                     }
                 });
