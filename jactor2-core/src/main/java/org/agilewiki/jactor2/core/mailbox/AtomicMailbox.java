@@ -9,16 +9,16 @@ public class AtomicMailbox extends UnboundMailbox {
     /**
      * Create a mailbox.
      *
-     * @param _onIdle                Object to be run when the inbox is emptied, or null.
      * @param _factory               The factory of this object.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
+     * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public AtomicMailbox(Runnable _onIdle,
-                         JAContext _factory,
+    public AtomicMailbox(JAContext _factory,
                          int _initialBufferSize,
-                         final int _initialLocalQueueSize) {
-        super(_onIdle, _factory, _initialBufferSize, _initialLocalQueueSize);
+                         final int _initialLocalQueueSize,
+                         Runnable _onIdle) {
+        super(_factory, _initialBufferSize, _initialLocalQueueSize, _onIdle);
     }
 
     @Override

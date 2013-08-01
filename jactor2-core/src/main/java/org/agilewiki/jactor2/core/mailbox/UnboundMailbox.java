@@ -27,16 +27,15 @@ abstract public class UnboundMailbox extends MailboxBase {
     /**
      * Create a mailbox.
      *
-     * @param _onIdle                Object to be run when the inbox is emptied, or null.
      * @param _factory               The factory of this object.
-     * @param _log                   The Mailbox log.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
+     * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public UnboundMailbox(Runnable _onIdle,
-                          JAContext _factory,
+    public UnboundMailbox(JAContext _factory,
                           int _initialBufferSize,
-                          final int _initialLocalQueueSize) {
+                          final int _initialLocalQueueSize,
+                          Runnable _onIdle) {
         super(_factory, _initialBufferSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }
