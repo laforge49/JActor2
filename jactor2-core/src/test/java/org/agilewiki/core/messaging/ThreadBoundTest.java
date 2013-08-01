@@ -15,7 +15,7 @@ public class ThreadBoundTest extends TestCase {
 
     public void testa() throws Exception {
         jaContext = new JAContext();
-        boundMailbox = jaContext.createThreadBoundMailbox(new Runnable() {
+        boundMailbox = new ThreadBoundMailbox(jaContext, new Runnable() {
             @Override
             public void run() {
                 boundMailbox.run();

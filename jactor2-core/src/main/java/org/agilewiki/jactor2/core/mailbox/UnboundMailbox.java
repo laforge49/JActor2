@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.mailbox;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
-import org.slf4j.Logger;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -36,10 +35,9 @@ abstract public class UnboundMailbox extends MailboxBase {
      */
     public UnboundMailbox(Runnable _onIdle,
                           JAContext _factory,
-                          Logger _log,
                           int _initialBufferSize,
                           final int _initialLocalQueueSize) {
-        super(_factory, _log, _initialBufferSize, _initialLocalQueueSize);
+        super(_factory, _initialBufferSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }
 

@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.mailbox;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Message;
-import org.slf4j.Logger;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -13,12 +12,18 @@ public class ThreadBoundMailbox extends MailboxBase {
 
     private final Runnable messageProcessor;
 
-    public ThreadBoundMailbox(Runnable _messageProcessor,
-                              JAContext _factory,
-                              Logger _log,
+    public ThreadBoundMailbox(JAContext _jaContext, Runnable _messageProcessor) {
+        this(_jaContext,
+                _jaContext.getInitialBufferSize(),
+                _jaContext.getInitialLocalMessageQueueSize(),
+                _messageProcessor);
+    }
+
+    public ThreadBoundMailbox(JAContext _jaContext,
                               int _initialBufferSize,
-                              final int _initialLocalQueueSize) {
-        super(_factory, _log, _initialBufferSize, _initialLocalQueueSize);
+                              final int _initialLocalQueueSize,
+                              Runnable _messageProcessor) {
+        super(_jaContext, _initialBufferSize, _initialLocalQueueSize);
         messageProcessor = _messageProcessor;
     }
 

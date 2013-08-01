@@ -1,6 +1,9 @@
 package org.agilewiki.jactor2.core.context;
 
-import org.agilewiki.jactor2.core.mailbox.*;
+import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
+import org.agilewiki.jactor2.core.mailbox.Inbox;
+import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,6 +107,18 @@ public class JAContext implements AutoCloseable {
         initialBufferSize = _initialBufferSize;
     }
 
+    public Logger getMailboxLogger() {
+        return mailboxLogger;
+    }
+
+    public int getInitialBufferSize() {
+        return initialBufferSize;
+    }
+
+    public int getInitialLocalMessageQueueSize() {
+        return initialLocalMessageQueueSize;
+    }
+
     /**
      * Creates a Mailbox which is only used to process non-blocking messages.
      *
@@ -142,7 +157,7 @@ public class JAContext implements AutoCloseable {
      */
     public final NonBlockingMailbox createNonBlockingMailbox(final int _initialBufferSize,
                                                              final Runnable _onIdle) {
-        return new NonBlockingMailbox(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
+        return new NonBlockingMailbox(_onIdle, this, _initialBufferSize, initialLocalMessageQueueSize);
     }
 
     /**
@@ -187,7 +202,7 @@ public class JAContext implements AutoCloseable {
      */
     public final AtomicMailbox createAtomicMailbox(final int _initialBufferSize,
                                                    final Runnable _onIdle) {
-        return new AtomicMailbox(_onIdle, this, mailboxLogger, _initialBufferSize, initialLocalMessageQueueSize);
+        return new AtomicMailbox(_onIdle, this, _initialBufferSize, initialLocalMessageQueueSize);
     }
 
     /**
@@ -262,18 +277,6 @@ public class JAContext implements AutoCloseable {
      */
     public final boolean isClosing() {
         return shuttingDown.get();
-    }
-
-    /**
-     * Creates a mailbox that runs on an existing thread.
-     *
-     * @param _messageProcessor The run method is called when there are messages
-     *                          to be processed.
-     * @return The thread bounded mailbox.
-     */
-    public final ThreadBoundMailbox createThreadBoundMailbox(final Runnable _messageProcessor) {
-        return new ThreadBoundMailbox(_messageProcessor, this,
-                mailboxLogger, initialBufferSize, initialLocalMessageQueueSize);
     }
 
     /**

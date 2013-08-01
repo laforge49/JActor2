@@ -52,20 +52,18 @@ abstract public class MailboxBase implements Mailbox {
     /**
      * Create a mailbox.
      *
-     * @param _factory               The factory of this object.
-     * @param _log                   The Mailbox log.
+     * @param _jaContext             The factory of this object.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public MailboxBase(final JAContext _factory,
-                       final Logger _log,
+    public MailboxBase(final JAContext _jaContext,
                        final int _initialBufferSize,
                        final int _initialLocalQueueSize) {
-        jaContext = _factory;
+        jaContext = _jaContext;
         inbox = createInbox(_initialLocalQueueSize);
-        log = _log;
+        log = _jaContext.getMailboxLogger();
         initialBufferSize = _initialBufferSize;
-        _factory.addAutoClosable(this);
+        _jaContext.addAutoClosable(this);
     }
 
     abstract protected Inbox createInbox(int _initialLocalQueueSize);

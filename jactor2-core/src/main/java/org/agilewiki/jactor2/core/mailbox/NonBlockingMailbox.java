@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.mailbox;
 
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.slf4j.Logger;
 
 public class NonBlockingMailbox extends UnboundMailbox {
 
@@ -10,16 +9,14 @@ public class NonBlockingMailbox extends UnboundMailbox {
      *
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      * @param _factory               The factory of this object.
-     * @param _log                   The Mailbox log.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
     public NonBlockingMailbox(Runnable _onIdle,
                               JAContext _factory,
-                              Logger _log,
                               int _initialBufferSize,
                               final int _initialLocalQueueSize) {
-        super(_onIdle, _factory, _log, _initialBufferSize, _initialLocalQueueSize);
+        super(_onIdle, _factory, _initialBufferSize, _initialLocalQueueSize);
     }
 
     @Override
