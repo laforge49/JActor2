@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.ExceptionHandler;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 /**

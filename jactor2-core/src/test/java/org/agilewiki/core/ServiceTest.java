@@ -2,14 +2,10 @@ package org.agilewiki.core;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.ExceptionHandler;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
-import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.ServiceClosedException;
-import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.messaging.*;
 
 public class ServiceTest extends TestCase {
 
