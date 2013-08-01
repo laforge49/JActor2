@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.util.durable.incDes.timings;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.util.durable.incDes.JAMap;
@@ -46,7 +47,7 @@ public class BMapTimingsTest extends TestCase {
             m1.getSerializedBytes();
             int j = 0;
             i = s / 2;
-            Mailbox mailbox = jaContext.createNonBlockingMailbox();
+            Mailbox mailbox = new NonBlockingMailbox(jaContext);
             long t0 = System.currentTimeMillis();
             while (j < r) {
                 JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(mailbox);

@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
 
 public class PublisherTest extends TestCase {
@@ -10,17 +11,17 @@ public class PublisherTest extends TestCase {
         JAContext jaContext = new JAContext();
         try {
             Publisher p = new Publisher();
-            p.initialize(jaContext.createNonBlockingMailbox());
+            p.initialize(new NonBlockingMailbox(jaContext));
             Printer a = new Printer();
-            a.initialize(jaContext.createNonBlockingMailbox());
+            a.initialize(new NonBlockingMailbox(jaContext));
             a.setName("a");
             p.subscribeReq(a).call();
             Printer b = new Printer();
-            b.initialize(jaContext.createNonBlockingMailbox());
+            b.initialize(new NonBlockingMailbox(jaContext));
             b.setName("b");
             p.subscribeReq(b).call();
             Printer c = new Printer();
-            c.initialize(jaContext.createNonBlockingMailbox());
+            c.initialize(new NonBlockingMailbox(jaContext));
             c.setName("c");
             p.subscribeReq(c).call();
             p.publishReq(new Print("42")).call();

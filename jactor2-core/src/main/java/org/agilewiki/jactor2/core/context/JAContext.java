@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.context;
 
 import org.agilewiki.jactor2.core.mailbox.Inbox;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,16 +115,6 @@ public class JAContext implements AutoCloseable {
 
     public int getInitialLocalMessageQueueSize() {
         return initialLocalMessageQueueSize;
-    }
-
-    /**
-     * Creates a Mailbox which is only used to process non-blocking messages.
-     *
-     * @return A new non-blocking mailbox.
-     */
-    @Deprecated
-    public final NonBlockingMailbox createNonBlockingMailbox() {
-        return new NonBlockingMailbox(this);
     }
 
     /**

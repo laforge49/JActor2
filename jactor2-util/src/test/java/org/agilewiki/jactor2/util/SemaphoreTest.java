@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.ExceptionHandler;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -23,18 +24,18 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     public void testI() throws Exception {
         final JAContext jaContext = new JAContext();
-        mailbox = jaContext.createNonBlockingMailbox();
+        mailbox = new NonBlockingMailbox(jaContext);
         final JASemaphore semaphore = new JASemaphore(
-                jaContext.createNonBlockingMailbox(), 1);
+                new NonBlockingMailbox(jaContext), 1);
         semaphore.acquireReq().call();
         jaContext.close();
     }
 
     public void testII() throws Exception {
         final JAContext jaContext = new JAContext();
-        mailbox = jaContext.createNonBlockingMailbox();
+        mailbox = new NonBlockingMailbox(jaContext);
         final JASemaphore semaphore = new JASemaphore(
-                jaContext.createNonBlockingMailbox(), 0);
+                new NonBlockingMailbox(jaContext), 0);
         semaphore.release();
         semaphore.acquireReq().call();
         jaContext.close();
@@ -61,9 +62,9 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     public void testIII() throws Exception {
         final JAContext jaContext = new JAContext();
-        mailbox = jaContext.createNonBlockingMailbox();
+        mailbox = new NonBlockingMailbox(jaContext);
         final JASemaphore semaphore = new JASemaphore(
-                jaContext.createNonBlockingMailbox(), 0);
+                new NonBlockingMailbox(jaContext), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, jaContext);
@@ -103,14 +104,14 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     public void testIV() throws Exception {
         final JAContext jaContext = new JAContext();
-        mailbox = jaContext.createNonBlockingMailbox();
+        mailbox = new NonBlockingMailbox(jaContext);
         final JASemaphore semaphore = new JASemaphore(
-                jaContext.createNonBlockingMailbox(), 0);
+                new NonBlockingMailbox(jaContext), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, jaContext);
         final boolean result = acquireException(semaphore,
-                jaContext.createNonBlockingMailbox()).call();
+                new NonBlockingMailbox(jaContext)).call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
         assertTrue(result);

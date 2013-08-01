@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.util.durable.incDes;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -15,7 +16,7 @@ public class TupleTest extends TestCase {
             Durables.registerTupleFactory(factoryLocator,
                     "sst", JAString.FACTORY_NAME, JAString.FACTORY_NAME);
             Factory tjf = factoryLocator.getFactory("sst");
-            Mailbox mailbox = jaContext.createNonBlockingMailbox();
+            Mailbox mailbox = new NonBlockingMailbox(jaContext);
             Tuple t0 = (Tuple) tjf.newSerializable(mailbox, factoryLocator);
             JAString e0 = (JAString) t0.iGetReq(0).call();
             assertNull(e0.getValueReq().call());

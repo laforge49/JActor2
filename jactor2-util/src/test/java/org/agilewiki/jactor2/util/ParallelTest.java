@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
 
@@ -19,7 +20,7 @@ public class ParallelTest extends TestCase {
 
     public void test() throws Exception {
         jaContext = new JAContext();
-        mailbox = jaContext.createNonBlockingMailbox();
+        mailbox = new NonBlockingMailbox(jaContext);
 
         start = new Request<Void>(mailbox) {
             @Override

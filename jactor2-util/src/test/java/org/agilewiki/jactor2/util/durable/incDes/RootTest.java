@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.util.durable.incDes;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -13,7 +14,7 @@ public class RootTest extends TestCase {
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            Mailbox mailbox = jaContext.createNonBlockingMailbox();
+            Mailbox mailbox = new NonBlockingMailbox(jaContext);
             Root root1 = (Root) rootFactory.newSerializable(mailbox, factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);

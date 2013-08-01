@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.util.durable.incDes.timings;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.util.durable.incDes.JAList;
@@ -36,7 +37,7 @@ public class BListTimingsTest extends TestCase {
         JAContext jaContext = Durables.createJAContext();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(jaContext, JAList.JAINTEGER_LIST);
-            Mailbox mailbox = jaContext.createNonBlockingMailbox();
+            Mailbox mailbox = new NonBlockingMailbox(jaContext);
             int i = 0;
             while (i < s) {
                 intList1.iAdd(-1);
