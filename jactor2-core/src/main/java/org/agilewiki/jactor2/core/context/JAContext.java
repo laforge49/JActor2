@@ -126,7 +126,7 @@ public class JAContext implements AutoCloseable {
      */
     @Deprecated
     public final NonBlockingMailbox createNonBlockingMailbox() {
-        return new NonBlockingMailbox(this, initialBufferSize, initialLocalMessageQueueSize, null);
+        return new NonBlockingMailbox(this);
     }
 
     /**
@@ -135,43 +135,9 @@ public class JAContext implements AutoCloseable {
      *
      * @return A new atomic mailbox.
      */
+    @Deprecated
     public final AtomicMailbox createAtomicMailbox() {
-        return createAtomicMailbox(initialBufferSize, null);
-    }
-
-    /**
-     * Creates a Mailbox for processing messages that perform long computations
-     * or which may block the thread, or when requests must be processed atomically.
-     *
-     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
-     * @return A new atomic mailbox.
-     */
-    public final AtomicMailbox createAtomicMailbox(final int _initialBufferSize) {
-        return createAtomicMailbox(_initialBufferSize, null);
-    }
-
-    /**
-     * Creates a Mailbox for processing messages that perform long computations
-     * or which may block the thread, or when requests must be processed atomically.
-     *
-     * @param _onIdle The run method is called when the input queue is empty.
-     * @return A new atomic mailbox.
-     */
-    public final AtomicMailbox createAtomicMailbox(final Runnable _onIdle) {
-        return createAtomicMailbox(initialBufferSize, _onIdle);
-    }
-
-    /**
-     * Creates a Mailbox for processing messages that perform long computations
-     * or which may block the thread, or when requests must be processed atomically.
-     *
-     * @param _initialBufferSize How big should the initial (per target Mailbox) buffer size be?
-     * @param _onIdle            The run method is called when the input queue is empty.
-     * @return A new atomic mailbox.
-     */
-    public final AtomicMailbox createAtomicMailbox(final int _initialBufferSize,
-                                                   final Runnable _onIdle) {
-        return new AtomicMailbox(this, _initialBufferSize, initialLocalMessageQueueSize, _onIdle);
+        return new AtomicMailbox(this);
     }
 
     /**

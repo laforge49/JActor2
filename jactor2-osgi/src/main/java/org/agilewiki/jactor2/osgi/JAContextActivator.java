@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.osgi.framework.*;
@@ -114,7 +115,7 @@ abstract public class JAContextActivator
         jaContext.addAutoClosable(this);
         jaProperties = new JAProperties(jaContext, null);
         jaProperties.putProperty("bundleContext", bundleContext);
-        initialize(jaContext.createAtomicMailbox());
+        initialize(new AtomicMailbox(jaContext));
     }
 
     /**
