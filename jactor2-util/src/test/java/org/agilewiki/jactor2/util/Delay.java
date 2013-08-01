@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
@@ -9,7 +10,7 @@ public class Delay {
     private final Mailbox mailbox;
 
     public Delay(final JAContext jaContext) {
-        mailbox = jaContext.createAtomicMailbox();
+        mailbox = new AtomicMailbox(jaContext);
     }
 
     public Request<Void> sleepReq(final long _delay) {

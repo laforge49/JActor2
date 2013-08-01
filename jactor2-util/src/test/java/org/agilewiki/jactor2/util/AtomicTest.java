@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -13,7 +14,7 @@ public class AtomicTest extends TestCase {
     public void test() throws Exception {
         JAContext jaContext = new JAContext();
         try {
-            int _count = startReq1(jaContext.createAtomicMailbox()).call();
+            int _count = startReq1(new AtomicMailbox(jaContext)).call();
             assertEquals(5, _count);
         } finally {
             jaContext.close();
@@ -25,7 +26,7 @@ public class AtomicTest extends TestCase {
             @Override
             public void processRequest(final Transport<Integer> _rp)
                     throws Exception {
-                Mailbox mailbox = _mailbox.getJAContext().createAtomicMailbox();
+                Mailbox mailbox = new AtomicMailbox(_mailbox.getJAContext());
                 ResponseProcessor rc = new ResponseCounter(5, null,
                         new ResponseProcessor() {
                             @Override

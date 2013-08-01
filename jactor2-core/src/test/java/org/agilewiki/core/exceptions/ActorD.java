@@ -26,7 +26,7 @@ public class ActorD {
                         responseProcessor.processResponse(throwable.toString());
                     }
                 });
-                Dd dd = new Dd(new AtomicMailbox(mailbox.getJAContext());
+                Dd dd = new Dd(new AtomicMailbox(mailbox.getJAContext()));
                 dd.doSomethin.send(mailbox, new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(final Void response)

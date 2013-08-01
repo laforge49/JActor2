@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.context;
 
-import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
 import org.agilewiki.jactor2.core.mailbox.Inbox;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
@@ -127,17 +126,6 @@ public class JAContext implements AutoCloseable {
     @Deprecated
     public final NonBlockingMailbox createNonBlockingMailbox() {
         return new NonBlockingMailbox(this);
-    }
-
-    /**
-     * Creates a Mailbox for processing messages that perform long computations
-     * or which may block the thread, or when requests must be processed atomically.
-     *
-     * @return A new atomic mailbox.
-     */
-    @Deprecated
-    public final AtomicMailbox createAtomicMailbox() {
-        return new AtomicMailbox(this);
     }
 
     /**
