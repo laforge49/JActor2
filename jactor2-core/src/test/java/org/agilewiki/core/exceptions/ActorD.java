@@ -1,6 +1,7 @@
 package org.agilewiki.core.exceptions;
 
 import org.agilewiki.jactor2.core.ExceptionHandler;
+import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -25,7 +26,7 @@ public class ActorD {
                         responseProcessor.processResponse(throwable.toString());
                     }
                 });
-                Dd dd = new Dd(mailbox.getJAContext().createAtomicMailbox());
+                Dd dd = new Dd(new AtomicMailbox(mailbox.getJAContext());
                 dd.doSomethin.send(mailbox, new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(final Void response)

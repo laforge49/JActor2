@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.ExceptionHandler;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ServiceClosedException;
@@ -13,13 +14,13 @@ import org.agilewiki.jactor2.core.messaging.Transport;
 public class ServiceTest extends TestCase {
 
     public void test() throws Exception {
-        JAContext testMBF = new JAContext();
-        JAContext clientMBF = new JAContext();
-        final JAContext serverMBF = new JAContext();
+        JAContext testContext = new JAContext();
+        JAContext clientContext = new JAContext();
+        final JAContext serverContext = new JAContext();
         try {
-            Mailbox testMailbox = testMBF.createNonBlockingMailbox();
-            Server server = new Server(serverMBF.createNonBlockingMailbox());
-            final Client client = new Client(clientMBF.createNonBlockingMailbox(), server);
+            Mailbox testMailbox = new NonBlockingMailbox(testContext);
+            Server server = new Server(new NonBlockingMailbox(serverContext));
+            final Client client = new Client(new NonBlockingMailbox(clientContext), server);
             new Request<Void>(testMailbox) {
                 @Override
                 public void processRequest(final Transport<Void> _transport) throws Exception {
@@ -30,13 +31,13 @@ public class ServiceTest extends TestCase {
                             _transport.processResponse(null);
                         }
                     });
-                    serverMBF.close();
+                    serverContext.close();
                 }
             }.call();
         } finally {
-            testMBF.close();
-            clientMBF.close();
-            serverMBF.close();
+            testContext.close();
+            clientContext.close();
+            serverContext.close();
         }
     }
 }

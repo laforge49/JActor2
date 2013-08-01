@@ -2,6 +2,7 @@ package org.agilewiki.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.mailbox.ThreadBoundMailbox;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -25,7 +26,7 @@ public class ThreadBoundTest extends TestCase {
                 }
             }
         });
-        final Mailbox mailbox = jaContext.createAtomicMailbox();
+        final Mailbox mailbox = new AtomicMailbox(jaContext);
         final Actor1 actor1 = new Actor1(mailbox);
         actor1.hi.send(boundMailbox, new ResponseProcessor<String>() {
             @Override

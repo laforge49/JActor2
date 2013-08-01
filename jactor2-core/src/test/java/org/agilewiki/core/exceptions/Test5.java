@@ -2,6 +2,7 @@ package org.agilewiki.core.exceptions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 /**
@@ -10,8 +11,8 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
         final JAContext jaContext = new JAContext();
-        final Mailbox mailboxE = jaContext.createAtomicMailbox();
-        final Mailbox mailboxA = jaContext.createAtomicMailbox();
+        final Mailbox mailboxE = new AtomicMailbox(jaContext);
+        final Mailbox mailboxA = new AtomicMailbox(jaContext);
         final ActorE actorE = new ActorE(mailboxE);
         final ActorA actorA = new ActorA(mailboxA);
         try {
