@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
  * </p>
  */
 
-abstract public interface Message extends AutoCloseable {
+public interface Message extends AutoCloseable {
 
     /**
      * Returns true when the response is to be sent to a mailbox created from a different mailbox factory.
