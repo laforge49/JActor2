@@ -3,12 +3,18 @@ package org.agilewiki.jactor2.core;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 /**
- * ActorBase implements an Actor bean, i.e. it no constructor arguments.
- * Initialization is not thread-safe, so it should be done
- * before a reference to the actor is shared.
- * <p/>
- * Use of this class is entirely optional, as actors need only a reference to a mailbox
- * to be able to exchange messages with other actors.
+ * <p>
+ * ActorBase is a convenience class that implements an Actor. Initialization is not
+ * thread-safe, so it should be done before a reference to the actor is shared.
+ * </p>
+ * <h3>Sample Usage:</h3>
+ * <pre>
+ * public class ActorBaseSample extends ActorBase {
+ *     public ActorBaseSample(final Mailbox _Mailbox) throws Exception {
+ *         initialize(_Mailbox);
+ *     }
+ * }
+ * </pre>
  */
 public class ActorBase implements Actor {
     /**
@@ -17,7 +23,7 @@ public class ActorBase implements Actor {
     private Mailbox mailbox;
 
     /**
-     * True when initialized, this flag prevents duplicate initialization.
+     * True when initialized, this flag is used to prevent the mailbox from being changed.
      */
     private boolean initialized;
 
@@ -31,13 +37,17 @@ public class ActorBase implements Actor {
     }
 
     /**
-     * Initialize an actor.
+     * Initialize an actor. This method can only be called once
+     * without raising an illegal state exception, as the mailbox
+     * can not be changed.
      *
      * @param _mailbox The actor's mailbox.
      */
     public void initialize(final Mailbox _mailbox) throws Exception {
         if (initialized)
             throw new IllegalStateException("Already initialized");
+        if (_mailbox == null)
+            throw new IllegalArgumentException("Mailbox may not be null");
         initialized = true;
         mailbox = _mailbox;
     }
