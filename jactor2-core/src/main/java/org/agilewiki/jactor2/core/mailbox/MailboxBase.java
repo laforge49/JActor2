@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for mailboxes.
@@ -37,7 +38,7 @@ abstract public class MailboxBase implements Mailbox {
     /**
      * A table of outboxes, one for each unique message destination.
      */
-    protected Map<Mailbox, ArrayDeque<Message>> sendBuffer;
+    protected Map<MailboxBase, ArrayDeque<Message>> sendBuffer;
 
     /**
      * The currently active exception handler.
@@ -68,17 +69,17 @@ abstract public class MailboxBase implements Mailbox {
 
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
-    @Override
+    //@Override
     public final Logger getLogger() {
         return log;
     }
 
-    @Override
+    //@Override
     public final Message getCurrentMessage() {
         return currentMessage;
     }
 
-    @Override
+    //@Override
     public final void setCurrentMessage(Message message) {
         currentMessage = message;
     }
@@ -88,20 +89,20 @@ abstract public class MailboxBase implements Mailbox {
         return inbox.hasWork();
     }
 
-    @Override
+    //@Override
     public final boolean isIdle() {
         return inbox.isIdle();
     }
 
-    @Override
+    //@Override
     public void close() throws Exception {
         if (sendBuffer == null)
             return;
-        final Iterator<Entry<Mailbox, ArrayDeque<Message>>> iter = sendBuffer
+        final Iterator<Entry<MailboxBase, ArrayDeque<Message>>> iter = sendBuffer
                 .entrySet().iterator();
         while (iter.hasNext()) {
-            final Entry<Mailbox, ArrayDeque<Message>> entry = iter.next();
-            final Mailbox target = entry.getKey();
+            final Entry<MailboxBase, ArrayDeque<Message>> entry = iter.next();
+            final MailboxBase target = entry.getKey();
             if (target.getJAContext() != jaContext) {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
@@ -132,7 +133,7 @@ abstract public class MailboxBase implements Mailbox {
         return rv;
     }
 
-    @Override
+    //@Override
     public final ExceptionHandler getExceptionHandler() {
         return exceptionHandler;
     }
@@ -151,7 +152,7 @@ abstract public class MailboxBase implements Mailbox {
         afterAdd();
     }
 
-    @Override
+    //@Override
     public void unbufferedAddMessages(final Queue<Message> _messages)
             throws Exception {
         if (jaContext.isClosing()) {
@@ -175,26 +176,26 @@ abstract public class MailboxBase implements Mailbox {
      */
     abstract protected void afterAdd() throws Exception;
 
-    @Override
+    //@Override
     public boolean buffer(final Message _message, final Mailbox _target) {
         if (jaContext.isClosing())
             return false;
         ArrayDeque<Message> buffer;
         if (sendBuffer == null) {
-            sendBuffer = new IdentityHashMap<Mailbox, ArrayDeque<Message>>();
+            sendBuffer = new IdentityHashMap<MailboxBase, ArrayDeque<Message>>();
             buffer = null;
         } else {
             buffer = sendBuffer.get(_target);
         }
         if (buffer == null) {
             buffer = new ArrayDeque<Message>(initialBufferSize);
-            sendBuffer.put(_target, buffer);
+            sendBuffer.put((MailboxBase) _target, buffer);
         }
         buffer.add(_message);
         return true;
     }
 
-    @Override
+    //@Override
     public void run() {
         while (true) {
             final Message message = inbox.poll();
@@ -223,7 +224,7 @@ abstract public class MailboxBase implements Mailbox {
      */
     abstract protected void notBusy() throws Exception;
 
-    @Override
+    //@Override
     public final void incomingResponse(final Message _message,
                                        final Mailbox _responseSource) {
         try {
@@ -239,13 +240,18 @@ abstract public class MailboxBase implements Mailbox {
         return jaContext;
     }
 
-    @Override
+    //@Override
     public void requestBegin() {
         inbox.requestBegin();
     }
 
-    @Override
+    //@Override
     public void requestEnd() {
         inbox.requestEnd();
     }
+
+    abstract public AtomicReference<Thread> getThreadReference();
+    abstract public boolean isRunning();
+    abstract public boolean isIdler();
+
 }

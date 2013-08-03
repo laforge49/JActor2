@@ -90,12 +90,12 @@ abstract public class UnboundMailbox extends MailboxBase {
     public boolean flush(boolean _mayMigrate) throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
-            final Iterator<Map.Entry<Mailbox, ArrayDeque<Message>>> iter = sendBuffer
+            final Iterator<Map.Entry<MailboxBase, ArrayDeque<Message>>> iter = sendBuffer
                     .entrySet().iterator();
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<Mailbox, ArrayDeque<Message>> entry = iter.next();
-                final Mailbox target = entry.getKey();
+                final Map.Entry<MailboxBase, ArrayDeque<Message>> entry = iter.next();
+                final MailboxBase target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() &&
@@ -104,7 +104,7 @@ abstract public class UnboundMailbox extends MailboxBase {
                         target instanceof UnboundMailbox &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();
-                    Mailbox targ = target;
+                    MailboxBase targ = target;
                     AtomicReference<Thread> targetThreadReference = targ.getThreadReference();
                     if (targetThreadReference.get() == null &&
                             targetThreadReference.compareAndSet(null, currentThread)) {

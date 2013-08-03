@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.MailboxBase;
 
 /**
  * An Event instance is used to pass one-way messages to any number of Actor objects.
@@ -21,7 +22,7 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
      */
     final public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
         final EventMessage message = new EventMessage(_targetActor);
-        _targetActor.getMailbox().unbufferedAddMessages(message, false);
+        ((MailboxBase) _targetActor.getMailbox()).unbufferedAddMessages(message, false);
     }
 
     /**
@@ -72,25 +73,27 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
          * @param _targetMailbox The mailbox of the target actor.
          */
         public void eval(final Mailbox _targetMailbox) {
-            _targetMailbox.setExceptionHandler(null);
-            _targetMailbox.setCurrentMessage(this);
+            MailboxBase targetMailbox = (MailboxBase) _targetMailbox;
+            targetMailbox.setExceptionHandler(null);
+            targetMailbox.setCurrentMessage(this);
             try {
                 processEvent(targetActor);
             } catch (final Throwable t) {
-                processThrowable(_targetMailbox, t);
+                processThrowable(targetMailbox, t);
             }
         }
 
         @Override
         public void processThrowable(final Mailbox _activeMailbox, final Throwable _t) {
-            ExceptionHandler exceptionHandler = _activeMailbox.getExceptionHandler();
+            MailboxBase activeMailbox = (MailboxBase) _activeMailbox;
+            ExceptionHandler exceptionHandler = activeMailbox.getExceptionHandler();
             if (exceptionHandler != null) {
                 try {
                     exceptionHandler.processException(_t);
                 } catch (final Throwable u) {
-                    _activeMailbox.getLogger().error("Exception handler unable to process throwable "
+                    activeMailbox.getLogger().error("Exception handler unable to process throwable "
                             + exceptionHandler.getClass().getName(), u);
-                    _activeMailbox.getLogger().error("Thrown by exception handler and uncaught "
+                    activeMailbox.getLogger().error("Thrown by exception handler and uncaught "
                             + exceptionHandler.getClass().getName(), _t);
                 }
             }

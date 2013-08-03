@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.MailboxBase;
 
 import java.util.concurrent.Semaphore;
 
@@ -19,7 +20,7 @@ public abstract class Request<RESPONSE_TYPE> {
      * The mailbox where this Request Objects is passed for processing. The thread
      * owned by this mailbox will process the Request.
      */
-    private final Mailbox mailbox;
+    private final MailboxBase mailbox;
 
     /**
      * Create an Request and bind it to its target mailbox.
@@ -31,7 +32,7 @@ public abstract class Request<RESPONSE_TYPE> {
         if (_targetMailbox == null) {
             throw new NullPointerException("targetMailbox");
         }
-        this.mailbox = _targetMailbox;
+        this.mailbox = (MailboxBase) _targetMailbox;
     }
 
     /**
@@ -53,7 +54,7 @@ public abstract class Request<RESPONSE_TYPE> {
      *                will buffer this Request.
      */
     public void signal(final Mailbox _source) throws Exception {
-        if (!_source.isRunning())
+        if (!((MailboxBase) _source).isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
         final RequestMessage message = new RequestMessage(false, mailbox, null,
@@ -77,15 +78,16 @@ public abstract class Request<RESPONSE_TYPE> {
      */
     public void send(final Mailbox _source,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
-        if (!_source.isRunning())
+        MailboxBase source = (MailboxBase) _source;
+        if (!source.isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
         final RequestMessage message = new RequestMessage(
-                _source.getJAContext() != mailbox.getJAContext(),
-                _source,
-                _source.getCurrentMessage(),
+                source.getJAContext() != mailbox.getJAContext(),
+                source,
+                source.getCurrentMessage(),
                 this,
-                _source.getExceptionHandler(),
+                source.getExceptionHandler(),
                 _rp);
         message.send(mailbox);
     }
@@ -266,7 +268,7 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _response the response being returned
          */
         void setResponse(final Object _response, final Mailbox _activeMailbox) {
-            _activeMailbox.requestEnd();
+            ((MailboxBase) _activeMailbox).requestEnd();
             responsePending = false;
             response = _response;
         }
@@ -295,10 +297,10 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox that will receive the message.
          */
         final void signal(final Mailbox _targetMailbox) throws Exception {
-            Mailbox sourceMailbox = (Mailbox) messageSource;
+            MailboxBase sourceMailbox = (MailboxBase) messageSource;
             boolean local = sourceMailbox == _targetMailbox;
             if (local || !sourceMailbox.buffer(this, _targetMailbox))
-                _targetMailbox.unbufferedAddMessages(this, local);
+                ((MailboxBase) _targetMailbox).unbufferedAddMessages(this, local);
         }
 
         /**
@@ -307,10 +309,10 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox that will receive the message.
          */
         final void send(final Mailbox _targetMailbox) throws Exception {
-            Mailbox sourceMailbox = (Mailbox) messageSource;
+            MailboxBase sourceMailbox = (MailboxBase) messageSource;
             boolean local = sourceMailbox == _targetMailbox;
             if (local || !sourceMailbox.buffer(this, _targetMailbox))
-                _targetMailbox.unbufferedAddMessages(this, local);
+                ((MailboxBase) _targetMailbox).unbufferedAddMessages(this, local);
         }
 
         /**
@@ -319,7 +321,7 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox that will receive the message.
          */
         final Object call(final Mailbox _targetMailbox) throws Exception {
-            _targetMailbox.unbufferedAddMessages(this, false);
+            ((MailboxBase) _targetMailbox).unbufferedAddMessages(this, false);
             return ((Pender) messageSource).pend();
         }
 
@@ -351,12 +353,13 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox whose thread is to evaluate the request.
          */
         private void processRequestMessage(final Mailbox _targetMailbox) {
-            final JAContext jaContext = _targetMailbox.getJAContext();
+            final MailboxBase targetMailbox = (MailboxBase) _targetMailbox;
+            final JAContext jaContext = targetMailbox.getJAContext();
             if (foreign)
                 jaContext.addAutoClosable(this);
-            _targetMailbox.setExceptionHandler(null);
-            _targetMailbox.setCurrentMessage(this);
-            _targetMailbox.requestBegin();
+            targetMailbox.setExceptionHandler(null);
+            targetMailbox.setCurrentMessage(this);
+            targetMailbox.requestBegin();
             try {
                 request.processRequest(
                         new Transport() {
@@ -367,12 +370,12 @@ public abstract class Request<RESPONSE_TYPE> {
                                     jaContext.removeAutoClosable(RequestMessage.this);
                                 if (!responsePending)
                                     return;
-                                setResponse(response, _targetMailbox);
+                                setResponse(response, targetMailbox);
                                 if (getResponseProcessor() != SignalResponseProcessor.SINGLETON) {
-                                    messageSource.incomingResponse(RequestMessage.this, _targetMailbox);
+                                    messageSource.incomingResponse(RequestMessage.this, targetMailbox);
                                 } else {
                                     if (response instanceof Throwable) {
-                                        _targetMailbox.getLogger().warn("Uncaught throwable",
+                                        targetMailbox.getLogger().warn("Uncaught throwable",
                                                 (Throwable) response);
                                     }
                                 }
@@ -384,7 +387,7 @@ public abstract class Request<RESPONSE_TYPE> {
                                     return null;
                                 if (!(messageSource instanceof Mailbox))
                                     return null;
-                                return ((Mailbox) messageSource).getJAContext();
+                                return ((MailboxBase) messageSource).getJAContext();
                             }
 
                             @Override
@@ -395,7 +398,7 @@ public abstract class Request<RESPONSE_TYPE> {
             } catch (final Throwable t) {
                 if (foreign)
                     jaContext.removeAutoClosable(this);
-                processThrowable(_targetMailbox, t);
+                processThrowable(targetMailbox, t);
             }
         }
 
@@ -405,10 +408,11 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _sourceMailbox The mailbox whose thread is to evaluate the response.
          */
         private void processResponseMessage(final Mailbox _sourceMailbox) {
-            _sourceMailbox.setExceptionHandler(sourceExceptionHandler);
-            _sourceMailbox.setCurrentMessage(oldMessage);
+            MailboxBase sourceMailbox = (MailboxBase) _sourceMailbox;
+            sourceMailbox.setExceptionHandler(sourceExceptionHandler);
+            sourceMailbox.setCurrentMessage(oldMessage);
             if (response instanceof Throwable) {
-                oldMessage.processThrowable(_sourceMailbox, (Throwable) response);
+                oldMessage.processThrowable(sourceMailbox, (Throwable) response);
                 return;
             }
             @SuppressWarnings("rawtypes")
@@ -417,26 +421,27 @@ public abstract class Request<RESPONSE_TYPE> {
             try {
                 responseProcessor.processResponse(response);
             } catch (final Throwable t) {
-                oldMessage.processThrowable(_sourceMailbox, t);
+                oldMessage.processThrowable(sourceMailbox, t);
             }
         }
 
         @Override
         public void processThrowable(final Mailbox _activeMailbox, final Throwable _t) {
-            ExceptionHandler exceptionHandler = _activeMailbox.getExceptionHandler();
+            MailboxBase activeMailbox = (MailboxBase) _activeMailbox;
+            ExceptionHandler exceptionHandler = activeMailbox.getExceptionHandler();
             if (exceptionHandler != null) {
                 try {
                     exceptionHandler.processException(_t);
                 } catch (final Throwable u) {
-                    _activeMailbox.getLogger().error("Exception handler unable to process throwable "
+                    activeMailbox.getLogger().error("Exception handler unable to process throwable "
                             + exceptionHandler.getClass().getName(), u);
                     if (!(responseProcessor instanceof SignalResponseProcessor)) {
                         if (!responsePending)
                             return;
-                        setResponse(u, _activeMailbox);
-                        messageSource.incomingResponse(this, _activeMailbox);
+                        setResponse(u, activeMailbox);
+                        messageSource.incomingResponse(this, activeMailbox);
                     } else {
-                        _activeMailbox.getLogger().error("Thrown by exception handler and uncaught "
+                        activeMailbox.getLogger().error("Thrown by exception handler and uncaught "
                                 + exceptionHandler.getClass().getName(), _t);
                     }
                 }
@@ -444,11 +449,11 @@ public abstract class Request<RESPONSE_TYPE> {
                 if (!responsePending) {
                     return;
                 }
-                setResponse(_t, _activeMailbox);
+                setResponse(_t, activeMailbox);
                 if (!(responseProcessor instanceof SignalResponseProcessor))
-                    messageSource.incomingResponse(this, _activeMailbox);
+                    messageSource.incomingResponse(this, activeMailbox);
                 else {
-                    _activeMailbox.getLogger().warn("Uncaught throwable", _t);
+                    activeMailbox.getLogger().warn("Uncaught throwable", _t);
                 }
             }
         }

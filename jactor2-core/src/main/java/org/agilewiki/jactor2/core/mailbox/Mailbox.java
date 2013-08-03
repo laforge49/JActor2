@@ -26,18 +26,14 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
     JAContext getJAContext();
 
     /**
-     * Is there work that can be done?
+     * Replace the current ExceptionHandler with another.
      *
-     * @return True when there is work ready to be done.
+     * @param exceptionHandler The exception handler to be used now.
+     *                         May be null if the default exception handler is to be used.
+     * @return The exception handler that was previously in effect, or null if the
+     *         default exception handler was in effect.
      */
-    boolean hasWork();
-
-    /**
-     * Is nothing pending?
-     *
-     * @return True when there is no work pending.
-     */
-    boolean isIdle();
+    ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 
     /**
      * The flush method forwards all buffered message to their target mailbox for
@@ -54,21 +50,23 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
     boolean flush() throws Exception;
 
     /**
-     * Replace the current ExceptionHandler with another.
+     * Is there work that can be done?
      *
-     * @param exceptionHandler The exception handler to be used now.
-     *                         May be null if the default exception handler is to be used.
-     * @return The exception handler that was previously in effect, or null if the
-     *         default exception handler was in effect.
+     * @return True when there is work ready to be done.
      */
-    ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
+    boolean hasWork();
+
+    /**
+     * Is nothing pending?
+     *
+     * @return True when there is no work pending.
+    boolean isIdle();
 
     /**
      * Add a message directly to the input queue of a Mailbox.
      *
      * @param message A message.
      * @param local   True when the current thread is bound to the mailbox.
-     */
     void unbufferedAddMessages(final Message message, final boolean local)
             throws Exception;
 
@@ -78,70 +76,60 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
      * @param message Message to be buffered.
      * @param target  The mailbox that should eventually receive this message
      * @return True if the message was buffered.
-     */
     boolean buffer(final Message message, final Mailbox target);
 
     /**
      * Returns true, if this mailbox is currently processing messages.
-     */
     boolean isRunning();
 
     /**
      * Returns the message currently being processed.
      *
      * @return The message currently being processed.
-     */
     Message getCurrentMessage();
 
     /**
      * The current exception handler.
      *
      * @return The current exception handler, or null.
-     */
     ExceptionHandler getExceptionHandler();
 
     /**
      * Returns the mailbox logger.
      *
      * @return The mailbox logger.
-     */
     Logger getLogger();
 
     /**
      * Identify the message currently being processed.
      *
      * @param message The message currently being processed.
-     */
     void setCurrentMessage(Message message);
 
     /**
      * Signals the start of a request.
-     */
     void requestBegin();
 
     /**
      * Signals that a request has completed.
-     */
     void requestEnd();
 
     /**
      * Adds messages directly to the queue.
      *
      * @param messages Previously buffered messages.
-     */
     void unbufferedAddMessages(final Queue<Message> messages) throws Exception;
 
     /**
      * Returns the atomic reference to the current thread.
      *
      * @return The atomic reference to the current thread.
-     */
     AtomicReference<Thread> getThreadReference();
 
     /**
      * Returns true when there is code to be executed when the inbox is emptied.
      *
      * @return True when there is code to be executed when the inbox is emptied.
-     */
     boolean isIdler();
+    */
 }
