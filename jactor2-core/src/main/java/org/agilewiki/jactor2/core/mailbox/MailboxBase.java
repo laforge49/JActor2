@@ -69,19 +69,31 @@ abstract public class MailboxBase implements Mailbox {
 
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
-    //@Override
+    /**
+     * Returns the mailbox logger.
+     *
+     * @return The mailbox logger.
+     */
     public final Logger getLogger() {
         return log;
     }
 
-    //@Override
+    /**
+     * Returns the message currently being processed.
+     *
+     * @return The message currently being processed.
+     */
     public final Message getCurrentMessage() {
         return currentMessage;
     }
 
-    //@Override
-    public final void setCurrentMessage(Message message) {
-        currentMessage = message;
+    /**
+     * Identify the message currently being processed.
+     *
+     * @param _message The message currently being processed.
+     */
+    public final void setCurrentMessage(Message _message) {
+        currentMessage = _message;
     }
 
     @Override
@@ -89,12 +101,16 @@ abstract public class MailboxBase implements Mailbox {
         return inbox.hasWork();
     }
 
-    //@Override
+    /**
+     * Is nothing pending?
+     *
+     * @return True when there is no work pending.
+     */
     public final boolean isIdle() {
         return inbox.isIdle();
     }
 
-    //@Override
+    @Override
     public void close() throws Exception {
         if (sendBuffer == null)
             return;
@@ -133,11 +149,21 @@ abstract public class MailboxBase implements Mailbox {
         return rv;
     }
 
-    //@Override
+    /**
+     * The current exception handler.
+     *
+     * @return The current exception handler, or null.
+     */
     public final ExceptionHandler getExceptionHandler() {
         return exceptionHandler;
     }
 
+    /**
+     * Add a message directly to the input queue of a Mailbox.
+     *
+     * @param _message A message.
+     * @param _local   True when the current thread is bound to the mailbox.
+     */
     public void unbufferedAddMessages(final Message _message, final boolean _local)
             throws Exception {
         if (jaContext.isClosing()) {
@@ -152,7 +178,11 @@ abstract public class MailboxBase implements Mailbox {
         afterAdd();
     }
 
-    //@Override
+    /**
+     * Adds messages directly to the queue.
+     *
+     * @param _messages Previously buffered messages.
+     */
     public void unbufferedAddMessages(final Queue<Message> _messages)
             throws Exception {
         if (jaContext.isClosing()) {
@@ -176,7 +206,13 @@ abstract public class MailboxBase implements Mailbox {
      */
     abstract protected void afterAdd() throws Exception;
 
-    //@Override
+    /**
+     * Buffers a message in the sending mailbox for sending later.
+     *
+     * @param _message Message to be buffered.
+     * @param _target  The mailbox that should eventually receive this message
+     * @return True if the message was buffered.
+     */
     public boolean buffer(final Message _message, final Mailbox _target) {
         if (jaContext.isClosing())
             return false;
@@ -195,7 +231,7 @@ abstract public class MailboxBase implements Mailbox {
         return true;
     }
 
-    //@Override
+    @Override
     public void run() {
         while (true) {
             final Message message = inbox.poll();
@@ -224,7 +260,7 @@ abstract public class MailboxBase implements Mailbox {
      */
     abstract protected void notBusy() throws Exception;
 
-    //@Override
+    @Override
     public final void incomingResponse(final Message _message,
                                        final Mailbox _responseSource) {
         try {
@@ -240,18 +276,37 @@ abstract public class MailboxBase implements Mailbox {
         return jaContext;
     }
 
-    //@Override
+    /**
+     * Signals the start of a request.
+     */
     public void requestBegin() {
         inbox.requestBegin();
     }
 
-    //@Override
+    /**
+     * Signals that a request has completed.
+     */
     public void requestEnd() {
         inbox.requestEnd();
     }
 
+    /**
+     * Returns the atomic reference to the current thread.
+     *
+     * @return The atomic reference to the current thread.
+     */
     abstract public AtomicReference<Thread> getThreadReference();
+
+    /**
+     * Returns true, if this mailbox is currently processing messages.
+     */
     abstract public boolean isRunning();
+
+    /**
+     * Returns true when there is code to be executed when the inbox is emptied.
+     *
+     * @return True when there is code to be executed when the inbox is emptied.
+     */
     abstract public boolean isIdler();
 
 }
