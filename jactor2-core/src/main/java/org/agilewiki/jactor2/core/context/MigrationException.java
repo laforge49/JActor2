@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.context;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.mailbox.MailboxBase;
 
 /**
