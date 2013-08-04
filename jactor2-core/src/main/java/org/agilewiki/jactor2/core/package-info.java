@@ -45,10 +45,14 @@
  *     response by default.
  * </p>
  * <p>
- *     All messages are placed in the mailboxes inbox when received and are typically processed
- *     in the order received. But atomic mailboxes give preference to events and responses and
- *     response messages are not processed until a response has been returned for the previous
- *     request.
+ *     All messages are placed in the mailboxes inbox when received and are processed
+ *     in the order received. But there are two exceptions to this. First, messages from
+ *     actors with the same mailbox are given preference over messages from actors with
+ *     different mailboxes.
+ *     </p>
+ *     <p>
+ *     The second exception to message ordering is when an atomic mailbox is used, as an
+ *     atomic mailbox gives preference to events and responses over requests.
  * </p>
  */
 package org.agilewiki.jactor2.core;
