@@ -27,6 +27,8 @@ public interface Inbox {
      */
     boolean hasWork();
 
+    boolean isEmpty();
+
     /**
      * Is nothing pending?
      *

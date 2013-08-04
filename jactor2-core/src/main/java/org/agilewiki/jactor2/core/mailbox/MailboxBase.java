@@ -96,9 +96,13 @@ abstract public class MailboxBase implements Mailbox {
         currentMessage = _message;
     }
 
-    @Override
     public final boolean hasWork() {
         return inbox.hasWork();
+    }
+
+    @Override
+    public final boolean isInboxEmpty() {
+        return inbox.isEmpty();
     }
 
     /**

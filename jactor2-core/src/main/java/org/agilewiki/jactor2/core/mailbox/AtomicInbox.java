@@ -65,11 +65,15 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
     }
 
     @Override
-    public boolean isIdle() {
-        return !processingRequest &&
-                localResponsePendingQueue.isEmpty() &&
+    public boolean isEmpty() {
+        return localResponsePendingQueue.isEmpty() &&
                 localNoResponsePendingQueue.isEmpty() &&
                 peek() == null;
+    }
+
+    @Override
+    public boolean isIdle() {
+        return !processingRequest && isEmpty();
     }
 
     @Override

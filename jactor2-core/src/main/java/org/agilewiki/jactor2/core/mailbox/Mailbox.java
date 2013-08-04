@@ -5,11 +5,8 @@ import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.MessageSource;
 
 /**
- * A mailbox implements an inbox for incoming messages (events/requests)
+ * A mailbox has an inbox for incoming messages (events/requests)
  * and buffers outgoing messages by destination mailbox.
- * <p/>
- * While a mailbox has a non-empty inbox, it has an assigned thread that processes
- * the contents of its inbox. And only one message is processed at a time.
  */
 public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
 
@@ -31,9 +28,9 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
     ExceptionHandler setExceptionHandler(final ExceptionHandler exceptionHandler);
 
     /**
-     * Is there work that can be done?
+     * Is the inbox empty?
      *
-     * @return True when there is work ready to be done.
+     * @return True when the inbox is empty.
      */
-    boolean hasWork();
+    boolean isInboxEmpty();
 }

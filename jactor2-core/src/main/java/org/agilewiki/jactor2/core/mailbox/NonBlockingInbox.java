@@ -38,6 +38,11 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
     }
 
     @Override
+    public boolean isEmpty() {
+        return hasWork();
+    }
+
+    @Override
     public boolean isIdle() {
         return !hasWork();
     }
