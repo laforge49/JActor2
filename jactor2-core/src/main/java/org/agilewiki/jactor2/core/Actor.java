@@ -4,8 +4,7 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 /**
  * <p>
- * Simply by implementing this interface turns an object into an actor that can
- * exchange messages with other actors.
+ * Actors must implement the Actor interface to provide access to their mailbox.
  * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
