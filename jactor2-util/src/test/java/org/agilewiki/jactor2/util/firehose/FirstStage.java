@@ -108,7 +108,6 @@ public class FirstStage extends ActorBase implements Runnable {
             add();
             try {
                 send();
-                getMailbox().flush();
             } catch (Exception e) {
                 exception(e);
             }
