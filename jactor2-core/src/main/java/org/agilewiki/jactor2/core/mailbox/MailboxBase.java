@@ -247,7 +247,7 @@ abstract public class MailboxBase implements Mailbox {
                 } catch (Exception e) {
                     log.error("Exception thrown by onIdle", e);
                 }
-                if (inbox.hasWork())
+                if (hasWork())
                     continue;
                 return;
             }

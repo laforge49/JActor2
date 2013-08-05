@@ -97,8 +97,9 @@ final public class ThreadManager {
                                     try {
                                         mailbox.run();
                                     } catch (final MigrationException me) {
+                                        boolean hasWork = mailbox.hasWork();
                                         threadReference.set(null);
-                                        if (mailbox.isIdler() || mailbox.hasWork())
+                                        if (mailbox.isIdler() || hasWork)
                                             execute(mailbox);
                                         mailbox = me.mailbox;
                                         threadReference = mailbox.getThreadReference();
@@ -108,8 +109,9 @@ final public class ThreadManager {
                                                 "Exception thrown by a mailbox's run method",
                                                 e);
                                     }
+                                    boolean hasWork = mailbox.hasWork();
                                     threadReference.set(null);
-                                    if (mailbox.hasWork())
+                                    if (hasWork)
                                         execute(mailbox);
                                     break;
                                 }

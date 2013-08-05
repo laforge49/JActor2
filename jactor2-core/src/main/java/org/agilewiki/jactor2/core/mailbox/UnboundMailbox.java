@@ -70,7 +70,7 @@ abstract public class UnboundMailbox extends MailboxBase {
          * The compareAndSet method is a moderately expensive operation,
          * so we use a guard expression to reduce the number of times it is called.
          */
-        if (threadReference.get() == null && inbox.hasWork()) {
+        if (threadReference.get() == null) {
             jaContext.submit(this);
         }
     }
