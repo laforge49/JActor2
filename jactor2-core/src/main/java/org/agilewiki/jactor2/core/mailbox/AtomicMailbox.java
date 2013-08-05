@@ -8,11 +8,11 @@ import org.agilewiki.jactor2.core.messaging.Message;
  * A mailbox which processes each request to completion, and which should be used by actors
  * which perform long computations, I/O, or otherwise block the thread.
  * <p>
- * For thread safety, the processing of each message is atomic, but when a message sends
- * a request, other messages may be processed before a response to that request is
- * received. However, an atomic mailbox will not process another request until a response is
- * returned for the prior request. This does not however preclude the processing of
- * event messages.
+ * For thread safety, the processing of each message is atomic, but when the processing of a
+ * message results in the sending of a request, other messages may be processed before a
+ * response to that request is received. However, an atomic mailbox will not process another
+ * request until a response is returned for the prior request. This does not however preclude
+ * the processing of event messages.
  * </p>
  * <p>
  * Request messages are buffered rather than being sent immediately. These messages are
