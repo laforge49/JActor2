@@ -8,7 +8,7 @@
  * <p>
  *     Actors can use 3 different classes of mailboxes: NonBlockingMailbox, AtomicMailbox
  *     and ThreadBoundMailbox. Mailbox instances are easily created, though an instance of
- *     JAContext is required. Three additional parameters can be passed to the constructor
+ *     JAContext is required. Various parameters can be passed to the constructor
  *     to configure a mailbox.
  * </p>
  * <p>
@@ -22,6 +22,13 @@
  * <p>
  *     <b>Runnable onIdle</b> The onIdle.run method is called when the mailbox becomes idle.
  *     (This parameter does not apply to ThreadBoundMailbox.)
+ * </p>
+ * <p>
+ *     <b>Runnable messageProcessor</b> The messageProcessor.run method is called when a
+ *     thread-bound mailbox has messages that need processing. As a result of invoking the
+ *     run method, the ThreadBoundMailbox.run method needs to be invoked by the thread that
+ *     the mailbox is bound to. (This parameter does not apply to NonBlockingMailbox nor to
+ *     AtomicMailbox.)
  * </p>
  */
 package org.agilewiki.jactor2.core.mailbox;
