@@ -52,7 +52,7 @@ abstract public class UnboundMailbox extends MailboxBase {
 
     @Override
     protected void notBusy() throws Exception {
-        if (onIdle != null && isIdle()) {
+        if (onIdle != null && inbox.isIdle()) {
             flush(true);
             onIdle.run();
         }

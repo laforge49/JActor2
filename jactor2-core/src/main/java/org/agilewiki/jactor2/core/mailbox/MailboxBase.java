@@ -53,7 +53,7 @@ abstract public class MailboxBase implements Mailbox {
     /**
      * Create a mailbox.
      *
-     * @param _jaContext             The factory of this object.
+     * @param _jaContext             The context of this mailbox.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
@@ -67,6 +67,12 @@ abstract public class MailboxBase implements Mailbox {
         _jaContext.addAutoClosable(this);
     }
 
+    /**
+     * Create the appropriate type of inbox.
+     *
+     * @param _initialLocalQueueSize The initial number of slots in the local queue.
+     * @return An inbox.
+     */
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
     /**
@@ -96,6 +102,12 @@ abstract public class MailboxBase implements Mailbox {
         currentMessage = _message;
     }
 
+    /**
+     * Returns true when there is a message in the inbox that can be processed.
+     * (This method is not thread safe and must be called on the mailbox's thread.)
+     *
+     * @return True if there is a message in the inbox that can be processed.
+     */
     public final boolean hasWork() {
         return inbox.hasWork();
     }
@@ -103,15 +115,6 @@ abstract public class MailboxBase implements Mailbox {
     @Override
     public final boolean isInboxEmpty() {
         return inbox.isEmpty();
-    }
-
-    /**
-     * Is nothing pending?
-     *
-     * @return True when there is no work pending.
-     */
-    public final boolean isIdle() {
-        return inbox.isIdle();
     }
 
     @Override

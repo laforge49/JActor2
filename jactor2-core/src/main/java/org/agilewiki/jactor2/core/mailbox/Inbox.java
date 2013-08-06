@@ -21,9 +21,10 @@ public interface Inbox {
     int INITIAL_BUFFER_SIZE = 16;
 
     /**
-     * Is there work that can be done?
+     * Returns true when there is a message in the inbox that can be processed.
+     * (This method is not thread safe and must be called on the mailbox's thread.)
      *
-     * @return True when there is work ready to be done.
+     * @return True if there is a message in the inbox that can be processed.
      */
     boolean hasWork();
 
