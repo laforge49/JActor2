@@ -40,4 +40,12 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
      * @return True when the inbox is empty.
      */
     boolean isInboxEmpty();
+
+    /**
+     * Processes the messages in the inbox. For a thread-bound mailbox this method must
+     * be called by the thread it is bound to, while for non-blocking and atomic mailboxes
+     * this method is called by ThreadManager.
+     */
+    @Override
+    void run();
 }
