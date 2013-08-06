@@ -168,7 +168,17 @@ public class ThreadBoundMailbox extends MailboxBase {
         messageProcessor.run();
     }
 
-    @Override
+    /**
+     * The flush method forwards all buffered message to their target mailbox for
+     * processing. For results/exceptions originating from a call, the calling thread
+     * is unblocked and the results returned or the exception thrown.
+     * <p>
+     * The flush method is automatically called when there are
+     * no more messages to be processed.
+     * </p>
+     *
+     * @return True when one or more buffered messages were delivered.
+     */
     public final boolean flush() throws Exception {
         boolean result = false;
         if (sendBuffer != null) {

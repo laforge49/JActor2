@@ -316,18 +316,5 @@ abstract public class MailboxBase implements Mailbox {
      */
     abstract public boolean isIdler();
 
-    /**
-     * The flush method forwards all buffered message to their target mailbox for
-     * processing. For results/exceptions originating from a call, the calling thread
-     * is unblocked and the results returned or the exception thrown.
-     * <p>
-     * The flush method is automatically called either after processing each message or when there are
-     * no more messages to be processed, depending on the type of mailbox.
-     * However, there may be special cases where an explicit flush is needed.
-     * </p>
-     *
-     * @return True when one or more buffered messages were delivered.
-     */
-    abstract public boolean flush() throws Exception;
 
 }

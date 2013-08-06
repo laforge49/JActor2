@@ -19,10 +19,10 @@ public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
     /**
      * Replace the current ExceptionHandler with another.
      * <p>
-     *     When an event or request message is processed by a mailbox, the current
-     *     exception handler is set to null. When a request is sent by a mailbox, the
-     *     current exception handler is saved in the outgoing message and restored when
-     *     the response message is processed.
+     * When an event or request message is processed by a mailbox, the current
+     * exception handler is set to null. When a request is sent by a mailbox, the
+     * current exception handler is saved in the outgoing message and restored when
+     * the response message is processed.
      * </p>
      *
      * @param exceptionHandler The exception handler to be used now.

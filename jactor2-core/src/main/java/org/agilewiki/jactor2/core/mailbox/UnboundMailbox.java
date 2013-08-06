@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Implements mailbox that is not bound to a single thread.
+ * Implements mailbox that is not bound to a single thread, i.e. NonBlockingMailbox and
+ * AtomicMailbox.
  */
 abstract public class UnboundMailbox extends MailboxBase {
 
@@ -27,16 +28,16 @@ abstract public class UnboundMailbox extends MailboxBase {
     /**
      * Create a mailbox.
      *
-     * @param _factory               The factory of this object.
+     * @param _context               The context of this mailbox.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public UnboundMailbox(JAContext _factory,
+    public UnboundMailbox(JAContext _context,
                           int _initialBufferSize,
                           final int _initialLocalQueueSize,
                           Runnable _onIdle) {
-        super(_factory, _initialBufferSize, _initialLocalQueueSize);
+        super(_context, _initialBufferSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }
 
@@ -69,11 +70,6 @@ abstract public class UnboundMailbox extends MailboxBase {
         if (threadReference.get() == null) {
             jaContext.submit(this);
         }
-    }
-
-    @Override
-    public final boolean flush() throws Exception {
-        return flush(false);
     }
 
     /**
