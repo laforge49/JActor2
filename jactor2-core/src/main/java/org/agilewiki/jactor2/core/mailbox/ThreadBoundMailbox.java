@@ -10,9 +10,17 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A mailbox bound to a pre-existing thread, a thread-bound mailbox can use
- * a program's main thread or a GUI thread. It is otherwise similar to a
- * non-blocking mailbox.
- * <p/>
+ * a program's main thread or a GUI thread.
+ * <p>
+ * For thread safety, the processing of each message is atomic, but when the processing of a
+ * message results in the sending of a request, other messages may be processed before a
+ * response to that request is received.
+ * </p>
+ * <p>
+ * Request/Response messages which are destined to a different mailbox are buffered rather
+ * than being sent immediately. These messages are disbursed to their destinations when all
+ * incoming messages have been processed.
+ * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;

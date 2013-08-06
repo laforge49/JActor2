@@ -10,8 +10,17 @@ import org.agilewiki.jactor2.core.context.JAContext;
  * response to that request is received.
  * </p>
  * <p>
- * Request messages are buffered rather than being sent immediately. These messages are
- * disbursed to their destinations when there are no more messages to be processed.
+ * Request/Response messages which are destined to a different mailbox are buffered rather
+ * than being sent immediately. These messages are disbursed to their destinations when all
+ * incoming messages have been processed.
+ * </p>
+ * <p>
+ * When the last block of buffered messages is being disbursed, if the destination is not
+ * a thread-bound mailbox, the destination mailbox has no associated thread and the
+ * context of the current mailbox is the same as the destination mailbox, then the
+ * current thread migrates with the message block. By this means the message block is
+ * often kept in the hardware thread's high-speed memory cache, which means much faster
+ * execution.
  * </p>
  * <p>
  * The Inbox used by NonBlockingMailbox is NonBlockingInbox.

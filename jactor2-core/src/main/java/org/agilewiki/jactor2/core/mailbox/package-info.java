@@ -5,6 +5,7 @@
  *     though the Mailbox interface does include a few methods that can be used by
  *     application developers.
  * </p>
+ * <h2>Configuring a Mailbox</h2>
  * <p>
  *     Actors can use 3 different classes of mailboxes: NonBlockingMailbox, AtomicMailbox
  *     and ThreadBoundMailbox. Mailbox instances are easily created, though an instance of
