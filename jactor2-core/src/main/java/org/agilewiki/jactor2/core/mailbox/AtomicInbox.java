@@ -6,23 +6,32 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * The inbox used by AtomicMailbox, two ArrayDeques are used as the local queues, one for
+ * requests and the other for events and responses.
+ */
 public class AtomicInbox extends ConcurrentLinkedQueue<Object>
         implements Inbox {
 
+    /**
+     * True when processing a request and the response has not yet been assigned.
+     */
     private boolean processingRequest;
 
     /**
-     * Local response pending queue for same-thread exchanges.
+     * Local response pending (requests) queue for same-thread exchanges.
      */
     private final ArrayDeque<Message> localResponsePendingQueue;
 
     /**
-     * Local no response pending queue for same-thread exchanges.
+     * Local no response pending (events and responses) queue for same-thread exchanges.
      */
     private final ArrayDeque<Message> localNoResponsePendingQueue;
 
     /**
-     * Creates a NonBlockingInbox, with the given local queue initial size.
+     * Creates an AtomicInbox.
+     *
+     * @param initialLocalQueueSize The initial local queue size.
      */
     public AtomicInbox(final int initialLocalQueueSize) {
         if (initialLocalQueueSize > INITIAL_LOCAL_QUEUE_SIZE) {
@@ -43,13 +52,23 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
         }
     }
 
-    private void offerLocal(final Queue<Message> msgs) {
-        while (!msgs.isEmpty()) {
-            Message msg = msgs.poll();
+    /**
+     * Add the messages in a message block to the appropriate local queue.
+     *
+     * @param _msgs The message to be added.
+     */
+    private void offerLocal(final Queue<Message> _msgs) {
+        while (!_msgs.isEmpty()) {
+            Message msg = _msgs.poll();
             offerLocal(msg);
         }
     }
 
+    /**
+     * Add a message to the appropriate local queue.
+     *
+     * @param msg The message to be added.
+     */
     private void offerLocal(final Message msg) {
         if (msg.isResponsePending())
             localResponsePendingQueue.offer(msg);
@@ -94,11 +113,6 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
         return true;
     }
 
-    /**
-     * Removes a message from the inbox, if the inbox is not empty.
-     *
-     * @return A message, or null.
-     */
     @Override
     public Message poll() {
         if (!hasWork())

@@ -7,9 +7,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * A default <code>Inbox</code> implementation, using a
- * ConcurrentLinkedQueue for cross-thread message exchanges, and a ArrayDeque
- * for same-thread message exchanges.
+ * The inbox used by NonBlockingMailbox and ThreadBoundMailbox, an ArrayDeque is used as the
+ * local queue.
  *
  * @author monster
  */
@@ -22,7 +21,9 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
     private final ArrayDeque<Object> localQueue;
 
     /**
-     * Creates a NonBlockingInbox, with the given local queue initial size.
+     * Creates a NonBlockingInbox.
+     *
+     * @param initialLocalQueueSize The initial local queue size.
      */
     public NonBlockingInbox(final int initialLocalQueueSize) {
         if (initialLocalQueueSize > INITIAL_LOCAL_QUEUE_SIZE)
@@ -47,12 +48,6 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
         return !hasWork();
     }
 
-    /**
-     * Adds a new message to the inbox.
-     *
-     * @param local Should be true for same-thread exchanges
-     * @param msg   The new message
-     */
     @Override
     public void offer(final boolean local, final Message msg) {
         if (local) {
@@ -62,11 +57,6 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
         }
     }
 
-    /**
-     * Adds a new message to the inbox.
-     *
-     * @param msgs The new messages
-     */
     @Override
     public void offer(final Queue<Message> msgs) {
         if (!msgs.isEmpty()) {
@@ -74,11 +64,6 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
         }
     }
 
-    /**
-     * Removes a message from the inbox, if the inbox is not empty.
-     *
-     * @return A message, or null.
-     */
     @Override
     public Message poll() {
         Object obj = localQueue.peek();
