@@ -39,7 +39,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     /**
      * Initial size of the outbox for each unique message destination.
      */
-    private final int initialBufferSize;
+    private final int initialOutboxSize;
 
     /**
      * A table of outboxes, one for each unique message destination.
@@ -60,16 +60,16 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
      * Create a mailbox.
      *
      * @param _jaContext             The context of this mailbox.
-     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
+     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
     public MailboxBase(final JAContext _jaContext,
-                       final int _initialBufferSize,
+                       final int _initialOutboxSize,
                        final int _initialLocalQueueSize) {
         jaContext = _jaContext;
         inbox = createInbox(_initialLocalQueueSize);
         log = _jaContext.getMailboxLogger();
-        initialBufferSize = _initialBufferSize;
+        initialOutboxSize = _initialOutboxSize;
         _jaContext.addAutoClosable(this);
     }
 
@@ -237,7 +237,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
             buffer = sendBuffer.get(_target);
         }
         if (buffer == null) {
-            buffer = new ArrayDeque<Message>(initialBufferSize);
+            buffer = new ArrayDeque<Message>(initialOutboxSize);
             sendBuffer.put((MailboxBase) _target, buffer);
         }
         buffer.add(_message);

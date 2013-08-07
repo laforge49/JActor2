@@ -54,15 +54,15 @@ public class NonBlockingMailbox extends UnboundMailbox {
      * Create a non-blocking mailbox.
      *
      * @param _jaContext             The context of the mailbox.
-     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
+     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
     public NonBlockingMailbox(JAContext _jaContext,
-                              int _initialBufferSize,
+                              int _initialOutboxSize,
                               final int _initialLocalQueueSize,
                               Runnable _onIdle) {
-        super(_jaContext, _initialBufferSize, _initialLocalQueueSize, _onIdle);
+        super(_jaContext, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     @Override

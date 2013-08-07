@@ -125,16 +125,16 @@ public class ThreadBoundMailbox extends MailboxBase {
      * </p>
      *
      * @param _jaContext             The context of the mailbox.
-     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
+     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _messageProcessor      The _messageProcessor.run method is called when there
      *                               are messages to be processed.
      */
     public ThreadBoundMailbox(JAContext _jaContext,
-                              int _initialBufferSize,
+                              int _initialOutboxSize,
                               final int _initialLocalQueueSize,
                               Runnable _messageProcessor) {
-        super(_jaContext, _initialBufferSize, _initialLocalQueueSize);
+        super(_jaContext, _initialOutboxSize, _initialLocalQueueSize);
         messageProcessor = _messageProcessor;
     }
 

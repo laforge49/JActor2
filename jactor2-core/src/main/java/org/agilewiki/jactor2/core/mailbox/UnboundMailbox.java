@@ -31,15 +31,15 @@ abstract public class UnboundMailbox extends MailboxBase {
      * Create a mailbox.
      *
      * @param _context               The context of this mailbox.
-     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
+     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
     public UnboundMailbox(JAContext _context,
-                          int _initialBufferSize,
+                          int _initialOutboxSize,
                           final int _initialLocalQueueSize,
                           Runnable _onIdle) {
-        super(_context, _initialBufferSize, _initialLocalQueueSize);
+        super(_context, _initialOutboxSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }
 
