@@ -10,8 +10,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Implements mailbox that is not bound to a single thread, i.e. NonBlockingMailbox and
- * AtomicMailbox.
+ * Common code for NonBlockingMailbox and AtomicMailbox, which are not bound to a thread.
  * <p>
  * UnboundMailbox supports thread migration only between instances of this class.
  * </p>

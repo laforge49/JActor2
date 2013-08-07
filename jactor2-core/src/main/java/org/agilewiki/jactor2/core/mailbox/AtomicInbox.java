@@ -7,8 +7,10 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * The inbox used by AtomicMailbox, two ArrayDeques are used as the local queues, one for
- * requests and the other for events and responses.
+ * The inbox used by AtomicMailbox, the next request is not made available for processing
+ * until a result is assigned to the previous request. This is implemented using
+ * two ArrayDeques as the local queues, one for requests and the other for events and
+ * responses.
  */
 public class AtomicInbox extends ConcurrentLinkedQueue<Object>
         implements Inbox {
