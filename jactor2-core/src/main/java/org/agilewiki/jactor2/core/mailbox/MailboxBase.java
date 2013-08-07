@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.MigrationException;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Message;
+import org.agilewiki.jactor2.core.messaging.MessageSource;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -13,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for mailboxes.
  */
-abstract public class MailboxBase implements Mailbox {
+abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseable {
 
     /**
      * Mailbox logger.
@@ -258,8 +259,13 @@ abstract public class MailboxBase implements Mailbox {
         }
     }
 
-    protected void processMessage(final Message message) {
-        message.eval(this);
+    /**
+     * Process the event/request/response message by calling its eval method.
+     *
+     * @param _message The message to be processed.
+     */
+    protected void processMessage(final Message _message) {
+        _message.eval(this);
     }
 
     /**

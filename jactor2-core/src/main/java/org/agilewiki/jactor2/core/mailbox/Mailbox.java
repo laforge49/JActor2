@@ -2,12 +2,11 @@ package org.agilewiki.jactor2.core.mailbox;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
-import org.agilewiki.jactor2.core.messaging.MessageSource;
 
 /**
  * The Mailbox interface identifies the mailbox methods that can be used by applications.
  */
-public interface Mailbox extends Runnable, MessageSource, AutoCloseable {
+public interface Mailbox extends Runnable {
 
     /**
      * Returns the mailbox context.
