@@ -17,12 +17,17 @@ import java.util.concurrent.atomic.AtomicReference;
 abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseable {
 
     /**
+     * Default initial (per target Mailbox) buffer.
+     */
+    public final static int INITIAL_OUTBOX_SIZE = 16;
+
+    /**
      * Mailbox logger.
      */
     protected final Logger log;
 
     /**
-     * The factory of this mailbox.
+     * The context of this mailbox.
      */
     protected final JAContext jaContext;
 

@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.context;
 
 import org.agilewiki.jactor2.core.mailbox.Inbox;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.mailbox.MailboxBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +70,7 @@ public class JAContext implements AutoCloseable {
     public JAContext() {
         this(
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
-                Inbox.INITIAL_BUFFER_SIZE,
+                MailboxBase.INITIAL_OUTBOX_SIZE,
                 20,
                 new DefaultThreadFactory());
     }
@@ -82,7 +83,7 @@ public class JAContext implements AutoCloseable {
     public JAContext(final int _threadCount) {
         this(
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
-                Inbox.INITIAL_BUFFER_SIZE,
+                MailboxBase.INITIAL_OUTBOX_SIZE,
                 _threadCount,
                 new DefaultThreadFactory());
     }

@@ -18,11 +18,6 @@ public interface Inbox {
     int INITIAL_LOCAL_QUEUE_SIZE = 16;
 
     /**
-     * Default initial (per target Mailbox) buffer.
-     */
-    int INITIAL_BUFFER_SIZE = 16;
-
-    /**
      * Returns true when there is a message in the inbox that can be processed.
      * (This method is not thread safe and must be called on the mailbox's thread.)
      *
@@ -54,7 +49,7 @@ public interface Inbox {
     void offer(final boolean _local, final Message _msg);
 
     /**
-     * Inserts new messages in the concurrent linked queue.
+     * Thread-safe message insertion.
      *
      * @param _msgs The new messages.
      */

@@ -19,12 +19,12 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
     private boolean processingRequest;
 
     /**
-     * Local response pending (requests) queue for same-thread exchanges.
+     * Local response-pending (requests) queue for same-thread exchanges.
      */
     private final ArrayDeque<Message> localResponsePendingQueue;
 
     /**
-     * Local no response pending (events and responses) queue for same-thread exchanges.
+     * Local no-response-pending (events and responses) queue for same-thread exchanges.
      */
     private final ArrayDeque<Message> localNoResponsePendingQueue;
 
