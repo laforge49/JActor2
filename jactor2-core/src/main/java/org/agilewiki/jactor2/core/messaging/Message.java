@@ -27,7 +27,8 @@ public interface Message extends AutoCloseable {
 
     /**
      * Execute the Event.processEvent or Request.processRequest method
-     * of the event/request held by the message.
+     * of the event/request held by the message. This method is always called on the
+     * target mailbox's own thread.
      *
      * @param _targetMailbox The mailbox whose thread is to evaluate the event/request.
      */
