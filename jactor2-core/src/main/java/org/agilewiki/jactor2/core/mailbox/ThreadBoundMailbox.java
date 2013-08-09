@@ -86,6 +86,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *         _targetActor.fin();
  *     }
  * }
+ *
+ * Output:
+ * finished
  * </pre>
  */
 public class ThreadBoundMailbox extends MailboxBase {
