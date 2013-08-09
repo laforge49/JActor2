@@ -21,7 +21,8 @@ public class Activator extends FactoryLocatorActivator {
 
     @Override
     protected void process() throws Exception {
-        Thread.sleep(2000);
+        log.warn("wait for commands to load");
+        Thread.sleep(10000);
         getMailbox().setExceptionHandler(new ExceptionHandler() {
             @Override
             public void processException(Throwable throwable) throws Throwable {
