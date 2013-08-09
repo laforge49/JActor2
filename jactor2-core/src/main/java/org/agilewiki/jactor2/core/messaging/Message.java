@@ -4,17 +4,20 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 /**
  * <p>
- * Message encapsulates the user/application Request/Event which are queued in the Actor's mailbox. The lightweight
- * thread associated with the Actor's mailbox will process the Message asynchronously.
+ * Message encapsulates the user/application Request/Event which are queued in the
+ * Actor's mailbox. The lightweight thread associated with the Actor's mailbox will process
+ * the Message asynchronously.
  * </p>
  */
 
 public interface Message extends AutoCloseable {
 
     /**
-     * Returns true when the response is to be sent to a mailbox created from a different mailbox factory.
+     * Returns true when the response is to be sent to a mailbox created from a different
+     * mailbox factory.
      *
-     * @return True when the response is to be sent to a mailbox created from a different mailbox factory.
+     * @return True when the response is to be sent to a mailbox created from a different
+     * mailbox factory.
      */
     boolean isForeign();
 
