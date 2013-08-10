@@ -39,6 +39,7 @@ import org.agilewiki.jactor2.core.mailbox.MailboxBase;
  *         //Create a SampleActor1 instance.
  *         SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMailbox(jaContext));
  *
+ *         //Print "finished" and exit when the event is processed by SampleActor1.
  *         new FinEvent("finished").signal(sampleActor1);
  *
  *         //Hang until exit.
@@ -53,7 +54,6 @@ import org.agilewiki.jactor2.core.mailbox.MailboxBase;
  *             initialize(_mailbox);
  *         }
  *
- *         //Print "finished" and exit when fin is called.
  *         void fin(final String msg) throws Exception {
  *             System.out.println(msg);
  *             System.exit(0);
@@ -91,7 +91,7 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
      */
     final public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
         final EventMessage message = new EventMessage(_targetActor);
-        ((MailboxBase) _targetActor.getMailbox()).unbufferedAddMessages(message, false);
+        ((MailboxBase) _targetActor.getMailbox()).unbufferedAddMessage(message, false);
     }
 
     /**

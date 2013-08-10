@@ -177,7 +177,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
      * @param _message A message.
      * @param _local   True when the current thread is bound to the mailbox.
      */
-    public void unbufferedAddMessages(final Message _message, final boolean _local)
+    public void unbufferedAddMessage(final Message _message, final boolean _local)
             throws Exception {
         if (jaContext.isClosing()) {
             if (_message.isForeign() && _message.isResponsePending())
@@ -282,7 +282,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     public final void incomingResponse(final Message _message,
                                        final Mailbox _responseSource) {
         try {
-            unbufferedAddMessages(_message, this == _responseSource ||
+            unbufferedAddMessage(_message, this == _responseSource ||
                     (_responseSource != null && this == _responseSource));
         } catch (final Throwable t) {
             log.error("unable to add response message", t);

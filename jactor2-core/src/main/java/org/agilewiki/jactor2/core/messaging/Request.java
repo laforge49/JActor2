@@ -10,7 +10,8 @@ import java.util.concurrent.Semaphore;
  * Request instances are used for passing both 1-way and 2-way messages between actors.
  * Requests are typically created as an anonymous class within the targeted Actor and are bound
  * to that actor's mailbox.
- * And rather than being sent immediately, request messages are buffered for improved throughput.
+ * And rather than being sent immediately, request messages passed using the send method
+ * are buffered for improved throughput.
  *
  * @param <RESPONSE_TYPE> The class of the result returned after the Request operates on the target actor.
  */
@@ -49,15 +50,9 @@ public abstract class Request<RESPONSE_TYPE> {
      * I.E. The signal method results in a 1-way message being passed.
      * If an exception is thrown while processing this Request,
      * that exception is simply logged as a warning.
-     *
-     * @param _source The mailbox on whose thread this method was invoked and which
-     *                will buffer this Request.
      */
-    public void signal(final Mailbox _source) throws Exception {
-        if (!((MailboxBase) _source).isRunning())
-            throw new IllegalStateException(
-                    "A valid source mailbox can not be idle");
-        final RequestMessage message = new RequestMessage(false, mailbox, null,
+    public void signal() throws Exception {
+        final RequestMessage message = new RequestMessage(false, null, null,
                 this, null, SignalResponseProcessor.SINGLETON);
         message.signal(mailbox);
     }
@@ -297,10 +292,7 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox that will receive the message.
          */
         final void signal(final Mailbox _targetMailbox) throws Exception {
-            MailboxBase sourceMailbox = (MailboxBase) messageSource;
-            boolean local = sourceMailbox == _targetMailbox;
-            if (local || !sourceMailbox.buffer(this, _targetMailbox))
-                ((MailboxBase) _targetMailbox).unbufferedAddMessages(this, local);
+            ((MailboxBase) _targetMailbox).unbufferedAddMessage(this, false);
         }
 
         /**
@@ -312,7 +304,7 @@ public abstract class Request<RESPONSE_TYPE> {
             MailboxBase sourceMailbox = (MailboxBase) messageSource;
             boolean local = sourceMailbox == _targetMailbox;
             if (local || !sourceMailbox.buffer(this, _targetMailbox))
-                ((MailboxBase) _targetMailbox).unbufferedAddMessages(this, local);
+                ((MailboxBase) _targetMailbox).unbufferedAddMessage(this, local);
         }
 
         /**
@@ -321,7 +313,7 @@ public abstract class Request<RESPONSE_TYPE> {
          * @param _targetMailbox The mailbox that will receive the message.
          */
         final Object call(final Mailbox _targetMailbox) throws Exception {
-            ((MailboxBase) _targetMailbox).unbufferedAddMessages(this, false);
+            ((MailboxBase) _targetMailbox).unbufferedAddMessage(this, false);
             return ((Pender) messageSource).pend();
         }
 

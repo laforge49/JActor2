@@ -104,7 +104,7 @@ abstract public class UnboundMailbox extends MailboxBase {
                             targetThreadReference.compareAndSet(null, currentThread)) {
                         while (!messages.isEmpty()) {
                             Message m = messages.poll();
-                            targ.unbufferedAddMessages(m, true);
+                            targ.unbufferedAddMessage(m, true);
                         }
                         throw new MigrationException(targ);
                     }
