@@ -9,34 +9,94 @@ public class RequestSample {
 
     public static void main(String[] args) throws Exception {
 
-        //A context with one thread.
-        final JAContext jaContext = new JAContext(1);
+        //A context with two threads.
+        final JAContext jaContext = new JAContext(2);
 
-        SampleActor2 actorA = new SampleActor2(new NonBlockingMailbox(jaContext));
+        try {
 
-        actorA.updateReq(1).signal();
+            //Create actorA.
+            SampleActor2 actorA = new SampleActor2(new NonBlockingMailbox(jaContext));
+
+            //Initialize actorA to 1.
+            actorA.updateReq(1).signal();
+
+            //Change actorA to 2.
+            System.out.println("was " + actorA.updateReq(2).call() + " but is now 2");
+
+            //Create actorB with a reference to actorA.
+            IndirectActor actorB = new IndirectActor(actorA, new NonBlockingMailbox(jaContext));
+
+            //Indirectly change actorA to 42.
+            System.out.println("was " + actorB.indirectReq(42).call() + " but is now 42");
+
+        } finally {
+            //shutdown the context
+            jaContext.close();
+        }
 
     }
 
 }
 
+//A simple actor with state.
 class SampleActor2 extends ActorBase {
 
+    //Initial state is 0.
     private int state = 0;
 
+    //Create a SimpleActor2.
     SampleActor2(final Mailbox _mailbox) throws Exception {
         initialize(_mailbox);
     }
 
+    //Return an update request.
     Request<Integer> updateReq(final int _newState) {
         return new Request<Integer>(getMailbox()) {
+
             @Override
             public void processRequest(Transport<Integer> _transport) throws Exception {
                 int oldState = state;
-                state = _newState;
-                _transport.processResponse(oldState);
+                state = _newState; //assign the new state
+                _transport.processResponse(oldState); //return the old state.
             }
         };
     }
 
+}
+
+//An actor which operates on another actor.
+class IndirectActor extends ActorBase {
+
+    //The other actor.
+    private final SampleActor2 actorA;
+
+    //Create an IndirectActor with a reference to another actor.
+    IndirectActor(final SampleActor2 _actorA, final Mailbox _mailbox) throws Exception {
+        actorA = _actorA;
+        initialize(_mailbox);
+    }
+
+    //Return a request to update the other actor and return its new state.
+    Request<Integer> indirectReq(final int _newState) {
+        return new Request<Integer>(getMailbox()) {
+
+            @Override
+            public void processRequest(final Transport<Integer> _transport) throws Exception {
+
+                //Get a request from the other actor.
+                Request<Integer> req = actorA.updateReq(_newState);
+
+                //Send the request to the other actor.
+                req.send(getMailbox(), new ResponseProcessor<Integer>() {
+
+                    @Override
+                    public void processResponse(Integer response) throws Exception {
+
+                        //Return the old state.
+                        _transport.processResponse(response);
+                    }
+                });
+            }
+        };
+    }
 }
