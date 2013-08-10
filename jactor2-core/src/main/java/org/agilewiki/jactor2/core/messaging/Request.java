@@ -96,8 +96,8 @@ import java.util.concurrent.Semaphore;
  *
  *     //Create an IndirectActor with a reference to another actor.
  *     IndirectActor(final SampleActor2 _actorA, final Mailbox _mailbox) throws Exception {
- * actorA = _actorA;
- * initialize(_mailbox);
+ *         actorA = _actorA;
+ *         initialize(_mailbox);
  *     }
  *
  *     //Return a request to update the other actor and return its new state.
