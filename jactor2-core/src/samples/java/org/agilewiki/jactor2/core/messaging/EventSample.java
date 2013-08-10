@@ -15,7 +15,7 @@ public class EventSample {
         //Create a SampleActor1 instance.
         SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMailbox(jaContext));
 
-        new FinEvent().signal(sampleActor1);
+        new FinEvent("finished").signal(sampleActor1);
 
         //Hang until exit.
         Thread.sleep(1000000);
@@ -30,16 +30,22 @@ class SampleActor1 extends ActorBase {
     }
 
     //Print "finished" and exit when fin is called.
-    void fin() throws Exception {
-        System.out.println("finished");
+    void fin(final String msg) throws Exception {
+        System.out.println(msg);
         System.exit(0);
     }
 }
 
 //When a FinEvent is passed to an actor, the fin method is called.
 class FinEvent extends Event<SampleActor1> {
+    private final String msg;
+
+    FinEvent(final String _msg) {
+        msg = _msg;
+    }
+
     @Override
     public void processEvent(SampleActor1 _targetActor) throws Exception {
-        _targetActor.fin();
+        _targetActor.fin(msg);
     }
 }

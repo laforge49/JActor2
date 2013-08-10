@@ -17,7 +17,7 @@ public interface Message extends AutoCloseable {
      * mailbox factory.
      *
      * @return True when the response is to be sent to a mailbox created from a different
-     * mailbox factory.
+     *         mailbox factory.
      */
     boolean isForeign();
 
