@@ -17,5 +17,6 @@ final public class SignalResponseProcessor implements ResponseProcessor<Void> {
 
     @Override
     public void processResponse(final Void response) {
+        throw new UnsupportedOperationException();
     }
 }

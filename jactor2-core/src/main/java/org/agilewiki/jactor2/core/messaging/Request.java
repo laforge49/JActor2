@@ -186,7 +186,7 @@ public abstract class Request<RESPONSE_TYPE> {
      *                processing on the same thread.
      * @param _rp     Passed with this request and then returned with the result, the
      *                ResponseProcessor is used to process the result on the same thread
-     *                that originally invoked this method.
+     *                that originally invoked this method. If null, then no response is returned.
      */
     public void send(final Mailbox _source,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
@@ -194,13 +194,16 @@ public abstract class Request<RESPONSE_TYPE> {
         if (!source.isRunning())
             throw new IllegalStateException(
                     "A valid source mailbox can not be idle");
+        ResponseProcessor<RESPONSE_TYPE> rp = _rp;
+        if (rp == null)
+            rp = (ResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         final RequestMessage message = new RequestMessage(
                 source.getJAContext() != mailbox.getJAContext(),
                 source,
                 source.getCurrentMessage(),
                 this,
                 source.getExceptionHandler(),
-                _rp);
+                rp);
         message.send(mailbox);
     }
 
