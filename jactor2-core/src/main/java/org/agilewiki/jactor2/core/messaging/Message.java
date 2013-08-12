@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.messaging;
 import org.agilewiki.jactor2.core.mailbox.Mailbox;
 
 /**
- * Message wrapps the user/application Request/Event which are queued in the
+ * Message wraps the user/application Request/Event which are queued in the
  * Actor's mailbox. The lightweight thread associated with the Actor's mailbox will process
  * the Message asynchronously.
  * <p>
