@@ -1,7 +1,9 @@
 package org.agilewiki.jactor2.core.messaging;
 
 /**
- * Used to flag a message as a 1-way message.
+ * Used to flag a message as a 1-way message. The singleton serves as a flag,
+ * so no response is ever returned and consequently the processResponse method
+ * should never actually be invoked.
  */
 final public class SignalResponseProcessor implements ResponseProcessor<Void> {
     /**
