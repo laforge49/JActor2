@@ -209,7 +209,9 @@ public abstract class Request<RESPONSE_TYPE> {
 
     /**
      * Passes this Request to the target Mailbox and blocks the current thread until
-     * a result is returned.
+     * a result is returned. The call method sends the message directly without buffering,
+     * as there is no mailbox. The response message is buffered, though thread migration is
+     * not possible.
      *
      * @return The result from applying this Request to the target actor.
      * @throws Exception If the result is an exception, it is thrown rather than being returned.
