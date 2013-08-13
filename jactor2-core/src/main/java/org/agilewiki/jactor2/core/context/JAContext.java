@@ -163,9 +163,7 @@ public class JAContext implements AutoCloseable {
     public final boolean removeAutoClosable(final AutoCloseable _closeable) {
         if (!isClosing()) {
             return closables.remove(_closeable);
-        } else {
-            throw new IllegalStateException("Shuting down ...");
-        }
+        } return false;
     }
 
     @Override
