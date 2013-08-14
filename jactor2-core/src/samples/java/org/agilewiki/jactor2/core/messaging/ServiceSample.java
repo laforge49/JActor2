@@ -141,11 +141,11 @@ class ServiceApplication extends ActorBase {
                 service.delayEchoReq(_delay, _text).send(getMailbox(), new ResponseProcessor<String>() {
                     @Override
                     public void processResponse(String response) throws Exception {
-                        if (echoReqState.transport == null)
+                        if (echoReqState.transport == null) {
                             //No echo result request has yet been received,
                             //so save the response for later.
                             echoReqState.response = response;
-                        else {
+                        } else {
                             //An echo result request has already been received,
                             //so now is the time to return the response.
                             echoReqState.transport.processResponse(response);
