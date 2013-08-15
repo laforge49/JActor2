@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.JASerializable;
@@ -55,7 +55,7 @@ abstract public class FactoryImpl implements Factory {
     /**
      * Create and configure an actor.
      *
-     * @param _mailbox The mailbox of the new actor.
+     * @param _mailbox The processing of the new actor.
      * @param _parent  The parent of the new actor.
      * @return The new actor.
      */

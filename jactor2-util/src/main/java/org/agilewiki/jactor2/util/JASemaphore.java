@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -38,7 +38,7 @@ public class JASemaphore extends ActorBase {
     /**
      * Create a semaphore manager.
      *
-     * @param mbox        The mailbox used to handle requests.
+     * @param mbox        The processing used to handle requests.
      * @param permitCount The number of semaphores initially available.
      */
     public JASemaphore(final Mailbox mbox, final int permitCount) throws Exception {

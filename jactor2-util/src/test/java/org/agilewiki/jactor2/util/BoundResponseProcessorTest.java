@@ -3,10 +3,10 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {

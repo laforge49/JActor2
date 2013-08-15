@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.Named;
 
@@ -14,7 +14,7 @@ public interface Factory extends Named {
     /**
      * Creates and configures a serializable object.
      *
-     * @param _mailbox A mailbox--must not be null.
+     * @param _mailbox A processing--must not be null.
      * @return The sew serializable object.
      */
     JASerializable newSerializable(final Mailbox _mailbox) throws Exception;
@@ -22,7 +22,7 @@ public interface Factory extends Named {
     /**
      * Creates and configures a serializable object.
      *
-     * @param _mailbox A mailbox--must not be null.
+     * @param _mailbox A processing--must not be null.
      * @param _parent  The dependency to be injected.
      * @return The sew serializable object.
      */

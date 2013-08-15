@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.util.durable;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.Properties;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.durable.app.App;
@@ -27,7 +27,7 @@ public final class Durables {
     /**
      * Creates a jaContext with a factoryLocator that supports all the pre-defined factories.
      *
-     * @return A mailbox factory whose properties include the factoryLocator.
+     * @return A processing factory whose properties include the factoryLocator.
      */
     public static JAContext createJAContext() throws Exception {
         JAContext jaContext = new JAContext();
@@ -64,8 +64,8 @@ public final class Durables {
     /**
      * Returns the factoryLocator from the jaContext's factoryLocator property.
      *
-     * @param _mailbox A mailbox.
-     * @return The factoryLocator for that mailbox.
+     * @param _mailbox A processing.
+     * @return The factoryLocator for that processing.
      */
     public static FactoryLocator getFactoryLocator(final Mailbox _mailbox) {
         return getFactoryLocator(_mailbox.getJAContext());
@@ -260,7 +260,7 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _mailbox        The mailbox to be used by the new object.
+     * @param _mailbox        The processing to be used by the new object.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
@@ -275,7 +275,7 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _mailbox        The mailbox to be used by the new object.
+     * @param _mailbox        The processing to be used by the new object.
      * @param _parent         The dependency to be injected, or null.
      * @return A new serializable object.
      */
@@ -288,11 +288,11 @@ public final class Durables {
     }
 
     /**
-     * Create a new serializable object and a new mailbox to be used by that serializable object.
+     * Create a new serializable object and a new processing to be used by that serializable object.
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _jaContext      The jaContext to be used to create the new mailbox.
+     * @param _jaContext      The jaContext to be used to create the new processing.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
@@ -303,11 +303,11 @@ public final class Durables {
     }
 
     /**
-     * Create a new serializable object and a new mailbox to be used by that serializable object.
+     * Create a new serializable object and a new processing to be used by that serializable object.
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _jaContext      The jaContext to be used to create the new mailbox.
+     * @param _jaContext      The jaContext to be used to create the new processing.
      * @param _parent         The dependency to be injected, or null.
      * @return A new serializable object.
      */
@@ -321,10 +321,10 @@ public final class Durables {
     }
 
     /**
-     * Create a new serializable object and a new mailbox to be used by that serializable object.
+     * Create a new serializable object and a new processing to be used by that serializable object.
      *
      * @param _factoryName The type of object to be created.
-     * @param _jaContext   The jaContext to be used to create the new mailbox
+     * @param _jaContext   The jaContext to be used to create the new processing
      *                     and which has a factoryLocator property.
      * @return A new serializable object.
      */
@@ -339,10 +339,10 @@ public final class Durables {
     }
 
     /**
-     * Create a new serializable object and a new mailbox to be used by that serializable object.
+     * Create a new serializable object and a new processing to be used by that serializable object.
      *
      * @param _factoryName The type of object to be created.
-     * @param _jaContext   The jaContext to be used to create the new mailbox
+     * @param _jaContext   The jaContext to be used to create the new processing
      *                     and which has a factoryLocator property.
      * @param _parent      The dependency to be injected, or null.
      * @return A new serializable object.
@@ -362,7 +362,7 @@ public final class Durables {
      * Create a new serializable object.
      *
      * @param _factoryName The type of object to be created.
-     * @param _mailbox     The mailbox to be used by the new serializable object
+     * @param _mailbox     The processing to be used by the new serializable object
      *                     and whose jaContext has a factoryLocator property.
      * @return A new serializable object.
      */
@@ -380,7 +380,7 @@ public final class Durables {
      * Create a new serializable object.
      *
      * @param _factoryName The type of object to be created.
-     * @param _mailbox     The mailbox to be used by the new serializable object
+     * @param _mailbox     The processing to be used by the new serializable object
      *                     and whose jaContext has a factoryLocator property.
      * @param _parent      The dependency to be injected, or null.
      * @return A new serializable object.

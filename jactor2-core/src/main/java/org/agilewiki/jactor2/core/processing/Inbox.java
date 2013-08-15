@@ -1,13 +1,13 @@
-package org.agilewiki.jactor2.core.mailbox;
+package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.messaging.Message;
 
 import java.util.Queue;
 
 /**
- * Provides at least two queues for a mailbox's incoming messages, where the first queue is a
+ * Provides at least two queues for a processing's incoming messages, where the first queue is a
  * concurrent linked queue for messages passed from other mailboxes and the other(s) are
- * local queues for messages that are passed using the mailbox's own thread.
+ * local queues for messages that are passed using the processing's own thread.
  *
  * @author monster
  */
@@ -19,7 +19,7 @@ public interface Inbox {
 
     /**
      * Returns true when there is a message in the inbox that can be processed.
-     * (This method is not thread safe and must be called on the mailbox's thread.)
+     * (This method is not thread safe and must be called on the processing's thread.)
      *
      * @return True if there is a message in the inbox that can be processed.
      */
@@ -43,7 +43,7 @@ public interface Inbox {
     /**
      * Inserts a new message in the queue.
      *
-     * @param _local True when the message is being inserted using the mailbox's own thread.
+     * @param _local True when the message is being inserted using the processing's own thread.
      * @param _msg   The new message.
      */
     void offer(final boolean _local, final Message _msg);

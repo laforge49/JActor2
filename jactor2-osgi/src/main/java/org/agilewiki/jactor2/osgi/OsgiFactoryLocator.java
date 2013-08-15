@@ -17,7 +17,7 @@ import java.util.Hashtable;
 public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedService {
 
     /**
-     * The mailbox factory to which the factory locator is bound.
+     * The processing factory to which the factory locator is bound.
      */
     private JAContext jaContext;
 
@@ -32,7 +32,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     private ServiceRegistration<OsgiFactoryLocator> serviceRegistration;
 
     /**
-     * True when the mailbox factory is to be closed when the factory locator is closed.
+     * True when the processing factory is to be closed when the factory locator is closed.
      */
     private boolean essentialService;
 
@@ -46,22 +46,22 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     }
 
     /**
-     * Returns the mailbox factory to which this factory locator is bound.
+     * Returns the processing factory to which this factory locator is bound.
      *
-     * @return The mailbox factory.
+     * @return The processing factory.
      */
     public JAContext getJAContext() {
         return jaContext;
     }
 
     /**
-     * Bind this factory locator to a mailbox factory.
+     * Bind this factory locator to a processing factory.
      *
-     * @param _jaContext The mailbox factory.
+     * @param _jaContext The processing factory.
      */
     public void setJAContext(final JAContext _jaContext) {
         if (jaContext != null)
-            throw new IllegalStateException("mailbox factory already set");
+            throw new IllegalStateException("processing factory already set");
         jaContext = _jaContext;
     }
 

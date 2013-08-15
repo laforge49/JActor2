@@ -1,25 +1,25 @@
-package org.agilewiki.jactor2.core.mailbox;
+package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 
 /**
- * The Mailbox interface identifies the mailbox methods that can be used by applications.
+ * The Mailbox interface identifies the processing methods that can be used by applications.
  */
 public interface Mailbox extends Runnable {
 
     /**
-     * Returns the mailbox context.
+     * Returns the processing context.
      *
-     * @return The mailbox context.
+     * @return The processing context.
      */
     JAContext getJAContext();
 
     /**
      * Replace the current ExceptionHandler with another.
      * <p>
-     * When an event or request message is processed by a mailbox, the current
-     * exception handler is set to null. When a request is sent by a mailbox, the
+     * When an event or request message is processed by a processing, the current
+     * exception handler is set to null. When a request is sent by a processing, the
      * current exception handler is saved in the outgoing message and restored when
      * the response message is processed.
      * </p>
@@ -33,7 +33,7 @@ public interface Mailbox extends Runnable {
 
     /**
      * Returns true when there are no more messages in the inbox. This method is generally
-     * only called by a mailbox's onIdle task to determine when to return so that an
+     * only called by a processing's onIdle task to determine when to return so that an
      * incoming message can be processed.
      *
      * @return True when the inbox is empty.
@@ -41,7 +41,7 @@ public interface Mailbox extends Runnable {
     boolean isInboxEmpty();
 
     /**
-     * Processes the messages in the inbox. For a thread-bound mailbox this method must
+     * Processes the messages in the inbox. For a thread-bound processing this method must
      * be called by the thread it is bound to, while for non-blocking and atomic mailboxes
      * this method is called by ThreadManager.
      */

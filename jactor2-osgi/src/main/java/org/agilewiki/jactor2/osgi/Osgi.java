@@ -2,11 +2,11 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.Properties;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.Root;
 import org.osgi.framework.Bundle;
@@ -22,7 +22,7 @@ final public class Osgi {
     /**
      * Returns the BundleContext saved in the bundleContext property of a JAContext.
      *
-     * @param _jaContext The mailbox factory.
+     * @param _jaContext The processing factory.
      * @return The BundleContext.
      */
     public static BundleContext getBundleContext(final JAContext _jaContext) {
@@ -53,9 +53,9 @@ final public class Osgi {
     }
 
     /**
-     * Returns the OsgiFactoryLocator associated with a mailbox.
+     * Returns the OsgiFactoryLocator associated with a processing.
      *
-     * @param _mailbox The mailbox.
+     * @param _mailbox The processing.
      * @return The OsgiFactoryLocator.
      */
     public static OsgiFactoryLocator getOsgiFactoryLocator(final Mailbox _mailbox) {
@@ -63,9 +63,9 @@ final public class Osgi {
     }
 
     /**
-     * Returns the OsgiFactoryLocator associated with a mailbox factory.
+     * Returns the OsgiFactoryLocator associated with a processing factory.
      *
-     * @param _jaContext The mailbox factory.
+     * @param _jaContext The processing factory.
      * @return The OsgiFactoryLocator.
      */
     public static OsgiFactoryLocator getOsgiFactoryLocator(final JAContext _jaContext) {
@@ -93,7 +93,7 @@ final public class Osgi {
      * Returns a request to create a copy of a root bound to the factory locator that can deserialize it.
      *
      * @param _root The root.
-     * @return A copy of the root with the appropriate mailbox.
+     * @return A copy of the root with the appropriate processing.
      */
     public static Request<Root> contextCopyReq(final Root _root) throws Exception {
         return new Request<Root>(_root.getMailbox()) {

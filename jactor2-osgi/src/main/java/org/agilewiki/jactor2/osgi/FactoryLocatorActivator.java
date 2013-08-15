@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * An activator that provides both a mailbox factory and a registered factory locator service.
+ * An activator that provides both a processing factory and a registered factory locator service.
  */
 abstract public class FactoryLocatorActivator extends JAContextActivator {
     private final Logger log = LoggerFactory.getLogger(FactoryLocatorActivator.class);
@@ -44,7 +44,7 @@ abstract public class FactoryLocatorActivator extends JAContextActivator {
     }
 
     /**
-     * Creates a factory locator and adds it to the mailbox factory's properties.
+     * Creates a factory locator and adds it to the processing factory's properties.
      */
     protected void createFactoryLocator() throws Exception {
         factoryLocator = new OsgiFactoryLocator();

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 
 /**
  * <p>
@@ -18,12 +18,12 @@ import org.agilewiki.jactor2.core.mailbox.Mailbox;
  */
 public class ActorBase implements Actor {
     /**
-     * The actor's mailbox.
+     * The actor's processing.
      */
     private Mailbox mailbox;
 
     /**
-     * True when initialized, this flag is used to prevent the mailbox from being changed.
+     * True when initialized, this flag is used to prevent the processing from being changed.
      */
     private boolean initialized;
 
@@ -38,10 +38,10 @@ public class ActorBase implements Actor {
 
     /**
      * Initialize an actor. This method can only be called once
-     * without raising an illegal state exception, as the mailbox
+     * without raising an illegal state exception, as the processing
      * can not be changed.
      *
-     * @param _mailbox The actor's mailbox.
+     * @param _mailbox The actor's processing.
      */
     public void initialize(final Mailbox _mailbox) throws Exception {
         if (initialized)

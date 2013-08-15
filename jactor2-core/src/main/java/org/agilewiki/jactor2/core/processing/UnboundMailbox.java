@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.mailbox;
+package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.MigrationException;
@@ -18,19 +18,19 @@ import java.util.concurrent.atomic.AtomicReference;
 abstract public class UnboundMailbox extends MailboxBase {
 
     /**
-     * A reference to the thread that is executing this mailbox.
+     * A reference to the thread that is executing this processing.
      */
     protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
 
     /**
-     * The object to be run when the mailbox is emptied and before the threadReference is cleared.
+     * The object to be run when the processing is emptied and before the threadReference is cleared.
      */
     private final Runnable onIdle;
 
     /**
-     * Create a mailbox.
+     * Create a processing.
      *
-     * @param _context               The context of this mailbox.
+     * @param _context               The context of this processing.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.context;
 
-import org.agilewiki.jactor2.core.mailbox.Inbox;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.MailboxBase;
+import org.agilewiki.jactor2.core.processing.Inbox;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MailboxBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,10 +15,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Creates non-blocking, may-block and thread-bound mailboxes and serves as a thread pool for
- * non-blocking and may-block mailboxes. Multiple mailbox factories with independent life cycles
+ * non-blocking and may-block mailboxes. Multiple processing factories with independent life cycles
  * are also supported.
- * In addition, the mailbox factory maintains a set of AutoClosable objects that are closed at
- * the end-of-life of the mailbox factory as well as a set of properties.
+ * In addition, the processing factory maintains a set of AutoClosable objects that are closed at
+ * the end-of-life of the processing factory as well as a set of properties.
  */
 
 public class JAContext implements AutoCloseable {
@@ -29,7 +29,7 @@ public class JAContext implements AutoCloseable {
     protected final Logger mailboxLogger = LoggerFactory.getLogger(Mailbox.class);
 
     /**
-     * The mailbox factory logger.
+     * The processing factory logger.
      */
     private final Logger logger = LoggerFactory.getLogger(JAContext.class);
 
@@ -45,7 +45,7 @@ public class JAContext implements AutoCloseable {
             .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
 
     /**
-     * Set when the mailbox factory reaches end-of-life.
+     * Set when the processing factory reaches end-of-life.
      */
     private final AtomicBoolean shuttingDown = new AtomicBoolean();
 
@@ -65,7 +65,7 @@ public class JAContext implements AutoCloseable {
     private Properties properties;
 
     /**
-     * Create a mailbox factory and a threadpool.
+     * Create a processing factory and a threadpool.
      */
     public JAContext() {
         this(
@@ -76,7 +76,7 @@ public class JAContext implements AutoCloseable {
     }
 
     /**
-     * Create a mailbox factory and a threadpool.
+     * Create a processing factory and a threadpool.
      *
      * @param _threadCount The thread pool size for mailboxes.
      */
@@ -89,7 +89,7 @@ public class JAContext implements AutoCloseable {
     }
 
     /**
-     * Create a mailbox factory and a threadpool.
+     * Create a processing factory and a threadpool.
      *
      * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
      * @param _initialBufferSize            How big should the initial outbox (per target Mailbox) buffer size be?
@@ -119,9 +119,9 @@ public class JAContext implements AutoCloseable {
     }
 
     /**
-     * Submit a mailbox for subsequent execution.
+     * Submit a processing for subsequent execution.
      *
-     * @param _mailbox The mailbox to be run.
+     * @param _mailbox The processing to be run.
      */
     public final void submit(final Mailbox _mailbox)
             throws Exception {
@@ -132,7 +132,7 @@ public class JAContext implements AutoCloseable {
                 throw e;
             else
                 logger.warn(
-                        "Unable to process the request, as mailbox shutdown had been called in the application",
+                        "Unable to process the request, as processing shutdown had been called in the application",
                         e);
         } catch (final Error e) {
             if (!isClosing())
@@ -163,7 +163,8 @@ public class JAContext implements AutoCloseable {
     public final boolean removeAutoClosable(final AutoCloseable _closeable) {
         if (!isClosing()) {
             return closables.remove(_closeable);
-        } return false;
+        }
+        return false;
     }
 
     @Override

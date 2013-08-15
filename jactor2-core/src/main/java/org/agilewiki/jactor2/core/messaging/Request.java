@@ -1,15 +1,15 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.MailboxBase;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MailboxBase;
 
 import java.util.concurrent.Semaphore;
 
 /**
  * Request instances are used for passing both 1-way and 2-way messages between actors.
  * Requests are typically created as an anonymous class within the targeted Actor and are bound
- * to that actor's mailbox.
+ * to that actor's processing.
  * The signal (1-way messaging) and call method (2-way messaging) pass unbuffered messages
  * to the target actor immediately, where they are enqueued for processing. But rather than being
  * sent immediately, request messages passed using the send method
@@ -26,8 +26,8 @@ import java.util.concurrent.Semaphore;
  *
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.context.JAContext;
- * import org.agilewiki.jactor2.core.mailbox.Mailbox;
- * import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
+ * import org.agilewiki.jactor2.core.processing.Mailbox;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
  *
  * public class RequestSample {
  *
@@ -135,16 +135,16 @@ import java.util.concurrent.Semaphore;
 public abstract class Request<RESPONSE_TYPE> {
 
     /**
-     * The mailbox where this Request Objects is passed for processing. The thread
-     * owned by this mailbox will process the Request.
+     * The processing where this Request Objects is passed for processing. The thread
+     * owned by this processing will process the Request.
      */
     private final MailboxBase mailbox;
 
     /**
-     * Create an Request and bind it to its target mailbox.
+     * Create an Request and bind it to its target processing.
      *
-     * @param _targetMailbox The mailbox where this Request Objects is passed for processing.
-     *                       The thread owned by this mailbox will process this Request.
+     * @param _targetMailbox The processing where this Request Objects is passed for processing.
+     *                       The thread owned by this processing will process this Request.
      */
     public Request(final Mailbox _targetMailbox) {
         if (_targetMailbox == null) {
@@ -176,12 +176,12 @@ public abstract class Request<RESPONSE_TYPE> {
 
     /**
      * Passes this Request together with the ResponseProcessor to the target Mailbox.
-     * Responses are passed back via the mailbox of the source actor and processed by the
+     * Responses are passed back via the processing of the source actor and processed by the
      * provided ResponseProcessor and any exceptions
      * raised while processing the request are processed by the exception handler active when
      * the send method was called.
      *
-     * @param _source The mailbox on whose thread this method was invoked and which
+     * @param _source The processing on whose thread this method was invoked and which
      *                will buffer this Request and subsequently receive the result for
      *                processing on the same thread.
      * @param _rp     Passed with this request and then returned with the result, the
@@ -193,7 +193,7 @@ public abstract class Request<RESPONSE_TYPE> {
         MailboxBase source = (MailboxBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(
-                    "A valid source mailbox can not be idle");
+                    "A valid source processing can not be idle");
         ResponseProcessor<RESPONSE_TYPE> rp = _rp;
         if (rp == null)
             rp = (ResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
@@ -210,7 +210,7 @@ public abstract class Request<RESPONSE_TYPE> {
     /**
      * Passes this Request to the target Mailbox and blocks the current thread until
      * a result is returned. The call method sends the message directly without buffering,
-     * as there is no mailbox. The response message is buffered, though thread migration is
+     * as there is no processing. The response message is buffered, though thread migration is
      * not possible.
      *
      * @return The result from applying this Request to the target actor.
@@ -302,18 +302,18 @@ public abstract class Request<RESPONSE_TYPE> {
     private static final class RequestMessage<RESPONSE_TYPE> implements Message {
 
         /**
-         * True when the result is to be returned via a mailbox with a mailbox factory
-         * that differs from the mailbox factory of the target mailbox.
+         * True when the result is to be returned via a processing with a processing factory
+         * that differs from the processing factory of the target processing.
          */
         protected final boolean foreign;
 
         /**
-         * The source mailbox or pender that will receive the results.
+         * The source processing or pender that will receive the results.
          */
         protected final MessageSource messageSource;
 
         /**
-         * The message targeted to the source mailbox which, when processed,
+         * The message targeted to the source processing which, when processed,
          * resulted in this message.
          */
         protected final Message oldMessage;
@@ -324,7 +324,7 @@ public abstract class Request<RESPONSE_TYPE> {
         protected final Request<RESPONSE_TYPE> request;
 
         /**
-         * The exception handler that was active in the source mailbox at the time
+         * The exception handler that was active in the source processing at the time
          * when this message was created.
          */
         protected final ExceptionHandler sourceExceptionHandler;
@@ -347,13 +347,13 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Creates a request message.
          *
-         * @param _foreign True when the result is to be returned via a mailbox with a mailbox factory
-         *                 that differs from the mailbox factory of the target mailbox.
-         * @param _source  The source mailbox or pender that will receive the results.
-         * @param _old     The message targeted to the source mailbox which, when processed,
+         * @param _foreign True when the result is to be returned via a processing with a processing factory
+         *                 that differs from the processing factory of the target processing.
+         * @param _source  The source processing or pender that will receive the results.
+         * @param _old     The message targeted to the source processing which, when processed,
          *                 resulted in this message.
          * @param _request The Request object carried by this message.
-         * @param _handler The exception handler that was active in the source mailbox at the time
+         * @param _handler The exception handler that was active in the source processing at the time
          *                 when this message was created.
          * @param _rp      The application object that will process the results.
          */
@@ -411,7 +411,7 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Pass a 1-way message.
          *
-         * @param _targetMailbox The mailbox that will receive the message.
+         * @param _targetMailbox The processing that will receive the message.
          */
         final void signal(final Mailbox _targetMailbox) throws Exception {
             ((MailboxBase) _targetMailbox).unbufferedAddMessage(this, false);
@@ -420,7 +420,7 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * A 2-way message exchange between the mailboxes.
          *
-         * @param _targetMailbox The mailbox that will receive the message.
+         * @param _targetMailbox The processing that will receive the message.
          */
         final void send(final Mailbox _targetMailbox) throws Exception {
             MailboxBase sourceMailbox = (MailboxBase) messageSource;
@@ -430,9 +430,9 @@ public abstract class Request<RESPONSE_TYPE> {
         }
 
         /**
-         * A 2-way message exchange between a Pender and the target mailbox.
+         * A 2-way message exchange between a Pender and the target processing.
          *
-         * @param _targetMailbox The mailbox that will receive the message.
+         * @param _targetMailbox The processing that will receive the message.
          */
         final Object call(final Mailbox _targetMailbox) throws Exception {
             ((MailboxBase) _targetMailbox).unbufferedAddMessage(this, false);
@@ -451,7 +451,7 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Process a request or the response.
          *
-         * @param _activeMailbox The mailbox whose thread is to evaluate the request/response.
+         * @param _activeMailbox The processing whose thread is to evaluate the request/response.
          */
         public void eval(final Mailbox _activeMailbox) {
             if (responsePending) {
@@ -464,7 +464,7 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Process a request.
          *
-         * @param _targetMailbox The mailbox whose thread is to evaluate the request.
+         * @param _targetMailbox The processing whose thread is to evaluate the request.
          */
         private void processRequestMessage(final Mailbox _targetMailbox) {
             final MailboxBase targetMailbox = (MailboxBase) _targetMailbox;
@@ -519,7 +519,7 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Process a response.
          *
-         * @param _sourceMailbox The mailbox whose thread is to evaluate the response.
+         * @param _sourceMailbox The processing whose thread is to evaluate the response.
          */
         private void processResponseMessage(final Mailbox _sourceMailbox) {
             MailboxBase sourceMailbox = (MailboxBase) _sourceMailbox;

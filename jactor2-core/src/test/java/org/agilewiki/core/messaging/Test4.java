@@ -2,9 +2,9 @@ package org.agilewiki.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.AtomicMailbox;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
 
 /**
  * Test code.

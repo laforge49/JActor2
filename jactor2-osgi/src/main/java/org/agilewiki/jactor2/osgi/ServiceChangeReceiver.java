@@ -20,7 +20,7 @@ import java.util.Map;
 public interface ServiceChangeReceiver<T> extends Actor {
 
     /**
-     * Called from within the actor's own mailbox, using a request, when
+     * Called from within the actor's own processing, using a request, when
      * registering with a JAServiceTracker, or when some service goes up or
      * down.
      *

@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.mailbox.AtomicMailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
+import org.agilewiki.jactor2.core.processing.AtomicMailbox;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
@@ -31,12 +31,12 @@ abstract public class JAContextActivator
     private Dictionary<String, ?> config;
 
     /**
-     * The mailbox factory used by the bundle.
+     * The processing factory used by the bundle.
      */
     private JAContext jaContext;
 
     /**
-     * The properties held by the mailbox factory.
+     * The properties held by the processing factory.
      */
     private JAProperties jaProperties;
 
@@ -93,20 +93,20 @@ abstract public class JAContextActivator
     }
 
     /**
-     * Returns the mailbox factory used by the bundle.
+     * Returns the processing factory used by the bundle.
      *
-     * @return The mailbox factory.
+     * @return The processing factory.
      */
     protected JAContext getJAContext() {
         return jaContext;
     }
 
     /**
-     * Create and initialize the mailbox factory.
-     * The Properties object of the mailbox factory is created
+     * Create and initialize the processing factory.
+     * The Properties object of the processing factory is created
      * and a bundleContext is added to it.
-     * The activator is also added to the close set of the mailbox factory
-     * and the activator is given a mailbox that may block.
+     * The activator is also added to the close set of the processing factory
+     * and the activator is given a processing that may block.
      */
     protected final void jaContextStart() throws Exception {
         jaContext = new JAContext();

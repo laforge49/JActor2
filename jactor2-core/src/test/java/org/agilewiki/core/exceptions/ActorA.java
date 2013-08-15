@@ -1,8 +1,8 @@
 package org.agilewiki.core.exceptions;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 
 public class ActorA {
     private final Mailbox mailbox;

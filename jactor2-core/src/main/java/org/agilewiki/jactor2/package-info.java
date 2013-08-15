@@ -49,10 +49,10 @@
  * <p>
  *     Actors need an input queue (an inbox) to receive messages from other actors, as well
  *     as buffers to hold unsent messages destined for other actors (outboxes). By allowing
- *     several actors to share the same mailbox, i.e. inbox and outboxes, these actors
+ *     several actors to share the same processing, i.e. inbox and outboxes, these actors
  *     then are effectively part of a larger, composite actor. Such actors can directly
  *     call methods on each other with complete thread safety, as only one message is processed
- *     at a time for all the actors sharing the same mailbox.
+ *     at a time for all the actors sharing the same processing.
  * </p>
  */
 package org.agilewiki.jactor2;

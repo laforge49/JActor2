@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
     private final Logger log = LoggerFactory.getLogger(JAServiceTracker.class);
 
     /**
-     * The bundle context of the *mailbox's bundle*.
+     * The bundle context of the *processing's bundle*.
      */
     private final BundleContext bundleContext;
 
@@ -77,7 +77,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         Objects.requireNonNull(_mailbox, "_mailbox");
         Objects.requireNonNull(_clazz, "_clazz");
         initialize(_mailbox);
-        // We use the bundle context of the *mailbox's bundle*, so that we can
+        // We use the bundle context of the *processing's bundle*, so that we can
         // be used in any bundle.
         bundleContext = Osgi.getBundleContext(_mailbox
                 .getJAContext());
@@ -94,7 +94,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         Objects.requireNonNull(_mailbox, "_mailbox");
         Objects.requireNonNull(_Filter, "_Filter");
         initialize(_mailbox);
-        // We use the bundle context of the *mailbox's bundle*, so that we can
+        // We use the bundle context of the *processing's bundle*, so that we can
         // be used in any bundle.
         bundleContext = Osgi.getBundleContext(_mailbox
                 .getJAContext());
@@ -182,7 +182,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
             // Sorry, we're closed!
             return;
         try {
-            // Create service change request, to be run in our own mailbox,
+            // Create service change request, to be run in our own processing,
             // because this method is not running in our actor thread.
             new Event<JAServiceTracker<T>>() {
                 @Override

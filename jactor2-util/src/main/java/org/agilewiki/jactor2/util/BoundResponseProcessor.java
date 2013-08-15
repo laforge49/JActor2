@@ -15,7 +15,7 @@ import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 public class BoundResponseProcessor<RESPONSE_TYPE> implements
         ResponseProcessor<RESPONSE_TYPE> {
     /**
-     * The mailbox on whose thread the wrapped ResponseProcessor object can be used.
+     * The processing on whose thread the wrapped ResponseProcessor object can be used.
      */
     private final Actor targetActor;
 
@@ -27,7 +27,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     /**
      * Create a thread-safe wrapper for a ResponseProcessor.
      *
-     * @param _actor The mailbox on whose thread the wrapped ResponseProcessor
+     * @param _actor The processing on whose thread the wrapped ResponseProcessor
      *               can be used.
      * @param _rp    The wrapped ResponseProcessor.
      */
@@ -39,7 +39,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
 
     /**
      * This method processes the response by immediately passing the wrapped response and ResponseProcessor
-     * via an unbuffered signal back to the appropriate mailbox.
+     * via an unbuffered signal back to the appropriate processing.
      *
      * @param rsp The response.
      */
@@ -51,7 +51,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
 
 /**
  * The request used to pass the response and the wrapped ResponseProcessor back to the
- * original target mailbox.
+ * original target processing.
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
@@ -68,7 +68,7 @@ class ContinuationEvent<RESPONSE_TYPE> extends Event<Actor> {
 
     /**
      * Creates the request used to pass the response and wrapped ResponseProcessor
-     * back to the original target mailbox.
+     * back to the original target processing.
      *
      * @param _rp  The wrapped ResponseProcessor.
      * @param _rsp The response.

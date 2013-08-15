@@ -3,12 +3,12 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
 
 public class JAIteratorTest extends TestCase {
     private Mailbox mailbox;
@@ -16,19 +16,19 @@ public class JAIteratorTest extends TestCase {
     private long runs;
 
     /*
-shared mailbox test
+shared processing test
 Number of runs: 100000000
 Count: 100000000
 Test time in milliseconds: 4126
 Messages per second: 24236548
 ----------------------------------------
-commandeering mailbox test
+commandeering processing test
 Number of runs: 100000000
 Count: 100000000
 Test time in milliseconds: 7246
 Messages per second: 13800717
 ----------------------------------------
-migration mailbox test
+migration processing test
 Number of runs: 100000000
 Count: 100000000
 Test time in milliseconds: 7291
@@ -37,7 +37,7 @@ Messages per second: 13715539
     public void test1() throws Exception {
         System.gc();
         runs = 10;
-        System.out.println("shared mailbox test");
+        System.out.println("shared processing test");
         JAContext jaContext = new JAContext();
         try {
             mailbox = new NonBlockingMailbox(jaContext);
@@ -51,7 +51,7 @@ Messages per second: 13715539
     public void test2() throws Exception {
         System.gc();
         runs = 10;
-        System.out.println("commandeering mailbox test");
+        System.out.println("commandeering processing test");
         JAContext jaContext = new JAContext();
         try {
             mailbox = new NonBlockingMailbox(jaContext);
@@ -65,7 +65,7 @@ Messages per second: 13715539
     public void test3() throws Exception {
         System.gc();
         runs = 10;
-        System.out.println("migration mailbox test");
+        System.out.println("migration processing test");
         JAContext jaContext = new JAContext();
         try {
             mailbox = new NonBlockingMailbox(jaContext);

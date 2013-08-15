@@ -3,8 +3,8 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
 import org.agilewiki.jactor2.core.messaging.Event;
+import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {

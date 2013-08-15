@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.mailbox;
+package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Message;
@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A mailbox bound to a pre-existing thread, a thread-bound mailbox can use
+ * A processing bound to a pre-existing thread, a thread-bound processing can use
  * a program's main thread or a GUI thread.
  * <p>
  * For thread safety, the processing of each message is atomic, but when the processing of a
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * response to that request is received.
  * </p>
  * <p>
- * Request/Response messages which are destined to a different mailbox are buffered rather
+ * Request/Response messages which are destined to a different processing are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when all
  * incoming messages have been processed.
  * </p>
@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *         //Get a reference to the main thread
  *         final Thread mainThread = Thread.currentThread();
  *
- *         //Create a thread-bound mailbox
+ *         //Create a thread-bound processing
  *         final ThreadBoundMailbox boundMailbox =
  *             new ThreadBoundMailbox(jaContext, new Runnable() {
  *                 {@literal @}Override
@@ -47,7 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *                 }
  *             });
  *
- *         //Create an actor that uses the thread-bound mailbox
+ *         //Create an actor that uses the thread-bound processing
  *         final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMailbox);
  *
  *         //Pass a FinEvent signal to the actor
@@ -99,15 +99,15 @@ public class ThreadBoundMailbox extends MailboxBase {
     private final Runnable messageProcessor;
 
     /**
-     * Create a thread-bound mailbox.
+     * Create a thread-bound processing.
      * <p>
-     * The _messageProcessor.run method is called when a thread-bound mailbox has messages
+     * The _messageProcessor.run method is called when a thread-bound processing has messages
      * that need processing. As a result of invoking the run method, the
      * ThreadBoundMailbox.run method needs to be invoked by the thread that
-     * the mailbox is bound to.
+     * the processing is bound to.
      * </p>
      *
-     * @param _jaContext        The context of the mailbox.
+     * @param _jaContext        The context of the processing.
      * @param _messageProcessor The _messageProcessor.run method is called when there
      *                          are messages to be processed.
      */
@@ -119,15 +119,15 @@ public class ThreadBoundMailbox extends MailboxBase {
     }
 
     /**
-     * Create a thread-bound mailbox.
+     * Create a thread-bound processing.
      * <p>
-     * The messageProcessor.run method is called when a thread-bound mailbox has messages
+     * The messageProcessor.run method is called when a thread-bound processing has messages
      * that need processing. As a result of invoking the run method, the
      * ThreadBoundMailbox.run method needs to be invoked by the thread that
-     * the mailbox is bound to.
+     * the processing is bound to.
      * </p>
      *
-     * @param _jaContext             The context of the mailbox.
+     * @param _jaContext             The context of the processing.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _messageProcessor      The _messageProcessor.run method is called when there
@@ -172,7 +172,7 @@ public class ThreadBoundMailbox extends MailboxBase {
     }
 
     /**
-     * The flush method forwards all buffered message to their target mailbox for
+     * The flush method forwards all buffered message to their target processing for
      * processing. For results/exceptions originating from a call, the calling thread
      * is unblocked and the results returned or the exception thrown.
      * <p>

@@ -8,7 +8,7 @@
  *     Event messages are created and passed using subclasses of the Event class.
  *     An event is not bound to an actor instance, so the same event can be used to
  *     send messages to any number of actors. And when passing an event message to an actor,
- *     the message is given to the target actor's mailbox immediately.
+ *     the message is given to the target actor's processing immediately.
  * </p>
  * <h2>Request/Response Messages</h2>
  * <p>
@@ -25,11 +25,11 @@
  *     exception handler, or if an exception is thrown by an exception handler, then the
  *     exception is returned as a response, though if the current message being processed is
  *     an event then the exception is simply logged. However, when a response message that
- *     holds an event is processed by the source mailbox, the exception is rethrown rather
+ *     holds an event is processed by the source processing, the exception is rethrown rather
  *     than passing it back to the application as a valid response.
  * </p>
  * <p>
- *     Before a mailbox processes an event or a request, the current exception handler is set
+ *     Before a processing processes an event or a request, the current exception handler is set
  *     to null. The application's message processing logic then has the option of assigning
  *     an exception handler via the Mailbox.setExceptionHandler method. When a request message
  *     is sent, the current exception handler is saved in the request message and subsequently

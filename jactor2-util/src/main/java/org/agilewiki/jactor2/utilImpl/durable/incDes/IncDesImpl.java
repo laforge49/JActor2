@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class IncDesImpl extends AncestorBase implements IncDes {
     /**
-     * The actor's mailbox.
+     * The actor's processing.
      */
     private Mailbox mailbox;
 
@@ -333,7 +333,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     /**
      * Returns a copy of the actor.
      *
-     * @param m The mailbox.
+     * @param m The processing.
      * @return a copy of the actor.
      */
     @Override
@@ -406,7 +406,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     /**
      * Initialize a LiteActor
      *
-     * @param _mailbox A mailbox which may be shared with other actors.
+     * @param _mailbox A processing which may be shared with other actors.
      * @param _parent  The parent actor.
      * @param _factory The factory.
      */

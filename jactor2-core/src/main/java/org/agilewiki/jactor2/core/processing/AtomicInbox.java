@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.mailbox;
+package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.messaging.Message;
 

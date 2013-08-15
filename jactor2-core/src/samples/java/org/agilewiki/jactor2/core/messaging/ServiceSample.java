@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
 
 //Exploring the use of multiple contexts.
 public class ServiceSample {
@@ -59,7 +59,7 @@ public class ServiceSample {
 class Service extends ActorBase {
 
     Service() throws Exception {
-        //Create a mailbox on a new context with 1 thread.
+        //Create a processing on a new context with 1 thread.
         initialize(new NonBlockingMailbox(new JAContext(1)));
     }
 

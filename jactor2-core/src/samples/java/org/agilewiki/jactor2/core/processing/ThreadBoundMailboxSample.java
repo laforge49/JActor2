@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.mailbox;
+package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
@@ -14,7 +14,7 @@ public class ThreadBoundMailboxSample {
         //Get a reference to the main thread.
         final Thread mainThread = Thread.currentThread();
 
-        //Create a thread-bound mailbox.
+        //Create a thread-bound processing.
         final ThreadBoundMailbox boundMailbox =
                 new ThreadBoundMailbox(jaContext, new Runnable() {
                     @Override
@@ -24,7 +24,7 @@ public class ThreadBoundMailboxSample {
                     }
                 });
 
-        //Create an actor that uses the thread-bound mailbox.
+        //Create an actor that uses the thread-bound processing.
         final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMailbox);
 
         //Pass a FinEvent signal to the actor.

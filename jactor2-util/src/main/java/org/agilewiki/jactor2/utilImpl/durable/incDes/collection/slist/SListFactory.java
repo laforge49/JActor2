@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.slist;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -56,7 +56,7 @@ public class SListFactory extends FactoryImpl {
     /**
      * Create and configure an actor.
      *
-     * @param mailbox The mailbox of the new actor.
+     * @param mailbox The processing of the new actor.
      * @param parent  The parent of the new actor.
      * @return The new actor.
      */

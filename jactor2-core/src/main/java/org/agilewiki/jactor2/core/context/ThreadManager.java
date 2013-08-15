@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.context;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
-import org.agilewiki.jactor2.core.mailbox.MailboxBase;
+import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MailboxBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * ThreadManager is a thread pool, but with a simplified API and
  * assumes that the thread pool has a fixed number of threads.
  * ThreadManager is also responsible for setting the threadReference
- * in the mailbox.
+ * in the processing.
  */
 final public class ThreadManager {
     final Logger logger = LoggerFactory.getLogger(ThreadManager.class);
@@ -106,7 +106,7 @@ final public class ThreadManager {
                                         continue;
                                     } catch (final Throwable e) {
                                         logger.error(
-                                                "Exception thrown by a mailbox's run method",
+                                                "Exception thrown by a processing's run method",
                                                 e);
                                     }
                                     boolean hasWork = mailbox.hasWork();
@@ -133,7 +133,7 @@ final public class ThreadManager {
     }
 
     /**
-     * Begin running a mailbox.
+     * Begin running a processing.
      *
      * @param _mailbox The run method is to be called by the selected thread.
      */

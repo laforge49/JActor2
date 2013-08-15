@@ -1,8 +1,8 @@
 package org.agilewiki.core.messaging;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 
 /**
  * Test code.

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.mailbox.Mailbox;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.Mailbox;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 public class LocateService<T> implements ServiceChangeReceiver<T> {
 
     /**
-     * The mailbox.
+     * The processing.
      */
     private Mailbox mailbox;
 
@@ -31,7 +31,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     /**
      * Create a LocateService actor.
      *
-     * @param _mailbox The actor mailbox.
+     * @param _mailbox The actor processing.
      * @param clazz    Class name of the desired service.
      */
     public LocateService(Mailbox _mailbox, String clazz) throws Exception {

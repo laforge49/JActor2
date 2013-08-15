@@ -4,14 +4,14 @@ package org.agilewiki.jactor2.core.messaging;
  * Exception handlers are used to alter how exceptions are processed.
  * <p>
  * By default, an exception which occurs while processing a call or send request is
- * returned as a result to the source mailbox or caller.
+ * returned as a result to the source processing or caller.
  * And for 1-way messages, the default is to simply log the exception as a warning.
  * Exception processing is specific to the request/event message being processed.
  * An application can set the exception handler for the request/event currently being processed using the
  * Mailbox.setExceptionHandler method.
  * </p>
  * <p>
- * When a mailbox receives an exception as a result, the exception is handled the same way as any other
+ * When a processing receives an exception as a result, the exception is handled the same way as any other
  * exception, by either passing it to an exception handler or returning it to the source of the request
  * being processed. On the other hand when a caller receives an exception as a result, the exception is
  * simply rethrown rather than passing it to the application logic as a response.
@@ -27,8 +27,8 @@ package org.agilewiki.jactor2.core.messaging;
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.context.JAContext;
- * import org.agilewiki.jactor2.core.mailbox.Mailbox;
- * import org.agilewiki.jactor2.core.mailbox.NonBlockingMailbox;
+ * import org.agilewiki.jactor2.core.processing.Mailbox;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
  *
  * public class ExceptionHandlerSample {
  *

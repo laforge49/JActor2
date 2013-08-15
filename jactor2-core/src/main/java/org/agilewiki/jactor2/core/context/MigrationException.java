@@ -1,21 +1,21 @@
 package org.agilewiki.jactor2.core.context;
 
-import org.agilewiki.jactor2.core.mailbox.MailboxBase;
+import org.agilewiki.jactor2.core.processing.MailboxBase;
 
 /**
- * Signals a migration of the current thread to another mailbox.
+ * Signals a migration of the current thread to another processing.
  */
 public class MigrationException extends RuntimeException {
 
     /**
-     * The newly active mailbox.
+     * The newly active processing.
      */
     public MailboxBase mailbox;
 
     /**
      * Create a new MigrationException.
      *
-     * @param _mailbox The newly active mailbox.
+     * @param _mailbox The newly active processing.
      */
     public MigrationException(final MailboxBase _mailbox) {
         mailbox = _mailbox;

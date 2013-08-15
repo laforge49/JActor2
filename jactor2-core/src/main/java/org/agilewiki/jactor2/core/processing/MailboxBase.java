@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.mailbox;
+package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.MigrationException;
@@ -27,7 +27,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     protected final Logger log;
 
     /**
-     * The context of this mailbox.
+     * The context of this processing.
      */
     protected final JAContext jaContext;
 
@@ -57,9 +57,9 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     private Message currentMessage;
 
     /**
-     * Create a mailbox.
+     * Create a processing.
      *
-     * @param _jaContext             The context of this mailbox.
+     * @param _jaContext             The context of this processing.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
@@ -82,9 +82,9 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
     /**
-     * Returns the mailbox logger.
+     * Returns the processing logger.
      *
-     * @return The mailbox logger.
+     * @return The processing logger.
      */
     public final Logger getLogger() {
         return log;
@@ -110,7 +110,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
 
     /**
      * Returns true when there is a message in the inbox that can be processed.
-     * (This method is not thread safe and must be called on the mailbox's thread.)
+     * (This method is not thread safe and must be called on the processing's thread.)
      *
      * @return True if there is a message in the inbox that can be processed.
      */
@@ -156,7 +156,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
             final ExceptionHandler _handler) {
         if (!isRunning())
             throw new IllegalStateException(
-                    "Attempt to set an exception handler on an idle mailbox");
+                    "Attempt to set an exception handler on an idle processing");
         final ExceptionHandler rv = this.exceptionHandler;
         this.exceptionHandler = _handler;
         return rv;
@@ -175,7 +175,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
      * Add a message directly to the input queue of a Mailbox.
      *
      * @param _message A message.
-     * @param _local   True when the current thread is bound to the mailbox.
+     * @param _local   True when the current thread is bound to the processing.
      */
     public void unbufferedAddMessage(final Message _message, final boolean _local)
             throws Exception {
@@ -220,10 +220,10 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     abstract protected void afterAdd() throws Exception;
 
     /**
-     * Buffers a message in the sending mailbox for sending later.
+     * Buffers a message in the sending processing for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The mailbox that should eventually receive this message
+     * @param _target  The processing that should eventually receive this message
      * @return True if the message was buffered.
      */
     public boolean buffer(final Message _message, final Mailbox _target) {
@@ -316,7 +316,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     abstract public AtomicReference<Thread> getThreadReference();
 
     /**
-     * Returns true, if this mailbox is currently processing messages.
+     * Returns true, if this processing is currently processing messages.
      */
     abstract public boolean isRunning();
 
