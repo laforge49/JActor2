@@ -12,8 +12,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * two ArrayDeques as the local queues, one for requests and the other for events and
  * responses.
  */
-public class AtomicInbox extends ConcurrentLinkedQueue<Object>
-        implements Inbox {
+public class AtomicInbox implements Inbox {
+
+    /**
+     * Concurrent queue for cross-thread exchanges.
+     */
+    private final ConcurrentLinkedQueue<Object> concurrentQueue;
 
     /**
      * True when processing a request and the response has not yet been assigned.
@@ -36,6 +40,7 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
      * @param initialLocalQueueSize The initial local queue size.
      */
     public AtomicInbox(final int initialLocalQueueSize) {
+        concurrentQueue = new ConcurrentLinkedQueue<Object>();
         if (initialLocalQueueSize > INITIAL_LOCAL_QUEUE_SIZE) {
             localResponsePendingQueue = new ArrayDeque<Message>(initialLocalQueueSize);
             localNoResponsePendingQueue = new ArrayDeque<Message>(initialLocalQueueSize);
@@ -50,7 +55,7 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
         if (local) {
             offerLocal(msg);
         } else {
-            super.offer(msg);
+            concurrentQueue.offer(msg);
         }
     }
 
@@ -81,7 +86,7 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
     @Override
     public void offer(final Queue<Message> msgs) {
         if (!msgs.isEmpty()) {
-            super.add(msgs);
+            concurrentQueue.add(msgs);
         }
     }
 
@@ -89,7 +94,7 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
     public boolean isEmpty() {
         return localResponsePendingQueue.isEmpty() &&
                 localNoResponsePendingQueue.isEmpty() &&
-                peek() == null;
+                concurrentQueue.peek() == null;
     }
 
     @Override
@@ -101,7 +106,7 @@ public class AtomicInbox extends ConcurrentLinkedQueue<Object>
     public boolean hasWork() {
         while (localNoResponsePendingQueue.isEmpty() &&
                 (processingRequest || localResponsePendingQueue.isEmpty())) {
-            Object obj = super.poll();
+            Object obj = concurrentQueue.poll();
             if (obj == null)
                 return false;
             if (obj instanceof Message) {
