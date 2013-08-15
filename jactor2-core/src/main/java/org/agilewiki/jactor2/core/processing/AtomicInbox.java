@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * two ArrayDeques as the local queues, one for requests and the other for events and
  * responses.
  */
-public class AtomicInbox implements Inbox {
+public class AtomicInbox extends Inbox {
 
     /**
      * Concurrent queue for cross-thread exchanges.

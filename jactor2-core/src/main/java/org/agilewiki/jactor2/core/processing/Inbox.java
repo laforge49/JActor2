@@ -11,11 +11,11 @@ import java.util.Queue;
  *
  * @author monster
  */
-public interface Inbox {
+public abstract class Inbox {
     /**
      * Default initial local queue size.
      */
-    int INITIAL_LOCAL_QUEUE_SIZE = 16;
+    public static int INITIAL_LOCAL_QUEUE_SIZE = 16;
 
     /**
      * Returns true when there is a message in the inbox that can be processed.
@@ -23,14 +23,14 @@ public interface Inbox {
      *
      * @return True if there is a message in the inbox that can be processed.
      */
-    boolean hasWork();
+    abstract public boolean hasWork();
 
     /**
      * Returns true when all the queues are empty.
      *
      * @return True when all the queues are empty.
      */
-    boolean isEmpty();
+    abstract public boolean isEmpty();
 
     /**
      * Returns true when the inbox is empty and no request messages are being processed
@@ -38,7 +38,7 @@ public interface Inbox {
      *
      * @return True when there is no work pending.
      */
-    boolean isIdle();
+    abstract public boolean isIdle();
 
     /**
      * Inserts a new message in the queue.
@@ -46,14 +46,14 @@ public interface Inbox {
      * @param _local True when the message is being inserted using the processing's own thread.
      * @param _msg   The new message.
      */
-    void offer(final boolean _local, final Message _msg);
+    abstract public void offer(final boolean _local, final Message _msg);
 
     /**
      * Thread-safe message insertion.
      *
      * @param _msgs The new messages.
      */
-    void offer(final Queue<Message> _msgs);
+    abstract public void offer(final Queue<Message> _msgs);
 
     /**
      * Retrieves and removes from the inbox the next message to be processed, or returns
@@ -62,15 +62,15 @@ public interface Inbox {
      * @return The next message to be processed, or null if there are no messages to be
      *         processed.
      */
-    Message poll();
+    abstract public Message poll();
 
     /**
      * Signals the start of a request.
      */
-    void requestBegin();
+    abstract public void requestBegin();
 
     /**
      * Signals that the result of a request has been assigned.
      */
-    void requestEnd();
+    abstract public void requestEnd();
 }

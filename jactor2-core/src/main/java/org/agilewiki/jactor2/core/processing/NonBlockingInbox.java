@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author monster
  */
-public class NonBlockingInbox implements Inbox {
+public class NonBlockingInbox extends Inbox {
 
     /**
      * Concurrent queue for cross-thread exchanges.
