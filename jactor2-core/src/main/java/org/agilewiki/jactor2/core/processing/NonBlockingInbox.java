@@ -12,8 +12,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author monster
  */
-public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
-        implements Inbox {
+public class NonBlockingInbox implements Inbox {
+
+    /**
+     * Concurrent queue for cross-thread exchanges.
+     */
+    private final ConcurrentLinkedQueue<Object> concurrentQueue;
 
     /**
      * Local queue for same-thread exchanges.
@@ -26,6 +30,7 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
      * @param initialLocalQueueSize The initial local queue size.
      */
     public NonBlockingInbox(final int initialLocalQueueSize) {
+        concurrentQueue = new ConcurrentLinkedQueue<Object>();
         if (initialLocalQueueSize > INITIAL_LOCAL_QUEUE_SIZE)
             localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
         else
@@ -35,7 +40,7 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
     @Override
     public boolean hasWork() {
         //ConcurrentLinkedQueue.isEmpty() is not accurate enough
-        return !localQueue.isEmpty() || peek() != null;
+        return !localQueue.isEmpty() || concurrentQueue.peek() != null;
     }
 
     @Override
@@ -53,14 +58,14 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
         if (local) {
             localQueue.offer(msg);
         } else {
-            super.offer(msg);
+            concurrentQueue.offer(msg);
         }
     }
 
     @Override
     public void offer(final Queue<Message> msgs) {
         if (!msgs.isEmpty()) {
-            super.add(msgs);
+            concurrentQueue.add(msgs);
         }
     }
 
@@ -68,7 +73,7 @@ public class NonBlockingInbox extends ConcurrentLinkedQueue<Object>
     public Message poll() {
         Object obj = localQueue.peek();
         if (obj == null) {
-            obj = super.poll();
+            obj = concurrentQueue.poll();
             if (obj == null) {
                 return null;
             } else {
