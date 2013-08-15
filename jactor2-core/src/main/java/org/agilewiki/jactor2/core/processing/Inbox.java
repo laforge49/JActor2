@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author monster
  */
-public abstract class Inbox {
+public abstract class Inbox implements AutoCloseable {
     /**
      * Default initial local queue size.
      */
@@ -99,5 +99,19 @@ public abstract class Inbox {
      */
     public void requestEnd() {
 
+    }
+
+    @Override
+    public void close() throws Exception {
+        while (true) {
+            final Message message = poll();
+            if (message == null)
+                return;
+            if (message.isForeign() && message.isResponsePending())
+                try {
+                    message.close();
+                } catch (final Throwable t) {
+                }
+        }
     }
 }

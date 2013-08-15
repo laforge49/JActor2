@@ -125,30 +125,21 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
 
     @Override
     public void close() throws Exception {
-        if (sendBuffer == null)
-            return;
-        final Iterator<Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = sendBuffer
-                .entrySet().iterator();
-        while (iter.hasNext()) {
-            final Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
-            final MessageProcessorBase target = entry.getKey();
-            if (target.getJAContext() != jaContext) {
-                final ArrayDeque<Message> messages = entry.getValue();
-                iter.remove();
-                target.unbufferedAddMessages(messages);
-            } else
-                iter.remove();
+        if (sendBuffer != null) {
+            final Iterator<Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = sendBuffer
+                    .entrySet().iterator();
+            while (iter.hasNext()) {
+                final Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
+                final MessageProcessorBase target = entry.getKey();
+                if (target.getJAContext() != jaContext) {
+                    final ArrayDeque<Message> messages = entry.getValue();
+                    iter.remove();
+                    target.unbufferedAddMessages(messages);
+                } else
+                    iter.remove();
+            }
         }
-        while (true) {
-            final Message message = inbox.poll();
-            if (message == null)
-                return;
-            if (message.isForeign() && message.isResponsePending())
-                try {
-                    message.close();
-                } catch (final Throwable t) {
-                }
-        }
+        inbox.close();
     }
 
     @Override
