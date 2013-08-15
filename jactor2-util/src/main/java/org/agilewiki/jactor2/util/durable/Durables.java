@@ -1,11 +1,9 @@
 package org.agilewiki.jactor2.util.durable;
 
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.context.Properties;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
-import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.durable.app.App;
 import org.agilewiki.jactor2.util.durable.incDes.*;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
@@ -51,13 +49,9 @@ public final class Durables {
             final String _bundleName,
             final String _version,
             final String _location) throws Exception {
-        Properties properties = _jaContext.getProperties();
-        if (properties == null) {
-            properties = new JAProperties(_jaContext);
-        }
         FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
         factoryLocator.configure(_bundleName, _version, _location);
-        properties.putProperty("factoryLocator", factoryLocator);
+        _jaContext.putProperty("factoryLocator", factoryLocator);
         return factoryLocator;
     }
 
@@ -78,7 +72,7 @@ public final class Durables {
      * @return The factoryLocator for that jaContext.
      */
     public static FactoryLocator getFactoryLocator(final JAContext _jaContext) {
-        return (FactoryLocator) _jaContext.getProperties().getProperty("factoryLocator");
+        return (FactoryLocator) _jaContext.getProperty("factoryLocator");
     }
 
     /**

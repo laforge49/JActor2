@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
-import org.agilewiki.jactor2.util.JAProperties;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -34,11 +33,6 @@ abstract public class JAContextActivator
      * The processing factory used by the bundle.
      */
     private JAContext jaContext;
-
-    /**
-     * The properties held by the processing factory.
-     */
-    private JAProperties jaProperties;
 
     /**
      * The bundle context.
@@ -111,8 +105,7 @@ abstract public class JAContextActivator
     protected final void jaContextStart() throws Exception {
         jaContext = new JAContext();
         jaContext.addAutoClosable(this);
-        jaProperties = new JAProperties(jaContext, null);
-        jaProperties.putProperty("bundleContext", bundleContext);
+        jaContext.putProperty("bundleContext", bundleContext);
         initialize(new AtomicMessageProcessor(jaContext));
     }
 

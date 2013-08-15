@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.context.Properties;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;
 import org.slf4j.Logger;
@@ -49,8 +48,7 @@ abstract public class FactoryLocatorActivator extends JAContextActivator {
     protected void createFactoryLocator() throws Exception {
         factoryLocator = new OsgiFactoryLocator();
         factoryLocator.setJAContext(getJAContext());
-        Properties properties = getJAContext().getProperties();
-        properties.putProperty("factoryLocator", factoryLocator);
+        getJAContext().putProperty("factoryLocator", factoryLocator);
     }
 
     @Override

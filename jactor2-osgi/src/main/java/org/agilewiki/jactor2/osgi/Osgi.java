@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.context.Properties;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
@@ -26,8 +25,7 @@ final public class Osgi {
      * @return The BundleContext.
      */
     public static BundleContext getBundleContext(final JAContext _jaContext) {
-        Properties p = _jaContext.getProperties();
-        return (BundleContext) p.getProperty("bundleContext");
+        return (BundleContext) _jaContext.getProperty("bundleContext");
     }
 
     /**

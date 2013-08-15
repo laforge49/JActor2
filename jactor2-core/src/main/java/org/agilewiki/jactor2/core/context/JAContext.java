@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -60,9 +61,9 @@ public class JAContext implements AutoCloseable {
     protected final int initialBufferSize;
 
     /**
-     * MessageProcessor factory properties.
+     * Context properties.
      */
-    private Properties properties;
+    private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
     /**
      * Create a processing factory and a threadpool.
@@ -191,24 +192,12 @@ public class JAContext implements AutoCloseable {
         return shuttingDown.get();
     }
 
-    /**
-     * Assigns the effectively final properties set manager.
-     * Once assigned, it can not be updated.
-     *
-     * @param _properties The properties set manager.
-     */
-    public void setProperties(final Properties _properties) {
-        if (properties != null)
-            throw new IllegalStateException("properties has already been set");
-        properties = _properties;
+    public Object getProperty(final String propertyName) {
+        return properties.get(propertyName);
     }
 
-    /**
-     * Returns the property set manager.
-     *
-     * @return The properties set manager.
-     */
-    public Properties getProperties() {
-        return properties;
+    public void putProperty(final String propertyName,
+                            final Object propertyValue) {
+        properties.put(propertyName, propertyValue);
     }
 }
