@@ -7,19 +7,14 @@ import org.agilewiki.jactor2.core.messaging.Message;
 import org.agilewiki.jactor2.core.messaging.MessageSource;
 import org.slf4j.Logger;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for mailboxes.
  */
 abstract public class MessageProcessorBase implements MessageProcessor, MessageSource, AutoCloseable {
-
-    /**
-     * Default initial (per target MessageProcessor) buffer.
-     */
-    public final static int INITIAL_OUTBOX_SIZE = 16;
 
     /**
      * MessageProcessor logger.
@@ -36,15 +31,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
      */
     protected final Inbox inbox;
 
-    /**
-     * Initial size of the outbox for each unique message destination.
-     */
-    private final int initialOutboxSize;
-
-    /**
-     * A table of outboxes, one for each unique message destination.
-     */
-    protected Map<MessageProcessorBase, ArrayDeque<Message>> sendBuffer;
+    protected final Outbox outbox;
 
     /**
      * The currently active exception handler.
@@ -60,16 +47,16 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
      * Create a processing.
      *
      * @param _jaContext             The context of this processing.
-     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
+     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
     public MessageProcessorBase(final JAContext _jaContext,
-                                final int _initialOutboxSize,
+                                final int _initialBufferSize,
                                 final int _initialLocalQueueSize) {
         jaContext = _jaContext;
         inbox = createInbox(_initialLocalQueueSize);
         log = _jaContext.getMailboxLogger();
-        initialOutboxSize = _initialOutboxSize;
+        outbox = new Outbox(jaContext, _initialBufferSize);
         _jaContext.addAutoClosable(this);
     }
 
@@ -124,22 +111,15 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     }
 
     @Override
-    public void close() throws Exception {
-        if (sendBuffer != null) {
-            final Iterator<Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = sendBuffer
-                    .entrySet().iterator();
-            while (iter.hasNext()) {
-                final Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
-                final MessageProcessorBase target = entry.getKey();
-                if (target.getJAContext() != jaContext) {
-                    final ArrayDeque<Message> messages = entry.getValue();
-                    iter.remove();
-                    target.unbufferedAddMessages(messages);
-                } else
-                    iter.remove();
-            }
+    public void close() {
+        try {
+            outbox.close();
+        } catch (Exception e) {
         }
-        inbox.close();
+        try {
+            inbox.close();
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -218,21 +198,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
      * @return True if the message was buffered.
      */
     public boolean buffer(final Message _message, final MessageProcessor _target) {
-        if (jaContext.isClosing())
-            return false;
-        ArrayDeque<Message> buffer;
-        if (sendBuffer == null) {
-            sendBuffer = new IdentityHashMap<MessageProcessorBase, ArrayDeque<Message>>();
-            buffer = null;
-        } else {
-            buffer = sendBuffer.get(_target);
-        }
-        if (buffer == null) {
-            buffer = new ArrayDeque<Message>(initialOutboxSize);
-            sendBuffer.put((MessageProcessorBase) _target, buffer);
-        }
-        buffer.add(_message);
-        return true;
+        return outbox.buffer(_message, _target);
     }
 
     @Override

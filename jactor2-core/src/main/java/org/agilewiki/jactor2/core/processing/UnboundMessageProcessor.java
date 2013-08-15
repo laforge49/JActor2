@@ -83,9 +83,8 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
      */
     public boolean flush(boolean _mayMigrate) throws Exception {
         boolean result = false;
-        if (sendBuffer != null) {
-            final Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = sendBuffer
-                    .entrySet().iterator();
+        final Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = outbox.getIterator();
+        if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
                 final Map.Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();

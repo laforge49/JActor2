@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.context;
 
 import org.agilewiki.jactor2.core.processing.Inbox;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
+import org.agilewiki.jactor2.core.processing.Outbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,8 +69,8 @@ public class JAContext implements AutoCloseable {
      */
     public JAContext() {
         this(
-                Inbox.INITIAL_LOCAL_QUEUE_SIZE,
-                MessageProcessorBase.INITIAL_OUTBOX_SIZE,
+                Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
+                Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
                 20,
                 new DefaultThreadFactory());
     }
@@ -82,8 +82,8 @@ public class JAContext implements AutoCloseable {
      */
     public JAContext(final int _threadCount) {
         this(
-                Inbox.INITIAL_LOCAL_QUEUE_SIZE,
-                MessageProcessorBase.INITIAL_OUTBOX_SIZE,
+                Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
+                Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
                 _threadCount,
                 new DefaultThreadFactory());
     }

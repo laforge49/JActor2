@@ -36,12 +36,12 @@ public class AtomicInbox extends Inbox {
      */
     public AtomicInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
-        if (initialLocalQueueSize > INITIAL_LOCAL_QUEUE_SIZE) {
+        if (initialLocalQueueSize > DEFAULT_INITIAL_LOCAL_QUEUE_SIZE) {
             localResponsePendingQueue = new ArrayDeque<Message>(initialLocalQueueSize);
             localNoResponsePendingQueue = new ArrayDeque<Message>(initialLocalQueueSize);
         } else {
-            localResponsePendingQueue = new ArrayDeque<Message>(INITIAL_LOCAL_QUEUE_SIZE);
-            localNoResponsePendingQueue = new ArrayDeque<Message>(INITIAL_LOCAL_QUEUE_SIZE);
+            localResponsePendingQueue = new ArrayDeque<Message>(DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
+            localNoResponsePendingQueue = new ArrayDeque<Message>(DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
         }
     }
 

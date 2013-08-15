@@ -440,7 +440,7 @@ public abstract class Request<RESPONSE_TYPE> {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
             if (!responsePending)
                 return;
             responsePending = false;

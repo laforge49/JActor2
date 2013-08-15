@@ -16,7 +16,7 @@ public abstract class Inbox implements AutoCloseable {
     /**
      * Default initial local queue size.
      */
-    public static int INITIAL_LOCAL_QUEUE_SIZE = 16;
+    public static int DEFAULT_INITIAL_LOCAL_QUEUE_SIZE = 16;
 
     /**
      * Concurrent queue for cross-thread exchanges.
@@ -102,7 +102,7 @@ public abstract class Inbox implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         while (true) {
             final Message message = poll();
             if (message == null)
