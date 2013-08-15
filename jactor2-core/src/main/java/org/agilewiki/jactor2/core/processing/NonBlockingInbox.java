@@ -15,11 +15,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class NonBlockingInbox extends Inbox {
 
     /**
-     * Concurrent queue for cross-thread exchanges.
-     */
-    private final ConcurrentLinkedQueue<Object> concurrentQueue;
-
-    /**
      * Local queue for same-thread exchanges.
      */
     private final ArrayDeque<Object> localQueue;
@@ -54,19 +49,8 @@ public class NonBlockingInbox extends Inbox {
     }
 
     @Override
-    public void offer(final boolean local, final Message msg) {
-        if (local) {
-            localQueue.offer(msg);
-        } else {
-            concurrentQueue.offer(msg);
-        }
-    }
-
-    @Override
-    public void offer(final Queue<Message> msgs) {
-        if (!msgs.isEmpty()) {
-            concurrentQueue.add(msgs);
-        }
+    protected void offerLocal(final Message msg) {
+        localQueue.offer(msg);
     }
 
     @Override
@@ -104,13 +88,5 @@ public class NonBlockingInbox extends Inbox {
                 return result;
             }
         }
-    }
-
-    @Override
-    public void requestBegin() {
-    }
-
-    @Override
-    public void requestEnd() {
     }
 }

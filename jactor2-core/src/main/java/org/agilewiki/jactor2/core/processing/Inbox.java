@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.processing;
 import org.agilewiki.jactor2.core.messaging.Message;
 
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Provides at least two queues for a processing's incoming messages, where the first queue is a
@@ -16,6 +17,11 @@ public abstract class Inbox {
      * Default initial local queue size.
      */
     public static int INITIAL_LOCAL_QUEUE_SIZE = 16;
+
+    /**
+     * Concurrent queue for cross-thread exchanges.
+     */
+    protected ConcurrentLinkedQueue<Object> concurrentQueue;
 
     /**
      * Returns true when there is a message in the inbox that can be processed.
@@ -46,14 +52,31 @@ public abstract class Inbox {
      * @param _local True when the message is being inserted using the processing's own thread.
      * @param _msg   The new message.
      */
-    abstract public void offer(final boolean _local, final Message _msg);
+    public void offer(final boolean _local, final Message _msg) {
+        if (_local) {
+            offerLocal(_msg);
+        } else {
+            concurrentQueue.offer(_msg);
+        }
+    }
 
     /**
      * Thread-safe message insertion.
      *
      * @param _msgs The new messages.
      */
-    abstract public void offer(final Queue<Message> _msgs);
+    public void offer(final Queue<Message> _msgs) {
+        if (!_msgs.isEmpty()) {
+            concurrentQueue.add(_msgs);
+        }
+    }
+
+    /**
+     * Add a message to the appropriate local queue.
+     *
+     * @param msg The message to be added.
+     */
+    protected abstract void offerLocal(final Message msg);
 
     /**
      * Retrieves and removes from the inbox the next message to be processed, or returns
@@ -67,10 +90,14 @@ public abstract class Inbox {
     /**
      * Signals the start of a request.
      */
-    abstract public void requestBegin();
+    public void requestBegin() {
+
+    }
 
     /**
      * Signals that the result of a request has been assigned.
      */
-    abstract public void requestEnd();
+    public void requestEnd() {
+
+    }
 }

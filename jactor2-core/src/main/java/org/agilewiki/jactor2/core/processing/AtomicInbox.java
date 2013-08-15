@@ -15,11 +15,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class AtomicInbox extends Inbox {
 
     /**
-     * Concurrent queue for cross-thread exchanges.
-     */
-    private final ConcurrentLinkedQueue<Object> concurrentQueue;
-
-    /**
      * True when processing a request and the response has not yet been assigned.
      */
     private boolean processingRequest;
@@ -50,15 +45,6 @@ public class AtomicInbox extends Inbox {
         }
     }
 
-    @Override
-    public void offer(final boolean local, final Message msg) {
-        if (local) {
-            offerLocal(msg);
-        } else {
-            concurrentQueue.offer(msg);
-        }
-    }
-
     /**
      * Add the messages in a message block to the appropriate local queue.
      *
@@ -71,23 +57,12 @@ public class AtomicInbox extends Inbox {
         }
     }
 
-    /**
-     * Add a message to the appropriate local queue.
-     *
-     * @param msg The message to be added.
-     */
-    private void offerLocal(final Message msg) {
+    @Override
+    protected void offerLocal(final Message msg) {
         if (msg.isResponsePending())
             localResponsePendingQueue.offer(msg);
         else
             localNoResponsePendingQueue.offer(msg);
-    }
-
-    @Override
-    public void offer(final Queue<Message> msgs) {
-        if (!msgs.isEmpty()) {
-            concurrentQueue.add(msgs);
-        }
     }
 
     @Override
