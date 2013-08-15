@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.messaging;
 import org.agilewiki.jactor2.core.context.JAContext;
 
 /**
- * A callback passed to the Request.processRequest method.
+ * A callback passed to the Request.processRequest method for returning a response.
  *
  * @param <RESPONSE_TYPE> The type of response.
  */

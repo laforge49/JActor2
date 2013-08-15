@@ -29,7 +29,7 @@
  *     than passing it back to the application as a valid response.
  * </p>
  * <p>
- *     When a mailbox processes an event or a request, the current exception handler is set
+ *     Before a mailbox processes an event or a request, the current exception handler is set
  *     to null. The application's message processing logic then has the option of assigning
  *     an exception handler via the Mailbox.setExceptionHandler method. When a request message
  *     is sent, the current exception handler is saved in the request message and subsequently
