@@ -4,34 +4,34 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.*;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 /**
  * Test code.
  */
 public class SemaphoreTest extends TestCase implements Actor {
-    Mailbox mailbox;
+    MessageProcessor messageProcessor;
 
     @Override
-    public Mailbox getMailbox() {
-        return mailbox;
+    public MessageProcessor getMessageProcessor() {
+        return messageProcessor;
     }
 
     public void testI() throws Exception {
         final JAContext jaContext = new JAContext();
-        mailbox = new NonBlockingMailbox(jaContext);
+        messageProcessor = new NonBlockingMessageProcessor(jaContext);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMailbox(jaContext), 1);
+                new NonBlockingMessageProcessor(jaContext), 1);
         semaphore.acquireReq().call();
         jaContext.close();
     }
 
     public void testII() throws Exception {
         final JAContext jaContext = new JAContext();
-        mailbox = new NonBlockingMailbox(jaContext);
+        messageProcessor = new NonBlockingMessageProcessor(jaContext);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMailbox(jaContext), 0);
+                new NonBlockingMessageProcessor(jaContext), 0);
         semaphore.release();
         semaphore.acquireReq().call();
         jaContext.close();
@@ -44,7 +44,7 @@ public class SemaphoreTest extends TestCase implements Actor {
             @Override
             public void processEvent(final SemaphoreTest actor)
                     throws Exception {
-                new Delay(jaContext).sleepReq(delay).send(getMailbox(),
+                new Delay(jaContext).sleepReq(delay).send(getMessageProcessor(),
                         new ResponseProcessor<Void>() {
                             @Override
                             public void processResponse(final Void response)
@@ -58,9 +58,9 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     public void testIII() throws Exception {
         final JAContext jaContext = new JAContext();
-        mailbox = new NonBlockingMailbox(jaContext);
+        messageProcessor = new NonBlockingMessageProcessor(jaContext);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMailbox(jaContext), 0);
+                new NonBlockingMessageProcessor(jaContext), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, jaContext);
@@ -71,13 +71,13 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     private Request<Boolean> acquireException(final JASemaphore semaphore,
-                                              final Mailbox mailbox) {
-        return new Request<Boolean>(mailbox) {
+                                              final MessageProcessor messageProcessor) {
+        return new Request<Boolean>(messageProcessor) {
             @Override
             public void processRequest(
                     final Transport<Boolean> responseProcessor)
                     throws Exception {
-                mailbox.setExceptionHandler(new ExceptionHandler() {
+                messageProcessor.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(final Throwable throwable)
                             throws Exception {
@@ -85,7 +85,7 @@ public class SemaphoreTest extends TestCase implements Actor {
                         responseProcessor.processResponse(true);
                     }
                 });
-                semaphore.acquireReq().send(mailbox,
+                semaphore.acquireReq().send(messageProcessor,
                         new ResponseProcessor<Void>() {
                             @Override
                             public void processResponse(final Void response)
@@ -100,14 +100,14 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     public void testIV() throws Exception {
         final JAContext jaContext = new JAContext();
-        mailbox = new NonBlockingMailbox(jaContext);
+        messageProcessor = new NonBlockingMessageProcessor(jaContext);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMailbox(jaContext), 0);
+                new NonBlockingMessageProcessor(jaContext), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, jaContext);
         final boolean result = acquireException(semaphore,
-                new NonBlockingMailbox(jaContext)).call();
+                new NonBlockingMessageProcessor(jaContext)).call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
         assertTrue(result);

@@ -23,16 +23,16 @@ public class Activator extends FactoryLocatorActivator {
     protected void process() throws Exception {
         log.warn("wait for commands to load");
         Thread.sleep(10000);
-        getMailbox().setExceptionHandler(new ExceptionHandler() {
+        getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
             @Override
             public void processException(Throwable throwable) throws Throwable {
                 log.error("test failure", throwable);
                 getJAContext().close();
             }
         });
-        LocateService<CommandProcessor> locateService = new LocateService(getMailbox(),
+        LocateService<CommandProcessor> locateService = new LocateService(getMessageProcessor(),
                 CommandProcessor.class.getName());
-        locateService.getReq().send(getMailbox(), new ResponseProcessor<CommandProcessor>() {
+        locateService.getReq().send(getMessageProcessor(), new ResponseProcessor<CommandProcessor>() {
             @Override
             public void processResponse(CommandProcessor response) throws Exception {
                 commandProcessor = response;
@@ -66,12 +66,12 @@ public class Activator extends FactoryLocatorActivator {
                 "config:propset import_a jactor2-osgi\\|" + getNiceVersion(),
                 "config:update"));
         String bundleLocation = "mvn:org.agilewiki.jactor2/jactor2-test-service/" + getNiceVersion();
-        FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
-        factoriesImporter.startReq(bundleLocation).send(getMailbox(), new ResponseProcessor<Void>() {
+        FactoriesImporter factoriesImporter = new FactoriesImporter(getMessageProcessor());
+        factoriesImporter.startReq(bundleLocation).send(getMessageProcessor(), new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {
-                LocateService<Hello> locateService = new LocateService(getMailbox(), Hello.class.getName());
-                locateService.getReq().send(getMailbox(), new ResponseProcessor<Hello>() {
+                LocateService<Hello> locateService = new LocateService(getMessageProcessor(), Hello.class.getName());
+                locateService.getReq().send(getMessageProcessor(), new ResponseProcessor<Hello>() {
                     @Override
                     public void processResponse(Hello response) throws Exception {
                         //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));

@@ -38,8 +38,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *         final Thread mainThread = Thread.currentThread();
  *
  *         //Create a thread-bound processing
- *         final ThreadBoundMailbox boundMailbox =
- *             new ThreadBoundMailbox(jaContext, new Runnable() {
+ *         final ThreadBoundMessageProcessor boundMailbox =
+ *             new ThreadBoundMessageProcessor(jaContext, new Runnable() {
  *                 {@literal @}Override
  *                 public void run() {
  *                     //Interrupt the main thread when there are messages to process
@@ -68,7 +68,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * class ThreadBoundActor extends ActorBase {
  *
- *     ThreadBoundActor(final Mailbox _mailbox) throws Exception {
+ *     ThreadBoundActor(final MessageProcessor _mailbox) throws Exception {
  *         initialize(_mailbox);
  *     }
  *
@@ -91,7 +91,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * finished
  * </pre>
  */
-public class ThreadBoundMailbox extends MailboxBase {
+public class ThreadBoundMessageProcessor extends MessageProcessorBase {
 
     /**
      * The messageProcessor.run method is called when there are messages to be processed.
@@ -103,7 +103,7 @@ public class ThreadBoundMailbox extends MailboxBase {
      * <p>
      * The _messageProcessor.run method is called when a thread-bound processing has messages
      * that need processing. As a result of invoking the run method, the
-     * ThreadBoundMailbox.run method needs to be invoked by the thread that
+     * ThreadBoundMessageProcessor.run method needs to be invoked by the thread that
      * the processing is bound to.
      * </p>
      *
@@ -111,7 +111,7 @@ public class ThreadBoundMailbox extends MailboxBase {
      * @param _messageProcessor The _messageProcessor.run method is called when there
      *                          are messages to be processed.
      */
-    public ThreadBoundMailbox(JAContext _jaContext, Runnable _messageProcessor) {
+    public ThreadBoundMessageProcessor(JAContext _jaContext, Runnable _messageProcessor) {
         super(_jaContext,
                 _jaContext.getInitialBufferSize(),
                 _jaContext.getInitialLocalMessageQueueSize());
@@ -123,7 +123,7 @@ public class ThreadBoundMailbox extends MailboxBase {
      * <p>
      * The messageProcessor.run method is called when a thread-bound processing has messages
      * that need processing. As a result of invoking the run method, the
-     * ThreadBoundMailbox.run method needs to be invoked by the thread that
+     * ThreadBoundMessageProcessor.run method needs to be invoked by the thread that
      * the processing is bound to.
      * </p>
      *
@@ -133,10 +133,10 @@ public class ThreadBoundMailbox extends MailboxBase {
      * @param _messageProcessor      The _messageProcessor.run method is called when there
      *                               are messages to be processed.
      */
-    public ThreadBoundMailbox(JAContext _jaContext,
-                              int _initialOutboxSize,
-                              final int _initialLocalQueueSize,
-                              Runnable _messageProcessor) {
+    public ThreadBoundMessageProcessor(JAContext _jaContext,
+                                       int _initialOutboxSize,
+                                       final int _initialLocalQueueSize,
+                                       Runnable _messageProcessor) {
         super(_jaContext, _initialOutboxSize, _initialLocalQueueSize);
         messageProcessor = _messageProcessor;
     }
@@ -185,12 +185,12 @@ public class ThreadBoundMailbox extends MailboxBase {
     public final boolean flush() throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
-            final Iterator<Map.Entry<MailboxBase, ArrayDeque<Message>>> iter = sendBuffer
+            final Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = sendBuffer
                     .entrySet().iterator();
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<MailboxBase, ArrayDeque<Message>> entry = iter.next();
-                final MailboxBase target = entry.getKey();
+                final Map.Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
+                final MessageProcessorBase target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.unbufferedAddMessages(messages);

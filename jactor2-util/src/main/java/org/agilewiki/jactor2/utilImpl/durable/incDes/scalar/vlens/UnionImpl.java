@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.*;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
@@ -27,9 +27,9 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
             }
 
             @Override
-            public UnionImpl newSerializable(Mailbox mailbox, Ancestor parent)
+            public UnionImpl newSerializable(MessageProcessor messageProcessor, Ancestor parent)
                     throws Exception {
-                UnionImpl uj = (UnionImpl) super.newSerializable(mailbox, parent);
+                UnionImpl uj = (UnionImpl) super.newSerializable(messageProcessor, parent);
                 Factory[] afs = new FactoryImpl[_actorTypes.length];
                 int i = 0;
                 while (i < _actorTypes.length) {
@@ -65,7 +65,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     protected int getFactoryIndex(String actorType) throws Exception {
-        FactoryLocator factoryLocator = Durables.getFactoryLocator(getMailbox());
+        FactoryLocator factoryLocator = Durables.getFactoryLocator(getMessageProcessor());
         Factory actorFactory = factoryLocator.getFactory(actorType);
         return getFactoryIndex(actorFactory);
     }
@@ -95,7 +95,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         if (factoryIndex == -1)
             return;
         Factory factory = getUnionFactories()[factoryIndex];
-        value = factory.newSerializable(getMailbox(), getParent());
+        value = factory.newSerializable(getMessageProcessor(), getParent());
         ((IncDesImpl) value.getDurable()).load(readableBytes);
         ((IncDesImpl) value.getDurable()).setContainerJid(this);
     }
@@ -130,7 +130,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public Request<Void> setValueReq(final String actorType) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(actorType);
@@ -155,7 +155,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         } else {
             Factory factory = getUnionFactories()[ndx];
             factoryIndex = ndx;
-            value = factory.newSerializable(getMailbox(), getParent());
+            value = factory.newSerializable(getMessageProcessor(), getParent());
             ((IncDesImpl) value.getDurable()).setContainerJid(this);
         }
         change(getSerializedLength() - oldLength);
@@ -175,7 +175,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public Request<Void> setValueReq(final String jidType, final byte[] bytes) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(jidType, bytes);
@@ -197,7 +197,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
         Factory factory = getUnionFactories()[ndx];
         factoryIndex = ndx;
-        value = factory.newSerializable(getMailbox(), getParent());
+        value = factory.newSerializable(getMessageProcessor(), getParent());
         ((IncDesImpl) value.getDurable()).setContainerJid(this);
         ((IncDesImpl) value.getDurable()).load(new ReadableBytes(bytes, 0));
         change(getSerializedLength() - oldLength);
@@ -217,7 +217,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public Request<Boolean> makeValueReq(final String jidType) {
-        return new Request<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(makeValue(jidType));
@@ -254,7 +254,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public Request<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
-        return new Request<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(makeValue(jidType, bytes));
@@ -313,17 +313,17 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         throw new IllegalArgumentException("pathname " + pathname);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(mailbox, parent, factory);
-        clearReq = new Request<Void>(getMailbox()) {
+        super.initialize(messageProcessor, parent, factory);
+        clearReq = new Request<Void>(getMessageProcessor()) {
             public void processRequest(Transport rp) throws Exception {
                 clear();
                 rp.processResponse(null);
             }
         };
 
-        getPAIDReq = new Request<JASerializable>(getMailbox()) {
+        getPAIDReq = new Request<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

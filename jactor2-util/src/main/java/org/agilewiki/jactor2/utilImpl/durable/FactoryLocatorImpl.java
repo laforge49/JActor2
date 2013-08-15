@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -61,17 +61,17 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
     /**
      * Creates a new actor.
      *
-     * @param jidType The jid type.
-     * @param mailbox A processing which may be shared with other actors, or null.
-     * @param parent  The parent actor to which unrecognized requests are forwarded, or null.
+     * @param jidType          The jid type.
+     * @param messageProcessor A processing which may be shared with other actors, or null.
+     * @param parent           The parent actor to which unrecognized requests are forwarded, or null.
      * @return The new jid.
      */
-    public JASerializable newSerializable(String jidType, Mailbox mailbox, Ancestor parent)
+    public JASerializable newSerializable(String jidType, MessageProcessor messageProcessor, Ancestor parent)
             throws Exception {
-        if (mailbox == null)
+        if (messageProcessor == null)
             throw new IllegalArgumentException("processing may not be null");
         Factory af = getFactory(jidType);
-        return af.newSerializable(mailbox, parent);
+        return af.newSerializable(messageProcessor, parent);
     }
 
     /**

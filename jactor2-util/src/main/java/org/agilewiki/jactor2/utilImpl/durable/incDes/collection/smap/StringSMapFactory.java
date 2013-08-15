@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.smap;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -60,15 +60,15 @@ public class StringSMapFactory extends FactoryImpl {
     /**
      * Create and configure an actor.
      *
-     * @param mailbox The processing of the new actor.
-     * @param parent  The parent of the new actor.
+     * @param messageProcessor The processing of the new actor.
+     * @param parent           The parent of the new actor.
      * @return The new actor.
      */
     @Override
-    public StringSMap newSerializable(Mailbox mailbox, Ancestor parent)
+    public StringSMap newSerializable(MessageProcessor messageProcessor, Ancestor parent)
             throws Exception {
-        StringSMap imj = (StringSMap) super.newSerializable(mailbox, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(mailbox);
+        StringSMap imj = (StringSMap) super.newSerializable(messageProcessor, parent);
+        FactoryLocator fl = Durables.getFactoryLocator(messageProcessor);
         imj.valueFactory = fl.getFactory(valueType);
         imj.initialCapacity = initialCapacity;
         return imj;

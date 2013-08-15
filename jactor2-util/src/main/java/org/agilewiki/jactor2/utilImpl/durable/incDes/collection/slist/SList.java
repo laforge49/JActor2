@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.slist;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.JASerializable;
@@ -185,7 +185,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iAddReq(final int _i, final byte[] _bytes) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iAdd(_i, _bytes);
@@ -208,7 +208,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iAddReq(final int _i) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iAdd(_i);
@@ -247,7 +247,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iRemoveReq(final int _i) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 iRemove(_i);
@@ -271,10 +271,10 @@ public class SList<ENTRY_TYPE extends JASerializable>
         change(c);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(mailbox, parent, factory);
-        emptyReq = new Request<Void>(getMailbox()) {
+        super.initialize(messageProcessor, parent, factory);
+        emptyReq = new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 empty();

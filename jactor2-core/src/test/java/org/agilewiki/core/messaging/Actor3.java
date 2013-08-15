@@ -2,19 +2,19 @@ package org.agilewiki.core.messaging;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 /**
  * Test code.
  */
 public class Actor3 {
-    private final Mailbox mailbox;
+    private final MessageProcessor messageProcessor;
     public final Request<Void> hi3;
 
-    public Actor3(final Mailbox mbox) {
-        this.mailbox = mbox;
+    public Actor3(final MessageProcessor mbox) {
+        this.messageProcessor = mbox;
 
-        hi3 = new Request<Void>(mailbox) {
+        hi3 = new Request<Void>(messageProcessor) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

@@ -3,17 +3,17 @@ package org.agilewiki.core.exceptions;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorE {
-    private final Mailbox mailbox;
+    private final MessageProcessor messageProcessor;
 
-    public ActorE(final Mailbox mbox) {
-        this.mailbox = mbox;
+    public ActorE(final MessageProcessor mbox) {
+        this.messageProcessor = mbox;
     }
 
     public Request<Void> throwRequest(final ActorA actorA) {
-        return new Request<Void>(mailbox) {
+        return new Request<Void>(messageProcessor) {
             @Override
             public void processRequest(final Transport<Void> responseProcessor)
                     throws Exception {
@@ -21,7 +21,7 @@ public class ActorE {
                 // response to our own request, which should NOT happen.
                 // Therefore, responseProcessor is NOT called.
                 try {
-                    actorA.throwRequest.send(mailbox,
+                    actorA.throwRequest.send(messageProcessor,
                             new ResponseProcessor<Void>() {
 
                                 @Override

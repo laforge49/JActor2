@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.app;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 
 /**
@@ -26,8 +26,8 @@ public class AppBase implements App {
     }
 
     @Override
-    public Mailbox getMailbox() {
-        return durable.getMailbox();
+    public MessageProcessor getMessageProcessor() {
+        return durable.getMessageProcessor();
     }
 
     @Override

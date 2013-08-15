@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 /**
  * Message wraps the user/application Request/Event which are queued in the
@@ -34,15 +34,15 @@ public interface Message extends AutoCloseable {
      * of the event/request held by the message. This method is always called on the
      * target processing's own thread.
      *
-     * @param _targetMailbox The processing whose thread is to evaluate the event/request.
+     * @param _targetMessageProcessor The processing whose thread is to evaluate the event/request.
      */
-    void eval(final Mailbox _targetMailbox);
+    void eval(final MessageProcessor _targetMessageProcessor);
 
     /**
      * Process the throwable on the current thread in the context of the active processing.
      *
-     * @param _activeMailbox The processing providing the context for processing the throwable.
-     * @param _t             The throwable to be processed.
+     * @param _activeMessageProcessor The processing providing the context for processing the throwable.
+     * @param _t                      The throwable to be processed.
      */
-    void processThrowable(final Mailbox _activeMailbox, final Throwable _t);
+    void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t);
 }

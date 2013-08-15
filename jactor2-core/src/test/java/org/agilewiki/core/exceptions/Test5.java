@@ -2,8 +2,8 @@ package org.agilewiki.core.exceptions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.AtomicMailbox;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 /**
  * Test code.
@@ -11,10 +11,10 @@ import org.agilewiki.jactor2.core.processing.Mailbox;
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
         final JAContext jaContext = new JAContext();
-        final Mailbox mailboxE = new AtomicMailbox(jaContext);
-        final Mailbox mailboxA = new AtomicMailbox(jaContext);
-        final ActorE actorE = new ActorE(mailboxE);
-        final ActorA actorA = new ActorA(mailboxA);
+        final MessageProcessor messageProcessorE = new AtomicMessageProcessor(jaContext);
+        final MessageProcessor messageProcessorA = new AtomicMessageProcessor(jaContext);
+        final ActorE actorE = new ActorE(messageProcessorE);
+        final ActorA actorA = new ActorA(messageProcessorA);
         try {
             actorE.throwRequest(actorA).call();
         } catch (final SecurityException se) {

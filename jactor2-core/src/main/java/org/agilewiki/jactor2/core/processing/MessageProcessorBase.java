@@ -14,15 +14,15 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for mailboxes.
  */
-abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseable {
+abstract public class MessageProcessorBase implements MessageProcessor, MessageSource, AutoCloseable {
 
     /**
-     * Default initial (per target Mailbox) buffer.
+     * Default initial (per target MessageProcessor) buffer.
      */
     public final static int INITIAL_OUTBOX_SIZE = 16;
 
     /**
-     * Mailbox logger.
+     * MessageProcessor logger.
      */
     protected final Logger log;
 
@@ -44,7 +44,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     /**
      * A table of outboxes, one for each unique message destination.
      */
-    protected Map<MailboxBase, ArrayDeque<Message>> sendBuffer;
+    protected Map<MessageProcessorBase, ArrayDeque<Message>> sendBuffer;
 
     /**
      * The currently active exception handler.
@@ -63,9 +63,9 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public MailboxBase(final JAContext _jaContext,
-                       final int _initialOutboxSize,
-                       final int _initialLocalQueueSize) {
+    public MessageProcessorBase(final JAContext _jaContext,
+                                final int _initialOutboxSize,
+                                final int _initialLocalQueueSize) {
         jaContext = _jaContext;
         inbox = createInbox(_initialLocalQueueSize);
         log = _jaContext.getMailboxLogger();
@@ -127,11 +127,11 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     public void close() throws Exception {
         if (sendBuffer == null)
             return;
-        final Iterator<Entry<MailboxBase, ArrayDeque<Message>>> iter = sendBuffer
+        final Iterator<Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = sendBuffer
                 .entrySet().iterator();
         while (iter.hasNext()) {
-            final Entry<MailboxBase, ArrayDeque<Message>> entry = iter.next();
-            final MailboxBase target = entry.getKey();
+            final Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
+            final MessageProcessorBase target = entry.getKey();
             if (target.getJAContext() != jaContext) {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
@@ -172,7 +172,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
     }
 
     /**
-     * Add a message directly to the input queue of a Mailbox.
+     * Add a message directly to the input queue of a MessageProcessor.
      *
      * @param _message A message.
      * @param _local   True when the current thread is bound to the processing.
@@ -226,19 +226,19 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
      * @param _target  The processing that should eventually receive this message
      * @return True if the message was buffered.
      */
-    public boolean buffer(final Message _message, final Mailbox _target) {
+    public boolean buffer(final Message _message, final MessageProcessor _target) {
         if (jaContext.isClosing())
             return false;
         ArrayDeque<Message> buffer;
         if (sendBuffer == null) {
-            sendBuffer = new IdentityHashMap<MailboxBase, ArrayDeque<Message>>();
+            sendBuffer = new IdentityHashMap<MessageProcessorBase, ArrayDeque<Message>>();
             buffer = null;
         } else {
             buffer = sendBuffer.get(_target);
         }
         if (buffer == null) {
             buffer = new ArrayDeque<Message>(initialOutboxSize);
-            sendBuffer.put((MailboxBase) _target, buffer);
+            sendBuffer.put((MessageProcessorBase) _target, buffer);
         }
         buffer.add(_message);
         return true;
@@ -280,7 +280,7 @@ abstract public class MailboxBase implements Mailbox, MessageSource, AutoCloseab
 
     @Override
     public final void incomingResponse(final Message _message,
-                                       final Mailbox _responseSource) {
+                                       final MessageProcessor _responseSource) {
         try {
             unbufferedAddMessage(_message, this == _responseSource ||
                     (_responseSource != null && this == _responseSource));

@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -23,7 +23,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     /**
      * The actor's processing.
      */
-    private Mailbox mailbox;
+    private MessageProcessor messageProcessor;
 
     /**
      * The factory, or null.
@@ -75,14 +75,14 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public JASerializable createSubordinate(Factory factory, Ancestor parent)
             throws Exception {
-        JASerializable jid = factory.newSerializable(getMailbox(), parent);
+        JASerializable jid = factory.newSerializable(getMessageProcessor(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
     final public JASerializable createSubordinate(String actorType, Ancestor parent)
             throws Exception {
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(messageProcessor), actorType, getMessageProcessor(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
@@ -101,7 +101,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             throws Exception {
         if (bytes == null)
             return createSubordinate(factory, parent);
-        JASerializable jid = factory.newSerializable(getMailbox(), parent);
+        JASerializable jid = factory.newSerializable(getMessageProcessor(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
@@ -111,7 +111,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             throws Exception {
         if (bytes == null)
             return createSubordinate(actorType, parent);
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(messageProcessor), actorType, getMessageProcessor(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
@@ -129,7 +129,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public JASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes)
             throws Exception {
-        JASerializable jid = factory.newSerializable(getMailbox(), parent);
+        JASerializable jid = factory.newSerializable(getMessageProcessor(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
@@ -138,7 +138,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public JASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes)
             throws Exception {
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(mailbox), actorType, getMailbox(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(messageProcessor), actorType, getMessageProcessor(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
@@ -241,7 +241,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     final public Request<Void> saveReq(final AppendableBytes appendableBytes) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 save(appendableBytes);
@@ -265,7 +265,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     final public Request<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
-        return new Request<Integer>(getMailbox()) {
+        return new Request<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(save(bytes, offset));
@@ -322,7 +322,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public Request<JASerializable> resolvePathnameReq(final String pathname) {
-        return new Request<JASerializable>(getMailbox()) {
+        return new Request<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(resolvePathname(pathname));
@@ -337,19 +337,19 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return a copy of the actor.
      */
     @Override
-    public JASerializable copy(final Mailbox m)
+    public JASerializable copy(final MessageProcessor m)
             throws Exception {
-        Mailbox mb = m;
+        MessageProcessor mb = m;
         if (mb == null)
-            mb = getMailbox();
+            mb = getMessageProcessor();
         JASerializable serializable = getFactory().newSerializable(mb, getParent());
         IncDesImpl jid = (IncDesImpl) serializable.getDurable();
         jid.load(new ReadableBytes(getSerializedBytes(), 0));
         return serializable;
     }
 
-    public final Request<JASerializable> copyReq(final Mailbox m) {
-        return new Request<JASerializable>(getMailbox()) {
+    public final Request<JASerializable> copyReq(final MessageProcessor m) {
+        return new Request<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(copy(m));
@@ -358,7 +358,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     public final Request<Boolean> isEqualReq(final JASerializable jidA) {
-        return new Request<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(final Transport rp) throws Exception {
                 getSerializedLengthReq.send(getMailbox(), new ResponseProcessor<Integer>() {
@@ -406,24 +406,24 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     /**
      * Initialize a LiteActor
      *
-     * @param _mailbox A processing which may be shared with other actors.
-     * @param _parent  The parent actor.
-     * @param _factory The factory.
+     * @param _messageProcessor A processing which may be shared with other actors.
+     * @param _parent           The parent actor.
+     * @param _factory          The factory.
      */
-    public void initialize(final Mailbox _mailbox, final Ancestor _parent, final FactoryImpl _factory)
+    public void initialize(final MessageProcessor _messageProcessor, final Ancestor _parent, final FactoryImpl _factory)
             throws Exception {
         super.initialize(_parent);
-        mailbox = _mailbox;
+        messageProcessor = _messageProcessor;
         factory = _factory;
 
-        getSerializedLengthReq = new Request<Integer>(getMailbox()) {
+        getSerializedLengthReq = new Request<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getSerializedLength());
             }
         };
 
-        getSerializedBytesReq = new Request<byte[]>(getMailbox()) {
+        getSerializedBytesReq = new Request<byte[]>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getSerializedBytes());
@@ -432,7 +432,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    public Mailbox getMailbox() {
-        return mailbox;
+    public MessageProcessor getMessageProcessor() {
+        return messageProcessor;
     }
 }

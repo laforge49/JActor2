@@ -3,21 +3,21 @@ package org.agilewiki.core.exceptions;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorC {
-    private final Mailbox mailbox;
+    private final MessageProcessor messageProcessor;
     public final Request<String> throwRequest;
 
-    public ActorC(final Mailbox mbox) {
-        this.mailbox = mbox;
+    public ActorC(final MessageProcessor mbox) {
+        this.messageProcessor = mbox;
 
-        throwRequest = new Request<String>(mailbox) {
+        throwRequest = new Request<String>(messageProcessor) {
             @Override
             public void processRequest(
                     final Transport<String> responseProcessor)
                     throws Exception {
-                mailbox.setExceptionHandler(new ExceptionHandler() {
+                messageProcessor.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(final Throwable throwable)
                             throws Exception {

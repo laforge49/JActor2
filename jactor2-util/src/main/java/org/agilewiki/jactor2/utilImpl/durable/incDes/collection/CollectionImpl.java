@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.collection;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 import org.agilewiki.jactor2.util.durable.incDes.Collection;
@@ -33,7 +33,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<ENTRY_TYPE> iGetReq(final int _i) {
-        return new Request<ENTRY_TYPE>(getMailbox()) {
+        return new Request<ENTRY_TYPE>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<ENTRY_TYPE> _rp) throws Exception {
                 _rp.processResponse(iGet(_i));
@@ -43,7 +43,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
 
     @Override
     public Request<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport _rp) throws Exception {
                 iSet(_i, _bytes);
@@ -123,10 +123,10 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(mailbox, parent, factory);
-        sizeReq = new Request<Integer>(getMailbox()) {
+        super.initialize(messageProcessor, parent, factory);
+        sizeReq = new Request<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Integer> _rp) throws Exception {
                 _rp.processResponse(size());

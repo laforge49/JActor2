@@ -5,8 +5,8 @@ import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.AtomicMailbox;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class AtomicTest extends TestCase {
     int count = 0;
@@ -14,19 +14,19 @@ public class AtomicTest extends TestCase {
     public void test() throws Exception {
         JAContext jaContext = new JAContext();
         try {
-            int _count = startReq1(new AtomicMailbox(jaContext)).call();
+            int _count = startReq1(new AtomicMessageProcessor(jaContext)).call();
             assertEquals(5, _count);
         } finally {
             jaContext.close();
         }
     }
 
-    Request<Integer> startReq1(final Mailbox _mailbox) {
-        return new Request<Integer>(_mailbox) {
+    Request<Integer> startReq1(final MessageProcessor _messageProcessor) {
+        return new Request<Integer>(_messageProcessor) {
             @Override
             public void processRequest(final Transport<Integer> _rp)
                     throws Exception {
-                Mailbox mailbox = new AtomicMailbox(_mailbox.getJAContext());
+                MessageProcessor messageProcessor = new AtomicMessageProcessor(_messageProcessor.getJAContext());
                 ResponseProcessor rc = new ResponseCounter(5, null,
                         new ResponseProcessor() {
                             @Override
@@ -35,22 +35,22 @@ public class AtomicTest extends TestCase {
                                 _rp.processResponse(count);
                             }
                         });
-                aReq(mailbox, 1).send(_mailbox, rc);
-                aReq(mailbox, 2).send(_mailbox, rc);
-                aReq(mailbox, 3).send(_mailbox, rc);
-                aReq(mailbox, 4).send(_mailbox, rc);
-                aReq(mailbox, 5).send(_mailbox, rc);
+                aReq(messageProcessor, 1).send(_messageProcessor, rc);
+                aReq(messageProcessor, 2).send(_messageProcessor, rc);
+                aReq(messageProcessor, 3).send(_messageProcessor, rc);
+                aReq(messageProcessor, 4).send(_messageProcessor, rc);
+                aReq(messageProcessor, 5).send(_messageProcessor, rc);
             }
         };
     }
 
-    Request<Void> aReq(final Mailbox _mailbox, final int msg) {
-        return new Request<Void>(_mailbox) {
+    Request<Void> aReq(final MessageProcessor _messageProcessor, final int msg) {
+        return new Request<Void>(_messageProcessor) {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
-                Delay delay = new Delay(_mailbox.getJAContext());
-                delay.sleepReq(100 - (msg * 20)).send(_mailbox,
+                Delay delay = new Delay(_messageProcessor.getJAContext());
+                delay.sleepReq(100 - (msg * 20)).send(_messageProcessor,
                         new ResponseProcessor<Void>() {
                             @Override
                             public void processResponse(Void response)

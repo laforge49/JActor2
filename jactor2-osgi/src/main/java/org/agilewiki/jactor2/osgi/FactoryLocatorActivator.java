@@ -89,7 +89,7 @@ abstract public class FactoryLocatorActivator extends JAContextActivator {
                 String value = entry.getValue();
                 int i = value.indexOf('|');
                 try {
-                    FactoriesImporter factoriesImporter = new FactoriesImporter(getMailbox());
+                    FactoriesImporter factoriesImporter = new FactoriesImporter(getMessageProcessor());
                     if (i > -1) {
                         String bundleName = value.substring(0, i);
                         String niceVersion = value.substring(i + 1);

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.MailboxBase;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 
 /**
  * An Event instance is used to pass one-way messages to any number of Actor objects.
@@ -26,8 +26,8 @@ import org.agilewiki.jactor2.core.processing.MailboxBase;
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.context.JAContext;
- * import org.agilewiki.jactor2.core.processing.Mailbox;
- * import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+ * import org.agilewiki.jactor2.core.processing.MessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  *
  * public class EventSample {
  *
@@ -37,7 +37,7 @@ import org.agilewiki.jactor2.core.processing.MailboxBase;
  *         final JAContext jaContext = new JAContext(1);
  *
  *         //Create a SampleActor1 instance.
- *         SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMailbox(jaContext));
+ *         SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMessageProcessor(jaContext));
  *
  *         //Print "finished" and exit when the event is processed by SampleActor1.
  *         new FinEvent("finished").signal(sampleActor1);
@@ -50,7 +50,7 @@ import org.agilewiki.jactor2.core.processing.MailboxBase;
  *
  *     class SampleActor1 extends ActorBase {
  *
- *         SampleActor1(final Mailbox _mailbox) throws Exception {
+ *         SampleActor1(final MessageProcessor _mailbox) throws Exception {
  *             initialize(_mailbox);
  *         }
  *
@@ -83,7 +83,7 @@ import org.agilewiki.jactor2.core.processing.MailboxBase;
 public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
 
     /**
-     * Passes an event message immediately to the target Mailbox for subsequent processing
+     * Passes an event message immediately to the target MessageProcessor for subsequent processing
      * by the thread of the that processing. No result is passed back and if an exception is
      * thrown while processing the event,that exception is simply logged as a warning.
      *
@@ -91,11 +91,11 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
      */
     final public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
         final EventMessage message = new EventMessage(_targetActor);
-        ((MailboxBase) _targetActor.getMailbox()).unbufferedAddMessage(message, false);
+        ((MessageProcessorBase) _targetActor.getMessageProcessor()).unbufferedAddMessage(message, false);
     }
 
     /**
-     * The processEvent method will be invoked by the target Mailbox on its own thread
+     * The processEvent method will be invoked by the target MessageProcessor on its own thread
      * when this event is processed.
      *
      * @param _targetActor The actor to be operated on.
@@ -138,8 +138,8 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
         }
 
         @Override
-        public void eval(final Mailbox _targetMailbox) {
-            MailboxBase targetMailbox = (MailboxBase) _targetMailbox;
+        public void eval(final MessageProcessor _targetMessageProcessor) {
+            MessageProcessorBase targetMailbox = (MessageProcessorBase) _targetMessageProcessor;
             targetMailbox.setExceptionHandler(null);
             targetMailbox.setCurrentMessage(this);
             try {
@@ -150,8 +150,8 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
         }
 
         @Override
-        public void processThrowable(final Mailbox _activeMailbox, final Throwable _t) {
-            MailboxBase activeMailbox = (MailboxBase) _activeMailbox;
+        public void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t) {
+            MessageProcessorBase activeMailbox = (MessageProcessorBase) _activeMessageProcessor;
             ExceptionHandler exceptionHandler = activeMailbox.getExceptionHandler();
             if (exceptionHandler != null) {
                 try {

@@ -10,7 +10,7 @@
  * </p>
  * <p>
  *     To be an actor, an object need only implement the Actor interface. And the Actor
- *     interface has a single method, getMailbox(), that returns the actor's processing.
+ *     interface has a single method, getMessageProcessor(), that returns the actor's processing.
  * </p>
  * <p>
  *     More than one actor can share the same processing. And because a processing processes only

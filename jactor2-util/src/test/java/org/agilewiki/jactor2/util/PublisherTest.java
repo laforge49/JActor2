@@ -4,24 +4,24 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class PublisherTest extends TestCase {
     public void test() throws Exception {
         JAContext jaContext = new JAContext();
         try {
             Publisher p = new Publisher();
-            p.initialize(new NonBlockingMailbox(jaContext));
+            p.initialize(new NonBlockingMessageProcessor(jaContext));
             Printer a = new Printer();
-            a.initialize(new NonBlockingMailbox(jaContext));
+            a.initialize(new NonBlockingMessageProcessor(jaContext));
             a.setName("a");
             p.subscribeReq(a).call();
             Printer b = new Printer();
-            b.initialize(new NonBlockingMailbox(jaContext));
+            b.initialize(new NonBlockingMessageProcessor(jaContext));
             b.setName("b");
             p.subscribeReq(b).call();
             Printer c = new Printer();
-            c.initialize(new NonBlockingMailbox(jaContext));
+            c.initialize(new NonBlockingMessageProcessor(jaContext));
             c.setName("c");
             p.subscribeReq(c).call();
             p.publishReq(new Print("42")).call();

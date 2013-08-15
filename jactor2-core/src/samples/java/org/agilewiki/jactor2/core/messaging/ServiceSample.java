@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 //Exploring the use of multiple contexts.
 public class ServiceSample {
@@ -21,7 +21,7 @@ public class ServiceSample {
             System.out.println(service.delayEchoReq(1, "1 (Expected)").call());
 
             //close the context used by the service actor.
-            service.getMailbox().getJAContext().close();
+            service.getMessageProcessor().getJAContext().close();
             try {
                 //Try using delay echo request with the context closed.
                 System.out.println(service.delayEchoReq(1, "(Unexpected)").call());
@@ -35,7 +35,7 @@ public class ServiceSample {
             //Create an application actor based on the application context
             //and with a reference to the service actor.
             final ServiceApplication serviceApplication =
-                    new ServiceApplication(service, new NonBlockingMailbox(applicationContext));
+                    new ServiceApplication(service, new NonBlockingMessageProcessor(applicationContext));
             //Start a delay echo service request using the application actor.
             EchoReqState echoReqState = serviceApplication.echoReq(1, "2 (Expected)").call();
             //Print the results of the delay echo service request.
@@ -48,7 +48,7 @@ public class ServiceSample {
             //The results should now show that an exception was thrown.
             System.out.println(serviceApplication.echoResultReq(echoReqState2).call());
         } finally {
-            service.getMailbox().getJAContext().close(); //Close the service context.
+            service.getMessageProcessor().getJAContext().close(); //Close the service context.
             applicationContext.close(); //Close the application context.
         }
 
@@ -60,12 +60,12 @@ class Service extends ActorBase {
 
     Service() throws Exception {
         //Create a processing on a new context with 1 thread.
-        initialize(new NonBlockingMailbox(new JAContext(1)));
+        initialize(new NonBlockingMessageProcessor(new JAContext(1)));
     }
 
     //Returns a delay echo request.
     Request<String> delayEchoReq(final int _delay, final String _text) {
-        return new Request<String>(getMailbox()) {
+        return new Request<String>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<String> _transport) throws Exception {
                 //Sleep a bit so that the request does not complete too quickly.
@@ -100,9 +100,9 @@ class ServiceApplication extends ActorBase {
     private final Service service;
 
     //Create a service application actor with a reference to a service actor.
-    ServiceApplication(final Service _service, final Mailbox _mailbox) throws Exception {
+    ServiceApplication(final Service _service, final MessageProcessor _messageProcessor) throws Exception {
         service = _service;
-        initialize(_mailbox);
+        initialize(_messageProcessor);
     }
 
     //Returns an application echo request.
@@ -110,7 +110,7 @@ class ServiceApplication extends ActorBase {
     //And the response returned by the echo request is state data needed to manage the
     //delivery of the response from the service delay echo request.
     Request<EchoReqState> echoReq(final int _delay, final String _text) {
-        return new Request<EchoReqState>(getMailbox()) {
+        return new Request<EchoReqState>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<EchoReqState> _transport) throws Exception {
 
@@ -159,11 +159,11 @@ class ServiceApplication extends ActorBase {
 
     //Returns a close service request.
     Request<Void> closeServiceReq() {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 //Close the context of the service actor.
-                service.getMailbox().getJAContext().close();
+                service.getMessageProcessor().getJAContext().close();
                 _transport.processResponse(null);
             }
         };
@@ -173,7 +173,7 @@ class ServiceApplication extends ActorBase {
     //An echo result request returns the response from the service delay echo request
     //associated with the given echo request state.
     Request<String> echoResultReq(final EchoReqState _echoReqState) {
-        return new Request<String>(getMailbox()) {
+        return new Request<String>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<String> _transport) throws Exception {
                 if (_echoReqState.response == null) {

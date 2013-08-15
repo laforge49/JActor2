@@ -4,30 +4,30 @@ import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.AtomicMailbox;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorD {
-    private final Mailbox mailbox;
+    private final MessageProcessor messageProcessor;
     public final Request<String> throwRequest;
 
-    public ActorD(final Mailbox mbox) {
-        this.mailbox = mbox;
+    public ActorD(final MessageProcessor mbox) {
+        this.messageProcessor = mbox;
 
-        throwRequest = new Request<String>(mailbox) {
+        throwRequest = new Request<String>(messageProcessor) {
             @Override
             public void processRequest(
                     final Transport<String> responseProcessor)
                     throws Exception {
-                mailbox.setExceptionHandler(new ExceptionHandler() {
+                messageProcessor.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(final Throwable throwable)
                             throws Exception {
                         responseProcessor.processResponse(throwable.toString());
                     }
                 });
-                Dd dd = new Dd(new AtomicMailbox(mailbox.getJAContext()));
-                dd.doSomethin.send(mailbox, new ResponseProcessor<Void>() {
+                Dd dd = new Dd(new AtomicMessageProcessor(messageProcessor.getJAContext()));
+                dd.doSomethin.send(messageProcessor, new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(final Void response)
                             throws Exception {
@@ -40,13 +40,13 @@ public class ActorD {
 }
 
 class Dd {
-    private final Mailbox mailbox;
+    private final MessageProcessor messageProcessor;
     final Request<Void> doSomethin;
 
-    public Dd(final Mailbox mbox) {
-        mailbox = mbox;
+    public Dd(final MessageProcessor mbox) {
+        messageProcessor = mbox;
 
-        doSomethin = new Request<Void>(mailbox) {
+        doSomethin = new Request<Void>(messageProcessor) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

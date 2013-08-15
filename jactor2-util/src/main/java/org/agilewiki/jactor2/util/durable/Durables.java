@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.util.durable;
 
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.context.Properties;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.JAProperties;
 import org.agilewiki.jactor2.util.durable.app.App;
@@ -64,11 +64,11 @@ public final class Durables {
     /**
      * Returns the factoryLocator from the jaContext's factoryLocator property.
      *
-     * @param _mailbox A processing.
+     * @param _messageProcessor A processing.
      * @return The factoryLocator for that processing.
      */
-    public static FactoryLocator getFactoryLocator(final Mailbox _mailbox) {
-        return getFactoryLocator(_mailbox.getJAContext());
+    public static FactoryLocator getFactoryLocator(final MessageProcessor _messageProcessor) {
+        return getFactoryLocator(_messageProcessor.getJAContext());
     }
 
     /**
@@ -258,33 +258,33 @@ public final class Durables {
     /**
      * Create a new serializable object.
      *
-     * @param _factoryLocator The factoryLocator.
-     * @param _factoryName    The type of object to be created.
-     * @param _mailbox        The processing to be used by the new object.
+     * @param _factoryLocator   The factoryLocator.
+     * @param _factoryName      The type of object to be created.
+     * @param _messageProcessor The processing to be used by the new object.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final Mailbox _mailbox)
+                                                 final MessageProcessor _messageProcessor)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _messageProcessor, null);
     }
 
     /**
      * Create a new serializable object.
      *
-     * @param _factoryLocator The factoryLocator.
-     * @param _factoryName    The type of object to be created.
-     * @param _mailbox        The processing to be used by the new object.
-     * @param _parent         The dependency to be injected, or null.
+     * @param _factoryLocator   The factoryLocator.
+     * @param _factoryName      The type of object to be created.
+     * @param _messageProcessor The processing to be used by the new object.
+     * @param _parent           The dependency to be injected, or null.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final Mailbox _mailbox,
+                                                 final MessageProcessor _messageProcessor,
                                                  final Ancestor _parent)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _mailbox, _parent);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, _messageProcessor, _parent);
     }
 
     /**
@@ -299,7 +299,7 @@ public final class Durables {
                                                  final String _factoryName,
                                                  final JAContext _jaContext)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, new NonBlockingMailbox(_jaContext), null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, new NonBlockingMessageProcessor(_jaContext), null);
     }
 
     /**
@@ -317,7 +317,7 @@ public final class Durables {
                                                  final Ancestor _parent)
             throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).
-                newSerializable(_factoryName, new NonBlockingMailbox(_jaContext), _parent);
+                newSerializable(_factoryName, new NonBlockingMessageProcessor(_jaContext), _parent);
     }
 
     /**
@@ -361,34 +361,34 @@ public final class Durables {
     /**
      * Create a new serializable object.
      *
-     * @param _factoryName The type of object to be created.
-     * @param _mailbox     The processing to be used by the new serializable object
-     *                     and whose jaContext has a factoryLocator property.
+     * @param _factoryName      The type of object to be created.
+     * @param _messageProcessor The processing to be used by the new serializable object
+     *                          and whose jaContext has a factoryLocator property.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final String _factoryName,
-                                                 final Mailbox _mailbox)
+                                                 final MessageProcessor _messageProcessor)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_mailbox.getJAContext()),
+                getFactoryLocator(_messageProcessor.getJAContext()),
                 _factoryName,
-                _mailbox,
+                _messageProcessor,
                 null);
     }
 
     /**
      * Create a new serializable object.
      *
-     * @param _factoryName The type of object to be created.
-     * @param _mailbox     The processing to be used by the new serializable object
-     *                     and whose jaContext has a factoryLocator property.
-     * @param _parent      The dependency to be injected, or null.
+     * @param _factoryName      The type of object to be created.
+     * @param _messageProcessor The processing to be used by the new serializable object
+     *                          and whose jaContext has a factoryLocator property.
+     * @param _parent           The dependency to be injected, or null.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final String _factoryName,
-                                                 final Mailbox _mailbox,
+                                                 final MessageProcessor _messageProcessor,
                                                  final Ancestor _parent)
             throws Exception {
-        return newSerializable(getFactoryLocator(_mailbox.getJAContext()), _factoryName, _mailbox, _parent);
+        return newSerializable(getFactoryLocator(_messageProcessor.getJAContext()), _factoryName, _messageProcessor, _parent);
     }
 }

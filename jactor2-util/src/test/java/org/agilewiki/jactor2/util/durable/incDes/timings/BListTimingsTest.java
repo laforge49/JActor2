@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.util.durable.incDes.JAList;
@@ -37,7 +37,7 @@ public class BListTimingsTest extends TestCase {
         JAContext jaContext = Durables.createJAContext();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(jaContext, JAList.JAINTEGER_LIST);
-            Mailbox mailbox = new NonBlockingMailbox(jaContext);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(jaContext);
             int i = 0;
             while (i < s) {
                 intList1.iAdd(-1);
@@ -49,7 +49,7 @@ public class BListTimingsTest extends TestCase {
             long t0 = System.currentTimeMillis();
             int j = 0;
             while (j < r) {
-                JAList<JAInteger> intList2 = (JAList) intList1.copy(mailbox);
+                JAList<JAInteger> intList2 = (JAList) intList1.copy(messageProcessor);
                 intList1.iAdd(s / 2);
                 intList2.getSerializedBytes();
                 j += 1;

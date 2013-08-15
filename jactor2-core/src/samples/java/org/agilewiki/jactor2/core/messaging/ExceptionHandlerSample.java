@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class ExceptionHandlerSample {
 
@@ -15,7 +15,7 @@ public class ExceptionHandlerSample {
         try {
 
             //Create an ExceptionActor.
-            ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMailbox(jaContext));
+            ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMessageProcessor(jaContext));
 
             try {
                 //Create and call an exception request.
@@ -27,7 +27,7 @@ public class ExceptionHandlerSample {
 
             //Create an ExceptionHandlerActor.
             ExceptionHandlerActor exceptionHandlerActor =
-                    new ExceptionHandlerActor(exceptionActor, new NonBlockingMailbox(jaContext));
+                    new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(jaContext));
             //Create a test request, call it and print the results.
             System.out.println(exceptionHandlerActor.testReq().call());
 
@@ -42,13 +42,13 @@ public class ExceptionHandlerSample {
 class ExceptionActor extends ActorBase {
 
     //Create an ExceptionActor.
-    ExceptionActor(final Mailbox _mailbox) throws Exception {
-        initialize(_mailbox);
+    ExceptionActor(final MessageProcessor _messageProcessor) throws Exception {
+        initialize(_messageProcessor);
     }
 
     //Returns an exception request.
     Request<Void> exceptionReq() {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(final Transport<Void> _transport) throws Exception {
                 throw new IllegalStateException(); //Throw an exception when the request is processed.
@@ -64,14 +64,14 @@ class ExceptionHandlerActor extends ActorBase {
     private final ExceptionActor exceptionActor;
 
     //Create an exception handler actor with a reference to an exception actor.
-    ExceptionHandlerActor(final ExceptionActor _exceptionActor, final Mailbox _mailbox) throws Exception {
+    ExceptionHandlerActor(final ExceptionActor _exceptionActor, final MessageProcessor _messageProcessor) throws Exception {
         exceptionActor = _exceptionActor;
-        initialize(_mailbox);
+        initialize(_messageProcessor);
     }
 
     //Returns a test request.
     Request<String> testReq() {
-        return new Request<String>(getMailbox()) {
+        return new Request<String>(getMessageProcessor()) {
 
             @Override
             public void processRequest(final Transport<String> _transport) throws Exception {

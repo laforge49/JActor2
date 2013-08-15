@@ -5,15 +5,15 @@ import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
         final JAContext jaContext = new JAContext();
         try {
             final Driver driver = new Driver();
-            driver.initialize(new NonBlockingMailbox(jaContext));
+            driver.initialize(new NonBlockingMessageProcessor(jaContext));
             assertEquals("Hello world!", driver.doitReq().call());
         } finally {
             jaContext.close();
@@ -29,10 +29,10 @@ class Driver extends ActorBase {
     }
 
     @Override
-    public void initialize(final Mailbox _mailbox) throws Exception {
-        super.initialize(_mailbox);
+    public void initialize(final MessageProcessor _messageProcessor) throws Exception {
+        super.initialize(_messageProcessor);
 
-        doitReq = new Request<String>(_mailbox) {
+        doitReq = new Request<String>(_messageProcessor) {
             @Override
             public void processRequest(final Transport<String> rp)
                     throws Exception {

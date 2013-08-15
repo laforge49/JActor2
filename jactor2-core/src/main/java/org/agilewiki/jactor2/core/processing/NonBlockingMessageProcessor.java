@@ -1,23 +1,18 @@
 package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.context.MigrationException;
-import org.agilewiki.jactor2.core.messaging.Message;
 
 /**
- * A processing which processes each request to completion, and which should be used by actors
- * which perform long computations, I/O, or otherwise block the thread.
+ * A processing for actors which process messages quickly and without blocking the thread.
  * <p>
  * For thread safety, the processing of each message is atomic, but when the processing of a
  * message results in the sending of a request, other messages may be processed before a
- * response to that request is received. However, an atomic processing will not process another
- * request until a response is returned for the prior request. This does not however preclude
- * the processing of event messages.
+ * response to that request is received.
  * </p>
  * <p>
  * Request/Response messages which are destined to a different processing are buffered rather
- * than being sent immediately. These messages are disbursed to their destinations when the
- * processing of each incoming message is complete.
+ * than being sent immediately. These messages are disbursed to their destinations when all
+ * incoming messages have been processed.
  * </p>
  * <p>
  * When the last block of buffered messages is being disbursed, if the destination is not
@@ -28,61 +23,50 @@ import org.agilewiki.jactor2.core.messaging.Message;
  * execution.
  * </p>
  * <p>
- * The Inbox used by AtomicMailbox is AtomicInbox.
+ * The Inbox used by NonBlockingMessageProcessor is NonBlockingInbox.
  * </p>
  */
-public class AtomicMailbox extends UnboundMailbox {
+public class NonBlockingMessageProcessor extends UnboundMessageProcessor {
 
     /**
-     * Create an atomic processing.
+     * Create a non-blocking processing.
      *
      * @param _jaContext The context of the processing.
      */
-    public AtomicMailbox(JAContext _jaContext) {
+    public NonBlockingMessageProcessor(JAContext _jaContext) {
         super(_jaContext, _jaContext.getInitialBufferSize(),
                 _jaContext.getInitialLocalMessageQueueSize(), null);
     }
 
     /**
-     * Create an atomic processing.
+     * Create a non-blocking processing.
      *
      * @param _jaContext The context of the processing.
      * @param _onIdle    Object to be run when the inbox is emptied, or null.
      */
-    public AtomicMailbox(JAContext _jaContext, Runnable _onIdle) {
+    public NonBlockingMessageProcessor(JAContext _jaContext,
+                                       Runnable _onIdle) {
         super(_jaContext, _jaContext.getInitialBufferSize(),
                 _jaContext.getInitialLocalMessageQueueSize(), _onIdle);
     }
 
     /**
-     * Create an atomic processing.
+     * Create a non-blocking processing.
      *
      * @param _jaContext             The context of the processing.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public AtomicMailbox(JAContext _jaContext,
-                         int _initialOutboxSize,
-                         final int _initialLocalQueueSize,
-                         Runnable _onIdle) {
+    public NonBlockingMessageProcessor(JAContext _jaContext,
+                                       int _initialOutboxSize,
+                                       final int _initialLocalQueueSize,
+                                       Runnable _onIdle) {
         super(_jaContext, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     @Override
     protected Inbox createInbox(int _initialLocalQueueSize) {
-        return new AtomicInbox(_initialLocalQueueSize);
-    }
-
-    @Override
-    protected void processMessage(final Message message) {
-        message.eval(this);
-        try {
-            flush(true);
-        } catch (final MigrationException me) {
-            throw me;
-        } catch (Exception e) {
-            log.error("Exception thrown by onIdle", e);
-        }
+        return new NonBlockingInbox(_initialLocalQueueSize);
     }
 }

@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class PropertiesTest extends TestCase {
     public void test() throws Exception {
@@ -15,7 +15,7 @@ public class PropertiesTest extends TestCase {
             p1.putProperty("a", "foo");
             p2.putProperty("b", "bar");
             ActorBase z = new ActorBase();
-            z.initialize(new NonBlockingMailbox(jaContext2));
+            z.initialize(new NonBlockingMessageProcessor(jaContext2));
             String a = (String) JAProperties.getProperty(z, "a");
             assertEquals("foo", a);
             String b = (String) JAProperties.getProperty(z, "b");

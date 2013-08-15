@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IntegerJAIntegerBMapTest extends TestCase {
@@ -21,8 +21,8 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             sj0.setValue(0);
             sj1.setValue(1);
             sj2.setValue(2);
-            Mailbox mailbox = new NonBlockingMailbox(jaContext);
-            JAMap<Integer, JAInteger> n = (JAMap) m.copy(mailbox);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            JAMap<Integer, JAInteger> n = (JAMap) m.copy(messageProcessor);
             JAInteger s0 = n.kGet(0);
             JAInteger s1 = n.kGet(1);
             JAInteger s2 = n.kGet(2);

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 /**
  * <p>
@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.processing.Mailbox;
  * <h3>Sample Usage:</h3>
  * <pre>
  * public class ActorBaseSample extends ActorBase {
- *     public ActorBaseSample(final Mailbox _Mailbox) throws Exception {
+ *     public ActorBaseSample(final MessageProcessor _Mailbox) throws Exception {
  *         initialize(_Mailbox);
  *     }
  * }
@@ -20,7 +20,7 @@ public class ActorBase implements Actor {
     /**
      * The actor's processing.
      */
-    private Mailbox mailbox;
+    private MessageProcessor messageProcessor;
 
     /**
      * True when initialized, this flag is used to prevent the processing from being changed.
@@ -41,19 +41,19 @@ public class ActorBase implements Actor {
      * without raising an illegal state exception, as the processing
      * can not be changed.
      *
-     * @param _mailbox The actor's processing.
+     * @param _messageProcessor The actor's processing.
      */
-    public void initialize(final Mailbox _mailbox) throws Exception {
+    public void initialize(final MessageProcessor _messageProcessor) throws Exception {
         if (initialized)
             throw new IllegalStateException("Already initialized");
-        if (_mailbox == null)
-            throw new IllegalArgumentException("Mailbox may not be null");
+        if (_messageProcessor == null)
+            throw new IllegalArgumentException("MessageProcessor may not be null");
         initialized = true;
-        mailbox = _mailbox;
+        messageProcessor = _messageProcessor;
     }
 
     @Override
-    public Mailbox getMailbox() {
-        return mailbox;
+    public MessageProcessor getMessageProcessor() {
+        return messageProcessor;
     }
 }

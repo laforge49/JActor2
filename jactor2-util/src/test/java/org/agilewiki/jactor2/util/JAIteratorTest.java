@@ -7,12 +7,12 @@ import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class JAIteratorTest extends TestCase {
-    private Mailbox mailbox;
-    private Mailbox counterMailbox;
+    private MessageProcessor messageProcessor;
+    private MessageProcessor counterMessageProcessor;
     private long runs;
 
     /*
@@ -40,8 +40,8 @@ Messages per second: 13715539
         System.out.println("shared processing test");
         JAContext jaContext = new JAContext();
         try {
-            mailbox = new NonBlockingMailbox(jaContext);
-            counterMailbox = mailbox;
+            messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            counterMessageProcessor = messageProcessor;
             runReq().call();
         } finally {
             jaContext.close();
@@ -54,8 +54,8 @@ Messages per second: 13715539
         System.out.println("commandeering processing test");
         JAContext jaContext = new JAContext();
         try {
-            mailbox = new NonBlockingMailbox(jaContext);
-            counterMailbox = new NonBlockingMailbox(jaContext);
+            messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            counterMessageProcessor = new NonBlockingMessageProcessor(jaContext);
             runReq().call();
         } finally {
             jaContext.close();
@@ -68,8 +68,8 @@ Messages per second: 13715539
         System.out.println("migration processing test");
         JAContext jaContext = new JAContext();
         try {
-            mailbox = new NonBlockingMailbox(jaContext);
-            counterMailbox = new NonBlockingMailbox(jaContext);
+            messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            counterMessageProcessor = new NonBlockingMessageProcessor(jaContext);
             runReq().call();
         } finally {
             jaContext.close();
@@ -77,11 +77,11 @@ Messages per second: 13715539
     }
 
     Request<Void> runReq() {
-        return new Request<Void>(mailbox) {
+        return new Request<Void>(messageProcessor) {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
-                final CounterActor counterActor = new CounterActor(counterMailbox);
+                final CounterActor counterActor = new CounterActor(counterMessageProcessor);
                 final Request urr = counterActor.resetReq;
                 final AddEvent uar = new AddEvent(1);
                 JAIterator pait = new JAIterator() {
@@ -104,7 +104,7 @@ Messages per second: 13715539
                     @Override
                     public void processResponse(Object response)
                             throws Exception {
-                        urr.send(mailbox,
+                        urr.send(messageProcessor,
                                 new ResponseProcessor<Long>() {
                                     @Override
                                     public void processResponse(final Long count)
@@ -150,9 +150,9 @@ class CounterActor extends ActorBase {
 
     public Request<Long> resetReq;
 
-    CounterActor(Mailbox mailbox) throws Exception {
-        initialize(mailbox);
-        resetReq = new Request<Long>(getMailbox()) {
+    CounterActor(MessageProcessor messageProcessor) throws Exception {
+        initialize(messageProcessor);
+        resetReq = new Request<Long>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Long> _transport) throws Exception {
                 _transport.processResponse(reset());

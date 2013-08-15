@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 /**
  * Test code.
@@ -14,15 +14,15 @@ public class ParallelTest extends TestCase {
     private static final int LOADS = 10;
     private static final long DELAY = 200;
 
-    private Mailbox mailbox;
+    private MessageProcessor messageProcessor;
     private JAContext jaContext;
     private Request<Void> start;
 
     public void test() throws Exception {
         jaContext = new JAContext();
-        mailbox = new NonBlockingMailbox(jaContext);
+        messageProcessor = new NonBlockingMessageProcessor(jaContext);
 
-        start = new Request<Void>(mailbox) {
+        start = new Request<Void>(messageProcessor) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)
@@ -32,7 +32,7 @@ public class ParallelTest extends TestCase {
                 int i = 0;
                 while (i < LOADS) {
                     final Delay dly = new Delay(jaContext);
-                    dly.sleepReq(ParallelTest.DELAY).send(mailbox,
+                    dly.sleepReq(ParallelTest.DELAY).send(messageProcessor,
                             responseCounter);
                     i += 1;
                 }

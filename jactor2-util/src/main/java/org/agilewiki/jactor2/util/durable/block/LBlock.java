@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.block;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -104,14 +104,14 @@ public class LBlock implements Block {
     }
 
     @Override
-    public Root getRoot(FactoryLocator factoryLocator, Mailbox mailbox, Ancestor parent)
+    public Root getRoot(FactoryLocator factoryLocator, MessageProcessor messageProcessor, Ancestor parent)
             throws Exception {
         if (rootJid != null)
             return rootJid;
         rb = null;
         if (rootJidBytes == null)
             return null;
-        rootJid = (Root) Durables.newSerializable(factoryLocator, Root.FACTORY_NAME, mailbox, parent);
+        rootJid = (Root) Durables.newSerializable(factoryLocator, Root.FACTORY_NAME, messageProcessor, parent);
         ((RootImpl) rootJid).load(new ReadableBytes(rootJidBytes, 0));
         return rootJid;
     }

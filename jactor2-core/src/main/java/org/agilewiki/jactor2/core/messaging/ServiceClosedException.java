@@ -8,8 +8,8 @@ package org.agilewiki.jactor2.core.messaging;
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.context.JAContext;
- * import org.agilewiki.jactor2.core.processing.Mailbox;
- * import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+ * import org.agilewiki.jactor2.core.processing.MessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  *
  * //Exploring the use of multiple contexts.
  * public class ServiceSample {
@@ -27,7 +27,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             System.out.println(service.delayEchoReq(1, "1 (Expected)").call());
  *
  *             //close the context used by the service actor.
- *             service.getMailbox().getJAContext().close();
+ *             service.getMessageProcessor().getJAContext().close();
  *             try {
  *                 //Try using delay echo request with the context closed.
  *                 System.out.println(service.delayEchoReq(1, "(Unexpected)").call());
@@ -41,7 +41,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             //Create an application actor based on the application context
  *             //and with a reference to the service actor.
  *             final ServiceApplication serviceApplication =
- *                     new ServiceApplication(service, new NonBlockingMailbox(applicationContext));
+ *                     new ServiceApplication(service, new NonBlockingMessageProcessor(applicationContext));
  *             //Start a delay echo service request using the application actor.
  *             EchoReqState echoReqState = serviceApplication.echoReq(1, "2 (Expected)").call();
  *             //Print the results of the delay echo service request.
@@ -54,7 +54,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             //The results should now show that an exception was thrown.
  *             System.out.println(serviceApplication.echoResultReq(echoReqState2).call());
  *         } finally {
- *             service.getMailbox().getJAContext().close(); //Close the service context.
+ *             service.getMessageProcessor().getJAContext().close(); //Close the service context.
  *             applicationContext.close(); //Close the application context.
  *         }
  *
@@ -66,12 +66,12 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *     Service() throws Exception {
  *         //Create a processing on a new context with 1 thread.
- *         initialize(new NonBlockingMailbox(new JAContext(1)));
+ *         initialize(new NonBlockingMessageProcessor(new JAContext(1)));
  *     }
  *
  *     //Returns a delay echo request.
  *     Request&lt;String&gt; delayEchoReq(final int _delay, final String _text) {
- *         return new Request&lt;String&gt;(getMailbox()) {
+ *         return new Request&lt;String&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest(Transport&lt;String&gt; _transport) throws Exception {
  *                 //Sleep a bit so that the request does not complete too quickly.
@@ -106,7 +106,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     private final Service service;
  *
  *     //Create a service application actor with a reference to a service actor.
- *     ServiceApplication(final Service _service, final Mailbox _mailbox) throws Exception {
+ *     ServiceApplication(final Service _service, final MessageProcessor _mailbox) throws Exception {
  *         service = _service;
  *         initialize(_mailbox);
  *     }
@@ -116,7 +116,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     //And the response returned by the echo request is state data needed to manage the
  *     //delivery of the response from the service delay echo request.
  *     Request&lt;EchoReqState&gt; echoReq(final int _delay, final String _text) {
- *         return new Request&lt;EchoReqState&gt;(getMailbox()) {
+ *         return new Request&lt;EchoReqState&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest(Transport&lt;EchoReqState&gt; _transport) throws Exception {
  *
@@ -126,7 +126,7 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *                 //Establish an exception handler which traps a ServiceClosedException and
  *                 //returns a notification that the exception occurred as a result.
- *                 getMailbox().setExceptionHandler(new ExceptionHandler() {
+ *                 getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
  *                     {@literal @}Override
  *                     public void processException(Throwable throwable) throws Throwable {
  *                         if (throwable instanceof ServiceClosedException) {
@@ -144,7 +144,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                             throw throwable;
  *                     }
  *                 });
- *                 service.delayEchoReq(_delay, _text).send(getMailbox(), new ResponseProcessor&lt;String&gt;() {
+ *                 service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new ResponseProcessor&lt;String&gt;() {
  *                     {@literal @}Override
  *                     public void processResponse(String response) throws Exception {
  *                         if (echoReqState.transport == null) {
@@ -165,11 +165,11 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *     //Returns a close service request.
  *     Request&lt;Void&gt; closeServiceReq() {
- *         return new Request&lt;Void&gt;(getMailbox()) {
+ *         return new Request&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest(Transport&lt;Void&gt; _transport) throws Exception {
  *                 //Close the context of the service actor.
- *                 service.getMailbox().getJAContext().close();
+ *                 service.getMessageProcessor().getJAContext().close();
  *                 _transport.processResponse(null);
  *             }
  *         };
@@ -179,7 +179,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     //An echo result request returns the response from the service delay echo request
  *     //associated with the given echo request state.
  *     Request&lt;String&gt; echoResultReq(final EchoReqState _echoReqState) {
- *         return new Request&lt;String&gt;(getMailbox()) {
+ *         return new Request&lt;String&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest(Transport&lt;String&gt; _transport) throws Exception {
  *                 if (_echoReqState.response == null) {

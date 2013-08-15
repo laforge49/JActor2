@@ -4,9 +4,9 @@ import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 
 /**
- * The Mailbox interface identifies the processing methods that can be used by applications.
+ * The MessageProcessor interface identifies the processing methods that can be used by applications.
  */
-public interface Mailbox extends Runnable {
+public interface MessageProcessor extends Runnable {
 
     /**
      * Returns the processing context.

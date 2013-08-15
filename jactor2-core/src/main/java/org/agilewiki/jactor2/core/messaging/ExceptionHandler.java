@@ -8,7 +8,7 @@ package org.agilewiki.jactor2.core.messaging;
  * And for 1-way messages, the default is to simply log the exception as a warning.
  * Exception processing is specific to the request/event message being processed.
  * An application can set the exception handler for the request/event currently being processed using the
- * Mailbox.setExceptionHandler method.
+ * MessageProcessor.setExceptionHandler method.
  * </p>
  * <p>
  * When a processing receives an exception as a result, the exception is handled the same way as any other
@@ -27,8 +27,8 @@ package org.agilewiki.jactor2.core.messaging;
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.context.JAContext;
- * import org.agilewiki.jactor2.core.processing.Mailbox;
- * import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+ * import org.agilewiki.jactor2.core.processing.MessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  *
  * public class ExceptionHandlerSample {
  *
@@ -40,7 +40,7 @@ package org.agilewiki.jactor2.core.messaging;
  *         try {
  *
  *             //Create an ExceptionActor.
- *             ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMailbox(jaContext));
+ *             ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMessageProcessor(jaContext));
  *
  *             try {
  *                 //Create and call an exception request.
@@ -52,7 +52,7 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *             //Create an ExceptionHandlerActor.
  *             ExceptionHandlerActor exceptionHandlerActor =
- *                     new ExceptionHandlerActor(exceptionActor, new NonBlockingMailbox(jaContext));
+ *                     new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(jaContext));
  *             //Create a test request, call it and print the results.
  *             System.out.println(exceptionHandlerActor.testReq().call());
  *
@@ -67,13 +67,13 @@ package org.agilewiki.jactor2.core.messaging;
  * class ExceptionActor extends ActorBase {
  *
  *     //Create an ExceptionActor.
- *     ExceptionActor(final Mailbox _mailbox) throws Exception {
+ *     ExceptionActor(final MessageProcessor _mailbox) throws Exception {
  *         initialize(_mailbox);
  *     }
  *
  *     //Returns an exception request.
  *     Request&lt;Void&gt; exceptionReq() {
- *         return new Request&lt;Void&gt;(getMailbox()) {
+ *         return new Request&lt;Void&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
  *             public void processRequest(final Transport&lt;Void&gt; _transport) throws Exception {
@@ -90,20 +90,20 @@ package org.agilewiki.jactor2.core.messaging;
  *     private final ExceptionActor exceptionActor;
  *
  *     //Create an exception handler actor with a reference to an exception actor.
- *     ExceptionHandlerActor(final ExceptionActor _exceptionActor, final Mailbox _mailbox) throws Exception {
+ *     ExceptionHandlerActor(final ExceptionActor _exceptionActor, final MessageProcessor _mailbox) throws Exception {
  *         exceptionActor = _exceptionActor;
  *         initialize(_mailbox);
  *     }
  *
  *     //Returns a test request.
  *     Request&lt;String&gt; testReq() {
- *         return new Request&lt;String&gt;(getMailbox()) {
+ *         return new Request&lt;String&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
  *             public void processRequest(final Transport&lt;String&gt; _transport) throws Exception {
  *
  *                 //Create and assign an exception handler.
- *                 getMailbox().setExceptionHandler(new ExceptionHandler() {
+ *                 getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
  *                     {@literal @}Override
  *                     public void processException(final Throwable _throwable) throws Throwable {
  *                         if (_throwable instanceof IllegalStateException) {
@@ -116,7 +116,7 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *                 //Create an exception request and send it to the exception actor for processing.
  *                 //The thrown exception is then caught by the assigned exception handler.
- *                 exceptionActor.exceptionReq().send(getMailbox(), new ResponseProcessor&lt;Void&gt;() {
+ *                 exceptionActor.exceptionReq().send(getMessageProcessor(), new ResponseProcessor&lt;Void&gt;() {
  *                     {@literal @}Override
  *                     public void processResponse(final Void _response) throws Exception {
  *                         _transport.processResponse("can not get here");

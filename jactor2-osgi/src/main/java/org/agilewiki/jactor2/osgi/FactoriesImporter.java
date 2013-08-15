@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.osgi;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +40,11 @@ public class FactoriesImporter extends ActorBase implements
     /**
      * Create and initialize a factories importer.
      *
-     * @param _mailbox The processing of the factory locator actor.
+     * @param _messageProcessor The processing of the factory locator actor.
      */
-    public FactoriesImporter(final Mailbox _mailbox) throws Exception {
-        initialize(_mailbox);
-        factoryLocator = Osgi.getOsgiFactoryLocator(_mailbox.getJAContext());
+    public FactoriesImporter(final MessageProcessor _messageProcessor) throws Exception {
+        initialize(_messageProcessor);
+        factoryLocator = Osgi.getOsgiFactoryLocator(_messageProcessor.getJAContext());
     }
 
     /**
@@ -55,7 +55,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public Request<Void> startReq(final Filter _filter) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(final Transport<Void> _transport)
                     throws Exception {
@@ -80,7 +80,7 @@ public class FactoriesImporter extends ActorBase implements
         if (tracker != null)
             throw new IllegalStateException("already started");
         // Create a service tracker for the given filter.
-        tracker = new JAServiceTracker<OsgiFactoryLocator>(getMailbox(),
+        tracker = new JAServiceTracker<OsgiFactoryLocator>(getMessageProcessor(),
                 _filter);
         // Keep _transport for later, in case we do not find out service
         // at initial registration.
@@ -96,7 +96,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public Request<Void> startReq(final String _bundleName, final String _niceVersion) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 start(_bundleName, _niceVersion, _transport);
@@ -116,7 +116,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     private void start(final String _bundleName, final String _niceVersion, final Transport<Void> _transport)
             throws Exception {
-        BundleContext bundleContext = Osgi.getBundleContext(getMailbox().getJAContext());
+        BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getJAContext());
         Filter filter = Osgi.factoryLocatorFilter(bundleContext, _bundleName, _niceVersion);
         start(filter, _transport);
     }
@@ -129,7 +129,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public Request<Void> startReq(final String _bundleName, final Version _version) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 start(_bundleName, _version, _transport);
@@ -160,7 +160,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public Request<Void> startReq(final String _bundleLocation) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 start(_bundleLocation, _transport);
@@ -179,7 +179,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     private void start(final String _bundleLocation, final Transport<Void> _transport)
             throws Exception {
-        BundleContext bundleContext = Osgi.getBundleContext(getMailbox().getJAContext());
+        BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getJAContext());
         Bundle bundle = bundleContext.installBundle(_bundleLocation);
         bundle.start();
         String bundleName = bundle.getSymbolicName();

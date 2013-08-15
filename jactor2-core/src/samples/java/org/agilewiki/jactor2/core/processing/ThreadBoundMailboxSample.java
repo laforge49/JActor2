@@ -15,8 +15,8 @@ public class ThreadBoundMailboxSample {
         final Thread mainThread = Thread.currentThread();
 
         //Create a thread-bound processing.
-        final ThreadBoundMailbox boundMailbox =
-                new ThreadBoundMailbox(jaContext, new Runnable() {
+        final ThreadBoundMessageProcessor boundMailbox =
+                new ThreadBoundMessageProcessor(jaContext, new Runnable() {
                     @Override
                     public void run() {
                         //Interrupt the main thread when there are messages to process
@@ -45,8 +45,8 @@ public class ThreadBoundMailboxSample {
 
 class ThreadBoundActor extends ActorBase {
 
-    ThreadBoundActor(final Mailbox _mailbox) throws Exception {
-        initialize(_mailbox);
+    ThreadBoundActor(final MessageProcessor _messageProcessor) throws Exception {
+        initialize(_messageProcessor);
     }
 
     //Print "finished" and exit when fin is called.

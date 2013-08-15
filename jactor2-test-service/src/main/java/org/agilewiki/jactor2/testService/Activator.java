@@ -31,7 +31,7 @@ public class Activator extends FactoryLocatorActivator {
 
     @Override
     protected void process() throws Exception {
-        hello = new HelloService(bundleContext, getMailbox());
+        hello = new HelloService(bundleContext, getMessageProcessor());
         managedServiceRegistration();
     }
 }

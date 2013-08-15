@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.flens;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -60,7 +60,7 @@ public class JAFloatImpl
 
     @Override
     public Request<Void> setValueReq(final Float v) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(v);
@@ -90,10 +90,10 @@ public class JAFloatImpl
     }
 
     @Override
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(mailbox, parent, factory);
-        getFloatReq = new Request<Float>(getMailbox()) {
+        super.initialize(messageProcessor, parent, factory);
+        getFloatReq = new Request<Float>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

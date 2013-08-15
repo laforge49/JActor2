@@ -1,16 +1,16 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorSample implements Actor {
-    private final Mailbox mailbox;
+    private final MessageProcessor messageProcessor;
 
-    ActorSample(final Mailbox _mailbox) {
-        mailbox = _mailbox;
+    ActorSample(final MessageProcessor _messageProcessor) {
+        messageProcessor = _messageProcessor;
     }
 
     @Override
-    public final Mailbox getMailbox() {
-        return mailbox;
+    public final MessageProcessor getMessageProcessor() {
+        return messageProcessor;
     }
 }

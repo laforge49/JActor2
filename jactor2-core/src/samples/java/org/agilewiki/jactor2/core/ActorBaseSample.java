@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorBaseSample extends ActorBase {
-    public ActorBaseSample(final Mailbox _Mailbox) throws Exception {
-        initialize(_Mailbox);
+    public ActorBaseSample(final MessageProcessor _MessageProcessor) throws Exception {
+        initialize(_MessageProcessor);
     }
 }

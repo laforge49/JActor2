@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class EventSample {
 
@@ -13,7 +13,7 @@ public class EventSample {
         final JAContext jaContext = new JAContext(1);
 
         //Create a SampleActor1 instance.
-        SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMailbox(jaContext));
+        SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMessageProcessor(jaContext));
 
         new FinEvent("finished").signal(sampleActor1);
 
@@ -25,8 +25,8 @@ public class EventSample {
 
 class SampleActor1 extends ActorBase {
 
-    SampleActor1(final Mailbox _mailbox) throws Exception {
-        initialize(_mailbox);
+    SampleActor1(final MessageProcessor _messageProcessor) throws Exception {
+        initialize(_messageProcessor);
     }
 
     //Print "finished" and exit when fin is called.

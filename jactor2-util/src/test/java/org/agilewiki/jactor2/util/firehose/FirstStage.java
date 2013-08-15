@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
-import org.agilewiki.jactor2.core.processing.AtomicMailbox;
+import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.util.BoundResponseProcessor;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class FirstStage extends ActorBase implements Runnable {
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(new AtomicMailbox(_jaContext, this));
+        initialize(new AtomicMessageProcessor(_jaContext, this));
         ack = new BoundResponseProcessor<Void>(this, new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {
@@ -80,7 +80,7 @@ public class FirstStage extends ActorBase implements Runnable {
     }
 
     private void send() throws Exception {
-        next.processDataReq(firehoseData).send(getMailbox(), null);
+        next.processDataReq(firehoseData).send(getMessageProcessor(), null);
         list = null;
         firehoseData = null;
         ackCount += 1;
@@ -89,7 +89,7 @@ public class FirstStage extends ActorBase implements Runnable {
     private void exception(Exception e) {
         e.printStackTrace();
         try {
-            getMailbox().getJAContext().close();
+            getMessageProcessor().getJAContext().close();
         } catch (Exception e1) {
             e1.printStackTrace();
             return;
@@ -115,7 +115,7 @@ public class FirstStage extends ActorBase implements Runnable {
         if (ndx >= count)
             return;
         createList();
-        while (getMailbox().isInboxEmpty() && ndx < count) {
+        while (getMessageProcessor().isInboxEmpty() && ndx < count) {
             add();
         }
     }

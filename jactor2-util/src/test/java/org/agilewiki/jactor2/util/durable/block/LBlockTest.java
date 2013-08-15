@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util.durable.block;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.incDes.Root;
@@ -16,7 +16,7 @@ public class LBlockTest extends TestCase {
             Root rj = (Root) Durables.newSerializable(
                     factoryLocator,
                     Root.FACTORY_NAME,
-                    new NonBlockingMailbox(jaContext));
+                    new NonBlockingMessageProcessor(jaContext));
             LBlock lb1 = new LBlock();
             lb1.setRootJid(rj);
             byte[] bs = lb1.serialize();
@@ -33,7 +33,7 @@ public class LBlockTest extends TestCase {
             LBlock lb2 = new LBlock();
             int rjl2 = lb2.setHeaderBytes(h);
             lb2.setRootBytes(sd);
-            Root rj2 = lb2.getRoot(factoryLocator, new NonBlockingMailbox(jaContext), null);
+            Root rj2 = lb2.getRoot(factoryLocator, new NonBlockingMessageProcessor(jaContext), null);
         } finally {
             jaContext.close();
         }

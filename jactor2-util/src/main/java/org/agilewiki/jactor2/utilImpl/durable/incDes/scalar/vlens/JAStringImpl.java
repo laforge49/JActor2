@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -50,7 +50,7 @@ public class JAStringImpl
     public Request<Void> setValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 setValue(v);
@@ -82,7 +82,7 @@ public class JAStringImpl
     public Request<Boolean> makeValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new Request<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(makeValue(v));
@@ -134,10 +134,10 @@ public class JAStringImpl
         return getValue().compareTo(o);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(mailbox, parent, factory);
-        getStringReq = new Request<String>(getMailbox()) {
+        super.initialize(messageProcessor, parent, factory);
+        getStringReq = new Request<String>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport rp) throws Exception {
                 rp.processResponse(getValue());

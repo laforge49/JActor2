@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Common code for NonBlockingMailbox and AtomicMailbox, which are not bound to a thread.
+ * Common code for NonBlockingMessageProcessor and AtomicMessageProcessor, which are not bound to a thread.
  * <p>
- * UnboundMailbox supports thread migration only between instances of this class.
+ * UnboundMessageProcessor supports thread migration only between instances of this class.
  * </p>
  */
-abstract public class UnboundMailbox extends MailboxBase {
+abstract public class UnboundMessageProcessor extends MessageProcessorBase {
 
     /**
      * A reference to the thread that is executing this processing.
@@ -35,10 +35,10 @@ abstract public class UnboundMailbox extends MailboxBase {
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public UnboundMailbox(JAContext _context,
-                          int _initialOutboxSize,
-                          final int _initialLocalQueueSize,
-                          Runnable _onIdle) {
+    public UnboundMessageProcessor(JAContext _context,
+                                   int _initialOutboxSize,
+                                   final int _initialLocalQueueSize,
+                                   Runnable _onIdle) {
         super(_context, _initialOutboxSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }
@@ -84,21 +84,21 @@ abstract public class UnboundMailbox extends MailboxBase {
     public boolean flush(boolean _mayMigrate) throws Exception {
         boolean result = false;
         if (sendBuffer != null) {
-            final Iterator<Map.Entry<MailboxBase, ArrayDeque<Message>>> iter = sendBuffer
+            final Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = sendBuffer
                     .entrySet().iterator();
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<MailboxBase, ArrayDeque<Message>> entry = iter.next();
-                final MailboxBase target = entry.getKey();
+                final Map.Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
+                final MessageProcessorBase target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() &&
                         _mayMigrate &&
                         getJAContext() == target.getJAContext() &&
-                        target instanceof UnboundMailbox &&
+                        target instanceof UnboundMessageProcessor &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();
-                    MailboxBase targ = target;
+                    MessageProcessorBase targ = target;
                     AtomicReference<Thread> targetThreadReference = targ.getThreadReference();
                     if (targetThreadReference.get() == null &&
                             targetThreadReference.compareAndSet(null, currentThread)) {

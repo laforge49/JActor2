@@ -41,7 +41,7 @@ public class JAProperties extends AncestorBase implements Properties {
      */
     public static Object getProperty(final Actor actor,
                                      final String propertyName) throws Exception {
-        Properties properties = actor.getMailbox().getJAContext()
+        Properties properties = actor.getMessageProcessor().getJAContext()
                 .getProperties();
         if (properties == null)
             throw new UnsupportedOperationException("no Properties ancestor");
@@ -59,7 +59,7 @@ public class JAProperties extends AncestorBase implements Properties {
     public static void putProperty(final Actor actor,
                                    final String propertyName, final Object propertyValue)
             throws Exception {
-        Properties properties = actor.getMailbox().getJAContext()
+        Properties properties = actor.getMessageProcessor().getJAContext()
                 .getProperties();
         if (properties == null)
             throw new UnsupportedOperationException("no Properties ancestor");

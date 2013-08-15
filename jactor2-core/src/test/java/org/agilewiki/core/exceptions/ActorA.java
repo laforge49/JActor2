@@ -2,16 +2,16 @@ package org.agilewiki.core.exceptions;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorA {
-    private final Mailbox mailbox;
+    private final MessageProcessor messageProcessor;
     public final Request<Void> throwRequest;
 
-    public ActorA(final Mailbox mbox) {
-        this.mailbox = mbox;
+    public ActorA(final MessageProcessor mbox) {
+        this.messageProcessor = mbox;
 
-        throwRequest = new Request<Void>(mailbox) {
+        throwRequest = new Request<Void>(messageProcessor) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

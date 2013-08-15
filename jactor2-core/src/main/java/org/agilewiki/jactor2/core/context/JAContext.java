@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.context;
 
 import org.agilewiki.jactor2.core.processing.Inbox;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.MailboxBase;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class JAContext implements AutoCloseable {
     /**
      * The logger used by mailboxes.
      */
-    protected final Logger mailboxLogger = LoggerFactory.getLogger(Mailbox.class);
+    protected final Logger mailboxLogger = LoggerFactory.getLogger(MessageProcessor.class);
 
     /**
      * The processing factory logger.
@@ -55,12 +55,12 @@ public class JAContext implements AutoCloseable {
     protected final int initialLocalMessageQueueSize;
 
     /**
-     * How big should the initial outbox (per target Mailbox) buffer size be?
+     * How big should the initial outbox (per target MessageProcessor) buffer size be?
      */
     protected final int initialBufferSize;
 
     /**
-     * Mailbox factory properties.
+     * MessageProcessor factory properties.
      */
     private Properties properties;
 
@@ -70,7 +70,7 @@ public class JAContext implements AutoCloseable {
     public JAContext() {
         this(
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
-                MailboxBase.INITIAL_OUTBOX_SIZE,
+                MessageProcessorBase.INITIAL_OUTBOX_SIZE,
                 20,
                 new DefaultThreadFactory());
     }
@@ -83,7 +83,7 @@ public class JAContext implements AutoCloseable {
     public JAContext(final int _threadCount) {
         this(
                 Inbox.INITIAL_LOCAL_QUEUE_SIZE,
-                MailboxBase.INITIAL_OUTBOX_SIZE,
+                MessageProcessorBase.INITIAL_OUTBOX_SIZE,
                 _threadCount,
                 new DefaultThreadFactory());
     }
@@ -92,7 +92,7 @@ public class JAContext implements AutoCloseable {
      * Create a processing factory and a threadpool.
      *
      * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
-     * @param _initialBufferSize            How big should the initial outbox (per target Mailbox) buffer size be?
+     * @param _initialBufferSize            How big should the initial outbox (per target MessageProcessor) buffer size be?
      * @param _threadCount                  The thread pool size for mailboxes.
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
@@ -121,12 +121,12 @@ public class JAContext implements AutoCloseable {
     /**
      * Submit a processing for subsequent execution.
      *
-     * @param _mailbox The processing to be run.
+     * @param _messageProcessor The processing to be run.
      */
-    public final void submit(final Mailbox _mailbox)
+    public final void submit(final MessageProcessor _messageProcessor)
             throws Exception {
         try {
-            threadManager.execute(_mailbox);
+            threadManager.execute(_messageProcessor);
         } catch (final Exception e) {
             if (!isClosing())
                 throw e;

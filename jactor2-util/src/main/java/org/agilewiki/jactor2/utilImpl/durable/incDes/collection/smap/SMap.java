@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.smap;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -56,7 +56,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
      */
     @Override
     final protected Factory getEntryFactory() throws Exception {
-        Factory af = Durables.getFactoryLocator(getMailbox()).getFactory("E." + getFactoryName());
+        Factory af = Durables.getFactoryLocator(getMessageProcessor()).getFactory("E." + getFactoryName());
         return af;
     }
 
@@ -146,7 +146,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     @Override
     public Request<Boolean> kMakeReq(final KEY_TYPE _key) {
-        return new Request<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Boolean> _rp) throws Exception {
                 _rp.processResponse(kMake(_key));
@@ -175,7 +175,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     @Override
     public Request<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes) {
-        return new Request<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Boolean> _rp) throws Exception {
                 _rp.processResponse(kMake(_key, _bytes));
@@ -208,7 +208,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     @Override
     public Request<VALUE_TYPE> kGetReq(final KEY_TYPE _key) {
-        return new Request<VALUE_TYPE>(getMailbox()) {
+        return new Request<VALUE_TYPE>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<VALUE_TYPE> _rp) throws Exception {
                 _rp.processResponse(kGet(_key));
@@ -233,7 +233,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     @Override
     public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key) {
-        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
+        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
                 _rp.processResponse(getHigher(_key));
@@ -258,7 +258,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     @Override
     public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key) {
-        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
+        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
                 _rp.processResponse(getCeiling(_key));
@@ -283,7 +283,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     @Override
     public Request<Boolean> kRemoveReq(final KEY_TYPE _key) {
-        return new Request<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Boolean> _rp) throws Exception {
                 _rp.processResponse(kRemove(_key));
@@ -350,7 +350,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     @Override
     public Request<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes) {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _rp) throws Exception {
                 kSet(_key, _bytes);
@@ -368,16 +368,16 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         entry.setValueBytes(bytes);
     }
 
-    public void initialize(final Mailbox mailbox, Ancestor parent, FactoryImpl factory)
+    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(mailbox, parent, factory);
-        getFirstReq = new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
+        super.initialize(messageProcessor, parent, factory);
+        getFirstReq = new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
                 _rp.processResponse(getFirst());
             }
         };
-        getLastReq = new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMailbox()) {
+        getLastReq = new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
                 _rp.processResponse(getLast());

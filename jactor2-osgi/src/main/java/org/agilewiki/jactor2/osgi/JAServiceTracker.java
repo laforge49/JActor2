@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,22 +64,22 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
     /**
      * Creates a service tracker that matches based strictly on the service type.
      */
-    public JAServiceTracker(final Mailbox _mailbox, final Class<?> _clazz)
+    public JAServiceTracker(final MessageProcessor _messageProcessor, final Class<?> _clazz)
             throws Exception {
-        this(_mailbox, Objects.requireNonNull(_clazz, "_clazz").getName());
+        this(_messageProcessor, Objects.requireNonNull(_clazz, "_clazz").getName());
     }
 
     /**
      * Creates a service tracker that matches based strictly on the service type.
      */
-    public JAServiceTracker(final Mailbox _mailbox, final String _clazz)
+    public JAServiceTracker(final MessageProcessor _messageProcessor, final String _clazz)
             throws Exception {
-        Objects.requireNonNull(_mailbox, "_mailbox");
+        Objects.requireNonNull(_messageProcessor, "_messageProcessor");
         Objects.requireNonNull(_clazz, "_clazz");
-        initialize(_mailbox);
+        initialize(_messageProcessor);
         // We use the bundle context of the *processing's bundle*, so that we can
         // be used in any bundle.
-        bundleContext = Osgi.getBundleContext(_mailbox
+        bundleContext = Osgi.getBundleContext(_messageProcessor
                 .getJAContext());
         // Creates a filter based on the class.
         listenerFilter = "(" + Constants.OBJECTCLASS + "=" + _clazz + ")";
@@ -89,14 +89,14 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
     /**
      * Creates a service tracker that matches based an LDAP filter.
      */
-    public JAServiceTracker(final Mailbox _mailbox, final Filter _Filter)
+    public JAServiceTracker(final MessageProcessor _messageProcessor, final Filter _Filter)
             throws Exception {
-        Objects.requireNonNull(_mailbox, "_mailbox");
+        Objects.requireNonNull(_messageProcessor, "_messageProcessor");
         Objects.requireNonNull(_Filter, "_Filter");
-        initialize(_mailbox);
+        initialize(_messageProcessor);
         // We use the bundle context of the *processing's bundle*, so that we can
         // be used in any bundle.
-        bundleContext = Osgi.getBundleContext(_mailbox
+        bundleContext = Osgi.getBundleContext(_messageProcessor
                 .getJAContext());
         listenerFilter = _Filter.toString();
     }

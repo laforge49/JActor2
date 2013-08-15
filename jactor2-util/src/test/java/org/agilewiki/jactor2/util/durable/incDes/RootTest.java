@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -14,8 +14,8 @@ public class RootTest extends TestCase {
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            Mailbox mailbox = new NonBlockingMailbox(jaContext);
-            Root root1 = (Root) rootFactory.newSerializable(mailbox, factoryLocator);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            Root root1 = (Root) rootFactory.newSerializable(messageProcessor, factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);
             root1.clearReq().call();
@@ -33,14 +33,14 @@ public class RootTest extends TestCase {
             assertNull(rpa);
 
             Factory stringAFactory = factoryLocator.getFactory(JAString.FACTORY_NAME);
-            JAString jaString1 = (JAString) stringAFactory.newSerializable(mailbox, factoryLocator);
+            JAString jaString1 = (JAString) stringAFactory.newSerializable(messageProcessor, factoryLocator);
             jaString1.setValueReq("abc").call();
             byte[] sb = jaString1.getSerializedBytesReq().call();
             root1.setValueReq(jaString1.getFactoryName(), sb).call();
             JAString sj = (JAString) root1.getValueReq().call();
             assertEquals("abc", sj.getValueReq().call());
 
-            Root root2 = (Root) rootFactory.newSerializable(mailbox, factoryLocator);
+            Root root2 = (Root) rootFactory.newSerializable(messageProcessor, factoryLocator);
             sl = root2.getSerializedLength();
             //assertEquals(56, sl);
             root2.setValueReq(IncDes.FACTORY_NAME).call();

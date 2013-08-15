@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -41,11 +41,11 @@ public class JASemaphore extends ActorBase {
      * @param mbox        The processing used to handle requests.
      * @param permitCount The number of semaphores initially available.
      */
-    public JASemaphore(final Mailbox mbox, final int permitCount) throws Exception {
+    public JASemaphore(final MessageProcessor mbox, final int permitCount) throws Exception {
         initialize(mbox);
         this.permits = permitCount;
 
-        acquire = new Request<Void>(getMailbox()) {
+        acquire = new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(
                     final Transport<Void> responseProcessor)

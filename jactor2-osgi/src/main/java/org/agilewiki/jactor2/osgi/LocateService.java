@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
@@ -16,7 +16,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     /**
      * The processing.
      */
-    private Mailbox mailbox;
+    private MessageProcessor messageProcessor;
 
     /**
      * The service tracker actor.
@@ -31,12 +31,12 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     /**
      * Create a LocateService actor.
      *
-     * @param _mailbox The actor processing.
-     * @param clazz    Class name of the desired service.
+     * @param _messageProcessor The actor processing.
+     * @param clazz             Class name of the desired service.
      */
-    public LocateService(Mailbox _mailbox, String clazz) throws Exception {
-        mailbox = _mailbox;
-        tracker = new JAServiceTracker(mailbox, clazz);
+    public LocateService(MessageProcessor _messageProcessor, String clazz) throws Exception {
+        messageProcessor = _messageProcessor;
+        tracker = new JAServiceTracker(messageProcessor, clazz);
     }
 
     /**
@@ -45,7 +45,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
      * @return The request.
      */
     public Request<T> getReq() {
-        return new Request<T>(mailbox) {
+        return new Request<T>(messageProcessor) {
             @Override
             public void processRequest(final Transport<T> _transport) throws Exception {
                 tracker.start(LocateService.this);
@@ -68,7 +68,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     }
 
     @Override
-    public Mailbox getMailbox() {
-        return mailbox;
+    public MessageProcessor getMessageProcessor() {
+        return messageProcessor;
     }
 }

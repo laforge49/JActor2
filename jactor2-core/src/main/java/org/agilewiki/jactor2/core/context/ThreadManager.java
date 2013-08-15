@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.context;
 
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.MailboxBase;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +29,8 @@ final public class ThreadManager {
     /**
      * The tasks queue holds the tasks waiting to be processed.
      */
-    final private ConcurrentLinkedQueue<MailboxBase> tasks =
-            new ConcurrentLinkedQueue<MailboxBase>();
+    final private ConcurrentLinkedQueue<MessageProcessorBase> tasks =
+            new ConcurrentLinkedQueue<MessageProcessorBase>();
 
     /**
      * When closing is true, concurrent exit as they finish their assigned tasks.
@@ -88,7 +88,7 @@ final public class ThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        MailboxBase mailbox = tasks.poll();
+                        MessageProcessorBase mailbox = tasks.poll();
                         if (mailbox != null) {
                             AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                             if (threadReference.get() == null &&
@@ -135,10 +135,10 @@ final public class ThreadManager {
     /**
      * Begin running a processing.
      *
-     * @param _mailbox The run method is to be called by the selected thread.
+     * @param _messageProcessor The run method is to be called by the selected thread.
      */
-    final public void execute(final Mailbox _mailbox) {
-        tasks.add((MailboxBase) _mailbox);
+    final public void execute(final MessageProcessor _messageProcessor) {
+        tasks.add((MessageProcessorBase) _messageProcessor);
         taskRequest.release();
     }
 

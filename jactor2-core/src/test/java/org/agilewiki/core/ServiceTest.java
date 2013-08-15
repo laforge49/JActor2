@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.*;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class ServiceTest extends TestCase {
 
@@ -14,10 +14,10 @@ public class ServiceTest extends TestCase {
         JAContext clientContext = new JAContext();
         final JAContext serverContext = new JAContext();
         try {
-            Mailbox testMailbox = new NonBlockingMailbox(testContext);
-            Server server = new Server(new NonBlockingMailbox(serverContext));
-            final Client client = new Client(new NonBlockingMailbox(clientContext), server);
-            new Request<Void>(testMailbox) {
+            MessageProcessor testMessageProcessor = new NonBlockingMessageProcessor(testContext);
+            Server server = new Server(new NonBlockingMessageProcessor(serverContext));
+            final Client client = new Client(new NonBlockingMessageProcessor(clientContext), server);
+            new Request<Void>(testMessageProcessor) {
                 @Override
                 public void processRequest(final Transport<Void> _transport) throws Exception {
                     client.crossReq().send(getMailbox(), new ResponseProcessor<Boolean>() {
@@ -42,13 +42,13 @@ class Client extends ActorBase {
 
     Server server;
 
-    Client(Mailbox mailbox, Server _server) throws Exception {
-        initialize(mailbox);
+    Client(MessageProcessor messageProcessor, Server _server) throws Exception {
+        initialize(messageProcessor);
         server = _server;
     }
 
     Request<Boolean> crossReq() {
-        return new Request<Boolean>(getMailbox()) {
+        return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(final Transport<Boolean> _transport) throws Exception {
                 getMailbox().setExceptionHandler(new ExceptionHandler() {
@@ -72,12 +72,12 @@ class Client extends ActorBase {
 }
 
 class Server extends ActorBase {
-    Server(Mailbox mailbox) throws Exception {
-        initialize(mailbox);
+    Server(MessageProcessor messageProcessor) throws Exception {
+        initialize(messageProcessor);
     }
 
     Request<Void> hangReq() {
-        return new Request<Void>(getMailbox()) {
+        return new Request<Void>(getMessageProcessor()) {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
             }

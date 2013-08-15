@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util.durable.incDes;
 
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.processing.Mailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.JASerializable;
@@ -120,18 +120,18 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
     /**
      * Returns a request to copy the serializable object.
      *
-     * @param _mailbox The processing to be used by the new serializable object.
+     * @param _messageProcessor The processing to be used by the new serializable object.
      * @return The request.
      */
-    Request<JASerializable> copyReq(final Mailbox _mailbox);
+    Request<JASerializable> copyReq(final MessageProcessor _messageProcessor);
 
     /**
      * Copy the serializable object.
      *
-     * @param _mailbox The processing to be used by the new serializable object.
+     * @param _messageProcessor The processing to be used by the new serializable object.
      * @return A deep copy of the serializable object with the same durable data.
      */
-    JASerializable copy(final Mailbox _mailbox) throws Exception;
+    JASerializable copy(final MessageProcessor _messageProcessor) throws Exception;
 
     /**
      * Check for equality.

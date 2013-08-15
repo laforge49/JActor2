@@ -5,8 +5,8 @@ import org.agilewiki.jactor2.core.context.Properties;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.Mailbox;
-import org.agilewiki.jactor2.core.processing.NonBlockingMailbox;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.Root;
 import org.osgi.framework.Bundle;
@@ -55,11 +55,11 @@ final public class Osgi {
     /**
      * Returns the OsgiFactoryLocator associated with a processing.
      *
-     * @param _mailbox The processing.
+     * @param _messageProcessor The processing.
      * @return The OsgiFactoryLocator.
      */
-    public static OsgiFactoryLocator getOsgiFactoryLocator(final Mailbox _mailbox) {
-        return (OsgiFactoryLocator) Durables.getFactoryLocator(_mailbox);
+    public static OsgiFactoryLocator getOsgiFactoryLocator(final MessageProcessor _messageProcessor) {
+        return (OsgiFactoryLocator) Durables.getFactoryLocator(_messageProcessor);
     }
 
     /**
@@ -96,21 +96,21 @@ final public class Osgi {
      * @return A copy of the root with the appropriate processing.
      */
     public static Request<Root> contextCopyReq(final Root _root) throws Exception {
-        return new Request<Root>(_root.getMailbox()) {
+        return new Request<Root>(_root.getMessageProcessor()) {
             @Override
             public void processRequest(final Transport<Root> _transport) throws Exception {
                 String location = _root.getBundleLocation();
-                BundleContext bundleContext = getBundleContext(_root.getMailbox().getJAContext());
+                BundleContext bundleContext = getBundleContext(_root.getMessageProcessor().getJAContext());
                 Bundle bundle = bundleContext.installBundle(location);
                 bundle.start();
                 Version version = bundle.getVersion();
                 LocateService<OsgiFactoryLocator> locateService = new LocateService<OsgiFactoryLocator>(
-                        _root.getMailbox(), OsgiFactoryLocator.class.getName());
-                locateService.getReq().send(_root.getMailbox(), new ResponseProcessor<OsgiFactoryLocator>() {
+                        _root.getMessageProcessor(), OsgiFactoryLocator.class.getName());
+                locateService.getReq().send(_root.getMessageProcessor(), new ResponseProcessor<OsgiFactoryLocator>() {
                     @Override
                     public void processResponse(OsgiFactoryLocator response) throws Exception {
-                        Mailbox newMailbox = new NonBlockingMailbox(response.getJAContext());
-                        _root.copyReq(newMailbox).send(_root.getMailbox(), (Transport) _transport);
+                        MessageProcessor newMessageProcessor = new NonBlockingMessageProcessor(response.getJAContext());
+                        _root.copyReq(newMessageProcessor).send(_root.getMessageProcessor(), (Transport) _transport);
                     }
                 });
             }

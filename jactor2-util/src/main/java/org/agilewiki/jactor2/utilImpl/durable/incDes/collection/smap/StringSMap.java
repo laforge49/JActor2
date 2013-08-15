@@ -15,7 +15,7 @@ public class StringSMap<VALUE_TYPE extends IncDesImpl> extends SMap<String, VALU
      * @return The IncDesFactory for the key.
      */
     final protected Factory getKeyFactory() throws Exception {
-        return Durables.getFactoryLocator(getMailbox()).getFactory(JAString.FACTORY_NAME);
+        return Durables.getFactoryLocator(getMessageProcessor()).getFactory(JAString.FACTORY_NAME);
     }
 
     /**
