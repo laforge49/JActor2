@@ -1,8 +1,8 @@
 org.agilewiki.jactor2
 org.agilewiki.jactor2.core
 org.agilewiki.jactor2.core.context
-org.agilewiki.jactor2.core.mailbox
 org.agilewiki.jactor2.core.messaging
+org.agilewiki.jactor2.core.processing
 org.agilewiki.jactor2.kdriver
 org.agilewiki.jactor2.osgi
 org.agilewiki.jactor2.testIface
