@@ -22,20 +22,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * the end-of-life of the processing factory as well as a set of properties.
  */
 
-public class JAContext implements AutoCloseable {
+public final class JAContext implements AutoCloseable {
 
     /**
      * The logger used by mailboxes.
      */
-    protected final Logger mailboxLogger = LoggerFactory.getLogger(MessageProcessor.class);
+    private final Logger mailboxLogger = LoggerFactory.getLogger(MessageProcessor.class);
 
     /**
-     * The processing factory logger.
-     */
-    private final Logger logger = LoggerFactory.getLogger(JAContext.class);
-
-    /**
-     * The thread pool used by mailboxes.
+     * The thread pool used by JAContext.
      */
     private final ThreadManager threadManager;
 
@@ -53,12 +48,12 @@ public class JAContext implements AutoCloseable {
     /**
      * How big should the initial inbox local queue size be?
      */
-    protected final int initialLocalMessageQueueSize;
+    private final int initialLocalMessageQueueSize;
 
     /**
      * How big should the initial outbox (per target MessageProcessor) buffer size be?
      */
-    protected final int initialBufferSize;
+    private final int initialBufferSize;
 
     /**
      * Context properties.
@@ -66,7 +61,7 @@ public class JAContext implements AutoCloseable {
     private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
     /**
-     * Create a processing factory and a threadpool.
+     * Create a JAContext.
      */
     public JAContext() {
         this(
@@ -77,9 +72,9 @@ public class JAContext implements AutoCloseable {
     }
 
     /**
-     * Create a processing factory and a threadpool.
+     * Create a JAContext.
      *
-     * @param _threadCount The thread pool size for mailboxes.
+     * @param _threadCount The thread pool size.
      */
     public JAContext(final int _threadCount) {
         this(
@@ -90,11 +85,11 @@ public class JAContext implements AutoCloseable {
     }
 
     /**
-     * Create a processing factory and a threadpool.
+     * Create a JAContext.
      *
      * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
      * @param _initialBufferSize            How big should the initial outbox (per target MessageProcessor) buffer size be?
-     * @param _threadCount                  The thread pool size for mailboxes.
+     * @param _threadCount                  The thread pool size.
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
     public JAContext(final int _initialLocalMessageQueueSize,
@@ -107,10 +102,20 @@ public class JAContext implements AutoCloseable {
         initialBufferSize = _initialBufferSize;
     }
 
+    /**
+     * Returns the logger to be used by message processors.
+     *
+     * @return A logger.
+     */
     public Logger getMailboxLogger() {
         return mailboxLogger;
     }
 
+    /**
+     * Returns the initial buffer size to be used by outboxes.
+     *
+     * @return The initial buffer size.
+     */
     public int getInitialBufferSize() {
         return initialBufferSize;
     }
@@ -120,7 +125,7 @@ public class JAContext implements AutoCloseable {
     }
 
     /**
-     * Submit a processing for subsequent execution.
+     * Submit a MessageProcessor for subsequent execution.
      *
      * @param _messageProcessor The processing to be run.
      */
@@ -131,10 +136,6 @@ public class JAContext implements AutoCloseable {
         } catch (final Exception e) {
             if (!isClosing())
                 throw e;
-            else
-                logger.warn(
-                        "Unable to process the request, as processing shutdown had been called in the application",
-                        e);
         } catch (final Error e) {
             if (!isClosing())
                 throw e;
@@ -192,12 +193,24 @@ public class JAContext implements AutoCloseable {
         return shuttingDown.get();
     }
 
+    /**
+     * Returns the value of a property.
+     * @param propertyName    The property name.
+     * @return The property value, or null.
+     */
     public Object getProperty(final String propertyName) {
         return properties.get(propertyName);
     }
 
-    public void putProperty(final String propertyName,
+    /**
+     * Assign a property value.
+     *
+     * @param propertyName     The name of the property.
+     * @param propertyValue    The value of the property, or null.
+     * @return The prior value of the property, or null.
+     */
+    public Object putProperty(final String propertyName,
                             final Object propertyValue) {
-        properties.put(propertyName, propertyValue);
+        return properties.put(propertyName, propertyValue);
     }
 }
