@@ -195,7 +195,8 @@ public final class JAContext implements AutoCloseable {
 
     /**
      * Returns the value of a property.
-     * @param propertyName    The property name.
+     *
+     * @param propertyName The property name.
      * @return The property value, or null.
      */
     public Object getProperty(final String propertyName) {
@@ -205,12 +206,12 @@ public final class JAContext implements AutoCloseable {
     /**
      * Assign a property value.
      *
-     * @param propertyName     The name of the property.
-     * @param propertyValue    The value of the property, or null.
+     * @param propertyName  The name of the property.
+     * @param propertyValue The value of the property, or null.
      * @return The prior value of the property, or null.
      */
     public Object putProperty(final String propertyName,
-                            final Object propertyValue) {
+                              final Object propertyValue) {
         return properties.put(propertyName, propertyValue);
     }
 }
