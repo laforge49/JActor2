@@ -15,11 +15,12 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Creates non-blocking, may-block and thread-bound mailboxes and serves as a thread pool for
- * non-blocking and may-block mailboxes. Multiple processing factories with independent life cycles
+ * Provides a thread pool for
+ * non-blocking and may-block message processors. Multiple contexts with independent life cycles
  * are also supported.
- * In addition, the processing factory maintains a set of AutoClosable objects that are closed at
- * the end-of-life of the processing factory as well as a set of properties.
+ * (A ServiceClosedException may be thrown when messages cross contexts and the target context is closed.)
+ * In addition, the context maintains a set of AutoClosable objects that are closed
+ * when the context is closed, as well as a table of properties.
  */
 
 public final class JAContext implements AutoCloseable {
@@ -205,6 +206,7 @@ public final class JAContext implements AutoCloseable {
 
     /**
      * Assign a property value.
+     * Or removes it if the value is set to null;
      *
      * @param propertyName  The name of the property.
      * @param propertyValue The value of the property, or null.
@@ -212,6 +214,17 @@ public final class JAContext implements AutoCloseable {
      */
     public Object putProperty(final String propertyName,
                               final Object propertyValue) {
+        if (propertyValue == null)
+            return properties.remove(propertyName);
         return properties.put(propertyName, propertyValue);
+    }
+
+    /**
+     * Returns a set view of the property names.
+     *
+     * @return A set view of the property names.
+     */
+    public Set<String> getPropertyNames() {
+        return properties.keySet();
     }
 }
