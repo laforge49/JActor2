@@ -101,7 +101,7 @@ public class JAContext implements AutoCloseable {
                      final int _initialBufferSize,
                      final int _threadCount,
                      final ThreadFactory _threadFactory) {
-        threadManager = ThreadManager.newThreadManager(
+        threadManager = new ThreadManager(
                 _threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
         initialBufferSize = _initialBufferSize;

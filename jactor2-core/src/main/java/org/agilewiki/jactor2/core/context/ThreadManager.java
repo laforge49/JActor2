@@ -11,75 +11,50 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A ThreadManager is used to process a collection of Runnable tasks.
- * ThreadManager is a thread pool, but with a simplified API and
+ * The ThreadManager is used to process a queue of MessageProcessor's.
+ * ThreadManager is a thread pool, but it has a simplified API and
  * assumes that the thread pool has a fixed number of threads.
- * ThreadManager is also responsible for setting the threadReference
- * in the processing.
+ * ThreadManager is also responsible for assigning the threadReference
+ * when a MessageProcessor is run.
  */
 final public class ThreadManager {
     final Logger logger = LoggerFactory.getLogger(ThreadManager.class);
 
     /**
      * The taskRequest semaphore is used to wake up a thread
-     * when there is a task to process.
+     * when there is a MessageProcessor which hasWork.
      */
     final private Semaphore taskRequest = new Semaphore(0);
 
     /**
-     * The tasks queue holds the tasks waiting to be processed.
+     * The messageProcessors queue holds the messageProcessors which have messages to be processed.
      */
-    final private ConcurrentLinkedQueue<MessageProcessorBase> tasks =
+    final private ConcurrentLinkedQueue<MessageProcessorBase> messageProcessors =
             new ConcurrentLinkedQueue<MessageProcessorBase>();
 
     /**
-     * When closing is true, concurrent exit as they finish their assigned tasks.
+     * When closing is true, the threads exit as they finish their current activity.
      */
     private boolean closing = false;
 
     /**
-     * The threadCount is the number of threads used.
+     * The threadCount is the number of threads in the thread pool.
      */
     private int threadCount;
 
     /**
-     * The worker threads.
+     * The threads in the thread pool.
      */
     private Thread threads[] = null;
 
     /**
-     * Create a JAThreadManager
-     *
-     * @param threadCount The number of concurrent to be used.
-     * @return A new JAThreadManager.
-     */
-    public static ThreadManager newThreadManager(final int threadCount) {
-        final ThreadFactory threadFactory = new DefaultThreadFactory();
-        return newThreadManager(threadCount, threadFactory);
-    }
-
-    /**
-     * Create a JAThreadManager
-     *
-     * @param threadCount   The number of concurrent to be used.
-     * @param threadFactory Used to create the threads.
-     * @return A new JAThreadManager.
-     */
-    public static ThreadManager newThreadManager(final int threadCount,
-                                                 final ThreadFactory threadFactory) {
-        final ThreadManager threadManager = new ThreadManager();
-        threadManager.start(threadCount, threadFactory);
-        return threadManager;
-    }
-
-    /**
-     * Create and start the threads.
+     * Create a ThreadManager
      *
      * @param _threadCount   The number of threads to be created.
      * @param _threadFactory Used to create the threads.
      */
-    final public void start(final int _threadCount,
-                            final ThreadFactory _threadFactory) {
+    public ThreadManager(final int _threadCount,
+                         final ThreadFactory _threadFactory) {
         this.threadCount = _threadCount;
         final Runnable runnable = new Runnable() {
             @Override
@@ -88,7 +63,7 @@ final public class ThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        MessageProcessorBase mailbox = tasks.poll();
+                        MessageProcessorBase mailbox = messageProcessors.poll();
                         if (mailbox != null) {
                             AtomicReference<Thread> threadReference = mailbox.getThreadReference();
                             if (threadReference.get() == null &&
@@ -138,7 +113,7 @@ final public class ThreadManager {
      * @param _messageProcessor The run method is to be called by the selected thread.
      */
     final public void execute(final MessageProcessor _messageProcessor) {
-        tasks.add((MessageProcessorBase) _messageProcessor);
+        messageProcessors.add((MessageProcessorBase) _messageProcessor);
         taskRequest.release();
     }
 
