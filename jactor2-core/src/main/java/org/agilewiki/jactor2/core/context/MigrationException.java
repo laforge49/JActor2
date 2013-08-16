@@ -4,6 +4,8 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 
 /**
  * Signals a migration of the current thread to another processing.
+ * As this exception is never thrown when a message is being processed,
+ * the application should never be exposed to it.
  */
 public class MigrationException extends RuntimeException {
 
