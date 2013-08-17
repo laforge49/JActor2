@@ -42,7 +42,7 @@ public interface MessageProcessor extends Runnable {
 
     /**
      * Processes the messages in the inbox. For a thread-bound processing this method must
-     * be called by the thread it is bound to, while for non-blocking and atomic mailboxes
+     * be called by the thread it is bound to, while for non-blocking and atomic message processors
      * this method is called by ThreadManager.
      */
     @Override
