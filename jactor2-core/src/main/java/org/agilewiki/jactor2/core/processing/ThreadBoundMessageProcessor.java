@@ -107,9 +107,9 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
      * the processing is bound to.
      * </p>
      *
-     * @param _jaContext        The context of the processing.
+     * @param _jaContext      The context of the processing.
      * @param _boundProcessor The _messageProcessor.run method is called when there
-     *                          are messages to be processed.
+     *                        are messages to be processed.
      */
     public ThreadBoundMessageProcessor(JAContext _jaContext, Runnable _boundProcessor) {
         super(_jaContext,
@@ -130,7 +130,7 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
      * @param _jaContext             The context of the processing.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
-     * @param _boundProcessor      The _messageProcessor.run method is called when there
+     * @param _boundProcessor        The _messageProcessor.run method is called when there
      *                               are messages to be processed.
      */
     public ThreadBoundMessageProcessor(JAContext _jaContext,
