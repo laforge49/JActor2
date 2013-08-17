@@ -110,14 +110,14 @@ public class AtomicInbox extends Inbox {
     @Override
     public void requestBegin() {
         if (processingRequest)
-            throw new IllegalStateException("already processing request");
+            throw new IllegalStateException("already processing a request");
         processingRequest = true;
     }
 
     @Override
     public void requestEnd() {
         if (!processingRequest)
-            throw new IllegalStateException("not processing request");
+            throw new IllegalStateException("not processing a request");
         processingRequest = false;
     }
 }
