@@ -6,9 +6,9 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Provides at least two queues for a processing's incoming messages, where the first queue is a
- * concurrent linked queue for messages passed from other mailboxes and the other(s) are
- * local queues for messages that are passed using the processing's own thread.
+ * Provides at least two queues for a message processor's incoming messages, where the first queue is a
+ * concurrent linked queue for messages passed from other message processors and the other(s) are
+ * local queues for messages that are passed using the message processor's own thread.
  *
  * @author monster
  */
@@ -25,7 +25,7 @@ public abstract class Inbox implements AutoCloseable {
 
     /**
      * Returns true when there is a message in the inbox that can be processed.
-     * (This method is not thread safe and must be called on the processing's thread.)
+     * (This method is not thread safe and must be called on the message processor's thread.)
      *
      * @return True if there is a message in the inbox that can be processed.
      */
@@ -49,7 +49,7 @@ public abstract class Inbox implements AutoCloseable {
     /**
      * Inserts a new message in the queue.
      *
-     * @param _local True when the message is being inserted using the processing's own thread.
+     * @param _local True when the message is being inserted using the message processor's own thread.
      * @param _msg   The new message.
      */
     public void offer(final boolean _local, final Message _msg) {
