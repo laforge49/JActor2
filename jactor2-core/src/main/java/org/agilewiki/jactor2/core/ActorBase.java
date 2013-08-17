@@ -10,20 +10,20 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * <h3>Sample Usage:</h3>
  * <pre>
  * public class ActorBaseSample extends ActorBase {
- *     public ActorBaseSample(final MessageProcessor _Mailbox) throws Exception {
- *         initialize(_Mailbox);
+ *     public ActorBaseSample(final MessageProcessor _processor) throws Exception {
+ *         initialize(_processor);
  *     }
  * }
  * </pre>
  */
 public class ActorBase implements Actor {
     /**
-     * The actor's processing.
+     * The actor's message processor.
      */
     private MessageProcessor messageProcessor;
 
     /**
-     * True when initialized, this flag is used to prevent the processing from being changed.
+     * True when initialized, this flag is used to prevent the message processor from being changed.
      */
     private boolean initialized;
 
@@ -38,10 +38,10 @@ public class ActorBase implements Actor {
 
     /**
      * Initialize an actor. This method can only be called once
-     * without raising an illegal state exception, as the processing
+     * without raising an illegal state exception, as the message processor
      * can not be changed.
      *
-     * @param _messageProcessor The actor's processing.
+     * @param _messageProcessor The actor's message processor.
      */
     public void initialize(final MessageProcessor _messageProcessor) throws Exception {
         if (initialized)
