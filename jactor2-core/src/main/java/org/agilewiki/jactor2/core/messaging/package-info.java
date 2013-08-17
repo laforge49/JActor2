@@ -18,6 +18,11 @@
  *     response has been assigned. Request and response messages are aggregated and sent in
  *     blocks to reduce the overhead of having to pass individual messages.
  * </p>
+ * <p>
+ *     No messages are being processed when a message block is sent. So when the last message
+ *     block is sent, the thread migrates to the destination message processor along with that
+ *     block.
+ * </p>
  * <h2>Exception Handling</h2>
  * <p>
  *     Exception handlers are used to process otherwise uncaught exceptions. But if there is no
