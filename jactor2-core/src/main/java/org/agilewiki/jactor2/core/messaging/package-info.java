@@ -21,7 +21,8 @@
  * <p>
  *     No messages are being processed when a message block is sent. So when the last message
  *     block is sent, the thread migrates to the destination message processor along with that
- *     block.
+ *     block. More often than not, only a single block of messages is sent, so thread migration
+ *     significantly reduces the overhead of message passing.
  * </p>
  * <h2>Exception Handling</h2>
  * <p>
