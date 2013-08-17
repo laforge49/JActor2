@@ -1,35 +1,37 @@
 /**
- * <h1>Non-blocking, Atomic and Thread-bound Mailboxes</h1>
+ * <h1>Non-blocking, Atomic and Thread-bound Message Processors</h1>
  * <p>
- *     Mailboxes are used by the Event and Request classes to pass messages to actors,
- *     though the MessageProcessor interface does include a few methods that can be used by
+ *     While MessageProcessors are used by the Event and Request classes to pass messages and process messages,
+ *     the MessageProcessor interface itself include only a few methods for use by
  *     application developers.
  * </p>
- * <h2>Configuring a MessageProcessor</h2>
+ * <h2>Creating a MessageProcessor</h2>
  * <p>
- *     Actors can use 3 different classes of mailboxes: NonBlockingMessageProcessor, AtomicMessageProcessor
- *     and ThreadBoundMessageProcessor. MessageProcessor instances are easily created, though an instance of
- *     JAContext is required. Various parameters can be passed to the constructor
- *     to configure a processing.
+ *     Actors can use 3 different classes of message processors: NonBlockingMessageProcessor, AtomicMessageProcessor
+ *     and ThreadBoundMessageProcessor. MessageProcessor instances are easily created, with an instance of
+ *     JAContext as a required parameter. Additional parameters can be also bepassed to the constructor
+ *     for configuring a message processor:
  * </p>
- * <p>
- *     <b>int initialBufferSize</b> This is the initial size of the outbox for each unique
- *     message destination. When not provided, JAConfig.getInitialBufferSize() is used instead.
- * </p>
- * <p>
- *     <b>int initialLocalQueueSize</b> The initial size of the ArrayDeque's used by the processing's
- *     inbox. When not provided, JAConfig.getInitialLocalMessageQueueSize() is used instead.
- * </p>
- * <p>
- *     <b>Runnable onIdle</b> The onIdle.run method is called when the processing becomes idle.
+ * <ul>
+ * <li>
+ *     <b>int initialBufferSize</b> This is the initial size of the the send buffers used by the outbox.
+ *     When not provided, JAContext.getInitialBufferSize() is used instead.
+ * </li>
+ * <li>
+ *     <b>int initialLocalQueueSize</b> The initial size of the locl queueeque(s) used by the
+ *     inbox. When not provided, JAContext.getInitialLocalMessageQueueSize() is used instead.
+ * </li>
+ * <li>
+ *     <b>Runnable onIdle</b> The onIdle.run method is called when the inbox becomes empty.
  *     (This parameter does not apply to ThreadBoundMessageProcessor.)
- * </p>
- * <p>
- *     <b>Runnable messageProcessor</b> The messageProcessor.run method is called when a
- *     thread-bound processing has messages that need processing. As a result of invoking the
- *     run method, the ThreadBoundMessageProcessor.run method needs to be invoked by the thread that
+ * </li>
+ * <li>
+ *     <b>Runnable boundProcessor</b> The boundProcessor.run method is called when a
+ *     thread-bound processor has messages that need processing. As a result of invoking the
+ *     boundProcessor.run method, the ThreadBoundMessageProcessor.run method be invoked in turn by the thread that
  *     the processing is bound to. (This parameter does not apply to NonBlockingMessageProcessor nor to
  *     AtomicMessageProcessor.)
- * </p>
+ * </li>
+ * </ul>
  */
 package org.agilewiki.jactor2.core.processing;
