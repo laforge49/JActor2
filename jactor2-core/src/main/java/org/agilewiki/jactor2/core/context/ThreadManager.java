@@ -76,12 +76,12 @@ final public class ThreadManager {
                                         threadReference.set(null);
                                         if (messageProcessor.isIdler() || hasWork)
                                             execute(messageProcessor);
-                                        messageProcessor = me.mailboxProcessor;
+                                        messageProcessor = me.messageProcessor;
                                         threadReference = messageProcessor.getThreadReference();
                                         continue;
                                     } catch (final Throwable e) {
                                         logger.error(
-                                                "Exception thrown by a processing's run method",
+                                                "Exception thrown by a message processor's run method",
                                                 e);
                                     }
                                     boolean hasWork = messageProcessor.hasWork();
@@ -108,7 +108,7 @@ final public class ThreadManager {
     }
 
     /**
-     * Begin running a processing.
+     * Begin running a message processor.
      *
      * @param _messageProcessor The run method is to be called by the selected thread.
      */

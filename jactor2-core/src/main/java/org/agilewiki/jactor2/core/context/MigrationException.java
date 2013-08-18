@@ -12,7 +12,7 @@ public class MigrationException extends RuntimeException {
     /**
      * The newly active message processor.
      */
-    public final MessageProcessorBase mailboxProcessor;
+    public final MessageProcessorBase messageProcessor;
 
     /**
      * Create a new MigrationException.
@@ -20,7 +20,7 @@ public class MigrationException extends RuntimeException {
      * @param _messageProcessor The newly active processing.
      */
     public MigrationException(final MessageProcessorBase _messageProcessor) {
-        mailboxProcessor = _messageProcessor;
+        messageProcessor = _messageProcessor;
     }
 
     /**
