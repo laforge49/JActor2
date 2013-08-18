@@ -8,6 +8,10 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * An outbox holds a collection of send buffers.
+ * Each send buffer holds one or more messages, all destined for the same message processor.
+ */
 public class Outbox implements AutoCloseable {
 
     /**
@@ -26,7 +30,7 @@ public class Outbox implements AutoCloseable {
     private Map<MessageProcessorBase, ArrayDeque<Message>> sendBuffer;
 
     /**
-     * The context of this processing.
+     * The context of this outbox.
      */
     protected final JAContext jaContext;
 
@@ -47,11 +51,11 @@ public class Outbox implements AutoCloseable {
     }
 
     /**
-     * Buffers a message in the sending processing for sending later.
+     * Buffers a message in the sending message processor for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The processing that should eventually receive this message
-     * @return True if the message was buffered.
+     * @param _target  The message processor that should eventually receive this message.
+     * @return True if the message was successfully buffered.
      */
     public boolean buffer(final Message _message, final MessageProcessor _target) {
         if (jaContext.isClosing())
