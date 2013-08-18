@@ -3,21 +3,21 @@ package org.agilewiki.jactor2.core.processing;
 import org.agilewiki.jactor2.core.context.JAContext;
 
 /**
- * A processing for actors which process messages quickly and without blocking the thread.
+ * A message processor for actors which process messages quickly and without blocking the thread.
  * <p>
  * For thread safety, the processing of each message is atomic, but when the processing of a
  * message results in the sending of a request, other messages may be processed before a
  * response to that request is received.
  * </p>
  * <p>
- * Request/Response messages which are destined to a different processing are buffered rather
+ * Request/Response messages which are destined to a different message processors are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when all
  * incoming messages have been processed.
  * </p>
  * <p>
  * When the last block of buffered messages is being disbursed, if the destination is not
- * a thread-bound processing, the destination processing has no associated thread and the
- * context of the current processing is the same as the destination processing, then the
+ * a thread-bound message processor, the destination message processor has no associated thread and the
+ * context of the current message processor is the same as the destination message processor, then the
  * current thread migrates with the message block. By this means the message block is
  * often kept in the hardware thread's high-speed memory cache, which means much faster
  * execution.
@@ -29,9 +29,9 @@ import org.agilewiki.jactor2.core.context.JAContext;
 public class NonBlockingMessageProcessor extends UnboundMessageProcessor {
 
     /**
-     * Create a non-blocking processing.
+     * Create a non-blocking message processor.
      *
-     * @param _jaContext The context of the processing.
+     * @param _jaContext The context of the message processor.
      */
     public NonBlockingMessageProcessor(JAContext _jaContext) {
         super(_jaContext, _jaContext.getInitialBufferSize(),
@@ -39,9 +39,9 @@ public class NonBlockingMessageProcessor extends UnboundMessageProcessor {
     }
 
     /**
-     * Create a non-blocking processing.
+     * Create a non-blocking message processor.
      *
-     * @param _jaContext The context of the processing.
+     * @param _jaContext The context of the message processor.
      * @param _onIdle    Object to be run when the inbox is emptied, or null.
      */
     public NonBlockingMessageProcessor(JAContext _jaContext,
@@ -51,9 +51,9 @@ public class NonBlockingMessageProcessor extends UnboundMessageProcessor {
     }
 
     /**
-     * Create a non-blocking processing.
+     * Create a non-blocking message processor.
      *
-     * @param _jaContext             The context of the processing.
+     * @param _jaContext             The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
