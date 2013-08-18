@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A processing bound to a pre-existing thread, a thread-bound processing can use
+ * A mailbox processor bound to a pre-existing thread, a thread-bound mailbox processor can use
  * a program's main thread or a GUI thread.
  * <p>
  * For thread safety, the processing of each message is atomic, but when the processing of a
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * response to that request is received.
  * </p>
  * <p>
- * Request/Response messages which are destined to a different processing are buffered rather
+ * Request/Response messages which are destined to a different mailbox processors are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when all
  * incoming messages have been processed.
  * </p>
@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * import org.agilewiki.jactor2.core.context.JAContext;
  * import org.agilewiki.jactor2.core.messaging.Event;
  *
- * public class ThreadBoundMailboxSample {
+ * public class ThreadBoundMessageProcessorSample {
  *
  *     public static void main(String[] args) throws Exception {
  *
@@ -37,8 +37,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *         //Get a reference to the main thread
  *         final Thread mainThread = Thread.currentThread();
  *
- *         //Create a thread-bound processing
- *         final ThreadBoundMessageProcessor boundMailbox =
+ *         //Create a thread-bound mailbox processor.
+ *         final ThreadBoundMessageProcessor boundMessageProcessor =
  *             new ThreadBoundMessageProcessor(jaContext, new Runnable() {
  *                 {@literal @}Override
  *                 public void run() {
@@ -47,8 +47,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *                 }
  *             });
  *
- *         //Create an actor that uses the thread-bound processing
- *         final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMailbox);
+ *         //Create an actor that uses the thread-bound mailbox processor.
+ *         final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMessageProcessor);
  *
  *         //Pass a FinEvent signal to the actor
  *         new FinEvent().signal(threadBoundActor);
@@ -60,7 +60,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *                 Thread.sleep(60000);
  *             } catch (InterruptedException e) {
  *                 //Process messages when the main thread is interrupted
- *                 boundMailbox.run();
+ *                 boundMessageProcessor.run();
  *             }
  *         }
  *     }
@@ -68,8 +68,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * class ThreadBoundActor extends ActorBase {
  *
- *     ThreadBoundActor(final MessageProcessor _mailbox) throws Exception {
- *         initialize(_mailbox);
+ *     ThreadBoundActor(final MessageProcessor _messageProcessor) throws Exception {
+ *         initialize(_messageProcessor);
  *     }
  *
  *     //Print "finished" and exit when fin is called
@@ -99,15 +99,15 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
     private final Runnable boundProcessor;
 
     /**
-     * Create a thread-bound processing.
+     * Create a thread-bound mailbox processor.
      * <p>
-     * The _messageProcessor.run method is called when a thread-bound processing has messages
+     * The _boundProcessor.run method is called when a thread-bound mailbox processor has messages
      * that need processing. As a result of invoking the run method, the
-     * ThreadBoundMessageProcessor.run method needs to be invoked by the thread that
-     * the processing is bound to.
+     * ThreadBoundMessageProcessor.run method must subsequently to be invoked by the thread that
+     * the mailbox processor is bound to.
      * </p>
      *
-     * @param _jaContext      The context of the processing.
+     * @param _jaContext      The context of the mailbox processor.
      * @param _boundProcessor The _messageProcessor.run method is called when there
      *                        are messages to be processed.
      */
@@ -119,15 +119,15 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
     }
 
     /**
-     * Create a thread-bound processing.
+     * Create a thread-bound mailbox processor.
      * <p>
-     * The boundProcessor.run method is called when a thread-bound processing has messages
+     * The boundProcessor.run method is called when a thread-bound mailbox processor has messages
      * that need processing. As a result of invoking the run method, the
-     * ThreadBoundMessageProcessor.run method needs to be invoked by the thread that
-     * the processing is bound to.
+     * ThreadBoundMessageProcessor.run method must subsequently to be invoked by the thread that
+     * the mailbox processor is bound to.
      * </p>
      *
-     * @param _jaContext             The context of the processing.
+     * @param _jaContext             The context of the mailbox processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _boundProcessor        The _messageProcessor.run method is called when there
@@ -172,9 +172,8 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
     }
 
     /**
-     * The flush method forwards all buffered message to their target processing for
-     * processing. For results/exceptions originating from a call, the calling thread
-     * is unblocked and the results returned or the exception thrown.
+     * The flush method disburses all buffered message to their target mailbox processor for
+     * processing.
      * <p>
      * The flush method is automatically called when there are
      * no more messages to be processed.
