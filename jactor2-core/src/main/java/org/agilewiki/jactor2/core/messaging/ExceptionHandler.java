@@ -11,7 +11,7 @@ package org.agilewiki.jactor2.core.messaging;
  * MessageProcessor.setExceptionHandler method.
  * </p>
  * <p>
- * When a processing receives an exception as a result, the exception is handled the same way as any other
+ * When a message processor receives an exception as a result, the exception is handled the same way as any other
  * exception, by either passing it to an exception handler or returning it to the source of the request
  * being processed. On the other hand when a caller receives an exception as a result, the exception is
  * simply rethrown rather than passing it to the application logic as a response.
@@ -67,8 +67,8 @@ package org.agilewiki.jactor2.core.messaging;
  * class ExceptionActor extends ActorBase {
  *
  *     //Create an ExceptionActor.
- *     ExceptionActor(final MessageProcessor _mailbox) throws Exception {
- *         initialize(_mailbox);
+ *     ExceptionActor(final MessageProcessor _messageProcessor) throws Exception {
+ *         initialize(_messageProcessor);
  *     }
  *
  *     //Returns an exception request.
@@ -90,9 +90,9 @@ package org.agilewiki.jactor2.core.messaging;
  *     private final ExceptionActor exceptionActor;
  *
  *     //Create an exception handler actor with a reference to an exception actor.
- *     ExceptionHandlerActor(final ExceptionActor _exceptionActor, final MessageProcessor _mailbox) throws Exception {
+ *     ExceptionHandlerActor(final ExceptionActor _exceptionActor, final MessageProcessor _messageProcessor) throws Exception {
  *         exceptionActor = _exceptionActor;
- *         initialize(_mailbox);
+ *         initialize(_messageProcessor);
  *     }
  *
  *     //Returns a test request.
