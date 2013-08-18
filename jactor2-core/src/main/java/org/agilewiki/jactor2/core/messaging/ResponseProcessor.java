@@ -10,7 +10,7 @@ public interface ResponseProcessor<RESPONSE_TYPE> {
      * The processResponse method accepts the response of a request.
      * <p>
      * This method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (processing) that passed the
+     * is always invoked from the same light-weight thread (message processor) that passed the
      * Request and ResponseProcessor objects.
      * </p>
      *
