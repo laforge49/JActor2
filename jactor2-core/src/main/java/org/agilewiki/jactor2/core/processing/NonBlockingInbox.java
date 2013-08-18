@@ -7,8 +7,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * The inbox used by NonBlockingMessageProcessor and ThreadBoundMessageProcessor, an ArrayDeque is used as the
- * local queue.
+ * The inbox used by NonBlockingMessageProcessor and ThreadBoundMessageProcessor,
+ * NonBlockingInbox uses an ArrayDeque for the local queue.
  *
  * @author monster
  */
