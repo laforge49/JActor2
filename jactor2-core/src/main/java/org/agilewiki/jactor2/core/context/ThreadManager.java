@@ -63,31 +63,31 @@ final public class ThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        MessageProcessorBase mailbox = messageProcessors.poll();
-                        if (mailbox != null) {
-                            AtomicReference<Thread> threadReference = mailbox.getThreadReference();
+                        MessageProcessorBase messageProcessor = messageProcessors.poll();
+                        if (messageProcessor != null) {
+                            AtomicReference<Thread> threadReference = messageProcessor.getThreadReference();
                             if (threadReference.get() == null &&
                                     threadReference.compareAndSet(null, currentThread)) {
                                 while (true) {
                                     try {
-                                        mailbox.run();
+                                        messageProcessor.run();
                                     } catch (final MigrationException me) {
-                                        boolean hasWork = mailbox.hasWork();
+                                        boolean hasWork = messageProcessor.hasWork();
                                         threadReference.set(null);
-                                        if (mailbox.isIdler() || hasWork)
-                                            execute(mailbox);
-                                        mailbox = me.mailbox;
-                                        threadReference = mailbox.getThreadReference();
+                                        if (messageProcessor.isIdler() || hasWork)
+                                            execute(messageProcessor);
+                                        messageProcessor = me.mailboxProcessor;
+                                        threadReference = messageProcessor.getThreadReference();
                                         continue;
                                     } catch (final Throwable e) {
                                         logger.error(
                                                 "Exception thrown by a processing's run method",
                                                 e);
                                     }
-                                    boolean hasWork = mailbox.hasWork();
+                                    boolean hasWork = messageProcessor.hasWork();
                                     threadReference.set(null);
                                     if (hasWork)
-                                        execute(mailbox);
+                                        execute(messageProcessor);
                                     break;
                                 }
                             }

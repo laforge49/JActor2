@@ -3,24 +3,24 @@ package org.agilewiki.jactor2.core.context;
 import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 
 /**
- * Signals a migration of the current thread to another processing.
+ * Signals a migration of the current thread to another message processor.
  * As this exception is never thrown when a message is being processed,
  * the application should never be exposed to it.
  */
 public class MigrationException extends RuntimeException {
 
     /**
-     * The newly active processing.
+     * The newly active message processor.
      */
-    public MessageProcessorBase mailbox;
+    public final MessageProcessorBase mailboxProcessor;
 
     /**
      * Create a new MigrationException.
      *
-     * @param _mailbox The newly active processing.
+     * @param _messageProcessor The newly active processing.
      */
-    public MigrationException(final MessageProcessorBase _mailbox) {
-        mailbox = _mailbox;
+    public MigrationException(final MessageProcessorBase _messageProcessor) {
+        mailboxProcessor = _messageProcessor;
     }
 
     /**
