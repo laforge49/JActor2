@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Provides a thread pool for
- * non-blocking and may-block message processors. Multiple contexts with independent life cycles
+ * non-blocking and atomic message processors. Multiple contexts with independent life cycles
  * are also supported.
  * (A ServiceClosedException may be thrown when messages cross contexts and the target context is closed.)
  * In addition, the context maintains a set of AutoClosable objects that are closed
@@ -42,7 +42,7 @@ public final class JAContext implements AutoCloseable {
             .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
 
     /**
-     * Set when the processing factory reaches end-of-life.
+     * Set when the context reaches end-of-life.
      */
     private final AtomicBoolean shuttingDown = new AtomicBoolean();
 
@@ -128,7 +128,7 @@ public final class JAContext implements AutoCloseable {
     /**
      * Submit a MessageProcessor for subsequent execution.
      *
-     * @param _messageProcessor The processing to be run.
+     * @param _messageProcessor The message processor to be run.
      */
     public final void submit(final MessageProcessor _messageProcessor)
             throws Exception {
