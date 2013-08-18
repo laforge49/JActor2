@@ -65,7 +65,7 @@ package org.agilewiki.jactor2.core.messaging;
  * class Service extends ActorBase {
  *
  *     Service() throws Exception {
- *         //Create a processing on a new context with 1 thread.
+ *         //Create a message processor on a new context with 1 thread.
  *         initialize(new NonBlockingMessageProcessor(new JAContext(1)));
  *     }
  *
@@ -106,9 +106,9 @@ package org.agilewiki.jactor2.core.messaging;
  *     private final Service service;
  *
  *     //Create a service application actor with a reference to a service actor.
- *     ServiceApplication(final Service _service, final MessageProcessor _mailbox) throws Exception {
+ *     ServiceApplication(final Service _service, final MessageProcessor _messageProcessor) throws Exception {
  *         service = _service;
- *         initialize(_mailbox);
+ *         initialize(_messageProcessor);
  *     }
  *
  *     //Returns an application echo request.
