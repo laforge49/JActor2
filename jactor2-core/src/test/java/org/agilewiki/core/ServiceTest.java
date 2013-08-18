@@ -20,7 +20,7 @@ public class ServiceTest extends TestCase {
             new Request<Void>(testMessageProcessor) {
                 @Override
                 public void processRequest(final Transport<Void> _transport) throws Exception {
-                    client.crossReq().send(getMailbox(), new ResponseProcessor<Boolean>() {
+                    client.crossReq().send(getMessageProcessor(), new ResponseProcessor<Boolean>() {
                         @Override
                         public void processResponse(Boolean response) throws Exception {
                             assertFalse(response);
@@ -51,7 +51,7 @@ class Client extends ActorBase {
         return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(final Transport<Boolean> _transport) throws Exception {
-                getMailbox().setExceptionHandler(new ExceptionHandler() {
+                getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(Throwable throwable) throws Throwable {
                         if (!(throwable instanceof ServiceClosedException)) {
@@ -60,7 +60,7 @@ class Client extends ActorBase {
                         _transport.processResponse(false);
                     }
                 });
-                server.hangReq().send(getMailbox(), new ResponseProcessor<Void>() {
+                server.hangReq().send(getMessageProcessor(), new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(Void response) throws Exception {
                         _transport.processResponse(true);

@@ -361,14 +361,14 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return new Request<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest(final Transport rp) throws Exception {
-                getSerializedLengthReq.send(getMailbox(), new ResponseProcessor<Integer>() {
+                getSerializedLengthReq.send(getMessageProcessor(), new ResponseProcessor<Integer>() {
                     @Override
                     public void processResponse(Integer response) throws Exception {
                         if (response.intValue() != getSerializedLength()) {
                             rp.processResponse(false);
                             return;
                         }
-                        getSerializedBytesReq.send(getMailbox(), new ResponseProcessor<byte[]>() {
+                        getSerializedBytesReq.send(getMessageProcessor(), new ResponseProcessor<byte[]>() {
                             @Override
                             public void processResponse(byte[] response) throws Exception {
                                 boolean eq = Arrays.equals(response, getSerializedBytes());

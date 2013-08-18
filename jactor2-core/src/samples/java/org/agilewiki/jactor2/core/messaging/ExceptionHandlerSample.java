@@ -77,7 +77,7 @@ class ExceptionHandlerActor extends ActorBase {
             public void processRequest(final Transport<String> _transport) throws Exception {
 
                 //Create and assign an exception handler.
-                getMailbox().setExceptionHandler(new ExceptionHandler() {
+                getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(final Throwable _throwable) throws Throwable {
                         if (_throwable instanceof IllegalStateException) {
@@ -90,7 +90,7 @@ class ExceptionHandlerActor extends ActorBase {
 
                 //Create an exception request and send it to the exception actor for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                exceptionActor.exceptionReq().send(getMailbox(), new ResponseProcessor<Void>() {
+                exceptionActor.exceptionReq().send(getMessageProcessor(), new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(final Void _response) throws Exception {
                         _transport.processResponse("can not get here");

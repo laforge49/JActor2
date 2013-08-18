@@ -87,7 +87,7 @@ class IndirectActor extends ActorBase {
                 Request<Integer> req = actorA.updateReq(_newState);
 
                 //Send the request to the other actor.
-                req.send(getMailbox(), new ResponseProcessor<Integer>() {
+                req.send(getMessageProcessor(), new ResponseProcessor<Integer>() {
 
                     @Override
                     public void processResponse(Integer response) throws Exception {

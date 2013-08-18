@@ -120,7 +120,7 @@ class ServiceApplication extends ActorBase {
 
                 //Establish an exception handler which traps a ServiceClosedException and
                 //returns a notification that the exception occurred as a result.
-                getMailbox().setExceptionHandler(new ExceptionHandler() {
+                getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(Throwable throwable) throws Throwable {
                         if (throwable instanceof ServiceClosedException) {
@@ -138,7 +138,7 @@ class ServiceApplication extends ActorBase {
                             throw throwable;
                     }
                 });
-                service.delayEchoReq(_delay, _text).send(getMailbox(), new ResponseProcessor<String>() {
+                service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new ResponseProcessor<String>() {
                     @Override
                     public void processResponse(String response) throws Exception {
                         if (echoReqState.transport == null) {

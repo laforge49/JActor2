@@ -9,7 +9,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Request instances are used for passing both 1-way and 2-way messages between actors.
  * Requests are typically created as an anonymous class within the targeted Actor and are bound
- * to that actor's processing.
+ * to that actor's message processor.
  * The signal (1-way messaging) and call method (2-way messaging) pass unbuffered messages
  * to the target actor immediately, where they are enqueued for processing. But rather than being
  * sent immediately, request messages passed using the send method
@@ -69,8 +69,8 @@ import java.util.concurrent.Semaphore;
  *     private int state = 0;
  *
  *     //Create a SimpleActor2.
- *     SampleActor2(final MessageProcessor _mailbox) throws Exception {
- *         initialize(_mailbox);
+ *     SampleActor2(final MessageProcessor _messageProcessor) throws Exception {
+ *         initialize(_messageProcessor);
  *     }
  *
  *     //Return an update request.
@@ -95,9 +95,9 @@ import java.util.concurrent.Semaphore;
  *     private final SampleActor2 actorA;
  *
  *     //Create an IndirectActor with a reference to another actor.
- *     IndirectActor(final SampleActor2 _actorA, final MessageProcessor _mailbox) throws Exception {
+ *     IndirectActor(final SampleActor2 _actorA, final MessageProcessor _messageProcessor) throws Exception {
  *         actorA = _actorA;
- *         initialize(_mailbox);
+ *         initialize(_messageProcessor);
  *     }
  *
  *     //Return a request to update the other actor and return its new state.
@@ -135,22 +135,22 @@ import java.util.concurrent.Semaphore;
 public abstract class Request<RESPONSE_TYPE> {
 
     /**
-     * The processing where this Request Objects is passed for processing. The thread
-     * owned by this processing will process the Request.
+     * The message processor where this Request Objects is passed for processing. The thread
+     * owned by this message processor will process the Request.
      */
-    private final MessageProcessorBase mailbox;
+    private final MessageProcessorBase messageProcessor;
 
     /**
-     * Create an Request and bind it to its target processing.
+     * Create an Request and bind it to its target message processor.
      *
-     * @param _targetMessageProcessor The processing where this Request Objects is passed for processing.
-     *                                The thread owned by this processing will process this Request.
+     * @param _targetMessageProcessor The message processor where this Request Objects is passed for processing.
+     *                                The thread owned by this message processor will process this Request.
      */
     public Request(final MessageProcessor _targetMessageProcessor) {
         if (_targetMessageProcessor == null) {
-            throw new NullPointerException("targetMailbox");
+            throw new NullPointerException("targetMessageProcessor");
         }
-        this.mailbox = (MessageProcessorBase) _targetMessageProcessor;
+        this.messageProcessor = (MessageProcessorBase) _targetMessageProcessor;
     }
 
     /**
@@ -158,8 +158,8 @@ public abstract class Request<RESPONSE_TYPE> {
      *
      * @return The target MessageProcessor.
      */
-    public MessageProcessor getMailbox() {
-        return mailbox;
+    public MessageProcessor getMessageProcessor() {
+        return messageProcessor;
     }
 
     /**
@@ -171,17 +171,17 @@ public abstract class Request<RESPONSE_TYPE> {
     public void signal() throws Exception {
         final RequestMessage message = new RequestMessage(false, null, null,
                 this, null, SignalResponseProcessor.SINGLETON);
-        message.signal(mailbox);
+        message.signal(messageProcessor);
     }
 
     /**
      * Passes this Request together with the ResponseProcessor to the target MessageProcessor.
-     * Responses are passed back via the processing of the source actor and processed by the
+     * Responses are passed back via the message processor of the source actor and processed by the
      * provided ResponseProcessor and any exceptions
      * raised while processing the request are processed by the exception handler active when
      * the send method was called.
      *
-     * @param _source The processing on whose thread this method was invoked and which
+     * @param _source The message processor on whose thread this method was invoked and which
      *                will buffer this Request and subsequently receive the result for
      *                processing on the same thread.
      * @param _rp     Passed with this request and then returned with the result, the
@@ -193,24 +193,24 @@ public abstract class Request<RESPONSE_TYPE> {
         MessageProcessorBase source = (MessageProcessorBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(
-                    "A valid source processing can not be idle");
+                    "A valid source message processor can not be idle");
         ResponseProcessor<RESPONSE_TYPE> rp = _rp;
         if (rp == null)
             rp = (ResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         final RequestMessage message = new RequestMessage(
-                source.getJAContext() != mailbox.getJAContext(),
+                source.getJAContext() != messageProcessor.getJAContext(),
                 source,
                 source.getCurrentMessage(),
                 this,
                 source.getExceptionHandler(),
                 rp);
-        message.send(mailbox);
+        message.send(messageProcessor);
     }
 
     /**
      * Passes this Request to the target MessageProcessor and blocks the current thread until
      * a result is returned. The call method sends the message directly without buffering,
-     * as there is no processing. The response message is buffered, though thread migration is
+     * as there is no message processor. The response message is buffered, though thread migration is
      * not possible.
      *
      * @return The result from applying this Request to the target actor.
@@ -220,7 +220,7 @@ public abstract class Request<RESPONSE_TYPE> {
         final Pender pender = new Pender();
         final RequestMessage<RESPONSE_TYPE> message = new RequestMessage<RESPONSE_TYPE>(true, pender, null,
                 this, null, CallResponseProcessor.SINGLETON);
-        return (RESPONSE_TYPE) message.call(mailbox);
+        return (RESPONSE_TYPE) message.call(messageProcessor);
     }
 
     /**
@@ -302,18 +302,18 @@ public abstract class Request<RESPONSE_TYPE> {
     private static final class RequestMessage<RESPONSE_TYPE> implements Message {
 
         /**
-         * True when the result is to be returned via a processing with a processing factory
-         * that differs from the processing factory of the target processing.
+         * True when the result is to be returned via a message processor with a context
+         * that differs from the context of the target message processor.
          */
         protected final boolean foreign;
 
         /**
-         * The source processing or pender that will receive the results.
+         * The source message processor or pender that will receive the results.
          */
         protected final MessageSource messageSource;
 
         /**
-         * The message targeted to the source processing which, when processed,
+         * The message targeted to the source message processor which, when processed,
          * resulted in this message.
          */
         protected final Message oldMessage;
@@ -324,7 +324,7 @@ public abstract class Request<RESPONSE_TYPE> {
         protected final Request<RESPONSE_TYPE> request;
 
         /**
-         * The exception handler that was active in the source processing at the time
+         * The exception handler that was active in the source message processor at the time
          * when this message was created.
          */
         protected final ExceptionHandler sourceExceptionHandler;
@@ -347,13 +347,13 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Creates a request message.
          *
-         * @param _foreign True when the result is to be returned via a processing with a processing factory
-         *                 that differs from the processing factory of the target processing.
-         * @param _source  The source processing or pender that will receive the results.
-         * @param _old     The message targeted to the source processing which, when processed,
+         * @param _foreign True when the result is to be returned via a message processor with a context
+         *                 that differs from the context of the target message processor.
+         * @param _source  The source message processor or pender that will receive the results.
+         * @param _old     The message targeted to the source message processor which, when processed,
          *                 resulted in this message.
          * @param _request The Request object carried by this message.
-         * @param _handler The exception handler that was active in the source processing at the time
+         * @param _handler The exception handler that was active in the source message processor at the time
          *                 when this message was created.
          * @param _rp      The application object that will process the results.
          */
@@ -411,28 +411,28 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Pass a 1-way message.
          *
-         * @param _targetMessageProcessor The processing that will receive the message.
+         * @param _targetMessageProcessor The message processor that will receive the message.
          */
         final void signal(final MessageProcessor _targetMessageProcessor) throws Exception {
             ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, false);
         }
 
         /**
-         * A 2-way message exchange between the mailboxes.
+         * A 2-way message exchange between the message processors.
          *
-         * @param _targetMessageProcessor The processing that will receive the message.
+         * @param _targetMessageProcessor The message processor that will receive the message.
          */
         final void send(final MessageProcessor _targetMessageProcessor) throws Exception {
-            MessageProcessorBase sourceMailbox = (MessageProcessorBase) messageSource;
-            boolean local = sourceMailbox == _targetMessageProcessor;
-            if (local || !sourceMailbox.buffer(this, _targetMessageProcessor))
+            MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) messageSource;
+            boolean local = sourceMessageProcessor == _targetMessageProcessor;
+            if (local || !sourceMessageProcessor.buffer(this, _targetMessageProcessor))
                 ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, local);
         }
 
         /**
-         * A 2-way message exchange between a Pender and the target processing.
+         * A 2-way message exchange between a Pender and the target message processor.
          *
-         * @param _targetMessageProcessor The processing that will receive the message.
+         * @param _targetMessageProcessor The message processor that will receive the message.
          */
         final Object call(final MessageProcessor _targetMessageProcessor) throws Exception {
             ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, false);
@@ -451,7 +451,7 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Process a request or the response.
          *
-         * @param _activeMessageProcessor The processing whose thread is to evaluate the request/response.
+         * @param _activeMessageProcessor The message processor whose thread is to evaluate the request/response.
          */
         public void eval(final MessageProcessor _activeMessageProcessor) {
             if (responsePending) {
@@ -464,16 +464,16 @@ public abstract class Request<RESPONSE_TYPE> {
         /**
          * Process a request.
          *
-         * @param _targetMessageProcessor The processing whose thread is to evaluate the request.
+         * @param _targetMessageProcessor The message processor whose thread is to evaluate the request.
          */
         private void processRequestMessage(final MessageProcessor _targetMessageProcessor) {
-            final MessageProcessorBase targetMailbox = (MessageProcessorBase) _targetMessageProcessor;
-            final JAContext jaContext = targetMailbox.getJAContext();
+            final MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) _targetMessageProcessor;
+            final JAContext jaContext = targetMessageProcessor.getJAContext();
             if (foreign)
                 jaContext.addAutoClosable(this);
-            targetMailbox.setExceptionHandler(null);
-            targetMailbox.setCurrentMessage(this);
-            targetMailbox.requestBegin();
+            targetMessageProcessor.setExceptionHandler(null);
+            targetMessageProcessor.setCurrentMessage(this);
+            targetMessageProcessor.requestBegin();
             try {
                 request.processRequest(
                         new Transport() {
@@ -484,12 +484,12 @@ public abstract class Request<RESPONSE_TYPE> {
                                     jaContext.removeAutoClosable(RequestMessage.this);
                                 if (!responsePending)
                                     return;
-                                setResponse(response, targetMailbox);
+                                setResponse(response, targetMessageProcessor);
                                 if (getResponseProcessor() != SignalResponseProcessor.SINGLETON) {
-                                    messageSource.incomingResponse(RequestMessage.this, targetMailbox);
+                                    messageSource.incomingResponse(RequestMessage.this, targetMessageProcessor);
                                 } else {
                                     if (response instanceof Throwable) {
-                                        targetMailbox.getLogger().warn("Uncaught throwable",
+                                        targetMessageProcessor.getLogger().warn("Uncaught throwable",
                                                 (Throwable) response);
                                     }
                                 }
@@ -512,21 +512,21 @@ public abstract class Request<RESPONSE_TYPE> {
             } catch (final Throwable t) {
                 if (foreign)
                     jaContext.removeAutoClosable(this);
-                processThrowable(targetMailbox, t);
+                processThrowable(targetMessageProcessor, t);
             }
         }
 
         /**
          * Process a response.
          *
-         * @param _sourceMessageProcessor The processing whose thread is to evaluate the response.
+         * @param _sourceMessageProcessor The message processor whose thread is to evaluate the response.
          */
         private void processResponseMessage(final MessageProcessor _sourceMessageProcessor) {
-            MessageProcessorBase sourceMailbox = (MessageProcessorBase) _sourceMessageProcessor;
-            sourceMailbox.setExceptionHandler(sourceExceptionHandler);
-            sourceMailbox.setCurrentMessage(oldMessage);
+            MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) _sourceMessageProcessor;
+            sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
+            sourceMessageProcessor.setCurrentMessage(oldMessage);
             if (response instanceof Throwable) {
-                oldMessage.processThrowable(sourceMailbox, (Throwable) response);
+                oldMessage.processThrowable(sourceMessageProcessor, (Throwable) response);
                 return;
             }
             @SuppressWarnings("rawtypes")
@@ -535,27 +535,27 @@ public abstract class Request<RESPONSE_TYPE> {
             try {
                 responseProcessor.processResponse(response);
             } catch (final Throwable t) {
-                oldMessage.processThrowable(sourceMailbox, t);
+                oldMessage.processThrowable(sourceMessageProcessor, t);
             }
         }
 
         @Override
         public void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t) {
-            MessageProcessorBase activeMailbox = (MessageProcessorBase) _activeMessageProcessor;
-            ExceptionHandler exceptionHandler = activeMailbox.getExceptionHandler();
+            MessageProcessorBase activeMessageProcessor = (MessageProcessorBase) _activeMessageProcessor;
+            ExceptionHandler exceptionHandler = activeMessageProcessor.getExceptionHandler();
             if (exceptionHandler != null) {
                 try {
                     exceptionHandler.processException(_t);
                 } catch (final Throwable u) {
-                    activeMailbox.getLogger().error("Exception handler unable to process throwable "
+                    activeMessageProcessor.getLogger().error("Exception handler unable to process throwable "
                             + exceptionHandler.getClass().getName(), u);
                     if (!(responseProcessor instanceof SignalResponseProcessor)) {
                         if (!responsePending)
                             return;
-                        setResponse(u, activeMailbox);
-                        messageSource.incomingResponse(this, activeMailbox);
+                        setResponse(u, activeMessageProcessor);
+                        messageSource.incomingResponse(this, activeMessageProcessor);
                     } else {
-                        activeMailbox.getLogger().error("Thrown by exception handler and uncaught "
+                        activeMessageProcessor.getLogger().error("Thrown by exception handler and uncaught "
                                 + exceptionHandler.getClass().getName(), _t);
                     }
                 }
@@ -563,11 +563,11 @@ public abstract class Request<RESPONSE_TYPE> {
                 if (!responsePending) {
                     return;
                 }
-                setResponse(_t, activeMailbox);
+                setResponse(_t, activeMessageProcessor);
                 if (!(responseProcessor instanceof SignalResponseProcessor))
-                    messageSource.incomingResponse(this, activeMailbox);
+                    messageSource.incomingResponse(this, activeMessageProcessor);
                 else {
-                    activeMailbox.getLogger().warn("Uncaught throwable", _t);
+                    activeMessageProcessor.getLogger().warn("Uncaught throwable", _t);
                 }
             }
         }
