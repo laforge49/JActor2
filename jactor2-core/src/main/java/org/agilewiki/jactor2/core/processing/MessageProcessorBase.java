@@ -12,7 +12,7 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Base class for mailboxes.
+ * Base class for message processors.
  */
 abstract public class MessageProcessorBase implements MessageProcessor, MessageSource, AutoCloseable {
 
@@ -22,7 +22,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     protected final Logger log;
 
     /**
-     * The context of this processing.
+     * The context of this message processor.
      */
     protected final JAContext jaContext;
 
@@ -44,9 +44,9 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     private Message currentMessage;
 
     /**
-     * Create a processing.
+     * Create a message processor.
      *
-     * @param _jaContext             The context of this processing.
+     * @param _jaContext             The context of this message processor.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
@@ -55,7 +55,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
                                 final int _initialLocalQueueSize) {
         jaContext = _jaContext;
         inbox = createInbox(_initialLocalQueueSize);
-        log = _jaContext.getMailboxLogger();
+        log = _jaContext.getMessageProcessorLogger();
         outbox = new Outbox(jaContext, _initialBufferSize);
         _jaContext.addAutoClosable(this);
     }
@@ -69,9 +69,9 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
     /**
-     * Returns the processing logger.
+     * Returns the message processor logger.
      *
-     * @return The processing logger.
+     * @return The message processor logger.
      */
     public final Logger getLogger() {
         return log;
@@ -97,7 +97,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
 
     /**
      * Returns true when there is a message in the inbox that can be processed.
-     * (This method is not thread safe and must be called on the processing's thread.)
+     * (This method is not thread safe and must be called on the message processor's thread.)
      *
      * @return True if there is a message in the inbox that can be processed.
      */
@@ -127,7 +127,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
             final ExceptionHandler _handler) {
         if (!isRunning())
             throw new IllegalStateException(
-                    "Attempt to set an exception handler on an idle processing");
+                    "Attempt to set an exception handler on an idle message processor");
         final ExceptionHandler rv = this.exceptionHandler;
         this.exceptionHandler = _handler;
         return rv;
@@ -146,7 +146,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
      * Add a message directly to the input queue of a MessageProcessor.
      *
      * @param _message A message.
-     * @param _local   True when the current thread is bound to the processing.
+     * @param _local   True when the current thread is bound to the message processor.
      */
     public void unbufferedAddMessage(final Message _message, final boolean _local)
             throws Exception {
@@ -191,10 +191,10 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     abstract protected void afterAdd() throws Exception;
 
     /**
-     * Buffers a message in the sending processing for sending later.
+     * Buffers a message in the sending message processor for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The processing that should eventually receive this message
+     * @param _target  The message processor that should eventually receive this message
      * @return True if the message was buffered.
      */
     public boolean buffer(final Message _message, final MessageProcessor _target) {
@@ -273,7 +273,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     abstract public AtomicReference<Thread> getThreadReference();
 
     /**
-     * Returns true, if this processing is currently processing messages.
+     * Returns true, if this message processor is actively processing messages.
      */
     abstract public boolean isRunning();
 

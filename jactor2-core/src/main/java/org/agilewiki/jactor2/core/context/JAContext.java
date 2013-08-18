@@ -26,9 +26,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class JAContext implements AutoCloseable {
 
     /**
-     * The logger used by mailboxes.
+     * The logger used by message processors.
      */
-    private final Logger mailboxLogger = LoggerFactory.getLogger(MessageProcessor.class);
+    private final Logger messageProcessorLogger = LoggerFactory.getLogger(MessageProcessor.class);
 
     /**
      * The thread pool used by JAContext.
@@ -108,8 +108,8 @@ public final class JAContext implements AutoCloseable {
      *
      * @return A logger.
      */
-    public Logger getMailboxLogger() {
-        return mailboxLogger;
+    public Logger getMessageProcessorLogger() {
+        return messageProcessorLogger;
     }
 
     /**
