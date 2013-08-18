@@ -18,19 +18,19 @@ import java.util.concurrent.atomic.AtomicReference;
 abstract public class UnboundMessageProcessor extends MessageProcessorBase {
 
     /**
-     * A reference to the thread that is executing this processing.
+     * A reference to the thread that is executing this message processor.
      */
     protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
 
     /**
-     * The object to be run when the processing is emptied and before the threadReference is cleared.
+     * The object to be run when the inbox is emptied and before the threadReference is cleared.
      */
     private final Runnable onIdle;
 
     /**
-     * Create a processing.
+     * Create a message processor.
      *
-     * @param _context               The context of this processing.
+     * @param _context               The context of this message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
