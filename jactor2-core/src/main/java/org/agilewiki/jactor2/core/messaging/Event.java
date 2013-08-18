@@ -8,11 +8,11 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
  * An Event instance is used to pass one-way messages to any number of Actor objects.
  * Event messages are unbuffered and are sent immediately. The net effect of sending
  * an event to an actor is that Event.processEvent, an application-specific method,
- * is called in a thread-safe way from the actor's processing's own thread.
+ * is called in a thread-safe way from the actor's MessageProcessor's own thread.
  * <p>
  * As neither message buffering nor thread migration are used, events may be slower,
  * in terms of both latency and throughput, than a request. On the other hand, when
- * the target processing is atomic, event processing is not delayed until a response is
+ * the target MessageProcessor is atomic, event processing is not delayed until a response is
  * assigned to a prior request.
  * </p>
  * <p>
@@ -50,8 +50,8 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
  *
  *     class SampleActor1 extends ActorBase {
  *
- *         SampleActor1(final MessageProcessor _mailbox) throws Exception {
- *             initialize(_mailbox);
+ *         SampleActor1(final MessageProcessor _messageProcessor) throws Exception {
+ *             initialize(_messageProcessor);
  *         }
  *
  *         void fin(final String msg) throws Exception {
@@ -84,7 +84,7 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
 
     /**
      * Passes an event message immediately to the target MessageProcessor for subsequent processing
-     * by the thread of the that processing. No result is passed back and if an exception is
+     * by the thread of the that message processor. No result is passed back and if an exception is
      * thrown while processing the event,that exception is simply logged as a warning.
      *
      * @param _targetActor The actor to be operated on.
@@ -139,27 +139,27 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
 
         @Override
         public void eval(final MessageProcessor _targetMessageProcessor) {
-            MessageProcessorBase targetMailbox = (MessageProcessorBase) _targetMessageProcessor;
-            targetMailbox.setExceptionHandler(null);
-            targetMailbox.setCurrentMessage(this);
+            MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) _targetMessageProcessor;
+            targetMessageProcessor.setExceptionHandler(null);
+            targetMessageProcessor.setCurrentMessage(this);
             try {
                 processEvent(targetActor);
             } catch (final Throwable t) {
-                processThrowable(targetMailbox, t);
+                processThrowable(targetMessageProcessor, t);
             }
         }
 
         @Override
         public void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t) {
-            MessageProcessorBase activeMailbox = (MessageProcessorBase) _activeMessageProcessor;
-            ExceptionHandler exceptionHandler = activeMailbox.getExceptionHandler();
+            MessageProcessorBase activeMessageProcessor = (MessageProcessorBase) _activeMessageProcessor;
+            ExceptionHandler exceptionHandler = activeMessageProcessor.getExceptionHandler();
             if (exceptionHandler != null) {
                 try {
                     exceptionHandler.processException(_t);
                 } catch (final Throwable u) {
-                    activeMailbox.getLogger().error("Exception handler unable to process throwable "
+                    activeMessageProcessor.getLogger().error("Exception handler unable to process throwable "
                             + exceptionHandler.getClass().getName(), u);
-                    activeMailbox.getLogger().error("Thrown by exception handler and uncaught "
+                    activeMessageProcessor.getLogger().error("Thrown by exception handler and uncaught "
                             + exceptionHandler.getClass().getName(), _t);
                 }
             }
