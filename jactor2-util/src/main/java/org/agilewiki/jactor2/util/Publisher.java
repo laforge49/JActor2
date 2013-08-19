@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -69,11 +70,9 @@ public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
-                final Object[] subs = subscribers.toArray();
-                for (final Object object : subs) {
-                    @SuppressWarnings("unchecked")
-                    final TARGET_ACTOR_TYPE subscriber = (TARGET_ACTOR_TYPE) object;
-                    event.signal(subscriber);
+                Iterator<TARGET_ACTOR_TYPE> it = subscribers.iterator();
+                while (it.hasNext()) {
+                    event.signal(it.next());
                 }
                 _rp.processResponse(null);
             }
