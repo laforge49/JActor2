@@ -5,11 +5,11 @@ import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
-public class PublisherTest extends TestCase {
+public class EventBusTest extends TestCase {
     public void test() throws Exception {
         JAContext jaContext = new JAContext();
         try {
-            Publisher p = new Publisher();
+            EventBus p = new EventBus();
             p.initialize(new NonBlockingMessageProcessor(jaContext));
             Printer a = new Printer();
             a.initialize(new NonBlockingMessageProcessor(jaContext));

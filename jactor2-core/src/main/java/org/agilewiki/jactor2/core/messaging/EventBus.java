@@ -12,7 +12,7 @@ import java.util.Set;
  *
  * @param <TARGET_ACTOR_TYPE> The type of subscriber.
  */
-public class Publisher<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
+public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     /**
      * The subscribers
      */
