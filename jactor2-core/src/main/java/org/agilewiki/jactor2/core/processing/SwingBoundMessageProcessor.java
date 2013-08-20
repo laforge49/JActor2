@@ -12,9 +12,9 @@ import javax.swing.*;
 public class SwingBoundMessageProcessor extends ThreadBoundMessageProcessor {
 
     /**
-     * Create a mailbox processor bound to the Swing event-dispatch thread.
+     * Create a message processor processor bound to the Swing event-dispatch thread.
      *
-     * @param _jaContext The context of the mailbox processor.
+     * @param _jaContext The context of the message processor.
      */
     public SwingBoundMessageProcessor(JAContext _jaContext) {
         super(_jaContext, null);
@@ -22,9 +22,9 @@ public class SwingBoundMessageProcessor extends ThreadBoundMessageProcessor {
     }
 
     /**
-     * Create a mailbox processor bound to the Swing event-dispatch thread.
+     * Create a message processor bound to the Swing event-dispatch thread.
      *
-     * @param _jaContext             The context of the mailbox processor.
+     * @param _jaContext             The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */

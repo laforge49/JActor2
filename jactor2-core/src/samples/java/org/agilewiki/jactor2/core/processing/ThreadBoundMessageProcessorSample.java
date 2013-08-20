@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Event;
 
-public class ThreadBoundMailboxSample {
+public class ThreadBoundMessageProcessorSample {
 
     public static void main(String[] args) throws Exception {
 
@@ -15,7 +15,7 @@ public class ThreadBoundMailboxSample {
         final Thread mainThread = Thread.currentThread();
 
         //Create a thread-bound processing.
-        final ThreadBoundMessageProcessor boundMailbox =
+        final ThreadBoundMessageProcessor boundMessageProcessor =
                 new ThreadBoundMessageProcessor(jaContext, new Runnable() {
                     @Override
                     public void run() {
@@ -25,7 +25,7 @@ public class ThreadBoundMailboxSample {
                 });
 
         //Create an actor that uses the thread-bound processing.
-        final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMailbox);
+        final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMessageProcessor);
 
         //Pass a FinEvent signal to the actor.
         new FinEvent().signal(threadBoundActor);
@@ -37,7 +37,7 @@ public class ThreadBoundMailboxSample {
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 //Process messages when the main thread is interrupted.
-                boundMailbox.run();
+                boundMessageProcessor.run();
             }
         }
     }
