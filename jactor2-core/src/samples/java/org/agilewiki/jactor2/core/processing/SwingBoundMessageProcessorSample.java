@@ -30,8 +30,8 @@ class HelloWorld extends ActorBase {
             @Override
             public void processRequest(Transport<Void> _transport) throws Exception {
                 //Create and set up the window.
-                JFrame frame = new JFrame("HelloWorldSwing");
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                JFrame frame = new JFrame("HelloWorld");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
 
                 //Close context when window is closed.
                 frame.addWindowListener(new WindowAdapter() {
@@ -45,13 +45,15 @@ class HelloWorld extends ActorBase {
                     }
                 });
 
-                //Add the ubiquitous "Hello World" label.
-                JLabel label = new JLabel("Hello World");
+                //Add the "Hello World!" label.
+                JLabel label = new JLabel("Hello World!");
                 frame.getContentPane().add(label);
 
                 //Display the window.
                 frame.pack();
                 frame.setVisible(true);
+
+                //return the result.
                 _transport.processResponse(null);
             }
         };
