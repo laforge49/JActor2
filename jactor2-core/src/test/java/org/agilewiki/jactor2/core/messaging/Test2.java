@@ -1,4 +1,4 @@
-package org.agilewiki.core.messaging;
+package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;

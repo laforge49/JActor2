@@ -1,4 +1,4 @@
-package org.agilewiki.core.messaging;
+package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
@@ -8,13 +8,12 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
 /**
  * Test code.
  */
-public class Test1 extends TestCase {
-    public void testa() throws Exception {
+public class Test3 extends TestCase {
+    public void testb() throws Exception {
         final JAContext jaContext = new JAContext();
         final MessageProcessor messageProcessor = new AtomicMessageProcessor(jaContext);
-        final Actor1 actor1 = new Actor1(messageProcessor);
-        final String result = actor1.hi.call();
-        assertEquals("Hello world!", result);
+        final Actor3 actor3 = new Actor3(messageProcessor);
+        actor3.hi3.call();
         jaContext.close();
     }
 }

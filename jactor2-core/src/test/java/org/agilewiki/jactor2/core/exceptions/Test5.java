@@ -1,4 +1,4 @@
-package org.agilewiki.core.exceptions;
+package org.agilewiki.jactor2.core.exceptions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;

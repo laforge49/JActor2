@@ -1,7 +1,6 @@
-package org.agilewiki.core;
+package org.agilewiki.jactor2.core;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.*;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;

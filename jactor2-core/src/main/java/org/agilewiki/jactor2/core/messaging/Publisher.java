@@ -1,10 +1,7 @@
-package org.agilewiki.jactor2.util;
+package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 
 import java.util.HashSet;
 import java.util.Iterator;

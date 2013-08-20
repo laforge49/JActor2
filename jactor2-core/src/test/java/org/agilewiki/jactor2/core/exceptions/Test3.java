@@ -1,4 +1,4 @@
-package org.agilewiki.core.exceptions;
+package org.agilewiki.jactor2.core.exceptions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
@@ -8,18 +8,13 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
 /**
  * Test code.
  */
-public class Test1 extends TestCase {
+public class Test3 extends TestCase {
     public void testI() throws Exception {
         final JAContext jaContext = new JAContext();
         final MessageProcessor messageProcessor = new AtomicMessageProcessor(jaContext);
-        final ActorA actorA = new ActorA(messageProcessor);
-        try {
-            actorA.throwRequest.call();
-        } catch (final SecurityException se) {
-            jaContext.close();
-            return;
-        }
-        throw new Exception("Security exception was not caught");
+        final ActorC actorC = new ActorC(messageProcessor);
+        final String result = actorC.throwRequest.call();
+        assertEquals("java.lang.SecurityException: thrown on request", result);
+        jaContext.close();
     }
-
 }

@@ -1,9 +1,8 @@
-package org.agilewiki.jactor2.util;
+package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class PublisherTest extends TestCase {
@@ -33,7 +32,7 @@ public class PublisherTest extends TestCase {
     }
 }
 
-class Printer extends ActorBase implements Named {
+class Printer extends ActorBase {
     /**
      * The name, or null.
      */
@@ -44,7 +43,6 @@ class Printer extends ActorBase implements Named {
      *
      * @return The name, or null.
      */
-    @Override
     public String getName() {
         return name;
     }

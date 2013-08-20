@@ -1,4 +1,4 @@
-package org.agilewiki.core.exceptions;
+package org.agilewiki.jactor2.core.exceptions;
 
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;

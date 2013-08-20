@@ -1,4 +1,4 @@
-package org.agilewiki.core.exceptions;
+package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
@@ -8,13 +8,13 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
 /**
  * Test code.
  */
-public class Test3 extends TestCase {
-    public void testI() throws Exception {
+public class Test1 extends TestCase {
+    public void testa() throws Exception {
         final JAContext jaContext = new JAContext();
         final MessageProcessor messageProcessor = new AtomicMessageProcessor(jaContext);
-        final ActorC actorC = new ActorC(messageProcessor);
-        final String result = actorC.throwRequest.call();
-        assertEquals("java.lang.SecurityException: thrown on request", result);
+        final Actor1 actor1 = new Actor1(messageProcessor);
+        final String result = actor1.hi.call();
+        assertEquals("Hello world!", result);
         jaContext.close();
     }
 }
