@@ -6,23 +6,21 @@ import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class SwingBoundMessageProcessorSample {
     public static void main(final String[] _args) throws Exception {
 
-        //Create a context with 5 threads.
-        JAContext context = new JAContext(5);
-
-        HelloWorld helloWorld = new HelloWorld(new SwingBoundMessageProcessor(context));
-        helloWorld.createAndShowReq().signal();
+        new HelloWorld().createAndShowReq().signal();
     }
 }
 
 class HelloWorld extends ActorBase {
-    HelloWorld(final SwingBoundMessageProcessor _messageProcessor) throws Exception {
-        initialize(_messageProcessor);
+    HelloWorld() throws Exception {
+
+        //Create a context with 5 threads.
+        JAContext context = new JAContext(5);
+
+        initialize(new SwingBoundMessageProcessor(context));
     }
 
     Request<Void> createAndShowReq() {
@@ -34,16 +32,7 @@ class HelloWorld extends ActorBase {
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
 
                 //Close context when window is closed.
-                frame.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        try {
-                            getMessageProcessor().getJAContext().close();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                });
+                frame.addWindowListener((SwingBoundMessageProcessor) getMessageProcessor());
 
                 //Add the "Hello World!" label.
                 JLabel label = new JLabel("Hello World!");
