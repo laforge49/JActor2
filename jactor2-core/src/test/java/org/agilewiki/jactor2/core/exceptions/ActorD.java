@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.exceptions;
 
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -11,8 +12,8 @@ public class ActorD {
     private final MessageProcessor messageProcessor;
     public final Request<String> throwRequest;
 
-    public ActorD(final MessageProcessor mbox) {
-        this.messageProcessor = mbox;
+    public ActorD(final JAContext _context) {
+        this.messageProcessor = new AtomicMessageProcessor(_context);
 
         throwRequest = new Request<String>(messageProcessor) {
             @Override
@@ -26,7 +27,7 @@ public class ActorD {
                         responseProcessor.processResponse(throwable.toString());
                     }
                 });
-                Dd dd = new Dd(new AtomicMessageProcessor(messageProcessor.getJAContext()));
+                Dd dd = new Dd(messageProcessor.getJAContext());
                 dd.doSomethin.send(messageProcessor, new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(final Void response)
@@ -43,8 +44,8 @@ class Dd {
     private final MessageProcessor messageProcessor;
     final Request<Void> doSomethin;
 
-    public Dd(final MessageProcessor mbox) {
-        messageProcessor = mbox;
+    public Dd(final JAContext _context) {
+        messageProcessor = new AtomicMessageProcessor(_context);
 
         doSomethin = new Request<Void>(messageProcessor) {
             @Override

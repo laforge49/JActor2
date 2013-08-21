@@ -11,9 +11,8 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
         final JAContext jaContext = new JAContext();
-        final MessageProcessor messageProcessorE = new AtomicMessageProcessor(jaContext);
+        final ActorE actorE = new ActorE(jaContext);
         final MessageProcessor messageProcessorA = new AtomicMessageProcessor(jaContext);
-        final ActorE actorE = new ActorE(messageProcessorE);
         final ActorA actorA = new ActorA(messageProcessorA);
         try {
             actorE.throwRequest(actorA).call();

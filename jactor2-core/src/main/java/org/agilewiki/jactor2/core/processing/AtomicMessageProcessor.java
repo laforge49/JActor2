@@ -6,7 +6,8 @@ import org.agilewiki.jactor2.core.messaging.Message;
 
 /**
  * A message processor which processes each request to completion, and which should be used by actors
- * which perform long computations, I/O, or otherwise block the thread.
+ * which perform long computations, I/O, or otherwise block the thread. And unlike other types of
+ * message processors, an AtomicMessageProcessor should usually be used only by a single actor.
  * <p>
  * For thread safety, the processing of each message is atomic, but when the processing of a
  * message results in the sending of a request, other messages may be processed before a

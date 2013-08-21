@@ -1,15 +1,17 @@
 package org.agilewiki.jactor2.core.exceptions;
 
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorE {
     private final MessageProcessor messageProcessor;
 
-    public ActorE(final MessageProcessor mbox) {
-        this.messageProcessor = mbox;
+    public ActorE(final JAContext _context) {
+        this.messageProcessor = new AtomicMessageProcessor(_context);
     }
 
     public Request<Void> throwRequest(final ActorA actorA) {

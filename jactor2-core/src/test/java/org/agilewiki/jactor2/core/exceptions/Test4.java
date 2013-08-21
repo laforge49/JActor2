@@ -11,8 +11,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
 public class Test4 extends TestCase {
     public void testI() throws Exception {
         final JAContext jaContext = new JAContext();
-        final MessageProcessor messageProcessor = new AtomicMessageProcessor(jaContext);
-        final ActorD actorD = new ActorD(messageProcessor);
+        final ActorD actorD = new ActorD(jaContext);
         final String result = actorD.throwRequest.call();
         assertEquals("java.lang.SecurityException: thrown on request", result);
         jaContext.close();

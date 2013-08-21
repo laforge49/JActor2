@@ -31,7 +31,7 @@ public class ParallelTest extends TestCase {
                         LOADS, null, responseProcessor);
                 int i = 0;
                 while (i < LOADS) {
-                    final Delay dly = new Delay(new AtomicMessageProcessor(jaContext));
+                    final Delay dly = new Delay(jaContext);
                     dly.sleepReq(ParallelTest.DELAY).send(messageProcessor,
                             responseCounter);
                     i += 1;

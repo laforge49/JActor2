@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core;
 
+import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
@@ -12,10 +13,10 @@ public class Delay extends ActorBase {
     /**
      * Create a Delay actor.
      *
-     * @param _messageProcessor The actor's message processor.
+     * @param _context The actor's context.
      */
-    public Delay(final AtomicMessageProcessor _messageProcessor) throws Exception {
-        initialize(_messageProcessor);
+    public Delay(final JAContext _context) throws Exception {
+        initialize(new AtomicMessageProcessor(_context));
     }
 
     /**
