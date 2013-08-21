@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.util;
+package org.agilewiki.jactor2.core.processing;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Delay;
@@ -7,8 +7,6 @@ import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseCounter;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class AtomicTest extends TestCase {
     int count = 0;
