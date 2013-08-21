@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,6 +19,15 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * The actors which will receive the published events.
      */
     private final Set<TARGET_ACTOR_TYPE> subscribers = new HashSet<TARGET_ACTOR_TYPE>();
+
+    /**
+     * Create an event bus.
+     *
+     * @param _messageProcessor The actor's message processor.
+     */
+    public EventBus(final MessageProcessor _messageProcessor) throws Exception {
+        initialize(_messageProcessor);
+    }
 
     /**
      * Returns a request to add a subscriber.

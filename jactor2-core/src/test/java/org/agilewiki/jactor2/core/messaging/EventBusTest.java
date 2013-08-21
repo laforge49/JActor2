@@ -9,8 +9,7 @@ public class EventBusTest extends TestCase {
     public void test() throws Exception {
         JAContext jaContext = new JAContext();
         try {
-            EventBus p = new EventBus();
-            p.initialize(new NonBlockingMessageProcessor(jaContext));
+            EventBus p = new EventBus(new NonBlockingMessageProcessor(jaContext));
             Printer a = new Printer();
             a.initialize(new NonBlockingMessageProcessor(jaContext));
             a.setName("a");
