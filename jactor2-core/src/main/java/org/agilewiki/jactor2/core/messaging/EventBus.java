@@ -8,21 +8,22 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Implements Publish and Subscribe.
+ * Publishes events to subscribers.
  *
- * @param <TARGET_ACTOR_TYPE> The type of subscriber.
+ * @param <TARGET_ACTOR_TYPE> A subclass of Actor implemented by all subscribers and
+ *                           the target of the published events.
  */
 public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     /**
-     * The subscribers
+     * The actors which will receive the published events.
      */
     private final Set<TARGET_ACTOR_TYPE> subscribers = new HashSet<TARGET_ACTOR_TYPE>();
 
     /**
-     * A request to add a subscriber.
+     * Returns a request to add a subscriber.
      * The result of the request is true when the subscriber list was changed.
      *
-     * @param _subscriber The actor to be added.
+     * @param _subscriber An actor that will receive the published events.
      * @return The request.
      */
     public Request<Boolean> subscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
@@ -36,10 +37,10 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     }
 
     /**
-     * A request to remove a subscriber.
+     * Returns a request to remove a subscriber.
      * The result of the request is true when the subscriber list was changed.
      *
-     * @param _subscriber The actor to be removed.
+     * @param _subscriber The actor that should no longer receive the published events.
      * @return The request.
      */
     public Request<Boolean> unsubscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
@@ -53,12 +54,12 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     }
 
     /**
-     * A request to publish an unbound request to all the subscribers.
-     * The request completes with a null result only when all subscribers have processed the
-     * unbound request.
-     * Exceptions thrown by subscribers when processign the unbound request are simply ignored.
+     * Returns a request to publish an event to all the subscribers.
+     * The request completes with a null result only when the event has been sent to all subscribers.
+     * Exceptions thrown by subscribers when processing the are are simply logged, as is the case for
+     * all events.
      *
-     * @param event The request to be published.
+     * @param event The event to be published.
      * @return The request.
      */
     public Request<Void> publishReq(
