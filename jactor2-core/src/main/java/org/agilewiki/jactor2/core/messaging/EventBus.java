@@ -12,7 +12,7 @@ import java.util.Set;
  * Publishes events to subscribers.
  *
  * @param <TARGET_ACTOR_TYPE> A subclass of Actor implemented by all subscribers and
- *                           the target of the published events.
+ *                            the target of the published events.
  */
 public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     /**
@@ -66,8 +66,8 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     /**
      * Returns a request to publish an event to all the subscribers.
      * The request completes with a null result only when the event has been sent to all subscribers.
-     * Exceptions thrown by subscribers when processing the are are simply logged, as is the case for
-     * all events.
+     * Exceptions thrown by subscribers when processing these events are are simply logged,
+     * as is the case for all events.
      *
      * @param event The event to be published.
      * @return The request.
