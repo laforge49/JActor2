@@ -1,6 +1,4 @@
-package org.agilewiki.jactor2.util;
-
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
+package org.agilewiki.jactor2.core.messaging;
 
 /**
  * When multiple requests have been sent, ResponseCounter can be used to
@@ -85,11 +83,6 @@ public class ResponseCounter<RESPONSE_TYPE> implements
         return count;
     }
 
-    /**
-     * This method is called as each request completes.
-     *
-     * @param response The response given, which is ignored.
-     */
     @Override
     public void processResponse(final RESPONSE_TYPE response) throws Exception {
         decrementCount();
