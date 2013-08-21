@@ -2,8 +2,10 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Actor;
+import org.agilewiki.jactor2.core.Delay;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.*;
+import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
@@ -44,7 +46,7 @@ public class SemaphoreTest extends TestCase implements Actor {
             @Override
             public void processEvent(final SemaphoreTest actor)
                     throws Exception {
-                new Delay(jaContext).sleepReq(delay).send(getMessageProcessor(),
+                new Delay(new AtomicMessageProcessor(jaContext)).sleepReq(delay).send(getMessageProcessor(),
                         new ResponseProcessor<Void>() {
                             @Override
                             public void processResponse(final Void response)

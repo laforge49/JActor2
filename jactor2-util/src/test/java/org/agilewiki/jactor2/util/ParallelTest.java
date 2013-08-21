@@ -1,9 +1,11 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.Delay;
 import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
@@ -31,7 +33,7 @@ public class ParallelTest extends TestCase {
                         LOADS, null, responseProcessor);
                 int i = 0;
                 while (i < LOADS) {
-                    final Delay dly = new Delay(jaContext);
+                    final Delay dly = new Delay(new AtomicMessageProcessor(jaContext));
                     dly.sleepReq(ParallelTest.DELAY).send(messageProcessor,
                             responseCounter);
                     i += 1;
