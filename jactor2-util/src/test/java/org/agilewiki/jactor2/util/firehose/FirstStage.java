@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.context.JAContext;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
-import org.agilewiki.jactor2.util.BoundResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.BoundResponseProcessor;
 
 import java.util.ArrayList;
 import java.util.List;

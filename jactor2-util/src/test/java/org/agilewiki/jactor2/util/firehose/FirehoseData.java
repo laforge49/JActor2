@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.firehose;
 
-import org.agilewiki.jactor2.util.BoundResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.BoundResponseProcessor;
 
 import java.util.List;
 
