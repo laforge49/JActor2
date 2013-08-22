@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Delay;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
@@ -14,12 +14,12 @@ public class ParallelTest extends TestCase {
     private static final long DELAY = 200;
 
     private MessageProcessor messageProcessor;
-    private JAContext jaContext;
+    private ModuleContext moduleContext;
     private Request<Void> start;
 
     public void test() throws Exception {
-        jaContext = new JAContext();
-        messageProcessor = new NonBlockingMessageProcessor(jaContext);
+        moduleContext = new ModuleContext();
+        messageProcessor = new NonBlockingMessageProcessor(moduleContext);
 
         start = new Request<Void>(messageProcessor) {
             @Override
@@ -30,7 +30,7 @@ public class ParallelTest extends TestCase {
                         LOADS, null, responseProcessor);
                 int i = 0;
                 while (i < LOADS) {
-                    final Delay dly = new Delay(jaContext);
+                    final Delay dly = new Delay(moduleContext);
                     dly.sleepReq(ParallelTest.DELAY).send(messageProcessor,
                             responseCounter);
                     i += 1;
@@ -42,6 +42,6 @@ public class ParallelTest extends TestCase {
         start.call();
         final long t1 = System.currentTimeMillis();
         assertTrue((t1 - t0) < DELAY + DELAY / 2);
-        jaContext.close();
+        moduleContext.close();
     }
 }

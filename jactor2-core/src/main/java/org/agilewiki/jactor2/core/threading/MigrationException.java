@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.context;
+package org.agilewiki.jactor2.core.threading;
 
 import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 

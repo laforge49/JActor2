@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
@@ -10,12 +10,12 @@ public class ExceptionHandlerSample {
     public static void main(final String[] _args) throws Exception {
 
         //A context with two threads.
-        final JAContext jaContext = new JAContext(2);
+        final ModuleContext moduleContext = new ModuleContext(2);
 
         try {
 
             //Create an ExceptionActor.
-            ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMessageProcessor(jaContext));
+            ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMessageProcessor(moduleContext));
 
             try {
                 //Create and call an exception request.
@@ -27,13 +27,13 @@ public class ExceptionHandlerSample {
 
             //Create an ExceptionHandlerActor.
             ExceptionHandlerActor exceptionHandlerActor =
-                    new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(jaContext));
+                    new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(moduleContext));
             //Create a test request, call it and print the results.
             System.out.println(exceptionHandlerActor.testReq().call());
 
         } finally {
             //shutdown the context
-            jaContext.close();
+            moduleContext.close();
         }
     }
 }

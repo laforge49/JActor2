@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -10,11 +10,11 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class RootTest extends TestCase {
     public void test() throws Exception {
-        JAContext jaContext = Durables.createJAContext();
+        ModuleContext moduleContext = Durables.createModuleContext();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(moduleContext);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
             Root root1 = (Root) rootFactory.newSerializable(messageProcessor, factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);
@@ -70,7 +70,7 @@ public class RootTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 }

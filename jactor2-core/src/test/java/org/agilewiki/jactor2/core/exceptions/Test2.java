@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.exceptions;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
@@ -12,32 +12,32 @@ import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 public class Test2 extends TestCase {
     public void testI() throws Exception {
         System.out.println("testI");
-        final JAContext jaContext = new JAContext();
-        final MessageProcessor messageProcessor = new NonBlockingMessageProcessor(jaContext);
+        final ModuleContext moduleContext = new ModuleContext();
+        final MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
         final ActorA actorA = new ActorA(messageProcessor);
         final ActorB actorB = new ActorB(messageProcessor);
         try {
             actorB.throwRequest(actorA).call();
         } catch (final SecurityException se) {
-            jaContext.close();
+            moduleContext.close();
             return;
         }
-        jaContext.close();
+        moduleContext.close();
         throw new Exception("Security exception was not caught");
     }
 
     public void testIII() throws Exception {
         System.out.println("testIII");
-        final JAContext jaContext = new JAContext();
-        final ActorA actorA = new ActorA(new AtomicMessageProcessor(jaContext));
-        final ActorB actorB = new ActorB(new AtomicMessageProcessor(jaContext));
+        final ModuleContext moduleContext = new ModuleContext();
+        final ActorA actorA = new ActorA(new AtomicMessageProcessor(moduleContext));
+        final ActorB actorB = new ActorB(new AtomicMessageProcessor(moduleContext));
         try {
             actorB.throwRequest(actorA).call();
         } catch (final SecurityException se) {
-            jaContext.close();
+            moduleContext.close();
             return;
         }
-        jaContext.close();
+        moduleContext.close();
         throw new Exception("Security exception was not caught");
     }
 }

@@ -27,7 +27,7 @@ public class Activator extends FactoryLocatorActivator {
             @Override
             public void processException(Throwable throwable) throws Throwable {
                 log.error("test failure", throwable);
-                getJAContext().close();
+                getModuleContext().close();
             }
         });
         LocateService<CommandProcessor> locateService = new LocateService(getMessageProcessor(),
@@ -78,7 +78,7 @@ public class Activator extends FactoryLocatorActivator {
                         String r = response.getMessage();
                         if (!"Aloha!".equals(r)) {
                             log.error("Unexpected response from Hello.getMessage(): " + r);
-                            getJAContext().close();
+                            getModuleContext().close();
                             return;
                         }
                         success();

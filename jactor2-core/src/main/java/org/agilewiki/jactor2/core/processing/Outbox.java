@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Message;
 
 import java.util.ArrayDeque;
@@ -32,15 +32,15 @@ public class Outbox implements AutoCloseable {
     /**
      * The context of this outbox.
      */
-    protected final JAContext jaContext;
+    protected final ModuleContext moduleContext;
 
     /**
      * Create an outbox.
      *
      * @param _initialBufferSize Initial size of each outbox per target MessageProcessor.
      */
-    public Outbox(final JAContext _jaContext, final int _initialBufferSize) {
-        jaContext = _jaContext;
+    public Outbox(final ModuleContext _moduleContext, final int _initialBufferSize) {
+        moduleContext = _moduleContext;
         initialBufferSize = _initialBufferSize;
     }
 
@@ -58,7 +58,7 @@ public class Outbox implements AutoCloseable {
      * @return True if the message was successfully buffered.
      */
     public boolean buffer(final Message _message, final MessageProcessor _target) {
-        if (jaContext.isClosing())
+        if (moduleContext.isClosing())
             return false;
         ArrayDeque<Message> buffer = null;
         if (sendBuffer == null) {
@@ -81,7 +81,7 @@ public class Outbox implements AutoCloseable {
             while (iter.hasNext()) {
                 final Map.Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
                 final MessageProcessorBase target = entry.getKey();
-                if (target.getJAContext() != jaContext) {
+                if (target.getModuleContext() != moduleContext) {
                     final ArrayDeque<Message> messages = entry.getValue();
                     iter.remove();
                     try {

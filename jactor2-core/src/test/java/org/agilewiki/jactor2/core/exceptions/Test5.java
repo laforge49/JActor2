@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.exceptions;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
@@ -10,9 +10,9 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  */
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
-        final JAContext jaContext = new JAContext();
-        final ActorE actorE = new ActorE(jaContext);
-        final MessageProcessor messageProcessorA = new AtomicMessageProcessor(jaContext);
+        final ModuleContext moduleContext = new ModuleContext();
+        final ActorE actorE = new ActorE(moduleContext);
+        final MessageProcessor messageProcessorA = new AtomicMessageProcessor(moduleContext);
         final ActorA actorA = new ActorA(messageProcessorA);
         try {
             actorE.throwRequest(actorA).call();
@@ -20,7 +20,7 @@ public class Test5 extends TestCase {
             // It's magic! We get the SecurityException, although our request
             // did not throw it, or return it as response. This shows that
             // child request exceptions are passed up to the parent request.
-            jaContext.close();
+            moduleContext.close();
             return;
         }
         throw new Exception("Security exception was not caught");

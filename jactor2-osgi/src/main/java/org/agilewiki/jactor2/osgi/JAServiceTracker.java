@@ -80,7 +80,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         // We use the bundle context of the *processing's bundle*, so that we can
         // be used in any bundle.
         bundleContext = Osgi.getBundleContext(_messageProcessor
-                .getJAContext());
+                .getModuleContext());
         // Creates a filter based on the class.
         listenerFilter = "(" + Constants.OBJECTCLASS + "=" + _clazz + ")";
         clazz = _clazz;
@@ -97,7 +97,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         // We use the bundle context of the *processing's bundle*, so that we can
         // be used in any bundle.
         bundleContext = Osgi.getBundleContext(_messageProcessor
-                .getJAContext());
+                .getModuleContext());
         listenerFilter = _Filter.toString();
     }
 

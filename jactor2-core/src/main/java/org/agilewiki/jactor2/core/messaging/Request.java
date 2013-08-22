@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 
@@ -25,7 +25,7 @@ import java.util.concurrent.Semaphore;
  * <pre>
  *
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.context.JAContext;
+ * import org.agilewiki.jactor2.core.context.ModuleContext;
  * import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  *
@@ -34,12 +34,12 @@ import java.util.concurrent.Semaphore;
  *     public static void main(String[] args) throws Exception {
  *
  *         //A context with two threads.
- *         final JAContext jaContext = new JAContext(2);
+ *         final ModuleContext moduleContext = new ModuleContext(2);
  *
  *         try {
  *
  *             //Create actorA.
- *             SampleActor2 actorA = new SampleActor2(new NonBlockingMessageProcessor(jaContext));
+ *             SampleActor2 actorA = new SampleActor2(new NonBlockingMessageProcessor(moduleContext));
  *
  *             //Initialize actorA to 1.
  *             actorA.updateReq(1).signal();
@@ -48,14 +48,14 @@ import java.util.concurrent.Semaphore;
  *             System.out.println("was " + actorA.updateReq(2).call() + " but is now 2");
  *
  *             //Create actorB with a reference to actorA.
- *             IndirectActor actorB = new IndirectActor(actorA, new NonBlockingMessageProcessor(jaContext));
+ *             IndirectActor actorB = new IndirectActor(actorA, new NonBlockingMessageProcessor(moduleContext));
  *
  *             //Indirectly change actorA to 42.
  *             System.out.println("was " + actorB.indirectReq(42).call() + " but is now 42");
  *
  *         } finally {
  *             //shutdown the context
- *             jaContext.close();
+ *             moduleContext.close();
  *         }
  *
  *     }
@@ -198,7 +198,7 @@ public abstract class Request<RESPONSE_TYPE> {
         if (rp == null)
             rp = (ResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         final RequestMessage message = new RequestMessage(
-                source.getJAContext() != messageProcessor.getJAContext(),
+                source.getModuleContext() != messageProcessor.getModuleContext(),
                 source,
                 source.getCurrentMessage(),
                 this,
@@ -468,9 +468,9 @@ public abstract class Request<RESPONSE_TYPE> {
          */
         private void processRequestMessage(final MessageProcessor _targetMessageProcessor) {
             final MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) _targetMessageProcessor;
-            final JAContext jaContext = targetMessageProcessor.getJAContext();
+            final ModuleContext moduleContext = targetMessageProcessor.getModuleContext();
             if (foreign)
-                jaContext.addAutoClosable(this);
+                moduleContext.addAutoClosable(this);
             targetMessageProcessor.setExceptionHandler(null);
             targetMessageProcessor.setCurrentMessage(this);
             targetMessageProcessor.requestBegin();
@@ -481,7 +481,7 @@ public abstract class Request<RESPONSE_TYPE> {
                             public void processResponse(final Object response)
                                     throws Exception {
                                 if (foreign)
-                                    jaContext.removeAutoClosable(RequestMessage.this);
+                                    moduleContext.removeAutoClosable(RequestMessage.this);
                                 if (!responsePending)
                                     return;
                                 setResponse(response, targetMessageProcessor);
@@ -496,12 +496,12 @@ public abstract class Request<RESPONSE_TYPE> {
                             }
 
                             @Override
-                            public JAContext getJAContext() {
+                            public ModuleContext getModuleContext() {
                                 if (messageSource == null)
                                     return null;
                                 if (!(messageSource instanceof MessageProcessor))
                                     return null;
-                                return ((MessageProcessorBase) messageSource).getJAContext();
+                                return ((MessageProcessorBase) messageSource).getModuleContext();
                             }
 
                             @Override
@@ -511,7 +511,7 @@ public abstract class Request<RESPONSE_TYPE> {
                         });
             } catch (final Throwable t) {
                 if (foreign)
-                    jaContext.removeAutoClosable(this);
+                    moduleContext.removeAutoClosable(this);
                 processThrowable(targetMessageProcessor, t);
             }
         }

@@ -1,16 +1,16 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BListTest extends TestCase {
     public void test1() throws Exception {
-        JAContext jaContext = Durables.createJAContext();
+        ModuleContext moduleContext = Durables.createModuleContext();
         try {
-            JAList<JAString> stringList1 = (JAList) Durables.newSerializable(jaContext, JAList.JASTRING_LIST);
+            JAList<JAString> stringList1 = (JAList) Durables.newSerializable(moduleContext, JAList.JASTRING_LIST);
             stringList1.iAdd(0);
             stringList1.iAdd(1);
             stringList1.iAdd(2);
@@ -20,7 +20,7 @@ public class BListTest extends TestCase {
             sj0.setValue("a");
             sj1.setValue("b");
             sj2.setValue("c");
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
             JAList<JAString> stringList2 = (JAList) stringList1.copy(messageProcessor);
             JAString s0 = stringList2.iGet(0);
             JAString s1 = stringList2.iGet(1);
@@ -29,14 +29,14 @@ public class BListTest extends TestCase {
             assertEquals("b", s1.getValue());
             assertEquals("c", s2.getValue());
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 
     public void test2() throws Exception {
-        JAContext jaContext = Durables.createJAContext();
+        ModuleContext moduleContext = Durables.createModuleContext();
         try {
-            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(jaContext, JAList.JAINTEGER_LIST);
+            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(moduleContext, JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 28) {
                 intList1.iAdd(i);
@@ -51,14 +51,14 @@ public class BListTest extends TestCase {
                 i += 1;
             }
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 
     public void test3() throws Exception {
-        JAContext jaContext = Durables.createJAContext();
+        ModuleContext moduleContext = Durables.createModuleContext();
         try {
-            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(jaContext, JAList.JAINTEGER_LIST);
+            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(moduleContext, JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 41) {
                 intList1.iAdd(-1);
@@ -73,14 +73,14 @@ public class BListTest extends TestCase {
                 i += 1;
             }
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 
     public void test4() throws Exception {
-        JAContext jaContext = Durables.createJAContext();
+        ModuleContext moduleContext = Durables.createModuleContext();
         try {
-            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(jaContext, JAList.JAINTEGER_LIST);
+            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(moduleContext, JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 391) {
                 intList1.iAdd(-1);
@@ -95,14 +95,14 @@ public class BListTest extends TestCase {
                 i += 1;
             }
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 
     public void test5() throws Exception {
-        JAContext jaContext = Durables.createJAContext();
+        ModuleContext moduleContext = Durables.createModuleContext();
         try {
-            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(jaContext, JAList.JAINTEGER_LIST);
+            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(moduleContext, JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 10000) {
                 intList1.iAdd(-1);
@@ -117,14 +117,14 @@ public class BListTest extends TestCase {
                 i += 1;
             }
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 
     public void test6() throws Exception {
-        JAContext jaContext = Durables.createJAContext();
+        ModuleContext moduleContext = Durables.createModuleContext();
         try {
-            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(jaContext, JAList.JAINTEGER_LIST);
+            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(moduleContext, JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 10000) {
                 intList1.iAdd(-1);
@@ -139,7 +139,7 @@ public class BListTest extends TestCase {
             }
             assertEquals(0, intList1.size());
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 }

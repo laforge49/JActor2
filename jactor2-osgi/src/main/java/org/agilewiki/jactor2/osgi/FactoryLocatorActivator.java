@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * An activator that provides both a processing factory and a registered factory locator service.
  */
-abstract public class FactoryLocatorActivator extends JAContextActivator {
+abstract public class FactoryLocatorActivator extends ModuleContextActivator {
     private final Logger log = LoggerFactory.getLogger(FactoryLocatorActivator.class);
 
     /**
@@ -21,7 +21,7 @@ abstract public class FactoryLocatorActivator extends JAContextActivator {
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         initializeActivator(_bundleContext);
-        jaContextStart();
+        moduleContextStart();
         createFactoryLocator();
         begin();
     }
@@ -47,8 +47,8 @@ abstract public class FactoryLocatorActivator extends JAContextActivator {
      */
     protected void createFactoryLocator() throws Exception {
         factoryLocator = new OsgiFactoryLocator();
-        factoryLocator.setJAContext(getJAContext());
-        getJAContext().putProperty("factoryLocator", factoryLocator);
+        factoryLocator.setModuleContext(getModuleContext());
+        getModuleContext().putProperty("factoryLocator", factoryLocator);
     }
 
     @Override
@@ -107,6 +107,6 @@ abstract public class FactoryLocatorActivator extends JAContextActivator {
     @Override
     public void stop(BundleContext context) throws Exception {
         setClosing();
-        getJAContext().close();
+        getModuleContext().close();
     }
 }

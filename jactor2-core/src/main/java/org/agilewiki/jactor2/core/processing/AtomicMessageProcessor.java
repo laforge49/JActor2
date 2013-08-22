@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.context.MigrationException;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
 
 /**
@@ -37,37 +37,37 @@ public class AtomicMessageProcessor extends UnboundMessageProcessor {
     /**
      * Create an atomic message processor.
      *
-     * @param _jaContext The context of the message processor.
+     * @param _moduleContext The context of the message processor.
      */
-    public AtomicMessageProcessor(JAContext _jaContext) {
-        super(_jaContext, _jaContext.getInitialBufferSize(),
-                _jaContext.getInitialLocalMessageQueueSize(), null);
+    public AtomicMessageProcessor(ModuleContext _moduleContext) {
+        super(_moduleContext, _moduleContext.getInitialBufferSize(),
+                _moduleContext.getInitialLocalMessageQueueSize(), null);
     }
 
     /**
      * Create an atomic message processor.
      *
-     * @param _jaContext The context of the message processor.
+     * @param _moduleContext The context of the message processor.
      * @param _onIdle    Object to be run when the inbox is emptied, or null.
      */
-    public AtomicMessageProcessor(JAContext _jaContext, Runnable _onIdle) {
-        super(_jaContext, _jaContext.getInitialBufferSize(),
-                _jaContext.getInitialLocalMessageQueueSize(), _onIdle);
+    public AtomicMessageProcessor(ModuleContext _moduleContext, Runnable _onIdle) {
+        super(_moduleContext, _moduleContext.getInitialBufferSize(),
+                _moduleContext.getInitialLocalMessageQueueSize(), _onIdle);
     }
 
     /**
      * Create an atomic message processor.
      *
-     * @param _jaContext             The context of the message processor.
+     * @param _moduleContext             The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public AtomicMessageProcessor(JAContext _jaContext,
+    public AtomicMessageProcessor(ModuleContext _moduleContext,
                                   int _initialOutboxSize,
                                   final int _initialLocalQueueSize,
                                   Runnable _onIdle) {
-        super(_jaContext, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        super(_moduleContext, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     @Override

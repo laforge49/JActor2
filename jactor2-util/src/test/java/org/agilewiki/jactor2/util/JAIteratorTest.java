@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -38,13 +38,13 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("shared processing test");
-        JAContext jaContext = new JAContext();
+        ModuleContext moduleContext = new ModuleContext();
         try {
-            messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            messageProcessor = new NonBlockingMessageProcessor(moduleContext);
             counterMessageProcessor = messageProcessor;
             runReq().call();
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 
@@ -52,13 +52,13 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("commandeering processing test");
-        JAContext jaContext = new JAContext();
+        ModuleContext moduleContext = new ModuleContext();
         try {
-            messageProcessor = new NonBlockingMessageProcessor(jaContext);
-            counterMessageProcessor = new NonBlockingMessageProcessor(jaContext);
+            messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+            counterMessageProcessor = new NonBlockingMessageProcessor(moduleContext);
             runReq().call();
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 
@@ -66,13 +66,13 @@ Messages per second: 13715539
         System.gc();
         runs = 10;
         System.out.println("migration processing test");
-        JAContext jaContext = new JAContext();
+        ModuleContext moduleContext = new ModuleContext();
         try {
-            messageProcessor = new NonBlockingMessageProcessor(jaContext);
-            counterMessageProcessor = new NonBlockingMessageProcessor(jaContext);
+            messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+            counterMessageProcessor = new NonBlockingMessageProcessor(moduleContext);
             runReq().call();
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 /**
  * A message processor for actors which process messages quickly and without blocking the thread.
@@ -31,38 +31,38 @@ public class NonBlockingMessageProcessor extends UnboundMessageProcessor {
     /**
      * Create a non-blocking message processor.
      *
-     * @param _jaContext The context of the message processor.
+     * @param _moduleContext The context of the message processor.
      */
-    public NonBlockingMessageProcessor(JAContext _jaContext) {
-        super(_jaContext, _jaContext.getInitialBufferSize(),
-                _jaContext.getInitialLocalMessageQueueSize(), null);
+    public NonBlockingMessageProcessor(ModuleContext _moduleContext) {
+        super(_moduleContext, _moduleContext.getInitialBufferSize(),
+                _moduleContext.getInitialLocalMessageQueueSize(), null);
     }
 
     /**
      * Create a non-blocking message processor.
      *
-     * @param _jaContext The context of the message processor.
+     * @param _moduleContext The context of the message processor.
      * @param _onIdle    Object to be run when the inbox is emptied, or null.
      */
-    public NonBlockingMessageProcessor(JAContext _jaContext,
+    public NonBlockingMessageProcessor(ModuleContext _moduleContext,
                                        Runnable _onIdle) {
-        super(_jaContext, _jaContext.getInitialBufferSize(),
-                _jaContext.getInitialLocalMessageQueueSize(), _onIdle);
+        super(_moduleContext, _moduleContext.getInitialBufferSize(),
+                _moduleContext.getInitialLocalMessageQueueSize(), _onIdle);
     }
 
     /**
      * Create a non-blocking message processor.
      *
-     * @param _jaContext             The context of the message processor.
+     * @param _moduleContext             The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public NonBlockingMessageProcessor(JAContext _jaContext,
+    public NonBlockingMessageProcessor(ModuleContext _moduleContext,
                                        int _initialOutboxSize,
                                        final int _initialLocalQueueSize,
                                        Runnable _onIdle) {
-        super(_jaContext, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        super(_moduleContext, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     @Override

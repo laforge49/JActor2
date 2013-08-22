@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.firehose;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
@@ -14,10 +14,10 @@ public class NullStage extends ActorBase implements DataProcessor {
 
     public long total;
 
-    public NullStage(final JAContext _jaContext, final DataProcessor _next)
+    public NullStage(final ModuleContext _moduleContext, final DataProcessor _next)
             throws Exception {
         next = _next;
-        initialize(new AtomicMessageProcessor(_jaContext));
+        initialize(new AtomicMessageProcessor(_moduleContext));
     }
 
     @Override

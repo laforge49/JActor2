@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 
 /**
@@ -9,11 +9,11 @@ import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 public interface MessageProcessor extends Runnable {
 
     /**
-     * Returns the processing context.
+     * Returns the module context.
      *
-     * @return The processing context.
+     * @return The module context.
      */
-    JAContext getJAContext();
+    ModuleContext getModuleContext();
 
     /**
      * Replace the current ExceptionHandler with another.

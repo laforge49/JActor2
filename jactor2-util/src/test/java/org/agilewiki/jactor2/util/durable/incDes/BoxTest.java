@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -10,11 +10,11 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class BoxTest extends TestCase {
     public void test() throws Exception {
-        JAContext jaContext = Durables.createJAContext();
+        ModuleContext moduleContext = Durables.createModuleContext();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(jaContext);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(moduleContext);
             Factory boxAFactory = factoryLocator.getFactory(Box.FACTORY_NAME);
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(jaContext);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
             Box box1 = (Box) boxAFactory.newSerializable(messageProcessor);
             int sl = box1.getSerializedLength();
             assertEquals(4, sl);
@@ -70,7 +70,7 @@ public class BoxTest extends TestCase {
             sl = rpa.getSerializedLength();
             assertEquals(0, sl);
 
-            Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, jaContext);
+            Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, moduleContext);
             sl = box3.getSerializedLength();
             assertEquals(4, sl);
             made = box3.makeValueReq(Box.FACTORY_NAME).call();
@@ -124,7 +124,7 @@ public class BoxTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 }

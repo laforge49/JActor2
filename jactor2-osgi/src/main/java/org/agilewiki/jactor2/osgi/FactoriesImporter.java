@@ -44,7 +44,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     public FactoriesImporter(final MessageProcessor _messageProcessor) throws Exception {
         initialize(_messageProcessor);
-        factoryLocator = Osgi.getOsgiFactoryLocator(_messageProcessor.getJAContext());
+        factoryLocator = Osgi.getOsgiFactoryLocator(_messageProcessor.getModuleContext());
     }
 
     /**
@@ -116,7 +116,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     private void start(final String _bundleName, final String _niceVersion, final Transport<Void> _transport)
             throws Exception {
-        BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getJAContext());
+        BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getModuleContext());
         Filter filter = Osgi.factoryLocatorFilter(bundleContext, _bundleName, _niceVersion);
         start(filter, _transport);
     }
@@ -179,7 +179,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     private void start(final String _bundleLocation, final Transport<Void> _transport)
             throws Exception {
-        BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getJAContext());
+        BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getModuleContext());
         Bundle bundle = bundleContext.installBundle(_bundleLocation);
         bundle.start();
         String bundleName = bundle.getSymbolicName();

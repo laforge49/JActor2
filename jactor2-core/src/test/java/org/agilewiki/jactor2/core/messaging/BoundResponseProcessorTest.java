@@ -2,19 +2,19 @@ package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
-        final JAContext jaContext = new JAContext();
+        final ModuleContext moduleContext = new ModuleContext();
         try {
             final Driver driver = new Driver();
-            driver.initialize(new NonBlockingMessageProcessor(jaContext));
+            driver.initialize(new NonBlockingMessageProcessor(moduleContext));
             assertEquals("Hello world!", driver.doitReq().call());
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 }

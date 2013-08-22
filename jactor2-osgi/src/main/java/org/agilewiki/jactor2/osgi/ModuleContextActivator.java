@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.osgi.framework.*;
@@ -12,11 +12,11 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 /**
- * A basic activator with a JAContext,
+ * A basic activator with a ModuleContext,
  * with a reference to the BundleContext stored in the bundleContext property
- * in the JAContext.
+ * in the ModuleContext.
  */
-abstract public class JAContextActivator
+abstract public class ModuleContextActivator
         extends ActorBase implements BundleActivator, ManagedService, AutoCloseable {
 
     /**
@@ -32,7 +32,7 @@ abstract public class JAContextActivator
     /**
      * The processing factory used by the bundle.
      */
-    private JAContext jaContext;
+    private ModuleContext moduleContext;
 
     /**
      * The bundle context.
@@ -47,7 +47,7 @@ abstract public class JAContextActivator
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         initializeActivator(_bundleContext);
-        jaContextStart();
+        moduleContextStart();
         begin();
     }
 
@@ -55,9 +55,9 @@ abstract public class JAContextActivator
      * Begins the activator's asynchronous processing.
      */
     protected void begin() throws Exception {
-        new Event<JAContextActivator>() {
+        new Event<ModuleContextActivator>() {
             @Override
-            public void processEvent(JAContextActivator _targetActor) throws Exception {
+            public void processEvent(ModuleContextActivator _targetActor) throws Exception {
                 process();
             }
         }.signal(this);
@@ -73,7 +73,7 @@ abstract public class JAContextActivator
     @Override
     public void stop(BundleContext context) throws Exception {
         setClosing();
-        jaContext.close();
+        moduleContext.close();
     }
 
     /**
@@ -87,26 +87,24 @@ abstract public class JAContextActivator
     }
 
     /**
-     * Returns the processing factory used by the bundle.
+     * Returns the module context used by the bundle.
      *
-     * @return The processing factory.
+     * @return The module context.
      */
-    protected JAContext getJAContext() {
-        return jaContext;
+    protected ModuleContext getModuleContext() {
+        return moduleContext;
     }
 
     /**
-     * Create and initialize the processing factory.
-     * The Properties object of the processing factory is created
-     * and a bundleContext is added to it.
-     * The activator is also added to the close set of the processing factory
+     * Create and initialize the module context.
+     * The activator is also added to the close set of the module context
      * and the activator is given a processing that may block.
      */
-    protected final void jaContextStart() throws Exception {
-        jaContext = new JAContext();
-        jaContext.addAutoClosable(this);
-        jaContext.putProperty("bundleContext", bundleContext);
-        initialize(new AtomicMessageProcessor(jaContext));
+    protected final void moduleContextStart() throws Exception {
+        moduleContext = new ModuleContext();
+        moduleContext.addAutoClosable(this);
+        moduleContext.putProperty("bundleContext", bundleContext);
+        initialize(new AtomicMessageProcessor(moduleContext));
     }
 
     /**

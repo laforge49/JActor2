@@ -7,7 +7,7 @@ package org.agilewiki.jactor2.core.messaging;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.context.JAContext;
+ * import org.agilewiki.jactor2.core.context.ModuleContext;
  * import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  *
@@ -17,7 +17,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     public static void main(final String[] _args) throws Exception {
  *
  *         //Application context with 1 thread.
- *         final JAContext applicationContext = new JAContext(1);
+ *         final ModuleContext applicationContext = new ModuleContext(1);
  *
  *         //Create a service actor that uses its own context.
  *         Service service = new Service();
@@ -27,7 +27,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             System.out.println(service.delayEchoReq(1, "1 (Expected)").call());
  *
  *             //close the context used by the service actor.
- *             service.getMessageProcessor().getJAContext().close();
+ *             service.getMessageProcessor().getModuleContext().close();
  *             try {
  *                 //Try using delay echo request with the context closed.
  *                 System.out.println(service.delayEchoReq(1, "(Unexpected)").call());
@@ -54,7 +54,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             //The results should now show that an exception was thrown.
  *             System.out.println(serviceApplication.echoResultReq(echoReqState2).call());
  *         } finally {
- *             service.getMessageProcessor().getJAContext().close(); //Close the service context.
+ *             service.getMessageProcessor().getModuleContext().close(); //Close the service context.
  *             applicationContext.close(); //Close the application context.
  *         }
  *
@@ -66,7 +66,7 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *     Service() throws Exception {
  *         //Create a message processor on a new context with 1 thread.
- *         initialize(new NonBlockingMessageProcessor(new JAContext(1)));
+ *         initialize(new NonBlockingMessageProcessor(new ModuleContext(1)));
  *     }
  *
  *     //Returns a delay echo request.
@@ -169,7 +169,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             {@literal @}Override
  *             public void processRequest(Transport&lt;Void&gt; _transport) throws Exception {
  *                 //Close the context of the service actor.
- *                 service.getMessageProcessor().getJAContext().close();
+ *                 service.getMessageProcessor().getModuleContext().close();
  *                 _transport.processResponse(null);
  *             }
  *         };

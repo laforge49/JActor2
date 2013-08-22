@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
 
@@ -18,7 +18,7 @@ class HelloWorld extends ActorBase {
     HelloWorld() throws Exception {
 
         //Create a context with 5 threads.
-        JAContext context = new JAContext(5);
+        ModuleContext context = new ModuleContext(5);
 
         initialize(new SwingBoundMessageProcessor(context));
     }

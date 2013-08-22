@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -23,56 +23,56 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.*;
 public final class Durables {
 
     /**
-     * Creates a jaContext with a factoryLocator that supports all the pre-defined factories.
+     * Creates a moduleContext with a factoryLocator that supports all the pre-defined factories.
      *
-     * @return A processing factory whose properties include the factoryLocator.
+     * @return A module context whose properties include the factoryLocator.
      */
-    public static JAContext createJAContext() throws Exception {
-        JAContext jaContext = new JAContext();
+    public static ModuleContext createModuleContext() throws Exception {
+        ModuleContext moduleContext = new ModuleContext();
         FactoryLocator factoryLocator =
-                createFactoryLocator(jaContext, "org.agilewiki.jactor2.util.durable", "", "");
+                createFactoryLocator(moduleContext, "org.agilewiki.jactor2.util.durable", "", "");
         registerFactories(factoryLocator);
-        return jaContext;
+        return moduleContext;
     }
 
     /**
-     * Create a factoryLocator and add it to the jaContext properties.
+     * Create a factoryLocator and add it to the moduleContext properties.
      *
-     * @param _jaContext  A jaContext.
+     * @param _moduleContext  A moduleContext.
      * @param _bundleName The name of the OSGi bundle or an empty string.
      * @param _version    The version of the OSGi bundle or an empty string.
      * @param _location   The location of the OSGi bundle or an empty string.
      * @return The new factoryLocator.
      */
     public static FactoryLocator createFactoryLocator(
-            final JAContext _jaContext,
+            final ModuleContext _moduleContext,
             final String _bundleName,
             final String _version,
             final String _location) throws Exception {
         FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
         factoryLocator.configure(_bundleName, _version, _location);
-        _jaContext.putProperty("factoryLocator", factoryLocator);
+        _moduleContext.putProperty("factoryLocator", factoryLocator);
         return factoryLocator;
     }
 
     /**
-     * Returns the factoryLocator from the jaContext's factoryLocator property.
+     * Returns the factoryLocator from the moduleContext's factoryLocator property.
      *
      * @param _messageProcessor A processing.
      * @return The factoryLocator for that processing.
      */
     public static FactoryLocator getFactoryLocator(final MessageProcessor _messageProcessor) {
-        return getFactoryLocator(_messageProcessor.getJAContext());
+        return getFactoryLocator(_messageProcessor.getModuleContext());
     }
 
     /**
-     * Returns the factoryLocator from the jaContext's factoryLocator property.
+     * Returns the factoryLocator from the moduleContext's factoryLocator property.
      *
-     * @param _jaContext A jaContext.
-     * @return The factoryLocator for that jaContext.
+     * @param _moduleContext A moduleContext.
+     * @return The factoryLocator for that moduleContext.
      */
-    public static FactoryLocator getFactoryLocator(final JAContext _jaContext) {
-        return (FactoryLocator) _jaContext.getProperty("factoryLocator");
+    public static FactoryLocator getFactoryLocator(final ModuleContext _moduleContext) {
+        return (FactoryLocator) _moduleContext.getProperty("factoryLocator");
     }
 
     /**
@@ -286,14 +286,14 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _jaContext      The jaContext to be used to create the new processing.
+     * @param _moduleContext      The moduleContext to be used to create the new processing.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final JAContext _jaContext)
+                                                 final ModuleContext _moduleContext)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, new NonBlockingMessageProcessor(_jaContext), null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, new NonBlockingMessageProcessor(_moduleContext), null);
     }
 
     /**
@@ -301,34 +301,34 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _jaContext      The jaContext to be used to create the new processing.
+     * @param _moduleContext      The moduleContext to be used to create the new processing.
      * @param _parent         The dependency to be injected, or null.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final JAContext _jaContext,
+                                                 final ModuleContext _moduleContext,
                                                  final Ancestor _parent)
             throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).
-                newSerializable(_factoryName, new NonBlockingMessageProcessor(_jaContext), _parent);
+                newSerializable(_factoryName, new NonBlockingMessageProcessor(_moduleContext), _parent);
     }
 
     /**
      * Create a new serializable object and a new processing to be used by that serializable object.
      *
      * @param _factoryName The type of object to be created.
-     * @param _jaContext   The jaContext to be used to create the new processing
+     * @param _moduleContext   The moduleContext to be used to create the new processing
      *                     and which has a factoryLocator property.
      * @return A new serializable object.
      */
-    public static JASerializable newSerializable(final JAContext _jaContext,
+    public static JASerializable newSerializable(final ModuleContext _moduleContext,
                                                  final String _factoryName)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_jaContext),
+                getFactoryLocator(_moduleContext),
                 _factoryName,
-                _jaContext,
+                _moduleContext,
                 null);
     }
 
@@ -336,19 +336,19 @@ public final class Durables {
      * Create a new serializable object and a new processing to be used by that serializable object.
      *
      * @param _factoryName The type of object to be created.
-     * @param _jaContext   The jaContext to be used to create the new processing
+     * @param _moduleContext   The moduleContext to be used to create the new processing
      *                     and which has a factoryLocator property.
      * @param _parent      The dependency to be injected, or null.
      * @return A new serializable object.
      */
-    public static JASerializable newSerializable(final JAContext _jaContext,
+    public static JASerializable newSerializable(final ModuleContext _moduleContext,
                                                  final String _factoryName,
                                                  final Ancestor _parent)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_jaContext),
+                getFactoryLocator(_moduleContext),
                 _factoryName,
-                _jaContext,
+                _moduleContext,
                 _parent);
     }
 
@@ -357,14 +357,14 @@ public final class Durables {
      *
      * @param _factoryName      The type of object to be created.
      * @param _messageProcessor The processing to be used by the new serializable object
-     *                          and whose jaContext has a factoryLocator property.
+     *                          and whose moduleContext has a factoryLocator property.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final String _factoryName,
                                                  final MessageProcessor _messageProcessor)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_messageProcessor.getJAContext()),
+                getFactoryLocator(_messageProcessor.getModuleContext()),
                 _factoryName,
                 _messageProcessor,
                 null);
@@ -375,7 +375,7 @@ public final class Durables {
      *
      * @param _factoryName      The type of object to be created.
      * @param _messageProcessor The processing to be used by the new serializable object
-     *                          and whose jaContext has a factoryLocator property.
+     *                          and whose moduleContext has a factoryLocator property.
      * @param _parent           The dependency to be injected, or null.
      * @return A new serializable object.
      */
@@ -383,6 +383,6 @@ public final class Durables {
                                                  final MessageProcessor _messageProcessor,
                                                  final Ancestor _parent)
             throws Exception {
-        return newSerializable(getFactoryLocator(_messageProcessor.getJAContext()), _factoryName, _messageProcessor, _parent);
+        return newSerializable(getFactoryLocator(_messageProcessor.getModuleContext()), _factoryName, _messageProcessor, _parent);
     }
 }

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
@@ -11,7 +11,7 @@ public class Actor3 {
     private final MessageProcessor messageProcessor;
     public final Request<Void> hi3;
 
-    public Actor3(final JAContext _context) {
+    public Actor3(final ModuleContext _context) {
         this.messageProcessor = new AtomicMessageProcessor(_context);
 
         hi3 = new Request<Void>(messageProcessor) {

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.context.MigrationException;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
 
 import java.util.ArrayDeque;
@@ -35,7 +35,7 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public UnboundMessageProcessor(JAContext _context,
+    public UnboundMessageProcessor(ModuleContext _context,
                                    int _initialOutboxSize,
                                    final int _initialLocalQueueSize,
                                    Runnable _onIdle) {
@@ -70,7 +70,7 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
     @Override
     protected void afterAdd() throws Exception {
         if (threadReference.get() == null) {
-            jaContext.submit(this);
+            moduleContext.submit(this);
         }
     }
 
@@ -93,7 +93,7 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
                 iter.remove();
                 if (!iter.hasNext() &&
                         _mayMigrate &&
-                        getJAContext() == target.getJAContext() &&
+                        getModuleContext() == target.getModuleContext() &&
                         target instanceof UnboundMessageProcessor &&
                         !target.isRunning()) {
                     Thread currentThread = threadReference.get();

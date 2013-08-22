@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.*;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
@@ -9,9 +9,9 @@ import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 public class ServiceTest extends TestCase {
 
     public void test() throws Exception {
-        JAContext testContext = new JAContext();
-        JAContext clientContext = new JAContext();
-        final JAContext serverContext = new JAContext();
+        ModuleContext testContext = new ModuleContext();
+        ModuleContext clientContext = new ModuleContext();
+        final ModuleContext serverContext = new ModuleContext();
         try {
             MessageProcessor testMessageProcessor = new NonBlockingMessageProcessor(testContext);
             Server server = new Server(new NonBlockingMessageProcessor(serverContext));

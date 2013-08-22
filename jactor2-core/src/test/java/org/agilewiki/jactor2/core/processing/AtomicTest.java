@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.processing;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Delay;
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseCounter;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
@@ -12,12 +12,12 @@ public class AtomicTest extends TestCase {
     int count = 0;
 
     public void test() throws Exception {
-        JAContext jaContext = new JAContext();
+        ModuleContext moduleContext = new ModuleContext();
         try {
-            int _count = startReq1(new AtomicMessageProcessor(jaContext)).call();
+            int _count = startReq1(new AtomicMessageProcessor(moduleContext)).call();
             assertEquals(5, _count);
         } finally {
-            jaContext.close();
+            moduleContext.close();
         }
     }
 
@@ -26,7 +26,7 @@ public class AtomicTest extends TestCase {
             @Override
             public void processRequest(final Transport<Integer> _rp)
                     throws Exception {
-                MessageProcessor messageProcessor = new AtomicMessageProcessor(_messageProcessor.getJAContext());
+                MessageProcessor messageProcessor = new AtomicMessageProcessor(_messageProcessor.getModuleContext());
                 ResponseProcessor rc = new ResponseCounter(5, null,
                         new ResponseProcessor() {
                             @Override
@@ -49,7 +49,7 @@ public class AtomicTest extends TestCase {
             @Override
             public void processRequest(final Transport<Void> _rp)
                     throws Exception {
-                Delay delay = new Delay(_messageProcessor.getJAContext());
+                Delay delay = new Delay(_messageProcessor.getModuleContext());
                 delay.sleepReq(100 - (msg * 20)).send(_messageProcessor,
                         new ResponseProcessor<Void>() {
                             @Override

@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.context;
+package org.agilewiki.jactor2.core.threading;
 
 import org.agilewiki.jactor2.core.processing.Inbox;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * when the context is closed, as well as a table of properties.
  */
 
-public final class JAContext implements AutoCloseable {
+public final class ModuleContext implements AutoCloseable {
 
     /**
      * The logger used by message processors.
@@ -31,7 +31,7 @@ public final class JAContext implements AutoCloseable {
     private final Logger messageProcessorLogger = LoggerFactory.getLogger(MessageProcessor.class);
 
     /**
-     * The thread pool used by JAContext.
+     * The thread pool used by ModuleContext.
      */
     private final ThreadManager threadManager;
 
@@ -62,9 +62,9 @@ public final class JAContext implements AutoCloseable {
     private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
     /**
-     * Create a JAContext.
+     * Create a ModuleContext.
      */
-    public JAContext() {
+    public ModuleContext() {
         this(
                 Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                 Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -73,11 +73,11 @@ public final class JAContext implements AutoCloseable {
     }
 
     /**
-     * Create a JAContext.
+     * Create a ModuleContext.
      *
      * @param _threadCount The thread pool size.
      */
-    public JAContext(final int _threadCount) {
+    public ModuleContext(final int _threadCount) {
         this(
                 Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                 Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -86,17 +86,17 @@ public final class JAContext implements AutoCloseable {
     }
 
     /**
-     * Create a JAContext.
+     * Create a ModuleContext.
      *
      * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
      * @param _initialBufferSize            How big should the initial outbox (per target MessageProcessor) buffer size be?
      * @param _threadCount                  The thread pool size.
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
-    public JAContext(final int _initialLocalMessageQueueSize,
-                     final int _initialBufferSize,
-                     final int _threadCount,
-                     final ThreadFactory _threadFactory) {
+    public ModuleContext(final int _initialLocalMessageQueueSize,
+                         final int _initialBufferSize,
+                         final int _threadCount,
+                         final ThreadFactory _threadFactory) {
         threadManager = new ThreadManager(
                 _threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
@@ -144,7 +144,7 @@ public final class JAContext implements AutoCloseable {
     }
 
     /**
-     * Adds an auto closeable, to be closed when the JAContext closes.
+     * Adds an auto closeable, to be closed when the ModuleContext closes.
      *
      * @param _closeable The autoclosable to be added to the list.
      * @return True, if the list was updated.

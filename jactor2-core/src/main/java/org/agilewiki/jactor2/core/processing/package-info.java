@@ -10,17 +10,17 @@
  *     Actors can use 4 different classes of message processors: NonBlockingMessageProcessor, AtomicMessageProcessor,
  *     ThreadBoundMessageProcessor and SwingBoundMessageProcessor.
  *     MessageProcessor instances are easily created, with an instance of
- *     JAContext as a required parameter. Additional parameters can be also be passed to the constructor
+ *     ModuleContext as a required parameter. Additional parameters can be also be passed to the constructor
  *     for configuring a message processor:
  * </p>
  * <ul>
  * <li>
  *     <b>int initialBufferSize</b> This is the initial size of the the send buffers used by the outbox.
- *     When not provided, JAContext.getInitialBufferSize() is used instead.
+ *     When not provided, ModuleContext.getInitialBufferSize() is used instead.
  * </li>
  * <li>
  *     <b>int initialLocalQueueSize</b> The initial size of the locl queueeque(s) used by the
- *     inbox. When not provided, JAContext.getInitialLocalMessageQueueSize() is used instead.
+ *     inbox. When not provided, ModuleContext.getInitialLocalMessageQueueSize() is used instead.
  * </li>
  * <li>
  *     <b>Runnable onIdle</b> The onIdle.run method is called when the inbox becomes empty.

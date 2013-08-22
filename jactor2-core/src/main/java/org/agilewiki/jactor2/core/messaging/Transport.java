@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 /**
  * A callback passed to the Request.processRequest method for returning a response.
@@ -9,12 +9,12 @@ import org.agilewiki.jactor2.core.context.JAContext;
  */
 public interface Transport<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_TYPE> {
     /**
-     * Returns the JAContext of the request source.
+     * Returns the ModuleContext of the request source.
      *
-     * @return The JAContext of the request source, or null when the request was
+     * @return The ModuleContext of the request source, or null when the request was
      *         passed using signal or call.
      */
-    JAContext getJAContext();
+    ModuleContext getModuleContext();
 
     /**
      * Returns an exception as a response instead of throwing it.

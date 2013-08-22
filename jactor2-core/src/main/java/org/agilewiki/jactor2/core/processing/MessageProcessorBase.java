@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.context.MigrationException;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.MigrationException;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Message;
 import org.agilewiki.jactor2.core.messaging.MessageSource;
@@ -24,7 +24,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     /**
      * The context of this message processor.
      */
-    protected final JAContext jaContext;
+    protected final ModuleContext moduleContext;
 
     /**
      * The inbox, implemented as a local queue and a concurrent queue.
@@ -46,18 +46,18 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     /**
      * Create a message processor.
      *
-     * @param _jaContext             The context of this message processor.
+     * @param _moduleContext             The context of this message processor.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public MessageProcessorBase(final JAContext _jaContext,
+    public MessageProcessorBase(final ModuleContext _moduleContext,
                                 final int _initialBufferSize,
                                 final int _initialLocalQueueSize) {
-        jaContext = _jaContext;
+        moduleContext = _moduleContext;
         inbox = createInbox(_initialLocalQueueSize);
-        log = _jaContext.getMessageProcessorLogger();
-        outbox = new Outbox(jaContext, _initialBufferSize);
-        _jaContext.addAutoClosable(this);
+        log = _moduleContext.getMessageProcessorLogger();
+        outbox = new Outbox(moduleContext, _initialBufferSize);
+        _moduleContext.addAutoClosable(this);
     }
 
     /**
@@ -150,7 +150,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
      */
     public void unbufferedAddMessage(final Message _message, final boolean _local)
             throws Exception {
-        if (jaContext.isClosing()) {
+        if (moduleContext.isClosing()) {
             if (_message.isForeign() && _message.isResponsePending())
                 try {
                     _message.close();
@@ -169,7 +169,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
      */
     public void unbufferedAddMessages(final Queue<Message> _messages)
             throws Exception {
-        if (jaContext.isClosing()) {
+        if (moduleContext.isClosing()) {
             final Iterator<Message> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final Message message = itm.next();
@@ -247,8 +247,8 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     }
 
     @Override
-    public JAContext getJAContext() {
-        return jaContext;
+    public ModuleContext getModuleContext() {
+        return moduleContext;
     }
 
     /**

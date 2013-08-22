@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.exceptions;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
@@ -11,7 +11,7 @@ public class ActorC {
     private final MessageProcessor messageProcessor;
     public final Request<String> throwRequest;
 
-    public ActorC(final JAContext _context) {
+    public ActorC(final ModuleContext _context) {
         this.messageProcessor = new AtomicMessageProcessor(_context);
 
         throwRequest = new Request<String>(messageProcessor) {

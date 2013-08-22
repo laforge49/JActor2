@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.context.JAContext;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
@@ -14,7 +14,7 @@ import java.awt.event.WindowListener;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.context.JAContext;
+ * import org.agilewiki.jactor2.core.context.ModuleContext;
  * import org.agilewiki.jactor2.core.messaging.Request;
  * import org.agilewiki.jactor2.core.messaging.Transport;
  *
@@ -31,7 +31,7 @@ import java.awt.event.WindowListener;
  *     HelloWorld() throws Exception {
  *
  *         //Create a context with 5 threads.
- *         JAContext context = new JAContext(5);
+ *         ModuleContext context = new ModuleContext(5);
  *
  *         initialize(new SwingBoundMessageProcessor(context));
  *     }
@@ -69,22 +69,22 @@ public class SwingBoundMessageProcessor extends ThreadBoundMessageProcessor impl
     /**
      * Create a message processor processor bound to the Swing event-dispatch thread.
      *
-     * @param _jaContext The context of the message processor.
+     * @param _moduleContext The context of the message processor.
      */
-    public SwingBoundMessageProcessor(JAContext _jaContext) {
-        super(_jaContext, null);
+    public SwingBoundMessageProcessor(ModuleContext _moduleContext) {
+        super(_moduleContext, null);
 
     }
 
     /**
      * Create a message processor bound to the Swing event-dispatch thread.
      *
-     * @param _jaContext             The context of the message processor.
+     * @param _moduleContext             The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public SwingBoundMessageProcessor(JAContext _jaContext, int _initialOutboxSize, int _initialLocalQueueSize) {
-        super(_jaContext, _initialOutboxSize, _initialLocalQueueSize, null);
+    public SwingBoundMessageProcessor(ModuleContext _moduleContext, int _initialOutboxSize, int _initialLocalQueueSize) {
+        super(_moduleContext, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 
     @Override
@@ -103,9 +103,9 @@ public class SwingBoundMessageProcessor extends ThreadBoundMessageProcessor impl
     @Override
     public void windowClosed(WindowEvent e) {
         try {
-            getJAContext().close();
+            getModuleContext().close();
         } catch (Exception ex) {
-            getLogger().warn("Exception when closing JAContext", ex);
+            getLogger().warn("Exception when closing ModuleContext", ex);
         }
     }
 
