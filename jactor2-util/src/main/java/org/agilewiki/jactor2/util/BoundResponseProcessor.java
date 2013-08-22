@@ -27,8 +27,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     /**
      * Create a thread-safe wrapper for a ResponseProcessor.
      *
-     * @param _actor The processing on whose thread the wrapped ResponseProcessor
-     *               can be used.
+     * @param _actor The actor which can process the ResponseProcessor.
      * @param _rp    The wrapped ResponseProcessor.
      */
     public BoundResponseProcessor(final Actor _actor,
@@ -39,7 +38,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
 
     /**
      * This method processes the response by immediately passing the wrapped response and ResponseProcessor
-     * via an unbuffered signal back to the appropriate processing.
+     * via an Event back to the appropriate processing.
      *
      * @param rsp The response.
      */
