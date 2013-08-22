@@ -11,7 +11,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The ThreadManager is used to process a queue of MessageProcessor's.
+ * The ThreadManager is used to process a queue of MessageProcessor's
+ * that have non-empty inboxes.
  * ThreadManager is a thread pool, but it has a simplified API and
  * assumes that the thread pool has a fixed number of threads.
  * ThreadManager is also responsible for assigning the threadReference

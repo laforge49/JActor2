@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 import java.util.concurrent.Semaphore;
 
 /**
- * Request instances are used for passing both 1-way and 2-way messages between actors.
+ * Request instances are used for passing both 1-way and 2-way buffered messages between actors.
  * Requests are typically created as an anonymous class within the targeted Actor and are bound
  * to that actor's message processor.
  * The signal (1-way messaging) and call method (2-way messaging) pass unbuffered messages
@@ -274,7 +274,7 @@ public abstract class Request<RESPONSE_TYPE> {
     }
 
     /**
-     * An instance of ResponseProcessor that is used as a place holder when the Request.call
+     * A subclass of ResponseProcessor that is used as a place holder when the Request.call
      * method is used.
      */
     final private static class CallResponseProcessor implements ResponseProcessor<Object> {

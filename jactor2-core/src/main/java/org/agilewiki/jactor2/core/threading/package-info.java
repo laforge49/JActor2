@@ -1,9 +1,9 @@
 /**
- * <h1>Message Processing Context</h1>
+ * <h1>Module Context</h1>
  * <p>
- * A ModuleContext instance provides an operating context for any number
- * of MessageProcessor instances, with ModuleContext instance managing the pool
- * of threads used by those MessageProcessor instances.
+ * A ModuleContext instance provides the operating context for any number
+ * of MessageProcessor instances, with the ModuleContext instance managing a pool
+ * of threads for those MessageProcessor instances.
  * </p>
  * <p>
  *     Each instance of ModuleContext has an independent lifecycle. Once

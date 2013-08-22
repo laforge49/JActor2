@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 
 /**
- * An Event instance is used to pass one-way messages to any number of Actor objects.
+ * An Event instance is used to pass one-way unbuffered messages to any number of Actor objects.
  * Event messages are unbuffered and are sent immediately. The net effect of sending
  * an event to an actor is that Event.processEvent, an application-specific method,
  * is called in a thread-safe way from the actor's MessageProcessor's own thread.
