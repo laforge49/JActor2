@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.util.firehose;
+package org.agilewiki.jactor2.core.firehose;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;

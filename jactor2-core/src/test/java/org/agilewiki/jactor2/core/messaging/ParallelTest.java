@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.messaging;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Delay;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 

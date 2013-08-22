@@ -2,8 +2,6 @@ package org.agilewiki.jactor2.core.exceptions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.context.JAContext;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 /**
  * Test code.
