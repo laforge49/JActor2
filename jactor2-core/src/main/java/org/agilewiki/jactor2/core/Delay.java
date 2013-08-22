@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 
 /**
- * Simulated I/O
+ * Simulates I/O.
  */
 public class Delay extends ActorBase {
 

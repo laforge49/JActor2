@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.messaging;
 import org.agilewiki.jactor2.core.Actor;
 
 /**
- * A thread-safe wrapper for ResponseProcessor.
+ * A thread-safe wrapper for a ResponseProcessor or a Transport.
  * When a request is processed, the ResponseProcessor given must only be used by the
  * same thread that is processing the request. In contrast, the processResult method
  * of BoundResponseProcessor can be called from any thread.
@@ -44,39 +44,40 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     public void processResponse(final RESPONSE_TYPE rsp) throws Exception {
         new ContinuationEvent<RESPONSE_TYPE>(rp, rsp).signal(targetActor);
     }
-}
-
-/**
- * The request used to pass the response and the wrapped ResponseProcessor back to the
- * original target processing.
- *
- * @param <RESPONSE_TYPE> The type of response.
- */
-class ContinuationEvent<RESPONSE_TYPE> extends Event<Actor> {
-    /**
-     * The wrapped ResponseProcessor.
-     */
-    private final ResponseProcessor<RESPONSE_TYPE> rp;
 
     /**
-     * The response.
-     */
-    private final RESPONSE_TYPE rsp;
-
-    /**
-     * Creates the request used to pass the response and wrapped ResponseProcessor
-     * back to the original target processing.
+     * The request used to pass the response and the wrapped ResponseProcessor back to the
+     * original target processing.
      *
-     * @param _rp  The wrapped ResponseProcessor.
-     * @param _rsp The response.
+     * @param <RESPONSE_TYPE> The type of response.
      */
-    public ContinuationEvent(final ResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
-        rp = _rp;
-        rsp = _rsp;
+    static class ContinuationEvent<RESPONSE_TYPE> extends Event<Actor> {
+        /**
+         * The wrapped ResponseProcessor.
+         */
+        private final ResponseProcessor<RESPONSE_TYPE> rp;
+
+        /**
+         * The response.
+         */
+        private final RESPONSE_TYPE rsp;
+
+        /**
+         * Creates the request used to pass the response and wrapped ResponseProcessor
+         * back to the original target processing.
+         *
+         * @param _rp  The wrapped ResponseProcessor.
+         * @param _rsp The response.
+         */
+        public ContinuationEvent(final ResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
+            rp = _rp;
+            rsp = _rsp;
+        }
+
+        @Override
+        public void processEvent(Actor _targetActor) throws Exception {
+            rp.processResponse(rsp);
+        }
     }
 
-    @Override
-    public void processEvent(Actor _targetActor) throws Exception {
-        rp.processResponse(rsp);
-    }
 }

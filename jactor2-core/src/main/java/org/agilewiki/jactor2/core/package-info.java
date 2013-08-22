@@ -1,7 +1,7 @@
 /**
  * <h1>Actors, Processing, Context and Messaging</h1>
  * <p>
- *     The JActor architecture is divided into 4 parts: actors, processing, context and messaging.
+ *     The JActor architecture is divided into 4 parts: actors, processing, threading and messaging.
  * </p>
  * <h2>Actors</h2>
  * <p>
@@ -29,15 +29,20 @@
  *     A message processor has an inbox, which is a queue of received messages, and an outbox that has a send buffer
  *     for each destination.
  * </p>
- * <h2>Context</h2>
+ * <h2>Threading</h2>
  * <p>
- *     A context is used to assign threads to message processors that have an inbox that is not empty,
+ *     A module context is used to assign threads to message processors that have an inbox that is not empty,
  *     with at most one thread being assigned to any given message processor.
  * </p>
  * <p>
  *     There can be more than one context within a program--which is important when working
  *     with OSGi. Each context has a property set and an independent lifecycle. When messages are
  *     sent to a context that is closed, an exception is raised in the sending actor.
+ * </p>
+ * <p>
+ *     Multiple module contexts can also be important when a Swing program has multiple frames that
+ *     have associated background tasks. If a frame has its own module context that is closed when
+ *     the frame is closed, all the background activity associated with that frame is terminated.
  * </p>
  * <h2>Messaging</h2>
  * <p>
