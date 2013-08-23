@@ -1,2 +1,3 @@
+del *.class
 javac *.java
-java %1
+java -classpath jactor2-core-0.0.2.jar;. %1
