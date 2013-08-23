@@ -1,6 +1,13 @@
 Programming for Performance
 ======
 
+As the number of cores continue to increase, it becomes harder and harder to write software
+that makes effective use of those cores. JActor2 is a second-generation library which address 
+this issue head on.
+
+JActor2 is lock-free code that extends the actor programming paradigm for increased effectiveness
+and ease of use.
+
 - [Tutorials](http://laforge49.github.io/JActor2/tutorials)
 - [API](http://laforge49.github.io/JActor2/api/index.html?org/agilewiki/jactor2/package-summary.html)
 - [Downloads](http://laforge49.github.io/JActor2/downloads)
