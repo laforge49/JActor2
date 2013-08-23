@@ -1,9 +1,31 @@
 <html>
 <body>
-<p style="font-size:small">
+<p>
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Getting Started
 </p>
 <h1>Getting Started</h1>
-<a href="test.bat">test.bat</a>
+<p>
+You will need three things to work with JActor2 core:
+</p>
+<ol>
+<li>
+<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">JDK 7</a> or later.
+</li>
+<li>
+The <a href="jactor2-core-0.0.2.jar">JActor2 core jar file</a>. And
+</li>
+<li>
+A test script.
+For windows, you can use <a href="test.bat">test.bat</a>:
+<pre>
+del *.class
+javac *.java
+java -classpath jactor2-core-0.0.2.jar;. %1
+</pre>
+</li>
+</ol>
+<p>
+
+</p>
 </body>
 </html>
