@@ -34,6 +34,7 @@ public class HelloWorldActor extends ActorBase {
 There is a lot here to discuss, but we should first note that this actor is completely unjustifiable,
 except that is is simple enough to use as a first example.
 </p>
+<blockquote>
 <h3>
 <a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/ActorBase.html">ActorBase</a>
 </h3>
@@ -55,5 +56,48 @@ the actor's message processor.
 <h3>
 <a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html">Request&lt;RESPONSE_TYPE&gt;</a>
 </h3>
+<p>
+A Request is a factory for 
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.RequestMessage.html">RequstMessage</a>.
+Request has an abstract method, processRequest, which is called on the thread of the actor which implements the subclass of Request.
+The HelloWorldActor.getGreetingReq method creates a request that simply returns the string "Hello world!".
+</p>
+<h3>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Transport.html">Transport&lt;RESPONSE_TYPE&gt;</a>
+</h3>
+<p>
+Transport is used to return and process a result on the thread of the actor which created the RequestMessage. 
+</p>
+</blockquote>
+<p>
+Here then is a program that exercises HelloWorldActor, <a href="HelloWorld.java">HelloWorld</a>:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.*;
+import org.agilewiki.jactor2.core.threading.*;
+import org.agilewiki.jactor2.core.messaging.*;
+import org.agilewiki.jactor2.core.processing.*;
+
+public class HelloWorld {
+    public static void main(final String[] _args) throws Exception {
+        ModuleContext context = new ModuleContext();
+        try {
+            NonBlockingMessageProcessor messageProcessor = new NonBlockingMessageProcessor(context);
+            HelloWorldActor helloWorldActor = new HelloWorldActor(messageProcessor);
+            Request<String> getGreetingReq = helloWorldActor.getGreetingReq();
+            String response = getGreetingReq.call();
+            System.out.println(response);
+        } finally {
+            context.close();
+        }
+    }
+}
+</pre>
+<p>
+Again, there are a number of items to discus.
+</p>
+<blockquote>
+
+</blockquote>
 </body>
 </html>
