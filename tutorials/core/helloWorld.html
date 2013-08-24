@@ -4,5 +4,56 @@
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Hello World
 </p>
 <h1>Hello World</h1>
+<p>
+We will start with a very simple actor,
+<a href="HelloWorldActor.java">HelloWorldActor</a>:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.*;
+import org.agilewiki.jactor2.core.threading.*;
+import org.agilewiki.jactor2.core.messaging.*;
+import org.agilewiki.jactor2.core.processing.*;
+
+public class HelloWorldActor extends ActorBase {
+
+    public HelloWorldActor(final MessageProcessor _messageProcessor) throws Exception {
+        initialize(_messageProcessor);
+    }
+    
+    public Request&lt;String&gt; getGreetingReq() {
+        return new Request&lt;String&gt;(getMessageProcessor()) {
+            @Override
+            public void processRequest(final Transport&lt;String&gt; _transport) throws Exception {
+                _transport.processResponse("Hello world!");
+            }
+        };
+    }
+}
+</pre>
+<p>
+There is a lot here to discuss, but we should first note that this actor is completely unjustifiable,
+except that is is simple enough to use as a first example.
+</p>
+<h3>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/ActorBase.html">ActorBase</a>
+</h3>
+<p>
+For HelloWorldActor to be an actor, it must implement
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/Actor.html">Actor</a>
+so that the getMessageProcessor can be used to access the actor's message processor.
+The easy way to do this is to extend ActorBase.
+</p>
+<h3>
+<a href ="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/processing/MessageProcessor.html">MessageProcessor</a>
+</h3>
+<p>
+A message processor is a light weight thread that processes messages for one or more actors.
+An actor can not function without one.
+So in the constructor of HelloWorldActor, the method ActorBase.initialize is used to assign
+the actor's message processor.
+</p>
+<h3>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html">Request&lt;RESPONSE_TYPE&gt;</a>
+</h3>
 </body>
 </html>
