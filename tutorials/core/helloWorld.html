@@ -97,7 +97,34 @@ public class HelloWorld {
 Again, there are a number of items to discus.
 </p>
 <blockquote>
-
+<h3>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/threading/ModuleContext.html">ModuleContext</a>
+</h3>
+<p>
+A module context provides several services. It manages a thread pool, a table of properties and a list of 
+AutoClosable objects that are to be closed when the context is closed.
+A program can have one or more modules, each with its own life-cycle. And, of course, a program
+will not exit normally until all the modules have been closed.
+</p>
+<h3>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/processing/NonBlockingMessageProcessor.html">NonBlockingMessageProcessor</a>
+</h3>
+<p>
+A NonBlockingMessageProcessor is one of several types of message processors.
+NonBlockingMessageProcessor is the default message processor used by most actors. 
+But it should not be used when an actor blocks for I/O or performs extensive computations.
+In HelowWorld, the HelloWorldActor is created with a NonBlockingMessageProcessor.
+</p>
+<h3>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html#call()">Request.call</a>
+</h3>
+<p>
+JActor is lock-free <strong>except</strong> for the Request.call method.
+This method creates a RequestMessage, passes that method to the actor that implemented the Request,
+and blocks the current thread until a response is received.
+HelloWorld invokes getGreetingReq.call to access the greeting provided by the HellowWorldActor.
+In general, call is only invoked by foreign threads, like the main thread in this case.
+</p>
 </blockquote>
 </body>
 </html>
