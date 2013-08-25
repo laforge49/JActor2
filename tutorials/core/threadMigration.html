@@ -4,5 +4,117 @@
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Thread Migration
 </p>
 <h1>Thread Migration</h1>
+<p>
+A thread is allocated from a ModuleContext and 
+assigned to a MessageProcessor when an idle MessageProcessor
+receives a message. 
+And a thread is unassigned from a MessageProcessor when that MessageProcessor
+becomes idle.
+But threads can also migrate from one MessageProcessor to another when a message is sent,
+with a new thread assigned to the original MessageProcessor if needed.
+Thread migration is significantly faster than passing messages between threads,
+as the data does not need to be loaded into another thread's memory cache.
+</p>
+<p>
+The Request.send method uses thread migration whenever possible, for both requests
+and responses. This is illustrated by the
+<a href="ThreadMigration.java">ThreadMigration</a>
+program:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.*;
+import org.agilewiki.jactor2.core.threading.*;
+import org.agilewiki.jactor2.core.messaging.*;
+import org.agilewiki.jactor2.core.processing.*;
+
+public class ThreadMigration extends ActorBase {
+    public static void main(final String[] _args) 
+            throws Exception {
+        ModuleContext moduleContext = new ModuleContext();
+        try {
+            System.out.println("\n           main thread: " + 
+                Thread.currentThread());
+            MessageProcessor messageProcessor = 
+                new NonBlockingMessageProcessor(moduleContext);
+            ThreadMigration threadMigration = 
+                new ThreadMigration(messageProcessor);
+            threadMigration.startReq().call();
+        } finally {
+            moduleContext.close();
+        }
+    }
+    
+    public ThreadMigration(final MessageProcessor _messageProcessor) 
+            throws Exception {
+        initialize(_messageProcessor);
+    }
+    
+    public Request&lt;Void&gt; startReq() {
+        return new Request&lt;Void&gt;(getMessageProcessor()) {
+            @Override
+            public void processRequest(final Transport&lt;Void&gt; _transport) 
+                    throws Exception {
+                System.out.println("ThreadMigration thread: " + Thread.currentThread());
+                MessageProcessor myMessageProcessor = getMessageProcessor();
+                ModuleContext myModuleContext = myMessageProcessor.getModuleContext();
+                MessageProcessor subMessageProcessor = 
+                    new NonBlockingMessageProcessor(myModuleContext);
+                SubActor subActor = new SubActor(subMessageProcessor);
+                subActor.doReq("         signal").signal();
+                subActor.doReq("           send").send(myMessageProcessor, _transport);
+            }
+        };
+    }
+}
+
+class SubActor extends ActorBase {
+    public SubActor(final MessageProcessor _messageProcessor) 
+            throws Exception {
+        initialize(_messageProcessor);
+    }
+    
+    public Request&lt;Void&gt; doReq(final String _label) {
+        return new Request&lt;Void&gt;(getMessageProcessor()) {
+            @Override
+            public void processRequest(final Transport&lt;Void&gt; _transport) 
+                    throws Exception {
+                System.out.println(_label + " thread: " + 
+                    Thread.currentThread());
+                _transport.processResponse(null);
+            }
+        };
+    }
+}
+</pre>
+<p>
+And here is the output from a test run:
+</p>
+<pre>
+C:\GitHub\JActor2docs\tutorials\core>test.bat ThreadMigration
+
+C:\GitHub\JActor2docs\tutorials\core>del *.class
+
+C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.2.jar;slf4
+j-api-1.7.5.jar *.java
+
+C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.2.jar;slf4
+j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. ThreadMigration
+
+           main thread: Thread[main,5,main]
+ThreadMigration thread: Thread[Thread-0,5,main]
+         signal thread: Thread[Thread-1,5,main]
+           send thread: Thread[Thread-0,5,main]
+
+C:\GitHub\JActor2docs\tutorials\core>
+</pre>
+<p>
+What this shows is that when 
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html#signal()">Request.signal</a>
+or
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html#call()">Request.call</a>
+are used, the message is passed to a new thread. But when
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html#send(org.agilewiki.jactor2.core.processing.MessageProcessor, org.agilewiki.jactor2.core.messaging.ResponseProcessor)">Request.send</a>
+is used, the thread migrates with the message.
+</p>
 </body>
 </html>
