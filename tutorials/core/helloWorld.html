@@ -126,5 +126,20 @@ HelloWorld invokes getGreetingReq.call to access the greeting provided by the He
 In general, call is only invoked by foreign threads, like the main thread in this case.
 </p>
 </blockquote>
+<p>
+Time to run this.
+</p>
+<pre>
+C:\GitHub\JActor2docs\tutorials\core>test.bat HelloWorld
+
+C:\GitHub\JActor2docs\tutorials\core>del *.class
+
+C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.2.jar;slf4j-api-1.7.5.jar *.java
+
+C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.2.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. HelloWorld
+Hello world!
+
+C:\GitHub\JActor2docs\tutorials\core>
+</pre>
 </body>
 </html>
