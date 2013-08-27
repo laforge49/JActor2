@@ -9,7 +9,62 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
+ * <p>
  * Publishes events to subscribers.
+ * </p>
+ * <h3>Sample Usage:</h3>
+ * <pre>
+ * import org.agilewiki.jactor2.core.messaging.EventBus;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+ * import org.agilewiki.jactor2.core.threading.ModuleContext;
+ *
+ * public class EventBusSample {
+ *
+ *     public static void main(final String[] _args) throws Exception {
+ *         //Create a module context.
+ *         ModuleContext moduleContext = new ModuleContext();
+ *         try {
+ *             //Create a status logger actor.
+ *             StatusLogger statusLogger =
+ *                 new StatusLogger(new NonBlockingMessageProcessor(moduleContext));
+ *
+ *             //Create a status printer actor.
+ *             StatusPrinter statusPrinter = new StatusPrinter(moduleContext);
+ *
+ *             //Define an event bus for StatusListener actors.
+ *             EventBus&gt;StatusListener&lt; eventBus =
+ *                 new EventBus&gt;StatusListener&lt;(new NonBlockingMessageProcessor(moduleContext));
+ *
+ *             //Add statusLogger and statusPrinter to the subscribers of the event bus.
+ *             eventBus.subscribeReq(statusLogger).call();
+ *             eventBus.subscribeReq(statusPrinter).call();
+ *
+ *             //Send a status update to all subscribers.
+ *             eventBus.publishReq(new StatusUpdate("started")).call();
+ *
+ *             //Send a status update to all subscribers.
+ *             eventBus.publishReq(new StatusUpdate("stopped")).call();
+ *         } finally {
+ *             //Close the module context.
+ *             moduleContext.close();
+ *         }
+ *     }
+ * }
+ *
+ * import org.agilewiki.jactor2.core.Actor;
+ *
+ * //An interface for actors which process StatusUpdate events.
+ * public interface StatusListener extends Actor {
+ *     //Process a StatusUpdate event.
+ *     void statusUpdate(final String _newStatus) throws Exception;
+ * }
+ *
+ * Output:
+ * new status: started
+ * new status: stopped
+ * 16 [Thread-3] INFO org.agilewiki.jactor2.core.messaging.eventBus.StatusLogger - new status: started
+ * 16 [Thread-3] INFO org.agilewiki.jactor2.core.messaging.eventBus.StatusLogger - new status: stopped
+ * </pre>
  *
  * @param <TARGET_ACTOR_TYPE> A subclass of Actor implemented by all subscribers and
  *                            the target of the published events.
