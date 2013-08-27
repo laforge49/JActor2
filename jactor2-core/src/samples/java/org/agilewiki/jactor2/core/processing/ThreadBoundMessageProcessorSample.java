@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Event;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 public class ThreadBoundMessageProcessorSample {
 

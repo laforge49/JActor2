@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import javax.swing.*;
 

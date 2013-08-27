@@ -10,6 +10,10 @@ public class EventBusSample {
         //Create a module context.
         ModuleContext moduleContext = new ModuleContext();
         try {
+            //Create a status logger actor.
+            StatusLogger statusLogger =
+                    new StatusLogger(new NonBlockingMessageProcessor(moduleContext));
+
             //Create a status printer actor.
             StatusPrinter statusPrinter = new StatusPrinter(moduleContext);
 
@@ -17,7 +21,8 @@ public class EventBusSample {
             EventBus<StatusListener> eventBus =
                     new EventBus<StatusListener>(new NonBlockingMessageProcessor(moduleContext));
 
-            //Add statusPrinter to the subscribers of the event bus.
+            //Add statusLogger and statusPrinter to the subscribers of the event bus.
+            eventBus.subscribeReq(statusLogger).call();
             eventBus.subscribeReq(statusPrinter).call();
 
             //Send a status update to all subscribers.
