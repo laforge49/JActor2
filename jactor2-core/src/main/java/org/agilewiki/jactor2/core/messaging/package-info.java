@@ -30,7 +30,7 @@
  *     exception handler, or if an exception is thrown by an exception handler, then the
  *     exception is returned as a response, though if the current message being processed is
  *     an event then the exception is simply logged. When a response message that
- *     holds an event is processed by the source message processor, the exception is rethrown
+ *     holds an exception is processed by the source message processor, the exception is rethrown
  *     within the source actor rather than being pass back to the actor as a valid response.
  * </p>
  * <p>
