@@ -17,7 +17,7 @@ public class StatusLogger extends ActorBase implements StatusListener {
 
     //Logs the revised status.
     @Override
-    public void statusUpdate(String _newStatus) {
-        logger.info("new status: " + _newStatus);
+    public void statusUpdate(final StatusUpdate _statusUpdate) {
+        logger.info("new status: " + _statusUpdate.newStatus);
     }
 }

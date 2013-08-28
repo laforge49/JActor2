@@ -16,7 +16,7 @@ public class StatusPrinter extends ActorBase implements StatusListener {
 
     //Prints the revised status.
     @Override
-    public void statusUpdate(String _newStatus) {
-        System.out.println("new status: " + _newStatus);
+    public void statusUpdate(final StatusUpdate _statusUpdate) {
+        System.out.println("new status: " + _statusUpdate.newStatus);
     }
 }

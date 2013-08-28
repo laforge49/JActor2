@@ -56,7 +56,7 @@ import java.util.Set;
  * //An interface for actors which process StatusUpdate events.
  * public interface StatusListener extends Actor {
  *     //Process a StatusUpdate event.
- *     void statusUpdate(final String _newStatus) throws Exception;
+ *     void statusUpdate(final StatusUpdate _statusUpdate) throws Exception;
  * }
  *
  * Output:
