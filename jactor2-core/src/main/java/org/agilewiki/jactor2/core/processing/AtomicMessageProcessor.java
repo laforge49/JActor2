@@ -9,9 +9,9 @@ import org.agilewiki.jactor2.core.messaging.Message;
  * which perform long computations, I/O, or otherwise block the thread. And unlike other types of
  * message processors, an AtomicMessageProcessor should usually be used only by a single actor.
  * <p>
- * For thread safety, the processing of each message is atomic, but when the processing of a
- * message results in the sending of a request, other messages may be processed before a
- * response to that request is received. However, an atomic message processor will not process another
+ * For thread safety, the processing of each message is atomic, but when the processing of a message
+ * results in the sending of a request message to another actor, other messages may be processed before a
+ * response to that request message is received. However, an atomic message processor will not process a
  * request until a response is returned for the prior request. This does not however preclude
  * the processing of event messages.
  * </p>

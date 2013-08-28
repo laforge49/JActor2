@@ -31,6 +31,10 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
      */
     protected final Inbox inbox;
 
+    /**
+     * Holds the buffered messages until they are passed as blocks to their
+     * various destinations.
+     */
     protected final Outbox outbox;
 
     /**

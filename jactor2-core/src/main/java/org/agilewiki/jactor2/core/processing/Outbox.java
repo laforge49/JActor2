@@ -44,6 +44,10 @@ public class Outbox implements AutoCloseable {
         initialBufferSize = _initialBufferSize;
     }
 
+    /**
+     * Returns an iterator of the send buffers held by the outbox.
+     * @return An iterator of the send buffers held by the outbox.
+     */
     public Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> getIterator() {
         if (sendBuffer == null)
             return null;
