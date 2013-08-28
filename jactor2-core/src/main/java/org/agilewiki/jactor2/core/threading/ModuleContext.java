@@ -121,6 +121,10 @@ public final class ModuleContext implements AutoCloseable {
         return initialBufferSize;
     }
 
+    /**
+     * Returns the initial local message queue(s) size.
+     * @return The initial local message queue(s) size.
+     */
     public int getInitialLocalMessageQueueSize() {
         return initialLocalMessageQueueSize;
     }
