@@ -12,7 +12,7 @@ public class StatusUpdate extends Event<StatusListener> {
         newStatus = _newStatus;
     }
 
-    //Invokes the statusUpdate method on a StatusListener actor with the revised status.
+    //Invokes the statusUpdate method on a StatusListener actor.
     @Override
     public void processEvent(StatusListener _targetActor) throws Exception {
         _targetActor.statusUpdate(this);
