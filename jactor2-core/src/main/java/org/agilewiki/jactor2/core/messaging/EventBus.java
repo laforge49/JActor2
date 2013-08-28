@@ -32,8 +32,8 @@ import java.util.Set;
  *             StatusPrinter statusPrinter = new StatusPrinter(moduleContext);
  *
  *             //Define an event bus for StatusListener actors.
- *             EventBus&gt;StatusListener&lt; eventBus =
- *                 new EventBus&gt;StatusListener&lt;(new NonBlockingMessageProcessor(moduleContext));
+ *             EventBus&lt;StatusListener&gt; eventBus =
+ *                 new EventBus&lt;StatusListener&gt;(new NonBlockingMessageProcessor(moduleContext));
  *
  *             //Add statusLogger and statusPrinter to the subscribers of the event bus.
  *             eventBus.subscribeReq(statusLogger).call();
