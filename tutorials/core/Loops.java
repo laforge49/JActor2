@@ -10,42 +10,48 @@ public class Loops extends ActorBase {
         try {
 		    Loops loops = new Loops(new NonBlockingMessageProcessor(moduleContext));
 			Sums sums;
+			
+			System.out.println("\nsingle message processor tests:");
+            sums = new Sums(loops.getMessageProcessor());
+			test(1000000, sums, loops);
+		    sums.getMessageProcessor().getModuleContext().close();
 			/*
 			System.out.println("\nno thread migration tests:");
             sums = new Sums(new NonBlockingMessageProcessor(new ModuleContext()));
-			loops.test(100000, sums);
+			test(1000000, sums, loops);
 		    sums.getMessageProcessor().getModuleContext().close();
-			*/
+			
 			System.out.println("\nthread migration tests:");
             sums = new Sums(new NonBlockingMessageProcessor(moduleContext));
-			loops.test(1000000, sums);
+			test(1000000, sums, loops);
+			*/
         } finally {
             moduleContext.close();
         }
     }
 	
-	Loops(final MessageProcessor _messageProcessor)
-            throws Exception {
-	    initialize(_messageProcessor);
-	}
-	
-	void test(final long _c, final Sums _sums) throws Exception {
-			System.out.println("1 => " + loopReq(_sums, 1).call());
+	static void test(final long _c, final Sums _sums, final Loops loops) throws Exception {
+			System.out.println("1 => " + loops.loopReq(_sums, 1).call());
 		    _sums.clearReq().signal();
-			System.out.println("2 => " + loopReq(_sums, 2).call());
+			System.out.println("2 => " + loops.loopReq(_sums, 2).call());
 		    _sums.clearReq().signal();
-			System.out.println("100 => " + loopReq(_sums, 100).call());
+			System.out.println("100 => " + loops.loopReq(_sums, 100).call());
 		    _sums.clearReq().signal();
 
 			System.gc();
 			long t0 = System.currentTimeMillis();
-			long r = loopReq(_sums, _c).call();
+			long r = loops.loopReq(_sums, _c).call();
 			long t1 = System.currentTimeMillis();
 			long d = t1 - t0;
 			System.out.println("" + _c + " => " + r + " in " + d + " milliseconds");
 			if (d > 0)
 			    System.out.println("" + (_c * 1000 / d) + " requests/responses per second");
 		    _sums.clearReq().signal();
+	}
+	
+	Loops(final MessageProcessor _messageProcessor)
+            throws Exception {
+	    initialize(_messageProcessor);
 	}
 	
 	Request<Long> loopReq(final Sums _sums, final long _count) {
