@@ -251,7 +251,10 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     public final void incomingResponse(final Message _message,
                                        final MessageProcessor _responseSource) {
         try {
-            unbufferedAddMessage(_message, this == _responseSource);
+            MessageProcessorBase responseSource = (MessageProcessorBase) _responseSource;
+            boolean local = this == _responseSource;
+            if (local || _responseSource == null || !responseSource.buffer(_message, this))
+                unbufferedAddMessage(_message, local);
         } catch (final Throwable t) {
             log.error("unable to add response message", t);
         }
