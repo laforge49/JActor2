@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
-import org.agilewiki.jactor2.core.threading.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
+import org.agilewiki.jactor2.core.threading.MigrationException;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -94,18 +94,19 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
                 if (!iter.hasNext() &&
                         _mayMigrate &&
                         getModuleContext() == target.getModuleContext() &&
-                        target instanceof UnboundMessageProcessor &&
-                        !target.isRunning()) {
-                    Thread currentThread = threadReference.get();
-                    MessageProcessorBase targ = target;
-                    AtomicReference<Thread> targetThreadReference = targ.getThreadReference();
-                    if (targetThreadReference.get() == null &&
-                            targetThreadReference.compareAndSet(null, currentThread)) {
-                        while (!messages.isEmpty()) {
-                            Message m = messages.poll();
-                            targ.unbufferedAddMessage(m, true);
+                        target instanceof UnboundMessageProcessor) {
+                    if (!target.isRunning()) {
+                        Thread currentThread = threadReference.get();
+                        MessageProcessorBase targ = target;
+                        AtomicReference<Thread> targetThreadReference = targ.getThreadReference();
+                        if (targetThreadReference.get() == null &&
+                                targetThreadReference.compareAndSet(null, currentThread)) {
+                            while (!messages.isEmpty()) {
+                                Message m = messages.poll();
+                                targ.unbufferedAddMessage(m, true);
+                            }
+                            throw new MigrationException(targ);
                         }
-                        throw new MigrationException(targ);
                     }
                 }
                 target.unbufferedAddMessages(messages);

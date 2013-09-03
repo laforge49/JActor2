@@ -36,7 +36,7 @@ Messages per second: 13715539
      */
     public void test1() throws Exception {
         System.gc();
-        runs = 10;
+        runs = 1000;
         System.out.println("shared processing test");
         ModuleContext moduleContext = new ModuleContext();
         try {
@@ -64,7 +64,7 @@ Messages per second: 13715539
 
     public void test3() throws Exception {
         System.gc();
-        runs = 10;
+        runs = 1000;
         System.out.println("migration processing test");
         ModuleContext moduleContext = new ModuleContext();
         try {

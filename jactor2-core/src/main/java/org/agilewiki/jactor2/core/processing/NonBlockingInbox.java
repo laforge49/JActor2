@@ -35,7 +35,8 @@ public class NonBlockingInbox extends Inbox {
     @Override
     public boolean hasWork() {
         //ConcurrentLinkedQueue.isEmpty() is not accurate enough
-        return !localQueue.isEmpty() || concurrentQueue.peek() != null;
+        boolean rv = !localQueue.isEmpty() || concurrentQueue.peek() != null;
+        return rv;
     }
 
     @Override

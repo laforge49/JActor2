@@ -75,8 +75,9 @@ final public class ThreadManager {
                                     } catch (final MigrationException me) {
                                         boolean hasWork = messageProcessor.hasWork();
                                         threadReference.set(null);
-                                        if (messageProcessor.isIdler() || hasWork)
+                                        if (messageProcessor.isIdler() || hasWork || messageProcessor.hasConcurrent()) {
                                             execute(messageProcessor);
+                                        }
                                         messageProcessor = me.messageProcessor;
                                         threadReference = messageProcessor.getThreadReference();
                                         continue;
@@ -87,7 +88,7 @@ final public class ThreadManager {
                                     }
                                     boolean hasWork = messageProcessor.hasWork();
                                     threadReference.set(null);
-                                    if (hasWork)
+                                    if (hasWork || messageProcessor.hasConcurrent())
                                         execute(messageProcessor);
                                     break;
                                 }

@@ -24,6 +24,14 @@ public abstract class Inbox implements AutoCloseable {
     protected ConcurrentLinkedQueue<Object> concurrentQueue;
 
     /**
+     * Returns true when a message has been passed from another thread.
+     * @return True when a message has been passed from another thread.
+     */
+    public boolean hasConcurrent() {
+        return concurrentQueue.peek() != null;
+    }
+
+    /**
      * Returns true when there is a message in the inbox that can be processed.
      * (This method is not thread safe and must be called on the message processor's thread.)
      *

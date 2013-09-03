@@ -109,6 +109,14 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
         return inbox.hasWork();
     }
 
+    /**
+     * Returns true when a message has been passed from another thread.
+     * @return True when a message has been passed from another thread.
+     */
+    public boolean hasConcurrent() {
+        return inbox.hasConcurrent();
+    }
+
     @Override
     public final boolean isInboxEmpty() {
         return inbox.isEmpty();

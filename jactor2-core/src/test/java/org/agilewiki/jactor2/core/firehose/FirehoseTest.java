@@ -18,7 +18,7 @@ public class FirehoseTest extends TestCase {
             next = new NullStage(moduleContext, next);
             next = new NullStage(moduleContext, next);
             next = new NullStage(moduleContext, next);
-            new FirstStage(moduleContext, next, 10000000, 10);
+            new FirstStage(moduleContext, next, 1, 10);
             try {
                 Thread.sleep(60000);
             } catch (Exception ex) {
