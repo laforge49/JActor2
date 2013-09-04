@@ -27,11 +27,14 @@ public class JALongImpl
         });
     }
 
-    private Request<Long> getLongReq;
-
     @Override
     public Request<Long> getValueReq() {
-        return getLongReq;
+        return new Request<Long>(getMessageProcessor()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                rp.processResponse(getValue());
+            }
+        };
     }
 
     /**
@@ -93,11 +96,5 @@ public class JALongImpl
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        getLongReq = new Request<Long>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getValue());
-            }
-        };
     }
 }

@@ -25,10 +25,13 @@ public class JAStringImpl
         });
     }
 
-    private Request<String> getStringReq;
-
     public Request<String> getValueReq() {
-        return getStringReq;
+        return new Request<String>(getMessageProcessor()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                rp.processResponse(getValue());
+            }
+        };
     }
 
     /**
@@ -137,11 +140,5 @@ public class JAStringImpl
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        getStringReq = new Request<String>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getValue());
-            }
-        };
     }
 }

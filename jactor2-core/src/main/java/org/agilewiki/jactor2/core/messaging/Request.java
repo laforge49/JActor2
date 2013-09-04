@@ -135,6 +135,11 @@ import java.util.concurrent.Semaphore;
 public abstract class Request<RESPONSE_TYPE> {
 
     /**
+     * A request can only be used once.
+     */
+    private boolean used;
+
+    /**
      * The message processor where this Request Objects is passed for processing. The thread
      * owned by this message processor will process the Request.
      */
@@ -162,6 +167,12 @@ public abstract class Request<RESPONSE_TYPE> {
         return messageProcessor;
     }
 
+    private void use() {
+        if (used)
+            throw new IllegalStateException("Already used");
+        used = true;
+    }
+
     /**
      * Passes this Request to the target MessageProcessor without any result being passed back.
      * I.E. The signal method results in a 1-way message being passed.
@@ -169,6 +180,7 @@ public abstract class Request<RESPONSE_TYPE> {
      * that exception is simply logged as a warning.
      */
     public void signal() throws Exception {
+        use();
         final RequestMessage message = new RequestMessage(false, null, null,
                 this, null, SignalResponseProcessor.SINGLETON);
         message.signal(messageProcessor);
@@ -190,6 +202,7 @@ public abstract class Request<RESPONSE_TYPE> {
      */
     public void send(final MessageProcessor _source,
                      final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
+        use();
         MessageProcessorBase source = (MessageProcessorBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(
@@ -217,6 +230,7 @@ public abstract class Request<RESPONSE_TYPE> {
      * @throws Exception If the result is an exception, it is thrown rather than being returned.
      */
     public RESPONSE_TYPE call() throws Exception {
+        use();
         final Pender pender = new Pender();
         final RequestMessage<RESPONSE_TYPE> message = new RequestMessage<RESPONSE_TYPE>(true, pender, null,
                 this, null, CallResponseProcessor.SINGLETON);

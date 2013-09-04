@@ -32,11 +32,14 @@ public class BytesImpl
         });
     }
 
-    private Request<byte[]> getBytesReq;
-
     @Override
     public Request<byte[]> getValueReq() {
-        return getBytesReq;
+        return new Request<byte[]>(getMessageProcessor()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                rp.processResponse(getValue());
+            }
+        };
     }
 
     /**
@@ -155,11 +158,5 @@ public class BytesImpl
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        getBytesReq = new Request<byte[]>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getValue());
-            }
-        };
     }
 }

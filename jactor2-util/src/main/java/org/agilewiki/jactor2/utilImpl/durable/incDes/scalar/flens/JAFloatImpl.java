@@ -27,11 +27,14 @@ public class JAFloatImpl
         });
     }
 
-    private Request<Float> getFloatReq;
-
     @Override
     public Request<Float> getValueReq() {
-        return getFloatReq;
+        return new Request<Float>(getMessageProcessor()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                rp.processResponse(getValue());
+            }
+        };
     }
 
     /**
@@ -93,11 +96,5 @@ public class JAFloatImpl
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        getFloatReq = new Request<Float>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getValue());
-            }
-        };
     }
 }

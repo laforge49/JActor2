@@ -56,17 +56,24 @@ public class BoxImpl
         return stringLength(_s.length());
     }
 
-    private Request<Void> clearReq;
-    private Request<JASerializable> getPAIDReq;
-
     @Override
     public Request<Void> clearReq() {
-        return clearReq;
+        return new Request<Void>(getMessageProcessor()) {
+            public void processRequest(Transport rp) throws Exception {
+                clear();
+                rp.processResponse(null);
+            }
+        };
     }
 
     @Override
     public Request<JASerializable> getValueReq() {
-        return getPAIDReq;
+        return new Request<JASerializable>(getMessageProcessor()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                rp.processResponse(getValue());
+            }
+        };
     }
 
     /**
@@ -287,18 +294,5 @@ public class BoxImpl
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        clearReq = new Request<Void>(getMessageProcessor()) {
-            public void processRequest(Transport rp) throws Exception {
-                clear();
-                rp.processResponse(null);
-            }
-        };
-
-        getPAIDReq = new Request<JASerializable>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getValue());
-            }
-        };
     }
 }
