@@ -132,7 +132,7 @@ import java.util.concurrent.Semaphore;
  *
  * @param <RESPONSE_TYPE> The class of the result returned after the Request operates on the target actor.
  */
-public abstract class Request<RESPONSE_TYPE> {
+public abstract class Request<RESPONSE_TYPE> implements Message {
 
     /**
      * A request can only be used once.
@@ -144,6 +144,44 @@ public abstract class Request<RESPONSE_TYPE> {
      * owned by this message processor will process the Request.
      */
     private final MessageProcessorBase messageProcessor;
+
+    /**
+     * True when the result is to be returned via a message processor with a context
+     * that differs from the context of the target message processor.
+     */
+    private boolean foreign;
+
+    /**
+     * The source message processor or pender that will receive the results.
+     */
+    private MessageSource messageSource;
+
+    /**
+     * The message targeted to the source message processor which, when processed,
+     * resulted in this message.
+     */
+    private Message oldMessage;
+
+    /**
+     * The exception handler that was active in the source message processor at the time
+     * when this message was created.
+     */
+    private ExceptionHandler sourceExceptionHandler;
+
+    /**
+     * The application object that will process the results.
+     */
+    private ResponseProcessor<?> responseProcessor;
+
+    /**
+     * True when a response to this message has not yet been determined.
+     */
+    private boolean responsePending = true;
+
+    /**
+     * The response created when this message is applied to the target actor.
+     */
+    private Object response;
 
     /**
      * Create an Request and bind it to its target message processor.
@@ -181,9 +219,8 @@ public abstract class Request<RESPONSE_TYPE> {
      */
     public void signal() throws Exception {
         use();
-        final RequestMessage message = new RequestMessage(false, null, null,
-                this, null, SignalResponseProcessor.SINGLETON);
-        message.signal(messageProcessor);
+        responseProcessor = SignalResponseProcessor.SINGLETON;
+        signal(messageProcessor);
     }
 
     /**
@@ -210,14 +247,12 @@ public abstract class Request<RESPONSE_TYPE> {
         ResponseProcessor<RESPONSE_TYPE> rp = _rp;
         if (rp == null)
             rp = (ResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
-        final RequestMessage message = new RequestMessage(
-                source.getModuleContext() != messageProcessor.getModuleContext(),
-                source,
-                source.getCurrentMessage(),
-                this,
-                source.getExceptionHandler(),
-                rp);
-        message.send(messageProcessor);
+        foreign = source.getModuleContext() != messageProcessor.getModuleContext();
+        messageSource = source;
+        oldMessage = source.getCurrentMessage();
+        sourceExceptionHandler = source.getExceptionHandler();
+        responseProcessor = rp;
+        send(messageProcessor);
     }
 
     /**
@@ -231,10 +266,10 @@ public abstract class Request<RESPONSE_TYPE> {
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
-        final Pender pender = new Pender();
-        final RequestMessage<RESPONSE_TYPE> message = new RequestMessage<RESPONSE_TYPE>(true, pender, null,
-                this, null, CallResponseProcessor.SINGLETON);
-        return (RESPONSE_TYPE) message.call(messageProcessor);
+        foreign = true;
+        messageSource = new Pender();
+        responseProcessor = CallResponseProcessor.SINGLETON;
+        return (RESPONSE_TYPE) call(messageProcessor);
     }
 
     /**
@@ -246,6 +281,207 @@ public abstract class Request<RESPONSE_TYPE> {
      */
     abstract public void processRequest(final Transport<RESPONSE_TYPE> _transport)
             throws Exception;
+
+    @Override
+    public boolean isForeign() {
+        return foreign;
+    }
+
+    @Override
+    public boolean isResponsePending() {
+        return responsePending;
+    }
+
+    /**
+     * @param _response the response being returned
+     */
+    void setResponse(final Object _response, final MessageProcessor _activeMessageProcessor) {
+        ((MessageProcessorBase) _activeMessageProcessor).requestEnd();
+        responsePending = false;
+        response = _response;
+    }
+
+    /**
+     * Returns the response.
+     *
+     * @return The response.
+     */
+    Object getResponse() {
+        return response;
+    }
+
+    /**
+     * The response processor.
+     *
+     * @return The responseProcessor.
+     */
+    ResponseProcessor<?> getResponseProcessor() {
+        return responseProcessor;
+    }
+
+    /**
+     * Pass a 1-way message.
+     *
+     * @param _targetMessageProcessor The message processor that will receive the message.
+     */
+    final void signal(final MessageProcessor _targetMessageProcessor) throws Exception {
+        ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, false);
+    }
+
+    /**
+     * A 2-way message exchange between the message processors.
+     *
+     * @param _targetMessageProcessor The message processor that will receive the message.
+     */
+    final void send(final MessageProcessor _targetMessageProcessor) throws Exception {
+        MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) messageSource;
+        boolean local = sourceMessageProcessor == _targetMessageProcessor;
+        if (local || !sourceMessageProcessor.buffer(this, _targetMessageProcessor))
+            ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, local);
+    }
+
+    /**
+     * A 2-way message exchange between a Pender and the target message processor.
+     *
+     * @param _targetMessageProcessor The message processor that will receive the message.
+     */
+    final Object call(final MessageProcessor _targetMessageProcessor) throws Exception {
+        ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, false);
+        return ((Pender) messageSource).pend();
+    }
+
+    @Override
+    public void close() {
+        if (!responsePending)
+            return;
+        responsePending = false;
+        response = new ServiceClosedException();
+        messageSource.incomingResponse(this, null);
+    }
+
+    /**
+     * Process a request or the response.
+     *
+     * @param _activeMessageProcessor The message processor whose thread is to evaluate the request/response.
+     */
+    public void eval(final MessageProcessor _activeMessageProcessor) {
+        if (responsePending) {
+            processRequestMessage(_activeMessageProcessor);
+        } else {
+            processResponseMessage(_activeMessageProcessor);
+        }
+    }
+
+    /**
+     * Process a request.
+     *
+     * @param _targetMessageProcessor The message processor whose thread is to evaluate the request.
+     */
+    private void processRequestMessage(final MessageProcessor _targetMessageProcessor) {
+        final MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) _targetMessageProcessor;
+        final ModuleContext moduleContext = targetMessageProcessor.getModuleContext();
+        if (foreign)
+            moduleContext.addAutoClosable(this);
+        targetMessageProcessor.setExceptionHandler(null);
+        targetMessageProcessor.setCurrentMessage(this);
+        targetMessageProcessor.requestBegin();
+        try {
+            processRequest(
+                    new Transport() {
+                        @Override
+                        public void processResponse(final Object response)
+                                throws Exception {
+                            if (foreign)
+                                moduleContext.removeAutoClosable(Request.this);
+                            if (!responsePending)
+                                return;
+                            setResponse(response, targetMessageProcessor);
+                            if (getResponseProcessor() != SignalResponseProcessor.SINGLETON) {
+                                messageSource.incomingResponse(Request.this, targetMessageProcessor);
+                            } else {
+                                if (response instanceof Throwable) {
+                                    targetMessageProcessor.getLogger().warn("Uncaught throwable",
+                                            (Throwable) response);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public ModuleContext getModuleContext() {
+                            if (messageSource == null)
+                                return null;
+                            if (!(messageSource instanceof MessageProcessor))
+                                return null;
+                            return ((MessageProcessorBase) messageSource).getModuleContext();
+                        }
+
+                        @Override
+                        public void processException(Exception response) throws Exception {
+                            processResponse((Object) response);
+                        }
+                    });
+        } catch (final Throwable t) {
+            if (foreign)
+                moduleContext.removeAutoClosable(this);
+            processThrowable(targetMessageProcessor, t);
+        }
+    }
+
+    /**
+     * Process a response.
+     *
+     * @param _sourceMessageProcessor The message processor whose thread is to evaluate the response.
+     */
+    private void processResponseMessage(final MessageProcessor _sourceMessageProcessor) {
+        MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) _sourceMessageProcessor;
+        sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
+        sourceMessageProcessor.setCurrentMessage(oldMessage);
+        if (response instanceof Throwable) {
+            oldMessage.processThrowable(sourceMessageProcessor, (Throwable) response);
+            return;
+        }
+        @SuppressWarnings("rawtypes")
+        final ResponseProcessor responseProcessor = this
+                .getResponseProcessor();
+        try {
+            responseProcessor.processResponse(response);
+        } catch (final Throwable t) {
+            oldMessage.processThrowable(sourceMessageProcessor, t);
+        }
+    }
+
+    @Override
+    public void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t) {
+        MessageProcessorBase activeMessageProcessor = (MessageProcessorBase) _activeMessageProcessor;
+        ExceptionHandler exceptionHandler = activeMessageProcessor.getExceptionHandler();
+        if (exceptionHandler != null) {
+            try {
+                exceptionHandler.processException(_t);
+            } catch (final Throwable u) {
+                activeMessageProcessor.getLogger().error("Exception handler unable to process throwable "
+                        + exceptionHandler.getClass().getName(), u);
+                if (!(responseProcessor instanceof SignalResponseProcessor)) {
+                    if (!responsePending)
+                        return;
+                    setResponse(u, activeMessageProcessor);
+                    messageSource.incomingResponse(this, activeMessageProcessor);
+                } else {
+                    activeMessageProcessor.getLogger().error("Thrown by exception handler and uncaught "
+                            + exceptionHandler.getClass().getName(), _t);
+                }
+            }
+        } else {
+            if (!responsePending) {
+                return;
+            }
+            setResponse(_t, activeMessageProcessor);
+            if (!(responseProcessor instanceof SignalResponseProcessor))
+                messageSource.incomingResponse(this, activeMessageProcessor);
+            else {
+                activeMessageProcessor.getLogger().warn("Uncaught throwable", _t);
+            }
+        }
+    }
 
     /**
      * Pender is used by the Request.call method to block the current thread until a
@@ -282,7 +518,7 @@ public abstract class Request<RESPONSE_TYPE> {
         @Override
         public void incomingResponse(final Message _message,
                                      final MessageProcessor _responseSource) {
-            this.result = ((RequestMessage) _message).getResponse();
+            this.result = ((Request) _message).getResponse();
             done.release();
         }
     }
@@ -305,285 +541,6 @@ public abstract class Request<RESPONSE_TYPE> {
 
         @Override
         public void processResponse(final Object response) {
-        }
-    }
-
-    /**
-     * The Message subclass used to pass requests and to return the results.
-     *
-     * @param <RESPONSE_TYPE> The class of the result returned after the Request operates on the target actor.
-     */
-    private static final class RequestMessage<RESPONSE_TYPE> implements Message {
-
-        /**
-         * True when the result is to be returned via a message processor with a context
-         * that differs from the context of the target message processor.
-         */
-        protected final boolean foreign;
-
-        /**
-         * The source message processor or pender that will receive the results.
-         */
-        protected final MessageSource messageSource;
-
-        /**
-         * The message targeted to the source message processor which, when processed,
-         * resulted in this message.
-         */
-        protected final Message oldMessage;
-
-        /**
-         * The Request object carried by this message.
-         */
-        protected final Request<RESPONSE_TYPE> request;
-
-        /**
-         * The exception handler that was active in the source message processor at the time
-         * when this message was created.
-         */
-        protected final ExceptionHandler sourceExceptionHandler;
-
-        /**
-         * The application object that will process the results.
-         */
-        protected final ResponseProcessor<?> responseProcessor;
-
-        /**
-         * True when a response to this message has not yet been determined.
-         */
-        protected boolean responsePending = true;
-
-        /**
-         * The response created when this message is applied to the target actor.
-         */
-        protected Object response;
-
-        /**
-         * Creates a request message.
-         *
-         * @param _foreign True when the result is to be returned via a message processor with a context
-         *                 that differs from the context of the target message processor.
-         * @param _source  The source message processor or pender that will receive the results.
-         * @param _old     The message targeted to the source message processor which, when processed,
-         *                 resulted in this message.
-         * @param _request The Request object carried by this message.
-         * @param _handler The exception handler that was active in the source message processor at the time
-         *                 when this message was created.
-         * @param _rp      The application object that will process the results.
-         */
-        RequestMessage(final boolean _foreign,
-                       final MessageSource _source,
-                       final Message _old,
-                       final Request<RESPONSE_TYPE> _request,
-                       final ExceptionHandler _handler,
-                       final ResponseProcessor _rp) {
-            messageSource = _source;
-            foreign = _foreign;
-            oldMessage = _old;
-            request = _request;
-            sourceExceptionHandler = _handler;
-            responseProcessor = _rp;
-        }
-
-        @Override
-        public boolean isForeign() {
-            return foreign;
-        }
-
-        @Override
-        public boolean isResponsePending() {
-            return responsePending;
-        }
-
-        /**
-         * @param _response the response being returned
-         */
-        void setResponse(final Object _response, final MessageProcessor _activeMessageProcessor) {
-            ((MessageProcessorBase) _activeMessageProcessor).requestEnd();
-            responsePending = false;
-            response = _response;
-        }
-
-        /**
-         * Returns the response.
-         *
-         * @return The response.
-         */
-        Object getResponse() {
-            return response;
-        }
-
-        /**
-         * The response processor.
-         *
-         * @return The responseProcessor.
-         */
-        ResponseProcessor<?> getResponseProcessor() {
-            return responseProcessor;
-        }
-
-        /**
-         * Pass a 1-way message.
-         *
-         * @param _targetMessageProcessor The message processor that will receive the message.
-         */
-        final void signal(final MessageProcessor _targetMessageProcessor) throws Exception {
-            ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, false);
-        }
-
-        /**
-         * A 2-way message exchange between the message processors.
-         *
-         * @param _targetMessageProcessor The message processor that will receive the message.
-         */
-        final void send(final MessageProcessor _targetMessageProcessor) throws Exception {
-            MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) messageSource;
-            boolean local = sourceMessageProcessor == _targetMessageProcessor;
-            if (local || !sourceMessageProcessor.buffer(this, _targetMessageProcessor))
-                ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, local);
-        }
-
-        /**
-         * A 2-way message exchange between a Pender and the target message processor.
-         *
-         * @param _targetMessageProcessor The message processor that will receive the message.
-         */
-        final Object call(final MessageProcessor _targetMessageProcessor) throws Exception {
-            ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, false);
-            return ((Pender) messageSource).pend();
-        }
-
-        @Override
-        public void close() {
-            if (!responsePending)
-                return;
-            responsePending = false;
-            response = new ServiceClosedException();
-            messageSource.incomingResponse(this, null);
-        }
-
-        /**
-         * Process a request or the response.
-         *
-         * @param _activeMessageProcessor The message processor whose thread is to evaluate the request/response.
-         */
-        public void eval(final MessageProcessor _activeMessageProcessor) {
-            if (responsePending) {
-                processRequestMessage(_activeMessageProcessor);
-            } else {
-                processResponseMessage(_activeMessageProcessor);
-            }
-        }
-
-        /**
-         * Process a request.
-         *
-         * @param _targetMessageProcessor The message processor whose thread is to evaluate the request.
-         */
-        private void processRequestMessage(final MessageProcessor _targetMessageProcessor) {
-            final MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) _targetMessageProcessor;
-            final ModuleContext moduleContext = targetMessageProcessor.getModuleContext();
-            if (foreign)
-                moduleContext.addAutoClosable(this);
-            targetMessageProcessor.setExceptionHandler(null);
-            targetMessageProcessor.setCurrentMessage(this);
-            targetMessageProcessor.requestBegin();
-            try {
-                request.processRequest(
-                        new Transport() {
-                            @Override
-                            public void processResponse(final Object response)
-                                    throws Exception {
-                                if (foreign)
-                                    moduleContext.removeAutoClosable(RequestMessage.this);
-                                if (!responsePending)
-                                    return;
-                                setResponse(response, targetMessageProcessor);
-                                if (getResponseProcessor() != SignalResponseProcessor.SINGLETON) {
-                                    messageSource.incomingResponse(RequestMessage.this, targetMessageProcessor);
-                                } else {
-                                    if (response instanceof Throwable) {
-                                        targetMessageProcessor.getLogger().warn("Uncaught throwable",
-                                                (Throwable) response);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public ModuleContext getModuleContext() {
-                                if (messageSource == null)
-                                    return null;
-                                if (!(messageSource instanceof MessageProcessor))
-                                    return null;
-                                return ((MessageProcessorBase) messageSource).getModuleContext();
-                            }
-
-                            @Override
-                            public void processException(Exception response) throws Exception {
-                                processResponse((Object) response);
-                            }
-                        });
-            } catch (final Throwable t) {
-                if (foreign)
-                    moduleContext.removeAutoClosable(this);
-                processThrowable(targetMessageProcessor, t);
-            }
-        }
-
-        /**
-         * Process a response.
-         *
-         * @param _sourceMessageProcessor The message processor whose thread is to evaluate the response.
-         */
-        private void processResponseMessage(final MessageProcessor _sourceMessageProcessor) {
-            MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) _sourceMessageProcessor;
-            sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
-            sourceMessageProcessor.setCurrentMessage(oldMessage);
-            if (response instanceof Throwable) {
-                oldMessage.processThrowable(sourceMessageProcessor, (Throwable) response);
-                return;
-            }
-            @SuppressWarnings("rawtypes")
-            final ResponseProcessor responseProcessor = this
-                    .getResponseProcessor();
-            try {
-                responseProcessor.processResponse(response);
-            } catch (final Throwable t) {
-                oldMessage.processThrowable(sourceMessageProcessor, t);
-            }
-        }
-
-        @Override
-        public void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t) {
-            MessageProcessorBase activeMessageProcessor = (MessageProcessorBase) _activeMessageProcessor;
-            ExceptionHandler exceptionHandler = activeMessageProcessor.getExceptionHandler();
-            if (exceptionHandler != null) {
-                try {
-                    exceptionHandler.processException(_t);
-                } catch (final Throwable u) {
-                    activeMessageProcessor.getLogger().error("Exception handler unable to process throwable "
-                            + exceptionHandler.getClass().getName(), u);
-                    if (!(responseProcessor instanceof SignalResponseProcessor)) {
-                        if (!responsePending)
-                            return;
-                        setResponse(u, activeMessageProcessor);
-                        messageSource.incomingResponse(this, activeMessageProcessor);
-                    } else {
-                        activeMessageProcessor.getLogger().error("Thrown by exception handler and uncaught "
-                                + exceptionHandler.getClass().getName(), _t);
-                    }
-                }
-            } else {
-                if (!responsePending) {
-                    return;
-                }
-                setResponse(_t, activeMessageProcessor);
-                if (!(responseProcessor instanceof SignalResponseProcessor))
-                    messageSource.incomingResponse(this, activeMessageProcessor);
-                else {
-                    activeMessageProcessor.getLogger().warn("Uncaught throwable", _t);
-                }
-            }
         }
     }
 }
