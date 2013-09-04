@@ -15,7 +15,12 @@ import java.util.concurrent.Semaphore;
  * sent immediately, request messages passed using the send method
  * (2-way messages) and all response messages are buffered for improved throughput. The send method
  * also supports thread migration.
- * <p/>
+ * <p>
+ *     A request also serves as a message and can only be used once.
+ *     So member variables of anonymous subclasses can be used to hold intermediate state when
+ *     when processing a request. This makes it easier to keep requests atomic.
+ * </p>
+ * <p>
  * Some care needs to be taken with the parameters passed to the target actor when creating a
  * Request. The application must take care not to change the contents of these parameters,
  * as they will likely be accessed from a different thread when the target actor
