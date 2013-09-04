@@ -10,34 +10,36 @@ public class Loops extends ActorBase {
         try {
 		    Loops loops = new Loops(new NonBlockingMessageProcessor(moduleContext));
 			Sums sums;
-			
-			System.out.println("\nsingle message processor tests:");
-            sums = new Sums(loops.getMessageProcessor());
-			test(1000000, sums, loops);
-		    sums.getMessageProcessor().getModuleContext().close();
 			/*
+			System.out.println("\nshared message processor tests:");
+            sums = new Sums(loops.getMessageProcessor());
+			test(1000000000, sums, loops);
+		    sums.getMessageProcessor().getModuleContext().close();
+			
 			System.out.println("\nno thread migration tests:");
             sums = new Sums(new NonBlockingMessageProcessor(new ModuleContext()));
-			test(1000000, sums, loops);
+			test(10000000, sums, loops);
 		    sums.getMessageProcessor().getModuleContext().close();
-			
+			*/
 			System.out.println("\nthread migration tests:");
             sums = new Sums(new NonBlockingMessageProcessor(moduleContext));
-			test(1000000, sums, loops);
-			*/
+			test(10000000, sums, loops);
+			Thread.sleep(10);
+			
         } finally {
             moduleContext.close();
         }
     }
 	
 	static void test(final long _c, final Sums _sums, final Loops loops) throws Exception {
+			/*
 			System.out.println("1 => " + loops.loopReq(_sums, 1).call());
 		    _sums.clearReq().signal();
 			System.out.println("2 => " + loops.loopReq(_sums, 2).call());
 		    _sums.clearReq().signal();
 			System.out.println("100 => " + loops.loopReq(_sums, 100).call());
 		    _sums.clearReq().signal();
-
+			*/
 			System.gc();
 			long t0 = System.currentTimeMillis();
 			long r = loops.loopReq(_sums, _c).call();
@@ -78,7 +80,6 @@ public class Loops extends ActorBase {
 				} else {
 				    counter = _count;
 					transport = _transport;
-		            ModuleContext moduleContext = getMessageProcessor().getModuleContext();
     			    _sums.addReq(counter).send(getMessageProcessor(), responseProcessor);
 				}
             }
