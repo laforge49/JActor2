@@ -18,7 +18,7 @@ import java.util.concurrent.Semaphore;
  * <p/>
  * Some care needs to be taken with the parameters passed to the target actor when creating a
  * Request. The application must take care not to change the contents of these parameters,
- * as their will likely be accessed from a different thread when the target actor
+ * as they will likely be accessed from a different thread when the target actor
  * is operated on.
  * </p>
  * <h3>Sample Usage:</h3>
