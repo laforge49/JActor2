@@ -55,8 +55,8 @@
  *     actors with the same message processor are given preference over messages from other actors.
  *     </p>
  *     <p>
- *     The second exception to message ordering is when an atomic message processor is used, as an
- *     atomic message processor gives preference to events and responses over requests and in any case does not
+ *     The second exception to message ordering is when an isolation message processor is used, as an
+ *     isolation message processor gives preference to events and responses over requests and in any case does not
  *     process a request until a response to the prior request has been sent.
  * </p>
  */

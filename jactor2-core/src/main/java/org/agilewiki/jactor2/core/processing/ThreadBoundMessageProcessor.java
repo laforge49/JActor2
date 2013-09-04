@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * A message processor bound to a pre-existing thread, a thread-bound message processor can use
  * a program's main thread or a GUI thread.
  * <p>
- * For thread safety, the processing of each message is atomic, but when the processing of a
+ * For thread safety, the processing of each message is done in isolation, but when the processing of a
  * message results in the sending of a request, other messages may be processed before a
  * response to that request is received.
  * </p>

@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.exceptions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 
@@ -29,8 +29,8 @@ public class Test2 extends TestCase {
     public void testIII() throws Exception {
         System.out.println("testIII");
         final ModuleContext moduleContext = new ModuleContext();
-        final ActorA actorA = new ActorA(new AtomicMessageProcessor(moduleContext));
-        final ActorB actorB = new ActorB(new AtomicMessageProcessor(moduleContext));
+        final ActorA actorA = new ActorA(new IsolationMessageProcessor(moduleContext));
+        final ActorB actorB = new ActorB(new IsolationMessageProcessor(moduleContext));
         try {
             actorB.throwRequest(actorA).call();
         } catch (final SecurityException se) {

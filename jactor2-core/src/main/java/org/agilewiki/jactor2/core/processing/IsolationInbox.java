@@ -7,12 +7,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * The inbox used by AtomicMessageProcessor, the next request is not made available for processing
+ * The inbox used by IsolationMessageProcessor, the next request is not made available for processing
  * until a result is assigned to the previous request. This is implemented using
  * two ArrayDeques as the local queues, one for requests and the other for events and
  * responses.
  */
-public class AtomicInbox extends Inbox {
+public class IsolationInbox extends Inbox {
 
     /**
      * True when processing a request and the response has not yet been assigned.
@@ -30,11 +30,11 @@ public class AtomicInbox extends Inbox {
     private final ArrayDeque<Message> localNoResponsePendingQueue;
 
     /**
-     * Creates an AtomicInbox.
+     * Creates an IsolationInbox.
      *
      * @param initialLocalQueueSize The initial local queue size.
      */
-    public AtomicInbox(final int initialLocalQueueSize) {
+    public IsolationInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
         if (initialLocalQueueSize > DEFAULT_INITIAL_LOCAL_QUEUE_SIZE) {
             localResponsePendingQueue = new ArrayDeque<Message>(initialLocalQueueSize);

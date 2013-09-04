@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.osgi;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -104,7 +104,7 @@ abstract public class ModuleContextActivator
         moduleContext = new ModuleContext();
         moduleContext.addAutoClosable(this);
         moduleContext.putProperty("bundleContext", bundleContext);
-        initialize(new AtomicMessageProcessor(moduleContext));
+        initialize(new IsolationMessageProcessor(moduleContext));
     }
 
     /**

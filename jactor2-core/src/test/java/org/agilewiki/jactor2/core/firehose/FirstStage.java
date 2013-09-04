@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class FirstStage extends ActorBase implements Runnable {
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(new AtomicMessageProcessor(_moduleContext, this));
+        initialize(new IsolationMessageProcessor(_moduleContext, this));
         ack = new BoundResponseProcessor<Void>(this, new ResponseProcessor<Void>() {
             @Override
             public void processResponse(Void response) throws Exception {

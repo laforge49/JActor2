@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Common code for NonBlockingMessageProcessor and AtomicMessageProcessor, which are not bound to a thread.
+ * Common code for NonBlockingMessageProcessor and IsolationMessageProcessor, which are not bound to a thread.
  * <p>
  * UnboundMessageProcessor supports thread migration only between instances of this class.
  * </p>

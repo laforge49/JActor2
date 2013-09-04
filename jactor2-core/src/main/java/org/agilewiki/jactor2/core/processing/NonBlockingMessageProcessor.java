@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
 /**
  * A message processor for actors which process messages quickly and without blocking the thread.
  * <p>
- * For thread safety, the processing of each message is atomic, but when the processing of a
+ * For thread safety, the processing of each message is done in isolation, but when the processing of a
  * message results in the sending of a request, other messages may be processed before a
  * response to that request is received.
  * </p>

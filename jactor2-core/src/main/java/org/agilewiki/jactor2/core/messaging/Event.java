@@ -12,7 +12,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
  * <p>
  * As neither message buffering nor thread migration are used, events may be slower,
  * in terms of both latency and throughput, than a request. On the other hand, when
- * the target MessageProcessor is atomic, event processing is not delayed until a response is
+ * the target MessageProcessor is isolation, event processing is not delayed until a response is
  * assigned to a prior request.
  * </p>
  * <p>

@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.exceptions;
 
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorC {
@@ -12,7 +12,7 @@ public class ActorC {
     public final Request<String> throwRequest;
 
     public ActorC(final ModuleContext _context) {
-        this.messageProcessor = new AtomicMessageProcessor(_context);
+        this.messageProcessor = new IsolationMessageProcessor(_context);
 
         throwRequest = new Request<String>(messageProcessor) {
             @Override

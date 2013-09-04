@@ -48,7 +48,7 @@ public abstract class Inbox implements AutoCloseable {
 
     /**
      * Returns true when the inbox is empty and no request messages are being processed
-     * atomically.
+     * in isolation.
      *
      * @return True when there is no work pending.
      */

@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.exceptions;
 
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorD {
@@ -13,7 +13,7 @@ public class ActorD {
     public final Request<String> throwRequest;
 
     public ActorD(final ModuleContext _context) {
-        this.messageProcessor = new AtomicMessageProcessor(_context);
+        this.messageProcessor = new IsolationMessageProcessor(_context);
 
         throwRequest = new Request<String>(messageProcessor) {
             @Override
@@ -45,7 +45,7 @@ class Dd {
     final Request<Void> doSomethin;
 
     public Dd(final ModuleContext _context) {
-        messageProcessor = new AtomicMessageProcessor(_context);
+        messageProcessor = new IsolationMessageProcessor(_context);
 
         doSomethin = new Request<Void>(messageProcessor) {
             @Override

@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 
 /**
  * Simulates I/O.
@@ -16,7 +16,7 @@ public class Delay extends ActorBase {
      * @param _context The actor's context.
      */
     public Delay(final ModuleContext _context) throws Exception {
-        initialize(new AtomicMessageProcessor(_context));
+        initialize(new IsolationMessageProcessor(_context));
     }
 
     /**

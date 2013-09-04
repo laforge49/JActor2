@@ -1,5 +1,5 @@
 /**
- * <h1>Non-blocking, Atomic, Thread-bound and Swing-bound Message Processors</h1>
+ * <h1>Non-blocking, Isolation, Thread-bound and Swing-bound Message Processors</h1>
  * <p>
  *     While MessageProcessors are used by the Event and Request classes to pass and process messages,
  *     the MessageProcessor interface itself include only a few methods for use by
@@ -7,7 +7,7 @@
  * </p>
  * <h2>Creating a MessageProcessor</h2>
  * <p>
- *     Actors can use 4 different classes of message processors: NonBlockingMessageProcessor, AtomicMessageProcessor,
+ *     Actors can use 4 different classes of message processors: NonBlockingMessageProcessor, IsolationMessageProcessor,
  *     ThreadBoundMessageProcessor and SwingBoundMessageProcessor.
  *     MessageProcessor instances are easily created, with an instance of
  *     ModuleContext as a required parameter. Additional parameters can be also be passed to the constructor

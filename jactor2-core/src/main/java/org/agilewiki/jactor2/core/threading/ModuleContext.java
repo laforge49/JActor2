@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Provides a thread pool for
- * non-blocking and atomic message processors. Multiple contexts with independent life cycles
+ * non-blocking and isolation message processors. Multiple contexts with independent life cycles
  * are also supported.
  * (A ServiceClosedException may be thrown when messages cross contexts and the target context is closed.)
  * In addition, the context maintains a set of AutoClosable objects that are closed

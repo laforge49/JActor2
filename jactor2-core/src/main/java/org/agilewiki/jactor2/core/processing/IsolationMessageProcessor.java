@@ -7,11 +7,11 @@ import org.agilewiki.jactor2.core.messaging.Message;
 /**
  * A message processor which processes each request to completion, and which should be used by actors
  * which perform long computations, I/O, or otherwise block the thread. And unlike other types of
- * message processors, an AtomicMessageProcessor should usually be used only by a single actor.
+ * message processors, an IsolationMessageProcessor should usually be used only by a single actor.
  * <p>
- * For thread safety, the processing of each message is atomic, but when the processing of a message
+ * For thread safety, the processing of each message is done in isolation from other messages, but when the processing of a message
  * results in the sending of a request message to another actor, other messages may be processed before a
- * response to that request message is received. However, an atomic message processor will not process a
+ * response to that request message is received. However, an isolation message processor will not process a
  * request until a response is returned for the prior request. This does not however preclude
  * the processing of event messages.
  * </p>
@@ -29,50 +29,50 @@ import org.agilewiki.jactor2.core.messaging.Message;
  * execution.
  * </p>
  * <p>
- * The Inbox used by AtomicMessageProcessor is AtomicInbox.
+ * The Inbox used by IsolationMessageProcessor is IsolationInbox.
  * </p>
  */
-public class AtomicMessageProcessor extends UnboundMessageProcessor {
+public class IsolationMessageProcessor extends UnboundMessageProcessor {
 
     /**
-     * Create an atomic message processor.
+     * Create an isolation message processor.
      *
      * @param _moduleContext The context of the message processor.
      */
-    public AtomicMessageProcessor(ModuleContext _moduleContext) {
+    public IsolationMessageProcessor(ModuleContext _moduleContext) {
         super(_moduleContext, _moduleContext.getInitialBufferSize(),
                 _moduleContext.getInitialLocalMessageQueueSize(), null);
     }
 
     /**
-     * Create an atomic message processor.
+     * Create an isolation message processor.
      *
      * @param _moduleContext The context of the message processor.
      * @param _onIdle    Object to be run when the inbox is emptied, or null.
      */
-    public AtomicMessageProcessor(ModuleContext _moduleContext, Runnable _onIdle) {
+    public IsolationMessageProcessor(ModuleContext _moduleContext, Runnable _onIdle) {
         super(_moduleContext, _moduleContext.getInitialBufferSize(),
                 _moduleContext.getInitialLocalMessageQueueSize(), _onIdle);
     }
 
     /**
-     * Create an atomic message processor.
+     * Create an isolation message processor.
      *
      * @param _moduleContext             The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public AtomicMessageProcessor(ModuleContext _moduleContext,
-                                  int _initialOutboxSize,
-                                  final int _initialLocalQueueSize,
-                                  Runnable _onIdle) {
+    public IsolationMessageProcessor(ModuleContext _moduleContext,
+                                     int _initialOutboxSize,
+                                     final int _initialLocalQueueSize,
+                                     Runnable _onIdle) {
         super(_moduleContext, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     @Override
     protected Inbox createInbox(int _initialLocalQueueSize) {
-        return new AtomicInbox(_initialLocalQueueSize);
+        return new IsolationInbox(_initialLocalQueueSize);
     }
 
     @Override

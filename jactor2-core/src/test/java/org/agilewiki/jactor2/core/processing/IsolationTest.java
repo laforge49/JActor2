@@ -8,13 +8,13 @@ import org.agilewiki.jactor2.core.messaging.ResponseCounter;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
 
-public class AtomicTest extends TestCase {
+public class IsolationTest extends TestCase {
     int count = 0;
 
     public void test() throws Exception {
         ModuleContext moduleContext = new ModuleContext();
         try {
-            int _count = startReq1(new AtomicMessageProcessor(moduleContext)).call();
+            int _count = startReq1(new IsolationMessageProcessor(moduleContext)).call();
             assertEquals(5, _count);
         } finally {
             moduleContext.close();
@@ -26,7 +26,7 @@ public class AtomicTest extends TestCase {
             @Override
             public void processRequest(final Transport<Integer> _rp)
                     throws Exception {
-                MessageProcessor messageProcessor = new AtomicMessageProcessor(_messageProcessor.getModuleContext());
+                MessageProcessor messageProcessor = new IsolationMessageProcessor(_messageProcessor.getModuleContext());
                 ResponseProcessor rc = new ResponseCounter(5, null,
                         new ResponseProcessor() {
                             @Override

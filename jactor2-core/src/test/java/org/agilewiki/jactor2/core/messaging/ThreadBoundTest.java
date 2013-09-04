@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
-import org.agilewiki.jactor2.core.processing.AtomicMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.ThreadBoundMessageProcessor;
 
@@ -25,7 +25,7 @@ public class ThreadBoundTest extends TestCase {
                 }
             }
         });
-        final MessageProcessor messageProcessor = new AtomicMessageProcessor(moduleContext);
+        final MessageProcessor messageProcessor = new IsolationMessageProcessor(moduleContext);
         final Actor1 actor1 = new Actor1(messageProcessor);
         actor1.hi.send(boundMailbox, new ResponseProcessor<String>() {
             @Override
