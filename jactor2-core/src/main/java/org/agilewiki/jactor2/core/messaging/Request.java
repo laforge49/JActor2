@@ -176,7 +176,7 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
     /**
      * The application object that will process the results.
      */
-    private ResponseProcessor<?> responseProcessor;
+    private ResponseProcessor responseProcessor;
 
     /**
      * True when a response to this message has not yet been determined.
@@ -225,7 +225,7 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
     public void signal() throws Exception {
         use();
         responseProcessor = SignalResponseProcessor.SINGLETON;
-        signal(messageProcessor);
+        messageProcessor.unbufferedAddMessage(this, false);
     }
 
     /**
@@ -257,7 +257,9 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
         oldMessage = source.getCurrentMessage();
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
-        send(messageProcessor);
+        boolean local = messageProcessor == messageProcessor;
+        if (local || !messageProcessor.buffer(this, messageProcessor))
+            messageProcessor.unbufferedAddMessage(this, local);
     }
 
     /**
@@ -274,7 +276,8 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
         foreign = true;
         messageSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
-        return (RESPONSE_TYPE) call(messageProcessor);
+        messageProcessor.unbufferedAddMessage(this, false);
+        return (RESPONSE_TYPE) ((Pender) messageSource).pend();
     }
 
     /**
@@ -300,59 +303,10 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
     /**
      * @param _response the response being returned
      */
-    void setResponse(final Object _response, final MessageProcessor _activeMessageProcessor) {
+    private void setResponse(final Object _response, final MessageProcessor _activeMessageProcessor) {
         ((MessageProcessorBase) _activeMessageProcessor).requestEnd();
         responsePending = false;
         response = _response;
-    }
-
-    /**
-     * Returns the response.
-     *
-     * @return The response.
-     */
-    Object getResponse() {
-        return response;
-    }
-
-    /**
-     * The response processor.
-     *
-     * @return The responseProcessor.
-     */
-    ResponseProcessor<?> getResponseProcessor() {
-        return responseProcessor;
-    }
-
-    /**
-     * Pass a 1-way message.
-     *
-     * @param _targetMessageProcessor The message processor that will receive the message.
-     */
-    final void signal(final MessageProcessor _targetMessageProcessor) throws Exception {
-        ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, false);
-    }
-
-    /**
-     * A 2-way message exchange between the message processors.
-     *
-     * @param _targetMessageProcessor The message processor that will receive the message.
-     */
-    final void send(final MessageProcessor _targetMessageProcessor) throws Exception {
-        MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) messageSource;
-        boolean local = sourceMessageProcessor == _targetMessageProcessor;
-        if (local || !sourceMessageProcessor.buffer(this, _targetMessageProcessor))
-            ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, local);
-    }
-
-    /**
-     * A 2-way message exchange between a Pender and the target message processor.
-     *
-     * @param _targetMessageProcessor The message processor that will receive the message.
-     */
-    final Object call(final MessageProcessor _targetMessageProcessor) throws Exception {
-        ((MessageProcessorBase) _targetMessageProcessor).unbufferedAddMessage(this, false);
-        return ((Pender) messageSource).pend();
     }
 
     @Override
@@ -369,6 +323,7 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
      *
      * @param _activeMessageProcessor The message processor whose thread is to evaluate the request/response.
      */
+    @Override
     public void eval(final MessageProcessor _activeMessageProcessor) {
         if (responsePending) {
             processRequestMessage(_activeMessageProcessor);
@@ -401,7 +356,7 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
                             if (!responsePending)
                                 return;
                             setResponse(response, targetMessageProcessor);
-                            if (getResponseProcessor() != SignalResponseProcessor.SINGLETON) {
+                            if (responseProcessor != SignalResponseProcessor.SINGLETON) {
                                 messageSource.incomingResponse(Request.this, targetMessageProcessor);
                             } else {
                                 if (response instanceof Throwable) {
@@ -445,9 +400,6 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
             oldMessage.processThrowable(sourceMessageProcessor, (Throwable) response);
             return;
         }
-        @SuppressWarnings("rawtypes")
-        final ResponseProcessor responseProcessor = this
-                .getResponseProcessor();
         try {
             responseProcessor.processResponse(response);
         } catch (final Throwable t) {
@@ -523,7 +475,7 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
         @Override
         public void incomingResponse(final Message _message,
                                      final MessageProcessor _responseSource) {
-            this.result = ((Request) _message).getResponse();
+            result = ((Request) _message).response;
             done.release();
         }
     }
