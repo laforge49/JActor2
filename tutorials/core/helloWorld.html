@@ -24,9 +24,9 @@ public class HelloWorldActor extends ActorBase {
     public Request&lt;String&gt; getGreetingReq() {
         return new Request&lt;String&gt;(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport&lt;String&gt; _transport) 
+            public void processRequest() 
                     throws Exception {
-                _transport.processResponse("Hello world!");
+                processResponse("Hello world!");
             }
         };
     }
@@ -63,12 +63,6 @@ A Request is a factory for
 <a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.RequestMessage.html">RequstMessage</a>.
 Request has an abstract method, processRequest, which is called on the thread of the actor which implements the subclass of Request.
 The HelloWorldActor.getGreetingReq method creates a request that simply returns the string "Hello world!".
-</p>
-<h3>
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Transport.html">Transport&lt;RESPONSE_TYPE&gt;</a>
-</h3>
-<p>
-Transport is used to return and process a result on the thread of the actor which created the RequestMessage. 
 </p>
 </blockquote>
 <p>
@@ -138,10 +132,10 @@ C:\GitHub\JActor2docs\tutorials\core>test.bat HelloWorld
 
 C:\GitHub\JActor2docs\tutorials\core>del *.class
 
-C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.3.jar;slf4
+C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.4.jar;slf4
 j-api-1.7.5.jar *.java
 
-C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.3.jar;slf4
+C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.4.jar;slf4
 j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. HelloWorld
 Hello world!
 

@@ -10,22 +10,22 @@ public class Loops extends ActorBase {
         try {
 		    Loops loops = new Loops(new NonBlockingMessageProcessor(moduleContext));
 			Sums sums;
-			/*
+			
 			System.out.println("\nshared message processor tests:");
             sums = new Sums(loops.getMessageProcessor());
-			test(1000000000, sums, loops);
+			test(100000000, sums, loops);
 		    sums.getMessageProcessor().getModuleContext().close();
-			
+			/*
 			System.out.println("\nno thread migration tests:");
             sums = new Sums(new NonBlockingMessageProcessor(new ModuleContext()));
 			test(10000000, sums, loops);
 		    sums.getMessageProcessor().getModuleContext().close();
-			*/
+			
 			System.out.println("\nthread migration tests:");
             sums = new Sums(new NonBlockingMessageProcessor(moduleContext));
 			test(10000000, sums, loops);
 			Thread.sleep(10);
-			
+			*/
         } finally {
             moduleContext.close();
         }

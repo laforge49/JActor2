@@ -12,8 +12,8 @@ public class HelloWorldActor extends ActorBase {
     public Request<String> getGreetingReq() {
         return new Request<String>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<String> _transport) throws Exception {
-                _transport.processResponse("Hello world!");
+            public void processRequest() throws Exception {
+                processResponse("Hello world!");
             }
         };
     }
