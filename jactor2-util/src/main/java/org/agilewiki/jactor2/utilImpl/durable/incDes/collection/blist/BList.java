@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.blist;
 
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -129,8 +128,8 @@ public class BList<ENTRY_TYPE extends JASerializable>
     public Request<ENTRY_TYPE> iGetReq(final int _i) {
         return new Request<ENTRY_TYPE>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<ENTRY_TYPE> _rp) throws Exception {
-                _rp.processResponse(iGet(_i));
+            public void processRequest() throws Exception {
+                processResponse(iGet(_i));
             }
         };
     }
@@ -169,9 +168,9 @@ public class BList<ENTRY_TYPE extends JASerializable>
     public Request<Void> iSetReq(final int _i, final byte[] _bytes) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iSet(_i, _bytes);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -244,9 +243,9 @@ public class BList<ENTRY_TYPE extends JASerializable>
     public Request<Void> iAddReq(final int _i) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iAdd(_i);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -261,9 +260,9 @@ public class BList<ENTRY_TYPE extends JASerializable>
     public Request<Void> iAddReq(final int _i, final byte[] _bytes) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iAdd(_i, _bytes);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -400,9 +399,9 @@ public class BList<ENTRY_TYPE extends JASerializable>
     public Request<Void> iRemoveReq(final int _i) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iRemove(_i);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -495,15 +494,15 @@ public class BList<ENTRY_TYPE extends JASerializable>
         super.initialize(messageProcessor, parent, factory);
         sizeReq = new Request<Integer>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Integer> _rp) throws Exception {
-                _rp.processResponse(size());
+            public void processRequest() throws Exception {
+                processResponse(size());
             }
         };
         emptyReq = new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 empty();
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }

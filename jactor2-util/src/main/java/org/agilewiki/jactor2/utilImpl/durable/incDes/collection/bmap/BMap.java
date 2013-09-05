@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.bmap;
 
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -32,26 +31,42 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Factory valueFactory;
     protected FactoryLocator factoryLocator;
 
-    private Request<Integer> sizeReq;
-    private Request<Void> emptyReq;
-    private Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq;
-    private Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq;
-
     @Override
     public Request<Integer> sizeReq() {
-        return sizeReq;
+        return new Request<Integer>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                processResponse(size());
+            }
+        };
     }
 
     public Request<Void> emptyReq() {
-        return emptyReq;
+        return new Request<Void>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                empty();
+                processResponse(null);
+            }
+        };
     }
 
     public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq() {
-        return getFirstReq;
+        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                processResponse(getFirst());
+            }
+        };
     }
 
     public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq() {
-        return getLastReq;
+        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                processResponse(getLast());
+            }
+        };
     }
 
     /**
@@ -144,8 +159,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> iGetReq(final int _i) {
         return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
-                _rp.processResponse(iGet(_i));
+            public void processRequest() throws Exception {
+                processResponse(iGet(_i));
             }
         };
     }
@@ -184,9 +199,9 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<Void> iSetReq(final int _i, final byte[] _bytes) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iSet(_i, _bytes);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -206,9 +221,9 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<Void> iAddReq(final int _i) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iAdd(_i);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -222,9 +237,9 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<Void> iAddReq(final int _i, final byte[] _bytes) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iAdd(_i, _bytes);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -238,8 +253,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes) {
         return new Request<Boolean>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Boolean> _rp) throws Exception {
-                _rp.processResponse(kMake(_key, _bytes));
+            public void processRequest() throws Exception {
+                processResponse(kMake(_key, _bytes));
             }
         };
     }
@@ -263,8 +278,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<Boolean> kMakeReq(final KEY_TYPE _key) {
         return new Request<Boolean>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Boolean> _rp) throws Exception {
-                _rp.processResponse(kMake(_key));
+            public void processRequest() throws Exception {
+                processResponse(kMake(_key));
             }
         };
     }
@@ -411,9 +426,9 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<Void> iRemoveReq(final int _i) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iRemove(_i);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -487,8 +502,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<Boolean> kRemoveReq(final KEY_TYPE _key) {
         return new Request<Boolean>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Boolean> _rp) throws Exception {
-                _rp.processResponse(kRemove(_key));
+            public void processRequest() throws Exception {
+                processResponse(kRemove(_key));
             }
         };
     }
@@ -601,8 +616,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<VALUE_TYPE> kGetReq(final KEY_TYPE _key) {
         return new Request<VALUE_TYPE>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<VALUE_TYPE> _rp) throws Exception {
-                _rp.processResponse(kGet(_key));
+            public void processRequest() throws Exception {
+                processResponse(kGet(_key));
             }
         };
     }
@@ -626,8 +641,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key) {
         return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
-                _rp.processResponse(getCeiling(_key));
+            public void processRequest() throws Exception {
+                processResponse(getCeiling(_key));
             }
         };
     }
@@ -656,8 +671,8 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key) {
         return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
-                _rp.processResponse(getHigher(_key));
+            public void processRequest() throws Exception {
+                processResponse(getHigher(_key));
             }
         };
     }
@@ -729,9 +744,9 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public Request<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 kSet(_key, _bytes);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -748,30 +763,5 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        sizeReq = new Request<Integer>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport<Integer> _rp) throws Exception {
-                _rp.processResponse(size());
-            }
-        };
-        emptyReq = new Request<Void>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
-                empty();
-                _rp.processResponse(null);
-            }
-        };
-        getFirstReq = new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
-                _rp.processResponse(getFirst());
-            }
-        };
-        getLastReq = new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport<MapEntry<KEY_TYPE, VALUE_TYPE>> _rp) throws Exception {
-                _rp.processResponse(getLast());
-            }
-        };
     }
 }

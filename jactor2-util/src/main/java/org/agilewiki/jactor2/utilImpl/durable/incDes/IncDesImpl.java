@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
@@ -243,9 +242,9 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     final public Request<Void> saveReq(final AppendableBytes appendableBytes) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
+            public void processRequest() throws Exception {
                 save(appendableBytes);
-                rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -267,8 +266,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     final public Request<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
         return new Request<Integer>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(save(bytes, offset));
+            public void processRequest() throws Exception {
+                processResponse(save(bytes, offset));
             }
         };
     }
@@ -324,8 +323,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     public Request<JASerializable> resolvePathnameReq(final String pathname) {
         return new Request<JASerializable>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(resolvePathname(pathname));
+            public void processRequest() throws Exception {
+                processResponse(resolvePathname(pathname));
             }
         };
     }
@@ -351,28 +350,30 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     public final Request<JASerializable> copyReq(final MessageProcessor m) {
         return new Request<JASerializable>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(copy(m));
+            public void processRequest() throws Exception {
+                processResponse(copy(m));
             }
         };
     }
 
     public final Request<Boolean> isEqualReq(final JASerializable jidA) {
         return new Request<Boolean>(getMessageProcessor()) {
+            Request<Boolean> dis = this;
+
             @Override
-            public void processRequest(final Transport rp) throws Exception {
+            public void processRequest() throws Exception {
                 getSerializedLengthReq.send(getMessageProcessor(), new ResponseProcessor<Integer>() {
                     @Override
                     public void processResponse(Integer response) throws Exception {
                         if (response.intValue() != getSerializedLength()) {
-                            rp.processResponse(false);
+                            dis.processResponse(false);
                             return;
                         }
                         getSerializedBytesReq.send(getMessageProcessor(), new ResponseProcessor<byte[]>() {
                             @Override
                             public void processResponse(byte[] response) throws Exception {
                                 boolean eq = Arrays.equals(response, getSerializedBytes());
-                                rp.processResponse(eq);
+                                dis.processResponse(eq);
                             }
                         });
                     }
@@ -418,15 +419,15 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
         getSerializedLengthReq = new Request<Integer>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getSerializedLength());
+            public void processRequest() throws Exception {
+                processResponse(getSerializedLength());
             }
         };
 
         getSerializedBytesReq = new Request<byte[]>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getSerializedBytes());
+            public void processRequest() throws Exception {
+                processResponse(getSerializedBytes());
             }
         };
     }

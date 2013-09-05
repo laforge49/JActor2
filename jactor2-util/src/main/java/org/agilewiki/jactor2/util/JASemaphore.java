@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 import java.util.ArrayDeque;
@@ -47,14 +46,13 @@ public class JASemaphore extends ActorBase {
 
         acquire = new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(
-                    final Transport<Void> responseProcessor)
+            public void processRequest()
                     throws Exception {
                 if (permits > 0) {
                     permits -= 1;
-                    responseProcessor.processResponse(null);
+                    processResponse(null);
                 } else {
-                    queue.offer(responseProcessor);
+                    queue.offer(this);
                 }
             }
         };

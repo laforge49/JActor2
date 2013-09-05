@@ -75,15 +75,14 @@ public class SemaphoreTest extends TestCase implements Actor {
                                               final MessageProcessor messageProcessor) {
         return new Request<Boolean>(messageProcessor) {
             @Override
-            public void processRequest(
-                    final Transport<Boolean> responseProcessor)
+            public void processRequest()
                     throws Exception {
                 messageProcessor.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(final Throwable throwable)
                             throws Exception {
                         System.out.println(throwable);
-                        responseProcessor.processResponse(true);
+                        processResponse(true);
                     }
                 });
                 semaphore.acquireReq().send(messageProcessor,

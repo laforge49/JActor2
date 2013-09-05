@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.slist;
 
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -35,10 +34,14 @@ public class SList<ENTRY_TYPE extends JASerializable>
      */
     protected ArrayList<ENTRY_TYPE> list;
 
-    private Request<Void> emptyReq;
-
     public Request<Void> emptyReq() {
-        return emptyReq;
+        return new Request<Void>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                empty();
+                processResponse(null);
+            }
+        };
     }
 
     /**
@@ -187,9 +190,9 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public Request<Void> iAddReq(final int _i, final byte[] _bytes) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iAdd(_i, _bytes);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -210,9 +213,9 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public Request<Void> iAddReq(final int _i) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iAdd(_i);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -249,9 +252,9 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public Request<Void> iRemoveReq(final int _i) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
+            public void processRequest() throws Exception {
                 iRemove(_i);
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -274,12 +277,5 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        emptyReq = new Request<Void>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport<Void> _rp) throws Exception {
-                empty();
-                _rp.processResponse(null);
-            }
-        };
     }
 }
