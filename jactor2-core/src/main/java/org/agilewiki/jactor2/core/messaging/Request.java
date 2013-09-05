@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import java.util.concurrent.Semaphore;
 
@@ -16,9 +16,9 @@ import java.util.concurrent.Semaphore;
  * (2-way messages) and all response messages are buffered for improved throughput. The send method
  * also supports thread migration.
  * <p>
- *     A request also serves as a message and can only be used once.
- *     So member variables of anonymous subclasses can be used to hold intermediate state when
- *     when processing a request. This makes it easier to keep requests atomic.
+ * A request also serves as a message and can only be used once.
+ * So member variables of anonymous subclasses can be used to hold intermediate state when
+ * when processing a request. This makes it easier to keep requests atomic.
  * </p>
  * <p>
  * Some care needs to be taken with the parameters passed to the target actor when creating a
@@ -137,7 +137,7 @@ import java.util.concurrent.Semaphore;
  *
  * @param <RESPONSE_TYPE> The class of the result returned after the Request operates on the target actor.
  */
-public abstract class Request<RESPONSE_TYPE> implements Message {
+public abstract class Request<RESPONSE_TYPE> implements ResponseProcessor<RESPONSE_TYPE>, Message {
 
     /**
      * A request can only be used once.
@@ -302,39 +302,57 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
         processRequest(
                 new Transport() {
                     @Override
-                    public void processResponse(final Object response)
+                    public void processResponse(final Object _response)
                             throws Exception {
-                        final ModuleContext moduleContext = messageProcessor.getModuleContext();
-                        if (foreign)
-                            moduleContext.removeAutoClosable(Request.this);
-                        if (!responsePending)
-                            return;
-                        setResponse(response, messageProcessor);
-                        if (responseProcessor != SignalResponseProcessor.SINGLETON) {
-                            messageSource.incomingResponse(Request.this, messageProcessor);
-                        } else {
-                            if (response instanceof Throwable) {
-                                messageProcessor.getLogger().warn("Uncaught throwable",
-                                        (Throwable) response);
-                            }
-                        }
+                        Request.this.processObjectResponse(_response);
                     }
 
                     @Override
                     public ModuleContext getModuleContext() {
-                        if (messageSource == null)
-                            return null;
-                        if (!(messageSource instanceof MessageProcessor))
-                            return null;
-                        return ((MessageProcessorBase) messageSource).getModuleContext();
+                        return Request.this.getModuleContext();
                     }
 
                     @Override
-                    public void processException(Exception response) throws Exception {
-                        processResponse((Object) response);
+                    public void processException(Exception _response) throws Exception {
+                        Request.this.processException(_response);
                     }
                 });
 
+    }
+
+    public void processResponse(final RESPONSE_TYPE _response)
+            throws Exception {
+        processObjectResponse(_response);
+    }
+
+    private void processObjectResponse(final Object _response)
+            throws Exception {
+        final ModuleContext moduleContext = messageProcessor.getModuleContext();
+        if (foreign)
+            moduleContext.removeAutoClosable(Request.this);
+        if (!responsePending)
+            return;
+        setResponse(_response, messageProcessor);
+        if (responseProcessor != SignalResponseProcessor.SINGLETON) {
+            messageSource.incomingResponse(Request.this, messageProcessor);
+        } else {
+            if (_response instanceof Throwable) {
+                messageProcessor.getLogger().warn("Uncaught throwable",
+                        (Throwable) _response);
+            }
+        }
+    }
+
+    public ModuleContext getModuleContext() {
+        if (messageSource == null)
+            return null;
+        if (!(messageSource instanceof MessageProcessor))
+            return null;
+        return ((MessageProcessorBase) messageSource).getModuleContext();
+    }
+
+    public void processException(final Exception _response) throws Exception {
+        processObjectResponse(_response);
     }
 
     @Override
