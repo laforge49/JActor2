@@ -83,10 +83,10 @@ import java.util.concurrent.Semaphore;
  *         return new Request&lt;Integer&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
- *             public void processRequest(Transport&lt;Integer&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *                 int oldState = state;
  *                 state = _newState; //assign the new state
- *                 _transport.processResponse(oldState); //return the old state.
+ *                 processResponse(oldState); //return the old state.
  *             }
  *         };
  *     }
@@ -110,7 +110,7 @@ import java.util.concurrent.Semaphore;
  *         return new Request&lt;Integer&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
- *             public void processRequest(final Transport&lt;Integer&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *
  *                 //Get a request from the other actor.
  *                 Request&lt;Integer&gt; req = actorA.updateReq(_newState);
@@ -122,7 +122,7 @@ import java.util.concurrent.Semaphore;
  *                     public void processResponse(Integer response) throws Exception {
  *
  *                         //Return the old state.
- *                         _transport.processResponse(response);
+ *                         processResponse(response);
  *                     }
  *                 });
  *             }

@@ -76,7 +76,7 @@ package org.agilewiki.jactor2.core.messaging;
  *         return new Request&lt;Void&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
- *             public void processRequest(final Transport&lt;Void&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *                 throw new IllegalStateException(); //Throw an exception when the request is processed.
  *             }
  *         };
@@ -100,7 +100,7 @@ package org.agilewiki.jactor2.core.messaging;
  *         return new Request&lt;String&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
- *             public void processRequest(final Transport&lt;String&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *
  *                 //Create and assign an exception handler.
  *                 getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
@@ -108,7 +108,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                     public void processException(final Throwable _throwable) throws Throwable {
  *                         if (_throwable instanceof IllegalStateException) {
  *                             //Returns a result if an IllegalStateException was thrown.
- *                             _transport.processResponse("got IllegalStateException, as expected");
+ *                             processResponse("got IllegalStateException, as expected");
  *                         } else //Otherwise rethrow the exception.
  *                             throw _throwable;
  *                     }
@@ -119,7 +119,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                 exceptionActor.exceptionReq().send(getMessageProcessor(), new ResponseProcessor&lt;Void&gt;() {
  *                     {@literal @}Override
  *                     public void processResponse(final Void _response) throws Exception {
- *                         _transport.processResponse("can not get here");
+ *                         Request.this.processResponse("can not get here");
  *                     }
  *                 });
  *             }

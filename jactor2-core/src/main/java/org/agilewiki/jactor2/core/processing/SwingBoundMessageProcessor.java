@@ -16,7 +16,6 @@ import java.awt.event.WindowListener;
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.context.ModuleContext;
  * import org.agilewiki.jactor2.core.messaging.Request;
- * import org.agilewiki.jactor2.core.messaging.Transport;
  *
  * import javax.swing.*;
  *
@@ -39,7 +38,7 @@ import java.awt.event.WindowListener;
  *     Request&lt;Void&gt; createAndShowReq() {
  *         return new Request&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
- *             public void processRequest(Transport&lt;Void&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *                 //Create and set up the window.
  *                 JFrame frame = new JFrame("HelloWorld");
  *                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
@@ -56,7 +55,7 @@ import java.awt.event.WindowListener;
  *                 frame.setVisible(true);
  *
  *                 //return the result.
- *                 _transport.processResponse(null);
+ *                 processResponse(null);
  *             }
  *         };
  *     }

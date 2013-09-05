@@ -54,10 +54,10 @@ class SampleActor2 extends ActorBase {
         return new Request<Integer>(getMessageProcessor()) {
 
             @Override
-            public void processRequest(Transport<Integer> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 int oldState = state;
                 state = _newState; //assign the new state
-                _transport.processResponse(oldState); //return the old state.
+                processResponse(oldState); //return the old state.
             }
         };
     }
@@ -81,7 +81,7 @@ class IndirectActor extends ActorBase {
         return new Request<Integer>(getMessageProcessor()) {
 
             @Override
-            public void processRequest(final Transport<Integer> _transport) throws Exception {
+            public void processRequest() throws Exception {
 
                 //Get a request from the other actor.
                 Request<Integer> req = actorA.updateReq(_newState);
@@ -93,7 +93,7 @@ class IndirectActor extends ActorBase {
                     public void processResponse(Integer response) throws Exception {
 
                         //Return the old state.
-                        _transport.processResponse(response);
+                        processResponse(response);
                     }
                 });
             }

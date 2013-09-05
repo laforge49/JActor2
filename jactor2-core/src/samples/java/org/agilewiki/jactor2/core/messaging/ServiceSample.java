@@ -67,7 +67,7 @@ class Service extends ActorBase {
     Request<String> delayEchoReq(final int _delay, final String _text) {
         return new Request<String>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<String> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 //Sleep a bit so that the request does not complete too quickly.
                 try {
                     Thread.sleep(_delay);
@@ -75,7 +75,7 @@ class Service extends ActorBase {
                     return;
                 }
                 //Echo the text back in the response.
-                _transport.processResponse("Echo: " + _text);
+                processResponse("Echo: " + _text);
             }
         };
     }
@@ -86,7 +86,7 @@ class Service extends ActorBase {
 class EchoReqState {
     //Not null when an echoResultRequest was received before
     // the result of the matching service delay echo request.
-    Transport<String> transport;
+    ResponseProcessor<String> responseProcessor;
 
     //Not null when the result of the service delay echo request is received
     //before the matching echoResultRequest.
@@ -112,7 +112,7 @@ class ServiceApplication extends ActorBase {
     Request<EchoReqState> echoReq(final int _delay, final String _text) {
         return new Request<EchoReqState>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<EchoReqState> _transport) throws Exception {
+            public void processRequest() throws Exception {
 
                 //State data needed to manage the delivery of the response from
                 //the service delay echo request.
@@ -125,14 +125,14 @@ class ServiceApplication extends ActorBase {
                     public void processException(Throwable throwable) throws Throwable {
                         if (throwable instanceof ServiceClosedException) {
                             String response = "Exception as expected";
-                            if (echoReqState.transport == null) {
+                            if (echoReqState.responseProcessor == null) {
                                 //No echo result request has yet been received,
                                 //so save the response for later.
                                 echoReqState.response = response;
                             } else {
                                 //An echo result request has already been received,
                                 //so now is the time to return the response.
-                                echoReqState.transport.processResponse(response);
+                                echoReqState.responseProcessor.processResponse(response);
                             }
                         } else
                             throw throwable;
@@ -141,18 +141,18 @@ class ServiceApplication extends ActorBase {
                 service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new ResponseProcessor<String>() {
                     @Override
                     public void processResponse(String response) throws Exception {
-                        if (echoReqState.transport == null) {
+                        if (echoReqState.responseProcessor == null) {
                             //No echo result request has yet been received,
                             //so save the response for later.
                             echoReqState.response = response;
                         } else {
                             //An echo result request has already been received,
                             //so now is the time to return the response.
-                            echoReqState.transport.processResponse(response);
+                            echoReqState.responseProcessor.processResponse(response);
                         }
                     }
                 });
-                _transport.processResponse(echoReqState);
+                processResponse(echoReqState);
             }
         };
     }
@@ -161,10 +161,10 @@ class ServiceApplication extends ActorBase {
     Request<Void> closeServiceReq() {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 //Close the context of the service actor.
                 service.getMessageProcessor().getModuleContext().close();
-                _transport.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -175,15 +175,15 @@ class ServiceApplication extends ActorBase {
     Request<String> echoResultReq(final EchoReqState _echoReqState) {
         return new Request<String>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<String> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 if (_echoReqState.response == null) {
                     //There is as yet no response from the associated service delay echo request,
-                    //so save the transport of this request for subsequent delivery of that belated response.
-                    _echoReqState.transport = _transport;
+                    //so save this request for subsequent delivery of that belated response.
+                    _echoReqState.responseProcessor = this;
                 } else {
                     //The response from the associated service delay echo request is already present,
                     //so return that response now.
-                    _transport.processResponse(_echoReqState.response);
+                    processResponse(_echoReqState.response);
                 }
             }
         };

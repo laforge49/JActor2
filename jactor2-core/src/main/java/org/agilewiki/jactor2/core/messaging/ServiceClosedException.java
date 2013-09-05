@@ -73,7 +73,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     Request&lt;String&gt; delayEchoReq(final int _delay, final String _text) {
  *         return new Request&lt;String&gt;(getMessageProcessor()) {
  *             {@literal @}Override
- *             public void processRequest(Transport&lt;String&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *                 //Sleep a bit so that the request does not complete too quickly.
  *                 try {
  *                     Thread.sleep(_delay);
@@ -81,7 +81,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                     return;
  *                 }
  *                 //Echo the text back in the response.
- *                 _transport.processResponse("Echo: " + _text);
+ *                 processResponse("Echo: " + _text);
  *             }
  *         };
  *     }
@@ -92,7 +92,7 @@ package org.agilewiki.jactor2.core.messaging;
  * class EchoReqState {
  *     //Not null when an echoResultRequest was received before
  *     // the result of the matching service delay echo request.
- *     Transport&lt;String&gt; transport;
+ *     ResponseProcessor&lt;String&gt; responseProcessor;
  *
  *     //Not null when the result of the service delay echo request is received
  *     //before the matching echoResultRequest.
@@ -118,7 +118,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     Request&lt;EchoReqState&gt; echoReq(final int _delay, final String _text) {
  *         return new Request&lt;EchoReqState&gt;(getMessageProcessor()) {
  *             {@literal @}Override
- *             public void processRequest(Transport&lt;EchoReqState&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *
  *                 //State data needed to manage the delivery of the response from
  *                 //the service delay echo request.
@@ -131,14 +131,14 @@ package org.agilewiki.jactor2.core.messaging;
  *                     public void processException(Throwable throwable) throws Throwable {
  *                         if (throwable instanceof ServiceClosedException) {
  *                             String response = "Exception as expected";
- *                             if (echoReqState.transport == null) {
+ *                             if (echoReqState.responseProcessor == null) {
  *                                 //No echo result request has yet been received,
  *                                 //so save the response for later.
  *                                 echoReqState.response = response;
  *                             } else {
  *                                 //An echo result request has already been received,
  *                                 //so now is the time to return the response.
- *                                 echoReqState.transport.processResponse(response);
+ *                                 echoReqState.responseProcessor.processResponse(response);
  *                             }
  *                         } else
  *                             throw throwable;
@@ -147,18 +147,18 @@ package org.agilewiki.jactor2.core.messaging;
  *                 service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new ResponseProcessor&lt;String&gt;() {
  *                     {@literal @}Override
  *                     public void processResponse(String response) throws Exception {
- *                         if (echoReqState.transport == null) {
+ *                         if (echoReqState.responseProcessor == null) {
  *                             //No echo result request has yet been received,
  *                             //so save the response for later.
  *                             echoReqState.response = response;
  *                         } else {
  *                             //An echo result request has already been received,
  *                             //so now is the time to return the response.
- *                             echoReqState.transport.processResponse(response);
+ *                             echoReqState.responseProcessor.processResponse(response);
  *                         }
  *                     }
  *                 });
- *                 _transport.processResponse(echoReqState);
+ *                 processResponse(echoReqState);
  *             }
  *         };
  *     }
@@ -167,10 +167,10 @@ package org.agilewiki.jactor2.core.messaging;
  *     Request&lt;Void&gt; closeServiceReq() {
  *         return new Request&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
- *             public void processRequest(Transport&lt;Void&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *                 //Close the context of the service actor.
  *                 service.getMessageProcessor().getModuleContext().close();
- *                 _transport.processResponse(null);
+ *                 processResponse(null);
  *             }
  *         };
  *     }
@@ -181,15 +181,15 @@ package org.agilewiki.jactor2.core.messaging;
  *     Request&lt;String&gt; echoResultReq(final EchoReqState _echoReqState) {
  *         return new Request&lt;String&gt;(getMessageProcessor()) {
  *             {@literal @}Override
- *             public void processRequest(Transport&lt;String&gt; _transport) throws Exception {
+ *             public void processRequest() throws Exception {
  *                 if (_echoReqState.response == null) {
  *                     //There is as yet no response from the associated service delay echo request,
- *                     //so save the transport of this request for subsequent delivery of that belated response.
- *                     _echoReqState.transport = _transport;
+ *                     //so save this request for subsequent delivery of that belated response.
+ *                     _echoReqState.responseProcessor = this;
  *                 } else {
  *                     //The response from the associated service delay echo request is already present,
  *                     //so return that response now.
- *                     _transport.processResponse(_echoReqState.response);
+ *                     processResponse(_echoReqState.response);
  *                 }
  *             }
  *         };

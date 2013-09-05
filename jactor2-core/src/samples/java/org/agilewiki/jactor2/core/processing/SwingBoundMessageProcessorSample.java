@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import javax.swing.*;
@@ -26,7 +25,7 @@ class HelloWorld extends ActorBase {
     Request<Void> createAndShowReq() {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 //Create and set up the window.
                 JFrame frame = new JFrame("HelloWorld");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
@@ -43,7 +42,7 @@ class HelloWorld extends ActorBase {
                 frame.setVisible(true);
 
                 //return the result.
-                _transport.processResponse(null);
+                processResponse(null);
             }
         };
     }

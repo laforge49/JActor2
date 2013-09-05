@@ -50,7 +50,7 @@ class ExceptionActor extends ActorBase {
     Request<Void> exceptionReq() {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Void> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 throw new IllegalStateException(); //Throw an exception when the request is processed.
             }
         };
@@ -74,7 +74,7 @@ class ExceptionHandlerActor extends ActorBase {
         return new Request<String>(getMessageProcessor()) {
 
             @Override
-            public void processRequest(final Transport<String> _transport) throws Exception {
+            public void processRequest() throws Exception {
 
                 //Create and assign an exception handler.
                 getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
@@ -82,7 +82,7 @@ class ExceptionHandlerActor extends ActorBase {
                     public void processException(final Throwable _throwable) throws Throwable {
                         if (_throwable instanceof IllegalStateException) {
                             //Returns a result if an IllegalStateException was thrown.
-                            _transport.processResponse("got IllegalStateException, as expected");
+                            processResponse("got IllegalStateException, as expected");
                         } else //Otherwise rethrow the exception.
                             throw _throwable;
                     }
@@ -93,7 +93,7 @@ class ExceptionHandlerActor extends ActorBase {
                 exceptionActor.exceptionReq().send(getMessageProcessor(), new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(final Void _response) throws Exception {
-                        _transport.processResponse("can not get here");
+                        Request.this.processResponse("can not get here");
                     }
                 });
             }
