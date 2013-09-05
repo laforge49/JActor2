@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
@@ -95,8 +94,10 @@ final public class Osgi {
      */
     public static Request<Root> contextCopyReq(final Root _root) throws Exception {
         return new Request<Root>(_root.getMessageProcessor()) {
+            Request dis = this;
+
             @Override
-            public void processRequest(final Transport<Root> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 String location = _root.getBundleLocation();
                 BundleContext bundleContext = getBundleContext(_root.getMessageProcessor().getModuleContext());
                 Bundle bundle = bundleContext.installBundle(location);
@@ -108,7 +109,7 @@ final public class Osgi {
                     @Override
                     public void processResponse(OsgiFactoryLocator response) throws Exception {
                         MessageProcessor newMessageProcessor = new NonBlockingMessageProcessor(response.getModuleContext());
-                        _root.copyReq(newMessageProcessor).send(_root.getMessageProcessor(), (Transport) _transport);
+                        _root.copyReq(newMessageProcessor).send(_root.getMessageProcessor(), dis);
                     }
                 });
             }

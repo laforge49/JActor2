@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
@@ -27,10 +27,10 @@ public class FactoriesImporter extends ActorBase implements
     private JAServiceTracker<OsgiFactoryLocator> tracker;
 
     /**
-     * The transport for the start request. Once a match is found,
-     * startTransport is set to null.
+     * The ResponseProcessor for the start request. Once a match is found,
+     * startResponseProcessor is set to null.
      */
-    private Transport<Void> startTransport;
+    private ResponseProcessor startResponseProcessor;
 
     /**
      * The factory locator of the current bundle.
@@ -57,9 +57,9 @@ public class FactoriesImporter extends ActorBase implements
     public Request<Void> startReq(final Filter _filter) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Void> _transport)
+            public void processRequest()
                     throws Exception {
-                start(_filter, _transport);
+                start(_filter, this);
             }
         };
     }
@@ -72,9 +72,9 @@ public class FactoriesImporter extends ActorBase implements
      *
      * @param _filter    A filter that should identify the single factory locator to be imported into the
      *                   factory locator of the current bundle.
-     * @param _transport The Transport used to signal completion.
+     * @param _responseProcessor The ResponseProcessor used to signal completion.
      */
-    private void start(final Filter _filter, final Transport<Void> _transport) throws Exception {
+    private void start(final Filter _filter, final ResponseProcessor<Void> _responseProcessor) throws Exception {
         // We're got a start-request!
         // We only accept one start request.
         if (tracker != null)
@@ -82,9 +82,9 @@ public class FactoriesImporter extends ActorBase implements
         // Create a service tracker for the given filter.
         tracker = new JAServiceTracker<OsgiFactoryLocator>(getMessageProcessor(),
                 _filter);
-        // Keep _transport for later, in case we do not find out service
+        // Keep _responseProcessor for later, in case we do not find out service
         // at initial registration.
-        startTransport = _transport;
+        startResponseProcessor = _responseProcessor;
         tracker.start(FactoriesImporter.this);
     }
 
@@ -98,8 +98,8 @@ public class FactoriesImporter extends ActorBase implements
     public Request<Void> startReq(final String _bundleName, final String _niceVersion) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _transport) throws Exception {
-                start(_bundleName, _niceVersion, _transport);
+            public void processRequest() throws Exception {
+                start(_bundleName, _niceVersion, this);
             }
         };
     }
@@ -112,13 +112,13 @@ public class FactoriesImporter extends ActorBase implements
      *
      * @param _bundleName  The symbolic name of the bundle.
      * @param _niceVersion Bundle version in the form 1.2.3 or 1.2.3-SNAPSHOT
-     * @param _transport   The Transport used to signal completion.
+     * @param _responseProcessor   The ResponseProcessor used to signal completion.
      */
-    private void start(final String _bundleName, final String _niceVersion, final Transport<Void> _transport)
+    private void start(final String _bundleName, final String _niceVersion, final ResponseProcessor<Void> _responseProcessor)
             throws Exception {
         BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getModuleContext());
         Filter filter = Osgi.factoryLocatorFilter(bundleContext, _bundleName, _niceVersion);
-        start(filter, _transport);
+        start(filter, _responseProcessor);
     }
 
     /**
@@ -131,8 +131,8 @@ public class FactoriesImporter extends ActorBase implements
     public Request<Void> startReq(final String _bundleName, final Version _version) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _transport) throws Exception {
-                start(_bundleName, _version, _transport);
+            public void processRequest() throws Exception {
+                start(_bundleName, _version, this);
             }
         };
     }
@@ -145,12 +145,12 @@ public class FactoriesImporter extends ActorBase implements
      *
      * @param _bundleName The symbolic name of the bundle.
      * @param _version    Bundle version.
-     * @param _transport  The Transport used to signal completion.
+     * @param _responseProcessor  The ResponseProcessor used to signal completion.
      */
-    private void start(final String _bundleName, final Version _version, final Transport<Void> _transport)
+    private void start(final String _bundleName, final Version _version, final ResponseProcessor<Void> _responseProcessor)
             throws Exception {
         String niceVersion = Osgi.getNiceVersion(_version);
-        start(_bundleName, niceVersion, _transport);
+        start(_bundleName, niceVersion, _responseProcessor);
     }
 
     /**
@@ -162,8 +162,8 @@ public class FactoriesImporter extends ActorBase implements
     public Request<Void> startReq(final String _bundleLocation) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _transport) throws Exception {
-                start(_bundleLocation, _transport);
+            public void processRequest() throws Exception {
+                start(_bundleLocation, this);
             }
         };
     }
@@ -175,16 +175,16 @@ public class FactoriesImporter extends ActorBase implements
      * any change to the set of matching factory locator's will stop the current bundle.
      *
      * @param _bundleLocation The location of the bundle (URL).
-     * @param _transport      The Transport used to signal completion.
+     * @param _responseProcessor      The ResponseProcessor used to signal completion.
      */
-    private void start(final String _bundleLocation, final Transport<Void> _transport)
+    private void start(final String _bundleLocation, final ResponseProcessor<Void> _responseProcessor)
             throws Exception {
         BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getModuleContext());
         Bundle bundle = bundleContext.installBundle(_bundleLocation);
         bundle.start();
         String bundleName = bundle.getSymbolicName();
         Version version = bundle.getVersion();
-        start(bundleName, version, _transport);
+        start(bundleName, version, _responseProcessor);
     }
 
     /**
@@ -194,7 +194,7 @@ public class FactoriesImporter extends ActorBase implements
     @Override
     public void serviceChange(final ServiceEvent _event,
                               final Map<ServiceReference, OsgiFactoryLocator> _tracked) throws Exception {
-        if (startTransport == null) {
+        if (startResponseProcessor == null) {
             // If we get here, that means we had it, and now it's gone. :(
             tracker.close();
             tracker = null;
@@ -206,19 +206,19 @@ public class FactoriesImporter extends ActorBase implements
             // OK. Too many services. Fail and close tracker.
             tracker.close();
             tracker = null;
-            startTransport
-                    .processException(new IllegalStateException(
+            startResponseProcessor
+                    .processResponse(new IllegalStateException(
                             "ambiguous filter--number of matches = "
                                     + _tracked.size()));
-            startTransport = null;
+            startResponseProcessor = null;
             return;
         }
         if (_tracked.size() == 1) {
             // Yeah! success!
             final OsgiFactoryLocator fl = _tracked.values().iterator().next();
             factoryLocator.importFactoryLocator(fl);
-            startTransport.processResponse(null);
-            startTransport = null;
+            startResponseProcessor.processResponse(null);
+            startResponseProcessor = null;
             // But we keep tracking, in case it goes down later ...
             return;
         }
