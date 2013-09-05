@@ -15,10 +15,9 @@ public class Actor2 {
     public Request<String> hi2(final Actor1 actor1) {
         return new Request<String>(messageProcessor) {
             @Override
-            public void processRequest(
-                    final Transport<String> responseProcessor)
+            public void processRequest()
                     throws Exception {
-                actor1.hi.send(messageProcessor, responseProcessor);
+                actor1.hi.send(messageProcessor, this);
             }
         };
     }

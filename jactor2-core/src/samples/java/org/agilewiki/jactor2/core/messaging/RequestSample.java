@@ -79,6 +79,7 @@ class IndirectActor extends ActorBase {
     //Return a request to update the other actor and return its new state.
     Request<Integer> indirectReq(final int _newState) {
         return new Request<Integer>(getMessageProcessor()) {
+            Request<Integer> dis = this;
 
             @Override
             public void processRequest() throws Exception {
@@ -93,7 +94,7 @@ class IndirectActor extends ActorBase {
                     public void processResponse(Integer response) throws Exception {
 
                         //Return the old state.
-                        processResponse(response);
+                        dis.processResponse(response);
                     }
                 });
             }

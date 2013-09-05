@@ -72,6 +72,7 @@ class ExceptionHandlerActor extends ActorBase {
     //Returns a test request.
     Request<String> testReq() {
         return new Request<String>(getMessageProcessor()) {
+            Request<String> dis = this;
 
             @Override
             public void processRequest() throws Exception {
@@ -93,7 +94,7 @@ class ExceptionHandlerActor extends ActorBase {
                 exceptionActor.exceptionReq().send(getMessageProcessor(), new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(final Void _response) throws Exception {
-                        Request.this.processResponse("can not get here");
+                        dis.processResponse("can not get here");
                     }
                 });
             }

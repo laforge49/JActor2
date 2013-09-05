@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.firehose;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
@@ -24,7 +23,7 @@ public class NullStage extends ActorBase implements DataProcessor {
     public Request<Void> processDataReq(final FirehoseData _firehoseData) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 //Thread.sleep(1);
                 List<Long> list = _firehoseData.getContent();
                 int s = list.size();
@@ -35,7 +34,7 @@ public class NullStage extends ActorBase implements DataProcessor {
                     x += 1;
                 }
                 next.processDataReq(_firehoseData).send(getMessageProcessor(), null);
-                _transport.processResponse(null);
+                processResponse(null);
             }
         };
     }

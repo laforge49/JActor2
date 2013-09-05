@@ -22,12 +22,12 @@ public class ParallelTest extends TestCase {
         messageProcessor = new NonBlockingMessageProcessor(moduleContext);
 
         start = new Request<Void>(messageProcessor) {
+            Request<Void> dis = this;
             @Override
-            public void processRequest(
-                    final Transport<Void> responseProcessor)
+            public void processRequest()
                     throws Exception {
                 final ResponseCounter<Void> responseCounter = new ResponseCounter<Void>(
-                        LOADS, null, responseProcessor);
+                        LOADS, null, dis);
                 int i = 0;
                 while (i < LOADS) {
                     final Delay dly = new Delay(moduleContext);

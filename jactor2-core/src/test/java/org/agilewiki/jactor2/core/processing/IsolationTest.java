@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.Delay;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseCounter;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 public class IsolationTest extends TestCase {
@@ -23,8 +22,10 @@ public class IsolationTest extends TestCase {
 
     Request<Integer> startReq1(final MessageProcessor _messageProcessor) {
         return new Request<Integer>(_messageProcessor) {
+            Request<Integer> dis = this;
+
             @Override
-            public void processRequest(final Transport<Integer> _rp)
+            public void processRequest()
                     throws Exception {
                 MessageProcessor messageProcessor = new IsolationMessageProcessor(_messageProcessor.getModuleContext());
                 ResponseProcessor rc = new ResponseCounter(5, null,
@@ -32,7 +33,7 @@ public class IsolationTest extends TestCase {
                             @Override
                             public void processResponse(Object response)
                                     throws Exception {
-                                _rp.processResponse(count);
+                                dis.processResponse(count);
                             }
                         });
                 aReq(messageProcessor, 1).send(_messageProcessor, rc);
@@ -46,8 +47,9 @@ public class IsolationTest extends TestCase {
 
     Request<Void> aReq(final MessageProcessor _messageProcessor, final int msg) {
         return new Request<Void>(_messageProcessor) {
+            Request<Void> dis = this;
             @Override
-            public void processRequest(final Transport<Void> _rp)
+            public void processRequest()
                     throws Exception {
                 Delay delay = new Delay(_messageProcessor.getModuleContext());
                 delay.sleepReq(100 - (msg * 20)).send(_messageProcessor,
@@ -58,7 +60,7 @@ public class IsolationTest extends TestCase {
                                 if (count != msg - 1)
                                     throw new IllegalStateException();
                                 count = msg;
-                                _rp.processResponse(null);
+                                dis.processResponse(null);
                             }
                         });
             }

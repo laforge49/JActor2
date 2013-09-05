@@ -17,13 +17,15 @@ public class ServiceTest extends TestCase {
             Server server = new Server(new NonBlockingMessageProcessor(serverContext));
             final Client client = new Client(new NonBlockingMessageProcessor(clientContext), server);
             new Request<Void>(testMessageProcessor) {
+                Request<Void> dis = this;
+
                 @Override
-                public void processRequest(final Transport<Void> _transport) throws Exception {
+                public void processRequest() throws Exception {
                     client.crossReq().send(getMessageProcessor(), new ResponseProcessor<Boolean>() {
                         @Override
                         public void processResponse(Boolean response) throws Exception {
                             assertFalse(response);
-                            _transport.processResponse(null);
+                            dis.processResponse(null);
                         }
                     });
                     serverContext.close();
@@ -48,21 +50,23 @@ class Client extends ActorBase {
 
     Request<Boolean> crossReq() {
         return new Request<Boolean>(getMessageProcessor()) {
+            Request<Boolean> dis = this;
+
             @Override
-            public void processRequest(final Transport<Boolean> _transport) throws Exception {
+            public void processRequest() throws Exception {
                 getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(Throwable throwable) throws Throwable {
                         if (!(throwable instanceof ServiceClosedException)) {
                             throw throwable;
                         }
-                        _transport.processResponse(false);
+                        processResponse(false);
                     }
                 });
                 server.hangReq().send(getMessageProcessor(), new ResponseProcessor<Void>() {
                     @Override
                     public void processResponse(Void response) throws Exception {
-                        _transport.processResponse(true);
+                        dis.processResponse(true);
                     }
                 });
             }
@@ -78,7 +82,7 @@ class Server extends ActorBase {
     Request<Void> hangReq() {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<Void> _transport) throws Exception {
+            public void processRequest() throws Exception {
             }
         };
     }

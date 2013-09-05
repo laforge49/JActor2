@@ -16,11 +16,10 @@ public class Actor3 {
 
         hi3 = new Request<Void>(messageProcessor) {
             @Override
-            public void processRequest(
-                    final Transport<Void> responseProcessor)
+            public void processRequest()
                     throws Exception {
                 System.out.println("Hello world!");
-                responseProcessor.processResponse(null);
+                processResponse(null);
             }
         };
     }

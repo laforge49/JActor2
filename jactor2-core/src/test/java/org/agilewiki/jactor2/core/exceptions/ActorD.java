@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.exceptions;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
@@ -17,14 +16,13 @@ public class ActorD {
 
         throwRequest = new Request<String>(messageProcessor) {
             @Override
-            public void processRequest(
-                    final Transport<String> responseProcessor)
+            public void processRequest()
                     throws Exception {
                 messageProcessor.setExceptionHandler(new ExceptionHandler() {
                     @Override
                     public void processException(final Throwable throwable)
                             throws Exception {
-                        responseProcessor.processResponse(throwable.toString());
+                        processResponse(throwable.toString());
                     }
                 });
                 Dd dd = new Dd(messageProcessor.getModuleContext());
@@ -49,10 +47,9 @@ class Dd {
 
         doSomethin = new Request<Void>(messageProcessor) {
             @Override
-            public void processRequest(
-                    final Transport<Void> responseProcessor)
+            public void processRequest()
                     throws Exception {
-                responseProcessor.processResponse(null);
+                processResponse(null);
             }
         };
     }

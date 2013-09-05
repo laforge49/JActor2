@@ -13,8 +13,8 @@ public class Actor1 extends ActorBase {
         initialize(mbox);
         hi = new Request<String>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport<String> _transport) throws Exception {
-                _transport.processResponse("Hello world!");
+            public void processRequest() throws Exception {
+                processResponse("Hello world!");
             }
         };
     }

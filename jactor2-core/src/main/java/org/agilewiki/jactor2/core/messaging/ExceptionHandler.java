@@ -98,6 +98,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     //Returns a test request.
  *     Request&lt;String&gt; testReq() {
  *         return new Request&lt;String&gt;(getMessageProcessor()) {
+ *             Request<String> dis = this;
  *
  *             {@literal @}Override
  *             public void processRequest() throws Exception {
@@ -119,7 +120,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                 exceptionActor.exceptionReq().send(getMessageProcessor(), new ResponseProcessor&lt;Void&gt;() {
  *                     {@literal @}Override
  *                     public void processResponse(final Void _response) throws Exception {
- *                         Request.this.processResponse("can not get here");
+ *                         dis.processResponse("can not get here");
  *                     }
  *                 });
  *             }

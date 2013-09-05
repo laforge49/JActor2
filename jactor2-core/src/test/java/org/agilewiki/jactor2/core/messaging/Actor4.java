@@ -14,16 +14,17 @@ public class Actor4 {
 
     public Request<Void> hi4(final Actor1 actor1) {
         return new Request<Void>(messageProcessor) {
+            Request<Void> dis = this;
+
             @Override
-            public void processRequest(
-                    final Transport<Void> responseProcessor)
+            public void processRequest()
                     throws Exception {
                 actor1.hi.send(messageProcessor, new ResponseProcessor<String>() {
                     @Override
                     public void processResponse(final String response)
                             throws Exception {
                         System.out.println(response);
-                        responseProcessor.processResponse(null);
+                        dis.processResponse(null);
                     }
                 });
             }

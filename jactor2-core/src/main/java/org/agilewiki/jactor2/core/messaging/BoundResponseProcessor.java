@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.messaging;
 import org.agilewiki.jactor2.core.Actor;
 
 /**
- * A thread-safe wrapper for a ResponseProcessor or a Transport.
+ * A thread-safe wrapper for a ResponseProcessor.
  * When a request is processed, the ResponseProcessor given must only be used by the
  * same thread that is processing the request. In contrast, the processResult method
  * of BoundResponseProcessor can be called from any thread.

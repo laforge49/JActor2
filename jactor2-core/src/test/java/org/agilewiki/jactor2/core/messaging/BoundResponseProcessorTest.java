@@ -31,11 +31,13 @@ class Driver extends ActorBase {
         super.initialize(_messageProcessor);
 
         doitReq = new Request<String>(_messageProcessor) {
+            Request<String> dis = this;
+
             @Override
-            public void processRequest(final Transport<String> rp)
+            public void processRequest()
                     throws Exception {
                 final BoundResponseProcessor<String> boundResponseProcessor = new BoundResponseProcessor<String>(
-                        Driver.this, rp);
+                        Driver.this, dis);
                 final Application application = new Application(
                         boundResponseProcessor);
                 application.start();

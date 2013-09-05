@@ -156,9 +156,9 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     public Request<Boolean> subscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
         return new Request<Boolean>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Boolean> _rp)
+            public void processRequest()
                     throws Exception {
-                _rp.processResponse(subscribers.add(_subscriber));
+                processResponse(subscribers.add(_subscriber));
             }
         };
     }
@@ -173,9 +173,9 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     public Request<Boolean> unsubscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
         return new Request<Boolean>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Boolean> _rp)
+            public void processRequest()
                     throws Exception {
-                _rp.processResponse(subscribers.remove(_subscriber));
+                processResponse(subscribers.remove(_subscriber));
             }
         };
     }
@@ -193,13 +193,13 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
             final Event<TARGET_ACTOR_TYPE> event) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Void> _rp)
+            public void processRequest()
                     throws Exception {
                 Iterator<TARGET_ACTOR_TYPE> it = subscribers.iterator();
                 while (it.hasNext()) {
                     event.signal(it.next());
                 }
-                _rp.processResponse(null);
+                processResponse(null);
             }
         };
     }

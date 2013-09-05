@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core;
 
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
@@ -28,11 +27,10 @@ public class Delay extends ActorBase {
     public Request<Void> sleepReq(final long _delay) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(
-                    final Transport<Void> responseProcessor)
+            public void processRequest()
                     throws Exception {
                 Thread.sleep(_delay);
-                responseProcessor.processResponse(null);
+                processResponse(null);
             }
         };
     }

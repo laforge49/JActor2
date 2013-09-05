@@ -108,6 +108,7 @@ import java.util.concurrent.Semaphore;
  *     //Return a request to update the other actor and return its new state.
  *     Request&lt;Integer&gt; indirectReq(final int _newState) {
  *         return new Request&lt;Integer&gt;(getMessageProcessor()) {
+ *             Request<Integer> dis = this;
  *
  *             {@literal @}Override
  *             public void processRequest() throws Exception {
@@ -122,7 +123,7 @@ import java.util.concurrent.Semaphore;
  *                     public void processResponse(Integer response) throws Exception {
  *
  *                         //Return the old state.
- *                         processResponse(response);
+ *                         dis.processResponse(response);
  *                     }
  *                 });
  *             }
