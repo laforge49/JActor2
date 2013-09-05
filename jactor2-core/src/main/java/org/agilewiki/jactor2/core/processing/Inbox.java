@@ -25,6 +25,7 @@ public abstract class Inbox implements AutoCloseable {
 
     /**
      * Returns true when a message has been passed from another thread.
+     *
      * @return True when a message has been passed from another thread.
      */
     public boolean hasConcurrent() {

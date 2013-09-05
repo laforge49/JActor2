@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 /**
  * The MessageProcessor interface identifies the processing methods that can be used by applications.

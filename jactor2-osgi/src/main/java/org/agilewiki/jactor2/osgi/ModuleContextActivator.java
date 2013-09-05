@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;

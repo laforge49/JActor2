@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.Root;
 import org.osgi.framework.Bundle;

@@ -2,9 +2,9 @@ package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Delay;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 /**
  * Test code.

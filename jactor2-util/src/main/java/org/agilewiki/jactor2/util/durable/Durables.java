@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.app.App;
 import org.agilewiki.jactor2.util.durable.incDes.*;
@@ -38,10 +38,10 @@ public final class Durables {
     /**
      * Create a factoryLocator and add it to the moduleContext properties.
      *
-     * @param _moduleContext  A moduleContext.
-     * @param _bundleName The name of the OSGi bundle or an empty string.
-     * @param _version    The version of the OSGi bundle or an empty string.
-     * @param _location   The location of the OSGi bundle or an empty string.
+     * @param _moduleContext A moduleContext.
+     * @param _bundleName    The name of the OSGi bundle or an empty string.
+     * @param _version       The version of the OSGi bundle or an empty string.
+     * @param _location      The location of the OSGi bundle or an empty string.
      * @return The new factoryLocator.
      */
     public static FactoryLocator createFactoryLocator(
@@ -286,7 +286,7 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _moduleContext      The moduleContext to be used to create the new processing.
+     * @param _moduleContext  The moduleContext to be used to create the new processing.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
@@ -301,7 +301,7 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _moduleContext      The moduleContext to be used to create the new processing.
+     * @param _moduleContext  The moduleContext to be used to create the new processing.
      * @param _parent         The dependency to be injected, or null.
      * @return A new serializable object.
      */
@@ -317,9 +317,9 @@ public final class Durables {
     /**
      * Create a new serializable object and a new processing to be used by that serializable object.
      *
-     * @param _factoryName The type of object to be created.
-     * @param _moduleContext   The moduleContext to be used to create the new processing
-     *                     and which has a factoryLocator property.
+     * @param _factoryName   The type of object to be created.
+     * @param _moduleContext The moduleContext to be used to create the new processing
+     *                       and which has a factoryLocator property.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final ModuleContext _moduleContext,
@@ -335,10 +335,10 @@ public final class Durables {
     /**
      * Create a new serializable object and a new processing to be used by that serializable object.
      *
-     * @param _factoryName The type of object to be created.
-     * @param _moduleContext   The moduleContext to be used to create the new processing
-     *                     and which has a factoryLocator property.
-     * @param _parent      The dependency to be injected, or null.
+     * @param _factoryName   The type of object to be created.
+     * @param _moduleContext The moduleContext to be used to create the new processing
+     *                       and which has a factoryLocator property.
+     * @param _parent        The dependency to be injected, or null.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final ModuleContext _moduleContext,

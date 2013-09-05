@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
-import org.agilewiki.jactor2.core.threading.MigrationException;
 import org.agilewiki.jactor2.core.messaging.Message;
+import org.agilewiki.jactor2.core.threading.MigrationException;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 /**
  * A message processor which processes each request to completion, and which should be used by actors
@@ -48,7 +48,7 @@ public class IsolationMessageProcessor extends UnboundMessageProcessor {
      * Create an isolation message processor.
      *
      * @param _moduleContext The context of the message processor.
-     * @param _onIdle    Object to be run when the inbox is emptied, or null.
+     * @param _onIdle        Object to be run when the inbox is emptied, or null.
      */
     public IsolationMessageProcessor(ModuleContext _moduleContext, Runnable _onIdle) {
         super(_moduleContext, _moduleContext.getInitialBufferSize(),
@@ -58,7 +58,7 @@ public class IsolationMessageProcessor extends UnboundMessageProcessor {
     /**
      * Create an isolation message processor.
      *
-     * @param _moduleContext             The context of the message processor.
+     * @param _moduleContext         The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
@@ -77,7 +77,7 @@ public class IsolationMessageProcessor extends UnboundMessageProcessor {
 
     @Override
     protected void processMessage(final Message message) {
-        message.eval(this);
+        message.eval();
         try {
             flush(true);
         } catch (final MigrationException me) {

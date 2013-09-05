@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Message;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import java.util.ArrayDeque;
 import java.util.IdentityHashMap;
@@ -46,6 +46,7 @@ public class Outbox implements AutoCloseable {
 
     /**
      * Returns an iterator of the send buffers held by the outbox.
+     *
      * @return An iterator of the send buffers held by the outbox.
      */
     public Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> getIterator() {

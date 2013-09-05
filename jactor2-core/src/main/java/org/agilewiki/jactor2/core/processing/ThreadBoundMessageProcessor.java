@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Message;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -107,7 +107,7 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
      * the message processor is bound to.
      * </p>
      *
-     * @param _moduleContext      The context of the message processor.
+     * @param _moduleContext  The context of the message processor.
      * @param _boundProcessor The _messageProcessor.run method is called when there
      *                        are messages to be processed.
      */
@@ -127,7 +127,7 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
      * the message processor is bound to.
      * </p>
      *
-     * @param _moduleContext             The context of the message processor.
+     * @param _moduleContext         The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _boundProcessor        The _messageProcessor.run method is called when there

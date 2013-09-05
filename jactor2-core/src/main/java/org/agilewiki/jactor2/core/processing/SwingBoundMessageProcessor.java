@@ -78,7 +78,7 @@ public class SwingBoundMessageProcessor extends ThreadBoundMessageProcessor impl
     /**
      * Create a message processor bound to the Swing event-dispatch thread.
      *
-     * @param _moduleContext             The context of the message processor.
+     * @param _moduleContext         The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */

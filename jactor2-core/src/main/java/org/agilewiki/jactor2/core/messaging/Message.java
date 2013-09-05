@@ -33,10 +33,8 @@ public interface Message extends AutoCloseable {
      * Execute the Event.processEvent or Request.processRequest method
      * of the event/request held by the message. This method is always called on the
      * target message processor's own thread.
-     *
-     * @param _targetMessageProcessor The message processor whose thread is to evaluate the event/request.
      */
-    void eval(final MessageProcessor _targetMessageProcessor);
+    void eval();
 
     /**
      * Process the throwable on the current thread in the context of the active message processor.

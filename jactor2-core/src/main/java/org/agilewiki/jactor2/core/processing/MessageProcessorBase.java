@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
-import org.agilewiki.jactor2.core.threading.MigrationException;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Message;
 import org.agilewiki.jactor2.core.messaging.MessageSource;
+import org.agilewiki.jactor2.core.threading.MigrationException;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.slf4j.Logger;
 
 import java.util.Iterator;
@@ -50,7 +50,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     /**
      * Create a message processor.
      *
-     * @param _moduleContext             The context of this message processor.
+     * @param _moduleContext         The context of this message processor.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
@@ -111,6 +111,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
 
     /**
      * Returns true when a message has been passed from another thread.
+     *
      * @return True when a message has been passed from another thread.
      */
     public boolean hasConcurrent() {
@@ -239,7 +240,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
      * @param _message The message to be processed.
      */
     protected void processMessage(final Message _message) {
-        _message.eval(this);
+        _message.eval();
     }
 
     /**

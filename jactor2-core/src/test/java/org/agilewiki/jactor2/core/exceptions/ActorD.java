@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.exceptions;
 
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 public class ActorD {
     private final MessageProcessor messageProcessor;

@@ -138,8 +138,8 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
         }
 
         @Override
-        public void eval(final MessageProcessor _targetMessageProcessor) {
-            MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) _targetMessageProcessor;
+        public void eval() {
+            MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) targetActor.getMessageProcessor();
             targetMessageProcessor.setExceptionHandler(null);
             targetMessageProcessor.setCurrentMessage(this);
             try {

@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.firehose;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.Transport;
+import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
+import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 public class EndStage extends ActorBase implements DataProcessor {
 

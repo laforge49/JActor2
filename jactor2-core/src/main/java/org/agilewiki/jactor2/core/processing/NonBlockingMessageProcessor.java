@@ -42,7 +42,7 @@ public class NonBlockingMessageProcessor extends UnboundMessageProcessor {
      * Create a non-blocking message processor.
      *
      * @param _moduleContext The context of the message processor.
-     * @param _onIdle    Object to be run when the inbox is emptied, or null.
+     * @param _onIdle        Object to be run when the inbox is emptied, or null.
      */
     public NonBlockingMessageProcessor(ModuleContext _moduleContext,
                                        Runnable _onIdle) {
@@ -53,7 +53,7 @@ public class NonBlockingMessageProcessor extends UnboundMessageProcessor {
     /**
      * Create a non-blocking message processor.
      *
-     * @param _moduleContext             The context of the message processor.
+     * @param _moduleContext         The context of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.

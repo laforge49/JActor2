@@ -409,15 +409,13 @@ public abstract class Request<RESPONSE_TYPE> implements ResponseProcessor<RESPON
 
     /**
      * Process a request or the response.
-     *
-     * @param _activeMessageProcessor The message processor whose thread is to evaluate the request/response.
      */
     @Override
-    public void eval(final MessageProcessor _activeMessageProcessor) {
+    public void eval() {
         if (responsePending) {
             processRequestMessage();
         } else {
-            processResponseMessage(_activeMessageProcessor);
+            processResponseMessage();
         }
     }
 
@@ -442,11 +440,9 @@ public abstract class Request<RESPONSE_TYPE> implements ResponseProcessor<RESPON
 
     /**
      * Process a response.
-     *
-     * @param _sourceMessageProcessor The message processor whose thread is to evaluate the response.
      */
-    private void processResponseMessage(final MessageProcessor _sourceMessageProcessor) {
-        MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) _sourceMessageProcessor;
+    private void processResponseMessage() {
+        MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) messageSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);
         if (response instanceof Throwable) {
