@@ -22,7 +22,7 @@ public interface Transport<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_TYP
      * But regardless of how a response is returned, if the response is an exception it
      * is passed to the exception handler of the actor that did the call or send on the request.
      *
-     * @param response An exception.
+     * @param _response An exception.
      */
-    public void processException(final Exception response) throws Exception;
+    public void processException(final Exception _response) throws Exception;
 }

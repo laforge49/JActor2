@@ -14,7 +14,7 @@ public interface ResponseProcessor<RESPONSE_TYPE> {
      * Request and ResponseProcessor objects.
      * </p>
      *
-     * @param response The response to a request.
+     * @param _response The response to a request.
      */
-    public void processResponse(final RESPONSE_TYPE response) throws Exception;
+    public void processResponse(final RESPONSE_TYPE _response) throws Exception;
 }

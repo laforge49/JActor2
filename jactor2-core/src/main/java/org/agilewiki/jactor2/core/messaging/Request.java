@@ -320,11 +320,22 @@ public abstract class Request<RESPONSE_TYPE> implements ResponseProcessor<RESPON
 
     }
 
+    @Override
     public void processResponse(final RESPONSE_TYPE _response)
             throws Exception {
         processObjectResponse(_response);
     }
 
+    /**
+     * The processResponse method accepts the response of a request.
+     * <p>
+     * This method need not be thread-safe, as it
+     * is always invoked from the same light-weight thread (message processor) that passed the
+     * Request and ResponseProcessor objects.
+     * </p>
+     *
+     * @param _response The response to a request.
+     */
     private void processObjectResponse(final Object _response)
             throws Exception {
         final ModuleContext moduleContext = messageProcessor.getModuleContext();
@@ -343,6 +354,12 @@ public abstract class Request<RESPONSE_TYPE> implements ResponseProcessor<RESPON
         }
     }
 
+    /**
+     * Returns the ModuleContext of the request source.
+     *
+     * @return The ModuleContext of the request source, or null when the request was
+     *         passed using signal or call.
+     */
     public ModuleContext getModuleContext() {
         if (messageSource == null)
             return null;
@@ -351,6 +368,13 @@ public abstract class Request<RESPONSE_TYPE> implements ResponseProcessor<RESPON
         return ((MessageProcessorBase) messageSource).getModuleContext();
     }
 
+    /**
+     * Returns an exception as a response instead of throwing it.
+     * But regardless of how a response is returned, if the response is an exception it
+     * is passed to the exception handler of the actor that did the call or send on the request.
+     *
+     * @param _response An exception.
+     */
     public void processException(final Exception _response) throws Exception {
         processObjectResponse(_response);
     }
