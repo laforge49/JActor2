@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
  *
  * @param <RESPONSE_TYPE> The type of response.
  */
+@Deprecated
 public interface Transport<RESPONSE_TYPE> extends ResponseProcessor<RESPONSE_TYPE> {
     /**
      * Returns the ModuleContext of the request source.

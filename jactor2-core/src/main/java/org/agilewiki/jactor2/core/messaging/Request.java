@@ -287,8 +287,55 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
      * @param _transport The Transport that is responsible for passing the result back
      *                   to the originator of this Request.
      */
-    abstract public void processRequest(final Transport<RESPONSE_TYPE> _transport)
-            throws Exception;
+    @Deprecated
+    public void processRequest(final Transport<RESPONSE_TYPE> _transport)
+            throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * The processRequest method will be invoked by the target MessageProcessor on its own thread
+     * when the Request is dequeued from the target inbox for processing.
+     */
+    public void processRequest()
+            throws Exception {
+        processRequest(
+                new Transport() {
+                    @Override
+                    public void processResponse(final Object response)
+                            throws Exception {
+                        final ModuleContext moduleContext = messageProcessor.getModuleContext();
+                        if (foreign)
+                            moduleContext.removeAutoClosable(Request.this);
+                        if (!responsePending)
+                            return;
+                        setResponse(response, messageProcessor);
+                        if (responseProcessor != SignalResponseProcessor.SINGLETON) {
+                            messageSource.incomingResponse(Request.this, messageProcessor);
+                        } else {
+                            if (response instanceof Throwable) {
+                                messageProcessor.getLogger().warn("Uncaught throwable",
+                                        (Throwable) response);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public ModuleContext getModuleContext() {
+                        if (messageSource == null)
+                            return null;
+                        if (!(messageSource instanceof MessageProcessor))
+                            return null;
+                        return ((MessageProcessorBase) messageSource).getModuleContext();
+                    }
+
+                    @Override
+                    public void processException(Exception response) throws Exception {
+                        processResponse((Object) response);
+                    }
+                });
+
+    }
 
     @Override
     public boolean isForeign() {
@@ -326,7 +373,7 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
     @Override
     public void eval(final MessageProcessor _activeMessageProcessor) {
         if (responsePending) {
-            processRequestMessage(_activeMessageProcessor);
+            processRequestMessage();
         } else {
             processResponseMessage(_activeMessageProcessor);
         }
@@ -334,56 +381,20 @@ public abstract class Request<RESPONSE_TYPE> implements Message {
 
     /**
      * Process a request.
-     *
-     * @param _targetMessageProcessor The message processor whose thread is to evaluate the request.
      */
-    private void processRequestMessage(final MessageProcessor _targetMessageProcessor) {
-        final MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) _targetMessageProcessor;
-        final ModuleContext moduleContext = targetMessageProcessor.getModuleContext();
+    private void processRequestMessage() {
+        final ModuleContext moduleContext = messageProcessor.getModuleContext();
         if (foreign)
             moduleContext.addAutoClosable(this);
-        targetMessageProcessor.setExceptionHandler(null);
-        targetMessageProcessor.setCurrentMessage(this);
-        targetMessageProcessor.requestBegin();
+        messageProcessor.setExceptionHandler(null);
+        messageProcessor.setCurrentMessage(this);
+        messageProcessor.requestBegin();
         try {
-            processRequest(
-                    new Transport() {
-                        @Override
-                        public void processResponse(final Object response)
-                                throws Exception {
-                            if (foreign)
-                                moduleContext.removeAutoClosable(Request.this);
-                            if (!responsePending)
-                                return;
-                            setResponse(response, targetMessageProcessor);
-                            if (responseProcessor != SignalResponseProcessor.SINGLETON) {
-                                messageSource.incomingResponse(Request.this, targetMessageProcessor);
-                            } else {
-                                if (response instanceof Throwable) {
-                                    targetMessageProcessor.getLogger().warn("Uncaught throwable",
-                                            (Throwable) response);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public ModuleContext getModuleContext() {
-                            if (messageSource == null)
-                                return null;
-                            if (!(messageSource instanceof MessageProcessor))
-                                return null;
-                            return ((MessageProcessorBase) messageSource).getModuleContext();
-                        }
-
-                        @Override
-                        public void processException(Exception response) throws Exception {
-                            processResponse((Object) response);
-                        }
-                    });
+            processRequest();
         } catch (final Throwable t) {
             if (foreign)
                 moduleContext.removeAutoClosable(this);
-            processThrowable(targetMessageProcessor, t);
+            processThrowable(messageProcessor, t);
         }
     }
 
