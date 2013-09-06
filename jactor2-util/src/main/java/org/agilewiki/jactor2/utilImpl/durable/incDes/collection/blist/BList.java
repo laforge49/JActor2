@@ -29,16 +29,24 @@ public class BList<ENTRY_TYPE extends JASerializable>
     protected Factory entryFactory;
     protected FactoryLocator factoryLocator;
 
-    private Request<Integer> sizeReq;
-    private Request<Void> emptyReq;
-
     @Override
     public Request<Integer> sizeReq() {
-        return sizeReq;
+        return new Request<Integer>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                processResponse(size());
+            }
+        };
     }
 
     public Request<Void> emptyReq() {
-        return emptyReq;
+        return new Request<Void>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                empty();
+                processResponse(null);
+            }
+        };
     }
 
     /**
@@ -492,18 +500,5 @@ public class BList<ENTRY_TYPE extends JASerializable>
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        sizeReq = new Request<Integer>(getMessageProcessor()) {
-            @Override
-            public void processRequest() throws Exception {
-                processResponse(size());
-            }
-        };
-        emptyReq = new Request<Void>(getMessageProcessor()) {
-            @Override
-            public void processRequest() throws Exception {
-                empty();
-                processResponse(null);
-            }
-        };
     }
 }

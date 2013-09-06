@@ -44,9 +44,6 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      */
     protected int serializedOffset;
 
-    private Request<byte[]> getSerializedBytesReq;
-    private Request<Integer> getSerializedLengthReq;
-
     @Override
     public IncDes getDurable() {
         return this;
@@ -54,12 +51,22 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public Request<byte[]> getSerializedBytesReq() {
-        return getSerializedBytesReq;
+        return new Request<byte[]>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                processResponse(getSerializedBytes());
+            }
+        };
     }
 
     @Override
     public Request<Integer> getSerializedLengthReq() {
-        return getSerializedLengthReq;
+        return new Request<Integer>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                processResponse(getSerializedLength());
+            }
+        };
     }
 
     final public JASerializable createSubordinate(Factory factory)
@@ -362,14 +369,14 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
             @Override
             public void processRequest() throws Exception {
-                getSerializedLengthReq.send(getMessageProcessor(), new ResponseProcessor<Integer>() {
+                getSerializedLengthReq().send(getMessageProcessor(), new ResponseProcessor<Integer>() {
                     @Override
                     public void processResponse(Integer response) throws Exception {
                         if (response.intValue() != getSerializedLength()) {
                             dis.processResponse(false);
                             return;
                         }
-                        getSerializedBytesReq.send(getMessageProcessor(), new ResponseProcessor<byte[]>() {
+                        getSerializedBytesReq().send(getMessageProcessor(), new ResponseProcessor<byte[]>() {
                             @Override
                             public void processResponse(byte[] response) throws Exception {
                                 boolean eq = Arrays.equals(response, getSerializedBytes());
@@ -416,20 +423,6 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         super.initialize(_parent);
         messageProcessor = _messageProcessor;
         factory = _factory;
-
-        getSerializedLengthReq = new Request<Integer>(getMessageProcessor()) {
-            @Override
-            public void processRequest() throws Exception {
-                processResponse(getSerializedLength());
-            }
-        };
-
-        getSerializedBytesReq = new Request<byte[]>(getMessageProcessor()) {
-            @Override
-            public void processRequest() throws Exception {
-                processResponse(getSerializedBytes());
-            }
-        };
     }
 
     @Override

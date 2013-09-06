@@ -46,16 +46,23 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     protected int factoryIndex = -1;
     protected JASerializable value;
 
-    private Request<Void> clearReq;
-    private Request<JASerializable> getPAIDReq;
-
     public Request<Void> clearReq() {
-        return clearReq;
+        return new Request<Void>(getMessageProcessor()) {
+            public void processRequest(Transport rp) throws Exception {
+                clear();
+                rp.processResponse(null);
+            }
+        };
     }
 
     @Override
     public Request<JASerializable> getValueReq() {
-        return getPAIDReq;
+        return new Request<JASerializable>(getMessageProcessor()) {
+            @Override
+            public void processRequest(Transport rp) throws Exception {
+                rp.processResponse(getValue());
+            }
+        };
     }
 
     protected Factory[] getUnionFactories() {
@@ -316,18 +323,5 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        clearReq = new Request<Void>(getMessageProcessor()) {
-            public void processRequest(Transport rp) throws Exception {
-                clear();
-                rp.processResponse(null);
-            }
-        };
-
-        getPAIDReq = new Request<JASerializable>(getMessageProcessor()) {
-            @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getValue());
-            }
-        };
     }
 }

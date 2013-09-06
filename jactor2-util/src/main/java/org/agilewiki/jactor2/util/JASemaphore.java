@@ -25,11 +25,6 @@ public class JASemaphore extends ActorBase {
     private final Queue<ResponseProcessor<Void>> queue = new ArrayDeque<ResponseProcessor<Void>>();
 
     /**
-     * The acquire request.
-     */
-    private final Request<Void> acquire;
-
-    /**
      * The release request.
      */
     private final Event<JASemaphore> release;
@@ -43,19 +38,6 @@ public class JASemaphore extends ActorBase {
     public JASemaphore(final MessageProcessor mbox, final int permitCount) throws Exception {
         initialize(mbox);
         this.permits = permitCount;
-
-        acquire = new Request<Void>(getMessageProcessor()) {
-            @Override
-            public void processRequest()
-                    throws Exception {
-                if (permits > 0) {
-                    permits -= 1;
-                    processResponse(null);
-                } else {
-                    queue.offer(this);
-                }
-            }
-        };
 
         release = new Event<JASemaphore>() {
             @Override
@@ -77,7 +59,18 @@ public class JASemaphore extends ActorBase {
      * @return The request.
      */
     public Request<Void> acquireReq() {
-        return acquire;
+        return new Request<Void>(getMessageProcessor()) {
+            @Override
+            public void processRequest()
+                    throws Exception {
+                if (permits > 0) {
+                    permits -= 1;
+                    processResponse(null);
+                } else {
+                    queue.offer(this);
+                }
+            }
+        };
     }
 
     /**

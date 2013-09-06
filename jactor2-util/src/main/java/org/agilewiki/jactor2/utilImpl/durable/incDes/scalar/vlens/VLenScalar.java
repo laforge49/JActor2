@@ -26,10 +26,13 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      */
     protected int len = -1;
 
-    private Request<Void> clearReq;
-
     public Request<Void> clearReq() {
-        return clearReq;
+        return new Request<Void>(getMessageProcessor()) {
+            public void processRequest(Transport rp) throws Exception {
+                clear();
+                rp.processResponse(null);
+            }
+        };
     }
 
     /**
@@ -132,11 +135,5 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        clearReq = new Request<Void>(getMessageProcessor()) {
-            public void processRequest(Transport rp) throws Exception {
-                clear();
-                rp.processResponse(null);
-            }
-        };
     }
 }

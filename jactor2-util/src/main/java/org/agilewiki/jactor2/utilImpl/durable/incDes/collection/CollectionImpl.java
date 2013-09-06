@@ -23,11 +23,14 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
      */
     protected int len;
 
-    private Request<Integer> sizeReq;
-
     @Override
     public Request<Integer> sizeReq() {
-        return sizeReq;
+        return new Request<Integer>(getMessageProcessor()) {
+            @Override
+            public void processRequest() throws Exception {
+                processResponse(size());
+            }
+        };
     }
 
     @Override
@@ -125,11 +128,5 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
     public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
             throws Exception {
         super.initialize(messageProcessor, parent, factory);
-        sizeReq = new Request<Integer>(getMessageProcessor()) {
-            @Override
-            public void processRequest() throws Exception {
-                processResponse(size());
-            }
-        };
     }
 }
