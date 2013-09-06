@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -28,8 +27,8 @@ public class JAStringImpl
     public Request<String> getValueReq() {
         return new Request<String>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(getValue());
+            public void processRequest() throws Exception {
+                processResponse(getValue());
             }
         };
     }
@@ -55,9 +54,9 @@ public class JAStringImpl
             throw new IllegalArgumentException("value may not be null");
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
+            public void processRequest() throws Exception {
                 setValue(v);
-                rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -87,8 +86,8 @@ public class JAStringImpl
             throw new IllegalArgumentException("value may not be null");
         return new Request<Boolean>(getMessageProcessor()) {
             @Override
-            public void processRequest(Transport rp) throws Exception {
-                rp.processResponse(makeValue(v));
+            public void processRequest() throws Exception {
+                processResponse(makeValue(v));
             }
         };
     }

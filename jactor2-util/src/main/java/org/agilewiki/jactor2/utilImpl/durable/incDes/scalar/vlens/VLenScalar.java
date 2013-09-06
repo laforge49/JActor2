@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
 import org.agilewiki.jactor2.core.messaging.Request;
-import org.agilewiki.jactor2.core.messaging.Transport;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
@@ -28,9 +27,9 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
 
     public Request<Void> clearReq() {
         return new Request<Void>(getMessageProcessor()) {
-            public void processRequest(Transport rp) throws Exception {
+            public void processRequest() throws Exception {
                 clear();
-                rp.processResponse(null);
+                processResponse(null);
             }
         };
     }
