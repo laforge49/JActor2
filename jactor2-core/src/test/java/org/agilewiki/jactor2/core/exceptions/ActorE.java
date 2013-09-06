@@ -32,7 +32,7 @@ public class ActorE {
                                         throws Exception {
                                     // Should NOT happen!
                                     dis.processException(new IllegalStateException(
-                                                    "We should have never got here!"));
+                                            "We should have never got here!"));
                                 }
                             });
                 } catch (final Exception e) {

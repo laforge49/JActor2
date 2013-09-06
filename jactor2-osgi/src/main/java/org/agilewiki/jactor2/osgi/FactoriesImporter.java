@@ -70,8 +70,8 @@ public class FactoriesImporter extends ActorBase implements
      * But once a match has been made and the factory locator is imported,
      * any change to the set of matching factory locator's will stop the current bundle.
      *
-     * @param _filter    A filter that should identify the single factory locator to be imported into the
-     *                   factory locator of the current bundle.
+     * @param _filter            A filter that should identify the single factory locator to be imported into the
+     *                           factory locator of the current bundle.
      * @param _responseProcessor The ResponseProcessor used to signal completion.
      */
     private void start(final Filter _filter, final ResponseProcessor<Void> _responseProcessor) throws Exception {
@@ -110,9 +110,9 @@ public class FactoriesImporter extends ActorBase implements
      * But once a match has been made and the factory locator is imported,
      * any change to the set of matching factory locator's will stop the current bundle.
      *
-     * @param _bundleName  The symbolic name of the bundle.
-     * @param _niceVersion Bundle version in the form 1.2.3 or 1.2.3-SNAPSHOT
-     * @param _responseProcessor   The ResponseProcessor used to signal completion.
+     * @param _bundleName        The symbolic name of the bundle.
+     * @param _niceVersion       Bundle version in the form 1.2.3 or 1.2.3-SNAPSHOT
+     * @param _responseProcessor The ResponseProcessor used to signal completion.
      */
     private void start(final String _bundleName, final String _niceVersion, final ResponseProcessor<Void> _responseProcessor)
             throws Exception {
@@ -143,9 +143,9 @@ public class FactoriesImporter extends ActorBase implements
      * But once a match has been made and the factory locator is imported,
      * any change to the set of matching factory locator's will stop the current bundle.
      *
-     * @param _bundleName The symbolic name of the bundle.
-     * @param _version    Bundle version.
-     * @param _responseProcessor  The ResponseProcessor used to signal completion.
+     * @param _bundleName        The symbolic name of the bundle.
+     * @param _version           Bundle version.
+     * @param _responseProcessor The ResponseProcessor used to signal completion.
      */
     private void start(final String _bundleName, final Version _version, final ResponseProcessor<Void> _responseProcessor)
             throws Exception {
@@ -174,8 +174,8 @@ public class FactoriesImporter extends ActorBase implements
      * But once a match has been made and the factory locator is imported,
      * any change to the set of matching factory locator's will stop the current bundle.
      *
-     * @param _bundleLocation The location of the bundle (URL).
-     * @param _responseProcessor      The ResponseProcessor used to signal completion.
+     * @param _bundleLocation    The location of the bundle (URL).
+     * @param _responseProcessor The ResponseProcessor used to signal completion.
      */
     private void start(final String _bundleLocation, final ResponseProcessor<Void> _responseProcessor)
             throws Exception {

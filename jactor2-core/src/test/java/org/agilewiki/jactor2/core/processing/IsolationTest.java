@@ -48,6 +48,7 @@ public class IsolationTest extends TestCase {
     Request<Void> aReq(final MessageProcessor _messageProcessor, final int msg) {
         return new Request<Void>(_messageProcessor) {
             Request<Void> dis = this;
+
             @Override
             public void processRequest()
                     throws Exception {

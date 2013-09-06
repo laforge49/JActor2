@@ -1,7 +1,10 @@
 package org.agilewiki.jactor2.core;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.messaging.*;
+import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
+import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.ServiceClosedException;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;

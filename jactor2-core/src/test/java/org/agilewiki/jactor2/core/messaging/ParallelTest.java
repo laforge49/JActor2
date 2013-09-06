@@ -23,6 +23,7 @@ public class ParallelTest extends TestCase {
 
         start = new Request<Void>(messageProcessor) {
             Request<Void> dis = this;
+
             @Override
             public void processRequest()
                     throws Exception {

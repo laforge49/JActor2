@@ -284,42 +284,9 @@ public abstract class Request<RESPONSE_TYPE> implements ResponseProcessor<RESPON
     /**
      * The processRequest method will be invoked by the target MessageProcessor on its own thread
      * when the Request is dequeued from the target inbox for processing.
-     *
-     * @param _transport The Transport that is responsible for passing the result back
-     *                   to the originator of this Request.
      */
-    @Deprecated
-    public void processRequest(final Transport<RESPONSE_TYPE> _transport)
-            throws Exception {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * The processRequest method will be invoked by the target MessageProcessor on its own thread
-     * when the Request is dequeued from the target inbox for processing.
-     */
-    public void processRequest()
-            throws Exception {
-        processRequest(
-                new Transport() {
-                    @Override
-                    public void processResponse(final Object _response)
-                            throws Exception {
-                        Request.this.processObjectResponse(_response);
-                    }
-
-                    @Override
-                    public ModuleContext getModuleContext() {
-                        return Request.this.getModuleContext();
-                    }
-
-                    @Override
-                    public void processException(Exception _response) throws Exception {
-                        Request.this.processException(_response);
-                    }
-                });
-
-    }
+    abstract public void processRequest()
+            throws Exception;
 
     @Override
     public void processResponse(final RESPONSE_TYPE _response)
