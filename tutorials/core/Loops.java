@@ -59,12 +59,11 @@ public class Loops extends ActorBase {
 	Request<Long> loopReq(final Sums _sums, final long _count) {
         return new Request<Long>(getMessageProcessor()) {
 		    long counter;
-			Transport<Long> transport;
 			ResponseProcessor<Long> responseProcessor = new ResponseProcessor<Long>() {
 			    @Override
 				public void processResponse(final Long _response) throws Exception {
 				    if (counter == 1) {
-					    transport.processResponse(_response);
+					    processResponse(_response);
 					} else {
 					    counter -= 1;
         			    _sums.addReq(counter).send(getMessageProcessor(), responseProcessor);
@@ -73,13 +72,12 @@ public class Loops extends ActorBase {
 			};
 			
             @Override
-            public void processRequest(final Transport<Long> _transport) 
+            public void processRequest() 
                     throws Exception {
 				if (_count < 1) {
-				    _transport.processResponse(0L);
+				    processResponse(0L);
 				} else {
 				    counter = _count;
-					transport = _transport;
     			    _sums.addReq(counter).send(getMessageProcessor(), responseProcessor);
 				}
             }
@@ -98,10 +96,10 @@ class Sums extends ActorBase {
 	Request<Void> clearReq() {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Void> _transport) 
+            public void processRequest() 
                     throws Exception {
 				total = 0L;
-                _transport.processResponse(null);
+                processResponse(null);
             }
         };
 	}
@@ -109,10 +107,10 @@ class Sums extends ActorBase {
 	Request<Long> addReq(final long _value) {
         return new Request<Long>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Long> _transport) 
+            public void processRequest() 
                     throws Exception {
 				total += _value;
-                _transport.processResponse(total);
+                processResponse(total);
             }
         };
 	}
