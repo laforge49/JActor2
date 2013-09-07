@@ -28,7 +28,7 @@ public class ThreadMigration extends ActorBase {
     public Request<Void> startReq() {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Void> _transport) 
+            public void processRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
                 MessageProcessor myMessageProcessor = getMessageProcessor();
@@ -37,7 +37,7 @@ public class ThreadMigration extends ActorBase {
                     new NonBlockingMessageProcessor(myModuleContext);
                 SubActor subActor = new SubActor(subMessageProcessor);
                 subActor.doReq("         signal").signal();
-                subActor.doReq("           send").send(myMessageProcessor, _transport);
+                subActor.doReq("           send").send(myMessageProcessor, this);
             }
         };
     }
@@ -52,11 +52,11 @@ class SubActor extends ActorBase {
     public Request<Void> doReq(final String _label) {
         return new Request<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport<Void> _transport) 
+            public void processRequest() 
                     throws Exception {
                 System.out.println(_label + " thread: " + 
                     Thread.currentThread());
-                _transport.processResponse(null);
+                processResponse(null);
             }
         };
     }

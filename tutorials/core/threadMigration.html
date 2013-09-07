@@ -52,7 +52,7 @@ public class ThreadMigration extends ActorBase {
     public Request&lt;Void&gt; startReq() {
         return new Request&lt;Void&gt;(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport&lt;Void&gt; _transport) 
+            public void processRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
                 MessageProcessor myMessageProcessor = getMessageProcessor();
@@ -61,7 +61,7 @@ public class ThreadMigration extends ActorBase {
                     new NonBlockingMessageProcessor(myModuleContext);
                 SubActor subActor = new SubActor(subMessageProcessor);
                 subActor.doReq("         signal").signal();
-                subActor.doReq("           send").send(myMessageProcessor, _transport);
+                subActor.doReq("           send").send(myMessageProcessor, this);
             }
         };
     }
@@ -76,11 +76,11 @@ class SubActor extends ActorBase {
     public Request&lt;Void&gt; doReq(final String _label) {
         return new Request&lt;Void&gt;(getMessageProcessor()) {
             @Override
-            public void processRequest(final Transport&lt;Void&gt; _transport) 
+            public void processRequest() 
                     throws Exception {
                 System.out.println(_label + " thread: " + 
                     Thread.currentThread());
-                _transport.processResponse(null);
+                processResponse(null);
             }
         };
     }
@@ -94,10 +94,10 @@ C:\GitHub\JActor2docs\tutorials\core>test.bat ThreadMigration
 
 C:\GitHub\JActor2docs\tutorials\core>del *.class
 
-C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.2.jar;slf4
+C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.4.jar;slf4
 j-api-1.7.5.jar *.java
 
-C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.2.jar;slf4
+C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.4.jar;slf4
 j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. ThreadMigration
 
            main thread: Thread[main,5,main]

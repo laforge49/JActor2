@@ -59,6 +59,8 @@ public class Loops extends ActorBase {
     Request<Long> loopReq(final Sums _sums, final long _count) {
         return new Request<Long>(getMessageProcessor()) {
             long counter;
+            ResponseProcessor dis = this;
+            
             ResponseProcessor<Long> responseProcessor = new ResponseProcessor<Long>() {
                 @Override
                 public void processResponse(final Long _response) throws Exception {
@@ -66,7 +68,7 @@ public class Loops extends ActorBase {
                         processResponse(_response);
                     } else {
                         counter -= 1;
-                        _sums.addReq(counter).send(getMessageProcessor(), responseProcessor);
+                        _sums.addReq(counter).send(getMessageProcessor(), dis);
                     }
                 }
             };
