@@ -34,7 +34,7 @@ public class NullStage extends ActorBase implements DataProcessor {
                     x += 1;
                 }
                 next.processDataReq(_firehoseData).send(getMessageProcessor(), null);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

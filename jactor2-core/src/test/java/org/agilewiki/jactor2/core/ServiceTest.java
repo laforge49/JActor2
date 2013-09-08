@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ServiceClosedException;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
@@ -24,11 +24,11 @@ public class ServiceTest extends TestCase {
 
                 @Override
                 public void processRequest() throws Exception {
-                    client.crossReq().send(getMessageProcessor(), new ResponseProcessor<Boolean>() {
+                    client.crossReq().send(getMessageProcessor(), new AsyncResponseProcessor<Boolean>() {
                         @Override
-                        public void processResponse(Boolean response) throws Exception {
+                        public void processAsyncResponse(Boolean response) throws Exception {
                             assertFalse(response);
-                            dis.processResponse(null);
+                            dis.processAsyncResponse(null);
                         }
                     });
                     serverContext.close();
@@ -63,13 +63,13 @@ class Client extends ActorBase {
                         if (!(throwable instanceof ServiceClosedException)) {
                             throw throwable;
                         }
-                        processResponse(false);
+                        processAsyncResponse(false);
                     }
                 });
-                server.hangReq().send(getMessageProcessor(), new ResponseProcessor<Void>() {
+                server.hangReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processResponse(Void response) throws Exception {
-                        dis.processResponse(true);
+                    public void processAsyncResponse(Void response) throws Exception {
+                        dis.processAsyncResponse(true);
                     }
                 });
             }

@@ -31,7 +31,7 @@ public class JALongImpl
         return new AsyncRequest<Long>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getValue());
+                processAsyncResponse(getValue());
             }
         };
     }
@@ -66,7 +66,7 @@ public class JALongImpl
             @Override
             public void processRequest() throws Exception {
                 setValue(_v);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

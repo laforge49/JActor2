@@ -19,12 +19,12 @@ public class Actor4 {
             @Override
             public void processRequest()
                     throws Exception {
-                actor1.hi.send(messageProcessor, new ResponseProcessor<String>() {
+                actor1.hi.send(messageProcessor, new AsyncResponseProcessor<String>() {
                     @Override
-                    public void processResponse(final String response)
+                    public void processAsyncResponse(final String response)
                             throws Exception {
                         System.out.println(response);
-                        dis.processResponse(null);
+                        dis.processAsyncResponse(null);
                     }
                 });
             }

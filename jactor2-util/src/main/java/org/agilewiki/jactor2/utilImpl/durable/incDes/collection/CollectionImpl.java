@@ -28,7 +28,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
         return new AsyncRequest<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(size());
+                processAsyncResponse(size());
             }
         };
     }
@@ -38,7 +38,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
         return new AsyncRequest<ENTRY_TYPE>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(iGet(_i));
+                processAsyncResponse(iGet(_i));
             }
         };
     }
@@ -49,7 +49,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
             @Override
             public void processRequest() throws Exception {
                 iSet(_i, _bytes);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

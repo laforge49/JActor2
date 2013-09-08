@@ -36,7 +36,7 @@ public class BytesImpl
         return new AsyncRequest<byte[]>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getValue());
+                processAsyncResponse(getValue());
             }
         };
     }
@@ -63,7 +63,7 @@ public class BytesImpl
             @Override
             public void processRequest() throws Exception {
                 setValue(v);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -104,7 +104,7 @@ public class BytesImpl
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(makeValue(v));
+                processAsyncResponse(makeValue(v));
             }
         };
     }

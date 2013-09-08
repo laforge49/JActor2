@@ -30,7 +30,7 @@ public class Delay extends ActorBase {
             public void processRequest()
                     throws Exception {
                 Thread.sleep(_delay);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

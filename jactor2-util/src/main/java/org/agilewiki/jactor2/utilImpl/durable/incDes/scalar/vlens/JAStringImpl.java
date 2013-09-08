@@ -28,7 +28,7 @@ public class JAStringImpl
         return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getValue());
+                processAsyncResponse(getValue());
             }
         };
     }
@@ -56,7 +56,7 @@ public class JAStringImpl
             @Override
             public void processRequest() throws Exception {
                 setValue(v);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -87,7 +87,7 @@ public class JAStringImpl
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(makeValue(v));
+                processAsyncResponse(makeValue(v));
             }
         };
     }

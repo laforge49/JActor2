@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
@@ -26,7 +26,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     /**
      * The responseProcessor for returning the service.
      */
-    private ResponseProcessor<T> responseProcessor;
+    private AsyncResponseProcessor<T> responseProcessor;
 
     /**
      * Create a LocateService actor.
@@ -60,7 +60,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
             throws Exception {
         if (_tracked.size() > 0 && responseProcessor != null) {
             T service = _tracked.values().iterator().next();
-            responseProcessor.processResponse(service);
+            responseProcessor.processAsyncResponse(service);
             responseProcessor = null;
             tracker.close();
             tracker = null;

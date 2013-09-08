@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.exceptions;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
@@ -25,13 +25,13 @@ public class ActorE {
                 // Therefore, responseProcessor is NOT called.
                 try {
                     actorA.throwRequest.send(messageProcessor,
-                            new ResponseProcessor<Void>() {
+                            new AsyncResponseProcessor<Void>() {
 
                                 @Override
-                                public void processResponse(final Void response)
+                                public void processAsyncResponse(final Void response)
                                         throws Exception {
                                     // Should NOT happen!
-                                    dis.processException(new IllegalStateException(
+                                    dis.processAsyncException(new IllegalStateException(
                                             "We should have never got here!"));
                                 }
                             });

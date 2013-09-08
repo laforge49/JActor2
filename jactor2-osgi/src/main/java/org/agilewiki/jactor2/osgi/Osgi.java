@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
@@ -105,9 +105,9 @@ final public class Osgi {
                 Version version = bundle.getVersion();
                 LocateService<OsgiFactoryLocator> locateService = new LocateService<OsgiFactoryLocator>(
                         _root.getMessageProcessor(), OsgiFactoryLocator.class.getName());
-                locateService.getReq().send(_root.getMessageProcessor(), new ResponseProcessor<OsgiFactoryLocator>() {
+                locateService.getReq().send(_root.getMessageProcessor(), new AsyncResponseProcessor<OsgiFactoryLocator>() {
                     @Override
-                    public void processResponse(OsgiFactoryLocator response) throws Exception {
+                    public void processAsyncResponse(OsgiFactoryLocator response) throws Exception {
                         MessageProcessor newMessageProcessor = new NonBlockingMessageProcessor(response.getModuleContext());
                         _root.copyReq(newMessageProcessor).send(_root.getMessageProcessor(), dis);
                     }

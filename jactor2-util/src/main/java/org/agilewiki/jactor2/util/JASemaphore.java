@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 import java.util.ArrayDeque;
@@ -22,7 +22,7 @@ public class JASemaphore extends ActorBase {
     /**
      * A queue of blocked requests.
      */
-    private final Queue<ResponseProcessor<Void>> queue = new ArrayDeque<ResponseProcessor<Void>>();
+    private final Queue<AsyncResponseProcessor<Void>> queue = new ArrayDeque<AsyncResponseProcessor<Void>>();
 
     /**
      * The release request.
@@ -42,11 +42,11 @@ public class JASemaphore extends ActorBase {
         release = new Event<JASemaphore>() {
             @Override
             public void processEvent(JASemaphore _targetActor) throws Exception {
-                final ResponseProcessor<Void> rp = queue.poll();
+                final AsyncResponseProcessor<Void> rp = queue.poll();
                 if (rp == null) {
                     permits += 1;
                 } else {
-                    rp.processResponse(null);
+                    rp.processAsyncResponse(null);
                 }
             }
         };
@@ -65,7 +65,7 @@ public class JASemaphore extends ActorBase {
                     throws Exception {
                 if (permits > 0) {
                     permits -= 1;
-                    processResponse(null);
+                    processAsyncResponse(null);
                 } else {
                     queue.offer(this);
                 }

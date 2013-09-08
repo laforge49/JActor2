@@ -60,7 +60,7 @@ public class BoxImpl
         return new AsyncRequest<Void>(getMessageProcessor()) {
             public void processRequest() throws Exception {
                 clear();
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -70,7 +70,7 @@ public class BoxImpl
         return new AsyncRequest<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getValue());
+                processAsyncResponse(getValue());
             }
         };
     }
@@ -113,7 +113,7 @@ public class BoxImpl
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(makeValue(jidType));
+                processAsyncResponse(makeValue(jidType));
             }
         };
     }
@@ -140,7 +140,7 @@ public class BoxImpl
             @Override
             public void processRequest() throws Exception {
                 setValue(actorType);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -165,7 +165,7 @@ public class BoxImpl
             @Override
             public void processRequest() throws Exception {
                 setValue(jidType, bytes);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -191,7 +191,7 @@ public class BoxImpl
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(makeValue(jidType, bytes));
+                processAsyncResponse(makeValue(jidType, bytes));
             }
         };
     }

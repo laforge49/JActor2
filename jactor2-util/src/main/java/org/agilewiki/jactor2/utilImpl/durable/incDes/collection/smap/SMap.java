@@ -26,7 +26,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getFirst());
+                processAsyncResponse(getFirst());
             }
         };
     }
@@ -35,7 +35,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getLast());
+                processAsyncResponse(getLast());
             }
         };
     }
@@ -155,7 +155,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(kMake(_key));
+                processAsyncResponse(kMake(_key));
             }
         };
     }
@@ -184,7 +184,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(kMake(_key, _bytes));
+                processAsyncResponse(kMake(_key, _bytes));
             }
         };
     }
@@ -217,7 +217,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return new AsyncRequest<VALUE_TYPE>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(kGet(_key));
+                processAsyncResponse(kGet(_key));
             }
         };
     }
@@ -242,7 +242,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getHigher(_key));
+                processAsyncResponse(getHigher(_key));
             }
         };
     }
@@ -267,7 +267,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getCeiling(_key));
+                processAsyncResponse(getCeiling(_key));
             }
         };
     }
@@ -292,7 +292,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(kRemove(_key));
+                processAsyncResponse(kRemove(_key));
             }
         };
     }
@@ -360,7 +360,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
             @Override
             public void processRequest() throws Exception {
                 kSet(_key, _bytes);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

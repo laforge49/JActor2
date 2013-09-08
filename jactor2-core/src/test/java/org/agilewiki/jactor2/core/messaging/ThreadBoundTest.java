@@ -27,9 +27,9 @@ public class ThreadBoundTest extends TestCase {
         });
         final MessageProcessor messageProcessor = new IsolationMessageProcessor(moduleContext);
         final Actor1 actor1 = new Actor1(messageProcessor);
-        actor1.hi.send(boundMailbox, new ResponseProcessor<String>() {
+        actor1.hi.send(boundMailbox, new AsyncResponseProcessor<String>() {
             @Override
-            public void processResponse(final String response) throws Exception {
+            public void processAsyncResponse(final String response) throws Exception {
                 System.out.println(response);
                 assertEquals("Hello world!", response);
             }

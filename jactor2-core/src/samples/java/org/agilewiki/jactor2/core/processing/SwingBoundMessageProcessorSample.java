@@ -42,7 +42,7 @@ class HelloWorld extends ActorBase {
                 frame.setVisible(true);
 
                 //return the result.
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

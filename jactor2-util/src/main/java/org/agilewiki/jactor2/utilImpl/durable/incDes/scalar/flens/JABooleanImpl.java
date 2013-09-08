@@ -31,7 +31,7 @@ public class JABooleanImpl
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getValue());
+                processAsyncResponse(getValue());
             }
         };
     }
@@ -66,7 +66,7 @@ public class JABooleanImpl
             @Override
             public void processRequest() throws Exception {
                 setValue(v);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

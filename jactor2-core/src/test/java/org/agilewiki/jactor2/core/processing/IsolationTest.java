@@ -3,8 +3,8 @@ package org.agilewiki.jactor2.core.processing;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Delay;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ResponseCounter;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 public class IsolationTest extends TestCase {
@@ -28,12 +28,12 @@ public class IsolationTest extends TestCase {
             public void processRequest()
                     throws Exception {
                 MessageProcessor messageProcessor = new IsolationMessageProcessor(_messageProcessor.getModuleContext());
-                ResponseProcessor rc = new ResponseCounter(5, null,
-                        new ResponseProcessor() {
+                AsyncResponseProcessor rc = new ResponseCounter(5, null,
+                        new AsyncResponseProcessor() {
                             @Override
-                            public void processResponse(Object response)
+                            public void processAsyncResponse(Object response)
                                     throws Exception {
-                                dis.processResponse(count);
+                                dis.processAsyncResponse(count);
                             }
                         });
                 aReq(messageProcessor, 1).send(_messageProcessor, rc);
@@ -54,14 +54,14 @@ public class IsolationTest extends TestCase {
                     throws Exception {
                 Delay delay = new Delay(_messageProcessor.getModuleContext());
                 delay.sleepReq(100 - (msg * 20)).send(_messageProcessor,
-                        new ResponseProcessor<Void>() {
+                        new AsyncResponseProcessor<Void>() {
                             @Override
-                            public void processResponse(Void response)
+                            public void processAsyncResponse(Void response)
                                     throws Exception {
                                 if (count != msg - 1)
                                     throw new IllegalStateException();
                                 count = msg;
-                                dis.processResponse(null);
+                                dis.processAsyncResponse(null);
                             }
                         });
             }

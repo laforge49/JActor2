@@ -4,9 +4,9 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.Delay;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
@@ -49,9 +49,9 @@ public class SemaphoreTest extends TestCase implements Actor {
             public void processEvent(final SemaphoreTest actor)
                     throws Exception {
                 new Delay(moduleContext).sleepReq(delay).send(getMessageProcessor(),
-                        new ResponseProcessor<Void>() {
+                        new AsyncResponseProcessor<Void>() {
                             @Override
-                            public void processResponse(final Void response)
+                            public void processAsyncResponse(final Void response)
                                     throws Exception {
                                 semaphore.release();
                             }
@@ -85,13 +85,13 @@ public class SemaphoreTest extends TestCase implements Actor {
                     public void processException(final Throwable throwable)
                             throws Exception {
                         System.out.println(throwable);
-                        processResponse(true);
+                        processAsyncResponse(true);
                     }
                 });
                 semaphore.acquireReq().send(messageProcessor,
-                        new ResponseProcessor<Void>() {
+                        new AsyncResponseProcessor<Void>() {
                             @Override
-                            public void processResponse(final Void response)
+                            public void processAsyncResponse(final Void response)
                                     throws Exception {
                                 throw new SecurityException(
                                         "thrown after acquire");

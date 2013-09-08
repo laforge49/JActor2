@@ -75,7 +75,7 @@ class Service extends ActorBase {
                     return;
                 }
                 //Echo the text back in the response.
-                processResponse("Echo: " + _text);
+                processAsyncResponse("Echo: " + _text);
             }
         };
     }
@@ -86,7 +86,7 @@ class Service extends ActorBase {
 class EchoReqState {
     //Not null when an echoResultRequest was received before
     // the result of the matching service delay echo request.
-    ResponseProcessor<String> responseProcessor;
+    AsyncResponseProcessor<String> responseProcessor;
 
     //Not null when the result of the service delay echo request is received
     //before the matching echoResultRequest.
@@ -132,15 +132,15 @@ class ServiceApplication extends ActorBase {
                             } else {
                                 //An echo result request has already been received,
                                 //so now is the time to return the response.
-                                echoReqState.responseProcessor.processResponse(response);
+                                echoReqState.responseProcessor.processAsyncResponse(response);
                             }
                         } else
                             throw throwable;
                     }
                 });
-                service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new ResponseProcessor<String>() {
+                service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor<String>() {
                     @Override
-                    public void processResponse(String response) throws Exception {
+                    public void processAsyncResponse(String response) throws Exception {
                         if (echoReqState.responseProcessor == null) {
                             //No echo result request has yet been received,
                             //so save the response for later.
@@ -148,11 +148,11 @@ class ServiceApplication extends ActorBase {
                         } else {
                             //An echo result request has already been received,
                             //so now is the time to return the response.
-                            echoReqState.responseProcessor.processResponse(response);
+                            echoReqState.responseProcessor.processAsyncResponse(response);
                         }
                     }
                 });
-                processResponse(echoReqState);
+                processAsyncResponse(echoReqState);
             }
         };
     }
@@ -164,7 +164,7 @@ class ServiceApplication extends ActorBase {
             public void processRequest() throws Exception {
                 //Close the context of the service actor.
                 service.getMessageProcessor().getModuleContext().close();
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -183,7 +183,7 @@ class ServiceApplication extends ActorBase {
                 } else {
                     //The response from the associated service delay echo request is already present,
                     //so return that response now.
-                    processResponse(_echoReqState.response);
+                    processAsyncResponse(_echoReqState.response);
                 }
             }
         };

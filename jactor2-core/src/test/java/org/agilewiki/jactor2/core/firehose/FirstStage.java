@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.firehose;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
@@ -42,9 +42,9 @@ public class FirstStage extends ActorBase implements Runnable {
         count = _count;
         maxWindowSize = _maxWindowSize;
         initialize(new IsolationMessageProcessor(_moduleContext, this));
-        ack = new BoundResponseProcessor<Void>(this, new ResponseProcessor<Void>() {
+        ack = new BoundResponseProcessor<Void>(this, new AsyncResponseProcessor<Void>() {
             @Override
-            public void processResponse(Void response) throws Exception {
+            public void processAsyncResponse(Void response) throws Exception {
                 ackCount -= 1;
                 if (list != null) {
                     send();

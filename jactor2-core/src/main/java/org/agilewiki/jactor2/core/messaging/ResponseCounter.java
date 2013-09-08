@@ -8,11 +8,11 @@ package org.agilewiki.jactor2.core.messaging;
  *                        requests have been completed.
  */
 public class ResponseCounter<RESPONSE_TYPE> implements
-        ResponseProcessor<RESPONSE_TYPE> {
+        AsyncResponseProcessor<RESPONSE_TYPE> {
     /**
-     * The ResponseProcessor to be used when all outstanding requests have completed.
+     * The AsyncResponseProcessor to be used when all outstanding requests have completed.
      */
-    private final ResponseProcessor<RESPONSE_TYPE> rp;
+    private final AsyncResponseProcessor<RESPONSE_TYPE> rp;
 
     /**
      * The number of requests that have not yet completed.
@@ -34,10 +34,10 @@ public class ResponseCounter<RESPONSE_TYPE> implements
      *
      * @param _count   The number of outstanding requests.
      * @param response The response to be given when all requests have completed.
-     * @param _rp      The ResponseProcessor to be used when all outstanding requests have completed.
+     * @param _rp      The AsyncResponseProcessor to be used when all outstanding requests have completed.
      */
     public ResponseCounter(final int _count, final RESPONSE_TYPE response,
-                           final ResponseProcessor<RESPONSE_TYPE> _rp) {
+                           final AsyncResponseProcessor<RESPONSE_TYPE> _rp) {
         this.count = _count;
         this.rp = _rp;
     }
@@ -59,7 +59,7 @@ public class ResponseCounter<RESPONSE_TYPE> implements
             count -= 1;
             if (count == 0) {
                 active = false;
-                rp.processResponse(result);
+                rp.processAsyncResponse(result);
             }
         }
     }
@@ -84,7 +84,7 @@ public class ResponseCounter<RESPONSE_TYPE> implements
     }
 
     @Override
-    public void processResponse(final RESPONSE_TYPE response) throws Exception {
+    public void processAsyncResponse(final RESPONSE_TYPE response) throws Exception {
         decrementCount();
     }
 }

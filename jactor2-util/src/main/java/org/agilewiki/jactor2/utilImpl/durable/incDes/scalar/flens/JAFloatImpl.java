@@ -31,7 +31,7 @@ public class JAFloatImpl
         return new AsyncRequest<Float>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getValue());
+                processAsyncResponse(getValue());
             }
         };
     }
@@ -66,7 +66,7 @@ public class JAFloatImpl
             @Override
             public void processRequest() throws Exception {
                 setValue(v);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

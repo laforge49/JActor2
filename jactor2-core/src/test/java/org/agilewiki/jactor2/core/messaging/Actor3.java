@@ -19,7 +19,7 @@ public class Actor3 {
             public void processRequest()
                     throws Exception {
                 System.out.println("Hello world!");
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.exceptions;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
@@ -22,13 +22,13 @@ public class ActorD {
                     @Override
                     public void processException(final Throwable throwable)
                             throws Exception {
-                        processResponse(throwable.toString());
+                        processAsyncResponse(throwable.toString());
                     }
                 });
                 Dd dd = new Dd(messageProcessor.getModuleContext());
-                dd.doSomethin.send(messageProcessor, new ResponseProcessor<Void>() {
+                dd.doSomethin.send(messageProcessor, new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processResponse(final Void response)
+                    public void processAsyncResponse(final Void response)
                             throws Exception {
                         throw new SecurityException("thrown on request");
                     }
@@ -49,7 +49,7 @@ class Dd {
             @Override
             public void processRequest()
                     throws Exception {
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

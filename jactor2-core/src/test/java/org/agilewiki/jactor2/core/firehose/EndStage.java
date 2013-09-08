@@ -18,8 +18,8 @@ public class EndStage extends ActorBase implements DataProcessor {
             @Override
             public void processRequest() throws Exception {
                 Thread.sleep(1);
-                _firehoseData.getAck().processResponse(null);
-                processResponse(null);
+                _firehoseData.getAck().processAsyncResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

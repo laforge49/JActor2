@@ -29,7 +29,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
         return new AsyncRequest<Void>(getMessageProcessor()) {
             public void processRequest() throws Exception {
                 clear();
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

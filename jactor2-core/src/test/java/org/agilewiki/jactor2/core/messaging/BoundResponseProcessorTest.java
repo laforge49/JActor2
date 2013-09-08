@@ -57,7 +57,7 @@ class Application extends Thread {
     @Override
     public void run() {
         try {
-            boundResponseProcessor.processResponse("Hello world!");
+            boundResponseProcessor.processAsyncResponse("Hello world!");
         } catch (final Throwable ex) {
             ex.printStackTrace();
         }

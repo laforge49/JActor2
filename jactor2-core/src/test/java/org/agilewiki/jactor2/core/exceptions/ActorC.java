@@ -21,7 +21,7 @@ public class ActorC {
                     @Override
                     public void processException(final Throwable throwable)
                             throws Exception {
-                        processResponse(throwable.toString());
+                        processAsyncResponse(throwable.toString());
                     }
                 });
                 throw new SecurityException("thrown on request");

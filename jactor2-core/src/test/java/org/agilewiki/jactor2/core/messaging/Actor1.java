@@ -14,7 +14,7 @@ public class Actor1 extends ActorBase {
         hi = new AsyncRequest<String>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse("Hello world!");
+                processAsyncResponse("Hello world!");
             }
         };
     }

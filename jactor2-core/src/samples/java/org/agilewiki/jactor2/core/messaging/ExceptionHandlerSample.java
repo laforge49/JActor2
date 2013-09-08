@@ -83,7 +83,7 @@ class ExceptionHandlerActor extends ActorBase {
                     public void processException(final Throwable _throwable) throws Throwable {
                         if (_throwable instanceof IllegalStateException) {
                             //Returns a result if an IllegalStateException was thrown.
-                            processResponse("got IllegalStateException, as expected");
+                            processAsyncResponse("got IllegalStateException, as expected");
                         } else //Otherwise rethrow the exception.
                             throw _throwable;
                     }
@@ -91,10 +91,10 @@ class ExceptionHandlerActor extends ActorBase {
 
                 //Create an exception request and send it to the exception actor for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                exceptionActor.exceptionReq().send(getMessageProcessor(), new ResponseProcessor<Void>() {
+                exceptionActor.exceptionReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processResponse(final Void _response) throws Exception {
-                        dis.processResponse("can not get here");
+                    public void processAsyncResponse(final Void _response) throws Exception {
+                        dis.processAsyncResponse("can not get here");
                     }
                 });
             }

@@ -81,7 +81,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                     return;
  *                 }
  *                 //Echo the text back in the response.
- *                 processResponse("Echo: " + _text);
+ *                 processAsyncResponse("Echo: " + _text);
  *             }
  *         };
  *     }
@@ -92,7 +92,7 @@ package org.agilewiki.jactor2.core.messaging;
  * class EchoReqState {
  *     //Not null when an echoResultRequest was received before
  *     // the result of the matching service delay echo request.
- *     ResponseProcessor&lt;String&gt; responseProcessor;
+ *     AsyncResponseProcessor&lt;String&gt; responseProcessor;
  *
  *     //Not null when the result of the service delay echo request is received
  *     //before the matching echoResultRequest.
@@ -138,15 +138,15 @@ package org.agilewiki.jactor2.core.messaging;
  *                             } else {
  *                                 //An echo result request has already been received,
  *                                 //so now is the time to return the response.
- *                                 echoReqState.responseProcessor.processResponse(response);
+ *                                 echoReqState.responseProcessor.processAsyncResponse(response);
  *                             }
  *                         } else
  *                             throw throwable;
  *                     }
  *                 });
- *                 service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new ResponseProcessor&lt;String&gt;() {
+ *                 service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor&lt;String&gt;() {
  *                     {@literal @}Override
- *                     public void processResponse(String response) throws Exception {
+ *                     public void processAsyncResponse(String response) throws Exception {
  *                         if (echoReqState.responseProcessor == null) {
  *                             //No echo result request has yet been received,
  *                             //so save the response for later.
@@ -154,11 +154,11 @@ package org.agilewiki.jactor2.core.messaging;
  *                         } else {
  *                             //An echo result request has already been received,
  *                             //so now is the time to return the response.
- *                             echoReqState.responseProcessor.processResponse(response);
+ *                             echoReqState.responseProcessor.processAsyncResponse(response);
  *                         }
  *                     }
  *                 });
- *                 processResponse(echoReqState);
+ *                 processAsyncResponse(echoReqState);
  *             }
  *         };
  *     }
@@ -170,7 +170,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             public void processRequest() throws Exception {
  *                 //Close the context of the service actor.
  *                 service.getMessageProcessor().getModuleContext().close();
- *                 processResponse(null);
+ *                 processAsyncResponse(null);
  *             }
  *         };
  *     }
@@ -189,7 +189,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                 } else {
  *                     //The response from the associated service delay echo request is already present,
  *                     //so return that response now.
- *                     processResponse(_echoReqState.response);
+ *                     processAsyncResponse(_echoReqState.response);
  *                 }
  *             }
  *         };

@@ -55,7 +55,7 @@ import java.awt.event.WindowListener;
  *                 frame.setVisible(true);
  *
  *                 //return the result.
- *                 processResponse(null);
+ *                 processAsyncResponse(null);
  *             }
  *         };
  *     }

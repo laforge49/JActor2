@@ -39,7 +39,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
             @Override
             public void processRequest() throws Exception {
                 empty();
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -192,7 +192,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
             @Override
             public void processRequest() throws Exception {
                 iAdd(_i, _bytes);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -215,7 +215,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
             @Override
             public void processRequest() throws Exception {
                 iAdd(_i);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -254,7 +254,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
             @Override
             public void processRequest() throws Exception {
                 iRemove(_i);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

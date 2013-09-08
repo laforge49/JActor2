@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
@@ -27,10 +27,10 @@ public class FactoriesImporter extends ActorBase implements
     private JAServiceTracker<OsgiFactoryLocator> tracker;
 
     /**
-     * The ResponseProcessor for the start request. Once a match is found,
+     * The AsyncResponseProcessor for the start request. Once a match is found,
      * startResponseProcessor is set to null.
      */
-    private ResponseProcessor startResponseProcessor;
+    private AsyncResponseProcessor startResponseProcessor;
 
     /**
      * The factory locator of the current bundle.
@@ -72,9 +72,9 @@ public class FactoriesImporter extends ActorBase implements
      *
      * @param _filter            A filter that should identify the single factory locator to be imported into the
      *                           factory locator of the current bundle.
-     * @param _responseProcessor The ResponseProcessor used to signal completion.
+     * @param _responseProcessor The AsyncResponseProcessor used to signal completion.
      */
-    private void start(final Filter _filter, final ResponseProcessor<Void> _responseProcessor) throws Exception {
+    private void start(final Filter _filter, final AsyncResponseProcessor<Void> _responseProcessor) throws Exception {
         // We're got a start-request!
         // We only accept one start request.
         if (tracker != null)
@@ -112,9 +112,9 @@ public class FactoriesImporter extends ActorBase implements
      *
      * @param _bundleName        The symbolic name of the bundle.
      * @param _niceVersion       Bundle version in the form 1.2.3 or 1.2.3-SNAPSHOT
-     * @param _responseProcessor The ResponseProcessor used to signal completion.
+     * @param _responseProcessor The AsyncResponseProcessor used to signal completion.
      */
-    private void start(final String _bundleName, final String _niceVersion, final ResponseProcessor<Void> _responseProcessor)
+    private void start(final String _bundleName, final String _niceVersion, final AsyncResponseProcessor<Void> _responseProcessor)
             throws Exception {
         BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getModuleContext());
         Filter filter = Osgi.factoryLocatorFilter(bundleContext, _bundleName, _niceVersion);
@@ -145,9 +145,9 @@ public class FactoriesImporter extends ActorBase implements
      *
      * @param _bundleName        The symbolic name of the bundle.
      * @param _version           Bundle version.
-     * @param _responseProcessor The ResponseProcessor used to signal completion.
+     * @param _responseProcessor The AsyncResponseProcessor used to signal completion.
      */
-    private void start(final String _bundleName, final Version _version, final ResponseProcessor<Void> _responseProcessor)
+    private void start(final String _bundleName, final Version _version, final AsyncResponseProcessor<Void> _responseProcessor)
             throws Exception {
         String niceVersion = Osgi.getNiceVersion(_version);
         start(_bundleName, niceVersion, _responseProcessor);
@@ -175,9 +175,9 @@ public class FactoriesImporter extends ActorBase implements
      * any change to the set of matching factory locator's will stop the current bundle.
      *
      * @param _bundleLocation    The location of the bundle (URL).
-     * @param _responseProcessor The ResponseProcessor used to signal completion.
+     * @param _responseProcessor The AsyncResponseProcessor used to signal completion.
      */
-    private void start(final String _bundleLocation, final ResponseProcessor<Void> _responseProcessor)
+    private void start(final String _bundleLocation, final AsyncResponseProcessor<Void> _responseProcessor)
             throws Exception {
         BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getModuleContext());
         Bundle bundle = bundleContext.installBundle(_bundleLocation);
@@ -207,7 +207,7 @@ public class FactoriesImporter extends ActorBase implements
             tracker.close();
             tracker = null;
             startResponseProcessor
-                    .processResponse(new IllegalStateException(
+                    .processAsyncResponse(new IllegalStateException(
                             "ambiguous filter--number of matches = "
                                     + _tracked.size()));
             startResponseProcessor = null;
@@ -217,7 +217,7 @@ public class FactoriesImporter extends ActorBase implements
             // Yeah! success!
             final OsgiFactoryLocator fl = _tracked.values().iterator().next();
             factoryLocator.importFactoryLocator(fl);
-            startResponseProcessor.processResponse(null);
+            startResponseProcessor.processAsyncResponse(null);
             startResponseProcessor = null;
             // But we keep tracking, in case it goes down later ...
             return;

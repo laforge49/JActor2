@@ -3,59 +3,59 @@ package org.agilewiki.jactor2.core.messaging;
 import org.agilewiki.jactor2.core.Actor;
 
 /**
- * A thread-safe wrapper for a ResponseProcessor.
- * When a request is processed, the ResponseProcessor given must only be used by the
+ * A thread-safe wrapper for a AsyncResponseProcessor.
+ * When a request is processed, the AsyncResponseProcessor given must only be used by the
  * same thread that is processing the request. In contrast, the processResult method
  * of BoundResponseProcessor can be called from any thread.
  *
  * @param <RESPONSE_TYPE>
  */
 public class BoundResponseProcessor<RESPONSE_TYPE> implements
-        ResponseProcessor<RESPONSE_TYPE> {
+        AsyncResponseProcessor<RESPONSE_TYPE> {
     /**
-     * The processing on whose thread the wrapped ResponseProcessor object can be used.
+     * The processing on whose thread the wrapped AsyncResponseProcessor object can be used.
      */
     private final Actor targetActor;
 
     /**
-     * The wrapped ResponseProcessor.
+     * The wrapped AsyncResponseProcessor.
      */
-    private final ResponseProcessor<RESPONSE_TYPE> rp;
+    private final AsyncResponseProcessor<RESPONSE_TYPE> rp;
 
     /**
-     * Create a thread-safe wrapper for a ResponseProcessor.
+     * Create a thread-safe wrapper for a AsyncResponseProcessor.
      *
-     * @param _actor The actor which can process the ResponseProcessor.
-     * @param _rp    The wrapped ResponseProcessor.
+     * @param _actor The actor which can process the AsyncResponseProcessor.
+     * @param _rp    The wrapped AsyncResponseProcessor.
      */
     public BoundResponseProcessor(final Actor _actor,
-                                  final ResponseProcessor<RESPONSE_TYPE> _rp) {
+                                  final AsyncResponseProcessor<RESPONSE_TYPE> _rp) {
         targetActor = _actor;
         rp = _rp;
     }
 
     /**
-     * This method processes the response by immediately passing the wrapped response and ResponseProcessor
+     * This method processes the response by immediately passing the wrapped response and AsyncResponseProcessor
      * via an Event back to the appropriate processing.
      *
      * @param rsp The response.
      */
     @Override
-    public void processResponse(final RESPONSE_TYPE rsp) throws Exception {
+    public void processAsyncResponse(final RESPONSE_TYPE rsp) throws Exception {
         new ContinuationEvent<RESPONSE_TYPE>(rp, rsp).signal(targetActor);
     }
 
     /**
-     * The request used to pass the response and the wrapped ResponseProcessor back to the
+     * The request used to pass the response and the wrapped AsyncResponseProcessor back to the
      * original target processing.
      *
      * @param <RESPONSE_TYPE> The type of response.
      */
     static class ContinuationEvent<RESPONSE_TYPE> extends Event<Actor> {
         /**
-         * The wrapped ResponseProcessor.
+         * The wrapped AsyncResponseProcessor.
          */
-        private final ResponseProcessor<RESPONSE_TYPE> rp;
+        private final AsyncResponseProcessor<RESPONSE_TYPE> rp;
 
         /**
          * The response.
@@ -63,20 +63,20 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
         private final RESPONSE_TYPE rsp;
 
         /**
-         * Creates the request used to pass the response and wrapped ResponseProcessor
+         * Creates the request used to pass the response and wrapped AsyncResponseProcessor
          * back to the original target processing.
          *
-         * @param _rp  The wrapped ResponseProcessor.
+         * @param _rp  The wrapped AsyncResponseProcessor.
          * @param _rsp The response.
          */
-        public ContinuationEvent(final ResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
+        public ContinuationEvent(final AsyncResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
             rp = _rp;
             rsp = _rsp;
         }
 
         @Override
         public void processEvent(Actor _targetActor) throws Exception {
-            rp.processResponse(rsp);
+            rp.processAsyncResponse(rsp);
         }
     }
 

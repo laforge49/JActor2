@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
@@ -54,7 +54,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return new AsyncRequest<byte[]>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getSerializedBytes());
+                processAsyncResponse(getSerializedBytes());
             }
         };
     }
@@ -64,7 +64,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return new AsyncRequest<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(getSerializedLength());
+                processAsyncResponse(getSerializedLength());
             }
         };
     }
@@ -251,7 +251,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             @Override
             public void processRequest() throws Exception {
                 save(appendableBytes);
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -274,7 +274,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return new AsyncRequest<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(save(bytes, offset));
+                processAsyncResponse(save(bytes, offset));
             }
         };
     }
@@ -331,7 +331,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return new AsyncRequest<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(resolvePathname(pathname));
+                processAsyncResponse(resolvePathname(pathname));
             }
         };
     }
@@ -358,7 +358,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return new AsyncRequest<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
-                processResponse(copy(m));
+                processAsyncResponse(copy(m));
             }
         };
     }
@@ -369,18 +369,18 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
             @Override
             public void processRequest() throws Exception {
-                getSerializedLengthReq().send(getMessageProcessor(), new ResponseProcessor<Integer>() {
+                getSerializedLengthReq().send(getMessageProcessor(), new AsyncResponseProcessor<Integer>() {
                     @Override
-                    public void processResponse(Integer response) throws Exception {
+                    public void processAsyncResponse(Integer response) throws Exception {
                         if (response.intValue() != getSerializedLength()) {
-                            dis.processResponse(false);
+                            dis.processAsyncResponse(false);
                             return;
                         }
-                        getSerializedBytesReq().send(getMessageProcessor(), new ResponseProcessor<byte[]>() {
+                        getSerializedBytesReq().send(getMessageProcessor(), new AsyncResponseProcessor<byte[]>() {
                             @Override
-                            public void processResponse(byte[] response) throws Exception {
+                            public void processAsyncResponse(byte[] response) throws Exception {
                                 boolean eq = Arrays.equals(response, getSerializedBytes());
-                                dis.processResponse(eq);
+                                dis.processAsyncResponse(eq);
                             }
                         });
                     }

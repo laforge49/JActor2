@@ -86,7 +86,7 @@ import java.util.concurrent.Semaphore;
  *             public void processRequest() throws Exception {
  *                 int oldState = state;
  *                 state = _newState; //assign the new state
- *                 processResponse(oldState); //return the old state.
+ *                 processAsyncResponse(oldState); //return the old state.
  *             }
  *         };
  *     }
@@ -117,13 +117,13 @@ import java.util.concurrent.Semaphore;
  *                 AsyncRequest&lt;Integer&gt; req = actorA.updateReq(_newState);
  *
  *                 //Send the request to the other actor.
- *                 req.send(getMessageProcessor(), new ResponseProcessor&lt;Integer&gt;() {
+ *                 req.send(getMessageProcessor(), new AsyncResponseProcessor&lt;Integer&gt;() {
  *
  *                     {@literal @}Override
- *                     public void processResponse(Integer response) throws Exception {
+ *                     public void processAsyncResponse(Integer response) throws Exception {
  *
  *                         //Return the old state.
- *                         dis.processResponse(response);
+ *                         dis.processAsyncResponse(response);
  *                     }
  *                 });
  *             }
@@ -138,7 +138,7 @@ import java.util.concurrent.Semaphore;
  *
  * @param <RESPONSE_TYPE> The class of the result returned after the AsyncRequest operates on the target actor.
  */
-public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<RESPONSE_TYPE>, Message {
+public abstract class AsyncRequest<RESPONSE_TYPE> implements AsyncResponseProcessor<RESPONSE_TYPE>, Message {
 
     /**
      * A request can only be used once.
@@ -177,7 +177,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<R
     /**
      * The application object that will process the results.
      */
-    private ResponseProcessor responseProcessor;
+    private AsyncResponseProcessor responseProcessor;
 
     /**
      * True when a response to this message has not yet been determined.
@@ -230,9 +230,9 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<R
     }
 
     /**
-     * Passes this AsyncRequest together with the ResponseProcessor to the target MessageProcessor.
+     * Passes this AsyncRequest together with the AsyncResponseProcessor to the target MessageProcessor.
      * Responses are passed back via the message processor of the source actor and processed by the
-     * provided ResponseProcessor and any exceptions
+     * provided AsyncResponseProcessor and any exceptions
      * raised while processing the request are processed by the exception handler active when
      * the send method was called.
      *
@@ -240,19 +240,19 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<R
      *                will buffer this AsyncRequest and subsequently receive the result for
      *                processing on the same thread.
      * @param _rp     Passed with this request and then returned with the result, the
-     *                ResponseProcessor is used to process the result on the same thread
+     *                AsyncResponseProcessor is used to process the result on the same thread
      *                that originally invoked this method. If null, then no response is returned.
      */
     public void send(final MessageProcessor _source,
-                     final ResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
+                     final AsyncResponseProcessor<RESPONSE_TYPE> _rp) throws Exception {
         use();
         MessageProcessorBase source = (MessageProcessorBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(
                     "A valid source message processor can not be idle");
-        ResponseProcessor<RESPONSE_TYPE> rp = _rp;
+        AsyncResponseProcessor<RESPONSE_TYPE> rp = _rp;
         if (rp == null)
-            rp = (ResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
+            rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         foreign = source.getModuleContext() != messageProcessor.getModuleContext();
         messageSource = source;
         oldMessage = source.getCurrentMessage();
@@ -289,17 +289,17 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<R
             throws Exception;
 
     @Override
-    public void processResponse(final RESPONSE_TYPE _response)
+    public void processAsyncResponse(final RESPONSE_TYPE _response)
             throws Exception {
         processObjectResponse(_response);
     }
 
     /**
-     * The processResponse method accepts the response of a request.
+     * The processAsyncResponse method accepts the response of a request.
      * <p>
      * This method need not be thread-safe, as it
      * is always invoked from the same light-weight thread (message processor) that passed the
-     * AsyncRequest and ResponseProcessor objects.
+     * AsyncRequest and AsyncResponseProcessor objects.
      * </p>
      *
      * @param _response The response to a request.
@@ -343,7 +343,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<R
      *
      * @param _response An exception.
      */
-    public void processException(final Exception _response) throws Exception {
+    public void processAsyncException(final Exception _response) throws Exception {
         processObjectResponse(_response);
     }
 
@@ -418,7 +418,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<R
             return;
         }
         try {
-            responseProcessor.processResponse(response);
+            responseProcessor.processAsyncResponse(response);
         } catch (final Throwable t) {
             oldMessage.processThrowable(sourceMessageProcessor, t);
         }
@@ -498,10 +498,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<R
     }
 
     /**
-     * A subclass of ResponseProcessor that is used as a place holder when the AsyncRequest.call
+     * A subclass of AsyncResponseProcessor that is used as a place holder when the AsyncRequest.call
      * method is used.
      */
-    final private static class CallResponseProcessor implements ResponseProcessor<Object> {
+    final private static class CallResponseProcessor implements AsyncResponseProcessor<Object> {
         /**
          * The singleton.
          */
@@ -514,7 +514,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements ResponseProcessor<R
         }
 
         @Override
-        public void processResponse(final Object response) {
+        public void processAsyncResponse(final Object response) {
         }
     }
 }

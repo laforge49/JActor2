@@ -158,7 +158,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
             @Override
             public void processRequest()
                     throws Exception {
-                processResponse(subscribers.add(_subscriber));
+                processAsyncResponse(subscribers.add(_subscriber));
             }
         };
     }
@@ -175,7 +175,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
             @Override
             public void processRequest()
                     throws Exception {
-                processResponse(subscribers.remove(_subscriber));
+                processAsyncResponse(subscribers.remove(_subscriber));
             }
         };
     }
@@ -199,7 +199,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
                 while (it.hasNext()) {
                     event.signal(it.next());
                 }
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
