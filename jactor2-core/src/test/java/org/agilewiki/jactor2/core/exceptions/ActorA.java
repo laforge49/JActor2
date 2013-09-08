@@ -12,7 +12,7 @@ public class ActorA {
 
         throwRequest = new AsyncRequest<Void>(messageProcessor) {
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 throw new SecurityException("thrown on request");
             }

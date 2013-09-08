@@ -83,7 +83,7 @@ import java.util.concurrent.Semaphore;
  *         return new AsyncRequest&lt;Integer&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
- *             public void processRequest() throws Exception {
+ *             public void processAsyncRequest() throws Exception {
  *                 int oldState = state;
  *                 state = _newState; //assign the new state
  *                 processAsyncResponse(oldState); //return the old state.
@@ -111,7 +111,7 @@ import java.util.concurrent.Semaphore;
  *             AsyncRequest<Integer> dis = this;
  *
  *             {@literal @}Override
- *             public void processRequest() throws Exception {
+ *             public void processAsyncRequest() throws Exception {
  *
  *                 //Get a request from the other actor.
  *                 AsyncRequest&lt;Integer&gt; req = actorA.updateReq(_newState);
@@ -282,10 +282,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements AsyncResponseProces
     }
 
     /**
-     * The processRequest method will be invoked by the target MessageProcessor on its own thread
+     * The processAsyncRequest method will be invoked by the target MessageProcessor on its own thread
      * when the AsyncRequest is dequeued from the target inbox for processing.
      */
-    abstract public void processRequest()
+    abstract public void processAsyncRequest()
             throws Exception;
 
     @Override
@@ -398,7 +398,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements AsyncResponseProces
         messageProcessor.setCurrentMessage(this);
         messageProcessor.requestBegin();
         try {
-            processRequest();
+            processAsyncRequest();
         } catch (final Throwable t) {
             if (foreign)
                 moduleContext.removeAutoClosable(this);

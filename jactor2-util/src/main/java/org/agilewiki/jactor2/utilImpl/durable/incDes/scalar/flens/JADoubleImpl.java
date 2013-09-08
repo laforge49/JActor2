@@ -30,7 +30,7 @@ public class JADoubleImpl
     public AsyncRequest<Double> getValueReq() {
         return new AsyncRequest<Double>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -64,7 +64,7 @@ public class JADoubleImpl
     public AsyncRequest<Void> setValueReq(final Double v) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }

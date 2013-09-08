@@ -76,7 +76,7 @@ package org.agilewiki.jactor2.core.messaging;
  *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
- *             public void processRequest() throws Exception {
+ *             public void processAsyncRequest() throws Exception {
  *                 throw new IllegalStateException(); //Throw an exception when the request is processed.
  *             }
  *         };
@@ -101,7 +101,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             AsyncRequest<String> dis = this;
  *
  *             {@literal @}Override
- *             public void processRequest() throws Exception {
+ *             public void processAsyncRequest() throws Exception {
  *
  *                 //Create and assign an exception handler.
  *                 getMessageProcessor().setExceptionHandler(new ExceptionHandler() {

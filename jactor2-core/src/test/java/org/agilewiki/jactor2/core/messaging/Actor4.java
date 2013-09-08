@@ -17,7 +17,7 @@ public class Actor4 {
             AsyncRequest<Void> dis = this;
 
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 actor1.hi.send(messageProcessor, new AsyncResponseProcessor<String>() {
                     @Override

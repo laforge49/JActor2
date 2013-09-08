@@ -54,7 +54,7 @@ class SampleActor2 extends ActorBase {
         return new AsyncRequest<Integer>(getMessageProcessor()) {
 
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 int oldState = state;
                 state = _newState; //assign the new state
                 processAsyncResponse(oldState); //return the old state.
@@ -82,7 +82,7 @@ class IndirectActor extends ActorBase {
             AsyncRequest<Integer> dis = this;
 
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
 
                 //Get a request from the other actor.
                 AsyncRequest<Integer> req = actorA.updateReq(_newState);

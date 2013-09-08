@@ -25,7 +25,7 @@ class HelloWorld extends ActorBase {
     AsyncRequest<Void> createAndShowReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 //Create and set up the window.
                 JFrame frame = new JFrame("HelloWorld");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.

@@ -30,7 +30,7 @@ public interface Message extends AutoCloseable {
     boolean isResponsePending();
 
     /**
-     * Execute the Event.processEvent or AsyncRequest.processRequest method
+     * Execute the Event.processEvent or AsyncRequest.processAsyncRequest method
      * of the event/request held by the message. This method is always called on the
      * target message processor's own thread.
      */

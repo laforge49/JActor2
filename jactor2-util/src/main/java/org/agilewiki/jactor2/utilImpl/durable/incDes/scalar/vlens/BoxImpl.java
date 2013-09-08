@@ -58,7 +58,7 @@ public class BoxImpl
     @Override
     public AsyncRequest<Void> clearReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
             }
@@ -69,7 +69,7 @@ public class BoxImpl
     public AsyncRequest<JASerializable> getValueReq() {
         return new AsyncRequest<JASerializable>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -112,7 +112,7 @@ public class BoxImpl
     public AsyncRequest<Boolean> makeValueReq(final String jidType) {
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(jidType));
             }
         };
@@ -138,7 +138,7 @@ public class BoxImpl
     public AsyncRequest<Void> setValueReq(final String actorType) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(actorType);
                 processAsyncResponse(null);
             }
@@ -163,7 +163,7 @@ public class BoxImpl
     public AsyncRequest<Void> setValueReq(final String jidType, final byte[] bytes) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(jidType, bytes);
                 processAsyncResponse(null);
             }
@@ -190,7 +190,7 @@ public class BoxImpl
     public AsyncRequest<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(jidType, bytes));
             }
         };

@@ -16,7 +16,7 @@ public class ActorD {
 
         throwRequest = new AsyncRequest<String>(messageProcessor) {
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 messageProcessor.setExceptionHandler(new ExceptionHandler() {
                     @Override
@@ -47,7 +47,7 @@ class Dd {
 
         doSomethin = new AsyncRequest<Void>(messageProcessor) {
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 processAsyncResponse(null);
             }

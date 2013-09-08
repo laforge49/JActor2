@@ -67,7 +67,7 @@ class Service extends ActorBase {
     AsyncRequest<String> delayEchoReq(final int _delay, final String _text) {
         return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 //Sleep a bit so that the request does not complete too quickly.
                 try {
                     Thread.sleep(_delay);
@@ -112,7 +112,7 @@ class ServiceApplication extends ActorBase {
     AsyncRequest<EchoReqState> echoReq(final int _delay, final String _text) {
         return new AsyncRequest<EchoReqState>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
 
                 //State data needed to manage the delivery of the response from
                 //the service delay echo request.
@@ -161,7 +161,7 @@ class ServiceApplication extends ActorBase {
     AsyncRequest<Void> closeServiceReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 //Close the context of the service actor.
                 service.getMessageProcessor().getModuleContext().close();
                 processAsyncResponse(null);
@@ -175,7 +175,7 @@ class ServiceApplication extends ActorBase {
     AsyncRequest<String> echoResultReq(final EchoReqState _echoReqState) {
         return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 if (_echoReqState.response == null) {
                     //There is as yet no response from the associated service delay echo request,
                     //so save this request for subsequent delivery of that belated response.

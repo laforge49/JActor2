@@ -57,7 +57,7 @@ public class FactoriesImporter extends ActorBase implements
     public AsyncRequest<Void> startReq(final Filter _filter) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 start(_filter, this);
             }
@@ -98,7 +98,7 @@ public class FactoriesImporter extends ActorBase implements
     public AsyncRequest<Void> startReq(final String _bundleName, final String _niceVersion) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 start(_bundleName, _niceVersion, this);
             }
         };
@@ -131,7 +131,7 @@ public class FactoriesImporter extends ActorBase implements
     public AsyncRequest<Void> startReq(final String _bundleName, final Version _version) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 start(_bundleName, _version, this);
             }
         };
@@ -162,7 +162,7 @@ public class FactoriesImporter extends ActorBase implements
     public AsyncRequest<Void> startReq(final String _bundleLocation) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 start(_bundleLocation, this);
             }
         };

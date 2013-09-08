@@ -30,7 +30,7 @@ public class JALongImpl
     public AsyncRequest<Long> getValueReq() {
         return new AsyncRequest<Long>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -64,7 +64,7 @@ public class JALongImpl
     public AsyncRequest<Void> setValueReq(final Long _v) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(_v);
                 processAsyncResponse(null);
             }

@@ -16,7 +16,7 @@ public class EndStage extends ActorBase implements DataProcessor {
     public AsyncRequest<Void> processDataReq(final FirehoseData _firehoseData) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 Thread.sleep(1);
                 _firehoseData.getAck().processAsyncResponse(null);
                 processAsyncResponse(null);

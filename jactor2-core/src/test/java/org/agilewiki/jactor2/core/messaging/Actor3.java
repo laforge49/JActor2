@@ -16,7 +16,7 @@ public class Actor3 {
 
         hi3 = new AsyncRequest<Void>(messageProcessor) {
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 System.out.println("Hello world!");
                 processAsyncResponse(null);

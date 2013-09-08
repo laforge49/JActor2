@@ -13,7 +13,7 @@ public class Actor1 extends ActorBase {
         initialize(mbox);
         hi = new AsyncRequest<String>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse("Hello world!");
             }
         };

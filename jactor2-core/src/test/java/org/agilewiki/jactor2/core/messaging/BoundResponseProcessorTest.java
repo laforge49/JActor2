@@ -34,7 +34,7 @@ class Driver extends ActorBase {
             AsyncRequest<String> dis = this;
 
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 final BoundResponseProcessor<String> boundResponseProcessor = new BoundResponseProcessor<String>(
                         Driver.this, dis);

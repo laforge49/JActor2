@@ -23,7 +23,7 @@ public class NullStage extends ActorBase implements DataProcessor {
     public AsyncRequest<Void> processDataReq(final FirehoseData _firehoseData) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 //Thread.sleep(1);
                 List<Long> list = _firehoseData.getContent();
                 int s = list.size();

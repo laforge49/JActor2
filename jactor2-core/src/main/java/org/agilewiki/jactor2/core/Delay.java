@@ -27,7 +27,7 @@ public class Delay extends ActorBase {
     public AsyncRequest<Void> sleepReq(final long _delay) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 Thread.sleep(_delay);
                 processAsyncResponse(null);

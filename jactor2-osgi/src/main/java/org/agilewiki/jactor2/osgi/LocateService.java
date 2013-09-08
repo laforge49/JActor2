@@ -47,7 +47,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     public AsyncRequest<T> getReq() {
         return new AsyncRequest<T>(messageProcessor) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 tracker.start(LocateService.this);
                 responseProcessor = this;
             }

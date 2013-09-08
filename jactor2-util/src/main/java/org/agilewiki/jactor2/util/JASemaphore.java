@@ -61,7 +61,7 @@ public class JASemaphore extends ActorBase {
     public AsyncRequest<Void> acquireReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 if (permits > 0) {
                     permits -= 1;

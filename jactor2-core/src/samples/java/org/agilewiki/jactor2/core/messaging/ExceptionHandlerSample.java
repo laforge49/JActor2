@@ -50,7 +50,7 @@ class ExceptionActor extends ActorBase {
     AsyncRequest<Void> exceptionReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 throw new IllegalStateException(); //Throw an exception when the request is processed.
             }
         };
@@ -75,7 +75,7 @@ class ExceptionHandlerActor extends ActorBase {
             AsyncRequest<String> dis = this;
 
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
 
                 //Create and assign an exception handler.
                 getMessageProcessor().setExceptionHandler(new ExceptionHandler() {

@@ -38,7 +38,7 @@ import java.awt.event.WindowListener;
  *     AsyncRequest&lt;Void&gt; createAndShowReq() {
  *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
- *             public void processRequest() throws Exception {
+ *             public void processAsyncRequest() throws Exception {
  *                 //Create and set up the window.
  *                 JFrame frame = new JFrame("HelloWorld");
  *                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.

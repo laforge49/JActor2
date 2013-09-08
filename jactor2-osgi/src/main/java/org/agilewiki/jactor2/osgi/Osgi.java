@@ -97,7 +97,7 @@ final public class Osgi {
             AsyncRequest dis = this;
 
             @Override
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 String location = _root.getBundleLocation();
                 BundleContext bundleContext = getBundleContext(_root.getMessageProcessor().getModuleContext());
                 Bundle bundle = bundleContext.installBundle(location);

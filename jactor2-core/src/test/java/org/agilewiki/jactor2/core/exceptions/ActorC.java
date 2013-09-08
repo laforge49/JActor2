@@ -15,7 +15,7 @@ public class ActorC {
 
         throwRequest = new AsyncRequest<String>(messageProcessor) {
             @Override
-            public void processRequest()
+            public void processAsyncRequest()
                     throws Exception {
                 messageProcessor.setExceptionHandler(new ExceptionHandler() {
                     @Override

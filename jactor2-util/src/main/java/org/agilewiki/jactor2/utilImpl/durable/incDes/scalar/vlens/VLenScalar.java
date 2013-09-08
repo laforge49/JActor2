@@ -27,7 +27,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
 
     public AsyncRequest<Void> clearReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
-            public void processRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
             }
