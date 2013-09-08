@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
@@ -10,7 +10,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
      *
      * @return The request.
      */
-    Request<Integer> sizeReq();
+    AsyncRequest<Integer> sizeReq();
 
     /**
      * Returns the size.
@@ -26,7 +26,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
      * @param _i An index, where 0 is the first element and -1 is the last element.
      * @return The request.
      */
-    Request<ENTRY_TYPE> iGetReq(final int _i);
+    AsyncRequest<ENTRY_TYPE> iGetReq(final int _i);
 
     /**
      * Returns the ith element.
@@ -45,7 +45,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
      * @param _bytes The new content.
      * @return The request.
      */
-    Request<Void> iSetReq(final int _i, final byte[] _bytes);
+    AsyncRequest<Void> iSetReq(final int _i, final byte[] _bytes);
 
     /**
      * Updates an existing serializable object.

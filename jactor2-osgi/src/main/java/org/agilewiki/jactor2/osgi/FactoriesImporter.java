@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.osgi.framework.*;
@@ -54,8 +54,8 @@ public class FactoriesImporter extends ActorBase implements
      *                factory locator of the current bundle.
      * @return The request.
      */
-    public Request<Void> startReq(final Filter _filter) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> startReq(final Filter _filter) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest()
                     throws Exception {
@@ -95,8 +95,8 @@ public class FactoriesImporter extends ActorBase implements
      * @param _niceVersion Bundle version in the form 1.2.3 or 1.2.3-SNAPSHOT
      * @return The request.
      */
-    public Request<Void> startReq(final String _bundleName, final String _niceVersion) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> startReq(final String _bundleName, final String _niceVersion) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 start(_bundleName, _niceVersion, this);
@@ -128,8 +128,8 @@ public class FactoriesImporter extends ActorBase implements
      * @param _version    Bundle version.
      * @return The request.
      */
-    public Request<Void> startReq(final String _bundleName, final Version _version) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> startReq(final String _bundleName, final Version _version) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 start(_bundleName, _version, this);
@@ -159,8 +159,8 @@ public class FactoriesImporter extends ActorBase implements
      * @param _bundleLocation The location of the bundle (URL).
      * @return The request.
      */
-    public Request<Void> startReq(final String _bundleLocation) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> startReq(final String _bundleLocation) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 start(_bundleLocation, this);

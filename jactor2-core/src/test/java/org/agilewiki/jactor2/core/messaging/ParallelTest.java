@@ -15,14 +15,14 @@ public class ParallelTest extends TestCase {
 
     private MessageProcessor messageProcessor;
     private ModuleContext moduleContext;
-    private Request<Void> start;
+    private AsyncRequest<Void> start;
 
     public void test() throws Exception {
         moduleContext = new ModuleContext();
         messageProcessor = new NonBlockingMessageProcessor(moduleContext);
 
-        start = new Request<Void>(messageProcessor) {
-            Request<Void> dis = this;
+        start = new AsyncRequest<Void>(messageProcessor) {
+            AsyncRequest<Void> dis = this;
 
             @Override
             public void processRequest()

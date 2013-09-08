@@ -64,8 +64,8 @@ class Service extends ActorBase {
     }
 
     //Returns a delay echo request.
-    Request<String> delayEchoReq(final int _delay, final String _text) {
-        return new Request<String>(getMessageProcessor()) {
+    AsyncRequest<String> delayEchoReq(final int _delay, final String _text) {
+        return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 //Sleep a bit so that the request does not complete too quickly.
@@ -109,8 +109,8 @@ class ServiceApplication extends ActorBase {
     //The echo request is used to initiate a service delay echo request.
     //And the response returned by the echo request is state data needed to manage the
     //delivery of the response from the service delay echo request.
-    Request<EchoReqState> echoReq(final int _delay, final String _text) {
-        return new Request<EchoReqState>(getMessageProcessor()) {
+    AsyncRequest<EchoReqState> echoReq(final int _delay, final String _text) {
+        return new AsyncRequest<EchoReqState>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
 
@@ -158,8 +158,8 @@ class ServiceApplication extends ActorBase {
     }
 
     //Returns a close service request.
-    Request<Void> closeServiceReq() {
-        return new Request<Void>(getMessageProcessor()) {
+    AsyncRequest<Void> closeServiceReq() {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 //Close the context of the service actor.
@@ -172,8 +172,8 @@ class ServiceApplication extends ActorBase {
     //Returns an echo result request.
     //An echo result request returns the response from the service delay echo request
     //associated with the given echo request state.
-    Request<String> echoResultReq(final EchoReqState _echoReqState) {
-        return new Request<String>(getMessageProcessor()) {
+    AsyncRequest<String> echoResultReq(final EchoReqState _echoReqState) {
+        return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 if (_echoReqState.response == null) {

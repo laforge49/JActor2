@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.exceptions;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
@@ -13,9 +13,9 @@ public class ActorE {
         this.messageProcessor = new IsolationMessageProcessor(_context);
     }
 
-    public Request<Void> throwRequest(final ActorA actorA) {
-        return new Request<Void>(messageProcessor) {
-            Request<Void> dis = this;
+    public AsyncRequest<Void> throwRequest(final ActorA actorA) {
+        return new AsyncRequest<Void>(messageProcessor) {
+            AsyncRequest<Void> dis = this;
 
             @Override
             public void processRequest()

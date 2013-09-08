@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -24,8 +24,8 @@ public class JAStringImpl
         });
     }
 
-    public Request<String> getValueReq() {
-        return new Request<String>(getMessageProcessor()) {
+    public AsyncRequest<String> getValueReq() {
+        return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(getValue());
@@ -49,10 +49,10 @@ public class JAStringImpl
         change(c);
     }
 
-    public Request<Void> setValueReq(final String v) {
+    public AsyncRequest<Void> setValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new Request<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 setValue(v);
@@ -81,10 +81,10 @@ public class JAStringImpl
         return true;
     }
 
-    public Request<Boolean> makeValueReq(final String v) {
+    public AsyncRequest<Boolean> makeValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new Request<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(makeValue(v));

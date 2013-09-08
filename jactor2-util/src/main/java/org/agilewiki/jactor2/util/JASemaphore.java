@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util;
 
 import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
@@ -58,8 +58,8 @@ public class JASemaphore extends ActorBase {
      *
      * @return The request.
      */
-    public Request<Void> acquireReq() {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> acquireReq() {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest()
                     throws Exception {

@@ -20,9 +20,9 @@ public class BoundResponseProcessorTest extends TestCase {
 }
 
 class Driver extends ActorBase {
-    private Request<String> doitReq;
+    private AsyncRequest<String> doitReq;
 
-    public Request<String> doitReq() {
+    public AsyncRequest<String> doitReq() {
         return doitReq;
     }
 
@@ -30,8 +30,8 @@ class Driver extends ActorBase {
     public void initialize(final MessageProcessor _messageProcessor) throws Exception {
         super.initialize(_messageProcessor);
 
-        doitReq = new Request<String>(_messageProcessor) {
-            Request<String> dis = this;
+        doitReq = new AsyncRequest<String>(_messageProcessor) {
+            AsyncRequest<String> dis = this;
 
             @Override
             public void processRequest()

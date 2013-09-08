@@ -12,8 +12,8 @@ public class Actor2 {
         this.messageProcessor = mbox;
     }
 
-    public Request<String> hi2(final Actor1 actor1) {
-        return new Request<String>(messageProcessor) {
+    public AsyncRequest<String> hi2(final Actor1 actor1) {
+        return new AsyncRequest<String>(messageProcessor) {
             @Override
             public void processRequest()
                     throws Exception {

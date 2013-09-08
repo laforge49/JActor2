@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging;
 
 /**
- * This exception is thrown when sending a Request to a different context and that context is closed.
+ * This exception is thrown when sending a AsyncRequest to a different context and that context is closed.
  * This exception is also thrown when closing a context that is processing a request from a different context.
  * This becomes important when working with OSGi and each bundle has its own lifecycle.
  * <h3>Sample Usage:</h3>
@@ -70,8 +70,8 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  *
  *     //Returns a delay echo request.
- *     Request&lt;String&gt; delayEchoReq(final int _delay, final String _text) {
- *         return new Request&lt;String&gt;(getMessageProcessor()) {
+ *     AsyncRequest&lt;String&gt; delayEchoReq(final int _delay, final String _text) {
+ *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest() throws Exception {
  *                 //Sleep a bit so that the request does not complete too quickly.
@@ -115,8 +115,8 @@ package org.agilewiki.jactor2.core.messaging;
  *     //The echo request is used to initiate a service delay echo request.
  *     //And the response returned by the echo request is state data needed to manage the
  *     //delivery of the response from the service delay echo request.
- *     Request&lt;EchoReqState&gt; echoReq(final int _delay, final String _text) {
- *         return new Request&lt;EchoReqState&gt;(getMessageProcessor()) {
+ *     AsyncRequest&lt;EchoReqState&gt; echoReq(final int _delay, final String _text) {
+ *         return new AsyncRequest&lt;EchoReqState&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest() throws Exception {
  *
@@ -164,8 +164,8 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  *
  *     //Returns a close service request.
- *     Request&lt;Void&gt; closeServiceReq() {
- *         return new Request&lt;Void&gt;(getMessageProcessor()) {
+ *     AsyncRequest&lt;Void&gt; closeServiceReq() {
+ *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest() throws Exception {
  *                 //Close the context of the service actor.
@@ -178,8 +178,8 @@ package org.agilewiki.jactor2.core.messaging;
  *     //Returns an echo result request.
  *     //An echo result request returns the response from the service delay echo request
  *     //associated with the given echo request state.
- *     Request&lt;String&gt; echoResultReq(final EchoReqState _echoReqState) {
- *         return new Request&lt;String&gt;(getMessageProcessor()) {
+ *     AsyncRequest&lt;String&gt; echoResultReq(final EchoReqState _echoReqState) {
+ *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest() throws Exception {
  *                 if (_echoReqState.response == null) {

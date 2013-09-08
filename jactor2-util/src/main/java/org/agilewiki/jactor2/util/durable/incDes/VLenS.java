@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 
 /**
  * Variable-length scalar
@@ -14,7 +14,7 @@ public interface VLenS<RESPONSE_TYPE> extends FLenS<RESPONSE_TYPE> {
      *
      * @return The request.
      */
-    Request<Void> clearReq();
+    AsyncRequest<Void> clearReq();
 
     /**
      * Sets the contents to null.
@@ -27,7 +27,7 @@ public interface VLenS<RESPONSE_TYPE> extends FLenS<RESPONSE_TYPE> {
      * @param _value The new value.
      * @return The request.
      */
-    Request<Boolean> makeValueReq(final RESPONSE_TYPE _value);
+    AsyncRequest<Boolean> makeValueReq(final RESPONSE_TYPE _value);
 
     /**
      * Assign a new value if the old value was null.

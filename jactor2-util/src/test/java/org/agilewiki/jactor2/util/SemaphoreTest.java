@@ -3,9 +3,9 @@ package org.agilewiki.jactor2.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.Delay;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
-import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
@@ -74,9 +74,9 @@ public class SemaphoreTest extends TestCase implements Actor {
         moduleContext.close();
     }
 
-    private Request<Boolean> acquireException(final JASemaphore semaphore,
+    private AsyncRequest<Boolean> acquireException(final JASemaphore semaphore,
                                               final MessageProcessor messageProcessor) {
-        return new Request<Boolean>(messageProcessor) {
+        return new AsyncRequest<Boolean>(messageProcessor) {
             @Override
             public void processRequest()
                     throws Exception {

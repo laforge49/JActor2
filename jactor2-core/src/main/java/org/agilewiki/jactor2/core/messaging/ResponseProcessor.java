@@ -11,7 +11,7 @@ public interface ResponseProcessor<RESPONSE_TYPE> {
      * <p>
      * This method need not be thread-safe, as it
      * is always invoked from the same light-weight thread (message processor) that passed the
-     * Request and ResponseProcessor objects.
+     * AsyncRequest and ResponseProcessor objects.
      * </p>
      *
      * @param _response The response to a request.

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 /**
@@ -55,7 +55,7 @@ public interface JAList<ENTRY_TYPE extends JASerializable> extends Collection<EN
      *
      * @return The request.
      */
-    Request<Void> emptyReq();
+    AsyncRequest<Void> emptyReq();
 
     /**
      * Empties the list.
@@ -69,7 +69,7 @@ public interface JAList<ENTRY_TYPE extends JASerializable> extends Collection<EN
      * @param _i An index, where 0 is the first element and -1 is the last element.
      * @return The request.
      */
-    Request<Void> iAddReq(final int _i);
+    AsyncRequest<Void> iAddReq(final int _i);
 
     /**
      * Insert a new serializable object into the list.
@@ -86,7 +86,7 @@ public interface JAList<ENTRY_TYPE extends JASerializable> extends Collection<EN
      * @param _bytes The serialized data used to initialize the new serializable object.
      * @return The request.
      */
-    Request<Void> iAddReq(final int _i, final byte[] _bytes);
+    AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes);
 
     /**
      * Insert and initialize a new serializable object into the list.
@@ -103,7 +103,7 @@ public interface JAList<ENTRY_TYPE extends JASerializable> extends Collection<EN
      * @param _i An index, where 0 is the first element and -1 is the last element.
      * @return The request.
      */
-    Request<Void> iRemoveReq(final int _i);
+    AsyncRequest<Void> iRemoveReq(final int _i);
 
     /**
      * Removes an object from the list.

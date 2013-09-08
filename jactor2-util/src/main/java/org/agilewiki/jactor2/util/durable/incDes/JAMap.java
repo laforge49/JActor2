@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 /**
@@ -137,7 +137,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      *
      * @return The request.
      */
-    Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq();
+    AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq();
 
     /**
      * Returns the first entry.
@@ -152,7 +152,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      *
      * @return The request.
      */
-    Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq();
+    AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq();
 
     /**
      * Returns the last entry.
@@ -168,7 +168,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return The request.
      */
-    Request<VALUE_TYPE> kGetReq(final KEY_TYPE _key);
+    AsyncRequest<VALUE_TYPE> kGetReq(final KEY_TYPE _key);
 
     /**
      * Returns the serializable object assigned to a given key.
@@ -185,7 +185,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return The request.
      */
-    Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key);
+    AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key);
 
     /**
      * Returns the entry with a higher key.
@@ -202,7 +202,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return The request.
      */
-    Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key);
+    AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key);
 
     /**
      * Returns an entry with a key greater or equal to the given key.
@@ -221,7 +221,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _bytes The serialized data used to update the object.
      * @return The request.
      */
-    Request<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes);
+    AsyncRequest<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes);
 
     /**
      * Updates an existing serializable object.
@@ -241,7 +241,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return The request.
      */
-    Request<Boolean> kMakeReq(final KEY_TYPE _key);
+    AsyncRequest<Boolean> kMakeReq(final KEY_TYPE _key);
 
     /**
      * Create a new serializable object and add it to the map, unless there is
@@ -263,7 +263,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _bytes The serialized data used to initialize the new object.
      * @return The request.
      */
-    Request<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes);
+    AsyncRequest<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes);
 
     /**
      * Create a new serializable object and add it to the map, unless there is
@@ -283,7 +283,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return The request.
      */
-    Request<Boolean> kRemoveReq(final KEY_TYPE _key);
+    AsyncRequest<Boolean> kRemoveReq(final KEY_TYPE _key);
 
     /**
      * Removes the entry with the given key.

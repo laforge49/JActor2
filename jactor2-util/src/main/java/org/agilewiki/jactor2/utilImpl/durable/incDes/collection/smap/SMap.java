@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.smap;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -22,8 +22,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
 
     public Factory valueFactory;
 
-    public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq() {
-        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
+    public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq() {
+        return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(getFirst());
@@ -31,8 +31,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
         };
     }
 
-    public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq() {
-        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
+    public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq() {
+        return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(getLast());
@@ -151,8 +151,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public Request<Boolean> kMakeReq(final KEY_TYPE _key) {
-        return new Request<Boolean>(getMessageProcessor()) {
+    public AsyncRequest<Boolean> kMakeReq(final KEY_TYPE _key) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(kMake(_key));
@@ -180,8 +180,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public Request<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes) {
-        return new Request<Boolean>(getMessageProcessor()) {
+    public AsyncRequest<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(kMake(_key, _bytes));
@@ -213,8 +213,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public Request<VALUE_TYPE> kGetReq(final KEY_TYPE _key) {
-        return new Request<VALUE_TYPE>(getMessageProcessor()) {
+    public AsyncRequest<VALUE_TYPE> kGetReq(final KEY_TYPE _key) {
+        return new AsyncRequest<VALUE_TYPE>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(kGet(_key));
@@ -238,8 +238,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key) {
-        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
+    public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key) {
+        return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(getHigher(_key));
@@ -263,8 +263,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public Request<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key) {
-        return new Request<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
+    public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key) {
+        return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(getCeiling(_key));
@@ -288,8 +288,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public Request<Boolean> kRemoveReq(final KEY_TYPE _key) {
-        return new Request<Boolean>(getMessageProcessor()) {
+    public AsyncRequest<Boolean> kRemoveReq(final KEY_TYPE _key) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(kRemove(_key));
@@ -355,8 +355,8 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     @Override
-    public Request<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 kSet(_key, _bytes);

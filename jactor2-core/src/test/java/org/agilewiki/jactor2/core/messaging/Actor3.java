@@ -9,12 +9,12 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
  */
 public class Actor3 {
     private final MessageProcessor messageProcessor;
-    public final Request<Void> hi3;
+    public final AsyncRequest<Void> hi3;
 
     public Actor3(final ModuleContext _context) {
         this.messageProcessor = new IsolationMessageProcessor(_context);
 
-        hi3 = new Request<Void>(messageProcessor) {
+        hi3 = new AsyncRequest<Void>(messageProcessor) {
             @Override
             public void processRequest()
                     throws Exception {

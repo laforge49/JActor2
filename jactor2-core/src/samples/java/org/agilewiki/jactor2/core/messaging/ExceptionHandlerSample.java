@@ -47,8 +47,8 @@ class ExceptionActor extends ActorBase {
     }
 
     //Returns an exception request.
-    Request<Void> exceptionReq() {
-        return new Request<Void>(getMessageProcessor()) {
+    AsyncRequest<Void> exceptionReq() {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 throw new IllegalStateException(); //Throw an exception when the request is processed.
@@ -70,9 +70,9 @@ class ExceptionHandlerActor extends ActorBase {
     }
 
     //Returns a test request.
-    Request<String> testReq() {
-        return new Request<String>(getMessageProcessor()) {
-            Request<String> dis = this;
+    AsyncRequest<String> testReq() {
+        return new AsyncRequest<String>(getMessageProcessor()) {
+            AsyncRequest<String> dis = this;
 
             @Override
             public void processRequest() throws Exception {

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.*;
@@ -45,8 +45,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     protected int factoryIndex = -1;
     protected JASerializable value;
 
-    public Request<Void> clearReq() {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> clearReq() {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             public void processRequest() throws Exception {
                 clear();
                 processResponse(null);
@@ -55,8 +55,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     @Override
-    public Request<JASerializable> getValueReq() {
-        return new Request<JASerializable>(getMessageProcessor()) {
+    public AsyncRequest<JASerializable> getValueReq() {
+        return new AsyncRequest<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(getValue());
@@ -135,8 +135,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     @Override
-    public Request<Void> setValueReq(final String actorType) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> setValueReq(final String actorType) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 setValue(actorType);
@@ -180,8 +180,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     @Override
-    public Request<Void> setValueReq(final String jidType, final byte[] bytes) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> setValueReq(final String jidType, final byte[] bytes) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 setValue(jidType, bytes);
@@ -222,8 +222,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     @Override
-    public Request<Boolean> makeValueReq(final String jidType) {
-        return new Request<Boolean>(getMessageProcessor()) {
+    public AsyncRequest<Boolean> makeValueReq(final String jidType) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(makeValue(jidType));
@@ -259,8 +259,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     @Override
-    public Request<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
-        return new Request<Boolean>(getMessageProcessor()) {
+    public AsyncRequest<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(makeValue(jidType, bytes));

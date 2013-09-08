@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -50,8 +50,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    public Request<byte[]> getSerializedBytesReq() {
-        return new Request<byte[]>(getMessageProcessor()) {
+    public AsyncRequest<byte[]> getSerializedBytesReq() {
+        return new AsyncRequest<byte[]>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(getSerializedBytes());
@@ -60,8 +60,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    public Request<Integer> getSerializedLengthReq() {
-        return new Request<Integer>(getMessageProcessor()) {
+    public AsyncRequest<Integer> getSerializedLengthReq() {
+        return new AsyncRequest<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(getSerializedLength());
@@ -246,8 +246,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         }
     }
 
-    final public Request<Void> saveReq(final AppendableBytes appendableBytes) {
-        return new Request<Void>(getMessageProcessor()) {
+    final public AsyncRequest<Void> saveReq(final AppendableBytes appendableBytes) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 save(appendableBytes);
@@ -270,8 +270,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    final public Request<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
-        return new Request<Integer>(getMessageProcessor()) {
+    final public AsyncRequest<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
+        return new AsyncRequest<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(save(bytes, offset));
@@ -327,8 +327,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    public Request<JASerializable> resolvePathnameReq(final String pathname) {
-        return new Request<JASerializable>(getMessageProcessor()) {
+    public AsyncRequest<JASerializable> resolvePathnameReq(final String pathname) {
+        return new AsyncRequest<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(resolvePathname(pathname));
@@ -354,8 +354,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return serializable;
     }
 
-    public final Request<JASerializable> copyReq(final MessageProcessor m) {
-        return new Request<JASerializable>(getMessageProcessor()) {
+    public final AsyncRequest<JASerializable> copyReq(final MessageProcessor m) {
+        return new AsyncRequest<JASerializable>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(copy(m));
@@ -363,9 +363,9 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         };
     }
 
-    public final Request<Boolean> isEqualReq(final JASerializable jidA) {
-        return new Request<Boolean>(getMessageProcessor()) {
-            Request<Boolean> dis = this;
+    public final AsyncRequest<Boolean> isEqualReq(final JASerializable jidA) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+            AsyncRequest<Boolean> dis = this;
 
             @Override
             public void processRequest() throws Exception {

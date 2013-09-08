@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
@@ -92,9 +92,9 @@ final public class Osgi {
      * @param _root The root.
      * @return A copy of the root with the appropriate processing.
      */
-    public static Request<Root> contextCopyReq(final Root _root) throws Exception {
-        return new Request<Root>(_root.getMessageProcessor()) {
-            Request dis = this;
+    public static AsyncRequest<Root> contextCopyReq(final Root _root) throws Exception {
+        return new AsyncRequest<Root>(_root.getMessageProcessor()) {
+            AsyncRequest dis = this;
 
             @Override
             public void processRequest() throws Exception {

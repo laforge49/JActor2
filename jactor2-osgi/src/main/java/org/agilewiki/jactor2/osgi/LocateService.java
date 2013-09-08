@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.osgi.framework.ServiceEvent;
@@ -44,8 +44,8 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
      *
      * @return The request.
      */
-    public Request<T> getReq() {
-        return new Request<T>(messageProcessor) {
+    public AsyncRequest<T> getReq() {
+        return new AsyncRequest<T>(messageProcessor) {
             @Override
             public void processRequest() throws Exception {
                 tracker.start(LocateService.this);

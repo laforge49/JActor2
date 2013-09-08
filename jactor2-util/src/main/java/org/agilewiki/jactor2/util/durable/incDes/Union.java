@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 /**
@@ -13,7 +13,7 @@ public interface Union extends IncDes {
      *
      * @return The request.
      */
-    Request<JASerializable> getValueReq();
+    AsyncRequest<JASerializable> getValueReq();
 
     /**
      * Returns the serializable object held by the union.
@@ -27,7 +27,7 @@ public interface Union extends IncDes {
      *
      * @return The request.
      */
-    Request<Void> clearReq();
+    AsyncRequest<Void> clearReq();
 
     /**
      * Clears the union.
@@ -41,7 +41,7 @@ public interface Union extends IncDes {
      * @param _factoryName The type of the new serializable object.
      * @return The request.
      */
-    Request<Void> setValueReq(final String _factoryName);
+    AsyncRequest<Void> setValueReq(final String _factoryName);
 
     /**
      * Create a new serializable object and put it in the union.
@@ -59,7 +59,7 @@ public interface Union extends IncDes {
      * @param _bytes       The content of the serializable object.
      * @return The request.
      */
-    Request<Void> setValueReq(final String _factoryName, final byte[] _bytes);
+    AsyncRequest<Void> setValueReq(final String _factoryName, final byte[] _bytes);
 
     /**
      * Create and initialize a serialize object and put it in the union.
@@ -77,7 +77,7 @@ public interface Union extends IncDes {
      * @param _factoryName The type of the new serializable object.
      * @return True if a new serializable object was created.
      */
-    Request<Boolean> makeValueReq(final String _factoryName);
+    AsyncRequest<Boolean> makeValueReq(final String _factoryName);
 
     /**
      * Create a new serializable object and put it in the union if the union was empty.
@@ -96,7 +96,7 @@ public interface Union extends IncDes {
      * @param _bytes       The content of the new serializable object.
      * @return True if a new serializable object was created.
      */
-    Request<Boolean> makeValueReq(final String _factoryName, final byte[] _bytes);
+    AsyncRequest<Boolean> makeValueReq(final String _factoryName, final byte[] _bytes);
 
     /**
      * Create and initialize a serializable object and put it in the union if the union was empty.

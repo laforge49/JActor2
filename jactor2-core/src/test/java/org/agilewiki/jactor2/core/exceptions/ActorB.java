@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.exceptions;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 
 public class ActorB {
@@ -10,9 +10,9 @@ public class ActorB {
         this.messageProcessor = mbox;
     }
 
-    public Request<Void> throwRequest(final ActorA actorA) {
-        return new Request<Void>(messageProcessor) {
-            Request<Void> dis = this;
+    public AsyncRequest<Void> throwRequest(final ActorA actorA) {
+        return new AsyncRequest<Void>(messageProcessor) {
+            AsyncRequest<Void> dis = this;
 
             @Override
             public void processRequest()

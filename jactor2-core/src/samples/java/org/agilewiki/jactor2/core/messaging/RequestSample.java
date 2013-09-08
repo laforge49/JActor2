@@ -50,8 +50,8 @@ class SampleActor2 extends ActorBase {
     }
 
     //Return an update request.
-    Request<Integer> updateReq(final int _newState) {
-        return new Request<Integer>(getMessageProcessor()) {
+    AsyncRequest<Integer> updateReq(final int _newState) {
+        return new AsyncRequest<Integer>(getMessageProcessor()) {
 
             @Override
             public void processRequest() throws Exception {
@@ -77,15 +77,15 @@ class IndirectActor extends ActorBase {
     }
 
     //Return a request to update the other actor and return its new state.
-    Request<Integer> indirectReq(final int _newState) {
-        return new Request<Integer>(getMessageProcessor()) {
-            Request<Integer> dis = this;
+    AsyncRequest<Integer> indirectReq(final int _newState) {
+        return new AsyncRequest<Integer>(getMessageProcessor()) {
+            AsyncRequest<Integer> dis = this;
 
             @Override
             public void processRequest() throws Exception {
 
                 //Get a request from the other actor.
-                Request<Integer> req = actorA.updateReq(_newState);
+                AsyncRequest<Integer> req = actorA.updateReq(_newState);
 
                 //Send the request to the other actor.
                 req.send(getMessageProcessor(), new ResponseProcessor<Integer>() {

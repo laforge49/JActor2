@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
  * response to that request is received.
  * </p>
  * <p>
- * Request/Response messages which are destined to a different message processors are buffered rather
+ * AsyncRequest/Response messages which are destined to a different message processors are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when all
  * incoming messages have been processed.
  * </p>

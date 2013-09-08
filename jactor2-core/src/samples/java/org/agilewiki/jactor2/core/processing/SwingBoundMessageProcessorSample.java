@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import javax.swing.*;
@@ -22,8 +22,8 @@ class HelloWorld extends ActorBase {
         initialize(new SwingBoundMessageProcessor(context));
     }
 
-    Request<Void> createAndShowReq() {
-        return new Request<Void>(getMessageProcessor()) {
+    AsyncRequest<Void> createAndShowReq() {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 //Create and set up the window.

@@ -153,8 +153,8 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @param _subscriber An actor that will receive the published events.
      * @return The request.
      */
-    public Request<Boolean> subscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
-        return new Request<Boolean>(getMessageProcessor()) {
+    public AsyncRequest<Boolean> subscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest()
                     throws Exception {
@@ -170,8 +170,8 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @param _subscriber The actor that should no longer receive the published events.
      * @return The request.
      */
-    public Request<Boolean> unsubscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
-        return new Request<Boolean>(getMessageProcessor()) {
+    public AsyncRequest<Boolean> unsubscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processRequest()
                     throws Exception {
@@ -189,9 +189,9 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @param event The event to be published.
      * @return The request.
      */
-    public Request<Void> publishReq(
+    public AsyncRequest<Void> publishReq(
             final Event<TARGET_ACTOR_TYPE> event) {
-        return new Request<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest()
                     throws Exception {

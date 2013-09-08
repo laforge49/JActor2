@@ -15,7 +15,7 @@ import java.awt.event.WindowListener;
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.context.ModuleContext;
- * import org.agilewiki.jactor2.core.messaging.Request;
+ * import org.agilewiki.jactor2.core.messaging.AsyncRequest;
  *
  * import javax.swing.*;
  *
@@ -35,8 +35,8 @@ import java.awt.event.WindowListener;
  *         initialize(new SwingBoundMessageProcessor(context));
  *     }
  *
- *     Request&lt;Void&gt; createAndShowReq() {
- *         return new Request&lt;Void&gt;(getMessageProcessor()) {
+ *     AsyncRequest&lt;Void&gt; createAndShowReq() {
+ *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processRequest() throws Exception {
  *                 //Create and set up the window.

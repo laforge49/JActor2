@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
-import org.agilewiki.jactor2.core.messaging.Request;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ServiceClosedException;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
@@ -19,8 +19,8 @@ public class ServiceTest extends TestCase {
             MessageProcessor testMessageProcessor = new NonBlockingMessageProcessor(testContext);
             Server server = new Server(new NonBlockingMessageProcessor(serverContext));
             final Client client = new Client(new NonBlockingMessageProcessor(clientContext), server);
-            new Request<Void>(testMessageProcessor) {
-                Request<Void> dis = this;
+            new AsyncRequest<Void>(testMessageProcessor) {
+                AsyncRequest<Void> dis = this;
 
                 @Override
                 public void processRequest() throws Exception {
@@ -51,9 +51,9 @@ class Client extends ActorBase {
         server = _server;
     }
 
-    Request<Boolean> crossReq() {
-        return new Request<Boolean>(getMessageProcessor()) {
-            Request<Boolean> dis = this;
+    AsyncRequest<Boolean> crossReq() {
+        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+            AsyncRequest<Boolean> dis = this;
 
             @Override
             public void processRequest() throws Exception {
@@ -82,8 +82,8 @@ class Server extends ActorBase {
         initialize(messageProcessor);
     }
 
-    Request<Void> hangReq() {
-        return new Request<Void>(getMessageProcessor()) {
+    AsyncRequest<Void> hangReq() {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
             }

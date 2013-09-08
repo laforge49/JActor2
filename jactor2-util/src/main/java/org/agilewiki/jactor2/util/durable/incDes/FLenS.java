@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 
 /**
  * Fixed-length scalar
@@ -14,7 +14,7 @@ public interface FLenS<RESPONSE_TYPE> extends IncDes {
      *
      * @return The request.
      */
-    Request<RESPONSE_TYPE> getValueReq();
+    AsyncRequest<RESPONSE_TYPE> getValueReq();
 
     /**
      * Returns the value.
@@ -29,7 +29,7 @@ public interface FLenS<RESPONSE_TYPE> extends IncDes {
      * @param _value The new value.
      * @return The request.
      */
-    Request<Void> setValueReq(final RESPONSE_TYPE _value);
+    AsyncRequest<Void> setValueReq(final RESPONSE_TYPE _value);
 
     /**
      * Assigns a value.

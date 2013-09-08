@@ -16,7 +16,7 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
  * the processing of event messages.
  * </p>
  * <p>
- * Request/Response messages which are destined to a different message processor are buffered rather
+ * AsyncRequest/Response messages which are destined to a different message processor are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when the
  * processing of each incoming message is complete.
  * </p>

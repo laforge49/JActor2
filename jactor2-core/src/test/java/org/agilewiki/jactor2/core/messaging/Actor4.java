@@ -12,9 +12,9 @@ public class Actor4 {
         this.messageProcessor = mbox;
     }
 
-    public Request<Void> hi4(final Actor1 actor1) {
-        return new Request<Void>(messageProcessor) {
-            Request<Void> dis = this;
+    public AsyncRequest<Void> hi4(final Actor1 actor1) {
+        return new AsyncRequest<Void>(messageProcessor) {
+            AsyncRequest<Void> dis = this;
 
             @Override
             public void processRequest()

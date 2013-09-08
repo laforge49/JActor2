@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection;
 
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.JASerializable;
@@ -24,8 +24,8 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
     protected int len;
 
     @Override
-    public Request<Integer> sizeReq() {
-        return new Request<Integer>(getMessageProcessor()) {
+    public AsyncRequest<Integer> sizeReq() {
+        return new AsyncRequest<Integer>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(size());
@@ -34,8 +34,8 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public Request<ENTRY_TYPE> iGetReq(final int _i) {
-        return new Request<ENTRY_TYPE>(getMessageProcessor()) {
+    public AsyncRequest<ENTRY_TYPE> iGetReq(final int _i) {
+        return new AsyncRequest<ENTRY_TYPE>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 processResponse(iGet(_i));
@@ -44,8 +44,8 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public Request<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processRequest() throws Exception {
                 iSet(_i, _bytes);

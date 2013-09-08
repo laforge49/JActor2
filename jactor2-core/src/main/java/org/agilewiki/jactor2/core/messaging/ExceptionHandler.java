@@ -72,8 +72,8 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  *
  *     //Returns an exception request.
- *     Request&lt;Void&gt; exceptionReq() {
- *         return new Request&lt;Void&gt;(getMessageProcessor()) {
+ *     AsyncRequest&lt;Void&gt; exceptionReq() {
+ *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
  *             public void processRequest() throws Exception {
@@ -96,9 +96,9 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  *
  *     //Returns a test request.
- *     Request&lt;String&gt; testReq() {
- *         return new Request&lt;String&gt;(getMessageProcessor()) {
- *             Request<String> dis = this;
+ *     AsyncRequest&lt;String&gt; testReq() {
+ *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
+ *             AsyncRequest<String> dis = this;
  *
  *             {@literal @}Override
  *             public void processRequest() throws Exception {

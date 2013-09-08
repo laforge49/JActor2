@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -22,7 +22,7 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
      *
      * @return The request.
      */
-    Request<Integer> getSerializedLengthReq();
+    AsyncRequest<Integer> getSerializedLengthReq();
 
     /**
      * Returns the number of bytes needed to serialize the persistent data.
@@ -38,7 +38,7 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
      *
      * @return The request.
      */
-    Request<byte[]> getSerializedBytesReq();
+    AsyncRequest<byte[]> getSerializedBytesReq();
 
     /**
      * Returns the serialized data.
@@ -56,7 +56,7 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
      * @param offset The starting offset into the array.
      * @return The request.
      */
-    Request<Integer> getSerializedBytesReq(byte[] bytes, int offset);
+    AsyncRequest<Integer> getSerializedBytesReq(byte[] bytes, int offset);
 
     /**
      * Copies the serialized data into a byte array.
@@ -92,7 +92,7 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
      * @param _pathname The pathname to the serializable object of interest.
      * @return The specified serializable object.
      */
-    Request<JASerializable> resolvePathnameReq(final String _pathname);
+    AsyncRequest<JASerializable> resolvePathnameReq(final String _pathname);
 
     /**
      * Resolves a pathname, returning a serializable object or null.
@@ -123,7 +123,7 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
      * @param _messageProcessor The processing to be used by the new serializable object.
      * @return The request.
      */
-    Request<JASerializable> copyReq(final MessageProcessor _messageProcessor);
+    AsyncRequest<JASerializable> copyReq(final MessageProcessor _messageProcessor);
 
     /**
      * Copy the serializable object.
@@ -139,5 +139,5 @@ public interface IncDes extends JASerializable, Actor, Ancestor {
      * @param _serializable
      * @return True when of the same type and has the same durable content.
      */
-    Request<Boolean> isEqualReq(final JASerializable _serializable);
+    AsyncRequest<Boolean> isEqualReq(final JASerializable _serializable);
 }

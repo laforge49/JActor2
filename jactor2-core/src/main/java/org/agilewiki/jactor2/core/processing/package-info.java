@@ -1,7 +1,7 @@
 /**
  * <h1>Non-blocking, Isolation, Thread-bound and Swing-bound Message Processors</h1>
  * <p>
- *     While MessageProcessors are used by the Event and Request classes to pass and process messages,
+ *     While MessageProcessors are used by the Event and AsyncRequest classes to pass and process messages,
  *     the MessageProcessor interface itself include only a few methods for use by
  *     application developers.
  * </p>

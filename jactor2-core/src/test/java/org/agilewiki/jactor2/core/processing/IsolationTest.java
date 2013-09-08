@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.processing;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Delay;
-import org.agilewiki.jactor2.core.messaging.Request;
+import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.ResponseCounter;
 import org.agilewiki.jactor2.core.messaging.ResponseProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
@@ -20,9 +20,9 @@ public class IsolationTest extends TestCase {
         }
     }
 
-    Request<Integer> startReq1(final MessageProcessor _messageProcessor) {
-        return new Request<Integer>(_messageProcessor) {
-            Request<Integer> dis = this;
+    AsyncRequest<Integer> startReq1(final MessageProcessor _messageProcessor) {
+        return new AsyncRequest<Integer>(_messageProcessor) {
+            AsyncRequest<Integer> dis = this;
 
             @Override
             public void processRequest()
@@ -45,9 +45,9 @@ public class IsolationTest extends TestCase {
         };
     }
 
-    Request<Void> aReq(final MessageProcessor _messageProcessor, final int msg) {
-        return new Request<Void>(_messageProcessor) {
-            Request<Void> dis = this;
+    AsyncRequest<Void> aReq(final MessageProcessor _messageProcessor, final int msg) {
+        return new AsyncRequest<Void>(_messageProcessor) {
+            AsyncRequest<Void> dis = this;
 
             @Override
             public void processRequest()

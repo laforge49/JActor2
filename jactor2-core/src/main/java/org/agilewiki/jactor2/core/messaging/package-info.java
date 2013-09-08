@@ -10,12 +10,12 @@
  *     send messages to any number of actors. And when passing an event message to an actor,
  *     the message is given to the target actor's processing immediately, without buffering.
  * </p>
- * <h2>Request/Response Messages</h2>
+ * <h2>AsyncRequest/Response Messages</h2>
  * <p>
  *     In contrast, request messages are created and passed using anonymous subclasses of
- *     the Request class, with these anonymous classes present within the actor where the
+ *     the AsyncRequest class, with these anonymous classes present within the actor where the
  *     request message is evaluated. Response messages are simply request messages to which a
- *     response has been assigned. Request and response messages are aggregated and sent in
+ *     response has been assigned. AsyncRequest and response messages are aggregated and sent in
  *     blocks to reduce the overhead of having to pass individual messages.
  * </p>
  * <p>
