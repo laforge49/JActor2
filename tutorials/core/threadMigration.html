@@ -38,7 +38,7 @@ public class ThreadMigration extends ActorBase {
                 new NonBlockingMessageProcessor(moduleContext);
             ThreadMigration threadMigration = 
                 new ThreadMigration(messageProcessor);
-            threadMigration.startReq().call();
+            threadMigration.startAReq().call();
         } finally {
             moduleContext.close();
         }
@@ -49,10 +49,10 @@ public class ThreadMigration extends ActorBase {
         initialize(_messageProcessor);
     }
     
-    public Request&lt;Void&gt; startReq() {
-        return new Request&lt;Void&gt;(getMessageProcessor()) {
+    public AsyncRequest&lt;Void&gt; startAReq() {
+        return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
             @Override
-            public void processRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
                 MessageProcessor myMessageProcessor = getMessageProcessor();
@@ -60,8 +60,8 @@ public class ThreadMigration extends ActorBase {
                 MessageProcessor subMessageProcessor = 
                     new NonBlockingMessageProcessor(myModuleContext);
                 SubActor subActor = new SubActor(subMessageProcessor);
-                subActor.doReq("         signal").signal();
-                subActor.doReq("           send").send(myMessageProcessor, this);
+                subActor.doAReq("         signal").signal();
+                subActor.doAReq("           send").send(myMessageProcessor, this);
             }
         };
     }
@@ -73,14 +73,14 @@ class SubActor extends ActorBase {
         initialize(_messageProcessor);
     }
     
-    public Request&lt;Void&gt; doReq(final String _label) {
-        return new Request&lt;Void&gt;(getMessageProcessor()) {
+    public AsyncRequest&lt;Void&gt; doAReq(final String _label) {
+        return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
             @Override
-            public void processRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 System.out.println(_label + " thread: " + 
                     Thread.currentThread());
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
@@ -94,10 +94,10 @@ C:\GitHub\JActor2docs\tutorials\core>test.bat ThreadMigration
 
 C:\GitHub\JActor2docs\tutorials\core>del *.class
 
-C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.4.jar;slf4
+C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.5.jar;slf4
 j-api-1.7.5.jar *.java
 
-C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.4.jar;slf4
+C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.5.jar;slf4
 j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. ThreadMigration
 
            main thread: Thread[main,5,main]

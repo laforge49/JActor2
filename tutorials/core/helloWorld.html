@@ -21,12 +21,12 @@ public class HelloWorldActor extends ActorBase {
         initialize(_messageProcessor);
     }
     
-    public Request&lt;String&gt; getGreetingReq() {
-        return new Request&lt;String&gt;(getMessageProcessor()) {
+    public AsyncRequest&lt;String&gt; getGreetingAReq() {
+        return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
             @Override
-            public void processRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
-                processResponse("Hello world!");
+                processAsyncResponse("Hello world!");
             }
         };
     }
@@ -82,8 +82,8 @@ public class HelloWorld {
                     new NonBlockingMessageProcessor(context);
             HelloWorldActor helloWorldActor = 
                     new HelloWorldActor(messageProcessor);
-            Request<String> getGreetingReq = helloWorldActor.getGreetingReq();
-            String response = getGreetingReq.call();
+            AsyncRequest<String> getGreetingAReq = helloWorldActor.getGreetingAReq();
+            String response = getGreetingAReq.call();
             System.out.println(response);
         } finally {
             context.close();
@@ -132,10 +132,10 @@ C:\GitHub\JActor2docs\tutorials\core>test.bat HelloWorld
 
 C:\GitHub\JActor2docs\tutorials\core>del *.class
 
-C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.4.jar;slf4
+C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.0.5.jar;slf4
 j-api-1.7.5.jar *.java
 
-C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.4.jar;slf4
+C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.0.5.jar;slf4
 j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. HelloWorld
 Hello world!
 
