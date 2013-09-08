@@ -48,7 +48,7 @@ public class SemaphoreTest extends TestCase implements Actor {
             @Override
             public void processEvent(final SemaphoreTest actor)
                     throws Exception {
-                new Delay(moduleContext).sleepReq(delay).send(getMessageProcessor(),
+                new Delay(moduleContext).sleepAReq(delay).send(getMessageProcessor(),
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(final Void response)

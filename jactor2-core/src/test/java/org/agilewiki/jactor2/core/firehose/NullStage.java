@@ -20,7 +20,7 @@ public class NullStage extends ActorBase implements DataProcessor {
     }
 
     @Override
-    public AsyncRequest<Void> processDataReq(final FirehoseData _firehoseData) {
+    public AsyncRequest<Void> processDataAReq(final FirehoseData _firehoseData) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {
@@ -33,7 +33,7 @@ public class NullStage extends ActorBase implements DataProcessor {
                     total += list.get(x);
                     x += 1;
                 }
-                next.processDataReq(_firehoseData).send(getMessageProcessor(), null);
+                next.processDataAReq(_firehoseData).send(getMessageProcessor(), null);
                 processAsyncResponse(null);
             }
         };

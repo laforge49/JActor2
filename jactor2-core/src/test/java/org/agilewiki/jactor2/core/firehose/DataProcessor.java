@@ -5,5 +5,5 @@ import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 
 public interface DataProcessor extends Actor {
 
-    AsyncRequest<Void> processDataReq(final FirehoseData _firehoseData);
+    AsyncRequest<Void> processDataAReq(final FirehoseData _firehoseData);
 }

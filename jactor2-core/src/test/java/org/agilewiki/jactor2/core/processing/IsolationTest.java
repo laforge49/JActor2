@@ -36,16 +36,16 @@ public class IsolationTest extends TestCase {
                                 dis.processAsyncResponse(count);
                             }
                         });
-                aReq(messageProcessor, 1).send(_messageProcessor, rc);
-                aReq(messageProcessor, 2).send(_messageProcessor, rc);
-                aReq(messageProcessor, 3).send(_messageProcessor, rc);
-                aReq(messageProcessor, 4).send(_messageProcessor, rc);
-                aReq(messageProcessor, 5).send(_messageProcessor, rc);
+                aAReq(messageProcessor, 1).send(_messageProcessor, rc);
+                aAReq(messageProcessor, 2).send(_messageProcessor, rc);
+                aAReq(messageProcessor, 3).send(_messageProcessor, rc);
+                aAReq(messageProcessor, 4).send(_messageProcessor, rc);
+                aAReq(messageProcessor, 5).send(_messageProcessor, rc);
             }
         };
     }
 
-    AsyncRequest<Void> aReq(final MessageProcessor _messageProcessor, final int msg) {
+    AsyncRequest<Void> aAReq(final MessageProcessor _messageProcessor, final int msg) {
         return new AsyncRequest<Void>(_messageProcessor) {
             AsyncRequest<Void> dis = this;
 
@@ -53,7 +53,7 @@ public class IsolationTest extends TestCase {
             public void processAsyncRequest()
                     throws Exception {
                 Delay delay = new Delay(_messageProcessor.getModuleContext());
-                delay.sleepReq(100 - (msg * 20)).send(_messageProcessor,
+                delay.sleepAReq(100 - (msg * 20)).send(_messageProcessor,
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(Void response)

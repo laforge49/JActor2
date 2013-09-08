@@ -12,7 +12,7 @@ public class BoundResponseProcessorTest extends TestCase {
         try {
             final Driver driver = new Driver();
             driver.initialize(new NonBlockingMessageProcessor(moduleContext));
-            assertEquals("Hello world!", driver.doitReq().call());
+            assertEquals("Hello world!", driver.doitAReq().call());
         } finally {
             moduleContext.close();
         }
@@ -22,7 +22,7 @@ public class BoundResponseProcessorTest extends TestCase {
 class Driver extends ActorBase {
     private AsyncRequest<String> doitReq;
 
-    public AsyncRequest<String> doitReq() {
+    public AsyncRequest<String> doitAReq() {
         return doitReq;
     }
 

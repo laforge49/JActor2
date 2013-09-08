@@ -21,7 +21,7 @@ import java.awt.event.WindowListener;
  *
  * public class SwingBoundMessageProcessorSample {
  *     public static void main(final String[] _args) throws Exception {
- *         new HelloWorld().createAndShowReq().signal();
+ *         new HelloWorld().createAndShowAReq().signal();
  *     }
  * }
  *
@@ -35,7 +35,7 @@ import java.awt.event.WindowListener;
  *         initialize(new SwingBoundMessageProcessor(context));
  *     }
  *
- *     AsyncRequest&lt;Void&gt; createAndShowReq() {
+ *     AsyncRequest&lt;Void&gt; createAndShowAReq() {
  *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {

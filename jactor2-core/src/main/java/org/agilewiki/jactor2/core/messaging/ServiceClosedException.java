@@ -24,13 +24,13 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *         try {
  *             //Test the delay echo request on the service actor.
- *             System.out.println(service.delayEchoReq(1, "1 (Expected)").call());
+ *             System.out.println(service.delayEchoAReq(1, "1 (Expected)").call());
  *
  *             //close the context used by the service actor.
  *             service.getMessageProcessor().getModuleContext().close();
  *             try {
  *                 //Try using delay echo request with the context closed.
- *                 System.out.println(service.delayEchoReq(1, "(Unexpected)").call());
+ *                 System.out.println(service.delayEchoAReq(1, "(Unexpected)").call());
  *             } catch (ServiceClosedException sce) {
  *                 //The ServiceClosedException is now thrown because the context is closed.
  *                 System.out.println("Exception as expected");
@@ -43,16 +43,16 @@ package org.agilewiki.jactor2.core.messaging;
  *             final ServiceApplication serviceApplication =
  *                     new ServiceApplication(service, new NonBlockingMessageProcessor(applicationContext));
  *             //Start a delay echo service request using the application actor.
- *             EchoReqState echoReqState = serviceApplication.echoReq(1, "2 (Expected)").call();
+ *             EchoReqState echoReqState = serviceApplication.echoAReq(1, "2 (Expected)").call();
  *             //Print the results of the delay echo service request.
- *             System.out.println(serviceApplication.echoResultReq(echoReqState).call());
+ *             System.out.println(serviceApplication.echoResultAReq(echoReqState).call());
  *
  *             //Start a second delay echo service request using the application actor.
- *             EchoReqState echoReqState2 = serviceApplication.echoReq(1, "(Unexpected)").call();
+ *             EchoReqState echoReqState2 = serviceApplication.echoAReq(1, "(Unexpected)").call();
  *             //Close the service context while the delay echo service request is still sleeping.
- *             serviceApplication.closeServiceReq().call();
+ *             serviceApplication.closeServiceAReq().call();
  *             //The results should now show that an exception was thrown.
- *             System.out.println(serviceApplication.echoResultReq(echoReqState2).call());
+ *             System.out.println(serviceApplication.echoResultAReq(echoReqState2).call());
  *         } finally {
  *             service.getMessageProcessor().getModuleContext().close(); //Close the service context.
  *             applicationContext.close(); //Close the application context.
@@ -70,7 +70,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  *
  *     //Returns a delay echo request.
- *     AsyncRequest&lt;String&gt; delayEchoReq(final int _delay, final String _text) {
+ *     AsyncRequest&lt;String&gt; delayEchoAReq(final int _delay, final String _text) {
  *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
@@ -115,7 +115,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     //The echo request is used to initiate a service delay echo request.
  *     //And the response returned by the echo request is state data needed to manage the
  *     //delivery of the response from the service delay echo request.
- *     AsyncRequest&lt;EchoReqState&gt; echoReq(final int _delay, final String _text) {
+ *     AsyncRequest&lt;EchoReqState&gt; echoAReq(final int _delay, final String _text) {
  *         return new AsyncRequest&lt;EchoReqState&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
@@ -144,7 +144,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                             throw throwable;
  *                     }
  *                 });
- *                 service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor&lt;String&gt;() {
+ *                 service.delayEchoAReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor&lt;String&gt;() {
  *                     {@literal @}Override
  *                     public void processAsyncResponse(String response) throws Exception {
  *                         if (echoReqState.responseProcessor == null) {
@@ -164,7 +164,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  *
  *     //Returns a close service request.
- *     AsyncRequest&lt;Void&gt; closeServiceReq() {
+ *     AsyncRequest&lt;Void&gt; closeServiceAReq() {
  *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
@@ -178,7 +178,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     //Returns an echo result request.
  *     //An echo result request returns the response from the service delay echo request
  *     //associated with the given echo request state.
- *     AsyncRequest&lt;String&gt; echoResultReq(final EchoReqState _echoReqState) {
+ *     AsyncRequest&lt;String&gt; echoResultAReq(final EchoReqState _echoReqState) {
  *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {

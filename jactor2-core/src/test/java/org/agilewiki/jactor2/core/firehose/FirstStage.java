@@ -80,7 +80,7 @@ public class FirstStage extends ActorBase implements Runnable {
     }
 
     private void send() throws Exception {
-        next.processDataReq(firehoseData).send(getMessageProcessor(), null);
+        next.processDataAReq(firehoseData).send(getMessageProcessor(), null);
         list = null;
         firehoseData = null;
         ackCount += 1;

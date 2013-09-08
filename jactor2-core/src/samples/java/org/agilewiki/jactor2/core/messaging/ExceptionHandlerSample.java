@@ -19,7 +19,7 @@ public class ExceptionHandlerSample {
 
             try {
                 //Create and call an exception request.
-                exceptionActor.exceptionReq().call();
+                exceptionActor.exceptionAReq().call();
                 System.out.println("can not get here");
             } catch (IllegalStateException ise) {
                 System.out.println("got first IllegalStateException, as expected");
@@ -29,7 +29,7 @@ public class ExceptionHandlerSample {
             ExceptionHandlerActor exceptionHandlerActor =
                     new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(moduleContext));
             //Create a test request, call it and print the results.
-            System.out.println(exceptionHandlerActor.testReq().call());
+            System.out.println(exceptionHandlerActor.testAReq().call());
 
         } finally {
             //shutdown the context
@@ -47,7 +47,7 @@ class ExceptionActor extends ActorBase {
     }
 
     //Returns an exception request.
-    AsyncRequest<Void> exceptionReq() {
+    AsyncRequest<Void> exceptionAReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {
@@ -70,7 +70,7 @@ class ExceptionHandlerActor extends ActorBase {
     }
 
     //Returns a test request.
-    AsyncRequest<String> testReq() {
+    AsyncRequest<String> testAReq() {
         return new AsyncRequest<String>(getMessageProcessor()) {
             AsyncRequest<String> dis = this;
 
@@ -91,7 +91,7 @@ class ExceptionHandlerActor extends ActorBase {
 
                 //Create an exception request and send it to the exception actor for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                exceptionActor.exceptionReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
+                exceptionActor.exceptionAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(final Void _response) throws Exception {
                         dis.processAsyncResponse("can not get here");

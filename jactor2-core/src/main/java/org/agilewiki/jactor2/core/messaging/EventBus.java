@@ -36,14 +36,14 @@ import java.util.Set;
  *                 new EventBus&lt;StatusListener&gt;(new NonBlockingMessageProcessor(moduleContext));
  *
  *             //Add statusLogger and statusPrinter to the subscribers of the event bus.
- *             eventBus.subscribeReq(statusLogger).call();
- *             eventBus.subscribeReq(statusPrinter).call();
+ *             eventBus.subscribeAReq(statusLogger).call();
+ *             eventBus.subscribeAReq(statusPrinter).call();
  *
  *             //Send a status update to all subscribers.
- *             eventBus.publishReq(new StatusUpdate("started")).call();
+ *             eventBus.publishAReq(new StatusUpdate("started")).call();
  *
  *             //Send a status update to all subscribers.
- *             eventBus.publishReq(new StatusUpdate("stopped")).call();
+ *             eventBus.publishAReq(new StatusUpdate("stopped")).call();
  *         } finally {
  *             //Close the module context.
  *             moduleContext.close();
@@ -153,7 +153,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @param _subscriber An actor that will receive the published events.
      * @return The request.
      */
-    public AsyncRequest<Boolean> subscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
+    public AsyncRequest<Boolean> subscribeAReq(final TARGET_ACTOR_TYPE _subscriber) {
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest()
@@ -170,7 +170,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @param _subscriber The actor that should no longer receive the published events.
      * @return The request.
      */
-    public AsyncRequest<Boolean> unsubscribeReq(final TARGET_ACTOR_TYPE _subscriber) {
+    public AsyncRequest<Boolean> unsubscribeAReq(final TARGET_ACTOR_TYPE _subscriber) {
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest()
@@ -189,7 +189,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @param event The event to be published.
      * @return The request.
      */
-    public AsyncRequest<Void> publishReq(
+    public AsyncRequest<Void> publishAReq(
             final Event<TARGET_ACTOR_TYPE> event) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override

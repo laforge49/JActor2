@@ -13,18 +13,18 @@ public class EventBusTest extends TestCase {
             Printer a = new Printer();
             a.initialize(new NonBlockingMessageProcessor(moduleContext));
             a.setName("a");
-            p.subscribeReq(a).call();
+            p.subscribeAReq(a).call();
             Printer b = new Printer();
             b.initialize(new NonBlockingMessageProcessor(moduleContext));
             b.setName("b");
-            p.subscribeReq(b).call();
+            p.subscribeAReq(b).call();
             Printer c = new Printer();
             c.initialize(new NonBlockingMessageProcessor(moduleContext));
             c.setName("c");
-            p.subscribeReq(c).call();
-            p.publishReq(new Print("42")).call();
-            p.publishReq(new Print("24")).call();
-            p.publishReq(new Print("Hello world!")).call();
+            p.subscribeAReq(c).call();
+            p.publishAReq(new Print("42")).call();
+            p.publishAReq(new Print("24")).call();
+            p.publishAReq(new Print("Hello world!")).call();
         } finally {
             moduleContext.close();
         }

@@ -44,7 +44,7 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *             try {
  *                 //Create and call an exception request.
- *                 exceptionActor.exceptionReq().call();
+ *                 exceptionActor.exceptionAReq().call();
  *                 System.out.println("can not get here");
  *             } catch (IllegalStateException ise) {
  *                 System.out.println("got first IllegalStateException, as expected");
@@ -54,7 +54,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             ExceptionHandlerActor exceptionHandlerActor =
  *                     new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(moduleContext));
  *             //Create a test request, call it and print the results.
- *             System.out.println(exceptionHandlerActor.testReq().call());
+ *             System.out.println(exceptionHandlerActor.testAReq().call());
  *
  *         } finally {
  *             //shutdown the context
@@ -72,7 +72,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  *
  *     //Returns an exception request.
- *     AsyncRequest&lt;Void&gt; exceptionReq() {
+ *     AsyncRequest&lt;Void&gt; exceptionAReq() {
  *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *
  *             {@literal @}Override
@@ -96,7 +96,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  *
  *     //Returns a test request.
- *     AsyncRequest&lt;String&gt; testReq() {
+ *     AsyncRequest&lt;String&gt; testAReq() {
  *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
  *             AsyncRequest<String> dis = this;
  *
@@ -117,7 +117,7 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *                 //Create an exception request and send it to the exception actor for processing.
  *                 //The thrown exception is then caught by the assigned exception handler.
- *                 exceptionActor.exceptionReq().send(getMessageProcessor(), new AsyncResponseProcessor&lt;Void&gt;() {
+ *                 exceptionActor.exceptionAReq().send(getMessageProcessor(), new AsyncResponseProcessor&lt;Void&gt;() {
  *                     {@literal @}Override
  *                     public void processAsyncResponse(final Void _response) throws Exception {
  *                         dis.processAsyncResponse("can not get here");

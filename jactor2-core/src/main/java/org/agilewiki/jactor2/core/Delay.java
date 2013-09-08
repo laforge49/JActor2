@@ -24,7 +24,7 @@ public class Delay extends ActorBase {
      * @param _delay The length of the delay in milliseconds.
      * @return The delay request.
      */
-    public AsyncRequest<Void> sleepReq(final long _delay) {
+    public AsyncRequest<Void> sleepAReq(final long _delay) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest()

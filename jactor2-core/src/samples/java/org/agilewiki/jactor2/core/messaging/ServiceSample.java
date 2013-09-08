@@ -18,13 +18,13 @@ public class ServiceSample {
 
         try {
             //Test the delay echo request on the service actor.
-            System.out.println(service.delayEchoReq(1, "1 (Expected)").call());
+            System.out.println(service.delayEchoAReq(1, "1 (Expected)").call());
 
             //close the context used by the service actor.
             service.getMessageProcessor().getModuleContext().close();
             try {
                 //Try using delay echo request with the context closed.
-                System.out.println(service.delayEchoReq(1, "(Unexpected)").call());
+                System.out.println(service.delayEchoAReq(1, "(Unexpected)").call());
             } catch (ServiceClosedException sce) {
                 //The ServiceClosedException is now thrown because the context is closed.
                 System.out.println("Exception as expected");
@@ -37,16 +37,16 @@ public class ServiceSample {
             final ServiceApplication serviceApplication =
                     new ServiceApplication(service, new NonBlockingMessageProcessor(applicationContext));
             //Start a delay echo service request using the application actor.
-            EchoReqState echoReqState = serviceApplication.echoReq(1, "2 (Expected)").call();
+            EchoReqState echoReqState = serviceApplication.echoAReq(1, "2 (Expected)").call();
             //Print the results of the delay echo service request.
-            System.out.println(serviceApplication.echoResultReq(echoReqState).call());
+            System.out.println(serviceApplication.echoResultAReq(echoReqState).call());
 
             //Start a second delay echo service request using the application actor.
-            EchoReqState echoReqState2 = serviceApplication.echoReq(1, "(Unexpected)").call();
+            EchoReqState echoReqState2 = serviceApplication.echoAReq(1, "(Unexpected)").call();
             //Close the service context while the delay echo service request is still sleeping.
-            serviceApplication.closeServiceReq().call();
+            serviceApplication.closeServiceAReq().call();
             //The results should now show that an exception was thrown.
-            System.out.println(serviceApplication.echoResultReq(echoReqState2).call());
+            System.out.println(serviceApplication.echoResultAReq(echoReqState2).call());
         } finally {
             service.getMessageProcessor().getModuleContext().close(); //Close the service context.
             applicationContext.close(); //Close the application context.
@@ -64,7 +64,7 @@ class Service extends ActorBase {
     }
 
     //Returns a delay echo request.
-    AsyncRequest<String> delayEchoReq(final int _delay, final String _text) {
+    AsyncRequest<String> delayEchoAReq(final int _delay, final String _text) {
         return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {
@@ -109,7 +109,7 @@ class ServiceApplication extends ActorBase {
     //The echo request is used to initiate a service delay echo request.
     //And the response returned by the echo request is state data needed to manage the
     //delivery of the response from the service delay echo request.
-    AsyncRequest<EchoReqState> echoReq(final int _delay, final String _text) {
+    AsyncRequest<EchoReqState> echoAReq(final int _delay, final String _text) {
         return new AsyncRequest<EchoReqState>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {
@@ -138,7 +138,7 @@ class ServiceApplication extends ActorBase {
                             throw throwable;
                     }
                 });
-                service.delayEchoReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor<String>() {
+                service.delayEchoAReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor<String>() {
                     @Override
                     public void processAsyncResponse(String response) throws Exception {
                         if (echoReqState.responseProcessor == null) {
@@ -158,7 +158,7 @@ class ServiceApplication extends ActorBase {
     }
 
     //Returns a close service request.
-    AsyncRequest<Void> closeServiceReq() {
+    AsyncRequest<Void> closeServiceAReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {
@@ -172,7 +172,7 @@ class ServiceApplication extends ActorBase {
     //Returns an echo result request.
     //An echo result request returns the response from the service delay echo request
     //associated with the given echo request state.
-    AsyncRequest<String> echoResultReq(final EchoReqState _echoReqState) {
+    AsyncRequest<String> echoResultAReq(final EchoReqState _echoReqState) {
         return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {

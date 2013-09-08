@@ -9,7 +9,7 @@ import javax.swing.*;
 public class SwingBoundMessageProcessorSample {
     public static void main(final String[] _args) throws Exception {
 
-        new HelloWorld().createAndShowReq().signal();
+        new HelloWorld().createAndShowAReq().signal();
     }
 }
 
@@ -22,7 +22,7 @@ class HelloWorld extends ActorBase {
         initialize(new SwingBoundMessageProcessor(context));
     }
 
-    AsyncRequest<Void> createAndShowReq() {
+    AsyncRequest<Void> createAndShowAReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {

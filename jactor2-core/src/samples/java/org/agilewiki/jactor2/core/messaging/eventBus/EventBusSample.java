@@ -22,14 +22,14 @@ public class EventBusSample {
                     new EventBus<StatusListener>(new NonBlockingMessageProcessor(moduleContext));
 
             //Add statusLogger and statusPrinter to the subscribers of the event bus.
-            eventBus.subscribeReq(statusLogger).call();
-            eventBus.subscribeReq(statusPrinter).call();
+            eventBus.subscribeAReq(statusLogger).call();
+            eventBus.subscribeAReq(statusPrinter).call();
 
             //Send a status update to all subscribers.
-            eventBus.publishReq(new StatusUpdate("started")).call();
+            eventBus.publishAReq(new StatusUpdate("started")).call();
 
             //Send a status update to all subscribers.
-            eventBus.publishReq(new StatusUpdate("stopped")).call();
+            eventBus.publishAReq(new StatusUpdate("stopped")).call();
         } finally {
             //Close the module context.
             moduleContext.close();

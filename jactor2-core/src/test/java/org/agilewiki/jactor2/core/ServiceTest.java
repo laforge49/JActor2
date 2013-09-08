@@ -24,7 +24,7 @@ public class ServiceTest extends TestCase {
 
                 @Override
                 public void processAsyncRequest() throws Exception {
-                    client.crossReq().send(getMessageProcessor(), new AsyncResponseProcessor<Boolean>() {
+                    client.crossAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Boolean>() {
                         @Override
                         public void processAsyncResponse(Boolean response) throws Exception {
                             assertFalse(response);
@@ -51,7 +51,7 @@ class Client extends ActorBase {
         server = _server;
     }
 
-    AsyncRequest<Boolean> crossReq() {
+    AsyncRequest<Boolean> crossAReq() {
         return new AsyncRequest<Boolean>(getMessageProcessor()) {
             AsyncRequest<Boolean> dis = this;
 
@@ -66,7 +66,7 @@ class Client extends ActorBase {
                         processAsyncResponse(false);
                     }
                 });
-                server.hangReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
+                server.hangAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(Void response) throws Exception {
                         dis.processAsyncResponse(true);
@@ -82,7 +82,7 @@ class Server extends ActorBase {
         initialize(messageProcessor);
     }
 
-    AsyncRequest<Void> hangReq() {
+    AsyncRequest<Void> hangAReq() {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {

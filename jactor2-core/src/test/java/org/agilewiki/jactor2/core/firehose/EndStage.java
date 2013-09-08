@@ -13,7 +13,7 @@ public class EndStage extends ActorBase implements DataProcessor {
     }
 
     @Override
-    public AsyncRequest<Void> processDataReq(final FirehoseData _firehoseData) {
+    public AsyncRequest<Void> processDataAReq(final FirehoseData _firehoseData) {
         return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
             public void processAsyncRequest() throws Exception {

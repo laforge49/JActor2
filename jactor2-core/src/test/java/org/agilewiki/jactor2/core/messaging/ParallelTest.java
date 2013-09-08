@@ -32,7 +32,7 @@ public class ParallelTest extends TestCase {
                 int i = 0;
                 while (i < LOADS) {
                     final Delay dly = new Delay(moduleContext);
-                    dly.sleepReq(ParallelTest.DELAY).send(messageProcessor,
+                    dly.sleepAReq(ParallelTest.DELAY).send(messageProcessor,
                             responseCounter);
                     i += 1;
                 }
