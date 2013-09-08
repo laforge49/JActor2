@@ -9,8 +9,8 @@ public class HelloWorld {
         try {
             NonBlockingMessageProcessor messageProcessor = new NonBlockingMessageProcessor(context);
             HelloWorldActor helloWorldActor = new HelloWorldActor(messageProcessor);
-            Request<String> getGreetingReq = helloWorldActor.getGreetingReq();
-            String response = getGreetingReq.call();
+            AsyncRequest<String> getGreetingAReq = helloWorldActor.getGreetingAReq();
+            String response = getGreetingAReq.call();
             System.out.println(response);
         } finally {
             context.close();

@@ -9,11 +9,11 @@ public class HelloWorldActor extends ActorBase {
         initialize(_messageProcessor);
     }
     
-    public Request<String> getGreetingReq() {
-        return new Request<String>(getMessageProcessor()) {
+    public AsyncRequest<String> getGreetingAReq() {
+        return new AsyncRequest<String>(getMessageProcessor()) {
             @Override
-            public void processRequest() throws Exception {
-                processResponse("Hello world!");
+            public void processAsyncRequest() throws Exception {
+                processAsyncResponse("Hello world!");
             }
         };
     }

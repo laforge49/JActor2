@@ -14,7 +14,7 @@ public class ThreadMigration extends ActorBase {
                 new NonBlockingMessageProcessor(moduleContext);
             ThreadMigration threadMigration = 
                 new ThreadMigration(messageProcessor);
-            threadMigration.startReq().call();
+            threadMigration.startAReq().call();
         } finally {
             moduleContext.close();
         }
@@ -25,10 +25,10 @@ public class ThreadMigration extends ActorBase {
         initialize(_messageProcessor);
     }
     
-    public Request<Void> startReq() {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> startAReq() {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
                 MessageProcessor myMessageProcessor = getMessageProcessor();
@@ -36,8 +36,8 @@ public class ThreadMigration extends ActorBase {
                 MessageProcessor subMessageProcessor = 
                     new NonBlockingMessageProcessor(myModuleContext);
                 SubActor subActor = new SubActor(subMessageProcessor);
-                subActor.doReq("         signal").signal();
-                subActor.doReq("           send").send(myMessageProcessor, this);
+                subActor.doAReq("         signal").signal();
+                subActor.doAReq("           send").send(myMessageProcessor, this);
             }
         };
     }
@@ -49,14 +49,14 @@ class SubActor extends ActorBase {
         initialize(_messageProcessor);
     }
     
-    public Request<Void> doReq(final String _label) {
-        return new Request<Void>(getMessageProcessor()) {
+    public AsyncRequest<Void> doAReq(final String _label) {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 System.out.println(_label + " thread: " + 
                     Thread.currentThread());
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }

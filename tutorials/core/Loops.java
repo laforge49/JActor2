@@ -34,21 +34,21 @@ public class Loops extends ActorBase {
     static void test(final long _c, final Sums _sums, final Loops loops) throws Exception {
             /*
             System.out.println("1 => " + loops.loopReq(_sums, 1).call());
-            _sums.clearReq().signal();
+            _sums.clearAReq().signal();
             System.out.println("2 => " + loops.loopReq(_sums, 2).call());
-            _sums.clearReq().signal();
+            _sums.clearAReq().signal();
             System.out.println("100 => " + loops.loopReq(_sums, 100).call());
-            _sums.clearReq().signal();
+            _sums.clearAReq().signal();
             */
             System.gc();
             long t0 = System.currentTimeMillis();
-            long r = loops.loopReq(_sums, _c).call();
+            long r = loops.loopAReq(_sums, _c).call();
             long t1 = System.currentTimeMillis();
             long d = t1 - t0;
             System.out.println("" + _c + " => " + r + " in " + d + " milliseconds");
             if (d > 0)
                 System.out.println("" + (_c * 1000 / d) + " requests/responses per second");
-            _sums.clearReq().signal();
+            _sums.clearAReq().signal();
     }
     
     Loops(final MessageProcessor _messageProcessor)
@@ -56,31 +56,31 @@ public class Loops extends ActorBase {
         initialize(_messageProcessor);
     }
     
-    Request<Long> loopReq(final Sums _sums, final long _count) {
-        return new Request<Long>(getMessageProcessor()) {
+    AsyncRequest<Long> loopAReq(final Sums _sums, final long _count) {
+        return new AsyncRequest<Long>(getMessageProcessor()) {
             long counter;
-            ResponseProcessor dis = this;
+            AsyncResponseProcessor dis = this;
             
-            ResponseProcessor<Long> responseProcessor = new ResponseProcessor<Long>() {
+            AsyncResponseProcessor<Long> responseProcessor = new AsyncResponseProcessor<Long>() {
                 @Override
-                public void processResponse(final Long _response) throws Exception {
+                public void processAsyncResponse(final Long _response) throws Exception {
                     if (counter == 1) {
-                        processResponse(_response);
+                        processAsyncResponse(_response);
                     } else {
                         counter -= 1;
-                        _sums.addReq(counter).send(getMessageProcessor(), dis);
+                        _sums.addAReq(counter).send(getMessageProcessor(), dis);
                     }
                 }
             };
             
             @Override
-            public void processRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 if (_count < 1) {
-                    processResponse(0L);
+                    processAsyncResponse(0L);
                 } else {
                     counter = _count;
-                    _sums.addReq(counter).send(getMessageProcessor(), responseProcessor);
+                    _sums.addAReq(counter).send(getMessageProcessor(), responseProcessor);
                 }
             }
         };
@@ -95,24 +95,24 @@ class Sums extends ActorBase {
         initialize(_messageProcessor);
     }
     
-    Request<Void> clearReq() {
-        return new Request<Void>(getMessageProcessor()) {
+    AsyncRequest<Void> clearAReq() {
+        return new AsyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 total = 0L;
-                processResponse(null);
+                processAsyncResponse(null);
             }
         };
     }
     
-    Request<Long> addReq(final long _value) {
-        return new Request<Long>(getMessageProcessor()) {
+    AsyncRequest<Long> addAReq(final long _value) {
+        return new AsyncRequest<Long>(getMessageProcessor()) {
             @Override
-            public void processRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 total += _value;
-                processResponse(total);
+                processAsyncResponse(total);
             }
         };
     }
