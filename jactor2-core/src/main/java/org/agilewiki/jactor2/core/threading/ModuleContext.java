@@ -34,8 +34,8 @@ public class ModuleContext implements AutoCloseable {
     /**
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
      */
-    public final ConcurrentSkipListMap<Long, RequestBase> pendingRequests =
-            DEBUG ? new ConcurrentSkipListMap<Long, RequestBase>() : null;
+    public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests =
+            DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>() : null;
 
     /**
      * The logger used by message processors.

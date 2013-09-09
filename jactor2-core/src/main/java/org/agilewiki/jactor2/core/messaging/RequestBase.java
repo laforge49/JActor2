@@ -4,9 +4,18 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
 public abstract class RequestBase<RESPONSE_TYPE> implements Message {
+
+    /**
+     * Assigned to current time when ModuleContext.DEBUG.
+     */
+    private Long debugTimestamp;
 
     /**
      * A request can only be used once.
@@ -57,6 +66,12 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     protected Object response;
 
+    /**
+     * Create a RequestBase.
+     *
+     * @param _targetMessageProcessor The message processor where this Request Objects is passed for processing.
+     *                                The thread owned by this message processor will process this Request.
+     */
     public RequestBase(final MessageProcessor _targetMessageProcessor) {
         if (_targetMessageProcessor == null) {
             throw new NullPointerException("targetMessageProcessor");
@@ -119,6 +134,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
         if (rp == null)
             rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
+        else
+            addDebugPending();
         foreign = source.getModuleContext() != messageProcessor.getModuleContext();
         messageSource = source;
         oldMessage = source.getCurrentMessage();
@@ -140,11 +157,28 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
+        addDebugPending();
         foreign = true;
         messageSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
         messageProcessor.unbufferedAddMessage(this, false);
         return (RESPONSE_TYPE) ((Pender) messageSource).pend();
+    }
+
+    /**
+     * track pending requests.
+     */
+    private void addDebugPending() {
+        if (ModuleContext.DEBUG) {
+            debugTimestamp = System.currentTimeMillis();
+            ModuleContext targetModuleContext = messageProcessor.getModuleContext();
+            Map<Long, Set<RequestBase>> pendingRequests = targetModuleContext.pendingRequests;
+            Set<RequestBase> milliSet = pendingRequests.get(debugTimestamp);
+            if (milliSet == null) {
+                milliSet = Collections.newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>());
+            }
+            pendingRequests.put(debugTimestamp, milliSet);
+        }
     }
 
     /**
@@ -156,6 +190,17 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         ((MessageProcessorBase) _activeMessageProcessor).requestEnd();
         responsePending = false;
         response = _response;
+        if (ModuleContext.DEBUG) {
+            ModuleContext targetModuleContext = messageProcessor.getModuleContext();
+            Map<Long, Set<RequestBase>> pendingRequests = targetModuleContext.pendingRequests;
+            Set<RequestBase> milliSet = pendingRequests.get(debugTimestamp);
+            if (milliSet != null) {
+                milliSet.remove(this);
+                if (milliSet.isEmpty()) {
+                    pendingRequests.remove(debugTimestamp);
+                }
+            }
+        }
     }
 
     /**
