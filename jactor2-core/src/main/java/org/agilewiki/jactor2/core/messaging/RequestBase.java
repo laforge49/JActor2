@@ -212,14 +212,15 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * </p>
      *
      * @param _response The response to a request.
+     * @return True when this is the first response.
      */
-    protected void processObjectResponse(final Object _response)
+    protected boolean processObjectResponse(final Object _response)
             throws Exception {
         final ModuleContext moduleContext = messageProcessor.getModuleContext();
         if (foreign)
             moduleContext.removeAutoClosable(RequestBase.this);
         if (!responsePending)
-            return;
+            return false;
         setResponse(_response, messageProcessor);
         if (responseProcessor != SignalResponseProcessor.SINGLETON) {
             messageSource.incomingResponse(RequestBase.this, messageProcessor);
@@ -229,6 +230,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                         (Throwable) _response);
             }
         }
+        return true;
     }
 
     /**
@@ -390,6 +392,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
         @Override
         public void processAsyncResponse(final Object response) {
+            throw new UnsupportedOperationException();
         }
     }
 }

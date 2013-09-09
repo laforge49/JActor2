@@ -166,6 +166,22 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
     }
 
     /**
+     * The processAsyncResponse method accepts the response of a request.
+     * <p>
+     * This method need not be thread-safe, as it
+     * is always invoked from the same light-weight thread (message processor) that passed the
+     * AsyncRequest and AsyncResponseProcessor objects.
+     * </p>
+     *
+     * @param _response The response to a request.
+     * @return True when this is the first response.
+     */
+    public boolean processCheckAsyncResponse(final RESPONSE_TYPE _response)
+            throws Exception {
+        return processObjectResponse(_response);
+    }
+
+    /**
      * Returns an exception as a response instead of throwing it.
      * But regardless of how a response is returned, if the response is an exception it
      * is passed to the exception handler of the actor that did the call or send on the request.
