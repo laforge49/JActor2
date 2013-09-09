@@ -126,11 +126,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     public void send(final MessageProcessor _source,
                      final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
-        use();
         MessageProcessorBase source = (MessageProcessorBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(
                     "A valid source message processor can not be idle");
+        use();
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
         if (rp == null)
             rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
