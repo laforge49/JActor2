@@ -13,7 +13,7 @@ public class Loops extends ActorBase {
             
             System.out.println("\nshared message processor tests:");
             sums = new Sums(loops.getMessageProcessor());
-            test(100000000, sums, loops);
+            test(10000000, sums, loops);
             sums.getMessageProcessor().getModuleContext().close();
             /*
             System.out.println("\nno thread migration tests:");
@@ -65,10 +65,10 @@ public class Loops extends ActorBase {
                 @Override
                 public void processAsyncResponse(final Long _response) throws Exception {
                     if (counter == 1) {
-                        processAsyncResponse(_response);
+                        dis.processAsyncResponse(_response);
                     } else {
                         counter -= 1;
-                        _sums.addAReq(counter).send(getMessageProcessor(), dis);
+                        _sums.addAReq(counter).send(getMessageProcessor(), responseProcessor);
                     }
                 }
             };
