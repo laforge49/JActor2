@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * when the context is closed, as well as a table of properties.
  */
 
-public final class ModuleContext implements AutoCloseable {
+public class ModuleContext implements AutoCloseable {
 
     /**
      * The logger used by message processors.
