@@ -170,14 +170,14 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     private void addDebugPending() {
         if (ModuleContext.DEBUG) {
-            debugTimestamp = System.currentTimeMillis();
+            debugTimestamp = System.nanoTime();
             ModuleContext targetModuleContext = messageProcessor.getModuleContext();
             Map<Long, Set<RequestBase>> pendingRequests = targetModuleContext.pendingRequests;
-            Set<RequestBase> milliSet = pendingRequests.get(debugTimestamp);
-            if (milliSet == null) {
-                milliSet = Collections.newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>());
+            Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
+            if (nanoSet == null) {
+                nanoSet = Collections.newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>());
             }
-            pendingRequests.put(debugTimestamp, milliSet);
+            pendingRequests.put(debugTimestamp, nanoSet);
         }
     }
 
@@ -193,10 +193,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (ModuleContext.DEBUG) {
             ModuleContext targetModuleContext = messageProcessor.getModuleContext();
             Map<Long, Set<RequestBase>> pendingRequests = targetModuleContext.pendingRequests;
-            Set<RequestBase> milliSet = pendingRequests.get(debugTimestamp);
-            if (milliSet != null) {
-                milliSet.remove(this);
-                if (milliSet.isEmpty()) {
+            Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
+            if (nanoSet != null) {
+                nanoSet.remove(this);
+                if (nanoSet.isEmpty()) {
                     pendingRequests.remove(debugTimestamp);
                 }
             }
