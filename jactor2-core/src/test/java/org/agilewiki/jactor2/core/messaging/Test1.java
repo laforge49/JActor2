@@ -13,7 +13,7 @@ public class Test1 extends TestCase {
         final ModuleContext moduleContext = new ModuleContext();
         final MessageProcessor messageProcessor = new IsolationMessageProcessor(moduleContext);
         final Actor1 actor1 = new Actor1(messageProcessor);
-        final String result = actor1.hi.call();
+        final String result = actor1.hiSReq().call();
         assertEquals("Hello world!", result);
         moduleContext.close();
     }

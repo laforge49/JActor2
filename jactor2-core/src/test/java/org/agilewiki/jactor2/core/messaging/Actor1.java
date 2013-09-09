@@ -7,14 +7,16 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * Test code.
  */
 public class Actor1 extends ActorBase {
-    public final AsyncRequest<String> hi;
 
     public Actor1(final MessageProcessor mbox) throws Exception {
         initialize(mbox);
-        hi = new AsyncRequest<String>(getMessageProcessor()) {
+    }
+
+    public SyncRequest<String> hiSReq() {
+        return new SyncRequest<String>(getMessageProcessor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                processAsyncResponse("Hello world!");
+            public String processSyncRequest() throws Exception {
+                return "Hello world!";
             }
         };
     }

@@ -1,25 +1,24 @@
 package org.agilewiki.jactor2.core.messaging;
 
+import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 /**
  * Test code.
  */
-public class Actor3 {
-    private final MessageProcessor messageProcessor;
-    public final AsyncRequest<Void> hi3;
+public class Actor3 extends ActorBase {
 
-    public Actor3(final ModuleContext _context) {
-        this.messageProcessor = new IsolationMessageProcessor(_context);
+    public Actor3(final ModuleContext _context) throws Exception {
+        initialize(new IsolationMessageProcessor(_context));
+    }
 
-        hi3 = new AsyncRequest<Void>(messageProcessor) {
+    public SyncRequest<Void> hi3SReq() {
+        return new SyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processAsyncRequest()
-                    throws Exception {
+            public Void processSyncRequest() throws Exception {
                 System.out.println("Hello world!");
-                processAsyncResponse(null);
+                return null;
             }
         };
     }

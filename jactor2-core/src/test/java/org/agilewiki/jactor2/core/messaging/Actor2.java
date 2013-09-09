@@ -12,12 +12,12 @@ public class Actor2 {
         this.messageProcessor = mbox;
     }
 
-    public AsyncRequest<String> hi2(final Actor1 actor1) {
+    public AsyncRequest<String> hi2AReq(final Actor1 actor1) {
         return new AsyncRequest<String>(messageProcessor) {
             @Override
             public void processAsyncRequest()
                     throws Exception {
-                actor1.hi.send(messageProcessor, this);
+                actor1.hiSReq().send(messageProcessor, this);
             }
         };
     }

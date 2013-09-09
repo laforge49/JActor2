@@ -75,7 +75,7 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     private AsyncRequest<Boolean> acquireException(final JASemaphore semaphore,
-                                              final MessageProcessor messageProcessor) {
+                                                   final MessageProcessor messageProcessor) {
         return new AsyncRequest<Boolean>(messageProcessor) {
             @Override
             public void processAsyncRequest()

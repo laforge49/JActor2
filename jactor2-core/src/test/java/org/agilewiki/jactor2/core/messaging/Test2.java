@@ -16,7 +16,7 @@ public class Test2 extends TestCase {
         final MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
         final Actor1 actor1 = new Actor1(messageProcessor);
         final Actor2 actor2 = new Actor2(messageProcessor);
-        final String result = actor2.hi2(actor1).call();
+        final String result = actor2.hi2AReq(actor1).call();
         assertEquals("Hello world!", result);
         moduleContext.close();
     }
@@ -26,7 +26,7 @@ public class Test2 extends TestCase {
         final ModuleContext moduleContext = new ModuleContext();
         final Actor1 actor1 = new Actor1(new IsolationMessageProcessor(moduleContext));
         final Actor2 actor2 = new Actor2(new IsolationMessageProcessor(moduleContext));
-        final String result = actor2.hi2(actor1).call();
+        final String result = actor2.hi2AReq(actor1).call();
         assertEquals("Hello world!", result);
         moduleContext.close();
     }

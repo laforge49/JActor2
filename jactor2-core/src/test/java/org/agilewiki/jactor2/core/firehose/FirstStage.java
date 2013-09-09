@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.firehose;
 
 import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 

@@ -1,10 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
-
-import java.util.concurrent.Semaphore;
 
 /**
  * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between actors.
@@ -193,19 +189,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
     }
 
     @Override
-    protected void processRequestMessage() {
-        final ModuleContext moduleContext = messageProcessor.getModuleContext();
-        if (foreign)
-            moduleContext.addAutoClosable(this);
-        messageProcessor.setExceptionHandler(null);
-        messageProcessor.setCurrentMessage(this);
-        messageProcessor.requestBegin();
-        try {
-            processAsyncRequest();
-        } catch (final Throwable t) {
-            if (foreign)
-                moduleContext.removeAutoClosable(this);
-            processThrowable(messageProcessor, t);
-        }
+    protected void processRequestMessage() throws Exception {
+        processAsyncRequest();
     }
 }

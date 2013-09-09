@@ -19,7 +19,7 @@ public class Actor4 {
             @Override
             public void processAsyncRequest()
                     throws Exception {
-                actor1.hi.send(messageProcessor, new AsyncResponseProcessor<String>() {
+                actor1.hiSReq().send(messageProcessor, new AsyncResponseProcessor<String>() {
                     @Override
                     public void processAsyncResponse(final String response)
                             throws Exception {

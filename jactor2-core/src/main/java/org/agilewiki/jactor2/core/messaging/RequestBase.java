@@ -272,7 +272,19 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     @Override
     public void eval() {
         if (responsePending) {
-            processRequestMessage();
+            final ModuleContext moduleContext = messageProcessor.getModuleContext();
+            if (foreign)
+                moduleContext.addAutoClosable(this);
+            messageProcessor.setExceptionHandler(null);
+            messageProcessor.setCurrentMessage(this);
+            messageProcessor.requestBegin();
+            try {
+                processRequestMessage();
+            } catch (final Throwable t) {
+                if (foreign)
+                    moduleContext.removeAutoClosable(this);
+                processThrowable(messageProcessor, t);
+            }
         } else {
             processResponseMessage();
         }
@@ -281,7 +293,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * Process a request.
      */
-    abstract protected void processRequestMessage();
+    abstract protected void processRequestMessage() throws Exception;
 
     /**
      * Process a response.
