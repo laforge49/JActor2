@@ -13,17 +13,13 @@ public class Test4 extends TestCase {
     public void testb() throws Exception {
         final ModuleContext moduleContext = new ModuleContext();
         final MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
-        final Actor1 actor1 = new Actor1(messageProcessor);
-        final Actor4 actor4 = new Actor4(messageProcessor);
-        actor4.hi4(actor1).call();
+        new Actor4(messageProcessor).hi4SReq().call();
         moduleContext.close();
     }
 
     public void testd() throws Exception {
         final ModuleContext moduleContext = new ModuleContext();
-        final Actor1 actor1 = new Actor1(new IsolationMessageProcessor(moduleContext));
-        final Actor4 actor4 = new Actor4(new IsolationMessageProcessor(moduleContext));
-        actor4.hi4(actor1).call();
+        new Actor4(new IsolationMessageProcessor(moduleContext)).hi4SReq().call();
         moduleContext.close();
     }
 }

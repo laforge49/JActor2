@@ -12,21 +12,14 @@ public class Actor4 {
         this.messageProcessor = mbox;
     }
 
-    public AsyncRequest<Void> hi4(final Actor1 actor1) {
-        return new AsyncRequest<Void>(messageProcessor) {
-            AsyncRequest<Void> dis = this;
-
+    public SyncRequest<Void> hi4SReq() {
+        return new SyncRequest<Void>(messageProcessor) {
             @Override
-            public void processAsyncRequest()
+            public Void processSyncRequest()
                     throws Exception {
-                actor1.hiSReq().send(messageProcessor, new AsyncResponseProcessor<String>() {
-                    @Override
-                    public void processAsyncResponse(final String response)
-                            throws Exception {
-                        System.out.println(response);
-                        dis.processAsyncResponse(null);
-                    }
-                });
+                new Actor1(messageProcessor).hiSReq().local(messageProcessor);
+                System.out.println(response);
+                return null;
             }
         };
     }
