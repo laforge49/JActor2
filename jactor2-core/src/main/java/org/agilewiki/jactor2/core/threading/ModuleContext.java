@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.threading;
 
+import org.agilewiki.jactor2.core.messaging.RequestBase;
 import org.agilewiki.jactor2.core.processing.Inbox;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.Outbox;
@@ -24,6 +25,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class ModuleContext implements AutoCloseable {
+
+    /**
+     * A "compile-time" flag to turn on debug;
+     */
+    public final static boolean DEBUG = false;
+
+    /**
+     * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
+     */
+    public final ConcurrentSkipListMap<Long, RequestBase> pendingRequests =
+            DEBUG ? new ConcurrentSkipListMap<Long, RequestBase>() : null;
 
     /**
      * The logger used by message processors.
