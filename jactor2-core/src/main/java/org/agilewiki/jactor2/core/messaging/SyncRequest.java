@@ -26,4 +26,8 @@ abstract public class SyncRequest<RESPONSE_TYPE>
     protected void processRequestMessage() throws Exception {
         processObjectResponse(processSyncRequest());
     }
+
+    public RESPONSE_TYPE local(final MessageProcessor _source) throws Exception {
+        return null;
+    }
 }
