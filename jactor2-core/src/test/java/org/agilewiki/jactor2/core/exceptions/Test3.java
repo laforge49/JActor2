@@ -10,7 +10,7 @@ public class Test3 extends TestCase {
     public void testI() throws Exception {
         final ModuleContext moduleContext = new ModuleContext();
         final ActorC actorC = new ActorC(moduleContext);
-        final String result = actorC.throwRequest.call();
+        final String result = actorC.throwAReq().call();
         assertEquals("java.lang.SecurityException: thrown on request", result);
         moduleContext.close();
     }

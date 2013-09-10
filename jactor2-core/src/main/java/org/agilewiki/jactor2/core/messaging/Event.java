@@ -144,23 +144,23 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
             targetMessageProcessor.setCurrentMessage(this);
             try {
                 processEvent(targetActor);
-            } catch (final Throwable t) {
-                processThrowable(targetMessageProcessor, t);
+            } catch (final Exception e) {
+                processException(targetMessageProcessor, e);
             }
         }
 
         @Override
-        public void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t) {
+        public void processException(final MessageProcessor _activeMessageProcessor, final Exception _e) {
             MessageProcessorBase activeMessageProcessor = (MessageProcessorBase) _activeMessageProcessor;
             ExceptionHandler exceptionHandler = activeMessageProcessor.getExceptionHandler();
             if (exceptionHandler != null) {
                 try {
-                    exceptionHandler.processException(_t);
+                    exceptionHandler.processException(_e);
                 } catch (final Throwable u) {
                     activeMessageProcessor.getLogger().error("Exception handler unable to process throwable "
                             + exceptionHandler.getClass().getName(), u);
                     activeMessageProcessor.getLogger().error("Thrown by exception handler and uncaught "
-                            + exceptionHandler.getClass().getName(), _t);
+                            + exceptionHandler.getClass().getName(), _e);
                 }
             }
         }

@@ -39,22 +39,27 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      */
     public RESPONSE_TYPE local(final MessageProcessor _source) throws Exception {
         use();
-        MessageProcessorBase source = (MessageProcessorBase) _source;
-        if (!source.isRunning())
+        MessageProcessorBase messageProcessor = (MessageProcessorBase) _source;
+        if (!messageProcessor.isRunning())
             throw new IllegalStateException(
                     "A valid source message processor can not be idle");
-        if (_source != getMessageProcessor())
+        if (messageProcessor != getMessageProcessor())
             throw new IllegalArgumentException("MessageProcessor is not shared");
-        messageSource = source;
-        oldMessage = source.getCurrentMessage();
-        sourceExceptionHandler = source.getExceptionHandler();
-        source.setCurrentMessage(this);
-        source.setExceptionHandler(null);
+        messageSource = messageProcessor;
+        oldMessage = messageProcessor.getCurrentMessage();
+        sourceExceptionHandler = messageProcessor.getExceptionHandler();
+        messageProcessor.setCurrentMessage(this);
+        messageProcessor.setExceptionHandler(null);
         try {
             return processSyncRequest();
+        } catch (Exception e) {
+            ExceptionHandler<RESPONSE_TYPE> currentExceptionHandler = messageProcessor.getExceptionHandler();
+            if (currentExceptionHandler == null)
+                throw e;
+            return currentExceptionHandler.processException(e);
         } finally {
-            source.setCurrentMessage(oldMessage);
-            source.setExceptionHandler(sourceExceptionHandler);
+            messageProcessor.setCurrentMessage(oldMessage);
+            messageProcessor.setExceptionHandler(sourceExceptionHandler);
         }
     }
 }

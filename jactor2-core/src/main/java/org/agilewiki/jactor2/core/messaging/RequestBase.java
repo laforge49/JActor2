@@ -280,10 +280,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             messageProcessor.requestBegin();
             try {
                 processRequestMessage();
-            } catch (final Throwable t) {
+            } catch (final Exception e) {
                 if (foreign)
                     moduleContext.removeAutoClosable(this);
-                processThrowable(messageProcessor, t);
+                processException(messageProcessor, e);
             }
         } else {
             processResponseMessage();
@@ -302,24 +302,24 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) messageSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);
-        if (response instanceof Throwable) {
-            oldMessage.processThrowable(sourceMessageProcessor, (Throwable) response);
+        if (response instanceof Exception) {
+            oldMessage.processException(sourceMessageProcessor, (Exception) response);
             return;
         }
         try {
             responseProcessor.processAsyncResponse(response);
-        } catch (final Throwable t) {
-            oldMessage.processThrowable(sourceMessageProcessor, t);
+        } catch (final Exception e) {
+            oldMessage.processException(sourceMessageProcessor, e);
         }
     }
 
     @Override
-    public void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t) {
+    public void processException(final MessageProcessor _activeMessageProcessor, final Exception _e) {
         MessageProcessorBase activeMessageProcessor = (MessageProcessorBase) _activeMessageProcessor;
-        ExceptionHandler exceptionHandler = activeMessageProcessor.getExceptionHandler();
+        ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor.getExceptionHandler();
         if (exceptionHandler != null) {
             try {
-                exceptionHandler.processException(_t);
+                processObjectResponse(exceptionHandler.processException(_e));
             } catch (final Throwable u) {
                 activeMessageProcessor.getLogger().error("Exception handler unable to process throwable "
                         + exceptionHandler.getClass().getName(), u);
@@ -330,18 +330,18 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                     messageSource.incomingResponse(this, activeMessageProcessor);
                 } else {
                     activeMessageProcessor.getLogger().error("Thrown by exception handler and uncaught "
-                            + exceptionHandler.getClass().getName(), _t);
+                            + exceptionHandler.getClass().getName(), _e);
                 }
             }
         } else {
             if (!responsePending) {
                 return;
             }
-            setResponse(_t, activeMessageProcessor);
+            setResponse(_e, activeMessageProcessor);
             if (!(responseProcessor instanceof SignalResponseProcessor))
                 messageSource.incomingResponse(this, activeMessageProcessor);
             else {
-                activeMessageProcessor.getLogger().warn("Uncaught throwable", _t);
+                activeMessageProcessor.getLogger().warn("Uncaught throwable", _e);
             }
         }
     }

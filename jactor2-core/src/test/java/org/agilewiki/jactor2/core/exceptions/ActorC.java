@@ -8,20 +8,21 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 public class ActorC {
     private final MessageProcessor messageProcessor;
-    public final AsyncRequest<String> throwRequest;
 
     public ActorC(final ModuleContext _context) {
         this.messageProcessor = new IsolationMessageProcessor(_context);
+    }
 
-        throwRequest = new AsyncRequest<String>(messageProcessor) {
+    public AsyncRequest<String> throwAReq() {
+        return new AsyncRequest<String>(messageProcessor) {
             @Override
             public void processAsyncRequest()
                     throws Exception {
-                messageProcessor.setExceptionHandler(new ExceptionHandler() {
+                messageProcessor.setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
-                    public void processException(final Throwable throwable)
+                    public String processException(final Exception exception)
                             throws Exception {
-                        processAsyncResponse(throwable.toString());
+                        return exception.toString();
                     }
                 });
                 throw new SecurityException("thrown on request");

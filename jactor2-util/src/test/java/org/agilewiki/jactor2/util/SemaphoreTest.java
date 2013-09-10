@@ -80,12 +80,12 @@ public class SemaphoreTest extends TestCase implements Actor {
             @Override
             public void processAsyncRequest()
                     throws Exception {
-                messageProcessor.setExceptionHandler(new ExceptionHandler() {
+                messageProcessor.setExceptionHandler(new ExceptionHandler<Boolean>() {
                     @Override
-                    public void processException(final Throwable throwable)
+                    public Boolean processException(final Exception exception)
                             throws Exception {
-                        System.out.println(throwable);
-                        processAsyncResponse(true);
+                        System.out.println(exception);
+                        return true;
                     }
                 });
                 semaphore.acquireReq().send(messageProcessor,

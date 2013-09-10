@@ -57,13 +57,13 @@ class Client extends ActorBase {
 
             @Override
             public void processAsyncRequest() throws Exception {
-                getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
+                getMessageProcessor().setExceptionHandler(new ExceptionHandler<Boolean>() {
                     @Override
-                    public void processException(Throwable throwable) throws Throwable {
-                        if (!(throwable instanceof ServiceClosedException)) {
-                            throw throwable;
+                    public Boolean processException(Exception exception) throws Exception {
+                        if (!(exception instanceof ServiceClosedException)) {
+                            throw exception;
                         }
-                        processAsyncResponse(false);
+                        return false;
                     }
                 });
                 server.hangAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {

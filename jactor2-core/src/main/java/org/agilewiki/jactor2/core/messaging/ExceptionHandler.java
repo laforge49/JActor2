@@ -134,12 +134,12 @@ package org.agilewiki.jactor2.core.messaging;
  * got IllegalStateException, as expected
  * </pre>
  */
-public interface ExceptionHandler {
+public interface ExceptionHandler<RESPONSE_TYPE> {
     /**
      * Process an exception or rethrow it.
      *
-     * @param throwable The exception to be processed.
+     * @param e The exception to be processed.
      */
-    public abstract void processException(final Throwable throwable)
-            throws Throwable;
+    public abstract RESPONSE_TYPE processException(final Exception e)
+            throws Exception;
 }

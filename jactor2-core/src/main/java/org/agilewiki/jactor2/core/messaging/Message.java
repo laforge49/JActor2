@@ -40,7 +40,7 @@ public interface Message extends AutoCloseable {
      * Process the throwable on the current thread in the context of the active message processor.
      *
      * @param _activeMessageProcessor The message processor providing the context for processing the throwable.
-     * @param _t                      The throwable to be processed.
+     * @param _e                      The exception to be processed.
      */
-    void processThrowable(final MessageProcessor _activeMessageProcessor, final Throwable _t);
+    void processException(final MessageProcessor _activeMessageProcessor, final Exception _e);
 }
