@@ -109,12 +109,12 @@ C:\GitHub\JActor2docs\tutorials\core>
 </pre>
 <p>
 What this shows is that when 
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html#signal()">Request.signal</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/RequestBase.html#signal()">signal</a>
 or
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html#call()">Request.call</a>
-are used, the message is passed to a new thread. But when
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/Request.html#send(org.agilewiki.jactor2.core.processing.MessageProcessor, org.agilewiki.jactor2.core.messaging.ResponseProcessor)">Request.send</a>
-is used, the thread migrates with the message.
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/RequestBase.html#call()">call</a>
+methods are used, the request is passed to a new thread. But when the
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/RequestBase.html#send(org.agilewiki.jactor2.core.processing.MessageProcessor, org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor)">send</a>
+method is used, the thread migrates with the message.
 </p>
 </body>
 </html>
