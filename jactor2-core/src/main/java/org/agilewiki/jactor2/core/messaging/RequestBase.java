@@ -76,7 +76,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (_targetMessageProcessor == null) {
             throw new NullPointerException("targetMessageProcessor");
         }
-        this.messageProcessor = (MessageProcessorBase) _targetMessageProcessor;
+        messageProcessor = (MessageProcessorBase) _targetMessageProcessor;
     }
 
     /**
@@ -141,8 +141,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         oldMessage = source.getCurrentMessage();
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
-        boolean local = messageProcessor == messageProcessor;
-        if (local || !messageProcessor.buffer(this, messageProcessor))
+        boolean local = messageProcessor == source;
+        if (local || !source.buffer(this, messageProcessor))
             messageProcessor.unbufferedAddMessage(this, local);
     }
 
