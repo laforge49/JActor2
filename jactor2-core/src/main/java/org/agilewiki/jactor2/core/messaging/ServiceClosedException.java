@@ -126,10 +126,10 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *                 //Establish an exception handler which traps a ServiceClosedException and
  *                 //returns a notification that the exception occurred as a result.
- *                 getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
+ *                 setExceptionHandler(new ExceptionHandler<EchoReqState>() {
  *                     {@literal @}Override
- *                     public void processException(Throwable throwable) throws Throwable {
- *                         if (throwable instanceof ServiceClosedException) {
+ *                     public EchoReqState processException(Exception exception) throws Exception {
+ *                         if (exception instanceof ServiceClosedException) {
  *                             String response = "Exception as expected";
  *                             if (echoReqState.responseProcessor == null) {
  *                                 //No echo result request has yet been received,
@@ -140,8 +140,9 @@ package org.agilewiki.jactor2.core.messaging;
  *                                 //so now is the time to return the response.
  *                                 echoReqState.responseProcessor.processAsyncResponse(response);
  *                             }
+ *                             return echoReqState;
  *                         } else
- *                             throw throwable;
+ *                             throw exception;
  *                     }
  *                 });
  *                 service.delayEchoAReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor&lt;String&gt;() {

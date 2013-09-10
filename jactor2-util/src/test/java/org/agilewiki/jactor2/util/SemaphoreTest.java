@@ -80,7 +80,7 @@ public class SemaphoreTest extends TestCase implements Actor {
             @Override
             public void processAsyncRequest()
                     throws Exception {
-                messageProcessor.setExceptionHandler(new ExceptionHandler<Boolean>() {
+                setExceptionHandler(new ExceptionHandler<Boolean>() {
                     @Override
                     public Boolean processException(final Exception exception)
                             throws Exception {

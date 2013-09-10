@@ -78,14 +78,14 @@ class ExceptionHandlerActor extends ActorBase {
             public void processAsyncRequest() throws Exception {
 
                 //Create and assign an exception handler.
-                getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
+                setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
-                    public void processException(final Throwable _throwable) throws Throwable {
-                        if (_throwable instanceof IllegalStateException) {
+                    public String processException(final Exception _exception) throws Exception {
+                        if (_exception instanceof IllegalStateException) {
                             //Returns a result if an IllegalStateException was thrown.
-                            processAsyncResponse("got IllegalStateException, as expected");
+                            return "got IllegalStateException, as expected";
                         } else //Otherwise rethrow the exception.
-                            throw _throwable;
+                            throw _exception;
                     }
                 });
 

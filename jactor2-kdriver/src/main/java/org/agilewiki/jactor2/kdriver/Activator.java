@@ -25,9 +25,10 @@ public class Activator extends FactoryLocatorActivator {
         Thread.sleep(10000);
         getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
             @Override
-            public void processException(Throwable throwable) throws Throwable {
-                log.error("test failure", throwable);
+            public Void processException(Exception exception) throws Exception {
+                log.error("test failure", exception);
                 getModuleContext().close();
+                return null;
             }
         });
         LocateService<CommandProcessor> locateService = new LocateService(getMessageProcessor(),

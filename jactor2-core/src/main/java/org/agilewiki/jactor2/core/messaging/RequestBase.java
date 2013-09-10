@@ -347,6 +347,26 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     /**
+     * Replace the current ExceptionHandler with another.
+     * <p>
+     * When an event or request message is processed by a message processor, the current
+     * exception handler is set to null. When a request is sent by a message processor, the
+     * current exception handler is saved in the outgoing message and restored when
+     * the response message is processed.
+     * </p>
+     *
+     * @param _exceptionHandler The exception handler to be used now.
+     *                         May be null if the default exception handler is to be used.
+     * @return The exception handler that was previously in effect, or null if the
+     *         default exception handler was in effect.
+     */
+    public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
+        ExceptionHandler<RESPONSE_TYPE> old = messageProcessor.getExceptionHandler();
+        messageProcessor.setExceptionHandler(_exceptionHandler);
+        return old;
+    }
+
+    /**
      * Pender is used by the RequestBase.call method to block the current thread until a
      * result is available and then either return the result or rethrow it if the result
      * is an exception.

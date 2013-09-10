@@ -57,7 +57,7 @@ class Client extends ActorBase {
 
             @Override
             public void processAsyncRequest() throws Exception {
-                getMessageProcessor().setExceptionHandler(new ExceptionHandler<Boolean>() {
+                setExceptionHandler(new ExceptionHandler<Boolean>() {
                     @Override
                     public Boolean processException(Exception exception) throws Exception {
                         if (!(exception instanceof ServiceClosedException)) {
