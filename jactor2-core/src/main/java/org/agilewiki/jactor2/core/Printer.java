@@ -31,7 +31,7 @@ import java.util.Locale;
  *         } finally {
  *             //shutdown the context
  *             moduleContext.close();
- *     }
+ *         }
  *
  *     }
  * }
