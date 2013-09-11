@@ -50,7 +50,7 @@ public class ModuleContext implements AutoCloseable {
     /**
      * A hash set of AutoCloseable objects.
      */
-    private final Set<AutoCloseable> closables = Collections
+    private final Set<AutoCloseable> closeables = Collections
             .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
 
     /**
@@ -168,21 +168,21 @@ public class ModuleContext implements AutoCloseable {
      */
     public final boolean addAutoClosable(final AutoCloseable _closeable) {
         if (!isClosing()) {
-            return closables.add(_closeable);
+            return closeables.add(_closeable);
         } else {
             throw new IllegalStateException("Shuting down ...");
         }
     }
 
     /**
-     * Remove an auto closeable from the list of closables.
+     * Remove an auto closeable from the list of closeables.
      *
      * @param _closeable The autoclosable to be removed from the list.
      * @return True, if the list was updated.
      */
     public final boolean removeAutoClosable(final AutoCloseable _closeable) {
         if (!isClosing()) {
-            return closables.remove(_closeable);
+            return closeables.remove(_closeable);
         }
         return false;
     }
@@ -191,7 +191,7 @@ public class ModuleContext implements AutoCloseable {
     public final void close() throws Exception {
         if (shuttingDown.compareAndSet(false, true)) {
             threadManager.close();
-            final Iterator<AutoCloseable> it = closables.iterator();
+            final Iterator<AutoCloseable> it = closeables.iterator();
             while (it.hasNext()) {
                 try {
                     it.next().close();
