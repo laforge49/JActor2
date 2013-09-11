@@ -7,6 +7,9 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
  * An isolation actor processes requests from other actors one at a time,
  * starting a new request only when a result is returned for the previous
  * one.
+ * </p>
+ * This is just a convenience class, as any actor which uses an isolation message processor
+ * is an isolation actor.
  */
 public class IsolationActor extends ActorBase {
 

@@ -10,8 +10,8 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * <h3>Sample Usage:</h3>
  * <pre>
  * public class ActorBaseSample extends ActorBase {
- *     public ActorBaseSample(final MessageProcessor _processor) throws Exception {
- *         initialize(_processor);
+ *     public ActorBaseSample(final MessageProcessor _messageProcessor) throws Exception {
+ *         initialize(_messageProcessor);
  *     }
  * }
  * </pre>
