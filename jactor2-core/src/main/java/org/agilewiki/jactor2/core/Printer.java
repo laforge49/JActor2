@@ -10,6 +10,32 @@ import java.util.Locale;
  * An isolation actor for printing.
  * By using an isolation actor, printing is done on a different thread, along with
  * formatting. In effect, Printer implements a simple logger.
+ * </p>
+ * <h3>Sample Usage:</h3>
+ * <pre>
+ * public class PrinterSample {
+ *
+ *     public static void main(String[] args) throws Exception {
+ *
+ *         //A context with one thread.
+ *         final ModuleContext moduleContext = new ModuleContext(1);
+ *
+ *         try {
+ *
+ *             //Create a Printer.
+ *             Printer printer = new Printer(moduleContext);
+ *
+ *             //Print something.
+ *             printer.printlnSReq("Hello World!").call();
+ *
+ *         } finally {
+ *             //shutdown the context
+ *             moduleContext.close();
+ *     }
+ *
+ *     }
+ * }
+ * </pre>
  */
 public class Printer extends IsolationActor {
     /**
