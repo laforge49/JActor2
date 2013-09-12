@@ -3,58 +3,58 @@ package org.agilewiki.jactor2.util.durable.incDes;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IncDesTest extends TestCase {
     public void test1() throws Exception {
         System.err.println("\nTest 1");
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            IncDes a = (IncDes) Durables.newSerializable(moduleContext, IncDes.FACTORY_NAME);
+            IncDes a = (IncDes) Durables.newSerializable(facility, IncDes.FACTORY_NAME);
             int l = a.getSerializedLengthReq().call();
             System.err.println(l);
             assertEquals(l, 0);
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 
     public void test4() throws Exception {
         System.err.println("\nTest 4");
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            IncDes a = (IncDes) Durables.newSerializable(moduleContext, IncDes.FACTORY_NAME);
+            IncDes a = (IncDes) Durables.newSerializable(facility, IncDes.FACTORY_NAME);
             byte[] bytes = a.getSerializedBytesReq().call();
             int l = bytes.length;
             System.err.println(l);
             assertEquals(l, 0);
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 
     public void test5() throws Exception {
         System.err.println("\nTest 5");
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            IncDes a = (IncDes) Durables.newSerializable(moduleContext, IncDes.FACTORY_NAME);
+            IncDes a = (IncDes) Durables.newSerializable(facility, IncDes.FACTORY_NAME);
             a.load(new byte[0]);
             int l = a.getSerializedLengthReq().call();
             System.err.println(l);
             assertEquals(l, 0);
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 
     public void test6() throws Exception {
         System.err.println("\nTest 6");
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            IncDes jid1 = (IncDes) Durables.newSerializable(moduleContext, IncDes.FACTORY_NAME);
+            IncDes jid1 = (IncDes) Durables.newSerializable(facility, IncDes.FACTORY_NAME);
             jid1.load(new byte[0]);
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
             IncDes jid2 = (IncDes) jid1.copyReq(messageProcessor).call();
             int l = jid2.getDurable().getSerializedLengthReq().call();
             System.err.println(l);
@@ -62,7 +62,7 @@ public class IncDesTest extends TestCase {
             boolean eq = jid1.isEqualReq(jid2).call();
             assertTrue(eq);
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

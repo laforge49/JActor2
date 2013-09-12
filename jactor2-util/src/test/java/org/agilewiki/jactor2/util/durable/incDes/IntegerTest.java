@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IntegerTest extends TestCase {
     public void test() throws Exception {
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            JAInteger int1 = (JAInteger) Durables.newSerializable(moduleContext, JAInteger.FACTORY_NAME);
+            JAInteger int1 = (JAInteger) Durables.newSerializable(facility, JAInteger.FACTORY_NAME);
             JAInteger int2 = (JAInteger) int1.copyReq(null).call();
             int2.setValueReq(1).call();
             JAInteger int3 = (JAInteger) int2.copyReq(null).call();
@@ -27,7 +27,7 @@ public class IntegerTest extends TestCase {
             v = int3.getValueReq().call();
             assertEquals(1, v);
 
-            Box box1 = (Box) Durables.newSerializable(moduleContext, Box.FACTORY_NAME);
+            Box box1 = (Box) Durables.newSerializable(facility, Box.FACTORY_NAME);
             box1.setValueReq(JAInteger.FACTORY_NAME).call();
             JAInteger rpa = (JAInteger) box1.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();
@@ -38,7 +38,7 @@ public class IntegerTest extends TestCase {
             assertEquals(-1, v);
 
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

@@ -6,13 +6,13 @@ import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class ActorD {
     private final MessageProcessor messageProcessor;
 
-    public ActorD(final ModuleContext _context) {
-        this.messageProcessor = new IsolationMessageProcessor(_context);
+    public ActorD(final Facility _facility) {
+        this.messageProcessor = new IsolationMessageProcessor(_facility);
     }
 
     public AsyncRequest<String> throwAReq() {
@@ -27,7 +27,7 @@ public class ActorD {
                         return exception.toString();
                     }
                 });
-                Dd dd = new Dd(messageProcessor.getModuleContext());
+                Dd dd = new Dd(messageProcessor.getFacility());
                 dd.doSomethinSReq().send(messageProcessor, new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(final Void response)
@@ -43,8 +43,8 @@ public class ActorD {
 class Dd {
     private final MessageProcessor messageProcessor;
 
-    public Dd(final ModuleContext _context) {
-        messageProcessor = new IsolationMessageProcessor(_context);
+    public Dd(final Facility _facility) {
+        messageProcessor = new IsolationMessageProcessor(_facility);
     }
 
     public SyncRequest<Void> doSomethinSReq() {

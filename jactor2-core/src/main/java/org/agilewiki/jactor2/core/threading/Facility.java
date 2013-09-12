@@ -17,14 +17,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Provides a thread pool for
- * non-blocking and isolation message processors. Multiple contexts with independent life cycles
+ * non-blocking and isolation message processors. Multiple facilities with independent life cycles
  * are also supported.
- * (A ServiceClosedException may be thrown when messages cross contexts and the target context is closed.)
- * In addition, the context maintains a set of AutoClosable objects that are closed
- * when the context is closed, as well as a table of properties.
+ * (A ServiceClosedException may be thrown when messages cross facilities and the target facility is closed.)
+ * In addition, the facility maintains a set of AutoClosable objects that are closed
+ * when the facility is closed, as well as a table of properties.
  */
 
-public class ModuleContext implements AutoCloseable {
+public class Facility implements AutoCloseable {
 
     /**
      * A "compile-time" flag to turn on debug;
@@ -43,7 +43,7 @@ public class ModuleContext implements AutoCloseable {
     private final Logger messageProcessorLogger = LoggerFactory.getLogger(MessageProcessor.class);
 
     /**
-     * The thread pool used by ModuleContext.
+     * The thread pool used by Facility.
      */
     private final ThreadManager threadManager;
 
@@ -54,7 +54,7 @@ public class ModuleContext implements AutoCloseable {
             .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
 
     /**
-     * Set when the context reaches end-of-life.
+     * Set when the facility reaches end-of-life.
      */
     private final AtomicBoolean shuttingDown = new AtomicBoolean();
 
@@ -69,14 +69,14 @@ public class ModuleContext implements AutoCloseable {
     private final int initialBufferSize;
 
     /**
-     * Context properties.
+     * Facility properties.
      */
     private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
     /**
-     * Create a ModuleContext.
+     * Create a Facility.
      */
-    public ModuleContext() {
+    public Facility() {
         this(
                 Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                 Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -85,11 +85,11 @@ public class ModuleContext implements AutoCloseable {
     }
 
     /**
-     * Create a ModuleContext.
+     * Create a Facility.
      *
      * @param _threadCount The thread pool size.
      */
-    public ModuleContext(final int _threadCount) {
+    public Facility(final int _threadCount) {
         this(
                 Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                 Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -98,17 +98,17 @@ public class ModuleContext implements AutoCloseable {
     }
 
     /**
-     * Create a ModuleContext.
+     * Create a Facility.
      *
      * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
      * @param _initialBufferSize            How big should the initial outbox (per target MessageProcessor) buffer size be?
      * @param _threadCount                  The thread pool size.
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
-    public ModuleContext(final int _initialLocalMessageQueueSize,
-                         final int _initialBufferSize,
-                         final int _threadCount,
-                         final ThreadFactory _threadFactory) {
+    public Facility(final int _initialLocalMessageQueueSize,
+                    final int _initialBufferSize,
+                    final int _threadCount,
+                    final ThreadFactory _threadFactory) {
         threadManager = new ThreadManager(
                 _threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
@@ -161,7 +161,7 @@ public class ModuleContext implements AutoCloseable {
     }
 
     /**
-     * Adds an auto closeable, to be closed when the ModuleContext closes.
+     * Adds an auto closeable, to be closed when the Facility closes.
      *
      * @param _closeable The autoclosable to be added to the list.
      * @return True, if the list was updated.

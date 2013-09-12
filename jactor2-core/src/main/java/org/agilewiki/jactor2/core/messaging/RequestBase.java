@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.core.threading.PoolThread;
 
 import java.util.Collections;
@@ -14,7 +14,7 @@ import java.util.concurrent.Semaphore;
 public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     /**
-     * Assigned to current time when ModuleContext.DEBUG.
+     * Assigned to current time when Facility.DEBUG.
      */
     private Long debugTimestamp;
 
@@ -30,8 +30,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected final MessageProcessorBase messageProcessor;
 
     /**
-     * True when the result is to be returned via a message processor with a context
-     * that differs from the context of the target message processor.
+     * True when the result is to be returned via a message processor with a facility
+     * that differs from the facility of the target message processor.
      */
     protected boolean foreign;
 
@@ -137,7 +137,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         else
             addDebugPending();
-        foreign = source.getModuleContext() != messageProcessor.getModuleContext();
+        foreign = source.getFacility() != messageProcessor.getFacility();
         messageSource = source;
         oldMessage = source.getCurrentMessage();
         sourceExceptionHandler = source.getExceptionHandler();
@@ -158,7 +158,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
-        if (ModuleContext.DEBUG) {
+        if (Facility.DEBUG) {
             if (Thread.currentThread() instanceof PoolThread)
                 throw new UnsupportedOperationException("Use of call on a PoolThread can result in a deadlock");
             addDebugPending();
@@ -174,10 +174,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * track pending requests.
      */
     private void addDebugPending() {
-        if (ModuleContext.DEBUG) {
+        if (Facility.DEBUG) {
             debugTimestamp = System.nanoTime();
-            ModuleContext targetModuleContext = messageProcessor.getModuleContext();
-            Map<Long, Set<RequestBase>> pendingRequests = targetModuleContext.pendingRequests;
+            Facility targetFacility = messageProcessor.getFacility();
+            Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
             Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet == null) {
                 nanoSet = Collections.newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>());
@@ -195,9 +195,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         ((MessageProcessorBase) _activeMessageProcessor).requestEnd();
         responsePending = false;
         response = _response;
-        if (ModuleContext.DEBUG) {
-            ModuleContext targetModuleContext = messageProcessor.getModuleContext();
-            Map<Long, Set<RequestBase>> pendingRequests = targetModuleContext.pendingRequests;
+        if (Facility.DEBUG) {
+            Facility targetFacility = messageProcessor.getFacility();
+            Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
             Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet != null) {
                 nanoSet.remove(this);
@@ -221,9 +221,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     protected boolean processObjectResponse(final Object _response)
             throws Exception {
-        final ModuleContext moduleContext = messageProcessor.getModuleContext();
+        final Facility facility = messageProcessor.getFacility();
         if (foreign)
-            moduleContext.removeAutoClosable(RequestBase.this);
+            facility.removeAutoClosable(RequestBase.this);
         if (!responsePending)
             return false;
         setResponse(_response, messageProcessor);
@@ -239,17 +239,17 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     /**
-     * Returns the ModuleContext of the request source.
+     * Returns the Facility of the request source.
      *
-     * @return The ModuleContext of the request source, or null when the request was
+     * @return The Facility of the request source, or null when the request was
      *         passed using signal or call.
      */
-    public ModuleContext getModuleContext() {
+    public Facility getFacility() {
         if (messageSource == null)
             return null;
         if (!(messageSource instanceof MessageProcessor))
             return null;
-        return ((MessageProcessorBase) messageSource).getModuleContext();
+        return ((MessageProcessorBase) messageSource).getFacility();
     }
 
     @Override
@@ -277,9 +277,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     @Override
     public void eval() {
         if (responsePending) {
-            final ModuleContext moduleContext = messageProcessor.getModuleContext();
+            final Facility facility = messageProcessor.getFacility();
             if (foreign)
-                moduleContext.addAutoClosable(this);
+                facility.addAutoClosable(this);
             messageProcessor.setExceptionHandler(null);
             messageProcessor.setCurrentMessage(this);
             messageProcessor.requestBegin();
@@ -287,7 +287,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 processRequestMessage();
             } catch (final Exception e) {
                 if (foreign)
-                    moduleContext.removeAutoClosable(this);
+                    facility.removeAutoClosable(this);
                 processException(messageProcessor, e);
             }
         } else {
@@ -361,7 +361,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * </p>
      *
      * @param _exceptionHandler The exception handler to be used now.
-     *                         May be null if the default exception handler is to be used.
+     *                          May be null if the default exception handler is to be used.
      * @return The exception handler that was previously in effect, or null if the
      *         default exception handler was in effect.
      */

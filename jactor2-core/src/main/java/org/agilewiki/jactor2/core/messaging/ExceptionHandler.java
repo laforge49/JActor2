@@ -26,7 +26,7 @@ package org.agilewiki.jactor2.core.messaging;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.context.ModuleContext;
+ * import org.agilewiki.jactor2.core.threading.Facility;
  * import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  *
@@ -34,13 +34,13 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *     public static void main(final String[] _args) throws Exception {
  *
- *         //A context with two threads.
- *         final ModuleContext moduleContext = new ModuleContext(2);
+ *         //A facility with two threads.
+ *         final Facility facility = new Facility(2);
  *
  *         try {
  *
  *             //Create an ExceptionActor.
- *             ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMessageProcessor(moduleContext));
+ *             ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMessageProcessor(facility));
  *
  *             try {
  *                 //Create and call an exception request.
@@ -52,13 +52,13 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *             //Create an ExceptionHandlerActor.
  *             ExceptionHandlerActor exceptionHandlerActor =
- *                     new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(moduleContext));
+ *                     new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(facility));
  *             //Create a test request, call it and print the results.
  *             System.out.println(exceptionHandlerActor.testAReq().call());
  *
  *         } finally {
- *             //shutdown the context
- *             moduleContext.close();
+ *             //shutdown the facility
+ *             facility.close();
  *         }
  *     }
  * }

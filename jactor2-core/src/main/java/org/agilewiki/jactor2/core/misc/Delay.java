@@ -1,10 +1,9 @@
 package org.agilewiki.jactor2.core.misc;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
  * Simulates I/O.
@@ -14,10 +13,10 @@ public class Delay extends ActorBase {
     /**
      * Create a Delay actor.
      *
-     * @param _context The actor's context.
+     * @param _facility The actor's facility.
      */
-    public Delay(final ModuleContext _context) throws Exception {
-        initialize(new IsolationMessageProcessor(_context));
+    public Delay(final Facility _facility) throws Exception {
+        initialize(new IsolationMessageProcessor(_facility));
     }
 
     /**

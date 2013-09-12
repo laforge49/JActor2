@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.util.durable.incDes.timings;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.util.durable.incDes.JAList;
@@ -34,10 +34,10 @@ public class BListTimingsTest extends TestCase {
         //total run time (milliseconds) = 2877
         //time per update (microseconds) = 2877
 
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(moduleContext, JAList.JAINTEGER_LIST);
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(facility, JAList.JAINTEGER_LIST);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
             int i = 0;
             while (i < s) {
                 intList1.iAdd(-1);
@@ -62,7 +62,7 @@ public class BListTimingsTest extends TestCase {
             long tpu = rt * 1000L / r;
             System.out.println("time per update (microseconds) = " + tpu);
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

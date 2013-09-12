@@ -11,8 +11,8 @@ import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  * <h3>Sample Usage:</h3>
  * <pre>
  * public class NonBlockingActorSample extends NonBlockingActor {
- *     public NonBlockingActorSample(final ModuleContext _moduleContext) throws Exception {
- *         super(new NonBlockingMessageProcessor(_moduleContext));
+ *     public NonBlockingActorSample(final Facility _facility) throws Exception {
+ *         super(new NonBlockingMessageProcessor(_facility));
  *     }
  * }
  * </pre>

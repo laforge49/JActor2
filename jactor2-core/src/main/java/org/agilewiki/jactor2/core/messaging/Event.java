@@ -25,7 +25,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.context.ModuleContext;
+ * import org.agilewiki.jactor2.core.threading.Facility;
  * import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  *
@@ -33,11 +33,11 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
  *
  *     public static void main(String[] args) throws Exception {
  *
- *         //A context with one thread.
- *         final ModuleContext moduleContext = new ModuleContext(1);
+ *         //A facility with one thread.
+ *         final Facility facility = new Facility(1);
  *
  *         //Create a SampleActor1 instance.
- *         SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMessageProcessor(moduleContext));
+ *         SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMessageProcessor(facility));
  *
  *         //Print "finished" and exit when the event is processed by SampleActor1.
  *         new FinEvent("finished").signal(sampleActor1);

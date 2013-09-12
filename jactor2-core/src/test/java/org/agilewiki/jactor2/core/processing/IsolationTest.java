@@ -1,22 +1,22 @@
 package org.agilewiki.jactor2.core.processing;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.misc.Delay;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ResponseCounter;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.misc.Delay;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class IsolationTest extends TestCase {
     int count = 0;
 
     public void test() throws Exception {
-        ModuleContext moduleContext = new ModuleContext();
+        Facility facility = new Facility();
         try {
-            int _count = startReq1(new IsolationMessageProcessor(moduleContext)).call();
+            int _count = startReq1(new IsolationMessageProcessor(facility)).call();
             assertEquals(5, _count);
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 
@@ -27,7 +27,7 @@ public class IsolationTest extends TestCase {
             @Override
             public void processAsyncRequest()
                     throws Exception {
-                MessageProcessor messageProcessor = new IsolationMessageProcessor(_messageProcessor.getModuleContext());
+                MessageProcessor messageProcessor = new IsolationMessageProcessor(_messageProcessor.getFacility());
                 AsyncResponseProcessor rc = new ResponseCounter(5, null,
                         new AsyncResponseProcessor() {
                             @Override
@@ -52,7 +52,7 @@ public class IsolationTest extends TestCase {
             @Override
             public void processAsyncRequest()
                     throws Exception {
-                Delay delay = new Delay(_messageProcessor.getModuleContext());
+                Delay delay = new Delay(_messageProcessor.getFacility());
                 delay.sleepSReq(100 - (msg * 20)).send(_messageProcessor,
                         new AsyncResponseProcessor<Void>() {
                             @Override

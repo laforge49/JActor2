@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.threading;
 
 /**
- * Base class for all threads in a module context thread pool.
+ * Base class for all threads in a facility thread pool.
  * The RequestBase.call method should not be invoked from a PoolThread.
  */
 public class PoolThread extends Thread {

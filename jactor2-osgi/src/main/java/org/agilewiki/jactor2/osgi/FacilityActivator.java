@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.osgi;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -12,11 +12,11 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 /**
- * A basic activator with a ModuleContext,
+ * A basic activator with a Facility,
  * with a reference to the BundleContext stored in the bundleContext property
- * in the ModuleContext.
+ * in the Facility.
  */
-abstract public class ModuleContextActivator
+abstract public class FacilityActivator
         extends ActorBase implements BundleActivator, ManagedService, AutoCloseable {
 
     /**
@@ -32,7 +32,7 @@ abstract public class ModuleContextActivator
     /**
      * The processing factory used by the bundle.
      */
-    private ModuleContext moduleContext;
+    private Facility facility;
 
     /**
      * The bundle context.
@@ -47,7 +47,7 @@ abstract public class ModuleContextActivator
     @Override
     public void start(final BundleContext _bundleContext) throws Exception {
         initializeActivator(_bundleContext);
-        moduleContextStart();
+        facilityStart();
         begin();
     }
 
@@ -55,9 +55,9 @@ abstract public class ModuleContextActivator
      * Begins the activator's asynchronous processing.
      */
     protected void begin() throws Exception {
-        new Event<ModuleContextActivator>() {
+        new Event<FacilityActivator>() {
             @Override
-            public void processEvent(ModuleContextActivator _targetActor) throws Exception {
+            public void processEvent(FacilityActivator _targetActor) throws Exception {
                 process();
             }
         }.signal(this);
@@ -73,7 +73,7 @@ abstract public class ModuleContextActivator
     @Override
     public void stop(BundleContext context) throws Exception {
         setClosing();
-        moduleContext.close();
+        facility.close();
     }
 
     /**
@@ -87,24 +87,24 @@ abstract public class ModuleContextActivator
     }
 
     /**
-     * Returns the module context used by the bundle.
+     * Returns the facility used by the bundle.
      *
-     * @return The module context.
+     * @return The facility.
      */
-    protected ModuleContext getModuleContext() {
-        return moduleContext;
+    protected Facility getFacility() {
+        return facility;
     }
 
     /**
-     * Create and initialize the module context.
-     * The activator is also added to the close set of the module context
+     * Create and initialize the facility.
+     * The activator is also added to the close set of the facility
      * and the activator is given a processing that may block.
      */
-    protected final void moduleContextStart() throws Exception {
-        moduleContext = new ModuleContext();
-        moduleContext.addAutoClosable(this);
-        moduleContext.putProperty("bundleContext", bundleContext);
-        initialize(new IsolationMessageProcessor(moduleContext));
+    protected final void facilityStart() throws Exception {
+        facility = new Facility();
+        facility.addAutoClosable(this);
+        facility.putProperty("bundleContext", bundleContext);
+        initialize(new IsolationMessageProcessor(facility));
     }
 
     /**

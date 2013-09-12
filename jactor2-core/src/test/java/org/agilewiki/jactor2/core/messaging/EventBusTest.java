@@ -3,30 +3,30 @@ package org.agilewiki.jactor2.core.messaging;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class EventBusTest extends TestCase {
     public void test() throws Exception {
-        ModuleContext moduleContext = new ModuleContext();
+        Facility facility = new Facility();
         try {
-            EventBus p = new EventBus(new NonBlockingMessageProcessor(moduleContext));
+            EventBus p = new EventBus(new NonBlockingMessageProcessor(facility));
             Printer a = new Printer();
-            a.initialize(new NonBlockingMessageProcessor(moduleContext));
+            a.initialize(new NonBlockingMessageProcessor(facility));
             a.setName("a");
             p.subscribeAReq(a).call();
             Printer b = new Printer();
-            b.initialize(new NonBlockingMessageProcessor(moduleContext));
+            b.initialize(new NonBlockingMessageProcessor(facility));
             b.setName("b");
             p.subscribeAReq(b).call();
             Printer c = new Printer();
-            c.initialize(new NonBlockingMessageProcessor(moduleContext));
+            c.initialize(new NonBlockingMessageProcessor(facility));
             c.setName("c");
             p.subscribeAReq(c).call();
             p.publishAReq(new Print("42")).call();
             p.publishAReq(new Print("24")).call();
             p.publishAReq(new Print("Hello world!")).call();
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

@@ -16,24 +16,24 @@ import java.util.Set;
  * <pre>
  * import org.agilewiki.jactor2.core.messaging.EventBus;
  * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
- * import org.agilewiki.jactor2.core.threading.ModuleContext;
+ * import org.agilewiki.jactor2.core.threading.Facility;
  *
  * public class EventBusSample {
  *
  *     public static void main(final String[] _args) throws Exception {
- *         //Create a module context.
- *         ModuleContext moduleContext = new ModuleContext();
+ *         //Create a facility.
+ *         Facility facility = new Facility();
  *         try {
  *             //Create a status logger actor.
  *             StatusLogger statusLogger =
- *                 new StatusLogger(new NonBlockingMessageProcessor(moduleContext));
+ *                 new StatusLogger(new NonBlockingMessageProcessor(facility));
  *
  *             //Create a status printer actor.
- *             StatusPrinter statusPrinter = new StatusPrinter(moduleContext);
+ *             StatusPrinter statusPrinter = new StatusPrinter(facility);
  *
  *             //Define an event bus for StatusListener actors.
  *             EventBus&lt;StatusListener&gt; eventBus =
- *                 new EventBus&lt;StatusListener&gt;(new NonBlockingMessageProcessor(moduleContext));
+ *                 new EventBus&lt;StatusListener&gt;(new NonBlockingMessageProcessor(facility));
  *
  *             //Add statusLogger and statusPrinter to the subscribers of the event bus.
  *             eventBus.subscribeAReq(statusLogger).call();
@@ -45,8 +45,8 @@ import java.util.Set;
  *             //Send a status update to all subscribers.
  *             eventBus.publishAReq(new StatusUpdate("stopped")).call();
  *         } finally {
- *             //Close the module context.
- *             moduleContext.close();
+ *             //Close the facility.
+ *             facility.close();
  *         }
  *     }
  * }
@@ -103,14 +103,14 @@ import java.util.Set;
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
  * import org.agilewiki.jactor2.core.processing.MessageProcessor;
- * import org.agilewiki.jactor2.core.threading.ModuleContext;
+ * import org.agilewiki.jactor2.core.threading.Facility;
  *
  * //An actor which prints status logger events.
  * public class StatusPrinter extends ActorBase implements StatusListener {
  *
  *     //Create an isolation StatusPrinter. (Isolation because the print may block the thread.)
- *     public StatusPrinter(final ModuleContext _moduleContext) throws Exception {
- *         MessageProcessor messageProcessor = new IsolationMessageProcessor(_moduleContext);
+ *     public StatusPrinter(final Facility _facility) throws Exception {
+ *         MessageProcessor messageProcessor = new IsolationMessageProcessor(_facility);
  *         initialize(messageProcessor);
  *     }
  *

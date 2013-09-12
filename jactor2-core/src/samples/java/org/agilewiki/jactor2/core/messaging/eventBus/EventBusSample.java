@@ -2,24 +2,24 @@ package org.agilewiki.jactor2.core.messaging.eventBus;
 
 import org.agilewiki.jactor2.core.messaging.EventBus;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class EventBusSample {
 
     public static void main(final String[] _args) throws Exception {
-        //Create a module context.
-        ModuleContext moduleContext = new ModuleContext();
+        //Create a module facility.
+        Facility facility = new Facility();
         try {
             //Create a status logger actor.
             StatusLogger statusLogger =
-                    new StatusLogger(new NonBlockingMessageProcessor(moduleContext));
+                    new StatusLogger(new NonBlockingMessageProcessor(facility));
 
             //Create a status printer actor.
-            StatusPrinter statusPrinter = new StatusPrinter(moduleContext);
+            StatusPrinter statusPrinter = new StatusPrinter(facility);
 
             //Define an event bus for StatusListener actors.
             EventBus<StatusListener> eventBus =
-                    new EventBus<StatusListener>(new NonBlockingMessageProcessor(moduleContext));
+                    new EventBus<StatusListener>(new NonBlockingMessageProcessor(facility));
 
             //Add statusLogger and statusPrinter to the subscribers of the event bus.
             eventBus.subscribeAReq(statusLogger).call();
@@ -31,8 +31,8 @@ public class EventBusSample {
             //Send a status update to all subscribers.
             eventBus.publishAReq(new StatusUpdate("stopped")).call();
         } finally {
-            //Close the module context.
-            moduleContext.close();
+            //Close the module facility.
+            facility.close();
         }
     }
 }

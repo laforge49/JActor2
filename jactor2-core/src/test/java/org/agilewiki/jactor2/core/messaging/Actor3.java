@@ -2,15 +2,15 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
  * Test code.
  */
 public class Actor3 extends ActorBase {
 
-    public Actor3(final ModuleContext _context) throws Exception {
-        initialize(new IsolationMessageProcessor(_context));
+    public Actor3(final Facility _facility) throws Exception {
+        initialize(new IsolationMessageProcessor(_facility));
     }
 
     public SyncRequest<Void> hi3SReq() {

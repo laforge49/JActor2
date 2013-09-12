@@ -15,10 +15,10 @@ public interface Message extends AutoCloseable {
 
     /**
      * Returns true when the response is to be sent to a message processor created with a different
-     * context.
+     * facility.
      *
      * @return True when the response is to be sent to a message processor created with a different
-     *         context.
+     *         facility.
      */
     boolean isForeign();
 
@@ -37,9 +37,9 @@ public interface Message extends AutoCloseable {
     void eval();
 
     /**
-     * Process the throwable on the current thread in the context of the active message processor.
+     * Process the throwable on the current thread in the facility of the active message processor.
      *
-     * @param _activeMessageProcessor The message processor providing the context for processing the throwable.
+     * @param _activeMessageProcessor The message processor providing the facility for processing the throwable.
      * @param _e                      The exception to be processed.
      */
     void processException(final MessageProcessor _activeMessageProcessor, final Exception _e);

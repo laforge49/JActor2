@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.messaging.Message;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -24,22 +24,22 @@ import java.util.concurrent.atomic.AtomicReference;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.context.ModuleContext;
+ * import org.agilewiki.jactor2.core.threading.Facility;
  * import org.agilewiki.jactor2.core.messaging.Event;
  *
  * public class ThreadBoundMessageProcessorSample {
  *
  *     public static void main(String[] args) throws Exception {
  *
- *         //A context with no threads
- *         final ModuleContext moduleContext = new ModuleContext(0);
+ *         //A facility with no threads
+ *         final Facility facility = new Facility(0);
  *
  *         //Get a reference to the main thread
  *         final Thread mainThread = Thread.currentThread();
  *
  *         //Create a thread-bound message processor.
  *         final ThreadBoundMessageProcessor boundMessageProcessor =
- *             new ThreadBoundMessageProcessor(moduleContext, new Runnable() {
+ *             new ThreadBoundMessageProcessor(facility, new Runnable() {
  *                 {@literal @}Override
  *                 public void run() {
  *                     //Interrupt the main thread when there are messages to process
@@ -107,14 +107,14 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
      * the message processor is bound to.
      * </p>
      *
-     * @param _moduleContext  The context of the message processor.
+     * @param _facility       The facility of the message processor.
      * @param _boundProcessor The _messageProcessor.run method is called when there
      *                        are messages to be processed.
      */
-    public ThreadBoundMessageProcessor(ModuleContext _moduleContext, Runnable _boundProcessor) {
-        super(_moduleContext,
-                _moduleContext.getInitialBufferSize(),
-                _moduleContext.getInitialLocalMessageQueueSize());
+    public ThreadBoundMessageProcessor(Facility _facility, Runnable _boundProcessor) {
+        super(_facility,
+                _facility.getInitialBufferSize(),
+                _facility.getInitialLocalMessageQueueSize());
         boundProcessor = _boundProcessor;
     }
 
@@ -127,17 +127,17 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
      * the message processor is bound to.
      * </p>
      *
-     * @param _moduleContext         The context of the message processor.
+     * @param _facility              The facility of the message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _boundProcessor        The _messageProcessor.run method is called when there
      *                               are messages to be processed.
      */
-    public ThreadBoundMessageProcessor(ModuleContext _moduleContext,
+    public ThreadBoundMessageProcessor(Facility _facility,
                                        int _initialOutboxSize,
                                        final int _initialLocalQueueSize,
                                        Runnable _boundProcessor) {
-        super(_moduleContext, _initialOutboxSize, _initialLocalQueueSize);
+        super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }
 

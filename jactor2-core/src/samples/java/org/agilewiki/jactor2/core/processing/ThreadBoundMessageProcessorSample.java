@@ -2,21 +2,21 @@ package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class ThreadBoundMessageProcessorSample {
 
     public static void main(String[] args) throws Exception {
 
-        //A context with no threads.
-        final ModuleContext moduleContext = new ModuleContext(0);
+        //A facility with no threads.
+        final Facility facility = new Facility(0);
 
         //Get a reference to the main thread.
         final Thread mainThread = Thread.currentThread();
 
         //Create a thread-bound processing.
         final ThreadBoundMessageProcessor boundMessageProcessor =
-                new ThreadBoundMessageProcessor(moduleContext, new Runnable() {
+                new ThreadBoundMessageProcessor(facility, new Runnable() {
                     @Override
                     public void run() {
                         //Interrupt the main thread when there are messages to process

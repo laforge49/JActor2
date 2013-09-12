@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
  * Test code.
@@ -12,32 +12,32 @@ import org.agilewiki.jactor2.core.threading.ModuleContext;
 public class Test2 extends TestCase {
     public void testI() throws Exception {
         System.out.println("testI");
-        final ModuleContext moduleContext = new ModuleContext();
-        final MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+        final Facility facility = new Facility();
+        final MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
         final ActorA actorA = new ActorA(messageProcessor);
         final ActorB actorB = new ActorB(messageProcessor);
         try {
             actorB.throwRequest(actorA).call();
         } catch (final SecurityException se) {
-            moduleContext.close();
+            facility.close();
             return;
         }
-        moduleContext.close();
+        facility.close();
         throw new Exception("Security exception was not caught");
     }
 
     public void testIII() throws Exception {
         System.out.println("testIII");
-        final ModuleContext moduleContext = new ModuleContext();
-        final ActorA actorA = new ActorA(new IsolationMessageProcessor(moduleContext));
-        final ActorB actorB = new ActorB(new IsolationMessageProcessor(moduleContext));
+        final Facility facility = new Facility();
+        final ActorA actorA = new ActorA(new IsolationMessageProcessor(facility));
+        final ActorB actorB = new ActorB(new IsolationMessageProcessor(facility));
         try {
             actorB.throwRequest(actorA).call();
         } catch (final SecurityException se) {
-            moduleContext.close();
+            facility.close();
             return;
         }
-        moduleContext.close();
+        facility.close();
         throw new Exception("Security exception was not caught");
     }
 }

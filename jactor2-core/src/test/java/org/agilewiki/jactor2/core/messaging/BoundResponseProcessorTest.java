@@ -4,17 +4,17 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
-        final ModuleContext moduleContext = new ModuleContext();
+        final Facility facility = new Facility();
         try {
             final Driver driver = new Driver();
-            driver.initialize(new NonBlockingMessageProcessor(moduleContext));
+            driver.initialize(new NonBlockingMessageProcessor(facility));
             assertEquals("Hello world!", driver.doitAReq().call());
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

@@ -3,18 +3,18 @@ package org.agilewiki.jactor2.util.durable.incDes;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class RootTest extends TestCase {
     public void test() throws Exception {
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(moduleContext);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(facility);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
             Root root1 = (Root) rootFactory.newSerializable(messageProcessor, factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);
@@ -70,7 +70,7 @@ public class RootTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

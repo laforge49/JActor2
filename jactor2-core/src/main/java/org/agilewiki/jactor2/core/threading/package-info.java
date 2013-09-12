@@ -1,26 +1,26 @@
 /**
- * <h1>Module Context</h1>
+ * <h1>Facility</h1>
  * <p>
- * A ModuleContext instance provides the operating context for any number
- * of MessageProcessor instances, with the ModuleContext instance managing a pool
+ * A Facility instance provides the operating facility for any number
+ * of MessageProcessor instances, with the Facility instance managing a pool
  * of threads for those MessageProcessor instances.
  * </p>
  * <p>
- *     Each instance of ModuleContext has an independent lifecycle. Once
+ *     Each instance of Facility has an independent lifecycle. Once
  *     created, it can be used in the creation of one or more MessageProcessor
- *     instances. And when a ModuleContext instance is closed, those
+ *     instances. And when a Facility instance is closed, those
  *     MessageProcessor instances are also closed. Indeed, any object
  *     that implements AutoClosable can be added to or removed from the list of objects
- *     to be closed that is maintained by each instance of ModuleContext.
+ *     to be closed that is maintained by each instance of Facility.
  * </p>
  * <p>
- *     ModuleContext instances do not interact directly. But actors pass messages to other
- *     actors which may or may not be part of a different context. And when a request message from one
- *     context is passed to another context that was or becomes closed, a ServiceClosedException
+ *     Facility instances do not interact directly. But actors pass messages to other
+ *     actors which may or may not be part of a different facility. And when a request message from one
+ *     facility is passed to another facility that was or becomes closed, a ServiceClosedException
  *     is be raised in the source actor.
  * </p>
  * <p>
- *     Each instance of ModuleContext also maintains a table of properties.
+ *     Each instance of Facility also maintains a table of properties.
  * </p>
  */
 package org.agilewiki.jactor2.core.threading;

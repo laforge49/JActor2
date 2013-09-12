@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.misc;
 
 import org.agilewiki.jactor2.core.IsolationActor;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 import java.io.PrintStream;
 import java.util.Locale;
@@ -18,20 +18,20 @@ import java.util.Locale;
  *
  *     public static void main(String[] args) throws Exception {
  *
- *         //A context with one thread.
- *         final ModuleContext moduleContext = new ModuleContext(1);
+ *         //A facility with one thread.
+ *         final Facility facility = new Facility(1);
  *
  *         try {
  *
  *             //Create a Printer.
- *             Printer printer = new Printer(moduleContext);
+ *             Printer printer = new Printer(facility);
  *
  *             //Print something.
  *             printer.printlnSReq("Hello World!").call();
  *
  *         } finally {
- *             //shutdown the context
- *             moduleContext.close();
+ *             //shutdown the facility
+ *             facility.close();
  *         }
  *
  *     }
@@ -47,36 +47,36 @@ public class Printer extends IsolationActor {
     /**
      * Create a Printer actor.
      *
-     * @param _moduleContext A set of resources, including a thread pool, for use
-     *                       by message processors and their actors.
+     * @param _facility A set of resources, including a thread pool, for use
+     *                  by message processors and their actors.
      */
-    public Printer(final ModuleContext _moduleContext) throws Exception {
-        this(_moduleContext, System.out);
+    public Printer(final Facility _facility) throws Exception {
+        this(_facility, System.out);
     }
 
     /**
      * Create a Printer actor.
      *
-     * @param _moduleContext A set of resources, including a thread pool, for use
-     *                       by message processors and their actors.
+     * @param _facility    A set of resources, including a thread pool, for use
+     *                     by message processors and their actors.
      * @param _printStream Where to print the string.
      */
-    public Printer(final ModuleContext _moduleContext,
+    public Printer(final Facility _facility,
                    final PrintStream _printStream) throws Exception {
-        this(_moduleContext, _printStream, null);
+        this(_facility, _printStream, null);
     }
 
     /**
      * Create a Printer actor.
      *
-     * @param _moduleContext A set of resources, including a thread pool, for use
-     *                       by message processors and their actors.
+     * @param _facility    A set of resources, including a thread pool, for use
+     *                     by message processors and their actors.
      * @param _printStream Where to print the string.
      */
-    public Printer(final ModuleContext _moduleContext,
+    public Printer(final Facility _facility,
                    final PrintStream _printStream,
                    final Locale _locale) throws Exception {
-        super(_moduleContext);
+        super(_facility);
         printStream = _printStream;
         locale = _locale;
     }
@@ -100,8 +100,8 @@ public class Printer extends IsolationActor {
     /**
      * A request to print a formated string.
      *
-     * @param _format      The formatting.
-     * @param _args        The data to be formatted.
+     * @param _format The formatting.
+     * @param _args   The data to be formatted.
      * @return The request.
      */
     public SyncRequest<Void> printSReq(final String _format,

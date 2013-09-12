@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.messaging.Message;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.core.threading.MigrationException;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -30,16 +30,16 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
     /**
      * Create a message processor.
      *
-     * @param _context               The context of this message processor.
+     * @param _facility              The facility of this message processor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public UnboundMessageProcessor(ModuleContext _context,
+    public UnboundMessageProcessor(Facility _facility,
                                    int _initialOutboxSize,
                                    final int _initialLocalQueueSize,
                                    Runnable _onIdle) {
-        super(_context, _initialOutboxSize, _initialLocalQueueSize);
+        super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }
 
@@ -70,7 +70,7 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
     @Override
     protected void afterAdd() throws Exception {
         if (threadReference.get() == null) {
-            moduleContext.submit(this);
+            facility.submit(this);
         }
     }
 
@@ -93,7 +93,7 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
                 iter.remove();
                 if (!iter.hasNext() &&
                         _mayMigrate &&
-                        getModuleContext() == target.getModuleContext() &&
+                        getFacility() == target.getFacility() &&
                         target instanceof UnboundMessageProcessor) {
                     if (!target.isRunning()) {
                         Thread currentThread = threadReference.get();

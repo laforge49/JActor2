@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.util.durable.incDes.timings;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.util.durable.incDes.JAMap;
@@ -34,9 +34,9 @@ public class BMapTimingsTest extends TestCase {
         //total run time (milliseconds) =  9871
         //time per update (microseconds) = 9871
 
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(moduleContext, JAMap.INTEGER_JAINTEGER_MAP);
+            JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(facility, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < s) {
                 m1.kMake(i);
@@ -47,7 +47,7 @@ public class BMapTimingsTest extends TestCase {
             m1.getSerializedBytes();
             int j = 0;
             i = s / 2;
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
             long t0 = System.currentTimeMillis();
             while (j < r) {
                 JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(messageProcessor);
@@ -64,7 +64,7 @@ public class BMapTimingsTest extends TestCase {
             long tpu = rt * 1000L / r;
             System.out.println("time per update (microseconds) = " + tpu);
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

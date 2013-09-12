@@ -7,18 +7,18 @@ import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.ServiceClosedException;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class ServiceTest extends TestCase {
 
     public void test() throws Exception {
-        ModuleContext testContext = new ModuleContext();
-        ModuleContext clientContext = new ModuleContext();
-        final ModuleContext serverContext = new ModuleContext();
+        Facility testFacility = new Facility();
+        Facility clientFacility = new Facility();
+        final Facility serverFacility = new Facility();
         try {
-            MessageProcessor testMessageProcessor = new NonBlockingMessageProcessor(testContext);
-            Server server = new Server(new NonBlockingMessageProcessor(serverContext));
-            final Client client = new Client(new NonBlockingMessageProcessor(clientContext), server);
+            MessageProcessor testMessageProcessor = new NonBlockingMessageProcessor(testFacility);
+            Server server = new Server(new NonBlockingMessageProcessor(serverFacility));
+            final Client client = new Client(new NonBlockingMessageProcessor(clientFacility), server);
             new AsyncRequest<Void>(testMessageProcessor) {
                 AsyncRequest<Void> dis = this;
 
@@ -31,13 +31,13 @@ public class ServiceTest extends TestCase {
                             dis.processAsyncResponse(null);
                         }
                     });
-                    serverContext.close();
+                    serverFacility.close();
                 }
             }.call();
         } finally {
-            testContext.close();
-            clientContext.close();
-            serverContext.close();
+            testFacility.close();
+            clientFacility.close();
+            serverFacility.close();
         }
     }
 }

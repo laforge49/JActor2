@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class FirstStage extends ActorBase implements Runnable {
 
     long t0;
 
-    public FirstStage(final ModuleContext _moduleContext,
+    public FirstStage(final Facility _facility,
                       final DataProcessor _next,
                       final long _count,
                       final int _maxWindowSize)
@@ -41,7 +41,7 @@ public class FirstStage extends ActorBase implements Runnable {
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(new IsolationMessageProcessor(_moduleContext, this));
+        initialize(new IsolationMessageProcessor(_facility, this));
         ack = new BoundResponseProcessor<Void>(this, new AsyncResponseProcessor<Void>() {
             @Override
             public void processAsyncResponse(Void response) throws Exception {
@@ -89,7 +89,7 @@ public class FirstStage extends ActorBase implements Runnable {
     private void exception(Exception e) {
         e.printStackTrace();
         try {
-            getMessageProcessor().getModuleContext().close();
+            getMessageProcessor().getFacility().close();
         } catch (Exception e1) {
             e1.printStackTrace();
             return;

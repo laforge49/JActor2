@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class LongTest extends TestCase {
     public void test() throws Exception {
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
-            JALong long1 = (JALong) Durables.newSerializable(moduleContext, JALong.FACTORY_NAME);
+            JALong long1 = (JALong) Durables.newSerializable(facility, JALong.FACTORY_NAME);
             JALong long2 = (JALong) long1.copyReq(null).call();
             long2.setValueReq(1L).call();
             JALong long3 = (JALong) long2.copyReq(null).call();
@@ -27,7 +27,7 @@ public class LongTest extends TestCase {
             v = long3.getValueReq().call();
             assertEquals(1L, v);
 
-            Box box = (Box) Durables.newSerializable(moduleContext, Box.FACTORY_NAME);
+            Box box = (Box) Durables.newSerializable(facility, Box.FACTORY_NAME);
             box.setValueReq(JALong.FACTORY_NAME).call();
             JALong rpa = (JALong) box.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();
@@ -38,7 +38,7 @@ public class LongTest extends TestCase {
             assertEquals(-1000000000000L, v);
 
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

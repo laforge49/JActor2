@@ -27,7 +27,7 @@ public class Activator extends FactoryLocatorActivator {
             @Override
             public Void processException(Exception exception) throws Exception {
                 log.error("test failure", exception);
-                getModuleContext().close();
+                getFacility().close();
                 return null;
             }
         });
@@ -79,7 +79,7 @@ public class Activator extends FactoryLocatorActivator {
                         String r = response.getMessage();
                         if (!"Aloha!".equals(r)) {
                             log.error("Unexpected response from Hello.getMessage(): " + r);
-                            getModuleContext().close();
+                            getFacility().close();
                             return;
                         }
                         success();

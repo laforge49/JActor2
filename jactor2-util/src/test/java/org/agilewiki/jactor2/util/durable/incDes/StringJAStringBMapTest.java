@@ -1,15 +1,15 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class StringJAStringBMapTest extends TestCase {
     public void test() throws Exception {
-        ModuleContext moduleContext = Durables.createModuleContext();
+        Facility facility = Durables.createFacility();
         try {
             JAMap<String, JAString> m = (JAMap) Durables.
-                    newSerializable(moduleContext, JAMap.STRING_JASTRING_MAP);
+                    newSerializable(facility, JAMap.STRING_JASTRING_MAP);
             assertEquals(0, m.size());
             assertTrue(m.kMake("1"));
             assertFalse(m.kMake("1"));
@@ -39,7 +39,7 @@ public class StringJAStringBMapTest extends TestCase {
             assertTrue(m.kRemove("1"));
             assertEquals(0, m.size());
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

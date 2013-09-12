@@ -2,14 +2,14 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.misc.Delay;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
+import org.agilewiki.jactor2.core.misc.Delay;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
  * Test code.
@@ -23,32 +23,32 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testI() throws Exception {
-        final ModuleContext moduleContext = new ModuleContext();
-        messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+        final Facility facility = new Facility();
+        messageProcessor = new NonBlockingMessageProcessor(facility);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMessageProcessor(moduleContext), 1);
+                new NonBlockingMessageProcessor(facility), 1);
         semaphore.acquireReq().call();
-        moduleContext.close();
+        facility.close();
     }
 
     public void testII() throws Exception {
-        final ModuleContext moduleContext = new ModuleContext();
-        messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+        final Facility facility = new Facility();
+        messageProcessor = new NonBlockingMessageProcessor(facility);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMessageProcessor(moduleContext), 0);
+                new NonBlockingMessageProcessor(facility), 0);
         semaphore.release();
         semaphore.acquireReq().call();
-        moduleContext.close();
+        facility.close();
     }
 
     private void delayedRelease(final JASemaphore semaphore,
                                 final long delay,
-                                final ModuleContext moduleContext) throws Exception {
+                                final Facility facility) throws Exception {
         new Event<SemaphoreTest>() {
             @Override
             public void processEvent(final SemaphoreTest actor)
                     throws Exception {
-                new Delay(moduleContext).sleepSReq(delay).send(getMessageProcessor(),
+                new Delay(facility).sleepSReq(delay).send(getMessageProcessor(),
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(final Void response)
@@ -61,17 +61,17 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testIII() throws Exception {
-        final ModuleContext moduleContext = new ModuleContext();
-        messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+        final Facility facility = new Facility();
+        messageProcessor = new NonBlockingMessageProcessor(facility);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMessageProcessor(moduleContext), 0);
+                new NonBlockingMessageProcessor(facility), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
-        delayedRelease(semaphore, d, moduleContext);
+        delayedRelease(semaphore, d, facility);
         semaphore.acquireReq().call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
-        moduleContext.close();
+        facility.close();
     }
 
     private AsyncRequest<Boolean> acquireException(final JASemaphore semaphore,
@@ -102,18 +102,18 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     public void testIV() throws Exception {
-        final ModuleContext moduleContext = new ModuleContext();
-        messageProcessor = new NonBlockingMessageProcessor(moduleContext);
+        final Facility facility = new Facility();
+        messageProcessor = new NonBlockingMessageProcessor(facility);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMessageProcessor(moduleContext), 0);
+                new NonBlockingMessageProcessor(facility), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
-        delayedRelease(semaphore, d, moduleContext);
+        delayedRelease(semaphore, d, facility);
         final boolean result = acquireException(semaphore,
-                new NonBlockingMessageProcessor(moduleContext)).call();
+                new NonBlockingMessageProcessor(facility)).call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
         assertTrue(result);
-        moduleContext.close();
+        facility.close();
     }
 }

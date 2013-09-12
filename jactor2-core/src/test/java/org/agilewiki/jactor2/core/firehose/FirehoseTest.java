@@ -1,30 +1,30 @@
 package org.agilewiki.jactor2.core.firehose;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class FirehoseTest extends TestCase {
     public void test() throws Exception {
         System.gc();
-        ModuleContext moduleContext = new ModuleContext();
+        Facility facility = new Facility();
         try {
-            DataProcessor next = new EndStage(moduleContext);
-            next = new NullStage(moduleContext, next);
-            next = new NullStage(moduleContext, next);
-            next = new NullStage(moduleContext, next);
-            next = new NullStage(moduleContext, next);
-            next = new NullStage(moduleContext, next);
-            next = new NullStage(moduleContext, next);
-            next = new NullStage(moduleContext, next);
-            next = new NullStage(moduleContext, next);
-            next = new NullStage(moduleContext, next);
-            new FirstStage(moduleContext, next, 1, 10);
+            DataProcessor next = new EndStage(facility);
+            next = new NullStage(facility, next);
+            next = new NullStage(facility, next);
+            next = new NullStage(facility, next);
+            next = new NullStage(facility, next);
+            next = new NullStage(facility, next);
+            next = new NullStage(facility, next);
+            next = new NullStage(facility, next);
+            next = new NullStage(facility, next);
+            next = new NullStage(facility, next);
+            new FirstStage(facility, next, 1, 10);
             try {
                 Thread.sleep(60000);
             } catch (Exception ex) {
             }
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
 }

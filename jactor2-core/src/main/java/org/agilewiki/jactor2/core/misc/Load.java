@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.misc;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
  * Simulates a load.
@@ -15,10 +15,10 @@ public class Load extends ActorBase {
     /**
      * Create a Load actor.
      *
-     * @param _context The actor's context.
+     * @param _facility The actor's facility.
      */
-    public Load(final ModuleContext _context) throws Exception {
-        initialize(new IsolationMessageProcessor(_context));
+    public Load(final Facility _facility) throws Exception {
+        initialize(new IsolationMessageProcessor(_facility));
     }
 
     /**
@@ -37,7 +37,7 @@ public class Load extends ActorBase {
                     i++;
                     j = 0;
                     while (j < 1000000) {
-                        j ++;
+                        j++;
                     }
                 }
                 return null;

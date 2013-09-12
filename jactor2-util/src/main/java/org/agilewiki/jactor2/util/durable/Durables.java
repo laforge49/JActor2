@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util.durable;
 
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.app.App;
 import org.agilewiki.jactor2.util.durable.incDes.*;
@@ -23,56 +23,56 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.*;
 public final class Durables {
 
     /**
-     * Creates a moduleContext with a factoryLocator that supports all the pre-defined factories.
+     * Creates a facility with a factoryLocator that supports all the pre-defined factories.
      *
-     * @return A module context whose properties include the factoryLocator.
+     * @return A facility whose properties include the factoryLocator.
      */
-    public static ModuleContext createModuleContext() throws Exception {
-        ModuleContext moduleContext = new ModuleContext();
+    public static Facility createFacility() throws Exception {
+        Facility facility = new Facility();
         FactoryLocator factoryLocator =
-                createFactoryLocator(moduleContext, "org.agilewiki.jactor2.util.durable", "", "");
+                createFactoryLocator(facility, "org.agilewiki.jactor2.util.durable", "", "");
         registerFactories(factoryLocator);
-        return moduleContext;
+        return facility;
     }
 
     /**
-     * Create a factoryLocator and add it to the moduleContext properties.
+     * Create a factoryLocator and add it to the facility properties.
      *
-     * @param _moduleContext A moduleContext.
-     * @param _bundleName    The name of the OSGi bundle or an empty string.
-     * @param _version       The version of the OSGi bundle or an empty string.
-     * @param _location      The location of the OSGi bundle or an empty string.
+     * @param _facility   A facility.
+     * @param _bundleName The name of the OSGi bundle or an empty string.
+     * @param _version    The version of the OSGi bundle or an empty string.
+     * @param _location   The location of the OSGi bundle or an empty string.
      * @return The new factoryLocator.
      */
     public static FactoryLocator createFactoryLocator(
-            final ModuleContext _moduleContext,
+            final Facility _facility,
             final String _bundleName,
             final String _version,
             final String _location) throws Exception {
         FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
         factoryLocator.configure(_bundleName, _version, _location);
-        _moduleContext.putProperty("factoryLocator", factoryLocator);
+        _facility.putProperty("factoryLocator", factoryLocator);
         return factoryLocator;
     }
 
     /**
-     * Returns the factoryLocator from the moduleContext's factoryLocator property.
+     * Returns the factoryLocator from the facility's factoryLocator property.
      *
      * @param _messageProcessor A processing.
      * @return The factoryLocator for that processing.
      */
     public static FactoryLocator getFactoryLocator(final MessageProcessor _messageProcessor) {
-        return getFactoryLocator(_messageProcessor.getModuleContext());
+        return getFactoryLocator(_messageProcessor.getFacility());
     }
 
     /**
-     * Returns the factoryLocator from the moduleContext's factoryLocator property.
+     * Returns the factoryLocator from the facility's factoryLocator property.
      *
-     * @param _moduleContext A moduleContext.
-     * @return The factoryLocator for that moduleContext.
+     * @param _facility A facility.
+     * @return The factoryLocator for that facility.
      */
-    public static FactoryLocator getFactoryLocator(final ModuleContext _moduleContext) {
-        return (FactoryLocator) _moduleContext.getProperty("factoryLocator");
+    public static FactoryLocator getFactoryLocator(final Facility _facility) {
+        return (FactoryLocator) _facility.getProperty("factoryLocator");
     }
 
     /**
@@ -286,14 +286,14 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _moduleContext  The moduleContext to be used to create the new processing.
+     * @param _facility       The facility to be used to create the new processing.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final ModuleContext _moduleContext)
+                                                 final Facility _facility)
             throws Exception {
-        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, new NonBlockingMessageProcessor(_moduleContext), null);
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(_factoryName, new NonBlockingMessageProcessor(_facility), null);
     }
 
     /**
@@ -301,54 +301,54 @@ public final class Durables {
      *
      * @param _factoryLocator The factoryLocator.
      * @param _factoryName    The type of object to be created.
-     * @param _moduleContext  The moduleContext to be used to create the new processing.
+     * @param _facility       The facility to be used to create the new processing.
      * @param _parent         The dependency to be injected, or null.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final FactoryLocator _factoryLocator,
                                                  final String _factoryName,
-                                                 final ModuleContext _moduleContext,
+                                                 final Facility _facility,
                                                  final Ancestor _parent)
             throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).
-                newSerializable(_factoryName, new NonBlockingMessageProcessor(_moduleContext), _parent);
+                newSerializable(_factoryName, new NonBlockingMessageProcessor(_facility), _parent);
     }
 
     /**
      * Create a new serializable object and a new processing to be used by that serializable object.
      *
-     * @param _factoryName   The type of object to be created.
-     * @param _moduleContext The moduleContext to be used to create the new processing
-     *                       and which has a factoryLocator property.
+     * @param _factoryName The type of object to be created.
+     * @param _facility    The facility to be used to create the new processing
+     *                     and which has a factoryLocator property.
      * @return A new serializable object.
      */
-    public static JASerializable newSerializable(final ModuleContext _moduleContext,
+    public static JASerializable newSerializable(final Facility _facility,
                                                  final String _factoryName)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_moduleContext),
+                getFactoryLocator(_facility),
                 _factoryName,
-                _moduleContext,
+                _facility,
                 null);
     }
 
     /**
      * Create a new serializable object and a new processing to be used by that serializable object.
      *
-     * @param _factoryName   The type of object to be created.
-     * @param _moduleContext The moduleContext to be used to create the new processing
-     *                       and which has a factoryLocator property.
-     * @param _parent        The dependency to be injected, or null.
+     * @param _factoryName The type of object to be created.
+     * @param _facility    The facility to be used to create the new processing
+     *                     and which has a factoryLocator property.
+     * @param _parent      The dependency to be injected, or null.
      * @return A new serializable object.
      */
-    public static JASerializable newSerializable(final ModuleContext _moduleContext,
+    public static JASerializable newSerializable(final Facility _facility,
                                                  final String _factoryName,
                                                  final Ancestor _parent)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_moduleContext),
+                getFactoryLocator(_facility),
                 _factoryName,
-                _moduleContext,
+                _facility,
                 _parent);
     }
 
@@ -357,14 +357,14 @@ public final class Durables {
      *
      * @param _factoryName      The type of object to be created.
      * @param _messageProcessor The processing to be used by the new serializable object
-     *                          and whose moduleContext has a factoryLocator property.
+     *                          and whose facility has a factoryLocator property.
      * @return A new serializable object.
      */
     public static JASerializable newSerializable(final String _factoryName,
                                                  final MessageProcessor _messageProcessor)
             throws Exception {
         return newSerializable(
-                getFactoryLocator(_messageProcessor.getModuleContext()),
+                getFactoryLocator(_messageProcessor.getFacility()),
                 _factoryName,
                 _messageProcessor,
                 null);
@@ -375,7 +375,7 @@ public final class Durables {
      *
      * @param _factoryName      The type of object to be created.
      * @param _messageProcessor The processing to be used by the new serializable object
-     *                          and whose moduleContext has a factoryLocator property.
+     *                          and whose facility has a factoryLocator property.
      * @param _parent           The dependency to be injected, or null.
      * @return A new serializable object.
      */
@@ -383,6 +383,6 @@ public final class Durables {
                                                  final MessageProcessor _messageProcessor,
                                                  final Ancestor _parent)
             throws Exception {
-        return newSerializable(getFactoryLocator(_messageProcessor.getModuleContext()), _factoryName, _messageProcessor, _parent);
+        return newSerializable(getFactoryLocator(_messageProcessor.getFacility()), _factoryName, _messageProcessor, _parent);
     }
 }

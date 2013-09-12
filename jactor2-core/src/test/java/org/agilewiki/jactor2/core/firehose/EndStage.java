@@ -3,13 +3,13 @@ package org.agilewiki.jactor2.core.firehose;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class EndStage extends ActorBase implements DataProcessor {
 
-    public EndStage(final ModuleContext _moduleContext)
+    public EndStage(final Facility _facility)
             throws Exception {
-        initialize(new IsolationMessageProcessor(_moduleContext));
+        initialize(new IsolationMessageProcessor(_facility));
     }
 
     @Override

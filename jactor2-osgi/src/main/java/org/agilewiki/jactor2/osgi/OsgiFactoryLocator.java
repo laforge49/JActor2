@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -19,7 +19,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     /**
      * The processing factory to which the factory locator is bound.
      */
-    private ModuleContext moduleContext;
+    private Facility facility;
 
     /**
      * The contents of the bundle's config file.
@@ -46,23 +46,23 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     }
 
     /**
-     * Returns the module context to which this factory locator is bound.
+     * Returns the facility to which this factory locator is bound.
      *
-     * @return The processing factory.
+     * @return The facility.
      */
-    public ModuleContext getModuleContext() {
-        return moduleContext;
+    public Facility getFacility() {
+        return facility;
     }
 
     /**
-     * Bind this factory locator to a module context.
+     * Bind this factory locator to a facility.
      *
-     * @param _moduleContext The processing factory.
+     * @param _facility The facility.
      */
-    public void setModuleContext(final ModuleContext _moduleContext) {
-        if (moduleContext != null)
+    public void setFacility(final Facility _facility) {
+        if (facility != null)
             throw new IllegalStateException("processing factory already set");
-        moduleContext = _moduleContext;
+        facility = _facility;
     }
 
     /**
@@ -87,7 +87,7 @@ public class OsgiFactoryLocator extends FactoryLocatorImpl implements ManagedSer
     public void close() throws Exception {
         super.close();
         if (essentialService) {
-            moduleContext.close();
+            facility.close();
         } else if (serviceRegistration != null)
             serviceRegistration.unregister();
     }

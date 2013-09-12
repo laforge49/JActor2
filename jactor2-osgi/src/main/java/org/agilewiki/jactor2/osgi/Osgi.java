@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.Root;
 import org.osgi.framework.Bundle;
@@ -18,13 +18,13 @@ import org.osgi.framework.Version;
 final public class Osgi {
 
     /**
-     * Returns the BundleContext saved in the bundleContext property of a ModuleContext.
+     * Returns the BundleContext saved in the bundleContext property of a Facility.
      *
-     * @param _moduleContext The processing factory.
+     * @param _facility The processing factory.
      * @return The BundleContext.
      */
-    public static BundleContext getBundleContext(final ModuleContext _moduleContext) {
-        return (BundleContext) _moduleContext.getProperty("bundleContext");
+    public static BundleContext getBundleContext(final Facility _facility) {
+        return (BundleContext) _facility.getProperty("bundleContext");
     }
 
     /**
@@ -62,11 +62,11 @@ final public class Osgi {
     /**
      * Returns the OsgiFactoryLocator associated with a processing factory.
      *
-     * @param _moduleContext The processing factory.
+     * @param _facility The processing factory.
      * @return The OsgiFactoryLocator.
      */
-    public static OsgiFactoryLocator getOsgiFactoryLocator(final ModuleContext _moduleContext) {
-        return (OsgiFactoryLocator) Durables.getFactoryLocator(_moduleContext);
+    public static OsgiFactoryLocator getOsgiFactoryLocator(final Facility _facility) {
+        return (OsgiFactoryLocator) Durables.getFactoryLocator(_facility);
     }
 
     /**
@@ -99,7 +99,7 @@ final public class Osgi {
             @Override
             public void processAsyncRequest() throws Exception {
                 String location = _root.getBundleLocation();
-                BundleContext bundleContext = getBundleContext(_root.getMessageProcessor().getModuleContext());
+                BundleContext bundleContext = getBundleContext(_root.getMessageProcessor().getFacility());
                 Bundle bundle = bundleContext.installBundle(location);
                 bundle.start();
                 Version version = bundle.getVersion();
@@ -108,7 +108,7 @@ final public class Osgi {
                 locateService.getReq().send(_root.getMessageProcessor(), new AsyncResponseProcessor<OsgiFactoryLocator>() {
                     @Override
                     public void processAsyncResponse(OsgiFactoryLocator response) throws Exception {
-                        MessageProcessor newMessageProcessor = new NonBlockingMessageProcessor(response.getModuleContext());
+                        MessageProcessor newMessageProcessor = new NonBlockingMessageProcessor(response.getFacility());
                         _root.copyReq(newMessageProcessor).send(_root.getMessageProcessor(), dis);
                     }
                 });

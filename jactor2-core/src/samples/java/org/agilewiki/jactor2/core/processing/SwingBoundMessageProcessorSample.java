@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.processing;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 import javax.swing.*;
 
@@ -16,10 +16,10 @@ public class SwingBoundMessageProcessorSample {
 class HelloWorld extends ActorBase {
     HelloWorld() throws Exception {
 
-        //Create a context with 5 threads.
-        ModuleContext context = new ModuleContext(5);
+        //Create a facility with 5 threads.
+        Facility facility = new Facility(5);
 
-        initialize(new SwingBoundMessageProcessor(context));
+        initialize(new SwingBoundMessageProcessor(facility));
     }
 
     AsyncRequest<Void> createAndShowAReq() {
@@ -30,7 +30,7 @@ class HelloWorld extends ActorBase {
                 JFrame frame = new JFrame("HelloWorld");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
 
-                //Close context when window is closed.
+                //Close facility when window is closed.
                 frame.addWindowListener((SwingBoundMessageProcessor) getMessageProcessor());
 
                 //Add the "Hello World!" label.

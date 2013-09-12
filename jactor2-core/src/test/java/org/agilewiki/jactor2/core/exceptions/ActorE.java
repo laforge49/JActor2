@@ -4,13 +4,13 @@ import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.Facility;
 
 public class ActorE {
     private final MessageProcessor messageProcessor;
 
-    public ActorE(final ModuleContext _context) {
-        this.messageProcessor = new IsolationMessageProcessor(_context);
+    public ActorE(final Facility _facility) {
+        this.messageProcessor = new IsolationMessageProcessor(_facility);
     }
 
     public AsyncRequest<Void> throwRequest(final ActorA actorA) {

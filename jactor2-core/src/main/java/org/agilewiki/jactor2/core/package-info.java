@@ -1,5 +1,5 @@
 /**
- * <h1>Actors, Processing, Context and Messaging</h1>
+ * <h1>Actors, Processing, Facilities and Messaging</h1>
  * <p>
  *     The JActor architecture is divided into 4 parts: actors, processing, threading and messaging.
  * </p>
@@ -31,17 +31,17 @@
  * </p>
  * <h2>Threading</h2>
  * <p>
- *     A module context is used to assign threads to message processors that have an inbox that is not empty,
+ *     A facility is used to assign threads to message processors that have an inbox that is not empty,
  *     with at most one thread being assigned to any given message processor.
  * </p>
  * <p>
- *     There can be more than one context within a program--which is important when working
- *     with OSGi. Each context has a property set and an independent lifecycle. When messages are
- *     sent to a context that is closed, an exception is raised in the sending actor.
+ *     There can be more than one facility within a program--which is important when working
+ *     with OSGi. Each facility has a property set and an independent lifecycle. When messages are
+ *     sent to a facility that is closed, an exception is raised in the sending actor.
  * </p>
  * <p>
- *     Multiple module contexts can also be important when a Swing program has multiple frames that
- *     have associated background tasks. If a frame has its own module context that is closed when
+ *     Multiple facilities can also be important when a Swing program has multiple frames that
+ *     have associated background tasks. If a frame has its own facility that is closed when
  *     the frame is closed, all the background activity associated with that frame is terminated.
  * </p>
  * <h2>Messaging</h2>

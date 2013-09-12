@@ -1,47 +1,47 @@
 package org.agilewiki.jactor2.core.messaging;
 
 /**
- * This exception is thrown when sending a AsyncRequest to a different context and that context is closed.
- * This exception is also thrown when closing a context that is processing a request from a different context.
+ * This exception is thrown when sending a AsyncRequest to a different facility and that facility is closed.
+ * This exception is also thrown when closing a facility that is processing a request from a different facility.
  * This becomes important when working with OSGi and each bundle has its own lifecycle.
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.context.ModuleContext;
+ * import org.agilewiki.jactor2.core.threading.Facility;
  * import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
  *
- * //Exploring the use of multiple contexts.
+ * //Exploring the use of multiple facilities.
  * public class ServiceSample {
  *
  *     public static void main(final String[] _args) throws Exception {
  *
- *         //Application context with 1 thread.
- *         final ModuleContext applicationContext = new ModuleContext(1);
+ *         //Application facility with 1 thread.
+ *         final Facility applicationFacility = new Facility(1);
  *
- *         //Create a service actor that uses its own context.
+ *         //Create a service actor that uses its own facility.
  *         Service service = new Service();
  *
  *         try {
  *             //Test the delay echo request on the service actor.
  *             System.out.println(service.delayEchoAReq(1, "1 (Expected)").call());
  *
- *             //close the context used by the service actor.
- *             service.getMessageProcessor().getModuleContext().close();
+ *             //close the facility used by the service actor.
+ *             service.getMessageProcessor().getFacility().close();
  *             try {
- *                 //Try using delay echo request with the context closed.
+ *                 //Try using delay echo request with the facility closed.
  *                 System.out.println(service.delayEchoAReq(1, "(Unexpected)").call());
  *             } catch (ServiceClosedException sce) {
- *                 //The ServiceClosedException is now thrown because the context is closed.
+ *                 //The ServiceClosedException is now thrown because the facility is closed.
  *                 System.out.println("Exception as expected");
  *             }
  *
- *             //Create a new service actor that uses its own context.
+ *             //Create a new service actor that uses its own facility.
  *             service = new Service();
- *             //Create an application actor based on the application context
+ *             //Create an application actor based on the application facility
  *             //and with a reference to the service actor.
  *             final ServiceApplication serviceApplication =
- *                     new ServiceApplication(service, new NonBlockingMessageProcessor(applicationContext));
+ *                     new ServiceApplication(service, new NonBlockingMessageProcessor(applicationFacility));
  *             //Start a delay echo service request using the application actor.
  *             EchoReqState echoReqState = serviceApplication.echoAReq(1, "2 (Expected)").call();
  *             //Print the results of the delay echo service request.
@@ -49,24 +49,24 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *             //Start a second delay echo service request using the application actor.
  *             EchoReqState echoReqState2 = serviceApplication.echoAReq(1, "(Unexpected)").call();
- *             //Close the service context while the delay echo service request is still sleeping.
+ *             //Close the service facility while the delay echo service request is still sleeping.
  *             serviceApplication.closeServiceAReq().call();
  *             //The results should now show that an exception was thrown.
  *             System.out.println(serviceApplication.echoResultAReq(echoReqState2).call());
  *         } finally {
- *             service.getMessageProcessor().getModuleContext().close(); //Close the service context.
- *             applicationContext.close(); //Close the application context.
+ *             service.getMessageProcessor().getFacility().close(); //Close the service facility.
+ *             applicationFacility.close(); //Close the application facility.
  *         }
  *
  *     }
  * }
  *
- * //A service actor that runs on its own context.
+ * //A service actor that runs on its own facility.
  * class Service extends ActorBase {
  *
  *     Service() throws Exception {
- *         //Create a message processor on a new context with 1 thread.
- *         initialize(new NonBlockingMessageProcessor(new ModuleContext(1)));
+ *         //Create a message processor on a new facility with 1 thread.
+ *         initialize(new NonBlockingMessageProcessor(new Facility(1)));
  *     }
  *
  *     //Returns a delay echo request.
@@ -99,10 +99,10 @@ package org.agilewiki.jactor2.core.messaging;
  *     String response;
  * }
  *
- * //An actor with a context that is different than the context of the service actor.
+ * //An actor with a facility that is different than the facility of the service actor.
  * class ServiceApplication extends ActorBase {
  *
- *     //The service actor, which operates in a different context.
+ *     //The service actor, which operates in a different facility.
  *     private final Service service;
  *
  *     //Create a service application actor with a reference to a service actor.
@@ -169,8 +169,8 @@ package org.agilewiki.jactor2.core.messaging;
  *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
- *                 //Close the context of the service actor.
- *                 service.getMessageProcessor().getModuleContext().close();
+ *                 //Close the facility of the service actor.
+ *                 service.getMessageProcessor().getFacility().close();
  *                 processAsyncResponse(null);
  *             }
  *         };
