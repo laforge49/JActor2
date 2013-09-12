@@ -1,16 +1,16 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 
 public class ActorSample implements Actor {
-    private final MessageProcessor messageProcessor;
+    private final Reactor reactor;
 
-    ActorSample(final MessageProcessor _messageProcessor) {
-        messageProcessor = _messageProcessor;
+    ActorSample(final Reactor _reactor) {
+        reactor = _reactor;
     }
 
     @Override
-    public final MessageProcessor getMessageProcessor() {
-        return messageProcessor;
+    public final Reactor getReactor() {
+        return reactor;
     }
 }

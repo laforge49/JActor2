@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.testService;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.testIface.Hello;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;
@@ -16,8 +16,8 @@ public class HelloService extends ActorBase implements Hello, ManagedService {
     private BundleContext context;
     private Dictionary<String, ?> properties;
 
-    public HelloService(final BundleContext _context, MessageProcessor messageProcessor) throws Exception {
-        initialize(messageProcessor);
+    public HelloService(final BundleContext _context, Reactor reactor) throws Exception {
+        initialize(reactor);
         context = _context;
     }
 

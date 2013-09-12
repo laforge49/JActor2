@@ -1,25 +1,25 @@
 package org.agilewiki.jactor2.core.threading;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
+import org.agilewiki.jactor2.core.processing.ReactorBase;
 
 /**
- * Signals a migration of the current thread to another message processor.
+ * Signals a migration of the current thread to another reactor.
  * As this exception is never thrown when a message is being processed,
  * the application should never be exposed to it.
  */
 public class MigrationException extends RuntimeException {
 
     /**
-     * The newly active message processor.
+     * The newly active reactor.
      */
-    public final MessageProcessorBase messageProcessor;
+    public final ReactorBase messageProcessor;
 
     /**
      * Create a new MigrationException.
      *
      * @param _messageProcessor The newly active processing.
      */
-    public MigrationException(final MessageProcessorBase _messageProcessor) {
+    public MigrationException(final ReactorBase _messageProcessor) {
         messageProcessor = _messageProcessor;
     }
 

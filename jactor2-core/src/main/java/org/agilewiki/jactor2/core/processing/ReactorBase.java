@@ -12,17 +12,17 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Base class for message processors.
+ * Base class for reactor.
  */
-abstract public class MessageProcessorBase implements MessageProcessor, MessageSource, AutoCloseable {
+abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseable {
 
     /**
-     * MessageProcessor logger.
+     * Reactor logger.
      */
     protected final Logger log;
 
     /**
-     * The facility of this message processor.
+     * The facility of this reactor.
      */
     protected final Facility facility;
 
@@ -48,15 +48,15 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     private Message currentMessage;
 
     /**
-     * Create a message processor.
+     * Create a reactor.
      *
-     * @param _facility              The facility of this message processor.
+     * @param _facility              The facility of this reactor.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public MessageProcessorBase(final Facility _facility,
-                                final int _initialBufferSize,
-                                final int _initialLocalQueueSize) {
+    public ReactorBase(final Facility _facility,
+                       final int _initialBufferSize,
+                       final int _initialLocalQueueSize) {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.getMessageProcessorLogger();
@@ -73,9 +73,9 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
     /**
-     * Returns the message processor logger.
+     * Returns the reactor logger.
      *
-     * @return The message processor logger.
+     * @return The reactor logger.
      */
     public final Logger getLogger() {
         return log;
@@ -101,7 +101,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
 
     /**
      * Returns true when there is a message in the inbox that can be processed.
-     * (This method is not thread safe and must be called on the message processor's thread.)
+     * (This method is not thread safe and must be called on the reactor's thread.)
      *
      * @return True if there is a message in the inbox that can be processed.
      */
@@ -140,7 +140,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
             final ExceptionHandler _handler) {
         if (!isRunning())
             throw new IllegalStateException(
-                    "Attempt to set an exception handler on an idle message processor");
+                    "Attempt to set an exception handler on an idle reactor");
         final ExceptionHandler rv = this.exceptionHandler;
         this.exceptionHandler = _handler;
         return rv;
@@ -156,10 +156,10 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     }
 
     /**
-     * Add a message directly to the input queue of a MessageProcessor.
+     * Add a message directly to the input queue of a Reactor.
      *
      * @param _message A message.
-     * @param _local   True when the current thread is bound to the message processor.
+     * @param _local   True when the current thread is bound to the reactor.
      */
     public void unbufferedAddMessage(final Message _message, final boolean _local)
             throws Exception {
@@ -204,13 +204,13 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     abstract protected void afterAdd() throws Exception;
 
     /**
-     * Buffers a message in the sending message processor for sending later.
+     * Buffers a message in the sending reactor for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The message processor that should eventually receive this message
+     * @param _target  The reactor that should eventually receive this message
      * @return True if the message was buffered.
      */
-    public boolean buffer(final Message _message, final MessageProcessor _target) {
+    public boolean buffer(final Message _message, final Reactor _target) {
         return outbox.buffer(_message, _target);
     }
 
@@ -250,9 +250,9 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
 
     @Override
     public final void incomingResponse(final Message _message,
-                                       final MessageProcessor _responseSource) {
+                                       final Reactor _responseSource) {
         try {
-            MessageProcessorBase responseSource = (MessageProcessorBase) _responseSource;
+            ReactorBase responseSource = (ReactorBase) _responseSource;
             boolean local = this == _responseSource;
             if (local || _responseSource == null || !responseSource.buffer(_message, this))
                 unbufferedAddMessage(_message, local);
@@ -288,7 +288,7 @@ abstract public class MessageProcessorBase implements MessageProcessor, MessageS
     abstract public AtomicReference<Thread> getThreadReference();
 
     /**
-     * Returns true, if this message processor is actively processing messages.
+     * Returns true, if this reactor is actively processing messages.
      */
     abstract public boolean isRunning();
 

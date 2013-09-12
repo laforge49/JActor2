@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
  * Message wraps the user/application AsyncRequest/Event which are queued in the
- * Actor's message processor's inbox. The lightweight thread associated with the Actor's message processor will process
+ * Actor's reactor's inbox. The lightweight thread associated with the Actor's reactor will process
  * the Message asynchronously.
  * <p>
  * Both Event and AsyncRequest have private nested classes specific to their requirements.
@@ -14,10 +14,10 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
 public interface Message extends AutoCloseable {
 
     /**
-     * Returns true when the response is to be sent to a message processor created with a different
+     * Returns true when the response is to be sent to a reactor created with a different
      * facility.
      *
-     * @return True when the response is to be sent to a message processor created with a different
+     * @return True when the response is to be sent to a reactor created with a different
      *         facility.
      */
     boolean isForeign();
@@ -32,15 +32,15 @@ public interface Message extends AutoCloseable {
     /**
      * Execute the Event.processEvent or AsyncRequest.processAsyncRequest method
      * of the event/request held by the message. This method is always called on the
-     * target message processor's own thread.
+     * target reactor's own thread.
      */
     void eval();
 
     /**
-     * Process the throwable on the current thread in the facility of the active message processor.
+     * Process the throwable on the current thread in the facility of the active reactor.
      *
-     * @param _activeMessageProcessor The message processor providing the facility for processing the throwable.
-     * @param _e                      The exception to be processed.
+     * @param _activeReactor The reactor providing the facility for processing the throwable.
+     * @param _e             The exception to be processed.
      */
-    void processException(final MessageProcessor _activeMessageProcessor, final Exception _e);
+    void processException(final Reactor _activeReactor, final Exception _e);
 }

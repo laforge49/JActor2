@@ -10,15 +10,15 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Common code for NonBlockingMessageProcessor and IsolationMessageProcessor, which are not bound to a thread.
+ * Common code for NonBlockingReactor and IsolationReactor, which are not bound to a thread.
  * <p>
- * UnboundMessageProcessor supports thread migration only between instances of this class.
+ * UnboundReactor supports thread migration only between instances of this class.
  * </p>
  */
-abstract public class UnboundMessageProcessor extends MessageProcessorBase {
+abstract public class UnboundReactor extends ReactorBase {
 
     /**
-     * A reference to the thread that is executing this message processor.
+     * A reference to the thread that is executing this reactor.
      */
     protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
 
@@ -28,17 +28,17 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
     private final Runnable onIdle;
 
     /**
-     * Create a message processor.
+     * Create an unbound reactor.
      *
-     * @param _facility              The facility of this message processor.
+     * @param _facility              The facility of this reactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public UnboundMessageProcessor(Facility _facility,
-                                   int _initialOutboxSize,
-                                   final int _initialLocalQueueSize,
-                                   Runnable _onIdle) {
+    public UnboundReactor(Facility _facility,
+                          int _initialOutboxSize,
+                          final int _initialLocalQueueSize,
+                          Runnable _onIdle) {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }
@@ -83,21 +83,21 @@ abstract public class UnboundMessageProcessor extends MessageProcessorBase {
      */
     public boolean flush(boolean _mayMigrate) throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = outbox.getIterator();
+        final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = outbox.getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
-                final MessageProcessorBase target = entry.getKey();
+                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter.next();
+                final ReactorBase target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() &&
                         _mayMigrate &&
                         getFacility() == target.getFacility() &&
-                        target instanceof UnboundMessageProcessor) {
+                        target instanceof UnboundReactor) {
                     if (!target.isRunning()) {
                         Thread currentThread = threadReference.get();
-                        MessageProcessorBase targ = target;
+                        ReactorBase targ = target;
                         AtomicReference<Thread> targetThreadReference = targ.getThreadReference();
                         if (targetThreadReference.get() == null &&
                                 targetThreadReference.compareAndSet(null, currentThread)) {

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 //Exploring the use of multiple facility.
@@ -21,7 +21,7 @@ public class ServiceSample {
             System.out.println(service.delayEchoAReq(1, "1 (Expected)").call());
 
             //close the facility used by the service actor.
-            service.getMessageProcessor().getFacility().close();
+            service.getReactor().getFacility().close();
             try {
                 //Try using delay echo request with the facility closed.
                 System.out.println(service.delayEchoAReq(1, "(Unexpected)").call());
@@ -35,7 +35,7 @@ public class ServiceSample {
             //Create an application actor based on the application facility
             //and with a reference to the service actor.
             final ServiceApplication serviceApplication =
-                    new ServiceApplication(service, new NonBlockingMessageProcessor(applicationFacility));
+                    new ServiceApplication(service, new NonBlockingReactor(applicationFacility));
             //Start a delay echo service request using the application actor.
             EchoReqState echoReqState = serviceApplication.echoAReq(1, "2 (Expected)").call();
             //Print the results of the delay echo service request.
@@ -48,7 +48,7 @@ public class ServiceSample {
             //The results should now show that an exception was thrown.
             System.out.println(serviceApplication.echoResultAReq(echoReqState2).call());
         } finally {
-            service.getMessageProcessor().getFacility().close(); //Close the service facility.
+            service.getReactor().getFacility().close(); //Close the service facility.
             applicationFacility.close(); //Close the application facility.
         }
 
@@ -60,12 +60,12 @@ class Service extends ActorBase {
 
     Service() throws Exception {
         //Create a processing on a new facility with 1 thread.
-        initialize(new NonBlockingMessageProcessor(new Facility(1)));
+        initialize(new NonBlockingReactor(new Facility(1)));
     }
 
     //Returns a delay echo request.
     AsyncRequest<String> delayEchoAReq(final int _delay, final String _text) {
-        return new AsyncRequest<String>(getMessageProcessor()) {
+        return new AsyncRequest<String>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 //Sleep a bit so that the request does not complete too quickly.
@@ -100,9 +100,9 @@ class ServiceApplication extends ActorBase {
     private final Service service;
 
     //Create a service application actor with a reference to a service actor.
-    ServiceApplication(final Service _service, final MessageProcessor _messageProcessor) throws Exception {
+    ServiceApplication(final Service _service, final Reactor _reactor) throws Exception {
         service = _service;
-        initialize(_messageProcessor);
+        initialize(_reactor);
     }
 
     //Returns an application echo request.
@@ -110,7 +110,7 @@ class ServiceApplication extends ActorBase {
     //And the response returned by the echo request is state data needed to manage the
     //delivery of the response from the service delay echo request.
     AsyncRequest<EchoReqState> echoAReq(final int _delay, final String _text) {
-        return new AsyncRequest<EchoReqState>(getMessageProcessor()) {
+        return new AsyncRequest<EchoReqState>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
 
@@ -160,11 +160,11 @@ class ServiceApplication extends ActorBase {
 
     //Returns a close service request.
     AsyncRequest<Void> closeServiceAReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 //Close the facility of the service actor.
-                service.getMessageProcessor().getFacility().close();
+                service.getReactor().getFacility().close();
                 processAsyncResponse(null);
             }
         };
@@ -174,7 +174,7 @@ class ServiceApplication extends ActorBase {
     //An echo result request returns the response from the service delay echo request
     //associated with the given echo request state.
     AsyncRequest<String> echoResultAReq(final EchoReqState _echoReqState) {
-        return new AsyncRequest<String>(getMessageProcessor()) {
+        return new AsyncRequest<String>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 if (_echoReqState.response == null) {

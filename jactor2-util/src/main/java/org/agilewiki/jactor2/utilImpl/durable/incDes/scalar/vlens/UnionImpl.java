@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.*;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
@@ -26,9 +26,9 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
             }
 
             @Override
-            public UnionImpl newSerializable(MessageProcessor messageProcessor, Ancestor parent)
+            public UnionImpl newSerializable(Reactor reactor, Ancestor parent)
                     throws Exception {
-                UnionImpl uj = (UnionImpl) super.newSerializable(messageProcessor, parent);
+                UnionImpl uj = (UnionImpl) super.newSerializable(reactor, parent);
                 Factory[] afs = new FactoryImpl[_actorTypes.length];
                 int i = 0;
                 while (i < _actorTypes.length) {
@@ -46,7 +46,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     protected JASerializable value;
 
     public AsyncRequest<Void> clearReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             public void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
@@ -56,7 +56,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<JASerializable> getValueReq() {
-        return new AsyncRequest<JASerializable>(getMessageProcessor()) {
+        return new AsyncRequest<JASerializable>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -71,7 +71,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     protected int getFactoryIndex(String actorType) throws Exception {
-        FactoryLocator factoryLocator = Durables.getFactoryLocator(getMessageProcessor());
+        FactoryLocator factoryLocator = Durables.getFactoryLocator(getReactor());
         Factory actorFactory = factoryLocator.getFactory(actorType);
         return getFactoryIndex(actorFactory);
     }
@@ -101,7 +101,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         if (factoryIndex == -1)
             return;
         Factory factory = getUnionFactories()[factoryIndex];
-        value = factory.newSerializable(getMessageProcessor(), getParent());
+        value = factory.newSerializable(getReactor(), getParent());
         ((IncDesImpl) value.getDurable()).load(readableBytes);
         ((IncDesImpl) value.getDurable()).setContainerJid(this);
     }
@@ -136,7 +136,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<Void> setValueReq(final String actorType) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 setValue(actorType);
@@ -161,7 +161,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         } else {
             Factory factory = getUnionFactories()[ndx];
             factoryIndex = ndx;
-            value = factory.newSerializable(getMessageProcessor(), getParent());
+            value = factory.newSerializable(getReactor(), getParent());
             ((IncDesImpl) value.getDurable()).setContainerJid(this);
         }
         change(getSerializedLength() - oldLength);
@@ -181,7 +181,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<Void> setValueReq(final String jidType, final byte[] bytes) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 setValue(jidType, bytes);
@@ -203,7 +203,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
         Factory factory = getUnionFactories()[ndx];
         factoryIndex = ndx;
-        value = factory.newSerializable(getMessageProcessor(), getParent());
+        value = factory.newSerializable(getReactor(), getParent());
         ((IncDesImpl) value.getDurable()).setContainerJid(this);
         ((IncDesImpl) value.getDurable()).load(new ReadableBytes(bytes, 0));
         change(getSerializedLength() - oldLength);
@@ -223,7 +223,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<Boolean> makeValueReq(final String jidType) {
-        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(jidType));
@@ -260,7 +260,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
-        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(jidType, bytes));
@@ -319,8 +319,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         throw new IllegalArgumentException("pathname " + pathname);
     }
 
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
+        super.initialize(reactor, parent, factory);
     }
 }

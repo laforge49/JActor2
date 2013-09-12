@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.tuple;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -45,15 +45,15 @@ public class TupleFactory extends FactoryImpl {
     /**
      * Create and configure an actor.
      *
-     * @param messageProcessor The processing of the new actor.
-     * @param parent           The parent of the new actor.
+     * @param reactor The processing of the new actor.
+     * @param parent  The parent of the new actor.
      * @return The new actor.
      */
     @Override
-    public TupleImpl newSerializable(MessageProcessor messageProcessor, Ancestor parent)
+    public TupleImpl newSerializable(Reactor reactor, Ancestor parent)
             throws Exception {
-        TupleImpl tj = (TupleImpl) super.newSerializable(messageProcessor, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(messageProcessor);
+        TupleImpl tj = (TupleImpl) super.newSerializable(reactor, parent);
+        FactoryLocator fl = Durables.getFactoryLocator(reactor);
         Factory[] afs = new FactoryImpl[jidTypes.length];
         int i = 0;
         while (i < jidTypes.length) {

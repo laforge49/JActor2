@@ -1,22 +1,22 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
  * <p>
- * Actors must implement the Actor interface to provide access to their message processor.
+ * Actors must implement the Actor interface to provide access to their reactor.
  * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
  * public class ActorSample implements Actor {
- *     private final MessageProcessor processor;
+ *     private final Reactor processor;
  *
- *     ActorSample(final MessageProcessor _processor) {
+ *     ActorSample(final Reactor _processor) {
  *         processor = _processor;
  *     }
  *
  *     {@literal @}Override
- *     public final MessageProcessor getMessageProcessor() {
+ *     public final Reactor getReactor() {
  *         return processor;
  *     }
  * }
@@ -24,9 +24,9 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  */
 public interface Actor {
     /**
-     * Returns the message processor associated with this Actor.
+     * Returns the reactor associated with this Actor.
      *
-     * @return The actor's message processor.
+     * @return The actor's reactor.
      */
-    public MessageProcessor getMessageProcessor();
+    public Reactor getReactor();
 }

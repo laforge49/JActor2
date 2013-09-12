@@ -87,7 +87,7 @@ abstract public class FactoryLocatorActivator extends FacilityActivator {
                 String value = entry.getValue();
                 int i = value.indexOf('|');
                 try {
-                    FactoriesImporter factoriesImporter = new FactoriesImporter(getMessageProcessor());
+                    FactoriesImporter factoriesImporter = new FactoriesImporter(getReactor());
                     if (i > -1) {
                         String bundleName = value.substring(0, i);
                         String niceVersion = value.substring(i + 1);

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
+import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.processing.ReactorBase;
 import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.core.threading.PoolThread;
 
@@ -24,30 +24,30 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected boolean used;
 
     /**
-     * The message processor where this Request Object is passed for processing. The thread
-     * owned by this message processor will process the Request.
+     * The reactor where this Request Object is passed for processing. The thread
+     * owned by this reactor will process the Request.
      */
-    protected final MessageProcessorBase messageProcessor;
+    protected final ReactorBase messageProcessor;
 
     /**
-     * True when the result is to be returned via a message processor with a facility
-     * that differs from the facility of the target message processor.
+     * True when the result is to be returned via a reactor with a facility
+     * that differs from the facility of the target reactor.
      */
     protected boolean foreign;
 
     /**
-     * The source message processor or pender that will receive the results.
+     * The source reactor or pender that will receive the results.
      */
     protected MessageSource messageSource;
 
     /**
-     * The message targeted to the source message processor which, when processed,
+     * The message targeted to the source reactor which, when processed,
      * resulted in this message.
      */
     protected Message oldMessage;
 
     /**
-     * The exception handler that was active in the source message processor at the time
+     * The exception handler that was active in the source reactor at the time
      * when this message was created.
      */
     protected ExceptionHandler sourceExceptionHandler;
@@ -70,22 +70,22 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * Create a RequestBase.
      *
-     * @param _targetMessageProcessor The message processor where this Request Objects is passed for processing.
-     *                                The thread owned by this message processor will process this Request.
+     * @param _targetReactor The reactor where this Request Objects is passed for processing.
+     *                       The thread owned by this reactor will process this Request.
      */
-    public RequestBase(final MessageProcessor _targetMessageProcessor) {
-        if (_targetMessageProcessor == null) {
+    public RequestBase(final Reactor _targetReactor) {
+        if (_targetReactor == null) {
             throw new NullPointerException("targetMessageProcessor");
         }
-        messageProcessor = (MessageProcessorBase) _targetMessageProcessor;
+        messageProcessor = (ReactorBase) _targetReactor;
     }
 
     /**
-     * Returns the MessageProcessor to which this Request is bound and to which this Request is to be passed.
+     * Returns the Reactor to which this Request is bound and to which this Request is to be passed.
      *
-     * @return The target MessageProcessor.
+     * @return The target Reactor.
      */
-    public MessageProcessor getMessageProcessor() {
+    public Reactor getMessageProcessor() {
         return messageProcessor;
     }
 
@@ -100,7 +100,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     /**
-     * Passes this Request to the target MessageProcessor without any result being passed back.
+     * Passes this Request to the target Reactor without any result being passed back.
      * I.E. The signal method results in a 1-way message being passed.
      * If an exception is thrown while processing this Request,
      * that exception is simply logged as a warning.
@@ -112,25 +112,25 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     /**
-     * Passes this Request together with the AsyncResponseProcessor to the target MessageProcessor.
-     * Responses are passed back via the message processor of the source actor and processed by the
+     * Passes this Request together with the AsyncResponseProcessor to the target Reactor.
+     * Responses are passed back via the reactor of the source actor and processed by the
      * provided AsyncResponseProcessor and any exceptions
      * raised while processing the request are processed by the exception handler active when
      * the send method was called.
      *
-     * @param _source            The message processor on whose thread this method was invoked and which
+     * @param _source            The reactor on whose thread this method was invoked and which
      *                           will buffer this Request and subsequently receive the result for
      *                           processing on the same thread.
      * @param _responseProcessor Passed with this request and then returned with the result, the
      *                           AsyncResponseProcessor is used to process the result on the same thread
      *                           that originally invoked this method. If null, then no response is returned.
      */
-    public void send(final MessageProcessor _source,
+    public void send(final Reactor _source,
                      final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
-        MessageProcessorBase source = (MessageProcessorBase) _source;
+        ReactorBase source = (ReactorBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(
-                    "A valid source message processor can not be idle");
+                    "A valid source reactor can not be idle");
         use();
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
         if (rp == null)
@@ -148,9 +148,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     /**
-     * Passes this Request to the target MessageProcessor and blocks the current thread until
+     * Passes this Request to the target Reactor and blocks the current thread until
      * a result is returned. The call method sends the message directly without buffering,
-     * as there is no message processor. The response message is buffered, though thread migration is
+     * as there is no reactor. The response message is buffered, though thread migration is
      * not possible.
      *
      * @return The result from applying this Request to the target actor.
@@ -191,8 +191,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *
      * @param _response the response being returned
      */
-    protected void setResponse(final Object _response, final MessageProcessor _activeMessageProcessor) {
-        ((MessageProcessorBase) _activeMessageProcessor).requestEnd();
+    protected void setResponse(final Object _response, final Reactor _activeReactor) {
+        ((ReactorBase) _activeReactor).requestEnd();
         responsePending = false;
         response = _response;
         if (Facility.DEBUG) {
@@ -212,7 +212,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * The processObjectResponse method accepts the response of a request.
      * <p>
      * This method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (message processor) that passed the
+     * is always invoked from the same light-weight thread (reactor) that passed the
      * Request.
      * </p>
      *
@@ -247,9 +247,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     public Facility getFacility() {
         if (messageSource == null)
             return null;
-        if (!(messageSource instanceof MessageProcessor))
+        if (!(messageSource instanceof Reactor))
             return null;
-        return ((MessageProcessorBase) messageSource).getFacility();
+        return ((ReactorBase) messageSource).getFacility();
     }
 
     @Override
@@ -304,7 +304,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * Process a response.
      */
     private void processResponseMessage() {
-        MessageProcessorBase sourceMessageProcessor = (MessageProcessorBase) messageSource;
+        ReactorBase sourceMessageProcessor = (ReactorBase) messageSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);
         if (response instanceof Exception) {
@@ -319,8 +319,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     @Override
-    public void processException(final MessageProcessor _activeMessageProcessor, final Exception _e) {
-        MessageProcessorBase activeMessageProcessor = (MessageProcessorBase) _activeMessageProcessor;
+    public void processException(final Reactor _activeReactor, final Exception _e) {
+        ReactorBase activeMessageProcessor = (ReactorBase) _activeReactor;
         ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor.getExceptionHandler();
         if (exceptionHandler != null) {
             try {
@@ -354,8 +354,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * Replace the current ExceptionHandler with another.
      * <p>
-     * When an event or request message is processed by a message processor, the current
-     * exception handler is set to null. When a request is sent by a message processor, the
+     * When an event or request message is processed by a reactor, the current
+     * exception handler is set to null. When a request is sent by a reactor, the
      * current exception handler is saved in the outgoing message and restored when
      * the response message is processed.
      * </p>
@@ -405,7 +405,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
         @Override
         public void incomingResponse(final Message _message,
-                                     final MessageProcessor _responseSource) {
+                                     final Reactor _responseSource) {
             result = ((RequestBase) _message).response;
             done.release();
         }

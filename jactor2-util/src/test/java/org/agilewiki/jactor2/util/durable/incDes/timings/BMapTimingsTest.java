@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
@@ -47,10 +47,10 @@ public class BMapTimingsTest extends TestCase {
             m1.getSerializedBytes();
             int j = 0;
             i = s / 2;
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
+            Reactor reactor = new NonBlockingReactor(facility);
             long t0 = System.currentTimeMillis();
             while (j < r) {
-                JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(messageProcessor);
+                JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(reactor);
                 JAInteger ij0 = m1.kGet(i);
                 ij0.setValue(-i);
                 m2.getSerializedBytes();

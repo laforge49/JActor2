@@ -4,9 +4,9 @@ import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
- * The MessageProcessor interface identifies the processing methods that can be used by applications.
+ * The Reactor interface identifies the processing methods that can be used by applications.
  */
-public interface MessageProcessor extends Runnable {
+public interface Reactor extends Runnable {
 
     /**
      * Returns the facility.
@@ -18,8 +18,8 @@ public interface MessageProcessor extends Runnable {
     /**
      * Replace the current ExceptionHandler with another.
      * <p>
-     * When an event or request message is processed by a message processor, the current
-     * exception handler is set to null. When a request is sent by a message processor, the
+     * When an event or request message is processed by a reactor, the current
+     * exception handler is set to null. When a request is sent by a reactor, the
      * current exception handler is saved in the outgoing message and restored when
      * the response message is processed.
      * </p>
@@ -42,7 +42,7 @@ public interface MessageProcessor extends Runnable {
 
     /**
      * Processes the messages in the inbox. For a thread-bound processing this method must
-     * be called by the thread it is bound to, while for non-blocking and isolation message processors
+     * be called by the thread it is bound to, while for non-blocking and isolation reactors
      * this method is called by ThreadManager.
      */
     @Override

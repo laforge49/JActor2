@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.threading;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
+import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.processing.ReactorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,27 +11,27 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The ThreadManager is used to process a queue of MessageProcessor's
+ * The ThreadManager is used to process a queue of Reactor's
  * that have non-empty inboxes.
  * ThreadManager is a thread pool, but it has a simplified API and
  * assumes that the thread pool has a fixed number of threads.
  * ThreadManager is also responsible for assigning the threadReference
- * when a MessageProcessor is run.
+ * when a Reactor is run.
  */
 final public class ThreadManager {
     final Logger logger = LoggerFactory.getLogger(ThreadManager.class);
 
     /**
      * The taskRequest semaphore is used to wake up a thread
-     * when there is a MessageProcessor which hasWork.
+     * when there is a Reactor which hasWork.
      */
     final private Semaphore taskRequest = new Semaphore(0);
 
     /**
      * The messageProcessors queue holds the messageProcessors which have messages to be processed.
      */
-    final private ConcurrentLinkedQueue<MessageProcessorBase> messageProcessors =
-            new ConcurrentLinkedQueue<MessageProcessorBase>();
+    final private ConcurrentLinkedQueue<ReactorBase> messageProcessors =
+            new ConcurrentLinkedQueue<ReactorBase>();
 
     /**
      * When closing is true, the threads exit as they finish their current activity.
@@ -64,7 +64,7 @@ final public class ThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        MessageProcessorBase messageProcessor = messageProcessors.poll();
+                        ReactorBase messageProcessor = messageProcessors.poll();
                         if (messageProcessor != null) {
                             AtomicReference<Thread> threadReference = messageProcessor.getThreadReference();
                             if (threadReference.get() == null &&
@@ -83,7 +83,7 @@ final public class ThreadManager {
                                         continue;
                                     } catch (final Throwable e) {
                                         logger.error(
-                                                "Exception thrown by a message processor's run method",
+                                                "Exception thrown by a reactor's run method",
                                                 e);
                                     }
                                     boolean hasWork = messageProcessor.hasWork();
@@ -110,12 +110,12 @@ final public class ThreadManager {
     }
 
     /**
-     * Begin running a message processor.
+     * Begin running a reactor.
      *
-     * @param _messageProcessor The run method is to be called by the selected thread.
+     * @param _reactor The run method is to be called by the selected thread.
      */
-    final public void execute(final MessageProcessor _messageProcessor) {
-        messageProcessors.add((MessageProcessorBase) _messageProcessor);
+    final public void execute(final Reactor _reactor) {
+        messageProcessors.add((ReactorBase) _reactor);
         taskRequest.release();
     }
 

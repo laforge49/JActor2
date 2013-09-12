@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A message processor bound to a pre-existing thread, a thread-bound message processor can use
+ * A reactor bound to a pre-existing thread, a thread-bound reactor can use
  * a program's main thread or a GUI thread.
  * <p>
  * For thread safety, the processing of each message is done in isolation, but when the processing of a
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * response to that request is received.
  * </p>
  * <p>
- * AsyncRequest/Response messages which are destined to a different message processors are buffered rather
+ * AsyncRequest/Response messages which are destined to a different reactor are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when all
  * incoming messages have been processed.
  * </p>
@@ -37,9 +37,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *         //Get a reference to the main thread
  *         final Thread mainThread = Thread.currentThread();
  *
- *         //Create a thread-bound message processor.
- *         final ThreadBoundMessageProcessor boundMessageProcessor =
- *             new ThreadBoundMessageProcessor(facility, new Runnable() {
+ *         //Create a thread-bound reactor.
+ *         final ThreadBoundReactor boundMessageProcessor =
+ *             new ThreadBoundReactor(facility, new Runnable() {
  *                 {@literal @}Override
  *                 public void run() {
  *                     //Interrupt the main thread when there are messages to process
@@ -47,7 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *                 }
  *             });
  *
- *         //Create an actor that uses the thread-bound message processor.
+ *         //Create an actor that uses the thread-bound reactor.
  *         final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMessageProcessor);
  *
  *         //Pass a FinEvent signal to the actor
@@ -68,7 +68,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * class ThreadBoundActor extends ActorBase {
  *
- *     ThreadBoundActor(final MessageProcessor _messageProcessor) throws Exception {
+ *     ThreadBoundActor(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);
  *     }
  *
@@ -91,7 +91,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * finished
  * </pre>
  */
-public class ThreadBoundMessageProcessor extends MessageProcessorBase {
+public class ThreadBoundReactor extends ReactorBase {
 
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
@@ -99,19 +99,19 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
     private final Runnable boundProcessor;
 
     /**
-     * Create a thread-bound message processor.
+     * Create a thread-bound reactor.
      * <p>
-     * The _boundProcessor.run method is called when a thread-bound message processor has messages
+     * The _boundProcessor.run method is called when a thread-bound reactor has messages
      * that need processing. As a result of invoking the run method, the
-     * ThreadBoundMessageProcessor.run method must subsequently to be invoked by the thread that
-     * the message processor is bound to.
+     * ThreadBoundReactor.run method must subsequently to be invoked by the thread that
+     * the reactor is bound to.
      * </p>
      *
-     * @param _facility       The facility of the message processor.
+     * @param _facility       The facility of the reactor.
      * @param _boundProcessor The _messageProcessor.run method is called when there
      *                        are messages to be processed.
      */
-    public ThreadBoundMessageProcessor(Facility _facility, Runnable _boundProcessor) {
+    public ThreadBoundReactor(Facility _facility, Runnable _boundProcessor) {
         super(_facility,
                 _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize());
@@ -119,24 +119,24 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
     }
 
     /**
-     * Create a thread-bound message processor.
+     * Create a thread-bound reactor.
      * <p>
-     * The boundProcessor.run method is called when a thread-bound message processor has messages
+     * The boundProcessor.run method is called when a thread-bound reactor has messages
      * that need processing. As a result of invoking the run method, the
-     * ThreadBoundMessageProcessor.run method must subsequently to be invoked by the thread that
-     * the message processor is bound to.
+     * ThreadBoundReactor.run method must subsequently to be invoked by the thread that
+     * the reactor is bound to.
      * </p>
      *
-     * @param _facility              The facility of the message processor.
+     * @param _facility              The facility of the reactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _boundProcessor        The _messageProcessor.run method is called when there
      *                               are messages to be processed.
      */
-    public ThreadBoundMessageProcessor(Facility _facility,
-                                       int _initialOutboxSize,
-                                       final int _initialLocalQueueSize,
-                                       Runnable _boundProcessor) {
+    public ThreadBoundReactor(Facility _facility,
+                              int _initialOutboxSize,
+                              final int _initialLocalQueueSize,
+                              Runnable _boundProcessor) {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }
@@ -172,7 +172,7 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
     }
 
     /**
-     * The flush method disburses all buffered message to their target message processor for
+     * The flush method disburses all buffered message to their target reactor for
      * processing.
      * <p>
      * The flush method is automatically called when there are
@@ -183,12 +183,12 @@ public class ThreadBoundMessageProcessor extends MessageProcessorBase {
      */
     public final boolean flush() throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = outbox.getIterator();
+        final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = outbox.getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
-                final MessageProcessorBase target = entry.getKey();
+                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter.next();
+                final ReactorBase target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.unbufferedAddMessages(messages);

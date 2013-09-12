@@ -5,68 +5,68 @@ import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.core.threading.MigrationException;
 
 /**
- * A message processor which processes each request to completion, and which should be used by actors
+ * A reactor which processes each request to completion, and which should be used by actors
  * which perform long computations, I/O, or otherwise block the thread. And unlike other types of
- * message processors, an IsolationMessageProcessor should usually be used only by a single actor.
+ * reactors, an IsolationReactor should usually be used only by a single actor.
  * <p>
  * For thread safety, the processing of each message is done in isolation from other messages, but when the processing of a message
  * results in the sending of a request message to another actor, other messages may be processed before a
- * response to that request message is received. However, an isolation message processor will not process a
+ * response to that request message is received. However, an isolation reactor will not process a
  * request until a response is returned for the prior request. This does not however preclude
  * the processing of event messages.
  * </p>
  * <p>
- * AsyncRequest/Response messages which are destined to a different message processor are buffered rather
+ * AsyncRequest/Response messages which are destined to a different reactor are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when the
  * processing of each incoming message is complete.
  * </p>
  * <p>
  * When the last block of buffered messages is being disbursed, if the destination is not
- * a thread-bound message processor, the destination message processor has no associated thread and the
- * facility of the current message processor is the same as the destination message processor, then the
+ * a thread-bound reactor, the destination reactor has no associated thread and the
+ * facility of the current reactor is the same as the destination reactor, then the
  * current thread migrates with the message block. By this means the message block is
  * often kept in the hardware thread's high-speed memory cache, which means much faster
  * execution.
  * </p>
  * <p>
- * The Inbox used by IsolationMessageProcessor is IsolationInbox.
+ * The Inbox used by IsolationReactor is IsolationInbox.
  * </p>
  */
-public class IsolationMessageProcessor extends UnboundMessageProcessor {
+public class IsolationReactor extends UnboundReactor {
 
     /**
-     * Create an isolation message processor.
+     * Create an isolation reactor.
      *
-     * @param _facility The facility of the message processor.
+     * @param _facility The facility of the reactor.
      */
-    public IsolationMessageProcessor(Facility _facility) {
+    public IsolationReactor(Facility _facility) {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), null);
     }
 
     /**
-     * Create an isolation message processor.
+     * Create an isolation reactor.
      *
-     * @param _facility The facility of the message processor.
+     * @param _facility The facility of the reactor.
      * @param _onIdle   Object to be run when the inbox is emptied, or null.
      */
-    public IsolationMessageProcessor(Facility _facility, Runnable _onIdle) {
+    public IsolationReactor(Facility _facility, Runnable _onIdle) {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), _onIdle);
     }
 
     /**
-     * Create an isolation message processor.
+     * Create an isolation reactor.
      *
-     * @param _facility              The facility of the message processor.
+     * @param _facility              The facility of the reactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public IsolationMessageProcessor(Facility _facility,
-                                     int _initialOutboxSize,
-                                     final int _initialLocalQueueSize,
-                                     Runnable _onIdle) {
+    public IsolationReactor(Facility _facility,
+                            int _initialOutboxSize,
+                            final int _initialLocalQueueSize,
+                            Runnable _onIdle) {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 
@@ -20,8 +20,8 @@ public class BListTest extends TestCase {
             sj0.setValue("a");
             sj1.setValue("b");
             sj2.setValue("c");
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
-            JAList<JAString> stringList2 = (JAList) stringList1.copy(messageProcessor);
+            Reactor reactor = new NonBlockingReactor(facility);
+            JAList<JAString> stringList2 = (JAList) stringList1.copy(reactor);
             JAString s0 = stringList2.iGet(0);
             JAString s1 = stringList2.iGet(1);
             JAString s2 = stringList2.iGet(2);

@@ -4,19 +4,19 @@ import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 public class ActorD {
-    private final MessageProcessor messageProcessor;
+    private final Reactor reactor;
 
     public ActorD(final Facility _facility) {
-        this.messageProcessor = new IsolationMessageProcessor(_facility);
+        this.reactor = new IsolationReactor(_facility);
     }
 
     public AsyncRequest<String> throwAReq() {
-        return new AsyncRequest<String>(messageProcessor) {
+        return new AsyncRequest<String>(reactor) {
             @Override
             public void processAsyncRequest()
                     throws Exception {
@@ -41,14 +41,14 @@ public class ActorD {
 }
 
 class Dd {
-    private final MessageProcessor messageProcessor;
+    private final Reactor reactor;
 
     public Dd(final Facility _facility) {
-        messageProcessor = new IsolationMessageProcessor(_facility);
+        reactor = new IsolationReactor(_facility);
     }
 
     public SyncRequest<Void> doSomethinSReq() {
-        return new SyncRequest<Void>(messageProcessor) {
+        return new SyncRequest<Void>(reactor) {
             @Override
             public Void processSyncRequest()
                     throws Exception {

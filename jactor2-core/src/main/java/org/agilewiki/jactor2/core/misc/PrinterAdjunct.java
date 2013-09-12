@@ -18,7 +18,7 @@ import org.agilewiki.jactor2.core.ActorBase;
  *
  *     // Returns a request to print a Hi! banner.
  *     public SyncRequest&lt;Void&gt; hiSReq() {
- *         return new SyncRequest&lt;Void&gt;(getMessageProcessor()) {
+ *         return new SyncRequest&lt;Void&gt;(getReactor()) {
  *             {@literal @}Override
  *             public Void processSyncRequest() throws Exception {
  *                 printer.printlnSReq("*********").local(messageProcessor);
@@ -45,7 +45,7 @@ public class PrinterAdjunct extends ActorBase {
      * @param _printer The printer used to print the text.
      */
     public PrinterAdjunct(final Printer _printer) throws Exception {
-        initialize(_printer.getMessageProcessor());
+        initialize(_printer.getReactor());
         printer = _printer;
     }
 }

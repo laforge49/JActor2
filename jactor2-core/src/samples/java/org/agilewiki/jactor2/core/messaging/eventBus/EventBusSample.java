@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging.eventBus;
 
 import org.agilewiki.jactor2.core.messaging.EventBus;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 public class EventBusSample {
@@ -12,14 +12,14 @@ public class EventBusSample {
         try {
             //Create a status logger actor.
             StatusLogger statusLogger =
-                    new StatusLogger(new NonBlockingMessageProcessor(facility));
+                    new StatusLogger(new NonBlockingReactor(facility));
 
             //Create a status printer actor.
             StatusPrinter statusPrinter = new StatusPrinter(facility);
 
             //Define an event bus for StatusListener actors.
             EventBus<StatusListener> eventBus =
-                    new EventBus<StatusListener>(new NonBlockingMessageProcessor(facility));
+                    new EventBus<StatusListener>(new NonBlockingReactor(facility));
 
             //Add statusLogger and statusPrinter to the subscribers of the event bus.
             eventBus.subscribeAReq(statusLogger).call();

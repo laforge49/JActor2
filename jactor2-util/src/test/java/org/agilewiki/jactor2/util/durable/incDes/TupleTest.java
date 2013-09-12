@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -16,8 +16,8 @@ public class TupleTest extends TestCase {
             Durables.registerTupleFactory(factoryLocator,
                     "sst", JAString.FACTORY_NAME, JAString.FACTORY_NAME);
             Factory tjf = factoryLocator.getFactory("sst");
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
-            Tuple t0 = (Tuple) tjf.newSerializable(messageProcessor, factoryLocator);
+            Reactor reactor = new NonBlockingReactor(facility);
+            Tuple t0 = (Tuple) tjf.newSerializable(reactor, factoryLocator);
             JAString e0 = (JAString) t0.iGetReq(0).call();
             assertNull(e0.getValueReq().call());
             JAString e1 = (JAString) t0.iGetReq(1).call();

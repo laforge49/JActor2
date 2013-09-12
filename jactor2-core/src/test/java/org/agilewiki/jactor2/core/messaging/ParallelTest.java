@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.misc.Delay;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
@@ -13,15 +13,15 @@ public class ParallelTest extends TestCase {
     private static final int LOADS = 10;
     private static final long DELAY = 200;
 
-    private MessageProcessor messageProcessor;
+    private Reactor reactor;
     private Facility facility;
     private AsyncRequest<Void> start;
 
     public void test() throws Exception {
         facility = new Facility();
-        messageProcessor = new NonBlockingMessageProcessor(facility);
+        reactor = new NonBlockingReactor(facility);
 
-        start = new AsyncRequest<Void>(messageProcessor) {
+        start = new AsyncRequest<Void>(reactor) {
             AsyncRequest<Void> dis = this;
 
             @Override

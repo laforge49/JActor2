@@ -8,7 +8,7 @@ import java.awt.event.WindowListener;
 
 /**
  * Messages are processed on Swing's event-dispatch thread when an actor uses
- * a SwingBoundMessageProcessor. This is critical, as so many Swing methods are
+ * a SwingBoundReactor. This is critical, as so many Swing methods are
  * not thread-safe. Also, if each window has its own facility, then closing a
  * window and its facility will also terminate all activity related to that window.
  * <h3>Sample Usage:</h3>
@@ -32,11 +32,11 @@ import java.awt.event.WindowListener;
  *         //Create a facility with 5 threads.
  *         Facility facility = new Facility(5);
  *
- *         initialize(new SwingBoundMessageProcessor(facility));
+ *         initialize(new SwingBoundReactor(facility));
  *     }
  *
  *     AsyncRequest&lt;Void&gt; createAndShowAReq() {
- *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
  *                 //Create and set up the window.
@@ -44,7 +44,7 @@ import java.awt.event.WindowListener;
  *                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
  *
  *                 //Close facility when window is closed.
- *                 frame.addWindowListener((SwingBoundMessageProcessor) getMessageProcessor());
+ *                 frame.addWindowListener((SwingBoundReactor) getReactor());
  *
  *                 //Add the "Hello World!" label.
  *                 JLabel label = new JLabel("Hello World!");
@@ -63,26 +63,26 @@ import java.awt.event.WindowListener;
  * }
  * </pre>
  */
-public class SwingBoundMessageProcessor extends ThreadBoundMessageProcessor implements WindowListener {
+public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener {
 
     /**
-     * Create a message processor processor bound to the Swing event-dispatch thread.
+     * Create a reactor bound to the Swing event-dispatch thread.
      *
-     * @param _facility The facility of the message processor.
+     * @param _facility The facility of the reactor.
      */
-    public SwingBoundMessageProcessor(Facility _facility) {
+    public SwingBoundReactor(Facility _facility) {
         super(_facility, null);
 
     }
 
     /**
-     * Create a message processor bound to the Swing event-dispatch thread.
+     * Create a reactor bound to the Swing event-dispatch thread.
      *
-     * @param _facility              The facility of the message processor.
+     * @param _facility              The facility of the reactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public SwingBoundMessageProcessor(Facility _facility, int _initialOutboxSize, int _initialLocalQueueSize) {
+    public SwingBoundReactor(Facility _facility, int _initialOutboxSize, int _initialLocalQueueSize) {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 

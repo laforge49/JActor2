@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -14,8 +14,8 @@ public class RootTest extends TestCase {
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(facility);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
-            Root root1 = (Root) rootFactory.newSerializable(messageProcessor, factoryLocator);
+            Reactor reactor = new NonBlockingReactor(facility);
+            Root root1 = (Root) rootFactory.newSerializable(reactor, factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);
             root1.clearReq().call();
@@ -33,14 +33,14 @@ public class RootTest extends TestCase {
             assertNull(rpa);
 
             Factory stringAFactory = factoryLocator.getFactory(JAString.FACTORY_NAME);
-            JAString jaString1 = (JAString) stringAFactory.newSerializable(messageProcessor, factoryLocator);
+            JAString jaString1 = (JAString) stringAFactory.newSerializable(reactor, factoryLocator);
             jaString1.setValueReq("abc").call();
             byte[] sb = jaString1.getSerializedBytesReq().call();
             root1.setValueReq(jaString1.getFactoryName(), sb).call();
             JAString sj = (JAString) root1.getValueReq().call();
             assertEquals("abc", sj.getValueReq().call());
 
-            Root root2 = (Root) rootFactory.newSerializable(messageProcessor, factoryLocator);
+            Root root2 = (Root) rootFactory.newSerializable(reactor, factoryLocator);
             sl = root2.getSerializedLength();
             //assertEquals(56, sl);
             root2.setValueReq(IncDes.FACTORY_NAME).call();

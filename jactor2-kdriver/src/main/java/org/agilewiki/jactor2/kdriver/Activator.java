@@ -23,7 +23,7 @@ public class Activator extends FactoryLocatorActivator {
     protected void process() throws Exception {
         log.warn("wait for commands to load");
         Thread.sleep(10000);
-        getMessageProcessor().setExceptionHandler(new ExceptionHandler() {
+        getReactor().setExceptionHandler(new ExceptionHandler() {
             @Override
             public Void processException(Exception exception) throws Exception {
                 log.error("test failure", exception);
@@ -31,9 +31,9 @@ public class Activator extends FactoryLocatorActivator {
                 return null;
             }
         });
-        LocateService<CommandProcessor> locateService = new LocateService(getMessageProcessor(),
+        LocateService<CommandProcessor> locateService = new LocateService(getReactor(),
                 CommandProcessor.class.getName());
-        locateService.getReq().send(getMessageProcessor(), new AsyncResponseProcessor<CommandProcessor>() {
+        locateService.getReq().send(getReactor(), new AsyncResponseProcessor<CommandProcessor>() {
             @Override
             public void processAsyncResponse(CommandProcessor response) throws Exception {
                 commandProcessor = response;
@@ -67,12 +67,12 @@ public class Activator extends FactoryLocatorActivator {
                 "config:propset import_a jactor2-osgi\\|" + getNiceVersion(),
                 "config:update"));
         String bundleLocation = "mvn:org.agilewiki.jactor2/jactor2-test-service/" + getNiceVersion();
-        FactoriesImporter factoriesImporter = new FactoriesImporter(getMessageProcessor());
-        factoriesImporter.startReq(bundleLocation).send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
+        FactoriesImporter factoriesImporter = new FactoriesImporter(getReactor());
+        factoriesImporter.startReq(bundleLocation).send(getReactor(), new AsyncResponseProcessor<Void>() {
             @Override
             public void processAsyncResponse(Void response) throws Exception {
-                LocateService<Hello> locateService = new LocateService(getMessageProcessor(), Hello.class.getName());
-                locateService.getReq().send(getMessageProcessor(), new AsyncResponseProcessor<Hello>() {
+                LocateService<Hello> locateService = new LocateService(getReactor(), Hello.class.getName());
+                locateService.getReq().send(getReactor(), new AsyncResponseProcessor<Hello>() {
                     @Override
                     public void processAsyncResponse(Hello response) throws Exception {
                         //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));

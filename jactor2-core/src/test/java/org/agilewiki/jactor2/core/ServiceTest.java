@@ -5,8 +5,8 @@ import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.messaging.ServiceClosedException;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 public class ServiceTest extends TestCase {
@@ -16,10 +16,10 @@ public class ServiceTest extends TestCase {
         Facility clientFacility = new Facility();
         final Facility serverFacility = new Facility();
         try {
-            MessageProcessor testMessageProcessor = new NonBlockingMessageProcessor(testFacility);
-            Server server = new Server(new NonBlockingMessageProcessor(serverFacility));
-            final Client client = new Client(new NonBlockingMessageProcessor(clientFacility), server);
-            new AsyncRequest<Void>(testMessageProcessor) {
+            Reactor testReactor = new NonBlockingReactor(testFacility);
+            Server server = new Server(new NonBlockingReactor(serverFacility));
+            final Client client = new Client(new NonBlockingReactor(clientFacility), server);
+            new AsyncRequest<Void>(testReactor) {
                 AsyncRequest<Void> dis = this;
 
                 @Override
@@ -46,13 +46,13 @@ class Client extends ActorBase {
 
     Server server;
 
-    Client(MessageProcessor messageProcessor, Server _server) throws Exception {
-        initialize(messageProcessor);
+    Client(Reactor reactor, Server _server) throws Exception {
+        initialize(reactor);
         server = _server;
     }
 
     AsyncRequest<Boolean> crossAReq() {
-        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getReactor()) {
             AsyncRequest<Boolean> dis = this;
 
             @Override
@@ -78,12 +78,12 @@ class Client extends ActorBase {
 }
 
 class Server extends ActorBase {
-    Server(MessageProcessor messageProcessor) throws Exception {
-        initialize(messageProcessor);
+    Server(Reactor reactor) throws Exception {
+        initialize(reactor);
     }
 
     AsyncRequest<Void> hangAReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
             }

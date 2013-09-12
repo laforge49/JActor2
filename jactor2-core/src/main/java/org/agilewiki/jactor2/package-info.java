@@ -49,20 +49,20 @@
  * <h2>Messaging is Not Always Needed</h2>
  * <p>
  *     It is often helpful to use small actors, but the overhead of messaging passing can
- *     be prohibitive. This is why message processors are first-class objects.
+ *     be prohibitive. This is why reactors are first-class objects.
  * </p>
  * <p>
- *     A message processor is a light-weight thread. A message processor has an input queue (an inbox)
+ *     A reactor is a light-weight thread. A reactor has an input queue (an inbox)
  *     for receiving messages to be processed
  *     and a set of send buffers (an outbox) for assembling buffered messages that are to be sent
- *     to other message processors.
+ *     to other reactors.
  *     </p>
  *     <p>
- *         Every actor needs a message processor, but the message processors
+ *         Every actor needs a reactor, but the reactor
  *     can be shared by several actors. These actors then always operate on the same thread and
  *     are effectively part of a larger, composite actor. Such actors can directly
  *     call methods on each other with complete thread safety, as only one message is processed
- *     at a time for all the actors sharing the same message processor.
+ *     at a time for all the actors sharing the same reactor.
  * </p>
  */
 package org.agilewiki.jactor2;

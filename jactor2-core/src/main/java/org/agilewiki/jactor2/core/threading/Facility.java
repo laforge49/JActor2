@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core.threading;
 
 import org.agilewiki.jactor2.core.messaging.RequestBase;
 import org.agilewiki.jactor2.core.processing.Inbox;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.Outbox;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Provides a thread pool for
- * non-blocking and isolation message processors. Multiple facilities with independent life cycles
+ * non-blocking and isolation reactor. Multiple facilities with independent life cycles
  * are also supported.
  * (A ServiceClosedException may be thrown when messages cross facilities and the target facility is closed.)
  * In addition, the facility maintains a set of AutoClosable objects that are closed
@@ -38,9 +38,9 @@ public class Facility implements AutoCloseable {
             DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>() : null;
 
     /**
-     * The logger used by message processors.
+     * The logger used by reactor.
      */
-    private final Logger messageProcessorLogger = LoggerFactory.getLogger(MessageProcessor.class);
+    private final Logger messageProcessorLogger = LoggerFactory.getLogger(Reactor.class);
 
     /**
      * The thread pool used by Facility.
@@ -64,7 +64,7 @@ public class Facility implements AutoCloseable {
     private final int initialLocalMessageQueueSize;
 
     /**
-     * How big should the initial outbox (per target MessageProcessor) buffer size be?
+     * How big should the initial outbox (per target Reactor) buffer size be?
      */
     private final int initialBufferSize;
 
@@ -101,7 +101,7 @@ public class Facility implements AutoCloseable {
      * Create a Facility.
      *
      * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
-     * @param _initialBufferSize            How big should the initial outbox (per target MessageProcessor) buffer size be?
+     * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
      * @param _threadCount                  The thread pool size.
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
@@ -116,7 +116,7 @@ public class Facility implements AutoCloseable {
     }
 
     /**
-     * Returns the logger to be used by message processors.
+     * Returns the logger to be used by reactor.
      *
      * @return A logger.
      */
@@ -143,14 +143,14 @@ public class Facility implements AutoCloseable {
     }
 
     /**
-     * Submit a MessageProcessor for subsequent execution.
+     * Submit a Reactor for subsequent execution.
      *
-     * @param _messageProcessor The message processor to be run.
+     * @param _reactor The reactor to be run.
      */
-    public final void submit(final MessageProcessor _messageProcessor)
+    public final void submit(final Reactor _reactor)
             throws Exception {
         try {
-            threadManager.execute(_messageProcessor);
+            threadManager.execute(_reactor);
         } catch (final Exception e) {
             if (!isClosing())
                 throw e;

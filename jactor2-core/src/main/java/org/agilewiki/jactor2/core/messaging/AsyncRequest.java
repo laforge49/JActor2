@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
  * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between actors.
  * Requests are typically created as an anonymous class within the targeted Actor and are bound
- * to that actor's message processor.
+ * to that actor's reactor.
  * The signal (1-way messaging) and call method (2-way messaging) pass unbuffered messages
  * to the target actor immediately, where they are enqueued for processing. But rather than being
  * sent immediately, request messages passed using the send method
@@ -27,8 +27,8 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  *
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.threading.Facility;
- * import org.agilewiki.jactor2.core.processing.MessageProcessor;
- * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.Reactor;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
  *
  * public class RequestSample {
  *
@@ -40,7 +40,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  *         try {
  *
  *             //Create actorA.
- *             SampleActor2 actorA = new SampleActor2(new NonBlockingMessageProcessor(facility));
+ *             SampleActor2 actorA = new SampleActor2(new NonBlockingReactor(facility));
  *
  *             //Initialize actorA to 1.
  *             actorA.updateAReq(1).signal();
@@ -49,7 +49,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  *             System.out.println("was " + actorA.updateAReq(2).call() + " but is now 2");
  *
  *             //Create actorB with a reference to actorA.
- *             IndirectActor actorB = new IndirectActor(actorA, new NonBlockingMessageProcessor(facility));
+ *             IndirectActor actorB = new IndirectActor(actorA, new NonBlockingReactor(facility));
  *
  *             //Indirectly change actorA to 42.
  *             System.out.println("was " + actorB.indirectAReq(42).call() + " but is now 42");
@@ -70,13 +70,13 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  *     private int state = 0;
  *
  *     //Create a SimpleActor2.
- *     SampleActor2(final MessageProcessor _messageProcessor) throws Exception {
+ *     SampleActor2(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);
  *     }
  *
  *     //Return an update request.
  *     AsyncRequest&lt;Integer&gt; updateAReq(final int _newState) {
- *         return new AsyncRequest&lt;Integer&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;Integer&gt;(getReactor()) {
  *
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
@@ -96,14 +96,14 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  *     private final SampleActor2 actorA;
  *
  *     //Create an IndirectActor with a reference to another actor.
- *     IndirectActor(final SampleActor2 _actorA, final MessageProcessor _messageProcessor) throws Exception {
+ *     IndirectActor(final SampleActor2 _actorA, final Reactor _messageProcessor) throws Exception {
  *         actorA = _actorA;
  *         initialize(_messageProcessor);
  *     }
  *
  *     //Return a request to update the other actor and return its new state.
  *     AsyncRequest&lt;Integer&gt; indirectAReq(final int _newState) {
- *         return new AsyncRequest&lt;Integer&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;Integer&gt;(getReactor()) {
  *             AsyncRequest<Integer> dis = this;
  *
  *             {@literal @}Override
@@ -113,7 +113,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  *                 AsyncRequest&lt;Integer&gt; req = actorA.updateAReq(_newState);
  *
  *                 //Send the request to the other actor.
- *                 req.send(getMessageProcessor(), new AsyncResponseProcessor&lt;Integer&gt;() {
+ *                 req.send(getReactor(), new AsyncResponseProcessor&lt;Integer&gt;() {
  *
  *                     {@literal @}Override
  *                     public void processAsyncResponse(Integer response) throws Exception {
@@ -139,17 +139,17 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
         implements AsyncResponseProcessor<RESPONSE_TYPE> {
 
     /**
-     * Create an AsyncRequest and bind it to its target message processor.
+     * Create an AsyncRequest and bind it to its target reactor.
      *
-     * @param _targetMessageProcessor The message processor where this AsyncRequest Objects is passed for processing.
-     *                                The thread owned by this message processor will process this AsyncRequest.
+     * @param _targetReactor The reactor where this AsyncRequest Objects is passed for processing.
+     *                       The thread owned by this reactor will process this AsyncRequest.
      */
-    public AsyncRequest(final MessageProcessor _targetMessageProcessor) {
-        super(_targetMessageProcessor);
+    public AsyncRequest(final Reactor _targetReactor) {
+        super(_targetReactor);
     }
 
     /**
-     * The processAsyncRequest method will be invoked by the target MessageProcessor on its own thread
+     * The processAsyncRequest method will be invoked by the target Reactor on its own thread
      * when the AsyncRequest is dequeued from the target inbox for processing.
      */
     abstract public void processAsyncRequest()
@@ -165,7 +165,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
      * The processAsyncResponse method accepts the response of a request.
      * <p>
      * This method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (message processor) that passed the
+     * is always invoked from the same light-weight thread (reactor) that passed the
      * AsyncRequest and AsyncResponseProcessor objects.
      * </p>
      *

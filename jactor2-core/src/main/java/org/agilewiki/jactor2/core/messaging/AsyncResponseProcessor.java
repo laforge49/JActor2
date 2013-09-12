@@ -10,7 +10,7 @@ public interface AsyncResponseProcessor<RESPONSE_TYPE> {
      * The processAsyncResponse method accepts the response of a request.
      * <p>
      * This method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (message processor) that passed the
+     * is always invoked from the same light-weight thread (reactor) that passed the
      * AsyncRequest and AsyncResponseProcessor objects.
      * </p>
      *

@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
@@ -104,7 +104,7 @@ abstract public class FacilityActivator
         facility = new Facility();
         facility.addAutoClosable(this);
         facility.putProperty("bundleContext", bundleContext);
-        initialize(new IsolationMessageProcessor(facility));
+        initialize(new IsolationReactor(facility));
     }
 
     /**

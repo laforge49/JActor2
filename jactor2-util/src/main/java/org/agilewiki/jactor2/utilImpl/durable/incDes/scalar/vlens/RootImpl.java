@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -40,11 +40,11 @@ public class RootImpl extends BoxImpl implements Root {
     }
 
     @Override
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
-        FactoryLocator factoryLocator = Durables.getFactoryLocator(getMessageProcessor());
-        bundleLocation = (JAString) Durables.newSerializable(JAString.FACTORY_NAME, messageProcessor);
+        super.initialize(reactor, parent, factory);
+        FactoryLocator factoryLocator = Durables.getFactoryLocator(getReactor());
+        bundleLocation = (JAString) Durables.newSerializable(JAString.FACTORY_NAME, reactor);
         bundleLocation.setValue(((FactoryLocatorImpl) factoryLocator).getLocation());
     }
 
@@ -110,11 +110,11 @@ public class RootImpl extends BoxImpl implements Root {
         return bundleLocation.getSerializedLength() + len;
     }
 
-    public JASerializable copy(MessageProcessor m)
+    public JASerializable copy(Reactor m)
             throws Exception {
-        MessageProcessor mb = m;
+        Reactor mb = m;
         if (mb == null)
-            mb = getMessageProcessor();
+            mb = getReactor();
         JASerializable jid = getFactory().newSerializable(mb, getParent());
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(getSerializedBytes(), 0));
         return jid;

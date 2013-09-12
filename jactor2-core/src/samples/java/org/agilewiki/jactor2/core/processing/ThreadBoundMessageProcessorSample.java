@@ -15,8 +15,8 @@ public class ThreadBoundMessageProcessorSample {
         final Thread mainThread = Thread.currentThread();
 
         //Create a thread-bound processing.
-        final ThreadBoundMessageProcessor boundMessageProcessor =
-                new ThreadBoundMessageProcessor(facility, new Runnable() {
+        final ThreadBoundReactor boundMessageProcessor =
+                new ThreadBoundReactor(facility, new Runnable() {
                     @Override
                     public void run() {
                         //Interrupt the main thread when there are messages to process
@@ -45,8 +45,8 @@ public class ThreadBoundMessageProcessorSample {
 
 class ThreadBoundActor extends ActorBase {
 
-    ThreadBoundActor(final MessageProcessor _messageProcessor) throws Exception {
-        initialize(_messageProcessor);
+    ThreadBoundActor(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
     }
 
     //Print "finished" and exit when fin is called.

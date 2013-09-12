@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.blist;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -31,7 +31,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Integer> sizeReq() {
-        return new AsyncRequest<Integer>(getMessageProcessor()) {
+        return new AsyncRequest<Integer>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(size());
@@ -40,7 +40,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     public AsyncRequest<Void> emptyReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 empty();
@@ -64,7 +64,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
         String baseType = getFactoryName();
         if (baseType.startsWith("IN."))
             baseType = baseType.substring(3);
-        factoryLocator = Durables.getFactoryLocator(getMessageProcessor());
+        factoryLocator = Durables.getFactoryLocator(getReactor());
         tupleFactories = new FactoryImpl[2];
         tupleFactories[TUPLE_SIZE] = factoryLocator.getFactory(JAInteger.FACTORY_NAME);
         tupleFactories[TUPLE_UNION] = factoryLocator.getFactory("U." + baseType);
@@ -134,7 +134,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<ENTRY_TYPE> iGetReq(final int _i) {
-        return new AsyncRequest<ENTRY_TYPE>(getMessageProcessor()) {
+        return new AsyncRequest<ENTRY_TYPE>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(iGet(_i));
@@ -174,7 +174,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 iSet(_i, _bytes);
@@ -249,7 +249,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iAddReq(final int _i) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 iAdd(_i);
@@ -266,7 +266,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 iAdd(_i, _bytes);
@@ -405,7 +405,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iRemoveReq(final int _i) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 iRemove(_i);
@@ -497,8 +497,8 @@ public class BList<ENTRY_TYPE extends JASerializable>
         incSize(eSize);
     }
 
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
+        super.initialize(reactor, parent, factory);
     }
 }

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.bmap;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
@@ -78,15 +78,15 @@ public class StringBMapFactory extends FactoryImpl {
     /**
      * Create and configure an actor.
      *
-     * @param messageProcessor The processing of the new actor.
-     * @param parent           The parent of the new actor.
+     * @param reactor The processing of the new actor.
+     * @param parent  The parent of the new actor.
      * @return The new actor.
      */
     @Override
-    public StringBMap newSerializable(MessageProcessor messageProcessor, Ancestor parent)
+    public StringBMap newSerializable(Reactor reactor, Ancestor parent)
             throws Exception {
-        StringBMap imj = (StringBMap) super.newSerializable(messageProcessor, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(messageProcessor);
+        StringBMap imj = (StringBMap) super.newSerializable(reactor, parent);
+        FactoryLocator fl = Durables.getFactoryLocator(reactor);
         imj.valueFactory = fl.getFactory(valueType);
         imj.nodeCapacity = NODE_CAPACITY;
         imj.isRoot = isRoot;

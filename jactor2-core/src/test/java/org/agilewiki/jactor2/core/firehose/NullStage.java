@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.firehose;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 import java.util.List;
@@ -16,12 +16,12 @@ public class NullStage extends ActorBase implements DataProcessor {
     public NullStage(final Facility _facility, final DataProcessor _next)
             throws Exception {
         next = _next;
-        initialize(new IsolationMessageProcessor(_facility));
+        initialize(new IsolationReactor(_facility));
     }
 
     @Override
     public AsyncRequest<Void> processDataAReq(final FirehoseData _firehoseData) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 //Thread.sleep(1);

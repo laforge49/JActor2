@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 
@@ -54,8 +54,8 @@ public class IncDesTest extends TestCase {
         try {
             IncDes jid1 = (IncDes) Durables.newSerializable(facility, IncDes.FACTORY_NAME);
             jid1.load(new byte[0]);
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
-            IncDes jid2 = (IncDes) jid1.copyReq(messageProcessor).call();
+            Reactor reactor = new NonBlockingReactor(facility);
+            IncDes jid2 = (IncDes) jid1.copyReq(reactor).call();
             int l = jid2.getDurable().getSerializedLengthReq().call();
             System.err.println(l);
             assertEquals(l, 0);

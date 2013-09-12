@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.slist;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.JASerializable;
@@ -35,7 +35,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
     protected ArrayList<ENTRY_TYPE> list;
 
     public AsyncRequest<Void> emptyReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 empty();
@@ -188,7 +188,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 iAdd(_i, _bytes);
@@ -211,7 +211,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iAddReq(final int _i) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 iAdd(_i);
@@ -250,7 +250,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iRemoveReq(final int _i) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 iRemove(_i);
@@ -274,8 +274,8 @@ public class SList<ENTRY_TYPE extends JASerializable>
         change(c);
     }
 
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
+        super.initialize(reactor, parent, factory);
     }
 }

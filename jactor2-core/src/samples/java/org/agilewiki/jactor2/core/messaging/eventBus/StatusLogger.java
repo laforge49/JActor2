@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging.eventBus;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +11,8 @@ public class StatusLogger extends ActorBase implements StatusListener {
     protected final Logger logger = LoggerFactory.getLogger(StatusLogger.class);
 
     //Create a StatusLogger.
-    public StatusLogger(final MessageProcessor _messageProcessor) throws Exception {
-        initialize(_messageProcessor);
+    public StatusLogger(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
     }
 
     //Logs the revised status.

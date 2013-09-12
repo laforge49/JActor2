@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.osgi;
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +40,11 @@ public class FactoriesImporter extends ActorBase implements
     /**
      * Create and initialize a factories importer.
      *
-     * @param _messageProcessor The processing of the factory locator actor.
+     * @param _reactor The processing of the factory locator actor.
      */
-    public FactoriesImporter(final MessageProcessor _messageProcessor) throws Exception {
-        initialize(_messageProcessor);
-        factoryLocator = Osgi.getOsgiFactoryLocator(_messageProcessor.getFacility());
+    public FactoriesImporter(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
+        factoryLocator = Osgi.getOsgiFactoryLocator(_reactor.getFacility());
     }
 
     /**
@@ -55,7 +55,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public AsyncRequest<Void> startReq(final Filter _filter) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest()
                     throws Exception {
@@ -80,7 +80,7 @@ public class FactoriesImporter extends ActorBase implements
         if (tracker != null)
             throw new IllegalStateException("already started");
         // Create a service tracker for the given filter.
-        tracker = new JAServiceTracker<OsgiFactoryLocator>(getMessageProcessor(),
+        tracker = new JAServiceTracker<OsgiFactoryLocator>(getReactor(),
                 _filter);
         // Keep _responseProcessor for later, in case we do not find out service
         // at initial registration.
@@ -96,7 +96,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public AsyncRequest<Void> startReq(final String _bundleName, final String _niceVersion) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 start(_bundleName, _niceVersion, this);
@@ -116,7 +116,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     private void start(final String _bundleName, final String _niceVersion, final AsyncResponseProcessor<Void> _responseProcessor)
             throws Exception {
-        BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getFacility());
+        BundleContext bundleContext = Osgi.getBundleContext(getReactor().getFacility());
         Filter filter = Osgi.factoryLocatorFilter(bundleContext, _bundleName, _niceVersion);
         start(filter, _responseProcessor);
     }
@@ -129,7 +129,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public AsyncRequest<Void> startReq(final String _bundleName, final Version _version) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 start(_bundleName, _version, this);
@@ -160,7 +160,7 @@ public class FactoriesImporter extends ActorBase implements
      * @return The request.
      */
     public AsyncRequest<Void> startReq(final String _bundleLocation) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 start(_bundleLocation, this);
@@ -179,7 +179,7 @@ public class FactoriesImporter extends ActorBase implements
      */
     private void start(final String _bundleLocation, final AsyncResponseProcessor<Void> _responseProcessor)
             throws Exception {
-        BundleContext bundleContext = Osgi.getBundleContext(getMessageProcessor().getFacility());
+        BundleContext bundleContext = Osgi.getBundleContext(getReactor().getFacility());
         Bundle bundle = bundleContext.installBundle(_bundleLocation);
         bundle.start();
         String bundleName = bundle.getSymbolicName();

@@ -7,35 +7,35 @@ import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
 import org.agilewiki.jactor2.core.misc.Delay;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
  * Test code.
  */
 public class SemaphoreTest extends TestCase implements Actor {
-    MessageProcessor messageProcessor;
+    Reactor reactor;
 
     @Override
-    public MessageProcessor getMessageProcessor() {
-        return messageProcessor;
+    public Reactor getReactor() {
+        return reactor;
     }
 
     public void testI() throws Exception {
         final Facility facility = new Facility();
-        messageProcessor = new NonBlockingMessageProcessor(facility);
+        reactor = new NonBlockingReactor(facility);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMessageProcessor(facility), 1);
+                new NonBlockingReactor(facility), 1);
         semaphore.acquireReq().call();
         facility.close();
     }
 
     public void testII() throws Exception {
         final Facility facility = new Facility();
-        messageProcessor = new NonBlockingMessageProcessor(facility);
+        reactor = new NonBlockingReactor(facility);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMessageProcessor(facility), 0);
+                new NonBlockingReactor(facility), 0);
         semaphore.release();
         semaphore.acquireReq().call();
         facility.close();
@@ -48,7 +48,7 @@ public class SemaphoreTest extends TestCase implements Actor {
             @Override
             public void processEvent(final SemaphoreTest actor)
                     throws Exception {
-                new Delay(facility).sleepSReq(delay).send(getMessageProcessor(),
+                new Delay(facility).sleepSReq(delay).send(getReactor(),
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(final Void response)
@@ -62,9 +62,9 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     public void testIII() throws Exception {
         final Facility facility = new Facility();
-        messageProcessor = new NonBlockingMessageProcessor(facility);
+        reactor = new NonBlockingReactor(facility);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMessageProcessor(facility), 0);
+                new NonBlockingReactor(facility), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, facility);
@@ -75,8 +75,8 @@ public class SemaphoreTest extends TestCase implements Actor {
     }
 
     private AsyncRequest<Boolean> acquireException(final JASemaphore semaphore,
-                                                   final MessageProcessor messageProcessor) {
-        return new AsyncRequest<Boolean>(messageProcessor) {
+                                                   final Reactor reactor) {
+        return new AsyncRequest<Boolean>(reactor) {
             @Override
             public void processAsyncRequest()
                     throws Exception {
@@ -103,14 +103,14 @@ public class SemaphoreTest extends TestCase implements Actor {
 
     public void testIV() throws Exception {
         final Facility facility = new Facility();
-        messageProcessor = new NonBlockingMessageProcessor(facility);
+        reactor = new NonBlockingReactor(facility);
         final JASemaphore semaphore = new JASemaphore(
-                new NonBlockingMessageProcessor(facility), 0);
+                new NonBlockingReactor(facility), 0);
         final long d = 100;
         final long t0 = System.currentTimeMillis();
         delayedRelease(semaphore, d, facility);
         final boolean result = acquireException(semaphore,
-                new NonBlockingMessageProcessor(facility)).call();
+                new NonBlockingReactor(facility)).call();
         final long t1 = System.currentTimeMillis();
         assertTrue(t1 - t0 >= d);
         assertTrue(result);

@@ -2,24 +2,24 @@ package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 public class EventBusTest extends TestCase {
     public void test() throws Exception {
         Facility facility = new Facility();
         try {
-            EventBus p = new EventBus(new NonBlockingMessageProcessor(facility));
+            EventBus p = new EventBus(new NonBlockingReactor(facility));
             Printer a = new Printer();
-            a.initialize(new NonBlockingMessageProcessor(facility));
+            a.initialize(new NonBlockingReactor(facility));
             a.setName("a");
             p.subscribeAReq(a).call();
             Printer b = new Printer();
-            b.initialize(new NonBlockingMessageProcessor(facility));
+            b.initialize(new NonBlockingReactor(facility));
             b.setName("b");
             p.subscribeAReq(b).call();
             Printer c = new Printer();
-            c.initialize(new NonBlockingMessageProcessor(facility));
+            c.initialize(new NonBlockingReactor(facility));
             c.setName("c");
             p.subscribeAReq(c).call();
             p.publishAReq(new Print("42")).call();

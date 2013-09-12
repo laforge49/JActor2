@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.Factory;
@@ -14,8 +14,8 @@ public class BoxTest extends TestCase {
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(facility);
             Factory boxAFactory = factoryLocator.getFactory(Box.FACTORY_NAME);
-            MessageProcessor messageProcessor = new NonBlockingMessageProcessor(facility);
-            Box box1 = (Box) boxAFactory.newSerializable(messageProcessor);
+            Reactor reactor = new NonBlockingReactor(facility);
+            Box box1 = (Box) boxAFactory.newSerializable(reactor);
             int sl = box1.getSerializedLength();
             assertEquals(4, sl);
             box1.clearReq().call();
@@ -33,14 +33,14 @@ public class BoxTest extends TestCase {
             assertNull(rpa);
 
             Factory stringAFactory = factoryLocator.getFactory(JAString.FACTORY_NAME);
-            JAString string1 = (JAString) stringAFactory.newSerializable(messageProcessor, factoryLocator);
+            JAString string1 = (JAString) stringAFactory.newSerializable(reactor, factoryLocator);
             string1.setValueReq("abc").call();
             byte[] sb = string1.getSerializedBytes();
             box1.setValueReq(string1.getFactoryName(), sb).call();
             JAString sj = (JAString) box1.getValueReq().call();
             assertEquals("abc", sj.getValueReq().call());
 
-            Box box2 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, messageProcessor);
+            Box box2 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, reactor);
             sl = box2.getSerializedLength();
             assertEquals(4, sl);
 

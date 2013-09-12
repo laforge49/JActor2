@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 public class ExceptionHandlerSample {
@@ -15,7 +15,7 @@ public class ExceptionHandlerSample {
         try {
 
             //Create an ExceptionActor.
-            ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMessageProcessor(facility));
+            ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingReactor(facility));
 
             try {
                 //Create and call an exception request.
@@ -27,7 +27,7 @@ public class ExceptionHandlerSample {
 
             //Create an ExceptionHandlerActor.
             ExceptionHandlerActor exceptionHandlerActor =
-                    new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(facility));
+                    new ExceptionHandlerActor(exceptionActor, new NonBlockingReactor(facility));
             //Create a test request, call it and print the results.
             System.out.println(exceptionHandlerActor.testAReq().call());
 
@@ -42,13 +42,13 @@ public class ExceptionHandlerSample {
 class ExceptionActor extends ActorBase {
 
     //Create an ExceptionActor.
-    ExceptionActor(final MessageProcessor _messageProcessor) throws Exception {
-        initialize(_messageProcessor);
+    ExceptionActor(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
     }
 
     //Returns an exception request.
     AsyncRequest<Void> exceptionAReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 throw new IllegalStateException(); //Throw an exception when the request is processed.
@@ -64,14 +64,14 @@ class ExceptionHandlerActor extends ActorBase {
     private final ExceptionActor exceptionActor;
 
     //Create an exception handler actor with a reference to an exception actor.
-    ExceptionHandlerActor(final ExceptionActor _exceptionActor, final MessageProcessor _messageProcessor) throws Exception {
+    ExceptionHandlerActor(final ExceptionActor _exceptionActor, final Reactor _reactor) throws Exception {
         exceptionActor = _exceptionActor;
-        initialize(_messageProcessor);
+        initialize(_reactor);
     }
 
     //Returns a test request.
     AsyncRequest<String> testAReq() {
-        return new AsyncRequest<String>(getMessageProcessor()) {
+        return new AsyncRequest<String>(getReactor()) {
             AsyncRequest<String> dis = this;
 
             @Override

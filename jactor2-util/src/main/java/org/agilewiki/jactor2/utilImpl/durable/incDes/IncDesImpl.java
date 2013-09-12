@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -22,7 +22,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     /**
      * The actor's processing.
      */
-    private MessageProcessor messageProcessor;
+    private Reactor reactor;
 
     /**
      * The factory, or null.
@@ -51,7 +51,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public AsyncRequest<byte[]> getSerializedBytesReq() {
-        return new AsyncRequest<byte[]>(getMessageProcessor()) {
+        return new AsyncRequest<byte[]>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getSerializedBytes());
@@ -61,7 +61,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public AsyncRequest<Integer> getSerializedLengthReq() {
-        return new AsyncRequest<Integer>(getMessageProcessor()) {
+        return new AsyncRequest<Integer>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getSerializedLength());
@@ -81,14 +81,14 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public JASerializable createSubordinate(Factory factory, Ancestor parent)
             throws Exception {
-        JASerializable jid = factory.newSerializable(getMessageProcessor(), parent);
+        JASerializable jid = factory.newSerializable(getReactor(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
     final public JASerializable createSubordinate(String actorType, Ancestor parent)
             throws Exception {
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(messageProcessor), actorType, getMessageProcessor(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(reactor), actorType, getReactor(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
@@ -107,7 +107,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             throws Exception {
         if (bytes == null)
             return createSubordinate(factory, parent);
-        JASerializable jid = factory.newSerializable(getMessageProcessor(), parent);
+        JASerializable jid = factory.newSerializable(getReactor(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
@@ -117,7 +117,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             throws Exception {
         if (bytes == null)
             return createSubordinate(actorType, parent);
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(messageProcessor), actorType, getMessageProcessor(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(reactor), actorType, getReactor(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
@@ -135,7 +135,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public JASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes)
             throws Exception {
-        JASerializable jid = factory.newSerializable(getMessageProcessor(), parent);
+        JASerializable jid = factory.newSerializable(getReactor(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
@@ -144,7 +144,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     final public JASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes)
             throws Exception {
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(messageProcessor), actorType, getMessageProcessor(), parent);
+        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(reactor), actorType, getReactor(), parent);
         if (readableBytes != null)
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
@@ -247,7 +247,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     final public AsyncRequest<Void> saveReq(final AppendableBytes appendableBytes) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 save(appendableBytes);
@@ -271,7 +271,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     final public AsyncRequest<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
-        return new AsyncRequest<Integer>(getMessageProcessor()) {
+        return new AsyncRequest<Integer>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(save(bytes, offset));
@@ -328,7 +328,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public AsyncRequest<JASerializable> resolvePathnameReq(final String pathname) {
-        return new AsyncRequest<JASerializable>(getMessageProcessor()) {
+        return new AsyncRequest<JASerializable>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(resolvePathname(pathname));
@@ -343,19 +343,19 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return a copy of the actor.
      */
     @Override
-    public JASerializable copy(final MessageProcessor m)
+    public JASerializable copy(final Reactor m)
             throws Exception {
-        MessageProcessor mb = m;
+        Reactor mb = m;
         if (mb == null)
-            mb = getMessageProcessor();
+            mb = getReactor();
         JASerializable serializable = getFactory().newSerializable(mb, getParent());
         IncDesImpl jid = (IncDesImpl) serializable.getDurable();
         jid.load(new ReadableBytes(getSerializedBytes(), 0));
         return serializable;
     }
 
-    public final AsyncRequest<JASerializable> copyReq(final MessageProcessor m) {
-        return new AsyncRequest<JASerializable>(getMessageProcessor()) {
+    public final AsyncRequest<JASerializable> copyReq(final Reactor m) {
+        return new AsyncRequest<JASerializable>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(copy(m));
@@ -364,7 +364,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     public final AsyncRequest<Boolean> isEqualReq(final JASerializable jidA) {
-        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getReactor()) {
             AsyncRequest<Boolean> dis = this;
 
             @Override
@@ -414,19 +414,19 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     /**
      * Initialize a LiteActor
      *
-     * @param _messageProcessor A processing which may be shared with other actors.
-     * @param _parent           The parent actor.
-     * @param _factory          The factory.
+     * @param _reactor A processing which may be shared with other actors.
+     * @param _parent  The parent actor.
+     * @param _factory The factory.
      */
-    public void initialize(final MessageProcessor _messageProcessor, final Ancestor _parent, final FactoryImpl _factory)
+    public void initialize(final Reactor _reactor, final Ancestor _parent, final FactoryImpl _factory)
             throws Exception {
         super.initialize(_parent);
-        messageProcessor = _messageProcessor;
+        reactor = _reactor;
         factory = _factory;
     }
 
     @Override
-    public MessageProcessor getMessageProcessor() {
-        return messageProcessor;
+    public Reactor getReactor() {
+        return reactor;
     }
 }

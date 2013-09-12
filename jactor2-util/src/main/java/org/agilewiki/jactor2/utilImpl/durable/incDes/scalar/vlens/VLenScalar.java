@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.utilImpl.durable.AppendableBytes;
@@ -26,7 +26,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
     protected int len = -1;
 
     public AsyncRequest<Void> clearReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             public void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
@@ -131,8 +131,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
             readableBytes.skip(len);
     }
 
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
+        super.initialize(reactor, parent, factory);
     }
 }

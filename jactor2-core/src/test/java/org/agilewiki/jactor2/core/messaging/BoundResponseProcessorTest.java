@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 public class BoundResponseProcessorTest extends TestCase {
@@ -11,7 +11,7 @@ public class BoundResponseProcessorTest extends TestCase {
         final Facility facility = new Facility();
         try {
             final Driver driver = new Driver();
-            driver.initialize(new NonBlockingMessageProcessor(facility));
+            driver.initialize(new NonBlockingReactor(facility));
             assertEquals("Hello world!", driver.doitAReq().call());
         } finally {
             facility.close();
@@ -27,10 +27,10 @@ class Driver extends ActorBase {
     }
 
     @Override
-    public void initialize(final MessageProcessor _messageProcessor) throws Exception {
-        super.initialize(_messageProcessor);
+    public void initialize(final Reactor _reactor) throws Exception {
+        super.initialize(_reactor);
 
-        doitReq = new AsyncRequest<String>(_messageProcessor) {
+        doitReq = new AsyncRequest<String>(_reactor) {
             AsyncRequest<String> dis = this;
 
             @Override

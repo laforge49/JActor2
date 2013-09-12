@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.flens;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -28,7 +28,7 @@ public class JAFloatImpl
 
     @Override
     public AsyncRequest<Float> getValueReq() {
-        return new AsyncRequest<Float>(getMessageProcessor()) {
+        return new AsyncRequest<Float>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -62,7 +62,7 @@ public class JAFloatImpl
 
     @Override
     public AsyncRequest<Void> setValueReq(final Float v) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 setValue(v);
@@ -92,8 +92,8 @@ public class JAFloatImpl
     }
 
     @Override
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
+        super.initialize(reactor, parent, factory);
     }
 }

@@ -1,21 +1,21 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.ThreadBoundMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.processing.ThreadBoundReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
  * Test code.
  */
 public class ThreadBoundTest extends TestCase {
-    ThreadBoundMessageProcessor boundMailbox;
+    ThreadBoundReactor boundMailbox;
     Facility facility;
 
     public void testa() throws Exception {
         facility = new Facility();
-        boundMailbox = new ThreadBoundMessageProcessor(facility, new Runnable() {
+        boundMailbox = new ThreadBoundReactor(facility, new Runnable() {
             @Override
             public void run() {
                 boundMailbox.run();
@@ -25,8 +25,8 @@ public class ThreadBoundTest extends TestCase {
                 }
             }
         });
-        final MessageProcessor messageProcessor = new IsolationMessageProcessor(facility);
-        final Actor1 actor1 = new Actor1(messageProcessor);
+        final Reactor reactor = new IsolationReactor(facility);
+        final Actor1 actor1 = new Actor1(reactor);
         actor1.hiSReq().send(boundMailbox, new AsyncResponseProcessor<String>() {
             @Override
             public void processAsyncResponse(final String response) throws Exception {

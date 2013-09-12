@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
+import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.processing.ReactorBase;
 
 abstract public class SyncRequest<RESPONSE_TYPE>
         extends RequestBase<RESPONSE_TYPE> {
@@ -9,15 +9,15 @@ abstract public class SyncRequest<RESPONSE_TYPE>
     /**
      * Create a SyncRequest.
      *
-     * @param _targetMessageProcessor The message processor where this SyncRequest Objects is passed for processing.
-     *                                The thread owned by this message processor will process this SyncRequest.
+     * @param _targetReactor The reactor where this SyncRequest Objects is passed for processing.
+     *                       The thread owned by this reactor will process this SyncRequest.
      */
-    public SyncRequest(MessageProcessor _targetMessageProcessor) {
-        super(_targetMessageProcessor);
+    public SyncRequest(Reactor _targetReactor) {
+        super(_targetReactor);
     }
 
     /**
-     * The processSyncRequest method will be invoked by the target MessageProcessor on its own thread
+     * The processSyncRequest method will be invoked by the target Reactor on its own thread
      * when the SyncRequest is dequeued from the target inbox for processing.
      *
      * @return The value returned by the target actor.
@@ -33,18 +33,18 @@ abstract public class SyncRequest<RESPONSE_TYPE>
     /**
      * Process the request immediately.
      *
-     * @param _source The message processor on whose thread this method was invoked and which
-     *                must be the same as the message processor of the target.
+     * @param _source The reactor on whose thread this method was invoked and which
+     *                must be the same as the reactor of the target.
      * @return The value returned by the target actor.
      */
-    public RESPONSE_TYPE local(final MessageProcessor _source) throws Exception {
+    public RESPONSE_TYPE local(final Reactor _source) throws Exception {
         use();
-        MessageProcessorBase messageProcessor = (MessageProcessorBase) _source;
+        ReactorBase messageProcessor = (ReactorBase) _source;
         if (!messageProcessor.isRunning())
             throw new IllegalStateException(
-                    "A valid source message processor can not be idle");
+                    "A valid source reactor can not be idle");
         if (messageProcessor != getMessageProcessor())
-            throw new IllegalArgumentException("MessageProcessor is not shared");
+            throw new IllegalArgumentException("Reactor is not shared");
         messageSource = messageProcessor;
         oldMessage = messageProcessor.getCurrentMessage();
         sourceExceptionHandler = messageProcessor.getExceptionHandler();

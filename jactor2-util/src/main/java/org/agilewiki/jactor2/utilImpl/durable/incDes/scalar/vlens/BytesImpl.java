@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -33,7 +33,7 @@ public class BytesImpl
 
     @Override
     public AsyncRequest<byte[]> getValueReq() {
-        return new AsyncRequest<byte[]>(getMessageProcessor()) {
+        return new AsyncRequest<byte[]>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -59,7 +59,7 @@ public class BytesImpl
 
     @Override
     public AsyncRequest<Void> setValueReq(final byte[] v) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 setValue(v);
@@ -101,7 +101,7 @@ public class BytesImpl
 
     @Override
     public AsyncRequest<Boolean> makeValueReq(final byte[] v) {
-        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(v));
@@ -154,8 +154,8 @@ public class BytesImpl
     }
 
     @Override
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
+        super.initialize(reactor, parent, factory);
     }
 }

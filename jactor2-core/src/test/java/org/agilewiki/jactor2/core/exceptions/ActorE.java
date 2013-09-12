@@ -2,19 +2,19 @@ package org.agilewiki.jactor2.core.exceptions;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 public class ActorE {
-    private final MessageProcessor messageProcessor;
+    private final Reactor reactor;
 
     public ActorE(final Facility _facility) {
-        this.messageProcessor = new IsolationMessageProcessor(_facility);
+        this.reactor = new IsolationReactor(_facility);
     }
 
     public AsyncRequest<Void> throwRequest(final ActorA actorA) {
-        return new AsyncRequest<Void>(messageProcessor) {
+        return new AsyncRequest<Void>(reactor) {
             AsyncRequest<Void> dis = this;
 
             @Override

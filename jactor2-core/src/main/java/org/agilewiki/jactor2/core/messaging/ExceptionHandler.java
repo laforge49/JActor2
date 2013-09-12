@@ -8,10 +8,10 @@ package org.agilewiki.jactor2.core.messaging;
  * And for 1-way messages, the default is to simply log the exception as a warning.
  * Exception processing is specific to the request/event message being processed.
  * An application can set the exception handler for the request/event currently being processed using the
- * MessageProcessor.setExceptionHandler method.
+ * Reactor.setExceptionHandler method.
  * </p>
  * <p>
- * When a message processor receives an exception as a result, the exception is handled the same way as any other
+ * When a reactor receives an exception as a result, the exception is handled the same way as any other
  * exception, by either passing it to an exception handler or returning it to the source of the request
  * being processed. On the other hand when a caller receives an exception as a result, the exception is
  * simply rethrown rather than passing it to the application logic as a response.
@@ -27,8 +27,8 @@ package org.agilewiki.jactor2.core.messaging;
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.threading.Facility;
- * import org.agilewiki.jactor2.core.processing.MessageProcessor;
- * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.Reactor;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
  *
  * public class ExceptionHandlerSample {
  *
@@ -40,7 +40,7 @@ package org.agilewiki.jactor2.core.messaging;
  *         try {
  *
  *             //Create an ExceptionActor.
- *             ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingMessageProcessor(facility));
+ *             ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingReactor(facility));
  *
  *             try {
  *                 //Create and call an exception request.
@@ -52,7 +52,7 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *             //Create an ExceptionHandlerActor.
  *             ExceptionHandlerActor exceptionHandlerActor =
- *                     new ExceptionHandlerActor(exceptionActor, new NonBlockingMessageProcessor(facility));
+ *                     new ExceptionHandlerActor(exceptionActor, new NonBlockingReactor(facility));
  *             //Create a test request, call it and print the results.
  *             System.out.println(exceptionHandlerActor.testAReq().call());
  *
@@ -67,13 +67,13 @@ package org.agilewiki.jactor2.core.messaging;
  * class ExceptionActor extends ActorBase {
  *
  *     //Create an ExceptionActor.
- *     ExceptionActor(final MessageProcessor _messageProcessor) throws Exception {
+ *     ExceptionActor(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);
  *     }
  *
  *     //Returns an exception request.
  *     AsyncRequest&lt;Void&gt; exceptionAReq() {
- *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
  *
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
@@ -90,14 +90,14 @@ package org.agilewiki.jactor2.core.messaging;
  *     private final ExceptionActor exceptionActor;
  *
  *     //Create an exception handler actor with a reference to an exception actor.
- *     ExceptionHandlerActor(final ExceptionActor _exceptionActor, final MessageProcessor _messageProcessor) throws Exception {
+ *     ExceptionHandlerActor(final ExceptionActor _exceptionActor, final Reactor _messageProcessor) throws Exception {
  *         exceptionActor = _exceptionActor;
  *         initialize(_messageProcessor);
  *     }
  *
  *     //Returns a test request.
  *     AsyncRequest&lt;String&gt; testAReq() {
- *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;String&gt;(getReactor()) {
  *             AsyncRequest&lt;String&gt; dis = this;
  *
  *             {@literal @}Override
@@ -117,7 +117,7 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *                 //Create an exception request and send it to the exception actor for processing.
  *                 //The thrown exception is then caught by the assigned exception handler.
- *                 exceptionActor.exceptionAReq().send(getMessageProcessor(), new AsyncResponseProcessor&lt;Void&gt;() {
+ *                 exceptionActor.exceptionAReq().send(getReactor(), new AsyncResponseProcessor&lt;Void&gt;() {
  *                     {@literal @}Override
  *                     public void processAsyncResponse(final Void _response) throws Exception {
  *                         dis.processAsyncResponse("can not get here");

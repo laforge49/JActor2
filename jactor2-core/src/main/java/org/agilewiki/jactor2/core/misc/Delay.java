@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.misc;
 
 import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
@@ -16,7 +16,7 @@ public class Delay extends ActorBase {
      * @param _facility The actor's facility.
      */
     public Delay(final Facility _facility) throws Exception {
-        initialize(new IsolationMessageProcessor(_facility));
+        initialize(new IsolationReactor(_facility));
     }
 
     /**
@@ -26,7 +26,7 @@ public class Delay extends ActorBase {
      * @return The delay request.
      */
     public SyncRequest<Void> sleepSReq(final long _delay) {
-        return new SyncRequest<Void>(getMessageProcessor()) {
+        return new SyncRequest<Void>(getReactor()) {
             @Override
             public Void processSyncRequest()
                     throws Exception {

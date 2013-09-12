@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.Actor;
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,7 +15,7 @@ import java.util.Set;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.messaging.EventBus;
- * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
  * import org.agilewiki.jactor2.core.threading.Facility;
  *
  * public class EventBusSample {
@@ -26,14 +26,14 @@ import java.util.Set;
  *         try {
  *             //Create a status logger actor.
  *             StatusLogger statusLogger =
- *                 new StatusLogger(new NonBlockingMessageProcessor(facility));
+ *                 new StatusLogger(new NonBlockingReactor(facility));
  *
  *             //Create a status printer actor.
  *             StatusPrinter statusPrinter = new StatusPrinter(facility);
  *
  *             //Define an event bus for StatusListener actors.
  *             EventBus&lt;StatusListener&gt; eventBus =
- *                 new EventBus&lt;StatusListener&gt;(new NonBlockingMessageProcessor(facility));
+ *                 new EventBus&lt;StatusListener&gt;(new NonBlockingReactor(facility));
  *
  *             //Add statusLogger and statusPrinter to the subscribers of the event bus.
  *             eventBus.subscribeAReq(statusLogger).call();
@@ -79,7 +79,7 @@ import java.util.Set;
  * }
  *
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.processing.MessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.slf4j.Logger;
  * import org.slf4j.LoggerFactory;
  *
@@ -89,7 +89,7 @@ import java.util.Set;
  *     protected final Logger logger = LoggerFactory.getLogger(StatusLogger.class);
  *
  *     //Create a StatusLogger.
- *     public StatusLogger(final MessageProcessor _messageProcessor) throws Exception {
+ *     public StatusLogger(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);
  *     }
  *
@@ -101,8 +101,8 @@ import java.util.Set;
  * }
  *
  * import org.agilewiki.jactor2.core.ActorBase;
- * import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
- * import org.agilewiki.jactor2.core.processing.MessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.IsolationReactor;
+ * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.agilewiki.jactor2.core.threading.Facility;
  *
  * //An actor which prints status logger events.
@@ -110,7 +110,7 @@ import java.util.Set;
  *
  *     //Create an isolation StatusPrinter. (Isolation because the print may block the thread.)
  *     public StatusPrinter(final Facility _facility) throws Exception {
- *         MessageProcessor messageProcessor = new IsolationMessageProcessor(_facility);
+ *         Reactor messageProcessor = new IsolationReactor(_facility);
  *         initialize(messageProcessor);
  *     }
  *
@@ -140,10 +140,10 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
     /**
      * Create an event bus.
      *
-     * @param _messageProcessor The actor's message processor.
+     * @param _reactor The actor's reactor.
      */
-    public EventBus(final MessageProcessor _messageProcessor) throws Exception {
-        initialize(_messageProcessor);
+    public EventBus(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
     }
 
     /**
@@ -154,7 +154,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @return The request.
      */
     public AsyncRequest<Boolean> subscribeAReq(final TARGET_ACTOR_TYPE _subscriber) {
-        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getReactor()) {
             @Override
             public void processAsyncRequest()
                     throws Exception {
@@ -171,7 +171,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @return The request.
      */
     public AsyncRequest<Boolean> unsubscribeAReq(final TARGET_ACTOR_TYPE _subscriber) {
-        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getReactor()) {
             @Override
             public void processAsyncRequest()
                     throws Exception {
@@ -191,7 +191,7 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      */
     public AsyncRequest<Void> publishAReq(
             final Event<TARGET_ACTOR_TYPE> event) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest()
                     throws Exception {

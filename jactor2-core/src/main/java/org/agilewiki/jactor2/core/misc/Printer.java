@@ -48,7 +48,7 @@ public class Printer extends IsolationActor {
      * Create a Printer actor.
      *
      * @param _facility A set of resources, including a thread pool, for use
-     *                  by message processors and their actors.
+     *                  by reactor and their actors.
      */
     public Printer(final Facility _facility) throws Exception {
         this(_facility, System.out);
@@ -58,7 +58,7 @@ public class Printer extends IsolationActor {
      * Create a Printer actor.
      *
      * @param _facility    A set of resources, including a thread pool, for use
-     *                     by message processors and their actors.
+     *                     by reactor and their actors.
      * @param _printStream Where to print the string.
      */
     public Printer(final Facility _facility,
@@ -70,7 +70,7 @@ public class Printer extends IsolationActor {
      * Create a Printer actor.
      *
      * @param _facility    A set of resources, including a thread pool, for use
-     *                     by message processors and their actors.
+     *                     by reactor and their actors.
      * @param _printStream Where to print the string.
      */
     public Printer(final Facility _facility,
@@ -88,7 +88,7 @@ public class Printer extends IsolationActor {
      * @return The request.
      */
     public SyncRequest<Void> printlnSReq(final String _string) {
-        return new SyncRequest<Void>(getMessageProcessor()) {
+        return new SyncRequest<Void>(getReactor()) {
             @Override
             public Void processSyncRequest() throws Exception {
                 System.out.println(_string);
@@ -106,7 +106,7 @@ public class Printer extends IsolationActor {
      */
     public SyncRequest<Void> printSReq(final String _format,
                                        final Object... _args) {
-        return new SyncRequest<Void>(getMessageProcessor()) {
+        return new SyncRequest<Void>(getReactor()) {
             @Override
             public Void processSyncRequest() throws Exception {
                 printStream.print(String.format(locale, _format, _args));

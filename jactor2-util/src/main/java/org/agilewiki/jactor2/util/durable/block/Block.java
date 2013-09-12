@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.block;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.incDes.Root;
@@ -84,11 +84,11 @@ public interface Block {
     /**
      * Return the Root, partially deserializing it as needed..
      *
-     * @param messageProcessor The processing.
-     * @param parent           The parent.
+     * @param reactor The processing.
+     * @param parent  The parent.
      * @return The Root, or null.
      */
-    public Root getRoot(FactoryLocator factoryLocator, MessageProcessor messageProcessor, Ancestor parent)
+    public Root getRoot(FactoryLocator factoryLocator, Reactor reactor, Ancestor parent)
             throws Exception;
 
     /**

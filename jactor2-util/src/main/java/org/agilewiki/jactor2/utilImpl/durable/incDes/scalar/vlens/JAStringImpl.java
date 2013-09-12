@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
@@ -25,7 +25,7 @@ public class JAStringImpl
     }
 
     public AsyncRequest<String> getValueReq() {
-        return new AsyncRequest<String>(getMessageProcessor()) {
+        return new AsyncRequest<String>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -52,7 +52,7 @@ public class JAStringImpl
     public AsyncRequest<Void> setValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 setValue(v);
@@ -84,7 +84,7 @@ public class JAStringImpl
     public AsyncRequest<Boolean> makeValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new AsyncRequest<Boolean>(getMessageProcessor()) {
+        return new AsyncRequest<Boolean>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(v));
@@ -136,8 +136,8 @@ public class JAStringImpl
         return getValue().compareTo(o);
     }
 
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
+        super.initialize(reactor, parent, factory);
     }
 }

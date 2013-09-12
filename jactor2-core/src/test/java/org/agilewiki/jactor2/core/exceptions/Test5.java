@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.exceptions;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
@@ -12,8 +12,8 @@ public class Test5 extends TestCase {
     public void testCascading() throws Exception {
         final Facility facility = new Facility();
         final ActorE actorE = new ActorE(facility);
-        final MessageProcessor messageProcessorA = new IsolationMessageProcessor(facility);
-        final ActorA actorA = new ActorA(messageProcessorA);
+        final Reactor reactorA = new IsolationReactor(facility);
+        final ActorA actorA = new ActorA(reactorA);
         try {
             actorE.throwRequest(actorA).call();
         } catch (final SecurityException se) {

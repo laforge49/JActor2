@@ -19,11 +19,11 @@ class HelloWorld extends ActorBase {
         //Create a facility with 5 threads.
         Facility facility = new Facility(5);
 
-        initialize(new SwingBoundMessageProcessor(facility));
+        initialize(new SwingBoundReactor(facility));
     }
 
     AsyncRequest<Void> createAndShowAReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 //Create and set up the window.
@@ -31,7 +31,7 @@ class HelloWorld extends ActorBase {
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
 
                 //Close facility when window is closed.
-                frame.addWindowListener((SwingBoundMessageProcessor) getMessageProcessor());
+                frame.addWindowListener((SwingBoundReactor) getMessageProcessor());
 
                 //Add the "Hello World!" label.
                 JLabel label = new JLabel("Hello World!");

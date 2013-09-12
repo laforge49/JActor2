@@ -1,18 +1,18 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
+import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.processing.ReactorBase;
 
 /**
  * An Event instance is used to pass one-way unbuffered messages to any number of Actor objects.
  * Event messages are unbuffered and are sent immediately. The net effect of sending
  * an event to an actor is that Event.processEvent, an application-specific method,
- * is called in a thread-safe way from the actor's MessageProcessor's own thread.
+ * is called in a thread-safe way from the actor's Reactor's own thread.
  * <p>
  * As neither message buffering nor thread migration are used, events may be slower,
  * in terms of both latency and throughput, than a request. On the other hand, when
- * the target MessageProcessor is isolation, event processing is not delayed until a response is
+ * the target Reactor is isolation, event processing is not delayed until a response is
  * assigned to a prior request.
  * </p>
  * <p>
@@ -26,8 +26,8 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.threading.Facility;
- * import org.agilewiki.jactor2.core.processing.MessageProcessor;
- * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.Reactor;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
  *
  * public class EventSample {
  *
@@ -37,7 +37,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
  *         final Facility facility = new Facility(1);
  *
  *         //Create a SampleActor1 instance.
- *         SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMessageProcessor(facility));
+ *         SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingReactor(facility));
  *
  *         //Print "finished" and exit when the event is processed by SampleActor1.
  *         new FinEvent("finished").signal(sampleActor1);
@@ -50,7 +50,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
  *
  *     class SampleActor1 extends ActorBase {
  *
- *         SampleActor1(final MessageProcessor _messageProcessor) throws Exception {
+ *         SampleActor1(final Reactor _messageProcessor) throws Exception {
  *             initialize(_messageProcessor);
  *         }
  *
@@ -83,19 +83,19 @@ import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
 
     /**
-     * Passes an event message immediately to the target MessageProcessor for subsequent processing
-     * by the thread of the that message processor. No result is passed back and if an exception is
+     * Passes an event message immediately to the target Reactor for subsequent processing
+     * by the thread of the that reactor. No result is passed back and if an exception is
      * thrown while processing the event,that exception is simply logged as a warning.
      *
      * @param _targetActor The actor to be operated on.
      */
     final public void signal(final TARGET_ACTOR_TYPE _targetActor) throws Exception {
         final EventMessage message = new EventMessage(_targetActor);
-        ((MessageProcessorBase) _targetActor.getMessageProcessor()).unbufferedAddMessage(message, false);
+        ((ReactorBase) _targetActor.getReactor()).unbufferedAddMessage(message, false);
     }
 
     /**
-     * The processEvent method will be invoked by the target MessageProcessor on its own thread
+     * The processEvent method will be invoked by the target Reactor on its own thread
      * when this event is processed.
      *
      * @param _targetActor The actor to be operated on.
@@ -139,7 +139,7 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
 
         @Override
         public void eval() {
-            MessageProcessorBase targetMessageProcessor = (MessageProcessorBase) targetActor.getMessageProcessor();
+            ReactorBase targetMessageProcessor = (ReactorBase) targetActor.getReactor();
             targetMessageProcessor.setExceptionHandler(null);
             targetMessageProcessor.setCurrentMessage(this);
             try {
@@ -150,8 +150,8 @@ public abstract class Event<TARGET_ACTOR_TYPE extends Actor> {
         }
 
         @Override
-        public void processException(final MessageProcessor _activeMessageProcessor, final Exception _e) {
-            MessageProcessorBase activeMessageProcessor = (MessageProcessorBase) _activeMessageProcessor;
+        public void processException(final Reactor _activeReactor, final Exception _e) {
+            ReactorBase activeMessageProcessor = (ReactorBase) _activeReactor;
             ExceptionHandler exceptionHandler = activeMessageProcessor.getExceptionHandler();
             if (exceptionHandler != null) {
                 try {

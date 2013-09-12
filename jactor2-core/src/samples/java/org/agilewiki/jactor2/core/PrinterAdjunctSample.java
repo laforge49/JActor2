@@ -13,7 +13,7 @@ public class PrinterAdjunctSample extends PrinterAdjunct {
 
     // Returns a request to print a Hi! banner.
     public SyncRequest<Void> hiSReq() {
-        return new SyncRequest<Void>(getMessageProcessor()) {
+        return new SyncRequest<Void>(getReactor()) {
             @Override
             public Void processSyncRequest() throws Exception {
                 printer.printlnSReq("*********").local(messageProcessor);

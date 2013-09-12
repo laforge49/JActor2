@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import org.agilewiki.jactor2.core.ActorBase;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
-import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 public class EventSample {
@@ -13,7 +13,7 @@ public class EventSample {
         final Facility facility = new Facility(1);
 
         //Create a SampleActor1 instance.
-        SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingMessageProcessor(facility));
+        SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingReactor(facility));
 
         new FinEvent("finished").signal(sampleActor1);
 
@@ -25,8 +25,8 @@ public class EventSample {
 
 class SampleActor1 extends ActorBase {
 
-    SampleActor1(final MessageProcessor _messageProcessor) throws Exception {
-        initialize(_messageProcessor);
+    SampleActor1(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
     }
 
     //Print "finished" and exit when fin is called.

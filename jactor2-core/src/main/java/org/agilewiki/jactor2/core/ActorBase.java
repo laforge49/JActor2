@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
  * <p>
@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  * <h3>Sample Usage:</h3>
  * <pre>
  * public class ActorBaseSample extends ActorBase {
- *     public ActorBaseSample(final MessageProcessor _messageProcessor) throws Exception {
+ *     public ActorBaseSample(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);
  *     }
  * }
@@ -18,12 +18,12 @@ import org.agilewiki.jactor2.core.processing.MessageProcessor;
  */
 public class ActorBase implements Actor {
     /**
-     * The actor's message processor.
+     * The actor's reactor.
      */
-    private MessageProcessor messageProcessor;
+    private Reactor reactor;
 
     /**
-     * True when initialized, this flag is used to prevent the message processor from being changed.
+     * True when initialized, this flag is used to prevent the reactor from being changed.
      */
     private boolean initialized;
 
@@ -38,22 +38,22 @@ public class ActorBase implements Actor {
 
     /**
      * Initialize an actor. This method can only be called once
-     * without raising an illegal state exception, as the message processor
+     * without raising an illegal state exception, as the reactor
      * can not be changed.
      *
-     * @param _messageProcessor The actor's message processor.
+     * @param _reactor The actor's reactor.
      */
-    public void initialize(final MessageProcessor _messageProcessor) throws Exception {
+    public void initialize(final Reactor _reactor) throws Exception {
         if (initialized)
             throw new IllegalStateException("Already initialized");
-        if (_messageProcessor == null)
-            throw new IllegalArgumentException("MessageProcessor may not be null");
+        if (_reactor == null)
+            throw new IllegalArgumentException("Reactor may not be null");
         initialized = true;
-        messageProcessor = _messageProcessor;
+        reactor = _reactor;
     }
 
     @Override
-    public MessageProcessor getMessageProcessor() {
-        return messageProcessor;
+    public Reactor getReactor() {
+        return reactor;
     }
 }

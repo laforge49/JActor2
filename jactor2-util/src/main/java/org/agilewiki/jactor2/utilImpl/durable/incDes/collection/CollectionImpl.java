@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 import org.agilewiki.jactor2.util.durable.incDes.Collection;
@@ -25,7 +25,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Integer> sizeReq() {
-        return new AsyncRequest<Integer>(getMessageProcessor()) {
+        return new AsyncRequest<Integer>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(size());
@@ -35,7 +35,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<ENTRY_TYPE> iGetReq(final int _i) {
-        return new AsyncRequest<ENTRY_TYPE>(getMessageProcessor()) {
+        return new AsyncRequest<ENTRY_TYPE>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 processAsyncResponse(iGet(_i));
@@ -45,7 +45,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 iSet(_i, _bytes);
@@ -125,8 +125,8 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
     }
 
-    public void initialize(final MessageProcessor messageProcessor, Ancestor parent, FactoryImpl factory)
+    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
             throws Exception {
-        super.initialize(messageProcessor, parent, factory);
+        super.initialize(reactor, parent, factory);
     }
 }

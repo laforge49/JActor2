@@ -1,16 +1,16 @@
 package org.agilewiki.jactor2.core.exceptions;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 
 public class ActorA {
-    private final MessageProcessor messageProcessor;
+    private final Reactor reactor;
     public final AsyncRequest<Void> throwRequest;
 
-    public ActorA(final MessageProcessor mbox) {
-        this.messageProcessor = mbox;
+    public ActorA(final Reactor mbox) {
+        this.reactor = mbox;
 
-        throwRequest = new AsyncRequest<Void>(messageProcessor) {
+        throwRequest = new AsyncRequest<Void>(reactor) {
             @Override
             public void processAsyncRequest()
                     throws Exception {

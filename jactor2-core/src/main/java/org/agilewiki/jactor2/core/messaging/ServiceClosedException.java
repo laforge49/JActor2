@@ -8,8 +8,8 @@ package org.agilewiki.jactor2.core.messaging;
  * <pre>
  * import org.agilewiki.jactor2.core.ActorBase;
  * import org.agilewiki.jactor2.core.threading.Facility;
- * import org.agilewiki.jactor2.core.processing.MessageProcessor;
- * import org.agilewiki.jactor2.core.processing.NonBlockingMessageProcessor;
+ * import org.agilewiki.jactor2.core.processing.Reactor;
+ * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
  *
  * //Exploring the use of multiple facilities.
  * public class ServiceSample {
@@ -27,7 +27,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             System.out.println(service.delayEchoAReq(1, "1 (Expected)").call());
  *
  *             //close the facility used by the service actor.
- *             service.getMessageProcessor().getFacility().close();
+ *             service.getReactor().getFacility().close();
  *             try {
  *                 //Try using delay echo request with the facility closed.
  *                 System.out.println(service.delayEchoAReq(1, "(Unexpected)").call());
@@ -41,7 +41,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             //Create an application actor based on the application facility
  *             //and with a reference to the service actor.
  *             final ServiceApplication serviceApplication =
- *                     new ServiceApplication(service, new NonBlockingMessageProcessor(applicationFacility));
+ *                     new ServiceApplication(service, new NonBlockingReactor(applicationFacility));
  *             //Start a delay echo service request using the application actor.
  *             EchoReqState echoReqState = serviceApplication.echoAReq(1, "2 (Expected)").call();
  *             //Print the results of the delay echo service request.
@@ -54,7 +54,7 @@ package org.agilewiki.jactor2.core.messaging;
  *             //The results should now show that an exception was thrown.
  *             System.out.println(serviceApplication.echoResultAReq(echoReqState2).call());
  *         } finally {
- *             service.getMessageProcessor().getFacility().close(); //Close the service facility.
+ *             service.getReactor().getFacility().close(); //Close the service facility.
  *             applicationFacility.close(); //Close the application facility.
  *         }
  *
@@ -65,13 +65,13 @@ package org.agilewiki.jactor2.core.messaging;
  * class Service extends ActorBase {
  *
  *     Service() throws Exception {
- *         //Create a message processor on a new facility with 1 thread.
- *         initialize(new NonBlockingMessageProcessor(new Facility(1)));
+ *         //Create a reactor on a new facility with 1 thread.
+ *         initialize(new NonBlockingReactor(new Facility(1)));
  *     }
  *
  *     //Returns a delay echo request.
  *     AsyncRequest&lt;String&gt; delayEchoAReq(final int _delay, final String _text) {
- *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;String&gt;(getReactor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
  *                 //Sleep a bit so that the request does not complete too quickly.
@@ -106,7 +106,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     private final Service service;
  *
  *     //Create a service application actor with a reference to a service actor.
- *     ServiceApplication(final Service _service, final MessageProcessor _messageProcessor) throws Exception {
+ *     ServiceApplication(final Service _service, final Reactor _messageProcessor) throws Exception {
  *         service = _service;
  *         initialize(_messageProcessor);
  *     }
@@ -116,7 +116,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     //And the response returned by the echo request is state data needed to manage the
  *     //delivery of the response from the service delay echo request.
  *     AsyncRequest&lt;EchoReqState&gt; echoAReq(final int _delay, final String _text) {
- *         return new AsyncRequest&lt;EchoReqState&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;EchoReqState&gt;(getReactor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
  *
@@ -145,7 +145,7 @@ package org.agilewiki.jactor2.core.messaging;
  *                             throw exception;
  *                     }
  *                 });
- *                 service.delayEchoAReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor&lt;String&gt;() {
+ *                 service.delayEchoAReq(_delay, _text).send(getReactor(), new AsyncResponseProcessor&lt;String&gt;() {
  *                     {@literal @}Override
  *                     public void processAsyncResponse(String response) throws Exception {
  *                         if (echoReqState.responseProcessor == null) {
@@ -166,11 +166,11 @@ package org.agilewiki.jactor2.core.messaging;
  *
  *     //Returns a close service request.
  *     AsyncRequest&lt;Void&gt; closeServiceAReq() {
- *         return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
  *                 //Close the facility of the service actor.
- *                 service.getMessageProcessor().getFacility().close();
+ *                 service.getReactor().getFacility().close();
  *                 processAsyncResponse(null);
  *             }
  *         };
@@ -180,7 +180,7 @@ package org.agilewiki.jactor2.core.messaging;
  *     //An echo result request returns the response from the service delay echo request
  *     //associated with the given echo request state.
  *     AsyncRequest&lt;String&gt; echoResultAReq(final EchoReqState _echoReqState) {
- *         return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
+ *         return new AsyncRequest&lt;String&gt;(getReactor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
  *                 if (_echoReqState.response == null) {

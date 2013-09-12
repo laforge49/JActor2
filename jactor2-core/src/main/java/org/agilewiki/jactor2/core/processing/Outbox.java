@@ -10,12 +10,12 @@ import java.util.Map;
 
 /**
  * An outbox holds a collection of send buffers.
- * Each send buffer holds one or more messages, all destined for the same message processor.
+ * Each send buffer holds one or more messages, all destined for the same reactor.
  */
 public class Outbox implements AutoCloseable {
 
     /**
-     * Default initial (per target MessageProcessor) buffer.
+     * Default initial (per target Reactor) buffer.
      */
     public final static int DEFAULT_INITIAL_BUFFER_SIZE = 16;
 
@@ -27,7 +27,7 @@ public class Outbox implements AutoCloseable {
     /**
      * A table of outboxes, one for each unique message destination.
      */
-    private Map<MessageProcessorBase, ArrayDeque<Message>> sendBuffer;
+    private Map<ReactorBase, ArrayDeque<Message>> sendBuffer;
 
     /**
      * The facility of this outbox.
@@ -37,7 +37,7 @@ public class Outbox implements AutoCloseable {
     /**
      * Create an outbox.
      *
-     * @param _initialBufferSize Initial size of each outbox per target MessageProcessor.
+     * @param _initialBufferSize Initial size of each outbox per target Reactor.
      */
     public Outbox(final Facility _facility, final int _initialBufferSize) {
         facility = _facility;
@@ -49,31 +49,31 @@ public class Outbox implements AutoCloseable {
      *
      * @return An iterator of the send buffers held by the outbox.
      */
-    public Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> getIterator() {
+    public Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> getIterator() {
         if (sendBuffer == null)
             return null;
         return sendBuffer.entrySet().iterator();
     }
 
     /**
-     * Buffers a message in the sending message processor for sending later.
+     * Buffers a message in the sending reactor for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The message processor that should eventually receive this message.
+     * @param _target  The reactor that should eventually receive this message.
      * @return True if the message was successfully buffered.
      */
-    public boolean buffer(final Message _message, final MessageProcessor _target) {
+    public boolean buffer(final Message _message, final Reactor _target) {
         if (facility.isClosing())
             return false;
         ArrayDeque<Message> buffer = null;
         if (sendBuffer == null) {
-            sendBuffer = new IdentityHashMap<MessageProcessorBase, ArrayDeque<Message>>();
+            sendBuffer = new IdentityHashMap<ReactorBase, ArrayDeque<Message>>();
         } else {
             buffer = sendBuffer.get(_target);
         }
         if (buffer == null) {
             buffer = new ArrayDeque<Message>(initialBufferSize);
-            sendBuffer.put((MessageProcessorBase) _target, buffer);
+            sendBuffer.put((ReactorBase) _target, buffer);
         }
         buffer.add(_message);
         return true;
@@ -81,11 +81,11 @@ public class Outbox implements AutoCloseable {
 
     @Override
     public void close() {
-        final Iterator<Map.Entry<MessageProcessorBase, ArrayDeque<Message>>> iter = getIterator();
+        final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
-                final Map.Entry<MessageProcessorBase, ArrayDeque<Message>> entry = iter.next();
-                final MessageProcessorBase target = entry.getKey();
+                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter.next();
+                final ReactorBase target = entry.getKey();
                 if (target.getFacility() != facility) {
                     final ArrayDeque<Message> messages = entry.getValue();
                     iter.remove();

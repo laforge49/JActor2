@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.osgi;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.processing.MessageProcessor;
+import org.agilewiki.jactor2.core.processing.Reactor;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
@@ -16,7 +16,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     /**
      * The processing.
      */
-    private MessageProcessor messageProcessor;
+    private Reactor reactor;
 
     /**
      * The service tracker actor.
@@ -31,12 +31,12 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     /**
      * Create a LocateService actor.
      *
-     * @param _messageProcessor The actor processing.
-     * @param clazz             Class name of the desired service.
+     * @param _reactor The actor processing.
+     * @param clazz    Class name of the desired service.
      */
-    public LocateService(MessageProcessor _messageProcessor, String clazz) throws Exception {
-        messageProcessor = _messageProcessor;
-        tracker = new JAServiceTracker(messageProcessor, clazz);
+    public LocateService(Reactor _reactor, String clazz) throws Exception {
+        reactor = _reactor;
+        tracker = new JAServiceTracker(reactor, clazz);
     }
 
     /**
@@ -45,7 +45,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
      * @return The request.
      */
     public AsyncRequest<T> getReq() {
-        return new AsyncRequest<T>(messageProcessor) {
+        return new AsyncRequest<T>(reactor) {
             @Override
             public void processAsyncRequest() throws Exception {
                 tracker.start(LocateService.this);
@@ -68,7 +68,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     }
 
     @Override
-    public MessageProcessor getMessageProcessor() {
-        return messageProcessor;
+    public Reactor getReactor() {
+        return reactor;
     }
 }

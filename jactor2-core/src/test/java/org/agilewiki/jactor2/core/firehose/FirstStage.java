@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.ActorBase;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
+import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class FirstStage extends ActorBase implements Runnable {
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(new IsolationMessageProcessor(_facility, this));
+        initialize(new IsolationReactor(_facility, this));
         ack = new BoundResponseProcessor<Void>(this, new AsyncResponseProcessor<Void>() {
             @Override
             public void processAsyncResponse(Void response) throws Exception {
@@ -80,7 +80,7 @@ public class FirstStage extends ActorBase implements Runnable {
     }
 
     private void send() throws Exception {
-        next.processDataAReq(firehoseData).send(getMessageProcessor(), null);
+        next.processDataAReq(firehoseData).send(getReactor(), null);
         list = null;
         firehoseData = null;
         ackCount += 1;
@@ -89,7 +89,7 @@ public class FirstStage extends ActorBase implements Runnable {
     private void exception(Exception e) {
         e.printStackTrace();
         try {
-            getMessageProcessor().getFacility().close();
+            getReactor().getFacility().close();
         } catch (Exception e1) {
             e1.printStackTrace();
             return;
@@ -115,7 +115,7 @@ public class FirstStage extends ActorBase implements Runnable {
         if (ndx >= count)
             return;
         createList();
-        while (getMessageProcessor().isInboxEmpty() && ndx < count) {
+        while (getReactor().isInboxEmpty() && ndx < count) {
             add();
         }
     }
