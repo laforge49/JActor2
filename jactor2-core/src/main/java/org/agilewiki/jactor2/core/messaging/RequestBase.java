@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.messaging;
 import org.agilewiki.jactor2.core.processing.MessageProcessor;
 import org.agilewiki.jactor2.core.processing.MessageProcessorBase;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
+import org.agilewiki.jactor2.core.threading.PoolThread;
 
 import java.util.Collections;
 import java.util.Map;
@@ -157,7 +158,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
-        addDebugPending();
+        if (ModuleContext.DEBUG) {
+            if (Thread.currentThread() instanceof PoolThread)
+                throw new UnsupportedOperationException("Use of call on a PoolThread can result in a deadlock");
+            addDebugPending();
+        }
         foreign = true;
         messageSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
