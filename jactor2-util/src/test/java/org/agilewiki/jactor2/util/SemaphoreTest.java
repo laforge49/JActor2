@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.Actor;
+import org.agilewiki.jactor2.core.Blade;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
@@ -14,7 +14,7 @@ import org.agilewiki.jactor2.core.threading.Facility;
 /**
  * Test code.
  */
-public class SemaphoreTest extends TestCase implements Actor {
+public class SemaphoreTest extends TestCase implements Blade {
     Reactor reactor;
 
     @Override
@@ -46,7 +46,7 @@ public class SemaphoreTest extends TestCase implements Actor {
                                 final Facility facility) throws Exception {
         new Event<SemaphoreTest>() {
             @Override
-            public void processEvent(final SemaphoreTest actor)
+            public void processEvent(final SemaphoreTest _targetBlade)
                     throws Exception {
                 new Delay(facility).sleepSReq(delay).send(getReactor(),
                         new AsyncResponseProcessor<Void>() {

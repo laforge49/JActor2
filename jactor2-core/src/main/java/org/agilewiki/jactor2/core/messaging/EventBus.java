@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.Blade;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.Reactor;
 
 import java.util.HashSet;
@@ -24,14 +24,14 @@ import java.util.Set;
  *         //Create a facility.
  *         Facility facility = new Facility();
  *         try {
- *             //Create a status logger actor.
+ *             //Create a status logger blade.
  *             StatusLogger statusLogger =
  *                 new StatusLogger(new NonBlockingReactor(facility));
  *
- *             //Create a status printer actor.
+ *             //Create a status printer blade.
  *             StatusPrinter statusPrinter = new StatusPrinter(facility);
  *
- *             //Define an event bus for StatusListener actors.
+ *             //Define an event bus for StatusListener blades.
  *             EventBus&lt;StatusListener&gt; eventBus =
  *                 new EventBus&lt;StatusListener&gt;(new NonBlockingReactor(facility));
  *
@@ -51,17 +51,17 @@ import java.util.Set;
  *     }
  * }
  *
- * import org.agilewiki.jactor2.core.Actor;
+ * import org.agilewiki.jactor2.core.Blade;
  *
  * //An interface for actors which process StatusUpdate events.
- * public interface StatusListener extends Actor {
+ * public interface StatusListener extends Blade {
  *     //Process a StatusUpdate event.
  *     void statusUpdate(final StatusUpdate _statusUpdate) throws Exception;
  * }
  *
  * import org.agilewiki.jactor2.core.messaging.Event;
  *
- * //An event sent to StatusListener actors.
+ * //An event sent to StatusListener blades.
  * public class StatusUpdate extends Event&lt;StatusListener&gt; {
  *     //The revised status.
  *     public final String newStatus;
@@ -71,20 +71,20 @@ import java.util.Set;
  *         newStatus = _newStatus;
  *     }
  *
- *     //Invokes the statusUpdate method on a StatusListener actor.
+ *     //Invokes the statusUpdate method on a StatusListener blade.
  *     {@literal @}Override
- *     public void processEvent(StatusListener _targetActor) throws Exception {
- *         _targetActor.statusUpdate(this);
+ *     public void processEvent(StatusListener _targetBlade) throws Exception {
+ *         _targetBlade.statusUpdate(this);
  *     }
  * }
  *
- * import org.agilewiki.jactor2.core.ActorBase;
+ * import org.agilewiki.jactor2.core.BladeBase;
  * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.slf4j.Logger;
  * import org.slf4j.LoggerFactory;
  *
- * //An actor which logs StatusUpdate events.
- * public class StatusLogger extends ActorBase implements StatusListener {
+ * //A blade which logs StatusUpdate events.
+ * public class StatusLogger extends BladeBase implements StatusListener {
  *     //The logger.
  *     protected final Logger logger = LoggerFactory.getLogger(StatusLogger.class);
  *
@@ -100,13 +100,13 @@ import java.util.Set;
  *     }
  * }
  *
- * import org.agilewiki.jactor2.core.ActorBase;
+ * import org.agilewiki.jactor2.core.BladeBase;
  * import org.agilewiki.jactor2.core.processing.IsolationReactor;
  * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.agilewiki.jactor2.core.threading.Facility;
  *
- * //An actor which prints status logger events.
- * public class StatusPrinter extends ActorBase implements StatusListener {
+ * //A blade which prints status logger events.
+ * public class StatusPrinter extends BladeBase implements StatusListener {
  *
  *     //Create an isolation StatusPrinter. (Isolation because the print may block the thread.)
  *     public StatusPrinter(final Facility _facility) throws Exception {
@@ -128,19 +128,19 @@ import java.util.Set;
  * 16 [Thread-3] INFO org.agilewiki.jactor2.core.messaging.eventBus.StatusLogger - new status: stopped
  * </pre>
  *
- * @param <TARGET_ACTOR_TYPE> A subclass of Actor implemented by all subscribers and
+ * @param <TARGET_BLADE_TYPE> A subclass of Blade implemented by all subscribers and
  *                            the target of the published events.
  */
-public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
+public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
     /**
-     * The actors which will receive the published events.
+     * The blades which will receive the published events.
      */
-    private final Set<TARGET_ACTOR_TYPE> subscribers = new HashSet<TARGET_ACTOR_TYPE>();
+    private final Set<TARGET_BLADE_TYPE> subscribers = new HashSet<TARGET_BLADE_TYPE>();
 
     /**
      * Create an event bus.
      *
-     * @param _reactor The actor's reactor.
+     * @param _reactor The blade's reactor.
      */
     public EventBus(final Reactor _reactor) throws Exception {
         initialize(_reactor);
@@ -150,10 +150,10 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * Returns a request to add a subscriber.
      * The result of the request is true when the subscriber list was changed.
      *
-     * @param _subscriber An actor that will receive the published events.
+     * @param _subscriber A blade that will receive the published events.
      * @return The request.
      */
-    public AsyncRequest<Boolean> subscribeAReq(final TARGET_ACTOR_TYPE _subscriber) {
+    public AsyncRequest<Boolean> subscribeAReq(final TARGET_BLADE_TYPE _subscriber) {
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
             public void processAsyncRequest()
@@ -167,10 +167,10 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * Returns a request to remove a subscriber.
      * The result of the request is true when the subscriber list was changed.
      *
-     * @param _subscriber The actor that should no longer receive the published events.
+     * @param _subscriber The blade that should no longer receive the published events.
      * @return The request.
      */
-    public AsyncRequest<Boolean> unsubscribeAReq(final TARGET_ACTOR_TYPE _subscriber) {
+    public AsyncRequest<Boolean> unsubscribeAReq(final TARGET_BLADE_TYPE _subscriber) {
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
             public void processAsyncRequest()
@@ -190,12 +190,12 @@ public class EventBus<TARGET_ACTOR_TYPE extends Actor> extends ActorBase {
      * @return The request.
      */
     public AsyncRequest<Void> publishAReq(
-            final Event<TARGET_ACTOR_TYPE> event) {
+            final Event<TARGET_BLADE_TYPE> event) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest()
                     throws Exception {
-                Iterator<TARGET_ACTOR_TYPE> it = subscribers.iterator();
+                Iterator<TARGET_BLADE_TYPE> it = subscribers.iterator();
                 while (it.hasNext()) {
                     event.signal(it.next());
                 }

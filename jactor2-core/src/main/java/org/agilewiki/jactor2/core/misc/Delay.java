@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.misc;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.threading.Facility;
 /**
  * Simulates I/O.
  */
-public class Delay extends ActorBase {
+public class Delay extends BladeBase {
 
     /**
      * Create a Delay actor.

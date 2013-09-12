@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.testService;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.testIface.Hello;
 import org.osgi.framework.BundleContext;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
 
-public class HelloService extends ActorBase implements Hello, ManagedService {
+public class HelloService extends BladeBase implements Hello, ManagedService {
     private final Logger logger = LoggerFactory.getLogger(HelloService.class);
     private BundleContext context;
     private Dictionary<String, ?> properties;

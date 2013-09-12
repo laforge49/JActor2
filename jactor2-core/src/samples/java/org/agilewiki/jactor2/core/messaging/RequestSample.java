@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
@@ -14,20 +14,20 @@ public class RequestSample {
 
         try {
 
-            //Create actorA.
-            SampleActor2 actorA = new SampleActor2(new NonBlockingReactor(facility));
+            //Create blade.
+            SampleBlade2 bladeA = new SampleBlade2(new NonBlockingReactor(facility));
 
-            //Initialize actorA to 1.
-            actorA.updateAReq(1).signal();
+            //Initialize blade to 1.
+            bladeA.updateAReq(1).signal();
 
-            //Change actorA to 2.
-            System.out.println("was " + actorA.updateAReq(2).call() + " but is now 2");
+            //Change blade to 2.
+            System.out.println("was " + bladeA.updateAReq(2).call() + " but is now 2");
 
-            //Create actorB with a reference to actorA.
-            IndirectActor actorB = new IndirectActor(actorA, new NonBlockingReactor(facility));
+            //Create bladeB with a reference to blade.
+            IndirectBlade bladeB = new IndirectBlade(bladeA, new NonBlockingReactor(facility));
 
-            //Indirectly change actorA to 42.
-            System.out.println("was " + actorB.indirectAReq(42).call() + " but is now 42");
+            //Indirectly change blade to 42.
+            System.out.println("was " + bladeB.indirectAReq(42).call() + " but is now 42");
 
         } finally {
             //shutdown the facility
@@ -38,14 +38,14 @@ public class RequestSample {
 
 }
 
-//A simple actor with state.
-class SampleActor2 extends ActorBase {
+//A simple blade with state.
+class SampleBlade2 extends BladeBase {
 
     //Initial state is 0.
     private int state = 0;
 
-    //Create a SimpleActor2.
-    SampleActor2(final Reactor _reactor) throws Exception {
+    //Create a SimpleBlade2.
+    SampleBlade2(final Reactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -64,19 +64,19 @@ class SampleActor2 extends ActorBase {
 
 }
 
-//An actor which operates on another actor.
-class IndirectActor extends ActorBase {
+//A blade which operates on another blade.
+class IndirectBlade extends BladeBase {
 
-    //The other actor.
-    private final SampleActor2 actorA;
+    //The other blade.
+    private final SampleBlade2 blade;
 
-    //Create an IndirectActor with a reference to another actor.
-    IndirectActor(final SampleActor2 _actorA, final Reactor _reactor) throws Exception {
-        actorA = _actorA;
+    //Create an IndirectBlade with a reference to another blade.
+    IndirectBlade(final SampleBlade2 _bladeA, final Reactor _reactor) throws Exception {
+        blade = _bladeA;
         initialize(_reactor);
     }
 
-    //Return a request to update the other actor and return its new state.
+    //Return a request to update the other blade and return its new state.
     AsyncRequest<Integer> indirectAReq(final int _newState) {
         return new AsyncRequest<Integer>(getReactor()) {
             AsyncRequest<Integer> dis = this;
@@ -84,10 +84,10 @@ class IndirectActor extends ActorBase {
             @Override
             public void processAsyncRequest() throws Exception {
 
-                //Get a request from the other actor.
-                AsyncRequest<Integer> req = actorA.updateAReq(_newState);
+                //Get a request from the other blade.
+                AsyncRequest<Integer> req = blade.updateAReq(_newState);
 
-                //Send the request to the other actor.
+                //Send the request to the other blade.
                 req.send(getMessageProcessor(), new AsyncResponseProcessor<Integer>() {
 
                     @Override

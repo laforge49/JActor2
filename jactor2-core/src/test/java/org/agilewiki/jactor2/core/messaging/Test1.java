@@ -12,8 +12,8 @@ public class Test1 extends TestCase {
     public void testa() throws Exception {
         final Facility facility = new Facility();
         final Reactor reactor = new IsolationReactor(facility);
-        final Actor1 actor1 = new Actor1(reactor);
-        final String result = actor1.hiSReq().call();
+        final Blade1 blade1 = new Blade1(reactor);
+        final String result = blade1.hiSReq().call();
         assertEquals("Hello world!", result);
         facility.close();
     }

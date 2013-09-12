@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.misc;
 
-import org.agilewiki.jactor2.core.IsolationActor;
+import org.agilewiki.jactor2.core.IsolationBlade;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
 import org.agilewiki.jactor2.core.threading.Facility;
 
@@ -38,7 +38,7 @@ import java.util.Locale;
  * }
  * </pre>
  */
-public class Printer extends IsolationActor {
+public class Printer extends IsolationBlade {
 
     final public PrintStream printStream;
 

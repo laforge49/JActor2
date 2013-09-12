@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.Actor;
+import org.agilewiki.jactor2.core.Blade;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @param <T> The type of the service expected.
  */
-public interface ServiceChangeReceiver<T> extends Actor {
+public interface ServiceChangeReceiver<T> extends Blade {
 
     /**
      * Called from within the actor's own processing, using a request, when

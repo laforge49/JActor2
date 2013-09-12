@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
@@ -14,22 +14,22 @@ public class ExceptionHandlerSample {
 
         try {
 
-            //Create an ExceptionActor.
-            ExceptionActor exceptionActor = new ExceptionActor(new NonBlockingReactor(facility));
+            //Create an ExceptionBlade.
+            ExceptionBlade exceptionBlade = new ExceptionBlade(new NonBlockingReactor(facility));
 
             try {
                 //Create and call an exception request.
-                exceptionActor.exceptionAReq().call();
+                exceptionBlade.exceptionAReq().call();
                 System.out.println("can not get here");
             } catch (IllegalStateException ise) {
                 System.out.println("got first IllegalStateException, as expected");
             }
 
-            //Create an ExceptionHandlerActor.
-            ExceptionHandlerActor exceptionHandlerActor =
-                    new ExceptionHandlerActor(exceptionActor, new NonBlockingReactor(facility));
+            //Create an ExceptionHandlerBlade.
+            ExceptionHandlerBlade exceptionHandlerBlade =
+                    new ExceptionHandlerBlade(exceptionBlade, new NonBlockingReactor(facility));
             //Create a test request, call it and print the results.
-            System.out.println(exceptionHandlerActor.testAReq().call());
+            System.out.println(exceptionHandlerBlade.testAReq().call());
 
         } finally {
             //shutdown the facility
@@ -38,11 +38,11 @@ public class ExceptionHandlerSample {
     }
 }
 
-//An actor with a request that throws an exception.
-class ExceptionActor extends ActorBase {
+//A blade with a request that throws an exception.
+class ExceptionBlade extends BladeBase {
 
-    //Create an ExceptionActor.
-    ExceptionActor(final Reactor _reactor) throws Exception {
+    //Create an ExceptionBlade.
+    ExceptionBlade(final Reactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -57,15 +57,15 @@ class ExceptionActor extends ActorBase {
     }
 }
 
-//An actor with an exception handler.
-class ExceptionHandlerActor extends ActorBase {
+//A blade with an exception handler.
+class ExceptionHandlerBlade extends BladeBase {
 
-    //An actor with a request that throws an exception.
-    private final ExceptionActor exceptionActor;
+    //A blade with a request that throws an exception.
+    private final ExceptionBlade exceptionBlade;
 
-    //Create an exception handler actor with a reference to an exception actor.
-    ExceptionHandlerActor(final ExceptionActor _exceptionActor, final Reactor _reactor) throws Exception {
-        exceptionActor = _exceptionActor;
+    //Create an exception handler blade with a reference to an exception blade.
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final Reactor _reactor) throws Exception {
+        exceptionBlade = _exceptionBlade;
         initialize(_reactor);
     }
 
@@ -89,9 +89,9 @@ class ExceptionHandlerActor extends ActorBase {
                     }
                 });
 
-                //Create an exception request and send it to the exception actor for processing.
+                //Create an exception request and send it to the exception blade for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                exceptionActor.exceptionAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
+                exceptionBlade.exceptionAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(final Void _response) throws Exception {
                         dis.processAsyncResponse("can not get here");

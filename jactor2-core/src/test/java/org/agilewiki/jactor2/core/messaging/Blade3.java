@@ -1,15 +1,15 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
  * Test code.
  */
-public class Actor3 extends ActorBase {
+public class Blade3 extends BladeBase {
 
-    public Actor3(final Facility _facility) throws Exception {
+    public Blade3(final Facility _facility) throws Exception {
         initialize(new IsolationReactor(_facility));
     }
 

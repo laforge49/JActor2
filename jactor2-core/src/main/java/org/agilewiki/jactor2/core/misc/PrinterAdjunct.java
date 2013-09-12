@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.misc;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 
 /**
  * A PrinterAdjunct can be used to print multiple lines
@@ -33,7 +33,7 @@ import org.agilewiki.jactor2.core.ActorBase;
  * }
  * </pre>
  */
-public class PrinterAdjunct extends ActorBase {
+public class PrinterAdjunct extends BladeBase {
     /**
      * The printer used to print the text.
      */

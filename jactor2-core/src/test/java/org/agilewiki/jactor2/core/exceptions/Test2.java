@@ -14,10 +14,10 @@ public class Test2 extends TestCase {
         System.out.println("testI");
         final Facility facility = new Facility();
         final Reactor reactor = new NonBlockingReactor(facility);
-        final ActorA actorA = new ActorA(reactor);
-        final ActorB actorB = new ActorB(reactor);
+        final BladeA bladeA = new BladeA(reactor);
+        final BladeB bladeB = new BladeB(reactor);
         try {
-            actorB.throwRequest(actorA).call();
+            bladeB.throwRequest(bladeA).call();
         } catch (final SecurityException se) {
             facility.close();
             return;
@@ -29,10 +29,10 @@ public class Test2 extends TestCase {
     public void testIII() throws Exception {
         System.out.println("testIII");
         final Facility facility = new Facility();
-        final ActorA actorA = new ActorA(new IsolationReactor(facility));
-        final ActorB actorB = new ActorB(new IsolationReactor(facility));
+        final BladeA bladeA = new BladeA(new IsolationReactor(facility));
+        final BladeB bladeB = new BladeB(new IsolationReactor(facility));
         try {
-            actorB.throwRequest(actorA).call();
+            bladeB.throwRequest(bladeA).call();
         } catch (final SecurityException se) {
             facility.close();
             return;

@@ -1,13 +1,13 @@
 package org.agilewiki.jactor2.core.firehose;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 import java.util.List;
 
-public class NullStage extends ActorBase implements DataProcessor {
+public class NullStage extends BladeBase implements DataProcessor {
 
     private DataProcessor next;
 

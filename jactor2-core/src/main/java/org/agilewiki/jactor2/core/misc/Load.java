@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.misc;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.threading.Facility;
 /**
  * Simulates a load.
  */
-public class Load extends ActorBase {
+public class Load extends BladeBase {
     private volatile long i;
     private volatile long j;
 

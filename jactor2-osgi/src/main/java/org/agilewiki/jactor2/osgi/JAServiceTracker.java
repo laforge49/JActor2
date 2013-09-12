@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.osgi.framework.*;
@@ -18,7 +18,7 @@ import java.util.Objects;
  *
  * @param <T> The type of the service interface.
  */
-public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
+public class JAServiceTracker<T> extends BladeBase implements ServiceListener,
         AutoCloseable {
 
     /**
@@ -110,7 +110,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
         new Event<JAServiceTracker<T>>() {
             @Override
-            public void processEvent(JAServiceTracker<T> _targetActor) throws Exception {
+            public void processEvent(JAServiceTracker<T> _targetBlade) throws Exception {
                 // We just received the start request. We can only receive one.
                 if (started)
                     throw new IllegalStateException("already started");
@@ -186,7 +186,7 @@ public class JAServiceTracker<T> extends ActorBase implements ServiceListener,
             // because this method is not running in our actor thread.
             new Event<JAServiceTracker<T>>() {
                 @Override
-                public void processEvent(JAServiceTracker<T> _targetActor) throws Exception {
+                public void processEvent(JAServiceTracker<T> _targetBlade) throws Exception {
                     final int typ = _event.getType();
                     final ServiceReference ref = _event.getServiceReference();
                     switch (typ) {

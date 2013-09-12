@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
@@ -17,7 +17,7 @@ import java.util.Hashtable;
  * in the Facility.
  */
 abstract public class FacilityActivator
-        extends ActorBase implements BundleActivator, ManagedService, AutoCloseable {
+        extends BladeBase implements BundleActivator, ManagedService, AutoCloseable {
 
     /**
      * The version of the bundle.
@@ -57,7 +57,7 @@ abstract public class FacilityActivator
     protected void begin() throws Exception {
         new Event<FacilityActivator>() {
             @Override
-            public void processEvent(FacilityActivator _targetActor) throws Exception {
+            public void processEvent(FacilityActivator _targetBlade) throws Exception {
                 process();
             }
         }.signal(this);

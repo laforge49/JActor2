@@ -13,7 +13,7 @@ import java.awt.event.WindowListener;
  * window and its facility will also terminate all activity related to that window.
  * <h3>Sample Usage:</h3>
  * <pre>
- * import org.agilewiki.jactor2.core.ActorBase;
+ * import org.agilewiki.jactor2.core.BladeBase;
  * import org.agilewiki.jactor2.core.threading.Facility;
  * import org.agilewiki.jactor2.core.messaging.AsyncRequest;
  *
@@ -25,7 +25,7 @@ import java.awt.event.WindowListener;
  *     }
  * }
  *
- * class HelloWorld extends ActorBase {
+ * class HelloWorld extends BladeBase {
  *
  *     HelloWorld() throws Exception {
  *

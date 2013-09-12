@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
@@ -31,7 +31,7 @@ public class EventBusTest extends TestCase {
     }
 }
 
-class Printer extends ActorBase {
+class Printer extends BladeBase {
     /**
      * The name, or null.
      */
@@ -49,7 +49,7 @@ class Printer extends ActorBase {
     /**
      * Assigns a name, unless already assigned.
      *
-     * @param _name The actor name.
+     * @param _name The blade name.
      */
     public void setName(final String _name) throws Exception {
         if (name != null)
@@ -70,7 +70,7 @@ class Print extends Event<Printer> {
     }
 
     @Override
-    public void processEvent(final Printer _targetActor) throws Exception {
-        _targetActor.print(msg);
+    public void processEvent(final Printer _targetBlade) throws Exception {
+        _targetBlade.print(msg);
     }
 }

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.core.Actor;
+import org.agilewiki.jactor2.core.Blade;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.util.durable.JASerializable;
 /**
  * IncDes is the interface for the durable part of all JASerializable objects.
  */
-public interface IncDes extends JASerializable, Actor, Ancestor {
+public interface IncDes extends JASerializable, Blade, Ancestor {
 
     /**
      * Factory name for a serializable object with no durable data.

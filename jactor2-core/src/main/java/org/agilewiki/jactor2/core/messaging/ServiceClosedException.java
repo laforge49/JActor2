@@ -6,7 +6,7 @@ package org.agilewiki.jactor2.core.messaging;
  * This becomes important when working with OSGi and each bundle has its own lifecycle.
  * <h3>Sample Usage:</h3>
  * <pre>
- * import org.agilewiki.jactor2.core.ActorBase;
+ * import org.agilewiki.jactor2.core.BladeBase;
  * import org.agilewiki.jactor2.core.threading.Facility;
  * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
@@ -19,14 +19,14 @@ package org.agilewiki.jactor2.core.messaging;
  *         //Application facility with 1 thread.
  *         final Facility applicationFacility = new Facility(1);
  *
- *         //Create a service actor that uses its own facility.
+ *         //Create a service blade that uses its own facility.
  *         Service service = new Service();
  *
  *         try {
- *             //Test the delay echo request on the service actor.
+ *             //Test the delay echo request on the service blade.
  *             System.out.println(service.delayEchoAReq(1, "1 (Expected)").call());
  *
- *             //close the facility used by the service actor.
+ *             //close the facility used by the service blade.
  *             service.getReactor().getFacility().close();
  *             try {
  *                 //Try using delay echo request with the facility closed.
@@ -36,18 +36,18 @@ package org.agilewiki.jactor2.core.messaging;
  *                 System.out.println("Exception as expected");
  *             }
  *
- *             //Create a new service actor that uses its own facility.
+ *             //Create a new service blade that uses its own facility.
  *             service = new Service();
- *             //Create an application actor based on the application facility
- *             //and with a reference to the service actor.
+ *             //Create an application blade based on the application facility
+ *             //and with a reference to the service blade.
  *             final ServiceApplication serviceApplication =
  *                     new ServiceApplication(service, new NonBlockingReactor(applicationFacility));
- *             //Start a delay echo service request using the application actor.
+ *             //Start a delay echo service request using the application blade.
  *             EchoReqState echoReqState = serviceApplication.echoAReq(1, "2 (Expected)").call();
  *             //Print the results of the delay echo service request.
  *             System.out.println(serviceApplication.echoResultAReq(echoReqState).call());
  *
- *             //Start a second delay echo service request using the application actor.
+ *             //Start a second delay echo service request using the application blade.
  *             EchoReqState echoReqState2 = serviceApplication.echoAReq(1, "(Unexpected)").call();
  *             //Close the service facility while the delay echo service request is still sleeping.
  *             serviceApplication.closeServiceAReq().call();
@@ -61,8 +61,8 @@ package org.agilewiki.jactor2.core.messaging;
  *     }
  * }
  *
- * //A service actor that runs on its own facility.
- * class Service extends ActorBase {
+ * //A service blade that runs on its own facility.
+ * class Service extends BladeBase {
  *
  *     Service() throws Exception {
  *         //Create a reactor on a new facility with 1 thread.
@@ -99,13 +99,13 @@ package org.agilewiki.jactor2.core.messaging;
  *     String response;
  * }
  *
- * //An actor with a facility that is different than the facility of the service actor.
- * class ServiceApplication extends ActorBase {
+ * //A blade with a facility that is different than the facility of the service blade.
+ * class ServiceApplication extends BladeBase {
  *
- *     //The service actor, which operates in a different facility.
+ *     //The service blade, which operates in a different facility.
  *     private final Service service;
  *
- *     //Create a service application actor with a reference to a service actor.
+ *     //Create a service application blade with a reference to a service blade.
  *     ServiceApplication(final Service _service, final Reactor _messageProcessor) throws Exception {
  *         service = _service;
  *         initialize(_messageProcessor);
@@ -169,7 +169,7 @@ package org.agilewiki.jactor2.core.messaging;
  *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
- *                 //Close the facility of the service actor.
+ *                 //Close the facility of the service blade.
  *                 service.getReactor().getFacility().close();
  *                 processAsyncResponse(null);
  *             }

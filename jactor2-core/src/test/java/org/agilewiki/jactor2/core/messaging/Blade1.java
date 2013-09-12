@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
  * Test code.
  */
-public class Actor1 extends ActorBase {
+public class Blade1 extends BladeBase {
 
-    public Actor1(final Reactor mbox) throws Exception {
+    public Blade1(final Reactor mbox) throws Exception {
         initialize(mbox);
     }
 

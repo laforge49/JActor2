@@ -4,22 +4,22 @@ import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
- * An isolation actor processes requests from other actors one at a time,
+ * An isolation blade processes requests from other blades one at a time,
  * starting a new request only when a result is returned for the previous
  * one.
  * </p>
- * This is just a convenience class, as any actor which uses an isolation reactor
- * is an isolation actor.
+ * This is just a convenience class, as any blade which uses an isolation reactor
+ * is an isolation blade.
  */
-public class IsolationActor extends ActorBase {
+public class IsolationBlade extends BladeBase {
 
     /**
-     * Create an isolation actor.
+     * Create an isolation blade.
      *
      * @param _facility A set of resources, including a thread pool, for use
-     *                  by reactors and their actors.
+     *                  by reactors and their blades.
      */
-    public IsolationActor(final Facility _facility) throws Exception {
+    public IsolationBlade(final Facility _facility) throws Exception {
         initialize(new IsolationReactor(_facility));
     }
 }

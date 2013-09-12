@@ -11,11 +11,11 @@ import org.agilewiki.jactor2.core.threading.Facility;
 public class Test5 extends TestCase {
     public void testCascading() throws Exception {
         final Facility facility = new Facility();
-        final ActorE actorE = new ActorE(facility);
+        final BladeE bladeE = new BladeE(facility);
         final Reactor reactorA = new IsolationReactor(facility);
-        final ActorA actorA = new ActorA(reactorA);
+        final BladeA bladeA = new BladeA(reactorA);
         try {
-            actorE.throwRequest(actorA).call();
+            bladeE.throwRequest(bladeA).call();
         } catch (final SecurityException se) {
             // It's magic! We get the SecurityException, although our request
             // did not throw it, or return it as response. This shows that

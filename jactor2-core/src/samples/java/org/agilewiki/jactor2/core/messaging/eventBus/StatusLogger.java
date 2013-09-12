@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.messaging.eventBus;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //An actor which logs StatusUpdate events.
-public class StatusLogger extends ActorBase implements StatusListener {
+public class StatusLogger extends BladeBase implements StatusListener {
     //The logger.
     protected final Logger logger = LoggerFactory.getLogger(StatusLogger.class);
 

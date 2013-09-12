@@ -4,14 +4,14 @@ import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
  * <p>
- * Actors must implement the Actor interface to provide access to their reactor.
+ * Blades must implement the Blade interface to provide access to their reactor.
  * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
- * public class ActorSample implements Actor {
+ * public class BladeSample implements Blade {
  *     private final Reactor processor;
  *
- *     ActorSample(final Reactor _processor) {
+ *     BladeSample(final Reactor _processor) {
  *         processor = _processor;
  *     }
  *
@@ -22,11 +22,11 @@ import org.agilewiki.jactor2.core.processing.Reactor;
  * }
  * </pre>
  */
-public interface Actor {
+public interface Blade {
     /**
-     * Returns the reactor associated with this Actor.
+     * Returns the reactor associated with this blade.
      *
-     * @return The actor's reactor.
+     * @return The blade's reactor.
      */
     public Reactor getReactor();
 }

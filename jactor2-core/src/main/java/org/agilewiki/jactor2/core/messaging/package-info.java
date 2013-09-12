@@ -6,14 +6,14 @@
  * <h2>Event Messages</h2>
  * <p>
  *     Event messages are created and passed using subclasses of the Event class.
- *     An event is not bound to an actor instance, so the same event can be used to
- *     send messages to any number of actors. And when passing an event message to an actor,
- *     the message is given to the target actor's processing immediately, without buffering.
+ *     An event is not bound to an blade instance, so the same event can be used to
+ *     send messages to any number of blades. And when passing an event message to an blade,
+ *     the message is given to the target blade's processing immediately, without buffering.
  * </p>
  * <h2>AsyncRequest/Response Messages</h2>
  * <p>
  *     In contrast, request messages are created and passed using anonymous subclasses of
- *     the AsyncRequest class, with these anonymous classes present within the actor where the
+ *     the AsyncRequest class, with these anonymous classes present within the blade where the
  *     request message is evaluated. Response messages are simply request messages to which a
  *     response has been assigned. AsyncRequest and response messages are aggregated and sent in
  *     blocks to reduce the overhead of having to pass individual messages.
@@ -31,7 +31,7 @@
  *     exception is returned as a response, though if the current message being processed is
  *     an event then the exception is simply logged. When a response message that
  *     holds an exception is processed by the source reactor, the exception is rethrown
- *     within the source actor rather than being pass back to the actor as a valid response.
+ *     within the source blade rather than being pass back to the blade as a valid response.
  * </p>
  * <p>
  *     Before an event or a request is processed, the current exception handler is set

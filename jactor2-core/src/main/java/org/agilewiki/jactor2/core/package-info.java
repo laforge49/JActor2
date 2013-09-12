@@ -9,7 +9,7 @@
  *     for an actor is achieved by processing only one message at a time.
  * </p>
  * <p>
- *     To be an actor, an object need only implement the Actor interface. And the Actor
+ *     To be an actor, an object need only implement the Blade interface. And the Blade
  *     interface has a single method, getReactor(), that returns the actor's reactor.
  * </p>
  * <p>

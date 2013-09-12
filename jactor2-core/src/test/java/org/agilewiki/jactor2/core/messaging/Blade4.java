@@ -5,10 +5,10 @@ import org.agilewiki.jactor2.core.processing.Reactor;
 /**
  * Test code.
  */
-public class Actor4 {
+public class Blade4 {
     private final Reactor reactor;
 
-    public Actor4(final Reactor mbox) {
+    public Blade4(final Reactor mbox) {
         this.reactor = mbox;
     }
 
@@ -17,7 +17,7 @@ public class Actor4 {
             @Override
             public Void processSyncRequest()
                     throws Exception {
-                new Actor1(messageProcessor).hiSReq().local(messageProcessor);
+                new Blade1(messageProcessor).hiSReq().local(messageProcessor);
                 System.out.println(response);
                 return null;
             }

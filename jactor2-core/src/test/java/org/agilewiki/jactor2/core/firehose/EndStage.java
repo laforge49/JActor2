@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.firehose;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
-public class EndStage extends ActorBase implements DataProcessor {
+public class EndStage extends BladeBase implements DataProcessor {
 
     public EndStage(final Facility _facility)
             throws Exception {

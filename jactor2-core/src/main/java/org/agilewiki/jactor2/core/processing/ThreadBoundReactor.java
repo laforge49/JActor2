@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
- * import org.agilewiki.jactor2.core.ActorBase;
+ * import org.agilewiki.jactor2.core.BladeBase;
  * import org.agilewiki.jactor2.core.threading.Facility;
  * import org.agilewiki.jactor2.core.messaging.Event;
  *
@@ -66,7 +66,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *     }
  * }
  *
- * class ThreadBoundActor extends ActorBase {
+ * class ThreadBoundActor extends BladeBase {
  *
  *     ThreadBoundActor(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);

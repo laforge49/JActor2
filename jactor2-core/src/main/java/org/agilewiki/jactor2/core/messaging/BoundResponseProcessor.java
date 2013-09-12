@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.Actor;
+import org.agilewiki.jactor2.core.Blade;
 
 /**
  * A thread-safe wrapper for a AsyncResponseProcessor.
@@ -15,7 +15,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     /**
      * The processing on whose thread the wrapped AsyncResponseProcessor object can be used.
      */
-    private final Actor targetActor;
+    private final Blade targetBlade;
 
     /**
      * The wrapped AsyncResponseProcessor.
@@ -25,12 +25,12 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     /**
      * Create a thread-safe wrapper for a AsyncResponseProcessor.
      *
-     * @param _actor The actor which can process the AsyncResponseProcessor.
+     * @param _blade The blade which can process the AsyncResponseProcessor.
      * @param _rp    The wrapped AsyncResponseProcessor.
      */
-    public BoundResponseProcessor(final Actor _actor,
+    public BoundResponseProcessor(final Blade _blade,
                                   final AsyncResponseProcessor<RESPONSE_TYPE> _rp) {
-        targetActor = _actor;
+        targetBlade = _blade;
         rp = _rp;
     }
 
@@ -42,7 +42,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
      */
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE rsp) throws Exception {
-        new ContinuationEvent<RESPONSE_TYPE>(rp, rsp).signal(targetActor);
+        new ContinuationEvent<RESPONSE_TYPE>(rp, rsp).signal(targetBlade);
     }
 
     /**
@@ -51,7 +51,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
      *
      * @param <RESPONSE_TYPE> The type of response.
      */
-    static class ContinuationEvent<RESPONSE_TYPE> extends Event<Actor> {
+    static class ContinuationEvent<RESPONSE_TYPE> extends Event<Blade> {
         /**
          * The wrapped AsyncResponseProcessor.
          */
@@ -75,7 +75,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
         }
 
         @Override
-        public void processEvent(Actor _targetActor) throws Exception {
+        public void processEvent(Blade _targetBlade) throws Exception {
             rp.processAsyncResponse(rsp);
         }
     }

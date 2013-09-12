@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
@@ -12,7 +12,7 @@ import java.util.Queue;
 /**
  * Blocks request processing, not threads.
  */
-public class JASemaphore extends ActorBase {
+public class JASemaphore extends BladeBase {
 
     /**
      * The number of available semaphores.
@@ -41,7 +41,7 @@ public class JASemaphore extends ActorBase {
 
         release = new Event<JASemaphore>() {
             @Override
-            public void processEvent(JASemaphore _targetActor) throws Exception {
+            public void processEvent(JASemaphore _targetBlade) throws Exception {
                 final AsyncResponseProcessor<Void> rp = queue.poll();
                 if (rp == null) {
                     permits += 1;

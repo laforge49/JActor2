@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messaging;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
@@ -19,7 +19,7 @@ public class BoundResponseProcessorTest extends TestCase {
     }
 }
 
-class Driver extends ActorBase {
+class Driver extends BladeBase {
     private AsyncRequest<String> doitReq;
 
     public AsyncRequest<String> doitAReq() {

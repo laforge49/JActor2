@@ -8,10 +8,10 @@ import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
-public class ActorD {
+public class BladeD {
     private final Reactor reactor;
 
-    public ActorD(final Facility _facility) {
+    public BladeD(final Facility _facility) {
         this.reactor = new IsolationReactor(_facility);
     }
 

@@ -3,11 +3,11 @@ package org.agilewiki.jactor2.core.messaging;
 import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
- * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between actors.
- * Requests are typically created as an anonymous class within the targeted Actor and are bound
- * to that actor's reactor.
+ * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between blades.
+ * Requests are typically created as an anonymous class within the targeted Blade and are bound
+ * to that blade's reactor.
  * The signal (1-way messaging) and call method (2-way messaging) pass unbuffered messages
- * to the target actor immediately, where they are enqueued for processing. But rather than being
+ * to the target blade immediately, where they are enqueued for processing. But rather than being
  * sent immediately, request messages passed using the send method
  * (2-way messages) and all response messages are buffered for improved throughput. The send method
  * also supports thread migration.
@@ -17,15 +17,15 @@ import org.agilewiki.jactor2.core.processing.Reactor;
  * when processing a request. This makes it easier to keep requests atomic.
  * </p>
  * <p>
- * Some care needs to be taken with the parameters passed to the target actor when creating a
+ * Some care needs to be taken with the parameters passed to the target blade when creating a
  * AsyncRequest. The application must take care not to change the contents of these parameters,
- * as they will likely be accessed from a different thread when the target actor
+ * as they will likely be accessed from a different thread when the target blade
  * is operated on.
  * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
  *
- * import org.agilewiki.jactor2.core.ActorBase;
+ * import org.agilewiki.jactor2.core.BladeBase;
  * import org.agilewiki.jactor2.core.threading.Facility;
  * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
@@ -39,20 +39,20 @@ import org.agilewiki.jactor2.core.processing.Reactor;
  *
  *         try {
  *
- *             //Create actorA.
- *             SampleActor2 actorA = new SampleActor2(new NonBlockingReactor(facility));
+ *             //Create bladeA.
+ *             SampleBlade2 bladeA = new SampleBlade2(new NonBlockingReactor(facility));
  *
- *             //Initialize actorA to 1.
- *             actorA.updateAReq(1).signal();
+ *             //Initialize bladeA to 1.
+ *             bladeA.updateAReq(1).signal();
  *
- *             //Change actorA to 2.
- *             System.out.println("was " + actorA.updateAReq(2).call() + " but is now 2");
+ *             //Change bladeA to 2.
+ *             System.out.println("was " + bladeA.updateAReq(2).call() + " but is now 2");
  *
- *             //Create actorB with a reference to actorA.
- *             IndirectActor actorB = new IndirectActor(actorA, new NonBlockingReactor(facility));
+ *             //Create bladeB with a reference to bladeA.
+ *             IndirectBlade bladeB = new IndirectBlade(bladeA, new NonBlockingReactor(facility));
  *
- *             //Indirectly change actorA to 42.
- *             System.out.println("was " + actorB.indirectAReq(42).call() + " but is now 42");
+ *             //Indirectly change bladeA to 42.
+ *             System.out.println("was " + bladeB.indirectAReq(42).call() + " but is now 42");
  *
  *         } finally {
  *             //shutdown the facility
@@ -63,14 +63,14 @@ import org.agilewiki.jactor2.core.processing.Reactor;
  *
  * }
  *
- * //A simple actor with state.
- * class SampleActor2 extends ActorBase {
+ * //A simple blade with state.
+ * class SampleBlade2 extends BladeBase {
  *
  *     //Initial state is 0.
  *     private int state = 0;
  *
- *     //Create a SimpleActor2.
- *     SampleActor2(final Reactor _messageProcessor) throws Exception {
+ *     //Create a SimpleBlade2.
+ *     SampleBlade2(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);
  *     }
  *
@@ -89,19 +89,19 @@ import org.agilewiki.jactor2.core.processing.Reactor;
  *
  * }
  *
- * //An actor which operates on another actor.
- * class IndirectActor extends ActorBase {
+ * //A blade which operates on another blade.
+ * class IndirectBlade extends BladeBase {
  *
- *     //The other actor.
- *     private final SampleActor2 actorA;
+ *     //The other blade.
+ *     private final SampleBlade2 bladeA;
  *
- *     //Create an IndirectActor with a reference to another actor.
- *     IndirectActor(final SampleActor2 _actorA, final Reactor _messageProcessor) throws Exception {
- *         actorA = _actorA;
+ *     //Create an IndirectBlade with a reference to another blade.
+ *     IndirectBlade(final SampleBlade2 _bladeA, final Reactor _messageProcessor) throws Exception {
+ *         bladeA = _bladeA;
  *         initialize(_messageProcessor);
  *     }
  *
- *     //Return a request to update the other actor and return its new state.
+ *     //Return a request to update the other blade and return its new state.
  *     AsyncRequest&lt;Integer&gt; indirectAReq(final int _newState) {
  *         return new AsyncRequest&lt;Integer&gt;(getReactor()) {
  *             AsyncRequest<Integer> dis = this;
@@ -109,10 +109,10 @@ import org.agilewiki.jactor2.core.processing.Reactor;
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
  *
- *                 //Get a request from the other actor.
- *                 AsyncRequest&lt;Integer&gt; req = actorA.updateAReq(_newState);
+ *                 //Get a request from the other blade.
+ *                 AsyncRequest&lt;Integer&gt; req = bladeA.updateAReq(_newState);
  *
- *                 //Send the request to the other actor.
+ *                 //Send the request to the other blade.
  *                 req.send(getReactor(), new AsyncResponseProcessor&lt;Integer&gt;() {
  *
  *                     {@literal @}Override
@@ -132,7 +132,7 @@ import org.agilewiki.jactor2.core.processing.Reactor;
  * was 2 but is now 42
  * </pre>
  *
- * @param <RESPONSE_TYPE> The class of the result returned after the AsyncRequest operates on the target actor.
+ * @param <RESPONSE_TYPE> The class of the result returned after the AsyncRequest operates on the target blade.
  */
 public abstract class AsyncRequest<RESPONSE_TYPE>
         extends RequestBase<RESPONSE_TYPE>
@@ -180,7 +180,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
     /**
      * Returns an exception as a response instead of throwing it.
      * But regardless of how a response is returned, if the response is an exception it
-     * is passed to the exception handler of the actor that did the call or send on the request.
+     * is passed to the exception handler of the blade that did the call or send on the request.
      *
      * @param _response An exception.
      */

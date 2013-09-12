@@ -6,14 +6,14 @@ import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
-public class ActorE {
+public class BladeE {
     private final Reactor reactor;
 
-    public ActorE(final Facility _facility) {
+    public BladeE(final Facility _facility) {
         this.reactor = new IsolationReactor(_facility);
     }
 
-    public AsyncRequest<Void> throwRequest(final ActorA actorA) {
+    public AsyncRequest<Void> throwRequest(final BladeA bladeA) {
         return new AsyncRequest<Void>(reactor) {
             AsyncRequest<Void> dis = this;
 
@@ -24,7 +24,7 @@ public class ActorE {
                 // response to our own request, which should NOT happen.
                 // Therefore, responseProcessor is NOT called.
                 try {
-                    actorA.throwRequest.send(messageProcessor,
+                    bladeA.throwRequest.send(messageProcessor,
                             new AsyncResponseProcessor<Void>() {
 
                                 @Override

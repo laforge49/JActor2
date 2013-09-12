@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.threading.Facility;
 
@@ -13,7 +13,7 @@ public class SwingBoundMessageProcessorSample {
     }
 }
 
-class HelloWorld extends ActorBase {
+class HelloWorld extends BladeBase {
     HelloWorld() throws Exception {
 
         //Create a facility with 5 threads.

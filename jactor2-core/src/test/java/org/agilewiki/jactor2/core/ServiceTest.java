@@ -42,7 +42,7 @@ public class ServiceTest extends TestCase {
     }
 }
 
-class Client extends ActorBase {
+class Client extends BladeBase {
 
     Server server;
 
@@ -77,7 +77,7 @@ class Client extends ActorBase {
     }
 }
 
-class Server extends ActorBase {
+class Server extends BladeBase {
     Server(Reactor reactor) throws Exception {
         initialize(reactor);
     }

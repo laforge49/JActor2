@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.processing;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.Event;
 import org.agilewiki.jactor2.core.threading.Facility;
 
@@ -25,7 +25,7 @@ public class ThreadBoundMessageProcessorSample {
                 });
 
         //Create an actor that uses the thread-bound processing.
-        final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMessageProcessor);
+        final ThreadBoundBlade threadBoundActor = new ThreadBoundBlade(boundMessageProcessor);
 
         //Pass a FinEvent signal to the actor.
         new FinEvent().signal(threadBoundActor);
@@ -43,9 +43,9 @@ public class ThreadBoundMessageProcessorSample {
     }
 }
 
-class ThreadBoundActor extends ActorBase {
+class ThreadBoundBlade extends BladeBase {
 
-    ThreadBoundActor(final Reactor _reactor) throws Exception {
+    ThreadBoundBlade(final Reactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -57,9 +57,9 @@ class ThreadBoundActor extends ActorBase {
 }
 
 //When a FinEvent is passed to an actor, the fin method is called.
-class FinEvent extends Event<ThreadBoundActor> {
+class FinEvent extends Event<ThreadBoundBlade> {
     @Override
-    public void processEvent(ThreadBoundActor _targetActor) throws Exception {
-        _targetActor.fin();
+    public void processEvent(ThreadBoundBlade _targetBlade) throws Exception {
+        _targetBlade.fin();
     }
 }

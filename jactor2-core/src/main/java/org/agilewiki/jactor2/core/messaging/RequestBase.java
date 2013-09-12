@@ -63,7 +63,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected boolean responsePending = true;
 
     /**
-     * The response created when this message is applied to the target actor.
+     * The response created when this message is applied to the target blade.
      */
     protected Object response;
 
@@ -113,7 +113,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     /**
      * Passes this Request together with the AsyncResponseProcessor to the target Reactor.
-     * Responses are passed back via the reactor of the source actor and processed by the
+     * Responses are passed back via the reactor of the source blade and processed by the
      * provided AsyncResponseProcessor and any exceptions
      * raised while processing the request are processed by the exception handler active when
      * the send method was called.
@@ -153,7 +153,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * as there is no reactor. The response message is buffered, though thread migration is
      * not possible.
      *
-     * @return The result from applying this Request to the target actor.
+     * @return The result from applying this Request to the target blade.
      * @throws Exception If the result is an exception, it is thrown rather than being returned.
      */
     public RESPONSE_TYPE call() throws Exception {

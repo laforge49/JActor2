@@ -14,9 +14,9 @@ public class Test2 extends TestCase {
         System.out.println("testa");
         final Facility facility = new Facility();
         final Reactor reactor = new NonBlockingReactor(facility);
-        final Actor1 actor1 = new Actor1(reactor);
-        final Actor2 actor2 = new Actor2(reactor);
-        final String result = actor2.hi2AReq(actor1).call();
+        final Blade1 blade1 = new Blade1(reactor);
+        final Blade2 blade2 = new Blade2(reactor);
+        final String result = blade2.hi2AReq(blade1).call();
         assertEquals("Hello world!", result);
         facility.close();
     }
@@ -24,9 +24,9 @@ public class Test2 extends TestCase {
     public void testc() throws Exception {
         System.out.println("testb");
         final Facility facility = new Facility();
-        final Actor1 actor1 = new Actor1(new IsolationReactor(facility));
-        final Actor2 actor2 = new Actor2(new IsolationReactor(facility));
-        final String result = actor2.hi2AReq(actor1).call();
+        final Blade1 blade1 = new Blade1(new IsolationReactor(facility));
+        final Blade2 blade2 = new Blade2(new IsolationReactor(facility));
+        final String result = blade2.hi2AReq(blade1).call();
         assertEquals("Hello world!", result);
         facility.close();
     }

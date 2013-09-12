@@ -20,7 +20,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      * The processSyncRequest method will be invoked by the target Reactor on its own thread
      * when the SyncRequest is dequeued from the target inbox for processing.
      *
-     * @return The value returned by the target actor.
+     * @return The value returned by the target blade.
      */
     abstract public RESPONSE_TYPE processSyncRequest()
             throws Exception;
@@ -35,7 +35,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      *
      * @param _source The reactor on whose thread this method was invoked and which
      *                must be the same as the reactor of the target.
-     * @return The value returned by the target actor.
+     * @return The value returned by the target blade.
      */
     public RESPONSE_TYPE local(final Reactor _source) throws Exception {
         use();

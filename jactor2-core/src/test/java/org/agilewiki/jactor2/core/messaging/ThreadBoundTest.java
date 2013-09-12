@@ -26,8 +26,8 @@ public class ThreadBoundTest extends TestCase {
             }
         });
         final Reactor reactor = new IsolationReactor(facility);
-        final Actor1 actor1 = new Actor1(reactor);
-        actor1.hiSReq().send(boundMailbox, new AsyncResponseProcessor<String>() {
+        final Blade1 blade1 = new Blade1(reactor);
+        blade1.hiSReq().send(boundMailbox, new AsyncResponseProcessor<String>() {
             @Override
             public void processAsyncResponse(final String response) throws Exception {
                 System.out.println(response);

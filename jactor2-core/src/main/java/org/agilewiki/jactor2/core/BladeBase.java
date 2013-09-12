@@ -4,21 +4,21 @@ import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
  * <p>
- * ActorBase is a convenience class that implements an Actor. Initialization is not
- * thread-safe, so it should be done before a reference to the actor is shared.
+ * BladeBase is a convenience class that implements an Blade. Initialization is not
+ * thread-safe, so it should be done before a reference to the blade is shared.
  * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
- * public class ActorBaseSample extends ActorBase {
- *     public ActorBaseSample(final Reactor _messageProcessor) throws Exception {
+ * public class BladeBaseSample extends BladeBase {
+ *     public BladeBaseSample(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);
  *     }
  * }
  * </pre>
  */
-public class ActorBase implements Actor {
+public class BladeBase implements Blade {
     /**
-     * The actor's reactor.
+     * The blade's reactor.
      */
     private Reactor reactor;
 
@@ -28,20 +28,20 @@ public class ActorBase implements Actor {
     private boolean initialized;
 
     /**
-     * Returns true when the actor has been initialized.
+     * Returns true when the blade has been initialized.
      *
-     * @return True when the actor has been initialized.
+     * @return True when the blade has been initialized.
      */
     public boolean isInitialized() {
         return initialized;
     }
 
     /**
-     * Initialize an actor. This method can only be called once
+     * Initialize a blade. This method can only be called once
      * without raising an illegal state exception, as the reactor
      * can not be changed.
      *
-     * @param _reactor The actor's reactor.
+     * @param _reactor The blade's reactor.
      */
     public void initialize(final Reactor _reactor) throws Exception {
         if (initialized)

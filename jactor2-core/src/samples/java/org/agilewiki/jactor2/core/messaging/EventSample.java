@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messaging;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
@@ -12,10 +12,10 @@ public class EventSample {
         //A facility with one thread.
         final Facility facility = new Facility(1);
 
-        //Create a SampleActor1 instance.
-        SampleActor1 sampleActor1 = new SampleActor1(new NonBlockingReactor(facility));
+        //Create a SampleBlade1 instance.
+        SampleBlade1 sampleBlade1 = new SampleBlade1(new NonBlockingReactor(facility));
 
-        new FinEvent("finished").signal(sampleActor1);
+        new FinEvent("finished").signal(sampleBlade1);
 
         //Hang until exit.
         Thread.sleep(1000000);
@@ -23,9 +23,9 @@ public class EventSample {
     }
 }
 
-class SampleActor1 extends ActorBase {
+class SampleBlade1 extends BladeBase {
 
-    SampleActor1(final Reactor _reactor) throws Exception {
+    SampleBlade1(final Reactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -36,8 +36,8 @@ class SampleActor1 extends ActorBase {
     }
 }
 
-//When a FinEvent is passed to an actor, the fin method is called.
-class FinEvent extends Event<SampleActor1> {
+//When a FinEvent is passed to a blade, the fin method is called.
+class FinEvent extends Event<SampleBlade1> {
     private final String msg;
 
     FinEvent(final String _msg) {
@@ -45,7 +45,7 @@ class FinEvent extends Event<SampleActor1> {
     }
 
     @Override
-    public void processEvent(SampleActor1 _targetActor) throws Exception {
-        _targetActor.fin(msg);
+    public void processEvent(SampleBlade1 _targetBlade) throws Exception {
+        _targetBlade.fin(msg);
     }
 }

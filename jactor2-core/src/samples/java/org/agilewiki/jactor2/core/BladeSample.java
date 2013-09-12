@@ -2,10 +2,10 @@ package org.agilewiki.jactor2.core;
 
 import org.agilewiki.jactor2.core.processing.Reactor;
 
-public class ActorSample implements Actor {
+public class BladeSample implements Blade {
     private final Reactor reactor;
 
-    ActorSample(final Reactor _reactor) {
+    BladeSample(final Reactor _reactor) {
         reactor = _reactor;
     }
 

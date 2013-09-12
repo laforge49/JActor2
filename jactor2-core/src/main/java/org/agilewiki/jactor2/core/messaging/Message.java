@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.processing.Reactor;
 
 /**
  * Message wraps the user/application AsyncRequest/Event which are queued in the
- * Actor's reactor's inbox. The lightweight thread associated with the Actor's reactor will process
+ * Blade's reactor's inbox. The lightweight thread associated with the Blade's reactor will process
  * the Message asynchronously.
  * <p>
  * Both Event and AsyncRequest have private nested classes specific to their requirements.

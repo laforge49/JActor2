@@ -12,9 +12,9 @@ public class Test1 extends TestCase {
     public void testI() throws Exception {
         final Facility facility = new Facility();
         final Reactor reactor = new IsolationReactor(facility);
-        final ActorA actorA = new ActorA(reactor);
+        final BladeA bladeA = new BladeA(reactor);
         try {
-            actorA.throwRequest.call();
+            bladeA.throwRequest.call();
         } catch (final SecurityException se) {
             facility.close();
             return;

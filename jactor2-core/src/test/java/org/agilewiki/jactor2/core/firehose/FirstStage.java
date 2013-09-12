@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.firehose;
 
-import org.agilewiki.jactor2.core.ActorBase;
+import org.agilewiki.jactor2.core.BladeBase;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;
@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.threading.Facility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstStage extends ActorBase implements Runnable {
+public class FirstStage extends BladeBase implements Runnable {
 
     private DataProcessor next;
 
@@ -67,7 +67,7 @@ public class FirstStage extends ActorBase implements Runnable {
         new Event<FirstStage>() {
 
             @Override
-            public void processEvent(FirstStage _targetActor) throws Exception {
+            public void processEvent(FirstStage _targetBlade) throws Exception {
             }
         }.signal(this);
     }
