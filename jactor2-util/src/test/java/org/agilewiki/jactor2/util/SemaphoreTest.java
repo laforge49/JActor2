@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.Actor;
-import org.agilewiki.jactor2.core.Delay;
+import org.agilewiki.jactor2.core.misc.Delay;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.Event;

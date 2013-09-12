@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.processing;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.Delay;
+import org.agilewiki.jactor2.core.misc.Delay;
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
 import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messaging.ResponseCounter;

@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.misc;
 
+import org.agilewiki.jactor2.core.IsolationActor;
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 

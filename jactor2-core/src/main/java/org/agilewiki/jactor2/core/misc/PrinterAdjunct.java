@@ -1,4 +1,6 @@
-package org.agilewiki.jactor2.core;
+package org.agilewiki.jactor2.core.misc;
+
+import org.agilewiki.jactor2.core.ActorBase;
 
 /**
  * A PrinterAdjunct can be used to print multiple lines

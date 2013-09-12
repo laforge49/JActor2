@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.core;
 
 import org.agilewiki.jactor2.core.messaging.SyncRequest;
+import org.agilewiki.jactor2.core.misc.Printer;
+import org.agilewiki.jactor2.core.misc.PrinterAdjunct;
 
 //Prints a banner without allowing any intervening lines.
 public class PrinterAdjunctSample extends PrinterAdjunct {

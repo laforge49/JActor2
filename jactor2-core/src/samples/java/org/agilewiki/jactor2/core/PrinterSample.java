@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core;
 
+import org.agilewiki.jactor2.core.misc.Printer;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
 public class PrinterSample {
