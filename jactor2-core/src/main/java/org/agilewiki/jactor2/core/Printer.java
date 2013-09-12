@@ -38,14 +38,46 @@ import java.util.Locale;
  * </pre>
  */
 public class Printer extends IsolationActor {
+
+    final public PrintStream printStream;
+
+    final public Locale locale;
+
     /**
      * Create a Printer actor.
      *
      * @param _moduleContext A set of resources, including a thread pool, for use
      *                       by message processors and their actors.
      */
-    public Printer(ModuleContext _moduleContext) throws Exception {
+    public Printer(final ModuleContext _moduleContext) throws Exception {
+        this(_moduleContext, System.out);
+    }
+
+    /**
+     * Create a Printer actor.
+     *
+     * @param _moduleContext A set of resources, including a thread pool, for use
+     *                       by message processors and their actors.
+     * @param _printStream Where to print the string.
+     */
+    public Printer(final ModuleContext _moduleContext,
+                   final PrintStream _printStream) throws Exception {
+        this(_moduleContext, _printStream, null);
+    }
+
+    /**
+     * Create a Printer actor.
+     *
+     * @param _moduleContext A set of resources, including a thread pool, for use
+     *                       by message processors and their actors.
+     * @param _printStream Where to print the string.
+     */
+    public Printer(final ModuleContext _moduleContext,
+                   final PrintStream _printStream,
+                   final Locale _locale) throws Exception {
         super(_moduleContext);
+        printStream = _printStream;
+        locale = _locale;
     }
 
     /**
@@ -65,60 +97,18 @@ public class Printer extends IsolationActor {
     }
 
     /**
-     * A request to print a string.
-     *
-     * @param _printStream Where to print the string.
-     * @param _string      The string to be printed
-     * @return The request.
-     */
-    public SyncRequest<Void> printSReq(final PrintStream _printStream,
-                                       final String _string) {
-        return new SyncRequest<Void>(getMessageProcessor()) {
-            @Override
-            public Void processSyncRequest() throws Exception {
-                _printStream.print(_string);
-                return null;
-            }
-        };
-    }
-
-    /**
      * A request to print a formated string.
      *
-     * @param _printStream Where to print the string.
      * @param _format      The formatting.
      * @param _args        The data to be formatted.
      * @return The request.
      */
-    public SyncRequest<Void> printSReq(final PrintStream _printStream,
-                                       final String _format,
+    public SyncRequest<Void> printSReq(final String _format,
                                        final Object... _args) {
         return new SyncRequest<Void>(getMessageProcessor()) {
             @Override
             public Void processSyncRequest() throws Exception {
-                _printStream.print(String.format(_format, _args));
-                return null;
-            }
-        };
-    }
-
-    /**
-     * A request to print a formated string.
-     *
-     * @param _printStream Where to print the string.
-     * @param _locale      The locale to apply during formatting.
-     * @param _format      The formatting.
-     * @param _args        The data to be formatted.
-     * @return The request.
-     */
-    public SyncRequest<Void> printSReq(final PrintStream _printStream,
-                                       final Locale _locale,
-                                       final String _format,
-                                       final Object... _args) {
-        return new SyncRequest<Void>(getMessageProcessor()) {
-            @Override
-            public Void processSyncRequest() throws Exception {
-                _printStream.print(String.format(_locale, _format, _args));
+                printStream.print(String.format(locale, _format, _args));
                 return null;
             }
         };
