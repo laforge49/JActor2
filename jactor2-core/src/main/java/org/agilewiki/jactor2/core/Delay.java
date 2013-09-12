@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core;
 
 import org.agilewiki.jactor2.core.messaging.AsyncRequest;
+import org.agilewiki.jactor2.core.messaging.SyncRequest;
 import org.agilewiki.jactor2.core.processing.IsolationMessageProcessor;
 import org.agilewiki.jactor2.core.threading.ModuleContext;
 
@@ -24,13 +25,13 @@ public class Delay extends ActorBase {
      * @param _delay The length of the delay in milliseconds.
      * @return The delay request.
      */
-    public AsyncRequest<Void> sleepAReq(final long _delay) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+    public SyncRequest<Void> sleepSReq(final long _delay) {
+        return new SyncRequest<Void>(getMessageProcessor()) {
             @Override
-            public void processAsyncRequest()
+            public Void processSyncRequest()
                     throws Exception {
                 Thread.sleep(_delay);
-                processAsyncResponse(null);
+                return null;
             }
         };
     }

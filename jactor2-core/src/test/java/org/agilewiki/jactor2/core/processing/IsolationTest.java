@@ -53,7 +53,7 @@ public class IsolationTest extends TestCase {
             public void processAsyncRequest()
                     throws Exception {
                 Delay delay = new Delay(_messageProcessor.getModuleContext());
-                delay.sleepAReq(100 - (msg * 20)).send(_messageProcessor,
+                delay.sleepSReq(100 - (msg * 20)).send(_messageProcessor,
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(Void response)
