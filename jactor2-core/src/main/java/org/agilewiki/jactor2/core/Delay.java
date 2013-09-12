@@ -22,7 +22,7 @@ public class Delay extends ActorBase {
     /**
      * Returns a delay request.
      *
-     * @param _delay The length of the delay in milliseconds.
+     * @param _delay The duration of the delay in milliseconds.
      * @return The delay request.
      */
     public SyncRequest<Void> sleepSReq(final long _delay) {
