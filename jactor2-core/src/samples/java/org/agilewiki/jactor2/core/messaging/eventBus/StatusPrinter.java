@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.processing.IsolationReactor;
 import org.agilewiki.jactor2.core.processing.Reactor;
 import org.agilewiki.jactor2.core.threading.Facility;
 
-//An actor which prints status logger events.
+//An blade which prints status logger events.
 public class StatusPrinter extends BladeBase implements StatusListener {
 
     //Create an isolation StatusPrinter. (Isolation because the print mayblock the thread.)

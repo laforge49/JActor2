@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.BladeBase;
 
 /**
  * A PrinterAdjunct can be used to print multiple lines
- * without having any other text being interleaved by other actors
+ * without having any other text being interleaved by other blades
  * using the same Printer.
  * </p>
  * <h3>Sample Usage:</h3>

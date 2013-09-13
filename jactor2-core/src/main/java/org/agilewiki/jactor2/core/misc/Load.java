@@ -13,9 +13,9 @@ public class Load extends BladeBase {
     private volatile long j;
 
     /**
-     * Create a Load actor.
+     * Create a Load blade.
      *
-     * @param _facility The actor's facility.
+     * @param _facility The blade's facility.
      */
     public Load(final Facility _facility) throws Exception {
         initialize(new IsolationReactor(_facility));

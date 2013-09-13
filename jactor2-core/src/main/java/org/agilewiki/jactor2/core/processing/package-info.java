@@ -7,7 +7,7 @@
  * </p>
  * <h2>Creating a Reactor</h2>
  * <p>
- *     Actors can use 4 different classes of reactors: NonBlockingReactor, IsolationReactor,
+ *     Blades can use 4 different classes of reactors: NonBlockingReactor, IsolationReactor,
  *     ThreadBoundReactor and SwingBoundReactor.
  *     Reactor instances are easily created, with an instance of
  *     Facility as a required parameter. Additional parameters can be also be passed to the constructor

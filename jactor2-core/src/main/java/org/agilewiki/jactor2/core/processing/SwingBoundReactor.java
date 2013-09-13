@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 /**
- * Messages are processed on Swing's event-dispatch thread when an actor uses
+ * Messages are processed on Swing's event-dispatch thread when an blade uses
  * a SwingBoundReactor. This is critical, as so many Swing methods are
  * not thread-safe. Also, if each window has its own facility, then closing a
  * window and its facility will also terminate all activity related to that window.

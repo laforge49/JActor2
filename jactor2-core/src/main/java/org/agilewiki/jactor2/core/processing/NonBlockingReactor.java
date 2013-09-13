@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.processing;
 import org.agilewiki.jactor2.core.threading.Facility;
 
 /**
- * A reactor for actors which process messages quickly and without blocking the thread.
+ * A reactor for blades which process messages quickly and without blocking the thread.
  * <p>
  * For thread safety, the processing of each message is done in isolation, but when the processing of a
  * message results in the sending of a request, other messages may be processed before a

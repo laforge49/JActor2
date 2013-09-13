@@ -40,7 +40,7 @@ public class FactoriesImporter extends BladeBase implements
     /**
      * Create and initialize a factories importer.
      *
-     * @param _reactor The processing of the factory locator actor.
+     * @param _reactor The processing of the factory locator blade.
      */
     public FactoriesImporter(final Reactor _reactor) throws Exception {
         initialize(_reactor);

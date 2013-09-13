@@ -13,7 +13,7 @@ import java.util.Objects;
 
 /**
  * Tracks OSGi services, reacting to OSGi's Service events, and publishes all
- * the matching services using thread-safe actor requests. The (single) listener
+ * the matching services using thread-safe blade requests. The (single) listener
  * must implement ServiceChangeReceiver<SERVICE> interface.
  *
  * @param <T> The type of the service interface.
@@ -162,7 +162,7 @@ public class JAServiceTracker<T> extends BladeBase implements ServiceListener,
     }
 
     /**
-     * Closes the actor, and de-register itself from OSGi service tracking.
+     * Closes the blade, and de-register itself from OSGi service tracking.
      */
     @Override
     public void close() {
@@ -183,7 +183,7 @@ public class JAServiceTracker<T> extends BladeBase implements ServiceListener,
             return;
         try {
             // Create service change request, to be run in our own processing,
-            // because this method is not running in our actor thread.
+            // because this method is not running in our blade thread.
             new Event<JAServiceTracker<T>>() {
                 @Override
                 public void processEvent(JAServiceTracker<T> _targetBlade) throws Exception {

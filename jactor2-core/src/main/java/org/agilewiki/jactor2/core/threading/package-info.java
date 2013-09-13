@@ -14,10 +14,10 @@
  *     to be closed that is maintained by each instance of Facility.
  * </p>
  * <p>
- *     Facility instances do not interact directly. But actors pass messages to other
- *     actors which may or may not be part of a different facility. And when a request message from one
+ *     Facility instances do not interact directly. But blades pass messages to other
+ *     blades which may or may not be part of a different facility. And when a request message from one
  *     facility is passed to another facility that was or becomes closed, a ServiceClosedException
- *     is be raised in the source actor.
+ *     is be raised in the source blade.
  * </p>
  * <p>
  *     Each instance of Facility also maintains a table of properties.

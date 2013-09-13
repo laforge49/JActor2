@@ -11,9 +11,9 @@ import org.agilewiki.jactor2.core.threading.Facility;
 public class Delay extends BladeBase {
 
     /**
-     * Create a Delay actor.
+     * Create a Delay blade.
      *
-     * @param _facility The actor's facility.
+     * @param _facility The blade's facility.
      */
     public Delay(final Facility _facility) throws Exception {
         initialize(new IsolationReactor(_facility));

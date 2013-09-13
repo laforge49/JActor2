@@ -10,14 +10,14 @@ public class EventBusSample {
         //Create a module facility.
         Facility facility = new Facility();
         try {
-            //Create a status logger actor.
+            //Create a status logger blade.
             StatusLogger statusLogger =
                     new StatusLogger(new NonBlockingReactor(facility));
 
-            //Create a status printer actor.
+            //Create a status printer blade.
             StatusPrinter statusPrinter = new StatusPrinter(facility);
 
-            //Define an event bus for StatusListener actors.
+            //Define an event bus for StatusListener blades.
             EventBus<StatusListener> eventBus =
                     new EventBus<StatusListener>(new NonBlockingReactor(facility));
 

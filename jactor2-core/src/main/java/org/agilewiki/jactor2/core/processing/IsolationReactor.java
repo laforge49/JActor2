@@ -5,12 +5,12 @@ import org.agilewiki.jactor2.core.threading.Facility;
 import org.agilewiki.jactor2.core.threading.MigrationException;
 
 /**
- * A reactor which processes each request to completion, and which should be used by actors
+ * A reactor which processes each request to completion, and which should be used by blades
  * which perform long computations, I/O, or otherwise block the thread. And unlike other types of
- * reactors, an IsolationReactor should usually be used only by a single actor.
+ * reactors, an IsolationReactor should usually be used only by a single blade.
  * <p>
  * For thread safety, the processing of each message is done in isolation from other messages, but when the processing of a message
- * results in the sending of a request message to another actor, other messages may be processed before a
+ * results in the sending of a request message to another blade, other messages may be processed before a
  * response to that request message is received. However, an isolation reactor will not process a
  * request until a response is returned for the prior request. This does not however preclude
  * the processing of event messages.

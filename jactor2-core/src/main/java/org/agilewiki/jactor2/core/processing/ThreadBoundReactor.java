@@ -47,11 +47,11 @@ import java.util.concurrent.atomic.AtomicReference;
  *                 }
  *             });
  *
- *         //Create an actor that uses the thread-bound reactor.
- *         final ThreadBoundActor threadBoundActor = new ThreadBoundActor(boundMessageProcessor);
+ *         //Create an blade that uses the thread-bound reactor.
+ *         final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
  *
- *         //Pass a FinEvent signal to the actor
- *         new FinEvent().signal(threadBoundActor);
+ *         //Pass a FinEvent signal to the blade
+ *         new FinEvent().signal(threadBoundBlade);
  *
  *         //Process messages when this thread is interrupted
  *         while (true) {
@@ -66,9 +66,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *     }
  * }
  *
- * class ThreadBoundActor extends BladeBase {
+ * class ThreadBoundBlade extends BladeBase {
  *
- *     ThreadBoundActor(final Reactor _messageProcessor) throws Exception {
+ *     ThreadBoundBlade(final Reactor _messageProcessor) throws Exception {
  *         initialize(_messageProcessor);
  *     }
  *
@@ -79,11 +79,11 @@ import java.util.concurrent.atomic.AtomicReference;
  *     }
  * }
  *
- * //When a FinEvent is passed to an actor, the fin method is called
- * class FinEvent extends Event&lt;ThreadBoundActor&gt; {
+ * //When a FinEvent is passed to an blade, the fin method is called
+ * class FinEvent extends Event&lt;ThreadBoundBlade&gt; {
  *     {@literal @}Override
- *     public void processEvent(ThreadBoundActor _targetActor) throws Exception {
- *         _targetActor.fin();
+ *     public void processEvent(ThreadBoundBlade _targetBlade) throws Exception {
+ *         _targetBlade.fin();
  *     }
  * }
  *

@@ -8,8 +8,8 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 /**
- * An isolation actor for printing.
- * By using an isolation actor, printing is done on a different thread, along with
+ * An isolation bladefor printing.
+ * By using an isolation blade, printing is done on a different thread, along with
  * formatting. In effect, Printer implements a simple logger.
  * </p>
  * <h3>Sample Usage:</h3>
@@ -45,7 +45,7 @@ public class Printer extends IsolationBlade {
     final public Locale locale;
 
     /**
-     * Create a Printer actor.
+     * Create a Printer blade.
      *
      * @param _facility A set of resources, including a thread pool, for use
      *                  by reactor and their actors.
@@ -55,10 +55,10 @@ public class Printer extends IsolationBlade {
     }
 
     /**
-     * Create a Printer actor.
+     * Create a Printer blade.
      *
      * @param _facility    A set of resources, including a thread pool, for use
-     *                     by reactor and their actors.
+     *                     by reactor and their blade.
      * @param _printStream Where to print the string.
      */
     public Printer(final Facility _facility,
@@ -67,7 +67,7 @@ public class Printer extends IsolationBlade {
     }
 
     /**
-     * Create a Printer actor.
+     * Create a Printer blade.
      *
      * @param _facility    A set of resources, including a thread pool, for use
      *                     by reactor and their actors.

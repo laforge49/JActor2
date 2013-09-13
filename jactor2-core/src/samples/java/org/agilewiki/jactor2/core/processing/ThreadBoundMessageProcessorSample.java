@@ -24,11 +24,11 @@ public class ThreadBoundMessageProcessorSample {
                     }
                 });
 
-        //Create an actor that uses the thread-bound processing.
-        final ThreadBoundBlade threadBoundActor = new ThreadBoundBlade(boundMessageProcessor);
+        //Create an blade that uses the thread-bound processing.
+        final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
 
-        //Pass a FinEvent signal to the actor.
-        new FinEvent().signal(threadBoundActor);
+        //Pass a FinEvent signal to the blade.
+        new FinEvent().signal(threadBoundBlade);
 
         //Process messages when this thread is interrupted.
         while (true) {
@@ -56,7 +56,7 @@ class ThreadBoundBlade extends BladeBase {
     }
 }
 
-//When a FinEvent is passed to an actor, the fin method is called.
+//When a FinEvent is passed to an blade, the fin method is called.
 class FinEvent extends Event<ThreadBoundBlade> {
     @Override
     public void processEvent(ThreadBoundBlade _targetBlade) throws Exception {
