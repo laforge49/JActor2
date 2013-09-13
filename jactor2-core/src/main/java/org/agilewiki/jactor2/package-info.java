@@ -14,15 +14,14 @@
  *     the cache may now have different data in it.
  * </p>
  * <p>
- *     Passing data between threads is also a slow operation. First, because the thread receiving
- *     the data may have been idle and must wait for a hardware thread to become available.
- *     Second, because the data will likely be passed to a thread running on a different
- *     hardware thread, so the data will need to be loaded into the new hardware thread's high-speed
+ *     Passing data between threads is also a slow operation because the data will likely be passed
+ *     to a thread running on a different
+ *     hardware thread. So the data will need to be loaded into the new hardware thread's high-speed
  *     cache. Of course when you do need to pass data between threads, you should pass the
  *     data in large chunks to minimize the passing overhead.
  * </p>
  * <p>
- *     Another major loss of speed occurs when a thread access data being updated by another hardware thread.
+ *     Another major loss of speed occurs when a thread accesses data being updated by another hardware thread.
  *     When this happens, the contents of the high speed caches for different hardware threads
  *     are synchronized, and that causes additional delays.
  * </p>
@@ -34,7 +33,7 @@
  * </p>
  * <p>
  *     The problem with actors is that they typically do not avoid passing data between
- *     threads. This is why we use thread migration. So whenever possible, the
+ *     threads. This is why JActor uses thread migration. So whenever possible, the
  *     thread which creates a message will follow that message to the actor receiving it.
  *     This way the message remains in the high-speed cache of the hardware thread that is
  *     being used.
@@ -46,23 +45,37 @@
  *     with the messages being passed to their destinations in chunks, so that some of the
  *     overhead of passing data between threads can be avoided.
  * </p>
- * <h2>Messaging is Not Always Needed</h2>
+ * <h2>Composing Actors for Enhanced Performance</h2>
  * <p>
- *     It is often helpful to use small actors, but the overhead of messaging passing can
- *     be prohibitive. This is why reactors are first-class objects.
+ *     In JActor, actors are in two parts: Reactors, which contain no application logic, and
+ *     Blades. A reactor can have any number of blades, and every blade has one reactor. Messages
+ *     are sourced by and targeted at blades, but it is the reactors which actually exchange and
+ *     process those messages.
  * </p>
  * <p>
- *     A reactor is a light-weight thread. A reactor has an input queue (an inbox)
- *     for receiving messages to be processed
- *     and a set of send buffers (an outbox) for assembling buffered messages that are to be sent
- *     to other reactors.
- *     </p>
- *     <p>
- *         Every actor needs a reactor, but the reactor
- *     can be shared by several actors. These actors then always operate on the same thread and
- *     are effectively part of a larger, composite actor. Such actors can directly
- *     call methods on each other with complete thread safety, as only one message is processed
- *     at a time for all the actors sharing the same reactor.
+ *     Each reactor is in effect a light-weight thread, processing one message at a time. The blades
+ *     of a reactor then always operate on the same thread. Message passing between blades in the same
+ *     reactor then is very fast, because the messages are not passed between threads.
+ * </p>
+ * <h2>Two-way Messaging Improves Garbage Collection Performance and Performance Under Load</h2>
+ * <p>
+ *     The standard actor model is event based and leaves flow control to the application developer.
+ *     Which means that event flooding is a common occurrence. This gives rise to a large memory footprint,
+ *     slow garbage collection and intermittent failures under loaded conditions.
+ * </p>
+ * <p>
+ *     JActor also supports events, but two-way messages are generally preferred. JActor's two-way
+ *     messaging uses callbacks to process responses, rather than blocking the thread. Two-way messaging
+ *     implicitly implements flow control and keeps the memory foot print small. So everything runs
+ *     faster and more reliably under load.
+ * </p>
+ * <p>
+ *     Another benefit of two-way messaging is that exceptions that occur while processing a message can
+ *     be sent back to the origin of the message, just as uncaught exceptions occuring in a method are passed up
+ *     to the calling method, recursively. So exceptions are more likely to be handled by code that knows what
+ *     might have caused the exception rather than by an actor monitor that may not be tracking activities to the
+ *     same degree. This improved exception handling makes for simpler code and consequently code that is more
+ *     robust over time as maintenance is simplified.
  * </p>
  */
 package org.agilewiki.jactor2;
