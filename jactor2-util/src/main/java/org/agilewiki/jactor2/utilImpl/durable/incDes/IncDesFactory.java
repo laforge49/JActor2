@@ -28,7 +28,7 @@ public class IncDesFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected IncDesImpl instantiateActor() {
+    protected IncDesImpl instantiateBlade() {
         return new IncDesImpl();
     }
 }

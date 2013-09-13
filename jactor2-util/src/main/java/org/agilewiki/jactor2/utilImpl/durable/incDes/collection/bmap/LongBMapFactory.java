@@ -57,7 +57,7 @@ public class LongBMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected LongBMap instantiateActor() {
+    protected LongBMap instantiateBlade() {
         return new LongBMap();
     }
 

@@ -5,9 +5,9 @@ package org.agilewiki.jactor2.util;
  */
 public interface Ancestor {
     /**
-     * Returns the parent actor in the dependency stack.
+     * Returns the parent blade in the dependency stack.
      *
-     * @return The parent actor, or null.
+     * @return The parent blade, or null.
      */
     public Ancestor getParent();
 }

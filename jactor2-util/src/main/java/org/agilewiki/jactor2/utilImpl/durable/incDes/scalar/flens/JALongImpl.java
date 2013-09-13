@@ -20,7 +20,7 @@ public class JALongImpl
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JALong.FACTORY_NAME) {
             @Override
-            final protected JALongImpl instantiateActor() {
+            final protected JALongImpl instantiateBlade() {
                 return new JALongImpl();
             }
         });

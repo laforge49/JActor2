@@ -25,7 +25,7 @@ public class BytesImpl
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Bytes.FACTORY_NAME) {
             @Override
-            final protected BytesImpl instantiateActor() {
+            final protected BytesImpl instantiateBlade() {
                 return new BytesImpl();
             }
         });

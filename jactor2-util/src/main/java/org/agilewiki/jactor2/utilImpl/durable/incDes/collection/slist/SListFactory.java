@@ -49,7 +49,7 @@ public class SListFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected SList instantiateActor() {
+    protected SList instantiateBlade() {
         return new SList();
     }
 

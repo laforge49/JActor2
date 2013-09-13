@@ -20,7 +20,7 @@ public class JADoubleImpl
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JADouble.FACTORY_NAME) {
             @Override
-            final protected JADoubleImpl instantiateActor() {
+            final protected JADoubleImpl instantiateBlade() {
                 return new JADoubleImpl();
             }
         });

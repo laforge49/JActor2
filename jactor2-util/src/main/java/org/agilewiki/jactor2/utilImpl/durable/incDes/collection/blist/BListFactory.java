@@ -51,7 +51,7 @@ public class BListFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected BList instantiateActor() {
+    protected BList instantiateBlade() {
         return new BList();
     }
 

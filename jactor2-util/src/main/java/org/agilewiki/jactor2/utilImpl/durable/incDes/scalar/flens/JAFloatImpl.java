@@ -20,7 +20,7 @@ public class JAFloatImpl
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JAFloat.FACTORY_NAME) {
             @Override
-            final protected JAFloatImpl instantiateActor() {
+            final protected JAFloatImpl instantiateBlade() {
                 return new JAFloatImpl();
             }
         });

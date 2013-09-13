@@ -20,7 +20,7 @@ public class JABooleanImpl
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JABoolean.FACTORY_NAME) {
             @Override
-            final protected JABooleanImpl instantiateActor() {
+            final protected JABooleanImpl instantiateBlade() {
                 return new JABooleanImpl();
             }
         });

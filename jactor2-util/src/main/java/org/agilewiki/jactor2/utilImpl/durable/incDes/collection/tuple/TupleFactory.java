@@ -38,7 +38,7 @@ public class TupleFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected TupleImpl instantiateActor() {
+    protected TupleImpl instantiateBlade() {
         return new TupleImpl();
     }
 

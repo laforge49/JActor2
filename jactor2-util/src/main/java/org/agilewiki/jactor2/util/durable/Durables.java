@@ -223,7 +223,7 @@ public final class Durables {
                                           final String _appFactoryName) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_appFactoryName) {
             @Override
-            protected App instantiateActor() throws Exception {
+            protected App instantiateBlade() throws Exception {
                 return (App) _appClass.newInstance();
             }
         });
@@ -243,7 +243,7 @@ public final class Durables {
                                           final String... _valueFactoryNames) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new AppFactory(_appFactoryName, _valueFactoryNames) {
             @Override
-            protected App instantiateActor() throws Exception {
+            protected App instantiateBlade() throws Exception {
                 return (App) _appClass.newInstance();
             }
         });

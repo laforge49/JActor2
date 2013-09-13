@@ -71,7 +71,7 @@ public class StringBMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected StringBMap instantiateActor() {
+    protected StringBMap instantiateBlade() {
         return new StringBMap();
     }
 

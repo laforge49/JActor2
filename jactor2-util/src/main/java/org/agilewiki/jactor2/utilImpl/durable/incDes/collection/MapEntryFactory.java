@@ -42,7 +42,7 @@ public class MapEntryFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected MapEntryImpl instantiateActor() {
+    protected MapEntryImpl instantiateBlade() {
         return new MapEntryImpl();
     }
 

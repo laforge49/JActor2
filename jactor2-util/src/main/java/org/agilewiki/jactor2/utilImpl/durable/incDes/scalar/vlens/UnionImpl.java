@@ -21,7 +21,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(_subActorType) {
 
             @Override
-            protected UnionImpl instantiateActor() {
+            protected UnionImpl instantiateBlade() {
                 return new UnionImpl();
             }
 

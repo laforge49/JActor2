@@ -18,7 +18,7 @@ public class JAStringImpl
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JAString.FACTORY_NAME) {
             @Override
-            final protected JAStringImpl instantiateActor() {
+            final protected JAStringImpl instantiateBlade() {
                 return new JAStringImpl();
             }
         });

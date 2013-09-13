@@ -53,7 +53,7 @@ public class LongSMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected LongSMap instantiateActor() {
+    protected LongSMap instantiateBlade() {
         return new LongSMap();
     }
 

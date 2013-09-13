@@ -52,7 +52,7 @@ public class IntegerSMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected IntegerSMap instantiateActor() {
+    protected IntegerSMap instantiateBlade() {
         return new IntegerSMap();
     }
 

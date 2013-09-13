@@ -32,7 +32,7 @@ public abstract class AppFactory extends FactoryImpl {
     }
 
     @Override
-    abstract protected App instantiateActor() throws Exception;
+    abstract protected App instantiateBlade() throws Exception;
 
     /**
      * Create and configure an actor.
@@ -43,7 +43,7 @@ public abstract class AppFactory extends FactoryImpl {
      */
     @Override
     public App newSerializable(Reactor reactor, Ancestor parent) throws Exception {
-        App a = instantiateActor();
+        App a = instantiateBlade();
         DurableImpl tj = new DurableImpl();
         a.setDurable(tj);
         tj.initialize(reactor, parent, this);

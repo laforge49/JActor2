@@ -23,7 +23,7 @@ public class BoxImpl
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Box.FACTORY_NAME) {
             @Override
-            final protected BoxImpl instantiateActor() {
+            final protected BoxImpl instantiateBlade() {
                 return new BoxImpl();
             }
         });

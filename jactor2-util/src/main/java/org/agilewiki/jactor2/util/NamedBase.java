@@ -22,7 +22,7 @@ public class NamedBase implements Named {
     /**
      * Assigns a name, unless already assigned.
      *
-     * @param _name The actor name.
+     * @param _name The blade name.
      */
     public void setName(final String _name) {
         if (name != null)

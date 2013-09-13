@@ -53,7 +53,7 @@ public class StringSMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected StringSMap instantiateActor() {
+    protected StringSMap instantiateBlade() {
         return new StringSMap();
     }
 

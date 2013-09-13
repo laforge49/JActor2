@@ -58,7 +58,7 @@ public class IntegerBMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    protected IntegerBMap instantiateActor() {
+    protected IntegerBMap instantiateBlade() {
         return new IntegerBMap();
     }
 

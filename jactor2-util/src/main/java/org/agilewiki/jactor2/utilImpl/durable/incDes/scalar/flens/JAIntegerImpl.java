@@ -20,7 +20,7 @@ public class JAIntegerImpl
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JAInteger.FACTORY_NAME) {
             @Override
-            final protected JAIntegerImpl instantiateActor() {
+            final protected JAIntegerImpl instantiateBlade() {
                 return new JAIntegerImpl();
             }
         });

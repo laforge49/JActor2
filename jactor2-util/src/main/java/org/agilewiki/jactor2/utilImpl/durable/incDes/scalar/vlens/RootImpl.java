@@ -25,7 +25,7 @@ public class RootImpl extends BoxImpl implements Root {
     public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
         ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
             @Override
-            final protected RootImpl instantiateActor() {
+            final protected RootImpl instantiateBlade() {
                 return new RootImpl();
             }
         });
