@@ -42,11 +42,11 @@ public class KarafWithBundleTest implements BundleListener, ServiceListener {
 
                 logLevel(LogLevelOption.LogLevel.INFO),
 
-                mavenBundle("org.agilewiki.jactor2", "jactor2-core", "0.1.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor2", "jactor2-util", "0.1.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor2", "jactor2-osgi", "0.1.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor2", "jactor2-test-iface", "0.1.1-SNAPSHOT"),
-                mavenBundle("org.agilewiki.jactor2", "jactor2-kdriver", "0.1.1-SNAPSHOT")
+                mavenBundle("org.agilewiki.jactor2", "jactor2-core", "0.2.0"),
+                mavenBundle("org.agilewiki.jactor2", "jactor2-util", "0.2.0"),
+                mavenBundle("org.agilewiki.jactor2", "jactor2-osgi", "0.2.0"),
+                mavenBundle("org.agilewiki.jactor2", "jactor2-test-iface", "0.2.0"),
+                mavenBundle("org.agilewiki.jactor2", "jactor2-kdriver", "0.2.0")
         };
     }
 
