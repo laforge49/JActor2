@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.Blade;
-import org.agilewiki.jactor2.core.blades.Delay;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;

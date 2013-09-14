@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core.blades;
+package org.agilewiki.jactor2.core.blades.misc;
 
+import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;

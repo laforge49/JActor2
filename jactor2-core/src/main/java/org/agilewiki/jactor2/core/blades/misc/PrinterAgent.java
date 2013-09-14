@@ -1,4 +1,7 @@
-package org.agilewiki.jactor2.core.blades;
+package org.agilewiki.jactor2.core.blades.misc;
+
+import org.agilewiki.jactor2.core.blades.Agent;
+import org.agilewiki.jactor2.core.blades.BladeBase;
 
 /**
  * A PrinterAgent can be used to print multiple lines
