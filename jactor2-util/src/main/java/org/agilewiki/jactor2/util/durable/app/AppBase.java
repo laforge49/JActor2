@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.app;
 
-import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 
 /**

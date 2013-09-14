@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
-import org.agilewiki.jactor2.core.messaging.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
 /**

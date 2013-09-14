@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.util;
 
-import org.agilewiki.jactor2.core.BladeBase;
-import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.Event;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

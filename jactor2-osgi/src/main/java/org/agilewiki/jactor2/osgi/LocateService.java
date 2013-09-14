@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.testService;
 
-import org.agilewiki.jactor2.core.BladeBase;
-import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.testIface.Hello;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;

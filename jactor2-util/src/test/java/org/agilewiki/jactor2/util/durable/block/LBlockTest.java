@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.util.durable.block;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
-import org.agilewiki.jactor2.core.threading.Facility;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.incDes.Root;

@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.BladeBase;
-import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.processing.IsolationReactor;
-import org.agilewiki.jactor2.core.threading.Facility;
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.Event;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.osgi.framework.*;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;

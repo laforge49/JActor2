@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.Blade;
+import org.agilewiki.jactor2.core.blades.Blade;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 

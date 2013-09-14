@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.util.durable.app;
 
-import org.agilewiki.jactor2.core.Blade;
+import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 

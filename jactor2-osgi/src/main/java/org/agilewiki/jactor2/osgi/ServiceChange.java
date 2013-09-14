@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.messaging.Event;
+import org.agilewiki.jactor2.core.messages.Event;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 

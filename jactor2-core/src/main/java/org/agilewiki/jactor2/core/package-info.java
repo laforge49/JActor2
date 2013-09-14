@@ -1,5 +1,5 @@
 /**
- * <h1>Actors, Processing, Facilities and Messaging</h1>
+ * <h1>Blades, Reactors and Facilities</h1>
  * <p>
  *     The JActor architecture is divided into 4 parts: actors, processing, threading and messaging.
  * </p>

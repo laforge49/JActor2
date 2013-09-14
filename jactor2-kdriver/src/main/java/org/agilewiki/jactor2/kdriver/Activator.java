@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.kdriver;
 
-import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
+import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.osgi.FactoriesImporter;
 import org.agilewiki.jactor2.osgi.FactoryLocatorActivator;
 import org.agilewiki.jactor2.osgi.LocateService;

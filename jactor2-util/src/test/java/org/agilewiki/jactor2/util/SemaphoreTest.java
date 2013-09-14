@@ -1,15 +1,15 @@
 package org.agilewiki.jactor2.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.Blade;
-import org.agilewiki.jactor2.core.messaging.AsyncRequest;
-import org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.messaging.ExceptionHandler;
-import org.agilewiki.jactor2.core.misc.Delay;
-import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
-import org.agilewiki.jactor2.core.processing.Reactor;
-import org.agilewiki.jactor2.core.threading.Facility;
+import org.agilewiki.jactor2.core.blades.Blade;
+import org.agilewiki.jactor2.core.blades.Delay;
+import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.Event;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * Test code.

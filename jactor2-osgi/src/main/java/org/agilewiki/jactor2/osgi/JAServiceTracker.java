@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.osgi;
 
-import org.agilewiki.jactor2.core.BladeBase;
-import org.agilewiki.jactor2.core.messaging.Event;
-import org.agilewiki.jactor2.core.processing.Reactor;
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.messages.Event;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.osgi.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
-import org.agilewiki.jactor2.core.processing.Reactor;
-import org.agilewiki.jactor2.core.threading.Facility;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IntegerJAIntegerBMapTest extends TestCase {
