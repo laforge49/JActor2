@@ -1,56 +1,56 @@
-import org.agilewiki.jactor2.core.*;
-import org.agilewiki.jactor2.core.threading.*;
-import org.agilewiki.jactor2.core.messaging.*;
-import org.agilewiki.jactor2.core.processing.*;
+import org.agilewiki.jactor2.core.blades.*;
+import org.agilewiki.jactor2.core.facilities.*;
+import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.reactors.*;
 
-public class ThreadMigration extends ActorBase {
+public class ThreadMigration extends BladeBase {
     public static void main(final String[] _args) 
             throws Exception {
-        ModuleContext moduleContext = new ModuleContext();
+        Facility facility = new Facility();
         try {
             System.out.println("\n           main thread: " + 
                 Thread.currentThread());
-            MessageProcessor messageProcessor = 
-                new NonBlockingMessageProcessor(moduleContext);
+            Reactor reactor = 
+                new NonBlockingReactor(facility);
             ThreadMigration threadMigration = 
-                new ThreadMigration(messageProcessor);
+                new ThreadMigration(reactor);
             threadMigration.startAReq().call();
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
     
-    public ThreadMigration(final MessageProcessor _messageProcessor) 
+    public ThreadMigration(final Reactor _reactor) 
             throws Exception {
-        initialize(_messageProcessor);
+        initialize(_reactor);
     }
     
     public AsyncRequest<Void> startAReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
-                MessageProcessor myMessageProcessor = getMessageProcessor();
-                ModuleContext myModuleContext = myMessageProcessor.getModuleContext();
-                MessageProcessor subMessageProcessor = 
-                    new NonBlockingMessageProcessor(myModuleContext);
-                SubActor subActor = new SubActor(subMessageProcessor);
+                Reactor myReactor = getReactor();
+                Facility myModuleContext = myReactor.getFacility();
+                Reactor subReactor = 
+                    new NonBlockingReactor(myModuleContext);
+                SubActor subActor = new SubActor(subReactor);
                 subActor.doAReq("         signal").signal();
-                subActor.doAReq("           send").send(myMessageProcessor, this);
+                subActor.doAReq("           send").send(myReactor, this);
             }
         };
     }
 }
 
-class SubActor extends ActorBase {
-    public SubActor(final MessageProcessor _messageProcessor) 
+class SubActor extends BladeBase {
+    public SubActor(final Reactor _reactor) 
             throws Exception {
-        initialize(_messageProcessor);
+        initialize(_reactor);
     }
     
     public AsyncRequest<Void> doAReq(final String _label) {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() 
                     throws Exception {

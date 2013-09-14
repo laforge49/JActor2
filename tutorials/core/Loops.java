@@ -1,33 +1,33 @@
-import org.agilewiki.jactor2.core.*;
-import org.agilewiki.jactor2.core.threading.*;
-import org.agilewiki.jactor2.core.messaging.*;
-import org.agilewiki.jactor2.core.processing.*;
+import org.agilewiki.jactor2.core.blades.*;
+import org.agilewiki.jactor2.core.facilities.*;
+import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.reactors.*;
 
-public class Loops extends ActorBase {
+public class Loops extends BladeBase {
     public static void main(final String[] _args) 
             throws Exception {
-        ModuleContext moduleContext = new ModuleContext();
+        Facility facility = new Facility();
         try {
-            Loops loops = new Loops(new NonBlockingMessageProcessor(moduleContext));
+            Loops loops = new Loops(new NonBlockingReactor(facility));
             Sums sums;
             
             System.out.println("\nshared message processor tests:");
-            sums = new Sums(loops.getMessageProcessor());
+            sums = new Sums(loops.getReactor());
             test(10000000, sums, loops);
-            sums.getMessageProcessor().getModuleContext().close();
+            sums.getReactor().getFacility().close();
             /*
             System.out.println("\nno thread migration tests:");
-            sums = new Sums(new NonBlockingMessageProcessor(new ModuleContext()));
+            sums = new Sums(new NonBlockingReactor(new Facility()));
             test(10000000, sums, loops);
-            sums.getMessageProcessor().getModuleContext().close();
+            sums.getMessageProcessor().getFacility().close();
             
             System.out.println("\nthread migration tests:");
-            sums = new Sums(new NonBlockingMessageProcessor(moduleContext));
+            sums = new Sums(new NonBlockingReactor(facility));
             test(10000000, sums, loops);
             Thread.sleep(10);
             */
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
     
@@ -51,13 +51,13 @@ public class Loops extends ActorBase {
             _sums.clearAReq().signal();
     }
     
-    Loops(final MessageProcessor _messageProcessor)
+    Loops(final Reactor _reactor)
             throws Exception {
-        initialize(_messageProcessor);
+        initialize(_reactor);
     }
     
     AsyncRequest<Long> loopAReq(final Sums _sums, final long _count) {
-        return new AsyncRequest<Long>(getMessageProcessor()) {
+        return new AsyncRequest<Long>(getReactor()) {
             long counter;
             AsyncResponseProcessor dis = this;
             
@@ -68,7 +68,7 @@ public class Loops extends ActorBase {
                         dis.processAsyncResponse(_response);
                     } else {
                         counter -= 1;
-                        _sums.addAReq(counter).send(getMessageProcessor(), responseProcessor);
+                        _sums.addAReq(counter).send(getReactor(), responseProcessor);
                     }
                 }
             };
@@ -80,23 +80,23 @@ public class Loops extends ActorBase {
                     processAsyncResponse(0L);
                 } else {
                     counter = _count;
-                    _sums.addAReq(counter).send(getMessageProcessor(), responseProcessor);
+                    _sums.addAReq(counter).send(getReactor(), responseProcessor);
                 }
             }
         };
     }
 }
 
-class Sums extends ActorBase {
+class Sums extends BladeBase {
     private long total = 0;
     
-    Sums(final MessageProcessor _messageProcessor)
+    Sums(final Reactor _reactor)
             throws Exception {
-        initialize(_messageProcessor);
+        initialize(_reactor);
     }
     
     AsyncRequest<Void> clearAReq() {
-        return new AsyncRequest<Void>(getMessageProcessor()) {
+        return new AsyncRequest<Void>(getReactor()) {
             @Override
             public void processAsyncRequest() 
                     throws Exception {
@@ -107,7 +107,7 @@ class Sums extends ActorBase {
     }
     
     AsyncRequest<Long> addAReq(final long _value) {
-        return new AsyncRequest<Long>(getMessageProcessor()) {
+        return new AsyncRequest<Long>(getReactor()) {
             @Override
             public void processAsyncRequest() 
                     throws Exception {

@@ -1,19 +1,19 @@
-import org.agilewiki.jactor2.core.*;
-import org.agilewiki.jactor2.core.threading.*;
-import org.agilewiki.jactor2.core.messaging.*;
-import org.agilewiki.jactor2.core.processing.*;
+import org.agilewiki.jactor2.core.blades.*;
+import org.agilewiki.jactor2.core.facilities.*;
+import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.reactors.*;
 
 public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
-        ModuleContext context = new ModuleContext();
+        Facility facility = new Facility();
         try {
-            NonBlockingMessageProcessor messageProcessor = new NonBlockingMessageProcessor(context);
-            HelloWorldActor helloWorldActor = new HelloWorldActor(messageProcessor);
-            AsyncRequest<String> getGreetingAReq = helloWorldActor.getGreetingAReq();
+            NonBlockingReactor reactor = new NonBlockingReactor(facility);
+            HelloWorldBlade helloWorldBlade = new HelloWorldBlade(reactor);
+            AsyncRequest<String> getGreetingAReq = helloWorldBlade.getGreetingAReq();
             String response = getGreetingAReq.call();
             System.out.println(response);
         } finally {
-            context.close();
+            facility.close();
         }
     }
 }
