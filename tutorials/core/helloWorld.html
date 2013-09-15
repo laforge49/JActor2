@@ -65,24 +65,22 @@ The HelloWorldActor.getGreetingAReq method creates a request that simply returns
 Here then is a program that exercises HelloWorldBlade, <a href="HelloWorld.java">HelloWorld</a>:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.*;
-import org.agilewiki.jactor2.core.threading.*;
-import org.agilewiki.jactor2.core.messaging.*;
-import org.agilewiki.jactor2.core.processing.*;
+import org.agilewiki.jactor2.core.blades.*;
+import org.agilewiki.jactor2.core.facilities.*;
+import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.reactors.*;
 
 public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
-        ModuleContext context = new ModuleContext();
+        Facility facility = new Facility();
         try {
-            NonBlockingMessageProcessor messageProcessor = 
-                    new NonBlockingMessageProcessor(context);
-            HelloWorldActor helloWorldActor = 
-                    new HelloWorldActor(messageProcessor);
-            AsyncRequest<String> getGreetingAReq = helloWorldActor.getGreetingAReq();
+            NonBlockingReactor reactor = new NonBlockingReactor(facility);
+            HelloWorldBlade helloWorldBlade = new HelloWorldBlade(reactor);
+            AsyncRequest<String> getGreetingAReq = helloWorldBlade.getGreetingAReq();
             String response = getGreetingAReq.call();
             System.out.println(response);
         } finally {
-            context.close();
+            facility.close();
         }
     }
 }
@@ -92,31 +90,31 @@ Again, there are a number of items to discus.
 </p>
 <blockquote>
 <h3>
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/threading/ModuleContext.html">ModuleContext</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/facilities/Facility.html">Facility</a>
 </h3>
 <p>
-A module context provides several services. It manages a thread pool, a table of properties and a list of 
+A facility provides several services. It manages a thread pool, a table of properties and a list of 
 AutoClosable objects that are to be closed when the context is closed.
-A program can have one or more modules, each with its own life-cycle. And, of course, a program
-will not exit normally until all the modules have been closed.
+A program can have one or more facility, each with its own life-cycle. And, of course, a program
+will not exit normally until all the facilities have been closed.
 </p>
 <h3>
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/processing/NonBlockingMessageProcessor.html">NonBlockingMessageProcessor</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
 </h3>
 <p>
-A NonBlockingMessageProcessor is one of several types of message processors.
-NonBlockingMessageProcessor is the default message processor used by most actors. 
-But it should not be used when an actor blocks for I/O or performs extensive computations.
-In HelowWorld, the HelloWorldActor is created with a NonBlockingMessageProcessor.
+A NonBlockingReactor is one of several types of reactors.
+NonBlockingReactor is the commonest reactor used with most blades. 
+But it should not be used when a blade blocks for I/O or performs extensive computations.
+In HelowWorld, the HelloWorldBlade is created with a NonBlockingReactor.
 </p>
 <h3>
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/RequestBase.html#call()">call</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
 </h3>
 <p>
 JActor is lock-free <strong>except</strong> for the call method.
-This method creates passes a request to the actor that implemented that request object,
+This method creates and passes a request to the blade that implemented that request class,
 and blocks the current thread until a response is received.
-HelloWorld invokes getGreetingAReq.call to access the greeting provided by the HellowWorldActor.
+HelloWorld invokes getGreetingAReq.call to access the greeting provided by the HellowWorldBlade.
 In general, call is only invoked by foreign threads, like the main thread in this case.
 </p>
 </blockquote>
@@ -124,18 +122,11 @@ In general, call is only invoked by foreign threads, like the main thread in thi
 Time to run this.
 </p>
 <pre>
-C:\GitHub\JActor2docs\tutorials\core>test.bat HelloWorld
+core>test.bat HelloWorld
 
-C:\GitHub\JActor2docs\tutorials\core>del *.class
-
-C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.1.0.jar;slf4
-j-api-1.7.5.jar *.java
-
-C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.1.0.jar;slf4
-j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. HelloWorld
 Hello world!
 
-C:\GitHub\JActor2docs\tutorials\core>
+core>
 </pre>
 </body>
 </html>
