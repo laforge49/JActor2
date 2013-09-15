@@ -5,13 +5,13 @@
 </p>
 <h1>Thread Migration</h1>
 <p>
-A thread is allocated from a ModuleContext and 
-assigned to a MessageProcessor when an idle MessageProcessor
+A thread is allocated from a Facility and 
+assigned to a Reactor when an idle Reactor
 receives a message. 
-And a thread is unassigned from a MessageProcessor when that MessageProcessor
+And a thread is released from a Reactor when that Reactor
 becomes idle.
-But threads can also migrate from one MessageProcessor to another when a message is sent,
-with a new thread assigned to the original MessageProcessor if needed.
+But threads can also migrate from one Reactor to another when a message is sent,
+with a new thread assigned to the original Reactor if needed.
 Thread migration is significantly faster than passing messages between threads,
 as the data does not need to be loaded into another thread's memory cache.
 </p>
@@ -22,59 +22,59 @@ and responses. This is illustrated by the
 program:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.*;
-import org.agilewiki.jactor2.core.threading.*;
-import org.agilewiki.jactor2.core.messaging.*;
-import org.agilewiki.jactor2.core.processing.*;
+import org.agilewiki.jactor2.core.blades.*;
+import org.agilewiki.jactor2.core.facilities.*;
+import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.reactors.*;
 
-public class ThreadMigration extends ActorBase {
+public class ThreadMigration extends BladeBase {
     public static void main(final String[] _args) 
             throws Exception {
-        ModuleContext moduleContext = new ModuleContext();
+        Facility facility = new Facility();
         try {
             System.out.println("\n           main thread: " + 
                 Thread.currentThread());
-            MessageProcessor messageProcessor = 
-                new NonBlockingMessageProcessor(moduleContext);
+            Reactor reactor = 
+                new NonBlockingReactor(facility);
             ThreadMigration threadMigration = 
-                new ThreadMigration(messageProcessor);
+                new ThreadMigration(reactor);
             threadMigration.startAReq().call();
         } finally {
-            moduleContext.close();
+            facility.close();
         }
     }
     
-    public ThreadMigration(final MessageProcessor _messageProcessor) 
+    public ThreadMigration(final Reactor _reactor) 
             throws Exception {
-        initialize(_messageProcessor);
+        initialize(_reactor);
     }
     
     public AsyncRequest&lt;Void&gt; startAReq() {
-        return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
+        return new AsyncRequest&lt;Void&gt;(getReactor()) {
             @Override
             public void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
-                MessageProcessor myMessageProcessor = getMessageProcessor();
-                ModuleContext myModuleContext = myMessageProcessor.getModuleContext();
-                MessageProcessor subMessageProcessor = 
-                    new NonBlockingMessageProcessor(myModuleContext);
-                SubActor subActor = new SubActor(subMessageProcessor);
+                Reactor myReactor = getReactor();
+                Facility myModuleContext = myReactor.getFacility();
+                Reactor subReactor = 
+                    new NonBlockingReactor(myModuleContext);
+                SubActor subActor = new SubActor(subReactor);
                 subActor.doAReq("         signal").signal();
-                subActor.doAReq("           send").send(myMessageProcessor, this);
+                subActor.doAReq("           send").send(myReactor, this);
             }
         };
     }
 }
 
-class SubActor extends ActorBase {
-    public SubActor(final MessageProcessor _messageProcessor) 
+class SubActor extends BladeBase {
+    public SubActor(final Reactor _reactor) 
             throws Exception {
-        initialize(_messageProcessor);
+        initialize(_reactor);
     }
     
     public AsyncRequest&lt;Void&gt; doAReq(final String _label) {
-        return new AsyncRequest&lt;Void&gt;(getMessageProcessor()) {
+        return new AsyncRequest&lt;Void&gt;(getReactor()) {
             @Override
             public void processAsyncRequest() 
                     throws Exception {
@@ -90,30 +90,22 @@ class SubActor extends ActorBase {
 And here is the output from a test run:
 </p>
 <pre>
-C:\GitHub\JActor2docs\tutorials\core>test.bat ThreadMigration
-
-C:\GitHub\JActor2docs\tutorials\core>del *.class
-
-C:GitHub\JActor2docs\tutorials\core>javac -classpath jactor2-core-0.1.0.jar;slf4
-j-api-1.7.5.jar *.java
-
-C:\GitHub\JActor2docs\tutorials\core>java -classpath jactor2-core-0.1.0.jar;slf4
-j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. ThreadMigration
+core>test.bat ThreadMigration
 
            main thread: Thread[main,5,main]
 ThreadMigration thread: Thread[Thread-0,5,main]
          signal thread: Thread[Thread-1,5,main]
            send thread: Thread[Thread-0,5,main]
 
-C:\GitHub\JActor2docs\tutorials\core>
+core>
 </pre>
 <p>
 What this shows is that when 
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/RequestBase.html#signal()">signal</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messages/RequestBase.html#signal()">signal</a>
 or
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/RequestBase.html#call()">call</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
 methods are used, the request is passed to a new thread. But when the
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/RequestBase.html#send(org.agilewiki.jactor2.core.processing.MessageProcessor, org.agilewiki.jactor2.core.messaging.AsyncResponseProcessor)">send</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messages/RequestBase.html#send(org.agilewiki.jactor2.core.reactors.Reactor, org.agilewiki.jactor2.core.messages.AsyncResponseProcessor)">send</a>
 method is used, the thread migrates with the message.
 </p>
 </body>
