@@ -5,27 +5,25 @@
 </p>
 <h1>Hello World</h1>
 <p>
-We will start with a very simple actor,
-<a href="HelloWorldActor.java">HelloWorldActor</a>:
+We will start with a very simple blade,
+<a href="HelloWorldBlade.java">HelloWorldBlade</a>:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.*;
-import org.agilewiki.jactor2.core.threading.*;
-import org.agilewiki.jactor2.core.messaging.*;
-import org.agilewiki.jactor2.core.processing.*;
+import org.agilewiki.jactor2.core.blades.*;
+import org.agilewiki.jactor2.core.facilities.*;
+import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.reactors.*;
 
-public class HelloWorldActor extends ActorBase {
+public class HelloWorldBlade extends BladeBase {
 
-    public HelloWorldActor(final MessageProcessor _messageProcessor) 
-            throws Exception {
-        initialize(_messageProcessor);
+    public HelloWorldBlade(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
     }
     
     public AsyncRequest&lt;String&gt; getGreetingAReq() {
-        return new AsyncRequest&lt;String&gt;(getMessageProcessor()) {
+        return new AsyncRequest&lt;String&gt;(getReactor()) {
             @Override
-            public void processAsyncRequest() 
-                    throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse("Hello world!");
             }
         };
@@ -33,30 +31,30 @@ public class HelloWorldActor extends ActorBase {
 }
 </pre>
 <p>
-There is a lot here to discuss, but we should first note that this actor is completely unjustifiable,
+There is a lot here to discuss, but we should first note that this blade is completely unjustifiable,
 except that is is simple enough to use as a first example.
 </p>
 <blockquote>
 <h3>
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/ActorBase.html">ActorBase</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/blades/BladeBase.html">BladeBase</a>
 </h3>
 <p>
-For HelloWorldActor to be an actor, it must implement
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/Actor.html">Actor</a>
-so that the getMessageProcessor can be used to access the actor's message processor.
-The easy way to do this is to extend ActorBase.
+For HelloWorldBlade to be an blade, it must implement
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>
+so that the getReactor method can be used to access the blade's reactor.
+The easy way to do this is to extend BladeBase.
 </p>
 <h3>
-<a href ="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/processing/MessageProcessor.html">MessageProcessor</a>
+<a href ="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/reactors/Reactor.html">Reactor</a>
 </h3>
 <p>
-A message processor is a light weight thread that processes messages for one or more actors.
-An actor can not function without one.
-So in the constructor of HelloWorldActor, the method ActorBase.initialize is used to assign
-the actor's message processor.
+A reactor is a light weight thread that processes messages for one or more blades.
+A blade can not function without one.
+So in the constructor of HelloWorldBlade, the method BladeBase.initialize is used to assign
+the blade's reactor.
 </p>
 <h3>
-<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messaging/AsyncRequest.html">AsyncRequest&lt;RESPONSE_TYPE&gt;</a>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messages/AsyncRequest.html">AsyncRequest&lt;RESPONSE_TYPE&gt;</a>
 </h3>
 <p>
 Request has an abstract method, processAsyncRequest, which is called on the thread of the actor which implements the subclass of ASyncRequest.
@@ -64,7 +62,7 @@ The HelloWorldActor.getGreetingAReq method creates a request that simply returns
 </p>
 </blockquote>
 <p>
-Here then is a program that exercises HelloWorldActor, <a href="HelloWorld.java">HelloWorld</a>:
+Here then is a program that exercises HelloWorldBlade, <a href="HelloWorld.java">HelloWorld</a>:
 </p>
 <pre>
 import org.agilewiki.jactor2.core.*;
