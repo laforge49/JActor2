@@ -1,9 +1,9 @@
 <html>
 <body>
 <p>
-<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Hello World
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Hello World!
 </p>
-<h1>Hello World</h1>
+<h1>Hello World!</h1>
 <p>
 We will begin our exploration of JActor2 with a program that prints "Hello World!".
 In the process, we will encounter a number of classes which play a major role when using JActor.
@@ -51,7 +51,7 @@ all the facilities are closed.
             Printer printer = new Printer(facility);
 </pre>
 <p>
-A printer is a 
+A printer is an 
 <a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/blades/IsolationBlade.html">IsolationBlade</a>,
 which is to say an application object, which prints to a PrintStream, System.out being the default.
 When a printer object is created, an
@@ -73,14 +73,17 @@ In this case, printRequest is a request to print "Hello World!".
 <h3>
 <a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
 </h3>
+<pre>
+            printRequest.call();
+</pre>
 <p>
 Here we print "Hello World!".
 But it is printed from the printer's own thread, not from the main thread.
 </p>
 <p>
 The call method of a request provides one way of invoking a request.
-The call method send the request to the blade and block the thread until a result is received.
-This method is the only method in JActor which blocks a thread.
+The printRequest.call method sends the request to the blade's thread and block the main thread until a result is received.
+The call method is the only method in JActor which blocks a thread.
 (The call method can not be used by a blade, as it must be invoked from a non-facility thread.)
 </p>
 </body>
