@@ -7,6 +7,12 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
 abstract public class SyncRequest<RESPONSE_TYPE>
         extends RequestBase<RESPONSE_TYPE> {
 
+    public static <RESPONSE_TYPE> RESPONSE_TYPE local(
+            final Reactor _source,
+            final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
+        return _syncRequest.local(_source);
+    }
+
     /**
      * Create a SyncRequest.
      *

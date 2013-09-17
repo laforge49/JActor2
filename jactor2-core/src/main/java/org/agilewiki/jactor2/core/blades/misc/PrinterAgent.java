@@ -22,11 +22,11 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
  *         return new AsyncBladeRequest&lt;Void&gt;() {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {
- *                 printer.printlnSReq("*********").local(messageProcessor);
- *                 printer.printlnSReq("*       *").local(messageProcessor);
- *                 printer.printlnSReq("*  Hi!  *").local(messageProcessor);
- *                 printer.printlnSReq("*       *").local(messageProcessor);
- *                 printer.printlnSReq("*********").local(messageProcessor);
+ *                 local(printer.printlnSReq("*********"));
+ *                 local(printer.printlnSReq("*       *"));
+ *                 local(printer.printlnSReq("*  Hi!  *"));
+ *                 local(printer.printlnSReq("*       *"));
+ *                 local(printer.printlnSReq("*********"));
  *                 processAsyncResponse(null);
  *             }
  *         };

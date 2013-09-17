@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Event;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -20,6 +21,31 @@ public class SemaphoreTest extends TestCase implements Blade {
     @Override
     public Reactor getReactor() {
         return reactor;
+    }
+
+    abstract public class SyncBladeRequest<RESPONSE_TYPE> extends SyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public SyncBladeRequest() {
+            super(getReactor());
+        }
+    }
+
+    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public AsyncBladeRequest() {
+            super(getReactor());
+        }
+    }
+
+    @Override
+    public <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
+        return SyncRequest.local(getReactor(), _syncRequest);
     }
 
     public void testI() throws Exception {

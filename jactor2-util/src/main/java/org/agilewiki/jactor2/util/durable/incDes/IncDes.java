@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.util.durable.incDes;
 
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.Factory;

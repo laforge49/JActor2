@@ -78,4 +78,9 @@ public class BladeBase implements Blade {
             super(reactor);
         }
     }
+
+    @Override
+    public <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
+        return SyncRequest.local(reactor, _syncRequest);
+    }
 }
