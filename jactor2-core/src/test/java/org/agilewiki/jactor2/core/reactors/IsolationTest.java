@@ -25,7 +25,7 @@ public class IsolationTest extends TestCase {
             AsyncRequest<Integer> dis = this;
 
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 Reactor reactor = new IsolationReactor(_reactor.getFacility());
                 AsyncResponseProcessor rc = new ResponseCounter(5, null,
@@ -50,7 +50,7 @@ public class IsolationTest extends TestCase {
             AsyncRequest<Void> dis = this;
 
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 Delay delay = new Delay(_reactor.getFacility());
                 delay.sleepSReq(100 - (msg * 20)).send(_reactor,

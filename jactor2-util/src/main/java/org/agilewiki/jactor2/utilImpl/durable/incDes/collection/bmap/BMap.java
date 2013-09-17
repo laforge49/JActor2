@@ -35,7 +35,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Integer> sizeReq() {
         return new AsyncRequest<Integer>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(size());
             }
         };
@@ -44,7 +44,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Void> emptyReq() {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 empty();
                 processAsyncResponse(null);
             }
@@ -54,7 +54,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getFirstReq() {
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getFirst());
             }
         };
@@ -63,7 +63,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getLastReq() {
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getLast());
             }
         };
@@ -159,7 +159,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> iGetReq(final int _i) {
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(iGet(_i));
             }
         };
@@ -199,7 +199,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 iSet(_i, _bytes);
                 processAsyncResponse(null);
             }
@@ -221,7 +221,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Void> iAddReq(final int _i) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 iAdd(_i);
                 processAsyncResponse(null);
             }
@@ -237,7 +237,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 iAdd(_i, _bytes);
                 processAsyncResponse(null);
             }
@@ -253,7 +253,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Boolean> kMakeReq(final KEY_TYPE _key, final byte[] _bytes) {
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(kMake(_key, _bytes));
             }
         };
@@ -278,7 +278,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Boolean> kMakeReq(final KEY_TYPE _key) {
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(kMake(_key));
             }
         };
@@ -426,7 +426,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Void> iRemoveReq(final int _i) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 iRemove(_i);
                 processAsyncResponse(null);
             }
@@ -502,7 +502,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Boolean> kRemoveReq(final KEY_TYPE _key) {
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(kRemove(_key));
             }
         };
@@ -616,7 +616,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<VALUE_TYPE> kGetReq(final KEY_TYPE _key) {
         return new AsyncRequest<VALUE_TYPE>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(kGet(_key));
             }
         };
@@ -641,7 +641,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key) {
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getCeiling(_key));
             }
         };
@@ -671,7 +671,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key) {
         return new AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getHigher(_key));
             }
         };
@@ -744,7 +744,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     public AsyncRequest<Void> kSetReq(final KEY_TYPE _key, final byte[] _bytes) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 kSet(_key, _bytes);
                 processAsyncResponse(null);
             }

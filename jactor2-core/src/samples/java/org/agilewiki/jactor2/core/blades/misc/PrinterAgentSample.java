@@ -13,7 +13,7 @@ public class PrinterAgentSample extends PrinterAgent {
     public AsyncRequest<Void> startAReq() {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 printer.printlnSReq("*********").local(messageProcessor);
                 printer.printlnSReq("*       *").local(messageProcessor);
                 printer.printlnSReq("*  Hi!  *").local(messageProcessor);

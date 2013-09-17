@@ -76,7 +76,7 @@ package org.agilewiki.jactor2.core.blades;
  *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
  *
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
+ *             protected void processAsyncRequest() throws Exception {
  *                 throw new IllegalStateException(); //Throw an exception when the request is processed.
  *             }
  *         };
@@ -101,7 +101,7 @@ package org.agilewiki.jactor2.core.blades;
  *             AsyncRequest&lt;String&gt; dis = this;
  *
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
+ *             protected void processAsyncRequest() throws Exception {
  *
  *                 //Create and assign an exception handler.
  *                 setExceptionHandler(new ExceptionHandler&lt;String&gt;() {

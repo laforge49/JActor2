@@ -34,7 +34,7 @@ class Driver extends BladeBase {
             AsyncRequest<String> dis = this;
 
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 final BoundResponseProcessor<String> boundResponseProcessor = new BoundResponseProcessor<String>(
                         Driver.this, dis);

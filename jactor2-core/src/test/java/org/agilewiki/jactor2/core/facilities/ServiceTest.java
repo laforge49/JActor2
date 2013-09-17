@@ -22,7 +22,7 @@ public class ServiceTest extends TestCase {
                 AsyncRequest<Void> dis = this;
 
                 @Override
-                public void processAsyncRequest() throws Exception {
+                protected void processAsyncRequest() throws Exception {
                     client.crossAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Boolean>() {
                         @Override
                         public void processAsyncResponse(Boolean response) throws Exception {
@@ -55,7 +55,7 @@ class Client extends BladeBase {
             AsyncRequest<Boolean> dis = this;
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 setExceptionHandler(new ExceptionHandler<Boolean>() {
                     @Override
                     public Boolean processException(Exception exception) throws Exception {
@@ -84,7 +84,7 @@ class Server extends BladeBase {
     AsyncRequest<Void> hangAReq() {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
             }
         };
     }

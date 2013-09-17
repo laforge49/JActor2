@@ -1,11 +1,10 @@
-package org.agilewiki.jactor2.core.reactors;
+package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 //Exploring the use of multiple facility.
 public class ServiceSample {
@@ -69,7 +68,7 @@ class Service extends BladeBase {
     AsyncRequest<String> delayEchoAReq(final int _delay, final String _text) {
         return new AsyncRequest<String>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 //Sleep a bit so that the request does not complete too quickly.
                 try {
                     Thread.sleep(_delay);
@@ -114,7 +113,7 @@ class ServiceApplication extends BladeBase {
     AsyncRequest<EchoReqState> echoAReq(final int _delay, final String _text) {
         return new AsyncRequest<EchoReqState>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
 
                 //State data needed to manage the delivery of the response from
                 //the service delay echo request.
@@ -164,7 +163,7 @@ class ServiceApplication extends BladeBase {
     AsyncRequest<Void> closeServiceAReq() {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 //Close the facility of the service blade.
                 service.getReactor().getFacility().close();
                 processAsyncResponse(null);
@@ -178,7 +177,7 @@ class ServiceApplication extends BladeBase {
     AsyncRequest<String> echoResultAReq(final EchoReqState _echoReqState) {
         return new AsyncRequest<String>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 if (_echoReqState.response == null) {
                     //There is as yet no response from the associated service delay echo request,
                     //so save this request for subsequent delivery of that belated response.

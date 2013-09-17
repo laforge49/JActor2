@@ -27,7 +27,7 @@ public class JAStringImpl
     public AsyncRequest<String> getValueReq() {
         return new AsyncRequest<String>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -54,7 +54,7 @@ public class JAStringImpl
             throw new IllegalArgumentException("value may not be null");
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }
@@ -86,7 +86,7 @@ public class JAStringImpl
             throw new IllegalArgumentException("value may not be null");
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(v));
             }
         };

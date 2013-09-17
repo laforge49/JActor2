@@ -16,7 +16,7 @@ public class BladeC {
     public AsyncRequest<String> throwAReq() {
         return new AsyncRequest<String>(reactor) {
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 setExceptionHandler(new ExceptionHandler<String>() {
                     @Override

@@ -61,7 +61,7 @@ public class JASemaphore extends BladeBase {
     public AsyncRequest<Void> acquireReq() {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 if (permits > 0) {
                     permits -= 1;

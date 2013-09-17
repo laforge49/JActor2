@@ -12,7 +12,7 @@ public class BladeA {
 
         throwRequest = new AsyncRequest<Void>(reactor) {
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 throw new SecurityException("thrown on request");
             }

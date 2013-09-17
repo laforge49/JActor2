@@ -23,7 +23,7 @@ public class NullStage extends BladeBase implements DataProcessor {
     public AsyncRequest<Void> processDataAReq(final FirehoseData _firehoseData) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 //Thread.sleep(1);
                 List<Long> list = _firehoseData.getContent();
                 int s = list.size();

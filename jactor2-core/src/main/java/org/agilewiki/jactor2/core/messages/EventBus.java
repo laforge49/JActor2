@@ -156,7 +156,7 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
     public AsyncRequest<Boolean> subscribeAReq(final TARGET_BLADE_TYPE _subscriber) {
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 processAsyncResponse(subscribers.add(_subscriber));
             }
@@ -173,7 +173,7 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
     public AsyncRequest<Boolean> unsubscribeAReq(final TARGET_BLADE_TYPE _subscriber) {
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 processAsyncResponse(subscribers.remove(_subscriber));
             }
@@ -193,7 +193,7 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
             final Event<TARGET_BLADE_TYPE> event) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 Iterator<TARGET_BLADE_TYPE> it = subscribers.iterator();
                 while (it.hasNext()) {

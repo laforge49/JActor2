@@ -15,7 +15,7 @@ public class Blade2 {
     public AsyncRequest<String> hi2AReq(final Blade1 blade1) {
         return new AsyncRequest<String>(reactor) {
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 blade1.hiSReq().send(messageProcessor, this);
             }

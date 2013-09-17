@@ -18,7 +18,7 @@ public class BladeE {
             AsyncRequest<Void> dis = this;
 
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 // Note: we only respond to responseProcessor if we get a
                 // response to our own request, which should NOT happen.

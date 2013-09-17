@@ -37,7 +37,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public AsyncRequest<Void> emptyReq() {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 empty();
                 processAsyncResponse(null);
             }
@@ -190,7 +190,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 iAdd(_i, _bytes);
                 processAsyncResponse(null);
             }
@@ -213,7 +213,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public AsyncRequest<Void> iAddReq(final int _i) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 iAdd(_i);
                 processAsyncResponse(null);
             }
@@ -252,7 +252,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
     public AsyncRequest<Void> iRemoveReq(final int _i) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 iRemove(_i);
                 processAsyncResponse(null);
             }

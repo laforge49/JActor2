@@ -30,7 +30,7 @@ public class JABooleanImpl
     public AsyncRequest<Boolean> getValueReq() {
         return new AsyncRequest<Boolean>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -64,7 +64,7 @@ public class JABooleanImpl
     public AsyncRequest<Void> setValueReq(final Boolean v) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }

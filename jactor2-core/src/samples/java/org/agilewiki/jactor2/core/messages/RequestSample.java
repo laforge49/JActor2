@@ -54,7 +54,7 @@ class SampleBlade2 extends BladeBase {
         return new AsyncRequest<Integer>(getReactor()) {
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 int oldState = state;
                 state = _newState; //assign the new state
                 processAsyncResponse(oldState); //return the old state.
@@ -82,7 +82,7 @@ class IndirectBlade extends BladeBase {
             AsyncRequest<Integer> dis = this;
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
 
                 //Get a request from the other blade.
                 AsyncRequest<Integer> req = blade.updateAReq(_newState);

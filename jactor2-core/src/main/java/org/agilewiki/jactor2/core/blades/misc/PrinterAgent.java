@@ -18,7 +18,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
  *     }
  *
  *     // Returns a request to print a Hi! banner.
- *     public AsyncRequest&lt;Void&gt; startAReq() {
+ *     protected AsyncRequest&lt;Void&gt; startAReq() {
  *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
  *             {@literal @}Override
  *             public void processAsyncRequest() throws Exception {

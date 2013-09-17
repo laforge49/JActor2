@@ -73,7 +73,7 @@ package org.agilewiki.jactor2.core.facilities;
  *     AsyncRequest&lt;String&gt; delayEchoAReq(final int _delay, final String _text) {
  *         return new AsyncRequest&lt;String&gt;(getReactor()) {
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
+ *             protected void processAsyncRequest() throws Exception {
  *                 //Sleep a bit so that the request does not complete too quickly.
  *                 try {
  *                     Thread.sleep(_delay);
@@ -118,7 +118,7 @@ package org.agilewiki.jactor2.core.facilities;
  *     AsyncRequest&lt;EchoReqState&gt; echoAReq(final int _delay, final String _text) {
  *         return new AsyncRequest&lt;EchoReqState&gt;(getReactor()) {
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
+ *             protected void processAsyncRequest() throws Exception {
  *
  *                 //State data needed to manage the delivery of the response from
  *                 //the service delay echo request.
@@ -168,7 +168,7 @@ package org.agilewiki.jactor2.core.facilities;
  *     AsyncRequest&lt;Void&gt; closeServiceAReq() {
  *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
+ *             protected void processAsyncRequest() throws Exception {
  *                 //Close the facility of the service blade.
  *                 service.getReactor().getFacility().close();
  *                 processAsyncResponse(null);
@@ -182,7 +182,7 @@ package org.agilewiki.jactor2.core.facilities;
  *     AsyncRequest&lt;String&gt; echoResultAReq(final EchoReqState _echoReqState) {
  *         return new AsyncRequest&lt;String&gt;(getReactor()) {
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
+ *             protected void processAsyncRequest() throws Exception {
  *                 if (_echoReqState.response == null) {
  *                     //There is as yet no response from the associated service delay echo request,
  *                     //so save this request for subsequent delivery of that belated response.

@@ -30,7 +30,7 @@ public class JAFloatImpl
     public AsyncRequest<Float> getValueReq() {
         return new AsyncRequest<Float>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -64,7 +64,7 @@ public class JAFloatImpl
     public AsyncRequest<Void> setValueReq(final Float v) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }

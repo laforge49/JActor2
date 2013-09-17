@@ -25,7 +25,7 @@ public class ParallelTest extends TestCase {
             AsyncRequest<Void> dis = this;
 
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 final ResponseCounter<Void> responseCounter = new ResponseCounter<Void>(
                         LOADS, null, dis);

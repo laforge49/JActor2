@@ -30,7 +30,7 @@ public class JAIntegerImpl
     public AsyncRequest<Integer> getValueReq() {
         return new AsyncRequest<Integer>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -84,7 +84,7 @@ public class JAIntegerImpl
     public AsyncRequest<Void> setValueReq(final Integer v) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }

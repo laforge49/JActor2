@@ -78,7 +78,7 @@ public class SemaphoreTest extends TestCase implements Blade {
                                                    final Reactor reactor) {
         return new AsyncRequest<Boolean>(reactor) {
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 setExceptionHandler(new ExceptionHandler<Boolean>() {
                     @Override

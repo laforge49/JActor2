@@ -79,7 +79,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *         return new AsyncRequest&lt;Integer&gt;(getReactor()) {
  *
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
+ *             protected void processAsyncRequest() throws Exception {
  *                 int oldState = state;
  *                 state = _newState; //assign the new state
  *                 processAsyncResponse(oldState); //return the old state.
@@ -107,7 +107,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *             AsyncRequest<Integer> dis = this;
  *
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
+ *             protected void processAsyncRequest() throws Exception {
  *
  *                 //Get a request from the other blade.
  *                 AsyncRequest&lt;Integer&gt; req = bladeA.updateAReq(_newState);
@@ -152,7 +152,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
      * The processAsyncRequest method will be invoked by the target Reactor on its own thread
      * when the AsyncRequest is dequeued from the target inbox for processing.
      */
-    abstract public void processAsyncRequest()
+    abstract protected void processAsyncRequest()
             throws Exception;
 
     @Override

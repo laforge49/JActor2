@@ -15,7 +15,7 @@ public class BladeB {
             AsyncRequest<Void> dis = this;
 
             @Override
-            public void processAsyncRequest()
+            protected void processAsyncRequest()
                     throws Exception {
                 bladeA.throwRequest.send(messageProcessor, this);
             }
