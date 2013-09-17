@@ -90,9 +90,9 @@ class ExceptionHandlerBlade extends BladeBase {
                     }
                 });
 
-                //Create an exception request and send it to the exception blade for processing.
+                //Create an exception request and doSend it to the exception blade for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                exceptionBlade.exceptionAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
+                send(exceptionBlade.exceptionAReq(), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(final Void _response) throws Exception {
                         dis.processAsyncResponse("can not get here");

@@ -7,7 +7,7 @@
  * <p>
  *     Event messages are created and passed using subclasses of the Event class.
  *     An event is not bound to an blade instance, so the same event can be used to
- *     send messages to any number of blades. And when passing an event message to an blade,
+ *     doSend messages to any number of blades. And when passing an event message to an blade,
  *     the message is given to the target blade's processing immediately, without buffering.
  * </p>
  * <h2>AsyncRequest/Response Messages</h2>
@@ -20,7 +20,7 @@
  * </p>
  * <p>
  *     No messages are being processed when a message block is sent. So when the last message
- *     block is sent, the thread migrates to the destination reactor along with that
+ *     block is sent, the thread migrates to the destination targetReactor along with that
  *     block. More often than not, only a single block of messages is sent, so thread migration
  *     significantly reduces the overhead of message passing.
  * </p>
@@ -30,7 +30,7 @@
  *     exception handler, or if an exception is thrown by an exception handler, then the
  *     exception is returned as a response, though if the current message being processed is
  *     an event then the exception is simply logged. When a response message that
- *     holds an exception is processed by the source reactor, the exception is rethrown
+ *     holds an exception is processed by the source targetReactor, the exception is rethrown
  *     within the source blade rather than being pass back to the blade as a valid response.
  * </p>
  * <p>

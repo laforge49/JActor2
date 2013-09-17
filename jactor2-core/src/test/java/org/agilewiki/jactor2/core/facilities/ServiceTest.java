@@ -5,25 +5,27 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class ServiceTest extends TestCase {
+    Reactor testReactor;
 
     public void test() throws Exception {
         Facility testFacility = new Facility();
         Facility clientFacility = new Facility();
         final Facility serverFacility = new Facility();
         try {
-            Reactor testReactor = new NonBlockingReactor(testFacility);
+            testReactor = new NonBlockingReactor(testFacility);
             Server server = new Server(new NonBlockingReactor(serverFacility));
             final Client client = new Client(new NonBlockingReactor(clientFacility), server);
-            new AsyncRequest<Void>(testReactor) {
+            new AsyncBladeRequest<Void>() {
                 AsyncRequest<Void> dis = this;
 
                 @Override
                 protected void processAsyncRequest() throws Exception {
-                    client.crossAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Boolean>() {
+                    send(client.crossAReq(), new AsyncResponseProcessor<Boolean>() {
                         @Override
                         public void processAsyncResponse(Boolean response) throws Exception {
                             assertFalse(response);
@@ -38,6 +40,28 @@ public class ServiceTest extends TestCase {
             clientFacility.close();
             serverFacility.close();
         }
+    }
+
+    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public AsyncBladeRequest() {
+            super(testReactor);
+        }
+    }
+
+    /**
+     * Process the request immediately.
+     *
+     * @param _request    The request to be processed.
+     * @param <RESPONSE_TYPE> The type of value returned.
+     */
+    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
+                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+            throws Exception {
+        RequestBase.doSend(testReactor, _request, _responseProcessor);
     }
 }
 
@@ -65,7 +89,7 @@ class Client extends BladeBase {
                         return false;
                     }
                 });
-                server.hangAReq().send(getMessageProcessor(), new AsyncResponseProcessor<Void>() {
+                send(server.hangAReq(), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(Void response) throws Exception {
                         dis.processAsyncResponse(true);

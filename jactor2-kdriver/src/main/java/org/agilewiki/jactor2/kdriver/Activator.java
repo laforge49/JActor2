@@ -33,7 +33,7 @@ public class Activator extends FactoryLocatorActivator {
         });
         LocateService<CommandProcessor> locateService = new LocateService(getReactor(),
                 CommandProcessor.class.getName());
-        locateService.getReq().send(getReactor(), new AsyncResponseProcessor<CommandProcessor>() {
+        send(locateService.getReq(), new AsyncResponseProcessor<CommandProcessor>() {
             @Override
             public void processAsyncResponse(CommandProcessor response) throws Exception {
                 commandProcessor = response;
@@ -68,11 +68,11 @@ public class Activator extends FactoryLocatorActivator {
                 "config:update"));
         String bundleLocation = "mvn:org.agilewiki.jactor2/jactor2-test-service/" + getNiceVersion();
         FactoriesImporter factoriesImporter = new FactoriesImporter(getReactor());
-        factoriesImporter.startReq(bundleLocation).send(getReactor(), new AsyncResponseProcessor<Void>() {
+        send(factoriesImporter.startReq(bundleLocation), new AsyncResponseProcessor<Void>() {
             @Override
             public void processAsyncResponse(Void response) throws Exception {
                 LocateService<Hello> locateService = new LocateService(getReactor(), Hello.class.getName());
-                locateService.getReq().send(getReactor(), new AsyncResponseProcessor<Hello>() {
+                send(locateService.getReq(), new AsyncResponseProcessor<Hello>() {
                     @Override
                     public void processAsyncResponse(Hello response) throws Exception {
                         //log.info(">>>>>>>>>>>>>>>>>> "+executeCommands("osgi:ls", "config:list"));

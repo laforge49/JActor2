@@ -27,7 +27,7 @@ package org.agilewiki.jactor2.core.facilities;
  *             System.out.println(service.delayEchoAReq(1, "1 (Expected)").call());
  *
  *             //close the facility used by the service blade.
- *             service.getReactor().getFacility().close();
+ *             service.getTargetReactor().getFacility().close();
  *             try {
  *                 //Try using delay echo request with the facility closed.
  *                 System.out.println(service.delayEchoAReq(1, "(Unexpected)").call());
@@ -54,7 +54,7 @@ package org.agilewiki.jactor2.core.facilities;
  *             //The results should now show that an exception was thrown.
  *             System.out.println(serviceApplication.echoResultAReq(echoReqState2).call());
  *         } finally {
- *             service.getReactor().getFacility().close(); //Close the service facility.
+ *             service.getTargetReactor().getFacility().close(); //Close the service facility.
  *             applicationFacility.close(); //Close the application facility.
  *         }
  *
@@ -65,7 +65,7 @@ package org.agilewiki.jactor2.core.facilities;
  * class Service extends BladeBase {
  *
  *     Service() throws Exception {
- *         //Create a reactor on a new facility with 1 thread.
+ *         //Create a targetReactor on a new facility with 1 thread.
  *         initialize(new NonBlockingReactor(new Facility(1)));
  *     }
  *
@@ -145,7 +145,7 @@ package org.agilewiki.jactor2.core.facilities;
  *                             throw exception;
  *                     }
  *                 });
- *                 service.delayEchoAReq(_delay, _text).send(getReactor(), new AsyncResponseProcessor&lt;String&gt;() {
+ *                 send(service.delayEchoAReq(_delay, _text), new AsyncResponseProcessor&lt;String&gt;() {
  *                     {@literal @}Override
  *                     public void processAsyncResponse(String response) throws Exception {
  *                         if (echoReqState.responseProcessor == null) {
@@ -170,7 +170,7 @@ package org.agilewiki.jactor2.core.facilities;
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
  *                 //Close the facility of the service blade.
- *                 service.getReactor().getFacility().close();
+ *                 service.getTargetReactor().getFacility().close();
  *                 processAsyncResponse(null);
  *             }
  *         };

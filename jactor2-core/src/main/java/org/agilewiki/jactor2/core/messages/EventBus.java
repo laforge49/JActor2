@@ -110,8 +110,8 @@ import java.util.Set;
  *
  *     //Create an isolation StatusPrinter. (Isolation because the print may block the thread.)
  *     public StatusPrinter(final Facility _facility) throws Exception {
- *         Reactor messageProcessor = new IsolationReactor(_facility);
- *         initialize(messageProcessor);
+ *         Reactor targetReactor = new IsolationReactor(_facility);
+ *         initialize(targetReactor);
  *     }
  *
  *     //Prints the revised status.
@@ -140,7 +140,7 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
     /**
      * Create an event bus.
      *
-     * @param _reactor The blade's reactor.
+     * @param _reactor The blade's targetReactor.
      */
     public EventBus(final Reactor _reactor) throws Exception {
         initialize(_reactor);

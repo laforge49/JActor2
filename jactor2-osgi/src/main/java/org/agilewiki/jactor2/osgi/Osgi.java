@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.osgi;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -105,11 +106,11 @@ final public class Osgi {
                 Version version = bundle.getVersion();
                 LocateService<OsgiFactoryLocator> locateService = new LocateService<OsgiFactoryLocator>(
                         _root.getReactor(), OsgiFactoryLocator.class.getName());
-                locateService.getReq().send(_root.getReactor(), new AsyncResponseProcessor<OsgiFactoryLocator>() {
+                RequestBase.doSend(_root.getReactor(), locateService.getReq(), new AsyncResponseProcessor<OsgiFactoryLocator>() {
                     @Override
                     public void processAsyncResponse(OsgiFactoryLocator response) throws Exception {
                         Reactor newReactor = new NonBlockingReactor(response.getFacility());
-                        _root.copyReq(newReactor).send(_root.getReactor(), dis);
+                        RequestBase.doSend(_root.getReactor(), _root.copyReq(newReactor), dis);
                     }
                 });
             }

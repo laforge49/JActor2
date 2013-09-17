@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Provides a thread pool for
- * non-blocking and isolation reactor. Multiple facilities with independent life cycles
+ * non-blocking and isolation targetReactor. Multiple facilities with independent life cycles
  * are also supported.
  * (A ServiceClosedException may be thrown when messages cross facilities and the target facility is closed.)
  * In addition, the facility maintains a set of AutoClosable objects that are closed
@@ -38,7 +38,7 @@ public class Facility implements AutoCloseable {
             DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>() : null;
 
     /**
-     * The logger used by reactor.
+     * The logger used by targetReactor.
      */
     private final Logger messageProcessorLogger = LoggerFactory.getLogger(Reactor.class);
 
@@ -116,7 +116,7 @@ public class Facility implements AutoCloseable {
     }
 
     /**
-     * Returns the logger to be used by reactor.
+     * Returns the logger to be used by targetReactor.
      *
      * @return A logger.
      */
@@ -145,7 +145,7 @@ public class Facility implements AutoCloseable {
     /**
      * Submit a Reactor for subsequent execution.
      *
-     * @param _reactor The reactor to be run.
+     * @param _reactor The targetReactor to be run.
      */
     public final void submit(final Reactor _reactor)
             throws Exception {

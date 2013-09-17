@@ -18,8 +18,8 @@ public interface Reactor extends Runnable {
     /**
      * Replace the current ExceptionHandler with another.
      * <p>
-     * When an event or request message is processed by a reactor, the current
-     * exception handler is set to null. When a request is sent by a reactor, the
+     * When an event or request message is processed by a targetReactor, the current
+     * exception handler is set to null. When a request is sent by a targetReactor, the
      * current exception handler is saved in the outgoing message and restored when
      * the response message is processed.
      * </p>

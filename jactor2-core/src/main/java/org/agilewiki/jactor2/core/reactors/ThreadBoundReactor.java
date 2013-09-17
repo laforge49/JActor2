@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A reactor bound to a pre-existing thread, a thread-bound reactor can use
+ * A targetReactor bound to a pre-existing thread, a thread-bound targetReactor can use
  * a program's main thread or a GUI thread.
  * <p>
  * For thread safety, the processing of each message is done in isolation, but when the processing of a
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * response to that request is received.
  * </p>
  * <p>
- * AsyncRequest/Response messages which are destined to a different reactor are buffered rather
+ * AsyncRequest/Response messages which are destined to a different targetReactor are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when all
  * incoming messages have been processed.
  * </p>
@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *         //Get a reference to the main thread
  *         final Thread mainThread = Thread.currentThread();
  *
- *         //Create a thread-bound reactor.
+ *         //Create a thread-bound targetReactor.
  *         final ThreadBoundReactor boundMessageProcessor =
  *             new ThreadBoundReactor(facility, new Runnable() {
  *                 {@literal @}Override
@@ -47,7 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *                 }
  *             });
  *
- *         //Create an blade that uses the thread-bound reactor.
+ *         //Create an blade that uses the thread-bound targetReactor.
  *         final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
  *
  *         //Pass a FinEvent signal to the blade
@@ -99,15 +99,15 @@ public class ThreadBoundReactor extends ReactorBase {
     private final Runnable boundProcessor;
 
     /**
-     * Create a thread-bound reactor.
+     * Create a thread-bound targetReactor.
      * <p>
-     * The _boundProcessor.run method is called when a thread-bound reactor has messages
+     * The _boundProcessor.run method is called when a thread-bound targetReactor has messages
      * that need processing. As a result of invoking the run method, the
      * ThreadBoundReactor.run method must subsequently to be invoked by the thread that
-     * the reactor is bound to.
+     * the targetReactor is bound to.
      * </p>
      *
-     * @param _facility       The facility of the reactor.
+     * @param _facility       The facility of the targetReactor.
      * @param _boundProcessor The _messageProcessor.run method is called when there
      *                        are messages to be processed.
      */
@@ -119,15 +119,15 @@ public class ThreadBoundReactor extends ReactorBase {
     }
 
     /**
-     * Create a thread-bound reactor.
+     * Create a thread-bound targetReactor.
      * <p>
-     * The boundProcessor.run method is called when a thread-bound reactor has messages
+     * The boundProcessor.run method is called when a thread-bound targetReactor has messages
      * that need processing. As a result of invoking the run method, the
      * ThreadBoundReactor.run method must subsequently to be invoked by the thread that
-     * the reactor is bound to.
+     * the targetReactor is bound to.
      * </p>
      *
-     * @param _facility              The facility of the reactor.
+     * @param _facility              The facility of the targetReactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      * @param _boundProcessor        The _messageProcessor.run method is called when there
@@ -172,7 +172,7 @@ public class ThreadBoundReactor extends ReactorBase {
     }
 
     /**
-     * The flush method disburses all buffered message to their target reactor for
+     * The flush method disburses all buffered message to their target targetReactor for
      * processing.
      * <p>
      * The flush method is automatically called when there are

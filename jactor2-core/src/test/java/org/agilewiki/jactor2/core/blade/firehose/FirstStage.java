@@ -80,7 +80,7 @@ public class FirstStage extends BladeBase implements Runnable {
     }
 
     private void send() throws Exception {
-        next.processDataAReq(firehoseData).send(getReactor(), null);
+        send(next.processDataAReq(firehoseData), null);
         list = null;
         firehoseData = null;
         ackCount += 1;

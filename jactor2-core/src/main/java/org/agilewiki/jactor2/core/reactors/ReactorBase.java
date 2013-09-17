@@ -12,7 +12,7 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Base class for reactor.
+ * Base class for targetReactor.
  */
 abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseable {
 
@@ -22,7 +22,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
     protected final Logger log;
 
     /**
-     * The facility of this reactor.
+     * The facility of this targetReactor.
      */
     protected final Facility facility;
 
@@ -48,9 +48,9 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
     private Message currentMessage;
 
     /**
-     * Create a reactor.
+     * Create a targetReactor.
      *
-     * @param _facility              The facility of this reactor.
+     * @param _facility              The facility of this targetReactor.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      */
@@ -73,9 +73,9 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
     /**
-     * Returns the reactor logger.
+     * Returns the targetReactor logger.
      *
-     * @return The reactor logger.
+     * @return The targetReactor logger.
      */
     public final Logger getLogger() {
         return log;
@@ -101,7 +101,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
 
     /**
      * Returns true when there is a message in the inbox that can be processed.
-     * (This method is not thread safe and must be called on the reactor's thread.)
+     * (This method is not thread safe and must be called on the targetReactor's thread.)
      *
      * @return True if there is a message in the inbox that can be processed.
      */
@@ -140,7 +140,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
             final ExceptionHandler _handler) {
         if (!isRunning())
             throw new IllegalStateException(
-                    "Attempt to set an exception handler on an idle reactor");
+                    "Attempt to set an exception handler on an idle targetReactor");
         final ExceptionHandler rv = this.exceptionHandler;
         this.exceptionHandler = _handler;
         return rv;
@@ -159,7 +159,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      * Add a message directly to the input queue of a Reactor.
      *
      * @param _message A message.
-     * @param _local   True when the current thread is bound to the reactor.
+     * @param _local   True when the current thread is bound to the targetReactor.
      */
     public void unbufferedAddMessage(final Message _message, final boolean _local)
             throws Exception {
@@ -204,10 +204,10 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
     abstract protected void afterAdd() throws Exception;
 
     /**
-     * Buffers a message in the sending reactor for sending later.
+     * Buffers a message in the sending targetReactor for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The reactor that should eventually receive this message
+     * @param _target  The targetReactor that should eventually receive this message
      * @return True if the message was buffered.
      */
     public boolean buffer(final Message _message, final Reactor _target) {
@@ -288,7 +288,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
     abstract public AtomicReference<Thread> getThreadReference();
 
     /**
-     * Returns true, if this reactor is actively processing messages.
+     * Returns true, if this targetReactor is actively processing messages.
      */
     abstract public boolean isRunning();
 

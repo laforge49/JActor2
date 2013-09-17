@@ -10,8 +10,8 @@ abstract public class SyncRequest<RESPONSE_TYPE>
     /**
      * Process the request immediately.
      *
-     * @param _source         The reactor on whose thread this method was invoked and which
-     *                        must be the same as the reactor of the target.
+     * @param _source         The targetReactor on whose thread this method was invoked and which
+     *                        must be the same as the targetReactor of the target.
      * @param _syncRequest    The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
      * @return The value returned by the target blade.
@@ -25,8 +25,8 @@ abstract public class SyncRequest<RESPONSE_TYPE>
     /**
      * Create a SyncRequest.
      *
-     * @param _targetReactor The reactor where this SyncRequest Objects is passed for processing.
-     *                       The thread owned by this reactor will process this SyncRequest.
+     * @param _targetReactor The targetReactor where this SyncRequest Objects is passed for processing.
+     *                       The thread owned by this targetReactor will process this SyncRequest.
      */
     public SyncRequest(Reactor _targetReactor) {
         super(_targetReactor);
@@ -49,8 +49,8 @@ abstract public class SyncRequest<RESPONSE_TYPE>
     /**
      * Process the request immediately.
      *
-     * @param _source The reactor on whose thread this method was invoked and which
-     *                must be the same as the reactor of the target.
+     * @param _source The targetReactor on whose thread this method was invoked and which
+     *                must be the same as the targetReactor of the target.
      * @return The value returned by the target blade.
      */
     private RESPONSE_TYPE doLocal(final Reactor _source) throws Exception {
@@ -58,8 +58,8 @@ abstract public class SyncRequest<RESPONSE_TYPE>
         ReactorBase messageProcessor = (ReactorBase) _source;
         if (!messageProcessor.isRunning())
             throw new IllegalStateException(
-                    "A valid source reactor can not be idle");
-        if (messageProcessor != getMessageProcessor())
+                    "A valid source targetReactor can not be idle");
+        if (messageProcessor != getTargetReactor())
             throw new IllegalArgumentException("Reactor is not shared");
         messageSource = messageProcessor;
         oldMessage = messageProcessor.getCurrentMessage();

@@ -85,7 +85,7 @@ public abstract class Event<TARGET_BLADE_TYPE extends Blade> {
 
     /**
      * Passes an event message immediately to the target Reactor for subsequent processing
-     * by the thread of the that reactor. No result is passed back and if an exception is
+     * by the thread of the that targetReactor. No result is passed back and if an exception is
      * thrown while processing the event,that exception is simply logged as a warning.
      *
      * @param _targetBlade The actor to be operated on.

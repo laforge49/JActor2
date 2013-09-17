@@ -16,6 +16,24 @@ import java.util.concurrent.Semaphore;
 public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     /**
+     * Process the request immediately.
+     *
+     * @param _source         The targetReactor on whose thread this method was invoked and which
+     *                        must be the same as the targetReactor of the target.
+     * @param _request    The request to be processed.
+     * @param _responseProcessor Passed with this request and then returned with the result, the
+     *                           AsyncResponseProcessor is used to process the result on the same thread
+     *                           that originally invoked this method. If null, then no response is returned.
+     * @param <RESPONSE_TYPE> The type of value returned.
+     */
+    public static <RESPONSE_TYPE> void doSend(
+            final Reactor _source,
+            final RequestBase<RESPONSE_TYPE> _request,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
+        _request.doSend(_source, _responseProcessor);
+    }
+
+    /**
      * Assigned to current time when Facility.DEBUG.
      */
     private Long debugTimestamp;
@@ -26,30 +44,30 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected boolean used;
 
     /**
-     * The reactor where this Request Object is passed for processing. The thread
-     * owned by this reactor will process the Request.
+     * The targetReactor where this Request Object is passed for processing. The thread
+     * owned by this targetReactor will process the Request.
      */
-    protected final ReactorBase messageProcessor;
+    protected final ReactorBase targetReactor;
 
     /**
-     * True when the result is to be returned via a reactor with a facility
-     * that differs from the facility of the target reactor.
+     * True when the result is to be returned via a targetReactor with a facility
+     * that differs from the facility of the target targetReactor.
      */
     protected boolean foreign;
 
     /**
-     * The source reactor or pender that will receive the results.
+     * The source targetReactor or pender that will receive the results.
      */
     protected MessageSource messageSource;
 
     /**
-     * The message targeted to the source reactor which, when processed,
+     * The message targeted to the source targetReactor which, when processed,
      * resulted in this message.
      */
     protected Message oldMessage;
 
     /**
-     * The exception handler that was active in the source reactor at the time
+     * The exception handler that was active in the source targetReactor at the time
      * when this message was created.
      */
     protected ExceptionHandler sourceExceptionHandler;
@@ -72,14 +90,14 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * Create a RequestBase.
      *
-     * @param _targetReactor The reactor where this Request Objects is passed for processing.
-     *                       The thread owned by this reactor will process this Request.
+     * @param _targetReactor The targetReactor where this Request Objects is passed for processing.
+     *                       The thread owned by this targetReactor will process this Request.
      */
     public RequestBase(final Reactor _targetReactor) {
         if (_targetReactor == null) {
             throw new NullPointerException("targetMessageProcessor");
         }
-        messageProcessor = (ReactorBase) _targetReactor;
+        targetReactor = (ReactorBase) _targetReactor;
     }
 
     /**
@@ -87,8 +105,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *
      * @return The target Reactor.
      */
-    public Reactor getMessageProcessor() {
-        return messageProcessor;
+    public Reactor getTargetReactor() {
+        return targetReactor;
     }
 
     /**
@@ -110,49 +128,49 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     public void signal() throws Exception {
         use();
         responseProcessor = SignalResponseProcessor.SINGLETON;
-        messageProcessor.unbufferedAddMessage(this, false);
+        targetReactor.unbufferedAddMessage(this, false);
     }
 
     /**
      * Passes this Request together with the AsyncResponseProcessor to the target Reactor.
-     * Responses are passed back via the reactor of the source blade and processed by the
+     * Responses are passed back via the targetReactor of the source blade and processed by the
      * provided AsyncResponseProcessor and any exceptions
      * raised while processing the request are processed by the exception handler active when
-     * the send method was called.
+     * the doSend method was called.
      *
-     * @param _source            The reactor on whose thread this method was invoked and which
+     * @param _source            The targetReactor on whose thread this method was invoked and which
      *                           will buffer this Request and subsequently receive the result for
      *                           processing on the same thread.
      * @param _responseProcessor Passed with this request and then returned with the result, the
      *                           AsyncResponseProcessor is used to process the result on the same thread
      *                           that originally invoked this method. If null, then no response is returned.
      */
-    public void send(final Reactor _source,
-                     final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
+    private void doSend(final Reactor _source,
+                       final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
         ReactorBase source = (ReactorBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(
-                    "A valid source reactor can not be idle");
+                    "A valid source targetReactor can not be idle");
         use();
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
         if (rp == null)
             rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         else
             addDebugPending();
-        foreign = source.getFacility() != messageProcessor.getFacility();
+        foreign = source.getFacility() != targetReactor.getFacility();
         messageSource = source;
         oldMessage = source.getCurrentMessage();
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
-        boolean local = messageProcessor == source;
-        if (local || !source.buffer(this, messageProcessor))
-            messageProcessor.unbufferedAddMessage(this, local);
+        boolean local = targetReactor == source;
+        if (local || !source.buffer(this, targetReactor))
+            targetReactor.unbufferedAddMessage(this, local);
     }
 
     /**
      * Passes this Request to the target Reactor and blocks the current thread until
      * a result is returned. The call method sends the message directly without buffering,
-     * as there is no reactor. The response message is buffered, though thread migration is
+     * as there is no targetReactor. The response message is buffered, though thread migration is
      * not possible.
      *
      * @return The result from applying this Request to the target blade.
@@ -168,7 +186,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         foreign = true;
         messageSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
-        messageProcessor.unbufferedAddMessage(this, false);
+        targetReactor.unbufferedAddMessage(this, false);
         return (RESPONSE_TYPE) ((Pender) messageSource).pend();
     }
 
@@ -178,7 +196,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     private void addDebugPending() {
         if (Facility.DEBUG) {
             debugTimestamp = System.nanoTime();
-            Facility targetFacility = messageProcessor.getFacility();
+            Facility targetFacility = targetReactor.getFacility();
             Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
             Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet == null) {
@@ -198,7 +216,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         responsePending = false;
         response = _response;
         if (Facility.DEBUG) {
-            Facility targetFacility = messageProcessor.getFacility();
+            Facility targetFacility = targetReactor.getFacility();
             Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
             Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet != null) {
@@ -214,7 +232,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * The processObjectResponse method accepts the response of a request.
      * <p>
      * This method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (reactor) that passed the
+     * is always invoked from the same light-weight thread (targetReactor) that passed the
      * Request.
      * </p>
      *
@@ -223,17 +241,17 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     protected boolean processObjectResponse(final Object _response)
             throws Exception {
-        final Facility facility = messageProcessor.getFacility();
+        final Facility facility = targetReactor.getFacility();
         if (foreign)
             facility.removeAutoClosable(RequestBase.this);
         if (!responsePending)
             return false;
-        setResponse(_response, messageProcessor);
+        setResponse(_response, targetReactor);
         if (responseProcessor != SignalResponseProcessor.SINGLETON) {
-            messageSource.incomingResponse(RequestBase.this, messageProcessor);
+            messageSource.incomingResponse(RequestBase.this, targetReactor);
         } else {
             if (_response instanceof Throwable) {
-                messageProcessor.getLogger().warn("Uncaught throwable",
+                targetReactor.getLogger().warn("Uncaught throwable",
                         (Throwable) _response);
             }
         }
@@ -279,18 +297,18 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     @Override
     public void eval() {
         if (responsePending) {
-            final Facility facility = messageProcessor.getFacility();
+            final Facility facility = targetReactor.getFacility();
             if (foreign)
                 facility.addAutoClosable(this);
-            messageProcessor.setExceptionHandler(null);
-            messageProcessor.setCurrentMessage(this);
-            messageProcessor.requestBegin();
+            targetReactor.setExceptionHandler(null);
+            targetReactor.setCurrentMessage(this);
+            targetReactor.requestBegin();
             try {
                 processRequestMessage();
             } catch (final Exception e) {
                 if (foreign)
                     facility.removeAutoClosable(this);
-                processException(messageProcessor, e);
+                processException(targetReactor, e);
             }
         } else {
             processResponseMessage();
@@ -356,8 +374,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * Replace the current ExceptionHandler with another.
      * <p>
-     * When an event or request message is processed by a reactor, the current
-     * exception handler is set to null. When a request is sent by a reactor, the
+     * When an event or request message is processed by a targetReactor, the current
+     * exception handler is set to null. When a request is sent by a targetReactor, the
      * current exception handler is saved in the outgoing message and restored when
      * the response message is processed.
      * </p>
@@ -368,8 +386,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *         default exception handler was in effect.
      */
     public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
-        ExceptionHandler<RESPONSE_TYPE> old = messageProcessor.getExceptionHandler();
-        messageProcessor.setExceptionHandler(_exceptionHandler);
+        ExceptionHandler<RESPONSE_TYPE> old = targetReactor.getExceptionHandler();
+        targetReactor.setExceptionHandler(_exceptionHandler);
         return old;
     }
 

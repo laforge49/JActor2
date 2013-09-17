@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.blade;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -11,6 +12,18 @@ public class BladeE {
 
     public BladeE(final Facility _facility) {
         this.reactor = new IsolationReactor(_facility);
+    }
+
+    /**
+     * Process the request immediately.
+     *
+     * @param _request    The request to be processed.
+     * @param <RESPONSE_TYPE> The type of value returned.
+     */
+    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
+                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+            throws Exception {
+        RequestBase.doSend(reactor, _request, _responseProcessor);
     }
 
     public AsyncRequest<Void> throwRequest(final BladeA bladeA) {
@@ -24,7 +37,7 @@ public class BladeE {
                 // response to our own request, which should NOT happen.
                 // Therefore, responseProcessor is NOT called.
                 try {
-                    bladeA.throwRequest.send(messageProcessor,
+                    send(bladeA.throwRequest,
                             new AsyncResponseProcessor<Void>() {
 
                                 @Override

@@ -48,7 +48,7 @@ public class Printer extends IsolationBlade {
      * Create a Printer blade.
      *
      * @param _facility A set of resources, including a thread pool, for use
-     *                  by reactor and their actors.
+     *                  by targetReactor and their actors.
      */
     public Printer(final Facility _facility) throws Exception {
         this(_facility, System.out);
@@ -58,7 +58,7 @@ public class Printer extends IsolationBlade {
      * Create a Printer blade.
      *
      * @param _facility    A set of resources, including a thread pool, for use
-     *                     by reactor and their blade.
+     *                     by targetReactor and their blade.
      * @param _printStream Where to print the string.
      */
     public Printer(final Facility _facility,
@@ -70,7 +70,7 @@ public class Printer extends IsolationBlade {
      * Create a Printer blade.
      *
      * @param _facility    A set of resources, including a thread pool, for use
-     *                     by reactor and their actors.
+     *                     by targetReactor and their actors.
      * @param _printStream Where to print the string.
      */
     public Printer(final Facility _facility,

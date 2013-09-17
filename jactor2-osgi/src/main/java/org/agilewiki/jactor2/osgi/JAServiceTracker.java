@@ -226,7 +226,7 @@ public class JAServiceTracker<T> extends BladeBase implements ServiceListener,
                     }
                     // We're done processing our own request.
                 }
-                // send service change request to listener
+                // doSend service change request to listener
             }.signal(this);
         } catch (final Exception exception) {
             // Most likely, a failure in signal() ...

@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * An outbox holds a collection of send buffers.
- * Each send buffer holds one or more messages, all destined for the same reactor.
+ * An outbox holds a collection of doSend buffers.
+ * Each doSend buffer holds one or more messages, all destined for the same targetReactor.
  */
 public class Outbox implements AutoCloseable {
 
@@ -45,9 +45,9 @@ public class Outbox implements AutoCloseable {
     }
 
     /**
-     * Returns an iterator of the send buffers held by the outbox.
+     * Returns an iterator of the doSend buffers held by the outbox.
      *
-     * @return An iterator of the send buffers held by the outbox.
+     * @return An iterator of the doSend buffers held by the outbox.
      */
     public Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> getIterator() {
         if (sendBuffer == null)
@@ -56,10 +56,10 @@ public class Outbox implements AutoCloseable {
     }
 
     /**
-     * Buffers a message in the sending reactor for sending later.
+     * Buffers a message in the sending targetReactor for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The reactor that should eventually receive this message.
+     * @param _target  The targetReactor that should eventually receive this message.
      * @return True if the message was successfully buffered.
      */
     public boolean buffer(final Message _message, final Reactor _target) {

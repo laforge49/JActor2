@@ -21,7 +21,7 @@ public class Blade4 {
             @Override
             protected Void processSyncRequest()
                     throws Exception {
-                local(new Blade1(messageProcessor).hiSReq());
+                local(new Blade1(targetReactor).hiSReq());
                 System.out.println(response);
                 return null;
             }

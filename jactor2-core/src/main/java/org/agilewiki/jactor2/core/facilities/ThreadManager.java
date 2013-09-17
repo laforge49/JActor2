@@ -83,7 +83,7 @@ final public class ThreadManager {
                                         continue;
                                     } catch (final Throwable e) {
                                         logger.error(
-                                                "Exception thrown by a reactor's run method",
+                                                "Exception thrown by a targetReactor's run method",
                                                 e);
                                     }
                                     boolean hasWork = messageProcessor.hasWork();
@@ -110,7 +110,7 @@ final public class ThreadManager {
     }
 
     /**
-     * Begin running a reactor.
+     * Begin running a targetReactor.
      *
      * @param _reactor The run method is to be called by the selected thread.
      */

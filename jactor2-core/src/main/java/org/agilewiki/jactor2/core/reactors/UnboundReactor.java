@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 abstract public class UnboundReactor extends ReactorBase {
 
     /**
-     * A reference to the thread that is executing this reactor.
+     * A reference to the thread that is executing this targetReactor.
      */
     protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
 
@@ -28,9 +28,9 @@ abstract public class UnboundReactor extends ReactorBase {
     private final Runnable onIdle;
 
     /**
-     * Create an unbound reactor.
+     * Create an unbound targetReactor.
      *
-     * @param _facility              The facility of this reactor.
+     * @param _facility              The facility of this targetReactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.

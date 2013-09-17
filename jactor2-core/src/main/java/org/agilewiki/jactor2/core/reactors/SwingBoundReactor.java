@@ -44,7 +44,7 @@ import java.awt.event.WindowListener;
  *                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
  *
  *                 //Close facility when window is closed.
- *                 frame.addWindowListener((SwingBoundReactor) getReactor());
+ *                 frame.addWindowListener((SwingBoundReactor) getTargetReactor());
  *
  *                 //Add the "Hello World!" label.
  *                 JLabel label = new JLabel("Hello World!");
@@ -66,9 +66,9 @@ import java.awt.event.WindowListener;
 public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener {
 
     /**
-     * Create a reactor bound to the Swing event-dispatch thread.
+     * Create a targetReactor bound to the Swing event-dispatch thread.
      *
-     * @param _facility The facility of the reactor.
+     * @param _facility The facility of the targetReactor.
      */
     public SwingBoundReactor(Facility _facility) {
         super(_facility, null);
@@ -76,9 +76,9 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
     }
 
     /**
-     * Create a reactor bound to the Swing event-dispatch thread.
+     * Create a targetReactor bound to the Swing event-dispatch thread.
      *
-     * @param _facility              The facility of the reactor.
+     * @param _facility              The facility of the targetReactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      */

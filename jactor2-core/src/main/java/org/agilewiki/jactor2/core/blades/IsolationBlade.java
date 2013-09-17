@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
  * starting a new request only when a result is returned for the previous
  * one.
  * </p>
- * This is just a convenience class, as any blade which uses an isolation reactor
+ * This is just a convenience class, as any blade which uses an isolation targetReactor
  * is an isolation blade.
  */
 public class IsolationBlade extends BladeBase {

@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -20,12 +22,12 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  */
 public class BladeBase implements Blade {
     /**
-     * The blade's reactor.
+     * The blade's targetReactor.
      */
     private Reactor reactor;
 
     /**
-     * True when initialized, this flag is used to prevent the reactor from being changed.
+     * True when initialized, this flag is used to prevent the targetReactor from being changed.
      */
     private boolean initialized;
 
@@ -40,10 +42,10 @@ public class BladeBase implements Blade {
 
     /**
      * Initialize a blade. This method can only be called once
-     * without raising an illegal state exception, as the reactor
+     * without raising an illegal state exception, as the targetReactor
      * can not be changed.
      *
-     * @param _reactor The blade's reactor.
+     * @param _reactor The blade's targetReactor.
      */
     public void initialize(final Reactor _reactor) throws Exception {
         if (initialized)
@@ -65,7 +67,7 @@ public class BladeBase implements Blade {
          * Create a SyncRequest.
          */
         public SyncBladeRequest() {
-            super(reactor);
+            super(BladeBase.this.reactor);
         }
     }
 
@@ -75,7 +77,7 @@ public class BladeBase implements Blade {
          * Create a SyncRequest.
          */
         public AsyncBladeRequest() {
-            super(reactor);
+            super(BladeBase.this.reactor);
         }
     }
 
@@ -86,7 +88,20 @@ public class BladeBase implements Blade {
      * @param <RESPONSE_TYPE> The type of value returned.
      * @return The response from the request.
      */
-    protected <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
+    protected <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest)
+            throws Exception {
         return SyncRequest.doLocal(reactor, _syncRequest);
+    }
+
+    /**
+     * Process the request immediately.
+     *
+     * @param _request    The request to be processed.
+     * @param <RESPONSE_TYPE> The type of value returned.
+     */
+    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
+                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+            throws Exception {
+        RequestBase.doSend(reactor, _request, _responseProcessor);
     }
 }

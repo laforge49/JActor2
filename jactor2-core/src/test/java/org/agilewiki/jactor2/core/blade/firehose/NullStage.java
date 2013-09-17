@@ -33,7 +33,7 @@ public class NullStage extends BladeBase implements DataProcessor {
                     total += list.get(x);
                     x += 1;
                 }
-                next.processDataAReq(_firehoseData).send(getMessageProcessor(), null);
+                send(next.processDataAReq(_firehoseData), null);
                 processAsyncResponse(null);
             }
         };

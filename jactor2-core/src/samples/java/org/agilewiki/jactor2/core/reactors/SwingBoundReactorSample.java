@@ -31,7 +31,7 @@ class HelloWorld extends BladeBase {
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
 
                 //Close facility when window is closed.
-                frame.addWindowListener((SwingBoundReactor) getMessageProcessor());
+                frame.addWindowListener((SwingBoundReactor) getTargetReactor());
 
                 //Add the "Hello World!" label.
                 JLabel label = new JLabel("Hello World!");

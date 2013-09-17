@@ -5,11 +5,11 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 /**
  * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between blades.
  * Requests are typically created as an anonymous class within the targeted Blade and are bound
- * to that blade's reactor.
+ * to that blade's targetReactor.
  * The signal (1-way messaging) and call method (2-way messaging) pass unbuffered messages
  * to the target blade immediately, where they are enqueued for processing. But rather than being
- * sent immediately, request messages passed using the send method
- * (2-way messages) and all response messages are buffered for improved throughput. The send method
+ * sent immediately, request messages passed using the doSend method
+ * (2-way messages) and all response messages are buffered for improved throughput. The doSend method
  * also supports thread migration.
  * <p>
  * A request also serves as a message and can only be used once.
@@ -113,7 +113,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *                 AsyncRequest&lt;Integer&gt; req = bladeA.updateAReq(_newState);
  *
  *                 //Send the request to the other blade.
- *                 req.send(getReactor(), new AsyncResponseProcessor&lt;Integer&gt;() {
+ *                 send(req, new AsyncResponseProcessor&lt;Integer&gt;() {
  *
  *                     {@literal @}Override
  *                     public void processAsyncResponse(Integer response) throws Exception {
@@ -139,10 +139,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
         implements AsyncResponseProcessor<RESPONSE_TYPE> {
 
     /**
-     * Create an AsyncRequest and bind it to its target reactor.
+     * Create an AsyncRequest and bind it to its target targetReactor.
      *
-     * @param _targetReactor The reactor where this AsyncRequest Objects is passed for processing.
-     *                       The thread owned by this reactor will process this AsyncRequest.
+     * @param _targetReactor The targetReactor where this AsyncRequest Objects is passed for processing.
+     *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
     public AsyncRequest(final Reactor _targetReactor) {
         super(_targetReactor);
@@ -165,7 +165,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
      * The processAsyncResponse method accepts the response of a request.
      * <p>
      * This method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (reactor) that passed the
+     * is always invoked from the same light-weight thread (targetReactor) that passed the
      * AsyncRequest and AsyncResponseProcessor objects.
      * </p>
      *
@@ -180,7 +180,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
     /**
      * Returns an exception as a response instead of throwing it.
      * But regardless of how a response is returned, if the response is an exception it
-     * is passed to the exception handler of the blade that did the call or send on the request.
+     * is passed to the exception handler of the blade that did the call or doSend on the request.
      *
      * @param _response An exception.
      */

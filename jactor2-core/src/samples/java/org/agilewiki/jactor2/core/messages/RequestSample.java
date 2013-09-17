@@ -88,7 +88,7 @@ class IndirectBlade extends BladeBase {
                 AsyncRequest<Integer> req = blade.updateAReq(_newState);
 
                 //Send the request to the other blade.
-                req.send(getMessageProcessor(), new AsyncResponseProcessor<Integer>() {
+                send(req, new AsyncResponseProcessor<Integer>() {
 
                     @Override
                     public void processAsyncResponse(Integer response) throws Exception {

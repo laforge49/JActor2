@@ -141,7 +141,7 @@ class ServiceApplication extends BladeBase {
                             throw exception;
                     }
                 });
-                service.delayEchoAReq(_delay, _text).send(getMessageProcessor(), new AsyncResponseProcessor<String>() {
+                send(service.delayEchoAReq(_delay, _text), new AsyncResponseProcessor<String>() {
                     @Override
                     public void processAsyncResponse(String response) throws Exception {
                         if (echoReqState.responseProcessor == null) {

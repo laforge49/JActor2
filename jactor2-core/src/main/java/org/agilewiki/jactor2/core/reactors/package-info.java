@@ -11,11 +11,11 @@
  *     ThreadBoundReactor and SwingBoundReactor.
  *     Reactor instances are easily created, with an instance of
  *     Facility as a required parameter. Additional parameters can be also be passed to the constructor
- *     for configuring a reactor:
+ *     for configuring a targetReactor:
  * </p>
  * <ul>
  * <li>
- *     <b>int initialBufferSize</b> This is the initial size of the the send buffers used by the outbox.
+ *     <b>int initialBufferSize</b> This is the initial size of the the doSend buffers used by the outbox.
  *     When not provided, Facility.getInitialBufferSize() is used instead.
  * </li>
  * <li>

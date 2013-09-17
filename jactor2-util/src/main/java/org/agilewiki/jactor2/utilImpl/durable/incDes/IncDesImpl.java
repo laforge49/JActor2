@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -370,14 +371,14 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                getSerializedLengthReq().send(getMessageProcessor(), new AsyncResponseProcessor<Integer>() {
+                send(getSerializedLengthReq(), new AsyncResponseProcessor<Integer>() {
                     @Override
                     public void processAsyncResponse(Integer response) throws Exception {
                         if (response.intValue() != getSerializedLength()) {
                             dis.processAsyncResponse(false);
                             return;
                         }
-                        getSerializedBytesReq().send(getMessageProcessor(), new AsyncResponseProcessor<byte[]>() {
+                        send(getSerializedBytesReq(), new AsyncResponseProcessor<byte[]>() {
                             @Override
                             public void processAsyncResponse(byte[] response) throws Exception {
                                 boolean eq = Arrays.equals(response, getSerializedBytes());
@@ -460,5 +461,17 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      */
     protected <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
         return SyncRequest.doLocal(reactor, _syncRequest);
+    }
+
+    /**
+     * Process the request immediately.
+     *
+     * @param _request    The request to be processed.
+     * @param <RESPONSE_TYPE> The type of value returned.
+     */
+    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
+                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+            throws Exception {
+        RequestBase.doSend(reactor, _request, _responseProcessor);
     }
 }

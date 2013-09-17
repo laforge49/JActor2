@@ -21,7 +21,7 @@ public class ParallelTest extends TestCase {
         facility = new Facility();
         reactor = new NonBlockingReactor(facility);
 
-        start = new AsyncRequest<Void>(reactor) {
+        start = new AsyncBladeRequest<Void>() {
             AsyncRequest<Void> dis = this;
 
             @Override
@@ -32,7 +32,7 @@ public class ParallelTest extends TestCase {
                 int i = 0;
                 while (i < LOADS) {
                     final Delay dly = new Delay(facility);
-                    dly.sleepSReq(ParallelTest.DELAY).send(messageProcessor,
+                    send(dly.sleepSReq(ParallelTest.DELAY),
                             responseCounter);
                     i += 1;
                 }
@@ -44,5 +44,27 @@ public class ParallelTest extends TestCase {
         final long t1 = System.currentTimeMillis();
         assertTrue((t1 - t0) < DELAY + DELAY / 2);
         facility.close();
+    }
+
+    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public AsyncBladeRequest() {
+            super(ParallelTest.this.reactor);
+        }
+    }
+
+    /**
+     * Process the request immediately.
+     *
+     * @param _request    The request to be processed.
+     * @param <RESPONSE_TYPE> The type of value returned.
+     */
+    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
+                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+            throws Exception {
+        RequestBase.doSend(reactor, _request, _responseProcessor);
     }
 }

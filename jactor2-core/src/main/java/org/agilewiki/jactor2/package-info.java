@@ -48,14 +48,14 @@
  * <h2>Composing Actors for Enhanced Performance</h2>
  * <p>
  *     In JActor, actors are in two parts: Reactors, which contain no application logic, and
- *     Blades. A reactor can have any number of blades, and every blade has one reactor. Messages
+ *     Blades. A targetReactor can have any number of blades, and every blade has one targetReactor. Messages
  *     are sourced by and targeted at blades, but it is the reactors which actually exchange and
  *     process those messages.
  * </p>
  * <p>
- *     Each reactor is in effect a light-weight thread, processing one message at a time. The blades
- *     of a reactor then always operate on the same thread. Message passing between blades in the same
- *     reactor then is very fast, because the messages are not passed between threads.
+ *     Each targetReactor is in effect a light-weight thread, processing one message at a time. The blades
+ *     of a targetReactor then always operate on the same thread. Message passing between blades in the same
+ *     targetReactor then is very fast, because the messages are not passed between threads.
  * </p>
  * <h2>Two-way Messaging Improves Garbage Collection Performance and Performance Under Load</h2>
  * <p>
