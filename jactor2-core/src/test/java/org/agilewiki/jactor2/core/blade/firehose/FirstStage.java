@@ -67,7 +67,7 @@ public class FirstStage extends BladeBase implements Runnable {
         new Event<FirstStage>() {
 
             @Override
-            public void processEvent(FirstStage _targetBlade) throws Exception {
+            protected void processEvent(FirstStage _targetBlade) throws Exception {
             }
         }.signal(this);
     }

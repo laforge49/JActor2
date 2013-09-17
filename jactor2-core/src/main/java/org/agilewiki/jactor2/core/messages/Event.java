@@ -101,7 +101,7 @@ public abstract class Event<TARGET_BLADE_TYPE extends Blade> {
      *
      * @param _targetBlade The actor to be operated on.
      */
-    abstract public void processEvent(final TARGET_BLADE_TYPE _targetBlade)
+    abstract protected void processEvent(final TARGET_BLADE_TYPE _targetBlade)
             throws Exception;
 
     /**

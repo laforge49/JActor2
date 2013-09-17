@@ -41,7 +41,7 @@ public class JASemaphore extends BladeBase {
 
         release = new Event<JASemaphore>() {
             @Override
-            public void processEvent(JASemaphore _targetBlade) throws Exception {
+            protected void processEvent(JASemaphore _targetBlade) throws Exception {
                 final AsyncResponseProcessor<Void> rp = queue.poll();
                 if (rp == null) {
                     permits += 1;

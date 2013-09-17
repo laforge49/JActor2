@@ -110,7 +110,7 @@ public class JAServiceTracker<T> extends BladeBase implements ServiceListener,
         Objects.requireNonNull(_serviceChangeReceiver, "_serviceChangeReceiver");
         new Event<JAServiceTracker<T>>() {
             @Override
-            public void processEvent(JAServiceTracker<T> _targetBlade) throws Exception {
+            protected void processEvent(JAServiceTracker<T> _targetBlade) throws Exception {
                 // We just received the start request. We can only receive one.
                 if (started)
                     throw new IllegalStateException("already started");
@@ -186,7 +186,7 @@ public class JAServiceTracker<T> extends BladeBase implements ServiceListener,
             // because this method is not running in our blade thread.
             new Event<JAServiceTracker<T>>() {
                 @Override
-                public void processEvent(JAServiceTracker<T> _targetBlade) throws Exception {
+                protected void processEvent(JAServiceTracker<T> _targetBlade) throws Exception {
                     final int typ = _event.getType();
                     final ServiceReference ref = _event.getServiceReference();
                     switch (typ) {

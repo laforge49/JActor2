@@ -14,7 +14,7 @@ public class StatusUpdate extends Event<StatusListener> {
 
     //Invokes the statusUpdate method on a StatusListener blade.
     @Override
-    public void processEvent(StatusListener _targetBlade) throws Exception {
+    protected void processEvent(StatusListener _targetBlade) throws Exception {
         _targetBlade.statusUpdate(this);
     }
 }

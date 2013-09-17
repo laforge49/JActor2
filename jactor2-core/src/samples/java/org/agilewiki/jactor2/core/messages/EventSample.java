@@ -45,7 +45,7 @@ class FinEvent extends Event<SampleBlade1> {
     }
 
     @Override
-    public void processEvent(SampleBlade1 _targetBlade) throws Exception {
+    protected void processEvent(SampleBlade1 _targetBlade) throws Exception {
         _targetBlade.fin(msg);
     }
 }

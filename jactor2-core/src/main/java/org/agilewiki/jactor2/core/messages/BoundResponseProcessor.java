@@ -75,7 +75,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
         }
 
         @Override
-        public void processEvent(Blade _targetBlade) throws Exception {
+        protected void processEvent(Blade _targetBlade) throws Exception {
             rp.processAsyncResponse(rsp);
         }
     }

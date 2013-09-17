@@ -70,7 +70,7 @@ class Print extends Event<Printer> {
     }
 
     @Override
-    public void processEvent(final Printer _targetBlade) throws Exception {
+    protected void processEvent(final Printer _targetBlade) throws Exception {
         _targetBlade.print(msg);
     }
 }

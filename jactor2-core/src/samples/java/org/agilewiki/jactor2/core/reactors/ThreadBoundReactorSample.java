@@ -59,7 +59,7 @@ class ThreadBoundBlade extends BladeBase {
 //When a FinEvent is passed to an blade, the fin method is called.
 class FinEvent extends Event<ThreadBoundBlade> {
     @Override
-    public void processEvent(ThreadBoundBlade _targetBlade) throws Exception {
+    protected void processEvent(ThreadBoundBlade _targetBlade) throws Exception {
         _targetBlade.fin();
     }
 }

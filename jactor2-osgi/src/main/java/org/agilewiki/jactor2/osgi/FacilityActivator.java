@@ -57,7 +57,7 @@ abstract public class FacilityActivator
     protected void begin() throws Exception {
         new Event<FacilityActivator>() {
             @Override
-            public void processEvent(FacilityActivator _targetBlade) throws Exception {
+            protected void processEvent(FacilityActivator _targetBlade) throws Exception {
                 process();
             }
         }.signal(this);

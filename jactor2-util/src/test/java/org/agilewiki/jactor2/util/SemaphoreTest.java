@@ -46,7 +46,7 @@ public class SemaphoreTest extends TestCase implements Blade {
                                 final Facility facility) throws Exception {
         new Event<SemaphoreTest>() {
             @Override
-            public void processEvent(final SemaphoreTest _targetBlade)
+            protected void processEvent(final SemaphoreTest _targetBlade)
                     throws Exception {
                 new Delay(facility).sleepSReq(delay).send(getReactor(),
                         new AsyncResponseProcessor<Void>() {
