@@ -50,7 +50,7 @@ public class ThreadMigration extends BladeBase {
     }
     
     public AsyncRequest&lt;Void&gt; startAReq() {
-        return new AsyncRequest&lt;Void&gt;(getReactor()) {
+        return new AsyncBladeRequest&lt;Void&gt;() {
             @Override
             protected void processAsyncRequest() 
                     throws Exception {
@@ -74,7 +74,7 @@ class SubActor extends BladeBase {
     }
     
     public AsyncRequest&lt;Void&gt; doAReq(final String _label) {
-        return new AsyncRequest&lt;Void&gt;(getReactor()) {
+        return new AsyncBladeRequest&lt;Void&gt;() {
             @Override
             protected void processAsyncRequest() 
                     throws Exception {

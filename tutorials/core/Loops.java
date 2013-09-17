@@ -57,7 +57,7 @@ public class Loops extends BladeBase {
     }
     
     AsyncRequest<Long> loopAReq(final Sums _sums, final long _count) {
-        return new AsyncRequest<Long>(getReactor()) {
+        return new AsyncBladeRequest<Long>() {
             long counter;
             AsyncResponseProcessor dis = this;
             
@@ -74,7 +74,7 @@ public class Loops extends BladeBase {
             };
             
             @Override
-            public void processAsyncRequest() 
+            protected void processAsyncRequest() 
                     throws Exception {
                 if (_count < 1) {
                     processAsyncResponse(0L);
@@ -96,9 +96,9 @@ class Sums extends BladeBase {
     }
     
     AsyncRequest<Void> clearAReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
-            public void processAsyncRequest() 
+            protected void processAsyncRequest() 
                     throws Exception {
                 total = 0L;
                 processAsyncResponse(null);
@@ -107,9 +107,9 @@ class Sums extends BladeBase {
     }
     
     AsyncRequest<Long> addAReq(final long _value) {
-        return new AsyncRequest<Long>(getReactor()) {
+        return new AsyncBladeRequest<Long>() {
             @Override
-            public void processAsyncRequest() 
+            protected void processAsyncRequest() 
                     throws Exception {
                 total += _value;
                 processAsyncResponse(total);

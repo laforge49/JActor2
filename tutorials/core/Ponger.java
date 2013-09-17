@@ -10,7 +10,7 @@ public class Ponger extends BladeBase {
     }
 
     SyncRequest<Long> pingSReq() {
-        return new SyncRequest<Long>(getReactor()) {
+        return new SyncBladeRequest<Long>() {
             @Override
             protected Long processSyncRequest() throws Exception {
                 count += 1;
