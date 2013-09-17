@@ -35,7 +35,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
     protected ArrayList<ENTRY_TYPE> list;
 
     public AsyncRequest<Void> emptyReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 empty();
@@ -188,7 +188,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 iAdd(_i, _bytes);
@@ -211,7 +211,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iAddReq(final int _i) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 iAdd(_i);
@@ -250,7 +250,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iRemoveReq(final int _i) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 iRemove(_i);

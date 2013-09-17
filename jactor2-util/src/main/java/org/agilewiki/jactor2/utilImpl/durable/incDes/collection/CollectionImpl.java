@@ -25,7 +25,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Integer> sizeReq() {
-        return new AsyncRequest<Integer>(getReactor()) {
+        return new AsyncBladeRequest<Integer>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(size());
@@ -35,7 +35,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<ENTRY_TYPE> iGetReq(final int _i) {
-        return new AsyncRequest<ENTRY_TYPE>(getReactor()) {
+        return new AsyncBladeRequest<ENTRY_TYPE>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(iGet(_i));
@@ -45,7 +45,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 iSet(_i, _bytes);

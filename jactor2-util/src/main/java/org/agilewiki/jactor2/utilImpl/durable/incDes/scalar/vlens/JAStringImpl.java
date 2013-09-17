@@ -25,7 +25,7 @@ public class JAStringImpl
     }
 
     public AsyncRequest<String> getValueReq() {
-        return new AsyncRequest<String>(getReactor()) {
+        return new AsyncBladeRequest<String>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -52,7 +52,7 @@ public class JAStringImpl
     public AsyncRequest<Void> setValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 setValue(v);
@@ -84,7 +84,7 @@ public class JAStringImpl
     public AsyncRequest<Boolean> makeValueReq(final String v) {
         if (v == null)
             throw new IllegalArgumentException("value may not be null");
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(v));

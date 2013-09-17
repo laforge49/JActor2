@@ -76,7 +76,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *
  *     //Return an update request.
  *     AsyncRequest&lt;Integer&gt; updateAReq(final int _newState) {
- *         return new AsyncRequest&lt;Integer&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;Integer&gt;() {
  *
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
@@ -103,7 +103,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *
  *     //Return a request to update the other blade and return its new state.
  *     AsyncRequest&lt;Integer&gt; indirectAReq(final int _newState) {
- *         return new AsyncRequest&lt;Integer&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;Integer&gt;() {
  *             AsyncRequest<Integer> dis = this;
  *
  *             {@literal @}Override

@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
@@ -51,7 +52,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public AsyncRequest<byte[]> getSerializedBytesReq() {
-        return new AsyncRequest<byte[]>(getReactor()) {
+        return new AsyncBladeRequest<byte[]>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getSerializedBytes());
@@ -61,7 +62,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public AsyncRequest<Integer> getSerializedLengthReq() {
-        return new AsyncRequest<Integer>(getReactor()) {
+        return new AsyncBladeRequest<Integer>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getSerializedLength());
@@ -247,7 +248,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     final public AsyncRequest<Void> saveReq(final AppendableBytes appendableBytes) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 save(appendableBytes);
@@ -271,7 +272,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     final public AsyncRequest<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
-        return new AsyncRequest<Integer>(getReactor()) {
+        return new AsyncBladeRequest<Integer>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(save(bytes, offset));
@@ -328,7 +329,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
 
     @Override
     public AsyncRequest<JASerializable> resolvePathnameReq(final String pathname) {
-        return new AsyncRequest<JASerializable>(getReactor()) {
+        return new AsyncBladeRequest<JASerializable>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(resolvePathname(pathname));
@@ -355,7 +356,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     public final AsyncRequest<JASerializable> copyReq(final Reactor m) {
-        return new AsyncRequest<JASerializable>(getReactor()) {
+        return new AsyncBladeRequest<JASerializable>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(copy(m));
@@ -364,7 +365,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     public final AsyncRequest<Boolean> isEqualReq(final JASerializable jidA) {
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             AsyncRequest<Boolean> dis = this;
 
             @Override
@@ -428,5 +429,25 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     @Override
     public Reactor getReactor() {
         return reactor;
+    }
+
+    abstract public class SyncBladeRequest<RESPONSE_TYPE> extends SyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public SyncBladeRequest() {
+            super(reactor);
+        }
+    }
+
+    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public AsyncBladeRequest() {
+            super(reactor);
+        }
     }
 }

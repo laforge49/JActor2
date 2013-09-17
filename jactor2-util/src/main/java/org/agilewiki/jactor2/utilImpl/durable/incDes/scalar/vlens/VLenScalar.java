@@ -26,7 +26,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
     protected int len = -1;
 
     public AsyncRequest<Void> clearReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             protected void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);

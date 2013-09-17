@@ -28,7 +28,7 @@ public class JADoubleImpl
 
     @Override
     public AsyncRequest<Double> getValueReq() {
-        return new AsyncRequest<Double>(getReactor()) {
+        return new AsyncBladeRequest<Double>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -62,7 +62,7 @@ public class JADoubleImpl
 
     @Override
     public AsyncRequest<Void> setValueReq(final Double v) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 setValue(v);

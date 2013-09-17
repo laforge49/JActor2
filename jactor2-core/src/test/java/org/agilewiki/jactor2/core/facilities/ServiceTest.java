@@ -51,7 +51,7 @@ class Client extends BladeBase {
     }
 
     AsyncRequest<Boolean> crossAReq() {
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             AsyncRequest<Boolean> dis = this;
 
             @Override
@@ -82,7 +82,7 @@ class Server extends BladeBase {
     }
 
     AsyncRequest<Void> hangAReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
             }

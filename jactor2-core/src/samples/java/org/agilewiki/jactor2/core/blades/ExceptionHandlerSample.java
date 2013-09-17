@@ -49,7 +49,7 @@ class ExceptionBlade extends BladeBase {
 
     //Returns an exception request.
     AsyncRequest<Void> exceptionAReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 throw new IllegalStateException(); //Throw an exception when the request is processed.
@@ -72,7 +72,7 @@ class ExceptionHandlerBlade extends BladeBase {
 
     //Returns a test request.
     AsyncRequest<String> testAReq() {
-        return new AsyncRequest<String>(getReactor()) {
+        return new AsyncBladeRequest<String>() {
             AsyncRequest<String> dis = this;
 
             @Override

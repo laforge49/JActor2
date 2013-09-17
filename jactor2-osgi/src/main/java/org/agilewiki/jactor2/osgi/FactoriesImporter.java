@@ -55,7 +55,7 @@ public class FactoriesImporter extends BladeBase implements
      * @return The request.
      */
     public AsyncRequest<Void> startReq(final Filter _filter) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest()
                     throws Exception {
@@ -96,7 +96,7 @@ public class FactoriesImporter extends BladeBase implements
      * @return The request.
      */
     public AsyncRequest<Void> startReq(final String _bundleName, final String _niceVersion) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 start(_bundleName, _niceVersion, this);
@@ -129,7 +129,7 @@ public class FactoriesImporter extends BladeBase implements
      * @return The request.
      */
     public AsyncRequest<Void> startReq(final String _bundleName, final Version _version) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 start(_bundleName, _version, this);
@@ -160,7 +160,7 @@ public class FactoriesImporter extends BladeBase implements
      * @return The request.
      */
     public AsyncRequest<Void> startReq(final String _bundleLocation) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 start(_bundleLocation, this);

@@ -33,7 +33,7 @@ public class BytesImpl
 
     @Override
     public AsyncRequest<byte[]> getValueReq() {
-        return new AsyncRequest<byte[]>(getReactor()) {
+        return new AsyncBladeRequest<byte[]>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -59,7 +59,7 @@ public class BytesImpl
 
     @Override
     public AsyncRequest<Void> setValueReq(final byte[] v) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 setValue(v);
@@ -101,7 +101,7 @@ public class BytesImpl
 
     @Override
     public AsyncRequest<Boolean> makeValueReq(final byte[] v) {
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(v));

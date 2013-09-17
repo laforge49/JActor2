@@ -11,7 +11,7 @@ public class PrinterAgentSample extends PrinterAgent {
 
     // Returns a request to print a Hi! banner.
     public AsyncRequest<Void> startAReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 printer.printlnSReq("*********").local(messageProcessor);

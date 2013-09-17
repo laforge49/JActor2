@@ -28,7 +28,7 @@ public class JABooleanImpl
 
     @Override
     public AsyncRequest<Boolean> getValueReq() {
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -62,7 +62,7 @@ public class JABooleanImpl
 
     @Override
     public AsyncRequest<Void> setValueReq(final Boolean v) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 setValue(v);

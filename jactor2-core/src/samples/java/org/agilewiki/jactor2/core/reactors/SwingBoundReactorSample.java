@@ -23,7 +23,7 @@ class HelloWorld extends BladeBase {
     }
 
     AsyncRequest<Void> createAndShowAReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 //Create and set up the window.

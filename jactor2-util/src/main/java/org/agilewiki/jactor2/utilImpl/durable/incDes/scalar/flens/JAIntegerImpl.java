@@ -28,7 +28,7 @@ public class JAIntegerImpl
 
     @Override
     public AsyncRequest<Integer> getValueReq() {
-        return new AsyncRequest<Integer>(getReactor()) {
+        return new AsyncBladeRequest<Integer>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -82,7 +82,7 @@ public class JAIntegerImpl
 
     @Override
     public AsyncRequest<Void> setValueReq(final Integer v) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 setValue(v);

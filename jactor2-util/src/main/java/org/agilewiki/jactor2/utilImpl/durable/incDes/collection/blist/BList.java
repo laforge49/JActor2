@@ -31,7 +31,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Integer> sizeReq() {
-        return new AsyncRequest<Integer>(getReactor()) {
+        return new AsyncBladeRequest<Integer>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(size());
@@ -40,7 +40,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     public AsyncRequest<Void> emptyReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 empty();
@@ -134,7 +134,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<ENTRY_TYPE> iGetReq(final int _i) {
-        return new AsyncRequest<ENTRY_TYPE>(getReactor()) {
+        return new AsyncBladeRequest<ENTRY_TYPE>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(iGet(_i));
@@ -174,7 +174,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 iSet(_i, _bytes);
@@ -249,7 +249,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iAddReq(final int _i) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 iAdd(_i);
@@ -266,7 +266,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 iAdd(_i, _bytes);
@@ -405,7 +405,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
 
     @Override
     public AsyncRequest<Void> iRemoveReq(final int _i) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 iRemove(_i);

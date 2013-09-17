@@ -71,7 +71,7 @@ package org.agilewiki.jactor2.core.facilities;
  *
  *     //Returns a delay echo request.
  *     AsyncRequest&lt;String&gt; delayEchoAReq(final int _delay, final String _text) {
- *         return new AsyncRequest&lt;String&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;String&gt;() {
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
  *                 //Sleep a bit so that the request does not complete too quickly.
@@ -116,7 +116,7 @@ package org.agilewiki.jactor2.core.facilities;
  *     //And the response returned by the echo request is state data needed to manage the
  *     //delivery of the response from the service delay echo request.
  *     AsyncRequest&lt;EchoReqState&gt; echoAReq(final int _delay, final String _text) {
- *         return new AsyncRequest&lt;EchoReqState&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;EchoReqState&gt;() {
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
  *
@@ -166,7 +166,7 @@ package org.agilewiki.jactor2.core.facilities;
  *
  *     //Returns a close service request.
  *     AsyncRequest&lt;Void&gt; closeServiceAReq() {
- *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;Void&gt;() {
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
  *                 //Close the facility of the service blade.
@@ -180,7 +180,7 @@ package org.agilewiki.jactor2.core.facilities;
  *     //An echo result request returns the response from the service delay echo request
  *     //associated with the given echo request state.
  *     AsyncRequest&lt;String&gt; echoResultAReq(final EchoReqState _echoReqState) {
- *         return new AsyncRequest&lt;String&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;String&gt;() {
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
  *                 if (_echoReqState.response == null) {

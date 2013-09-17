@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 //Exploring the use of multiple facility.
 public class ServiceSample {
@@ -66,7 +67,7 @@ class Service extends BladeBase {
 
     //Returns a delay echo request.
     AsyncRequest<String> delayEchoAReq(final int _delay, final String _text) {
-        return new AsyncRequest<String>(getReactor()) {
+        return new AsyncBladeRequest<String>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 //Sleep a bit so that the request does not complete too quickly.
@@ -111,7 +112,7 @@ class ServiceApplication extends BladeBase {
     //And the response returned by the echo request is state data needed to manage the
     //delivery of the response from the service delay echo request.
     AsyncRequest<EchoReqState> echoAReq(final int _delay, final String _text) {
-        return new AsyncRequest<EchoReqState>(getReactor()) {
+        return new AsyncBladeRequest<EchoReqState>() {
             @Override
             protected void processAsyncRequest() throws Exception {
 
@@ -161,7 +162,7 @@ class ServiceApplication extends BladeBase {
 
     //Returns a close service request.
     AsyncRequest<Void> closeServiceAReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 //Close the facility of the service blade.
@@ -175,7 +176,7 @@ class ServiceApplication extends BladeBase {
     //An echo result request returns the response from the service delay echo request
     //associated with the given echo request state.
     AsyncRequest<String> echoResultAReq(final EchoReqState _echoReqState) {
-        return new AsyncRequest<String>(getReactor()) {
+        return new AsyncBladeRequest<String>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 if (_echoReqState.response == null) {

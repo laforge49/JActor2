@@ -28,7 +28,7 @@ public class JALongImpl
 
     @Override
     public AsyncRequest<Long> getValueReq() {
-        return new AsyncRequest<Long>(getReactor()) {
+        return new AsyncBladeRequest<Long>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -62,7 +62,7 @@ public class JALongImpl
 
     @Override
     public AsyncRequest<Void> setValueReq(final Long _v) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 setValue(_v);

@@ -46,7 +46,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     protected JASerializable value;
 
     public AsyncRequest<Void> clearReq() {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             protected void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
@@ -56,7 +56,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<JASerializable> getValueReq() {
-        return new AsyncRequest<JASerializable>(getReactor()) {
+        return new AsyncBladeRequest<JASerializable>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
@@ -136,7 +136,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<Void> setValueReq(final String actorType) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 setValue(actorType);
@@ -181,7 +181,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<Void> setValueReq(final String jidType, final byte[] bytes) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 setValue(jidType, bytes);
@@ -223,7 +223,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<Boolean> makeValueReq(final String jidType) {
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(jidType));
@@ -260,7 +260,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     @Override
     public AsyncRequest<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(jidType, bytes));

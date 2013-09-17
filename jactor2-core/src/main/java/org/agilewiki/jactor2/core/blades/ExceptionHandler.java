@@ -73,7 +73,7 @@ package org.agilewiki.jactor2.core.blades;
  *
  *     //Returns an exception request.
  *     AsyncRequest&lt;Void&gt; exceptionAReq() {
- *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;Void&gt;() {
  *
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
@@ -97,7 +97,7 @@ package org.agilewiki.jactor2.core.blades;
  *
  *     //Returns a test request.
  *     AsyncRequest&lt;String&gt; testAReq() {
- *         return new AsyncRequest&lt;String&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;String&gt;() {
  *             AsyncRequest&lt;String&gt; dis = this;
  *
  *             {@literal @}Override

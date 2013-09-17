@@ -154,7 +154,7 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
      * @return The request.
      */
     public AsyncRequest<Boolean> subscribeAReq(final TARGET_BLADE_TYPE _subscriber) {
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest()
                     throws Exception {
@@ -171,7 +171,7 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
      * @return The request.
      */
     public AsyncRequest<Boolean> unsubscribeAReq(final TARGET_BLADE_TYPE _subscriber) {
-        return new AsyncRequest<Boolean>(getReactor()) {
+        return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest()
                     throws Exception {
@@ -191,7 +191,7 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
      */
     public AsyncRequest<Void> publishAReq(
             final Event<TARGET_BLADE_TYPE> event) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest()
                     throws Exception {

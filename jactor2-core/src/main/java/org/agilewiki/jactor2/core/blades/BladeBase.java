@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.blades;
 
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -64,6 +65,16 @@ public class BladeBase implements Blade {
          * Create a SyncRequest.
          */
         public SyncBladeRequest() {
+            super(reactor);
+        }
+    }
+
+    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public AsyncBladeRequest() {
             super(reactor);
         }
     }

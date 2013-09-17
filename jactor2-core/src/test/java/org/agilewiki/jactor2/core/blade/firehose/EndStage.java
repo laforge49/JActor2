@@ -14,7 +14,7 @@ public class EndStage extends BladeBase implements DataProcessor {
 
     @Override
     public AsyncRequest<Void> processDataAReq(final FirehoseData _firehoseData) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 Thread.sleep(1);

@@ -36,7 +36,7 @@ import java.awt.event.WindowListener;
  *     }
  *
  *     AsyncRequest&lt;Void&gt; createAndShowAReq() {
- *         return new AsyncRequest&lt;Void&gt;(getReactor()) {
+ *         return new AsyncBladeRequest&lt;Void&gt;() {
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
  *                 //Create and set up the window.
