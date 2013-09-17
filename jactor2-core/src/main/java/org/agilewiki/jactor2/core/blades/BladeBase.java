@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.blades;
 
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
@@ -55,5 +56,15 @@ public class BladeBase implements Blade {
     @Override
     public Reactor getReactor() {
         return reactor;
+    }
+
+    abstract public class SyncBladeRequest<RESPONSE_TYPE> extends SyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public SyncBladeRequest() {
+            super(reactor);
+        }
     }
 }

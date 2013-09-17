@@ -28,7 +28,7 @@ public class Load extends BladeBase {
      * @return The delay request.
      */
     public SyncRequest<Void> loadSReq(final long _load) {
-        return new SyncRequest<Void>(getReactor()) {
+        return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest()
                     throws Exception {
