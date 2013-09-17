@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.blades;
 
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**

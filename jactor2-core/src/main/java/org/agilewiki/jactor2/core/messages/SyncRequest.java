@@ -7,6 +7,15 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
 abstract public class SyncRequest<RESPONSE_TYPE>
         extends RequestBase<RESPONSE_TYPE> {
 
+    /**
+     * Process the request immediately.
+     *
+     * @param _source         The reactor on whose thread this method was invoked and which
+     *                        must be the same as the reactor of the target.
+     * @param _syncRequest    The request to be processed.
+     * @param <RESPONSE_TYPE> The type of value returned.
+     * @return The value returned by the target blade.
+     */
     public static <RESPONSE_TYPE> RESPONSE_TYPE doLocal(
             final Reactor _source,
             final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {

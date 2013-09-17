@@ -454,8 +454,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     /**
      * Process the request immediately.
      *
-     * @param _syncRequest       The request to be processed.
-     * @param <RESPONSE_TYPE>    The type of value returned.
+     * @param _syncRequest    The request to be processed.
+     * @param <RESPONSE_TYPE> The type of value returned.
      * @return The response from the request.
      */
     protected <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
