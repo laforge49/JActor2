@@ -28,7 +28,7 @@ public class ThreadMigration extends BladeBase {
     public AsyncRequest<Void> startAReq() {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() 
+            protected void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
                 Reactor myReactor = getReactor();
@@ -52,7 +52,7 @@ class SubActor extends BladeBase {
     public AsyncRequest<Void> doAReq(final String _label) {
         return new AsyncRequest<Void>(getReactor()) {
             @Override
-            public void processAsyncRequest() 
+            protected void processAsyncRequest() 
                     throws Exception {
                 System.out.println(_label + " thread: " + 
                     Thread.currentThread());
