@@ -50,7 +50,7 @@ class Dd {
     public SyncRequest<Void> doSomethinSReq() {
         return new SyncRequest<Void>(reactor) {
             @Override
-            public Void processSyncRequest()
+            protected Void processSyncRequest()
                     throws Exception {
                 return null;
             }

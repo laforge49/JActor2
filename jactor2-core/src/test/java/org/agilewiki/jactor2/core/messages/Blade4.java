@@ -15,7 +15,7 @@ public class Blade4 {
     public SyncRequest<Void> hi4SReq() {
         return new SyncRequest<Void>(reactor) {
             @Override
-            public Void processSyncRequest()
+            protected Void processSyncRequest()
                     throws Exception {
                 new Blade1(messageProcessor).hiSReq().local(messageProcessor);
                 System.out.println(response);

@@ -30,7 +30,7 @@ public class Load extends BladeBase {
     public SyncRequest<Void> loadSReq(final long _load) {
         return new SyncRequest<Void>(getReactor()) {
             @Override
-            public Void processSyncRequest()
+            protected Void processSyncRequest()
                     throws Exception {
                 i = 0;
                 while (i < _load) {

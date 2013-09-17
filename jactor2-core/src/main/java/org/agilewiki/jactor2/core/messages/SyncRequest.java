@@ -23,7 +23,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      *
      * @return The value returned by the target blade.
      */
-    abstract public RESPONSE_TYPE processSyncRequest()
+    abstract protected RESPONSE_TYPE processSyncRequest()
             throws Exception;
 
     @Override

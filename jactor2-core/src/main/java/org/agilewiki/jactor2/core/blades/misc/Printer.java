@@ -90,7 +90,7 @@ public class Printer extends IsolationBlade {
     public SyncRequest<Void> printlnSReq(final String _string) {
         return new SyncRequest<Void>(getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            protected Void processSyncRequest() throws Exception {
                 System.out.println(_string);
                 return null;
             }
@@ -108,7 +108,7 @@ public class Printer extends IsolationBlade {
                                        final Object... _args) {
         return new SyncRequest<Void>(getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            protected Void processSyncRequest() throws Exception {
                 printStream.print(String.format(locale, _format, _args));
                 return null;
             }

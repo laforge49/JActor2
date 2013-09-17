@@ -16,7 +16,7 @@ public class Blade3 extends BladeBase {
     public SyncRequest<Void> hi3SReq() {
         return new SyncRequest<Void>(getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            protected Void processSyncRequest() throws Exception {
                 System.out.println("Hello world!");
                 return null;
             }

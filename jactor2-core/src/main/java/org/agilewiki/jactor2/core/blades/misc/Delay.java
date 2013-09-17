@@ -28,7 +28,7 @@ public class Delay extends BladeBase {
     public SyncRequest<Void> sleepSReq(final long _delay) {
         return new SyncRequest<Void>(getReactor()) {
             @Override
-            public Void processSyncRequest()
+            protected Void processSyncRequest()
                     throws Exception {
                 Thread.sleep(_delay);
                 return null;

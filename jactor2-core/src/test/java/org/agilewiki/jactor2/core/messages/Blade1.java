@@ -15,7 +15,7 @@ public class Blade1 extends BladeBase {
     public SyncRequest<String> hiSReq() {
         return new SyncRequest<String>(getReactor()) {
             @Override
-            public String processSyncRequest() throws Exception {
+            protected String processSyncRequest() throws Exception {
                 return "Hello world!";
             }
         };
