@@ -1,0 +1,34 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Ponger
+</p>
+<h1>Ponger</h1>
+<a href="Ponger.java">Ponger</a>
+is a very simple blade. It has a synchronous request, pingSReq.
+This request returns the number of times it has been called:
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class Ponger extends BladeBase {
+    private long count = 0;
+    
+    public Ponger(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
+    }
+
+    SyncRequest&lt;Long&gt; pingSReq() {
+        return new SyncRequest&lt;Long&gt;(getReactor()) {
+            @Override
+            public Long processSyncRequest() throws Exception {
+                count += 1;
+                return count;
+            }
+        };
+    }
+}
+</pre>
+</body>
+</html>
