@@ -8,13 +8,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Provides at least two queues for a reactor's incoming messages, where the first queue is a
  * concurrent linked queue for messages passed from other reactors and the other(s) are
- * local queues for messages that are passed using the reactor's own thread.
+ * doLocal queues for messages that are passed using the reactor's own thread.
  *
  * @author monster
  */
 public abstract class Inbox implements AutoCloseable {
     /**
-     * Default initial local queue size.
+     * Default initial doLocal queue size.
      */
     public static int DEFAULT_INITIAL_LOCAL_QUEUE_SIZE = 16;
 
@@ -81,7 +81,7 @@ public abstract class Inbox implements AutoCloseable {
     }
 
     /**
-     * Add a message to the appropriate local queue.
+     * Add a message to the appropriate doLocal queue.
      *
      * @param msg The message to be added.
      */

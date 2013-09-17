@@ -9,7 +9,11 @@ public class Blade4 {
     private final Reactor reactor;
 
     public Blade4(final Reactor mbox) {
-        this.reactor = mbox;
+        reactor = mbox;
+    }
+
+    public <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
+        return SyncRequest.doLocal(reactor, _syncRequest);
     }
 
     public SyncRequest<Void> hi4SReq() {
@@ -17,7 +21,7 @@ public class Blade4 {
             @Override
             protected Void processSyncRequest()
                     throws Exception {
-                new Blade1(messageProcessor).hiSReq().local(messageProcessor);
+                local(new Blade1(messageProcessor).hiSReq());
                 System.out.println(response);
                 return null;
             }

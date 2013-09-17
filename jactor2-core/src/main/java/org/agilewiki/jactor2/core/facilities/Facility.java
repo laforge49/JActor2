@@ -59,7 +59,7 @@ public class Facility implements AutoCloseable {
     private final AtomicBoolean shuttingDown = new AtomicBoolean();
 
     /**
-     * How big should the initial inbox local queue size be?
+     * How big should the initial inbox doLocal queue size be?
      */
     private final int initialLocalMessageQueueSize;
 
@@ -100,7 +100,7 @@ public class Facility implements AutoCloseable {
     /**
      * Create a Facility.
      *
-     * @param _initialLocalMessageQueueSize How big should the initial inbox local queue size be?
+     * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
      * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
      * @param _threadCount                  The thread pool size.
      * @param _threadFactory                The factory used to create threads for the threadpool.
@@ -134,9 +134,9 @@ public class Facility implements AutoCloseable {
     }
 
     /**
-     * Returns the initial local message queue(s) size.
+     * Returns the initial doLocal message queue(s) size.
      *
-     * @return The initial local message queue(s) size.
+     * @return The initial doLocal message queue(s) size.
      */
     public int getInitialLocalMessageQueueSize() {
         return initialLocalMessageQueueSize;

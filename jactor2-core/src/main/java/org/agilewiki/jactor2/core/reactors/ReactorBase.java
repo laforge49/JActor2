@@ -27,7 +27,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
     protected final Facility facility;
 
     /**
-     * The inbox, implemented as a local queue and a concurrent queue.
+     * The inbox, implemented as a doLocal queue and a concurrent queue.
      */
     protected final Inbox inbox;
 
@@ -52,7 +52,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      *
      * @param _facility              The facility of this reactor.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
-     * @param _initialLocalQueueSize The initial number of slots in the local queue.
+     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      */
     public ReactorBase(final Facility _facility,
                        final int _initialBufferSize,
@@ -67,7 +67,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
     /**
      * Create the appropriate type of inbox.
      *
-     * @param _initialLocalQueueSize The initial number of slots in the local queue.
+     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      * @return An inbox.
      */
     abstract protected Inbox createInbox(int _initialLocalQueueSize);

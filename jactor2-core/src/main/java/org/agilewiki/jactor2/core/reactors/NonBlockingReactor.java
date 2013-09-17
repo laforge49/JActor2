@@ -55,7 +55,7 @@ public class NonBlockingReactor extends UnboundReactor {
      *
      * @param _facility              The facility of the reactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
-     * @param _initialLocalQueueSize The initial number of slots in the local queue.
+     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
     public NonBlockingReactor(Facility _facility,

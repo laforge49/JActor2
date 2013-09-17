@@ -7,10 +7,10 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
 abstract public class SyncRequest<RESPONSE_TYPE>
         extends RequestBase<RESPONSE_TYPE> {
 
-    public static <RESPONSE_TYPE> RESPONSE_TYPE local(
+    public static <RESPONSE_TYPE> RESPONSE_TYPE doLocal(
             final Reactor _source,
             final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
-        return _syncRequest.local(_source);
+        return _syncRequest.doLocal(_source);
     }
 
     /**
@@ -44,7 +44,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      *                must be the same as the reactor of the target.
      * @return The value returned by the target blade.
      */
-    public RESPONSE_TYPE local(final Reactor _source) throws Exception {
+    private RESPONSE_TYPE doLocal(final Reactor _source) throws Exception {
         use();
         ReactorBase messageProcessor = (ReactorBase) _source;
         if (!messageProcessor.isRunning())

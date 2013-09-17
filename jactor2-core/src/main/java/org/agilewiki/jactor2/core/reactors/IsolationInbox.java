@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * The inbox used by IsolationReactor, the next request is not made available for processing
  * until a result is assigned to the previous request. This is implemented using
- * two ArrayDeques as the local queues, one for requests and the other for events and
+ * two ArrayDeques as the doLocal queues, one for requests and the other for events and
  * responses.
  */
 public class IsolationInbox extends Inbox {
@@ -32,7 +32,7 @@ public class IsolationInbox extends Inbox {
     /**
      * Creates an IsolationInbox.
      *
-     * @param initialLocalQueueSize The initial local queue size.
+     * @param initialLocalQueueSize The initial doLocal queue size.
      */
     public IsolationInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
@@ -46,7 +46,7 @@ public class IsolationInbox extends Inbox {
     }
 
     /**
-     * Add the messages in a message block to the appropriate local queue.
+     * Add the messages in a message block to the appropriate doLocal queue.
      *
      * @param _msgs The message to be added.
      */

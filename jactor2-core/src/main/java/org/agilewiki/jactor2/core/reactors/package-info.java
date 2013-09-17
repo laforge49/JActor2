@@ -19,7 +19,7 @@
  *     When not provided, Facility.getInitialBufferSize() is used instead.
  * </li>
  * <li>
- *     <b>int initialLocalQueueSize</b> The initial size of the local queue(s) used by the
+ *     <b>int initialLocalQueueSize</b> The initial size of the doLocal queue(s) used by the
  *     inbox. When not provided, Facility.getInitialLocalMessageQueueSize() is used instead.
  * </li>
  * <li>

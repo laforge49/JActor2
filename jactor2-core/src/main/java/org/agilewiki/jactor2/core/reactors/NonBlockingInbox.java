@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * The inbox used by NonBlockingReactor, ThreadBoundReactor
- * and SwingBoundReactor, NonBlockingInbox uses a single ArrayDeque for the local queue.
+ * and SwingBoundReactor, NonBlockingInbox uses a single ArrayDeque for the doLocal queue.
  *
  * @author monster
  */
@@ -22,7 +22,7 @@ public class NonBlockingInbox extends Inbox {
     /**
      * Creates a NonBlockingInbox.
      *
-     * @param initialLocalQueueSize The initial local queue size.
+     * @param initialLocalQueueSize The initial doLocal queue size.
      */
     public NonBlockingInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
