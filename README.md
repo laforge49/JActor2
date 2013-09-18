@@ -8,8 +8,7 @@ this issue head on.
 JActor2 is lock-free code that extends the actor programming paradigm for increased effectiveness
 and ease of use.
 
-- [Tutorials](http://laforge49.github.io/JActor2/docs/tutorials)
-- [API](http://laforge49.github.io/JActor2/docs/api/index.html?org/agilewiki/jactor2/package-summary.html)
+- [Documentation](http://laforge49.github.io/JActor2/docs/index.html)
 - [Downloads](http://laforge49.github.io/JActor2/downloads)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - Compatible with [Maven 3](http://maven.apache.org/) and [OSGi](http://www.osgi.org/Main/HomePage).
