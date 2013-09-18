@@ -9,7 +9,6 @@ is a very simple blade. It has a synchronous request, pingSReq.
 This request returns the number of times it has been called:
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Ponger extends BladeBase {
@@ -19,7 +18,7 @@ public class Ponger extends BladeBase {
         initialize(_reactor);
     }
 
-    SyncRequest&lt;Long&gt; pingSReq() {
+    public SyncBladeRequest&lt;Long&gt; pingSReq() {
         return new SyncBladeRequest&lt;Long&gt;() {
             @Override
             protected Long processSyncRequest() throws Exception {
@@ -30,5 +29,71 @@ public class Ponger extends BladeBase {
     }
 }
 </pre>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html">BladeBase</a>
+</h3>
+<pre>
+public class Ponger extends BladeBase {
+    ...
+}
+</pre>
+<p>
+BladeBase implements the Blade interface and provides a number of methods and nested
+classes for use when implementing a Blade.
+</p>
+<h3>
+Thread Safety
+</h3>
+<pre>
+    private long count = 0;
+</pre>
+<p>
+The member variable count is private and the only means of updating it is through a
+request. Which makes it thread-safe.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#initialize(org.agilewiki.jactor2.core.reactors.Reactor)">BladeBase.initialize</a>
+</h3>
+<pre>
+    public Ponger(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
+    }
+</pre>
+<p>
+Every blade needs a reactor before it can send or receive messages.
+And once set, a blade can not be assigned a different reactor.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest&lt;RESPONSE_TYPE&gt;</a>
+</h3>
+<pre>
+    public SyncBladeRequest&lt;Long&gt; pingSReq() {
+        return new SyncBladeRequest&lt;Long&gt;() {
+            ...
+        };
+    }
+</pre>
+<p>
+SyncBladeRequest is a BladeBase nested class that extends
+<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;RESPONSE_TYPE&gt;</a>.
+The pingSReq method returns a non-reusable instance of SyncBladeRequest that can be used to
+access the state of the blade.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest()">SyncRequest.processSyncRequest</a>
+</h3>
+<pre>
+            @Override
+            protected Long processSyncRequest() throws Exception {
+                count += 1;
+                return count;
+            }
+</pre>
+<p>
+The processSyncRequest method is called when the SyncRequest is invoked.
+But it runs on the thread of the reactor assigned to the blade,
+regardless of which thread was used to invoke the SyncRequest.
+This method is used to access and/or update the state of the blade and to return a result.
+</p>
 </body>
 </html>
