@@ -37,7 +37,7 @@ public class ThreadMigration extends BladeBase {
                     new NonBlockingReactor(myModuleContext);
                 SubActor subActor = new SubActor(subReactor);
                 subActor.doAReq("         signal").signal();
-                subActor.doAReq("           send").send(myReactor, this);
+                send(subActor.doAReq("           send"), this);
             }
         };
     }

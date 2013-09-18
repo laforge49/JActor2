@@ -68,7 +68,7 @@ public class Loops extends BladeBase {
                         dis.processAsyncResponse(_response);
                     } else {
                         counter -= 1;
-                        _sums.addAReq(counter).send(getReactor(), responseProcessor);
+                        send(_sums.addAReq(counter), responseProcessor);
                     }
                 }
             };
@@ -80,7 +80,7 @@ public class Loops extends BladeBase {
                     processAsyncResponse(0L);
                 } else {
                     counter = _count;
-                    _sums.addAReq(counter).send(getReactor(), responseProcessor);
+                    send(_sums.addAReq(counter), responseProcessor);
                 }
             }
         };
