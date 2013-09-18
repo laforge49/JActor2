@@ -61,7 +61,7 @@ public class BladeBase implements Blade {
         return reactor;
     }
 
-    abstract public class SyncBladeRequest<RESPONSE_TYPE> extends SyncRequest<RESPONSE_TYPE> {
+    protected abstract class SyncBladeRequest<RESPONSE_TYPE> extends SyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
@@ -71,7 +71,7 @@ public class BladeBase implements Blade {
         }
     }
 
-    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+    protected abstract class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
