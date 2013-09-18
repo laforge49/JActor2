@@ -16,10 +16,9 @@ public class IsolationBlade extends BladeBase {
     /**
      * Create an isolation blade.
      *
-     * @param _facility A set of resources, including a thread pool, for use
-     *                  by reactors and their blades.
+     * @param _isolationReactor The reactor used by the isolation blade.
      */
-    public IsolationBlade(final Facility _facility) throws Exception {
-        initialize(new IsolationReactor(_facility));
+    public IsolationBlade(final IsolationReactor _isolationReactor) throws Exception {
+        initialize(_isolationReactor);
     }
 }

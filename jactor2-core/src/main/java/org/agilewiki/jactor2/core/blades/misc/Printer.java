@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.blades.misc;
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 import java.io.PrintStream;
 import java.util.Locale;
@@ -47,36 +48,33 @@ public class Printer extends IsolationBlade {
     /**
      * Create a Printer blade.
      *
-     * @param _facility A set of resources, including a thread pool, for use
-     *                  by targetReactor and their actors.
+     * @param _isolationReactor The reactor used by the isolation blade.
      */
-    public Printer(final Facility _facility) throws Exception {
-        this(_facility, System.out);
+    public Printer(final IsolationReactor _isolationReactor) throws Exception {
+        this(_isolationReactor, System.out);
     }
 
     /**
      * Create a Printer blade.
      *
-     * @param _facility    A set of resources, including a thread pool, for use
-     *                     by targetReactor and their blade.
+     * @param _isolationReactor The reactor used by the isolation blade.
      * @param _printStream Where to print the string.
      */
-    public Printer(final Facility _facility,
+    public Printer(final IsolationReactor _isolationReactor,
                    final PrintStream _printStream) throws Exception {
-        this(_facility, _printStream, null);
+        this(_isolationReactor, _printStream, null);
     }
 
     /**
      * Create a Printer blade.
      *
-     * @param _facility    A set of resources, including a thread pool, for use
-     *                     by targetReactor and their actors.
+     * @param _isolationReactor The reactor used by the isolation blade.
      * @param _printStream Where to print the string.
      */
-    public Printer(final Facility _facility,
+    public Printer(final IsolationReactor _isolationReactor,
                    final PrintStream _printStream,
                    final Locale _locale) throws Exception {
-        super(_facility);
+        super(_isolationReactor);
         printStream = _printStream;
         locale = _locale;
     }
