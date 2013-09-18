@@ -12,12 +12,14 @@ In the process, we will encounter a number of classes which play a major role wh
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = new Printer(facility);
+            IsolationReactor isolationReactor = new IsolationReactor(facility);
+            Printer printer = new Printer(isolationReactor);
             SyncRequest<Void> printRequest = printer.printlnSReq("Hello World!");
             printRequest.call();
         } finally {
@@ -44,19 +46,33 @@ A program can have 1 or more facilities, and does not exit normally until
 all the facilities are closed.
 </p>
 <h3>
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>
+</h3>
+<pre>
+            IsolationReactor isolationReactor = new IsolationReactor(facility);
+</pre>
+<p>
+A
+<a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/reactors/Reactor.html">Reactor</a>
+processes messages and exchanges messages with other reactors.
+Thread safety is achieved by processing only one message at a time.
+</p>
+<p>
+An isolation reactor is a type of reactor which further isolates requests, 
+starting a new request only after a result was returned for the previous request.
+Isolation reactors are intended for use only when a thread may be blocked due to, for example, blocking I/O or
+extensive computations.
+</p>
+<h3>
 <a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/blades/misc/Printer.html">Printer</a>
 </h3>
 <pre>
-            Printer printer = new Printer(facility);
+            Printer printer = new Printer(isolationReactor);
 </pre>
 <p>
 A printer is an 
 <a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/blades/IsolationBlade.html">IsolationBlade</a>,
-which is to say an application object, which prints to a PrintStream, System.out being the default.
-When a printer object is created, an
-<a href ="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>
-is also created. The isolation reactor uses the provided facility and the printer uses the newly created isolation reactor in turn.
-(Isolation reactors are reactors intended for use by blades which perform extensive computation or which block the thread for I/O or other reasons.)
+which is to say an application object that uses an isolation reactor. It prints to a PrintStream, System.out being the default.
 </p>
 <h3>
 <a href="http://laforge49.github.io/JActor2/api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;RESPONSE_TYPE&gt;</a>
