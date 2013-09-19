@@ -13,20 +13,20 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
  * //Prints a banner without allowing any intervening lines.
  * public class PrinterAgentSample extends PrinterAgent {
  *
- *     public PrinterAgentSample(Printer _printer) throws Exception {
- *         psuper(_printer);
+ *     public PrinterAgentSample(final Printer _printer) throws Exception {
+ *         super(_printer);
  *     }
  *
  *     // Returns a request to print a Hi! banner.
- *     protected AsyncRequest&lt;Void&gt; startAReq() {
+ *     public AsyncBladeRequest&lt;Void&gt; startAReq() {
  *         return new AsyncBladeRequest&lt;Void&gt;() {
  *             {@literal @}Override
- *             public void processAsyncRequest() throws Exception {
- *                 local(printer.printlnSReq("*********"));
- *                 local(printer.printlnSReq("*       *"));
- *                 local(printer.printlnSReq("*  Hi!  *"));
- *                 local(printer.printlnSReq("*       *"));
- *                 local(printer.printlnSReq("*********"));
+ *             protected void processAsyncRequest() throws Exception {
+ *                 println("*********");
+ *                 println("*       *");
+ *                 println("*  Hi!  *");
+ *                 println("*       *");
+ *                 println("*********");
  *                 processAsyncResponse(null);
  *             }
  *         };
@@ -48,5 +48,25 @@ abstract public class PrinterAgent extends BladeBase implements Agent<Void> {
     public PrinterAgent(final Printer _printer) throws Exception {
         initialize(_printer.getReactor());
         printer = _printer;
+    }
+
+    /**
+     * Print a string.
+     *
+     * @param _string The string to be printed
+     */
+    protected void println(final String _string) throws Exception {
+        local(printer.printlnSReq(_string));
+    }
+
+    /**
+     * Print a formatted string.
+     *
+     * @param _format The formatting.
+     * @param _args   The data to be formatted.
+     */
+    protected void print(final String _format,
+                         final Object... _args) throws Exception {
+        local(printer.printSReq(_format, _args));
     }
 }
