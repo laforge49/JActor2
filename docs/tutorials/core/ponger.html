@@ -9,6 +9,7 @@ is a very simple blade. It has a synchronous request, pingSReq.
 This request returns the number of times it has been called:
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Ponger extends BladeBase {
@@ -18,7 +19,7 @@ public class Ponger extends BladeBase {
         initialize(_reactor);
     }
 
-    public SyncBladeRequest&lt;Long&gt; pingSReq() {
+    public SyncRequest&lt;Long&gt; pingSReq() {
         return new SyncBladeRequest&lt;Long&gt;() {
             @Override
             protected Long processSyncRequest() throws Exception {
@@ -67,7 +68,7 @@ And once set, a blade can not be assigned a different reactor.
 <a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest&lt;RESPONSE_TYPE&gt;</a>
 </h3>
 <pre>
-    public SyncBladeRequest&lt;Long&gt; pingSReq() {
+    public SyncRequest&lt;Long&gt; pingSReq() {
         return new SyncBladeRequest&lt;Long&gt;() {
             ...
         };
@@ -76,8 +77,7 @@ And once set, a blade can not be assigned a different reactor.
 <p>
 SyncBladeRequest is a BladeBase nested class that extends
 <a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;RESPONSE_TYPE&gt;</a>.
-The pingSReq method returns a non-reusable instance of SyncBladeRequest that can be used to
-access the state of the blade.
+The pingSReq method returns a non-reusable instance of SyncRequest for accessing the state of the blade.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest()">SyncRequest.processSyncRequest</a>

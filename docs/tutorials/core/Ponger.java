@@ -1,4 +1,5 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Ponger extends BladeBase {
@@ -8,7 +9,7 @@ public class Ponger extends BladeBase {
         initialize(_reactor);
     }
 
-    public SyncBladeRequest<Long> pingSReq() {
+    public SyncRequest<Long> pingSReq() {
         return new SyncBladeRequest<Long>() {
             @Override
             protected Long processSyncRequest() throws Exception {
