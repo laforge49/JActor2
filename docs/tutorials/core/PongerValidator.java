@@ -1,19 +1,15 @@
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class PongerValidator {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Reactor reactor = new NonBlockingReactor(facility);
-            Ponger ponger = new Ponger(reactor);
+            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
             long i = 0;
             while (i < 10) {
                 i++;
-                SyncRequest<Long> ping = ponger.pingSReq();
-                long j = ping.call();
+                long j = ponger.pingSReq().call();
                 if (i != j)
                     throw new IllegalStateException("unexpected result");
             }

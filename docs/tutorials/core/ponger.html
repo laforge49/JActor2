@@ -95,5 +95,74 @@ But it runs on the thread of the reactor assigned to the blade,
 regardless of which thread was used to invoke the SyncRequest.
 This method is used to access and/or update the state of the blade and to return a result.
 </p>
+<h2>
+<a href="PongerValidator.java">PongerValidator</a>
+</h2>
+<p>
+PongerValidator is a simple program that exercises Ponger:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+public class PongerValidator {
+    public static void main(final String[] _args) throws Exception {
+        Facility facility = new Facility();
+        try {
+            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
+            long i = 0;
+            while (i < 10) {
+                i++;
+                long j = ponger.pingSReq().call();
+                if (i != j)
+                    throw new IllegalStateException("unexpected result");
+            }
+        } finally {
+            facility.close();
+        }
+    }
+}
+</pre>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/facilities/Facility.html">Facility</a>
+</h3>
+<pre>
+        Facility facility = new Facility();
+        try {
+            ...
+        } finally {
+            facility.close();
+        }
+</pre>
+<p>
+One or more facilities are always needed when using JActor.
+And they must be closed for the program to exit normally.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
+</h3>
+<pre>
+            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
+</pre>
+<p>
+Blades generally use non-blocking reactors, but only if they do not block the thread for I/O, intense computation 
+or any other reason.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
+</h3>
+<pre>
+            long i = 0;
+            while (i < 10) {
+                i++;
+                long j = ponger.pingSReq().call();
+                if (i != j)
+                    throw new IllegalStateException("unexpected result");
+            }
+</pre>
+<p>
+The call method will return the result from invoking a request, but must not be used from within a blade.
+This method blocks the main thread until a result is received.
+</p>
 </body>
 </html>
