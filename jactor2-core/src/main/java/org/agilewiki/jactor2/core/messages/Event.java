@@ -135,6 +135,11 @@ public abstract class Event<TARGET_BLADE_TYPE extends Blade> {
         }
 
         @Override
+        public boolean isIsolated() {
+            return false;
+        }
+
+        @Override
         public void close() throws Exception {
         }
 

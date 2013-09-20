@@ -83,6 +83,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected boolean responsePending = true;
 
     /**
+     * True when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
+     */
+    protected boolean isolated;
+
+    /**
      * The response created when this message is applied to the target blade.
      */
     protected Object response;
@@ -280,6 +285,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     @Override
     public boolean isResponsePending() {
         return responsePending;
+    }
+
+    @Override
+    public boolean isIsolated() {
+        return isolated;
     }
 
     @Override

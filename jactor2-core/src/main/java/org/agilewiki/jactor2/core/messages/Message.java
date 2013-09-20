@@ -30,6 +30,13 @@ public interface Message extends AutoCloseable {
     boolean isResponsePending();
 
     /**
+     * Returns true whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.
+     *
+     * @return True whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.
+     */
+    boolean isIsolated();
+
+    /**
      * Execute the Event.processEvent or AsyncRequest.processAsyncRequest method
      * of the event/request held by the message. This method is always called on the
      * target targetReactor's own thread.
