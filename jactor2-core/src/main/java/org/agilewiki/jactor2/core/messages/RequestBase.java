@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 
@@ -61,7 +62,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected MessageSource messageSource;
 
     /**
-     * The message targeted to the source targetReactor which, when processed,
+     * The message targeted to the source reactor which, when processed,
      * resulted in this message.
      */
     protected Message oldMessage;
@@ -85,7 +86,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * True when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
      */
-    protected boolean isolated;
+    private boolean isolated;
 
     /**
      * The response created when this message is applied to the target blade.
@@ -143,7 +144,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * raised while processing the request are processed by the exception handler active when
      * the doSend method was called.
      *
-     * @param _source            The targetReactor on whose thread this method was invoked and which
+     * @param _source            The sourceReactor on whose thread this method was invoked and which
      *                           will buffer this Request and subsequently receive the result for
      *                           processing on the same thread.
      * @param _responseProcessor Passed with this request and then returned with the result, the
@@ -155,7 +156,14 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         ReactorBase source = (ReactorBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(
-                    "A valid source targetReactor can not be idle");
+                    "A valid source sourceReactor can not be idle");
+        if (oldMessage != null && oldMessage.isIsolated())
+            isolated = true;
+        if (targetReactor instanceof IsolationReactor) {
+            if (isolated)
+                throw new UnsupportedOperationException("Isolated requests can not be nested, even indirectly.");
+            isolated = true;
+        }
         use();
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
         if (rp == null)
