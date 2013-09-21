@@ -97,7 +97,7 @@ But it is printed from the printer's own thread, not from the main thread.
 </p>
 <p>
 The call method of a request provides one way of invoking a request.
-The printRequest.call method sends the request to the blade's thread and block the main thread until a result is received.
+The printRequest.call method sends the request to the blade's thread and blocks the main thread until a result is received.
 The call method is the only method in JActor which blocks a thread.
 (The call method can not be used by a blade, as it must be invoked from a non-facility thread.)
 </p>
