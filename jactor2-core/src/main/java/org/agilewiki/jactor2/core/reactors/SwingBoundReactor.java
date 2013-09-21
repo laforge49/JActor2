@@ -44,7 +44,7 @@ import java.awt.event.WindowListener;
  *                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
  *
  *                 //Close facility when window is closed.
- *                 frame.addWindowListener((SwingBoundReactor) getTargetReactor());
+ *                 frame.addWindowListener((SwingBoundReactor) targetReactor);
  *
  *                 //Add the "Hello World!" label.
  *                 JLabel label = new JLabel("Hello World!");

@@ -25,7 +25,7 @@ import java.util.Locale;
  *         try {
  *
  *             //Create a Printer.
- *             Printer printer = new Printer(facility);
+ *             Printer printer = new Printer(new IsolationReactor(facility));
  *
  *             //Print something.
  *             printer.printlnSReq("Hello World!").call();

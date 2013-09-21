@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 public class PrinterSample {
 
@@ -12,7 +13,7 @@ public class PrinterSample {
         try {
 
             //Create a Printer.
-            Printer printer = new Printer(facility);
+            Printer printer = new Printer(new IsolationReactor(facility));
 
             //Print something.
             printer.printlnSReq("Hello World!").call();
