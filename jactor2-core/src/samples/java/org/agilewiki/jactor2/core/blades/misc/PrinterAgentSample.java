@@ -8,16 +8,16 @@ public class PrinterAgentSample extends PrinterAgent {
     }
 
     // Returns a request to print a Hi! banner.
-    public AsyncBladeRequest<Void> startAReq() {
-        return new AsyncBladeRequest<Void>() {
+    public SyncBladeRequest<Void> startSReq() {
+        return new SyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            protected Void processSyncRequest() throws Exception {
                 println("*********");
                 println("*       *");
                 println("*  Hi!  *");
                 println("*       *");
                 println("*********");
-                processAsyncResponse(null);
+                return null;
             }
         };
     }

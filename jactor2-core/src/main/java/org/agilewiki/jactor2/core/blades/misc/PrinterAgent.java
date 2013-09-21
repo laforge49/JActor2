@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
-import org.agilewiki.jactor2.core.blades.Agent;
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.SyncAgent;
 
 /**
  * A PrinterAgent can be used to print multiple lines
@@ -18,23 +18,23 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
  *     }
  *
  *     // Returns a request to print a Hi! banner.
- *     public AsyncBladeRequest&lt;Void&gt; startAReq() {
- *         return new AsyncBladeRequest&lt;Void&gt;() {
- *             {@literal @}Override
- *             protected void processAsyncRequest() throws Exception {
+ *     public SyncBladeRequest<Void> startSReq() {
+ *         return new SyncBladeRequest<Void>() {
+ *
+ *             @Override protected Void processSyncRequest() throws Exception {
  *                 println("*********");
  *                 println("*       *");
  *                 println("*  Hi!  *");
  *                 println("*       *");
  *                 println("*********");
- *                 processAsyncResponse(null);
+ *                 return null;
  *             }
  *         };
  *     }
  * }
  * </pre>
  */
-abstract public class PrinterAgent extends BladeBase implements Agent<Void> {
+abstract public class PrinterAgent extends BladeBase implements SyncAgent<Void> {
     /**
      * The printer used to print the text.
      */
