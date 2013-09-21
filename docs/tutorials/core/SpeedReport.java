@@ -36,7 +36,7 @@ public class SpeedReport extends PrinterAgent {
                 println(heading);
                 print("Test duration in nanoseconds: %,d%n", ns);
                 print("Number of exchanges: %,d%n", count);
-                print("Exchanges per second: %,d%n%n", 1000000000L / ns * count);
+                print("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
                 processAsyncResponse(null);
             }
         };
