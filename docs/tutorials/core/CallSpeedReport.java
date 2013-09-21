@@ -25,7 +25,7 @@ public class CallSpeedReport {
             final long t11 = System.nanoTime();
             final long d1 = t11 - t10;
             Printer printer = new Printer(new IsolationReactor(facility));
-            SpeedReport.startAReq(printer, "Speed Report Validation", d1 - d0, count).call();
+            SpeedReport.startSReq(printer, "Speed Report Validation", d1 - d0, count).call();
         } finally {
             facility.close();
         }

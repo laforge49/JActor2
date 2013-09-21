@@ -1,19 +1,19 @@
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.misc.PrinterAgent;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 public class SpeedReport extends PrinterAgent {
     private final String heading;
     private final long ns;
     private final long count;
     
-    public static AsyncRequest<Void> startAReq(
+    public static SyncRequest<Void> startSReq(
             final Printer _printer, 
         final String _heading, 
         final long _ns, 
         final long _count)
             throws Exception {
-        return new SpeedReport(_printer, _heading, _ns, _count).startAReq();
+        return new SpeedReport(_printer, _heading, _ns, _count).startSReq();
     }
 
     public SpeedReport(
@@ -28,16 +28,16 @@ public class SpeedReport extends PrinterAgent {
         count = _count;
     }
     
-    public AsyncRequest<Void> startAReq() {
-        return new AsyncBladeRequest<Void>() {
+    public SyncRequest<Void> startSReq() {
+        return new SyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            protected Void processSyncRequest() throws Exception {
                 println("");
                 println(heading);
                 print("Test duration in nanoseconds: %,d%n", ns);
                 print("Number of exchanges: %,d%n", count);
                 print("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
-                processAsyncResponse(null);
+                return null;
             }
         };
     }

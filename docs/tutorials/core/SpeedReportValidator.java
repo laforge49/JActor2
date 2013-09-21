@@ -7,7 +7,7 @@ public class SpeedReportValidator {
         Facility facility = new Facility();
         try {
             Printer printer = new Printer(new IsolationReactor(facility));
-            SpeedReport.startAReq(printer, "Speed Report Validation", 1000L, 1L).call();
+            SpeedReport.startSReq(printer, "Speed Report Validation", 1000L, 1L).call();
         } finally {
             facility.close();
         }
