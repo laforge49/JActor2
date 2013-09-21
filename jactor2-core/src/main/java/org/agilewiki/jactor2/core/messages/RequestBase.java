@@ -191,9 +191,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
+        if (Thread.currentThread() instanceof PoolThread)
+            throw new UnsupportedOperationException("Use of call on a PoolThread can result in a deadlock");
         if (Facility.DEBUG) {
-            if (Thread.currentThread() instanceof PoolThread)
-                throw new UnsupportedOperationException("Use of call on a PoolThread can result in a deadlock");
             addDebugPending();
         }
         foreign = true;
