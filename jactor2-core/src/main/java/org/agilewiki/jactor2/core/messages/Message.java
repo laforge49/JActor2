@@ -30,7 +30,7 @@ public interface Message extends AutoCloseable {
     boolean isResponsePending();
 
     /**
-     * Returns true whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.
+     * Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
      *
      * @return True whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.
      */
