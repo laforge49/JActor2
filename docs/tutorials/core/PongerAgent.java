@@ -1,9 +1,7 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.SyncAgent;
+import org.agilewiki.jactor2.core.blades.SyncAgentBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
-public class PongerAgent extends BladeBase implements SyncAgent {
-    private final Ponger ponger;
+public class PongerAgent extends SyncAgentBase<Void, Ponger> {
     private final long count;
     
     public static SyncRequest<Void> startSReq(
@@ -13,23 +11,18 @@ public class PongerAgent extends BladeBase implements SyncAgent {
     }
 
     public PongerAgent(
-        final Ponger _ponger, 
-        final long _count) throws Exception {
-        initialize(_ponger.getReactor());
-        ponger = _ponger;
+            final Ponger _ponger, 
+            final long _count) throws Exception {
+        super(_ponger);
         count = _count;
     }
     
-    public SyncRequest<Void> startSReq() {
-        return new SyncBladeRequest<Void>() {
-            @Override
-            protected Void processSyncRequest() throws Exception {
-                long i = 0;
-                while (i < count) {
-                    local(ponger.pingSReq());
-                }
-                return null;
-            }
-        };
+    @Override
+    public Void start() throws Exception {
+        long i = 0;
+        while (i < count) {
+            local(blade.pingSReq());
+        }
+        return null;
     }
 }

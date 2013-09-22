@@ -17,28 +17,23 @@ public class SpeedReport extends PrinterAgent {
     }
 
     public SpeedReport(
-        final Printer _printer, 
-        final String _heading, 
-        final long _ns, 
-        final long _count)
-            throws Exception {
+            final Printer _printer, 
+            final String _heading, 
+            final long _ns, 
+            final long _count) throws Exception {
         super(_printer);
         heading = _heading;
         ns = _ns;
         count = _count;
     }
     
-    public SyncRequest<Void> startSReq() {
-        return new SyncBladeRequest<Void>() {
-            @Override
-            protected Void processSyncRequest() throws Exception {
-                println("");
-                println(heading);
-                printf("Test duration in nanoseconds: %,d%n", ns);
-                printf("Number of exchanges: %,d%n", count);
-                printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
-                return null;
-            }
-        };
+    @Override
+    protected Void start() throws Exception {
+        println("");
+        println(heading);
+        printf("Test duration in nanoseconds: %,d%n", ns);
+        printf("Number of exchanges: %,d%n", count);
+        printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
+        return null;
     }
 }
