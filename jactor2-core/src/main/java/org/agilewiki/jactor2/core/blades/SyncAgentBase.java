@@ -27,7 +27,7 @@ abstract public class SyncAgentBase<RESPONSE_TYPE, BLADE_TYPE extends Blade>
         return new SyncBladeRequest<RESPONSE_TYPE>() {
             @Override
             protected RESPONSE_TYPE processSyncRequest() throws Exception {
-                return null;
+                return start();
             }
         };
     }
