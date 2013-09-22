@@ -63,13 +63,48 @@ public class SpeedReport extends PrinterAgent {
 }
 </pre>
 <p>
-PrinterAgent is an agent, which is to say that it is a blade that uses the same reactor as another blade.
+PrinterAgent is a
+<a href="../../api/org/agilewiki/jactor2/core/blades/SyncAgent.html">SyncAgent</a>,
+which is to say that it is a blade that uses the same reactor as another blade.
 This allows PrinterAgent to access the requests of Printer locally, without recourse to messages.
 Local access to Printer means that PrinterAgent can easily implement protected methods, like println and printf,
 for using the Printer blade.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/Agent.html">Agent</a>
+<a href="../../api/org/agilewiki/jactor2/core/blades/SyncAgent.html#startSReq()">startSReq</a>
 </h3>
+<pre>
+    public static SyncRequest&lt;Void&gt; startSReq(
+            final Printer _printer, 
+        final String _heading, 
+        final long _ns, 
+        final long _count)
+            throws Exception {
+        return new SpeedReport(_printer, _heading, _ns, _count).startSReq();
+    }
+</pre>
+<p>
+Sync agents have a single request, startSReq, which is called only once.
+So it makes a lot of sense to define a static method which creates the agent and returns the request.
+</p>
+<pre>
+    public SyncRequest&lt;Void&gt; startSReq() {
+        return new SyncBladeRequest&lt;Void&gt;() {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                println("");
+                println(heading);
+                printf("Test duration in nanoseconds: %,d%n", ns);
+                printf("Number of exchanges: %,d%n", count);
+                printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
+                return null;
+            }
+        };
+    }
+</pre>
+<p>
+When processing startSReq, the protected methods on PrinterAgent--println and printf--can be used
+for printing the report.
+</p>
 </body>
 </html>
