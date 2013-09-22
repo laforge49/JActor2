@@ -21,7 +21,7 @@ import org.agilewiki.jactor2.core.blades.SyncAgent;
  *     public SyncBladeRequest<Void> startSReq() {
  *         return new SyncBladeRequest<Void>() {
  *
- *             @Override protected Void processSyncRequest() throws Exception {
+ *             {@literal @}Override protected Void processSyncRequest() throws Exception {
  *                 println("*********");
  *                 println("*       *");
  *                 println("*  Hi!  *");
