@@ -1,0 +1,59 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; CallSpeedReport
+</p>
+<h1>CallSpeedReport - Calls Per Second</h1>
+<p>
+The 
+<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
+method is quite slow as it typically blocks the originating thread, 
+allocates a thread to the target reactor,
+creates a message and adds it to the concurrent linked queue of that reactor.
+The message must then be dequeued and evaluated on the new thread.
+The message is then updated with a response and the originating thread is woken up.
+Fortunately the call method is not used very often!
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+public class CallSpeedReport {
+    public static void main(final String[] _args) throws Exception {
+        final long count = 1000000L;
+        Facility facility = new Facility();
+        try {
+            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
+            final long t10 = System.nanoTime();
+            long i = 0L;
+            while (i < count) {
+                i += 1;
+                long j = ponger.pingSReq().call();
+            }
+            final long t11 = System.nanoTime();
+            final long d1 = t11 - t10;
+            Printer printer = new Printer(new IsolationReactor(facility));
+            SpeedReport.startSReq(printer, "Call Timings", d1, count).call();
+        } finally {
+            facility.close();
+        }
+    }
+}
+</pre>
+<p>
+This benchmark is pretty straight forward. We call the ping request in a loop and then use SpeedReport to 
+calculate and print the results:
+</p>
+<pre>
+Call Timings
+Test duration in nanoseconds: 5,173,229,782
+Number of exchanges: 1,000,000
+Exchanges per second: 193,302
+</pre>
+By themselves the numbers are pretty meaningless. These test results were done on a system with both a fast CPU and
+fast RAM.
+But we can compare these numbers to other methods to gauge relative performance.
+</body>
+</html>
