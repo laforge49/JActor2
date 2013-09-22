@@ -5,6 +5,71 @@
 </p>
 <h1>SpeedReport - PrinterAgent</h1>
 <p>
+SpeedReport is a blade that prints a brief report that is useful when writing benchmarks.
+The report is generated entirely on the same thread used by Printer.
 </p>
+<pre>
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.blades.misc.PrinterAgent;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+
+public class SpeedReport extends PrinterAgent {
+    private final String heading;
+    private final long ns;
+    private final long count;
+    
+    public static SyncRequest&lt;Void&gt; startSReq(
+            final Printer _printer, 
+        final String _heading, 
+        final long _ns, 
+        final long _count)
+            throws Exception {
+        return new SpeedReport(_printer, _heading, _ns, _count).startSReq();
+    }
+
+    public SpeedReport(
+        final Printer _printer, 
+        final String _heading, 
+        final long _ns, 
+        final long _count)
+            throws Exception {
+        super(_printer);
+        heading = _heading;
+        ns = _ns;
+        count = _count;
+    }
+    
+    public SyncRequest&lt;Void&gt; startSReq() {
+        return new SyncBladeRequest&lt;Void&gt;() {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                println("");
+                println(heading);
+                printf("Test duration in nanoseconds: %,d%n", ns);
+                printf("Number of exchanges: %,d%n", count);
+                printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
+                return null;
+            }
+        };
+    }
+}
+</pre>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/misc/PrinterAgent.html">PrinterAgent</a>
+</h3>
+<pre>
+public class SpeedReport extends PrinterAgent {
+    ...
+}
+</pre>
+<p>
+PrinterAgent is an agent, which is to say that it is a blade that uses the same reactor as another blade.
+This allows PrinterAgent to access the requests of Printer locally, without recourse to messages.
+Local access to Printer means that PrinterAgent can easily implement protected methods, like println and printf,
+for using the Printer blade.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/Agent.html">Agent</a>
+</h3>
 </body>
 </html>
