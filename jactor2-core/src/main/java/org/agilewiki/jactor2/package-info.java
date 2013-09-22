@@ -66,7 +66,7 @@
  * <p>
  *     JActor also supports events, but two-way messages are generally preferred. JActor's two-way
  *     messaging uses callbacks to process responses, rather than blocking the thread. Two-way messaging
- *     implicitly implements flow control and keeps the memory foot print small. So everything runs
+ *     implicitly implements flow control and keeps the memory footprint small. So everything runs
  *     faster and more reliably under load.
  * </p>
  * <p>

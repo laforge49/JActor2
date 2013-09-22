@@ -65,7 +65,7 @@ abstract public class PrinterAgent extends BladeBase implements SyncAgent<Void> 
      * @param _format The formatting.
      * @param _args   The data to be formatted.
      */
-    protected void print(final String _format,
+    protected void printf(final String _format,
                          final Object... _args) throws Exception {
         local(printer.printSReq(_format, _args));
     }
