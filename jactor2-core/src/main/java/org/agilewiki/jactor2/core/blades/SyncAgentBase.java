@@ -14,7 +14,8 @@ abstract public class SyncAgentBase<RESPONSE_TYPE, BLADE_TYPE extends Blade>
 
     /**
      * Create a sync agent.
-     * @param _blade    The blade to which this agent is bound.
+     *
+     * @param _blade The blade to which this agent is bound.
      */
     public SyncAgentBase(final BLADE_TYPE _blade) throws Exception {
         initialize(_blade.getReactor());

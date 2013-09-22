@@ -25,7 +25,7 @@ public class Blade2 {
     /**
      * Process the request immediately.
      *
-     * @param _request    The request to be processed.
+     * @param _request        The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
      */
     protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,

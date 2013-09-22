@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.SyncAgent;
 import org.agilewiki.jactor2.core.blades.SyncAgentBase;
 
 /**
@@ -61,7 +59,7 @@ abstract public class PrinterAgent extends SyncAgentBase<Void, Printer> {
      * @param _args   The data to be formatted.
      */
     protected void printf(final String _format,
-                         final Object... _args) throws Exception {
+                          final Object... _args) throws Exception {
         local(blade.printSReq(_format, _args));
     }
 }

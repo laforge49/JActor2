@@ -19,13 +19,13 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * Process the request immediately.
      *
-     * @param _source         The targetReactor on whose thread this method was invoked and which
-     *                        must be the same as the targetReactor of the target.
-     * @param _request    The request to be processed.
+     * @param _source            The targetReactor on whose thread this method was invoked and which
+     *                           must be the same as the targetReactor of the target.
+     * @param _request           The request to be processed.
      * @param _responseProcessor Passed with this request and then returned with the result, the
      *                           AsyncResponseProcessor is used to process the result on the same thread
      *                           that originally invoked this method. If null, then no response is returned.
-     * @param <RESPONSE_TYPE> The type of value returned.
+     * @param <RESPONSE_TYPE>    The type of value returned.
      */
     public static <RESPONSE_TYPE> void doSend(
             final Reactor _source,
@@ -152,7 +152,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *                           that originally invoked this method. If null, then no response is returned.
      */
     private void doSend(final Reactor _source,
-                       final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
+                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
         ReactorBase source = (ReactorBase) _source;
         if (!source.isRunning())
             throw new IllegalStateException(

@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
@@ -58,7 +57,7 @@ public class Printer extends IsolationBlade {
      * Create a Printer blade.
      *
      * @param _isolationReactor The reactor used by the isolation blade.
-     * @param _printStream Where to print the string.
+     * @param _printStream      Where to print the string.
      */
     public Printer(final IsolationReactor _isolationReactor,
                    final PrintStream _printStream) throws Exception {
@@ -69,7 +68,7 @@ public class Printer extends IsolationBlade {
      * Create a Printer blade.
      *
      * @param _isolationReactor The reactor used by the isolation blade.
-     * @param _printStream Where to print the string.
+     * @param _printStream      Where to print the string.
      */
     public Printer(final IsolationReactor _isolationReactor,
                    final PrintStream _printStream,
