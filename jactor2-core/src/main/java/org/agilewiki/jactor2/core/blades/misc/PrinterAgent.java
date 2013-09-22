@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.SyncAgent;
+import org.agilewiki.jactor2.core.blades.SyncAgentBase;
 
 /**
  * A PrinterAgent can be used to print multiple lines
@@ -34,20 +35,14 @@ import org.agilewiki.jactor2.core.blades.SyncAgent;
  * }
  * </pre>
  */
-abstract public class PrinterAgent extends BladeBase implements SyncAgent<Void> {
-    /**
-     * The printer used to print the text.
-     */
-    public final Printer printer;
-
+abstract public class PrinterAgent extends SyncAgentBase<Void, Printer> {
     /**
      * Create a printer adjunct.
      *
      * @param _printer The printer used to print the text.
      */
     public PrinterAgent(final Printer _printer) throws Exception {
-        initialize(_printer.getReactor());
-        printer = _printer;
+        super(_printer);
     }
 
     /**
@@ -56,7 +51,7 @@ abstract public class PrinterAgent extends BladeBase implements SyncAgent<Void> 
      * @param _string The string to be printed
      */
     protected void println(final String _string) throws Exception {
-        local(printer.printlnSReq(_string));
+        local(blade.printlnSReq(_string));
     }
 
     /**
@@ -67,6 +62,6 @@ abstract public class PrinterAgent extends BladeBase implements SyncAgent<Void> 
      */
     protected void printf(final String _format,
                          final Object... _args) throws Exception {
-        local(printer.printSReq(_format, _args));
+        local(blade.printSReq(_format, _args));
     }
 }
