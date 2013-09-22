@@ -34,9 +34,9 @@ public class SpeedReport extends PrinterAgent {
             protected Void processSyncRequest() throws Exception {
                 println("");
                 println(heading);
-                print("Test duration in nanoseconds: %,d%n", ns);
-                print("Number of exchanges: %,d%n", count);
-                print("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
+                printf("Test duration in nanoseconds: %,d%n", ns);
+                printf("Number of exchanges: %,d%n", count);
+                printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
                 return null;
             }
         };
