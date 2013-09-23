@@ -12,10 +12,10 @@ We will use PongerAgent, a sync agent of Ponger, to see just how fast local acce
 import org.agilewiki.jactor2.core.blades.SyncAgentBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
-public class PongerAgent extends SyncAgentBase<Void, Ponger> {
+public class PongerAgent extends SyncAgentBase&lt;Void, Ponger&gt; {
     private final long count;
     
-    public static SyncRequest<Void> startSReq(
+    public static SyncRequest&lt;Void&gt; startSReq(
             final Ponger _ponger, 
             final long _count) throws Exception {
         return new PongerAgent(_ponger, _count).startSReq();
@@ -39,5 +39,31 @@ public class PongerAgent extends SyncAgentBase<Void, Ponger> {
     }
 }
 </pre>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/SyncAgentBase.html">SyncAgentBase&lt;RESULT_TYPE, BLADE_TYPE extends Blade&gt;</a>
+</h3>
+<pre>
+public class PongerAgent extends SyncAgentBase&lt;Void, Ponger&gt; {
+    ...
+}
+</pre>
+<p>
+PongerAgent extends SyncAgentBase. The result from start is Void. And the local blade is Ponger.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#local(org.agilewiki.jactor2.core.messages.SyncRequest)">local</a>
+</h3>
+<pre>
+        long i = 0;
+        while (i < count) {
+            i++;
+            local(localBlade.pingSReq());
+        }
+</pre>
+<p>
+The BladeBase.local method is used only to invoke requests on blades with the same reactor.
+Like call, local returns a result, Void in this case.
+Unlike call, no messages are passed between threads and no threads are blocked.
+</p>
 </body>
 </html>
