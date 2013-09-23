@@ -21,6 +21,7 @@ public class PongerAgent extends SyncAgentBase<Void, Ponger> {
     public Void start() throws Exception {
         long i = 0;
         while (i < count) {
+            i++;
             local(blade.pingSReq());
         }
         return null;

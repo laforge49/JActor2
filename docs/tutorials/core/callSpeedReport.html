@@ -26,16 +26,16 @@ public class CallSpeedReport {
         Facility facility = new Facility();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor(facility));
-            final long t10 = System.nanoTime();
+            final long before = System.nanoTime();
             long i = 0L;
             while (i < count) {
                 i += 1;
                 long j = ponger.pingSReq().call();
             }
-            final long t11 = System.nanoTime();
-            final long d1 = t11 - t10;
+            final long after = System.nanoTime();
+            final long duration = after - before;
             Printer printer = new Printer(new IsolationReactor(facility));
-            SpeedReport.startSReq(printer, "Call Timings", d1, count).call();
+            SpeedReport.startSReq(printer, "Call Timings", duration, count).call();
         } finally {
             facility.close();
         }
