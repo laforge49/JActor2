@@ -8,18 +8,18 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 abstract public class SyncAgentBase<RESPONSE_TYPE, BLADE_TYPE extends Blade>
         extends BladeBase implements SyncAgent {
     /**
-     * The blade to which this agent is bound.
+     * The blade which is local to this agent.
      */
-    protected BLADE_TYPE blade;
+    protected BLADE_TYPE localBlade;
 
     /**
      * Create a sync agent.
      *
-     * @param _blade The blade to which this agent is bound.
+     * @param _localBlade The blade which is to be local to this agent.
      */
-    public SyncAgentBase(final BLADE_TYPE _blade) throws Exception {
-        initialize(_blade.getReactor());
-        blade = _blade;
+    public SyncAgentBase(final BLADE_TYPE _localBlade) throws Exception {
+        initialize(_localBlade.getReactor());
+        localBlade = _localBlade;
     }
 
     @Override

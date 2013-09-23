@@ -49,7 +49,7 @@ abstract public class PrinterAgent extends SyncAgentBase<Void, Printer> {
      * @param _string The string to be printed
      */
     protected void println(final String _string) throws Exception {
-        local(blade.printlnSReq(_string));
+        local(localBlade.printlnSReq(_string));
     }
 
     /**
@@ -60,6 +60,6 @@ abstract public class PrinterAgent extends SyncAgentBase<Void, Printer> {
      */
     protected void printf(final String _format,
                           final Object... _args) throws Exception {
-        local(blade.printSReq(_format, _args));
+        local(localBlade.printSReq(_format, _args));
     }
 }
