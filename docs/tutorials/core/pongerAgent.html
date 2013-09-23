@@ -1,3 +1,14 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; PongerAgent
+</p>
+<h1>PongerAgent - Local Methods per Second</h1>
+<p>
+Local access of requests by another blade in the same reactor are quite fast. 
+We will use PongerAgent, a sync agent of Ponger, to see just how fast local access can be.
+</p>
+<pre>
 import org.agilewiki.jactor2.core.blades.SyncAgentBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
@@ -27,3 +38,6 @@ public class PongerAgent extends SyncAgentBase<Void, Ponger> {
         return null;
     }
 }
+</pre>
+</body>
+</html>
