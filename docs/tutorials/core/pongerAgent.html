@@ -65,5 +65,51 @@ The BladeBase.local method is used only to invoke requests on blades with the sa
 Like call, local returns a result, Void in this case.
 Unlike call, no messages are passed between threads and no threads are blocked.
 </p>
+<h2>
+LocalSpeedReport
+</h2>
+<p>
+<a href="LocalSpeedReport.java">LocalSpeedReport</a>
+is a small program that times the Ponger agent and creates the speed report.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+public class LocalSpeedReport {
+    public static void main(final String[] _args) throws Exception {
+        final long count = 500000000L;
+        Facility facility = new Facility();
+        try {
+            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
+            SyncRequest<Void> startSReq = PongerAgent.startSReq(ponger, count);
+            final long before = System.nanoTime();
+            startSReq.call();
+            final long after = System.nanoTime();
+            final long duration = after - before;
+            Printer printer = new Printer(new IsolationReactor(facility));
+            SpeedReport.startSReq(printer, "Local Timings", duration, count).call();
+        } finally {
+            facility.close();
+        }
+    }
+}
+</pre>
+<p>
+And here is the report:
+</p>
+<pre>
+Local Timings
+Test duration in nanoseconds: 5,764,216,729
+Number of exchanges: 500,000,000
+Exchanges per second: 86,742,054
+</pre>
+<p>
+The local method is almost 450 times faster than the call method.
+(Timings vary with each run.)
+</p>
 </body>
 </html>
