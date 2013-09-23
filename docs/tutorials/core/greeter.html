@@ -1,0 +1,68 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Greeter
+</p>
+<h1>Greeter - AsyncRequest</h1>
+<p>With 
+<a href="Greeter.java">Greeter</a>
+we get our first look at
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html">AsyncRequest</a>.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class Greeter extends BladeBase {
+    public Greeter(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
+    }
+    
+    public AsyncRequest&lt;String&gt; greetingAReq(final String _name) {
+        return new AsyncBladeRequest&lt;String&gt;() {
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                processAsyncResponse("Hi " + _name);
+            }
+        };
+    }
+    
+    public static void main(final String[] _args) throws Exception {
+        Facility facility = new Facility();
+        try {
+            Greeter greeter = new Greeter(new NonBlockingReactor(facility));
+            AsyncRequest&lt;String&gt; greetingAReq = greeter.greetingAReq("Joe");
+            String greeting = greetingAReq.call();
+            if (!"Hi Joe".equals(greeting))
+                throw new IllegalStateException("invalid response: " + greeting);
+        } finally {
+            facility.close();
+        }
+    }
+}
+</pre>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncResponse(RESPONSE_TYPE)">processAsyncResponse</a>
+</h3>
+<pre>
+    public AsyncRequest&lt;String&gt; greetingAReq(final String _name) {
+        return new AsyncBladeRequest&lt;String&gt;() {
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                processAsyncResponse("Hi " + _name);
+            }
+        };
+    }
+</pre>
+<p>
+Asynchronous requests have one key feature--their results are returned by calling the processAsyncResponse method,
+and not via a return statement.
+This separates data flow from control flow, as the results often do not become available until long after the
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncRequest()">processAsyncRequest</a>
+method returns.
+</p>
+</body>
+</html>

@@ -4,8 +4,8 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class AsyncGreeter extends BladeBase {
-    public AsyncGreeter(final Reactor _reactor) throws Exception {
+public class Greeter extends BladeBase {
+    public Greeter(final Reactor _reactor) throws Exception {
         initialize(_reactor);
     }
     
@@ -21,8 +21,8 @@ public class AsyncGreeter extends BladeBase {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            AsyncGreeter asyncGreeter = new AsyncGreeter(new NonBlockingReactor(facility));
-            AsyncRequest<String> greetingAReq = asyncGreeter.greetingAReq("Joe");
+            Greeter greeter = new Greeter(new NonBlockingReactor(facility));
+            AsyncRequest<String> greetingAReq = greeter.greetingAReq("Joe");
             String greeting = greetingAReq.call();
             if (!"Hi Joe".equals(greeting))
                 throw new IllegalStateException("invalid response: " + greeting);
