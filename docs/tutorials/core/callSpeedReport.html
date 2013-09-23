@@ -14,6 +14,10 @@ The message must then be dequeued and evaluated on the new thread.
 The message is then updated with a response and the originating thread is woken up.
 Fortunately the call method is not used very often!
 </p>
+<p>
+<a href="CallSpeedReport.java">CallSpeedReport</a>
+is a small program that will tell us just how fast the call method is.
+</p>
 <pre>
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
