@@ -38,7 +38,7 @@ abstract public class UnboundReactor extends ReactorBase {
     public UnboundReactor(Facility _facility,
                           int _initialOutboxSize,
                           final int _initialLocalQueueSize,
-                          Runnable _onIdle) {
+                          Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }

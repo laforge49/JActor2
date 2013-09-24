@@ -1,7 +1,10 @@
 package org.agilewiki.jactor2.core.facilities;
 
+import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.RequestBase;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Inbox;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.slf4j.Logger;
@@ -24,12 +27,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * when the facility is closed, as well as a table of properties.
  */
 
-public class Facility implements AutoCloseable {
+public class Facility extends BladeBase implements AutoCloseable {
 
     /**
      * A "compile-time" flag to turn on debug;
      */
     public final static boolean DEBUG = false;
+
+    private final InternalReactor internalReactor;
 
     /**
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
@@ -76,7 +81,7 @@ public class Facility implements AutoCloseable {
     /**
      * Create a Facility.
      */
-    public Facility() {
+    public Facility() throws Exception {
         this(
                 Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                 Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -89,7 +94,7 @@ public class Facility implements AutoCloseable {
      *
      * @param _threadCount The thread pool size.
      */
-    public Facility(final int _threadCount) {
+    public Facility(final int _threadCount) throws Exception {
         this(
                 Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                 Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -108,11 +113,13 @@ public class Facility implements AutoCloseable {
     public Facility(final int _initialLocalMessageQueueSize,
                     final int _initialBufferSize,
                     final int _threadCount,
-                    final ThreadFactory _threadFactory) {
+                    final ThreadFactory _threadFactory) throws Exception {
         threadManager = new ThreadManager(
                 _threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
         initialBufferSize = _initialBufferSize;
+        internalReactor = new InternalReactor();
+        initialize(internalReactor);
     }
 
     /**
@@ -161,30 +168,42 @@ public class Facility implements AutoCloseable {
     }
 
     /**
-     * Adds an auto closeable, to be closed when the Facility closes.
+     * Returns a request to add an auto closeable, to be closed when the Facility closes.
+     * This request returns true if the AutoClosable was added.
      *
      * @param _closeable The autoclosable to be added to the list.
-     * @return True, if the list was updated.
+     * @return The request.
      */
-    public final boolean addAutoClosable(final AutoCloseable _closeable) {
-        if (!isClosing()) {
-            return closeables.add(_closeable);
-        } else {
-            throw new IllegalStateException("Shuting down ...");
-        }
+    public SyncRequest<Boolean> addAutoClosableSReq(final AutoCloseable _closeable) {
+        return new SyncBladeRequest<Boolean>() {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                if (!isClosing()) {
+                    return closeables.add(_closeable);
+                } else {
+                    throw new IllegalStateException("Shuting down ...");
+                }
+            }
+        };
     }
 
     /**
-     * Remove an auto closeable from the list of closeables.
+     * Returns a request to remove an auto closeable.
+     * This request returns true if the AutoClosable was removed.
      *
-     * @param _closeable The autoclosable to be removed from the list.
-     * @return True, if the list was updated.
+     * @param _closeable The autoclosable to be removed.
+     * @return The request.
      */
-    public final boolean removeAutoClosable(final AutoCloseable _closeable) {
-        if (!isClosing()) {
-            return closeables.remove(_closeable);
-        }
-        return false;
+    public SyncRequest<Boolean> removeAutoClosableSReq(final AutoCloseable _closeable) {
+        return new SyncBladeRequest<Boolean>() {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                if (!isClosing()) {
+                    return closeables.remove(_closeable);
+                }
+                return false;
+            }
+        };
     }
 
     @Override
@@ -243,5 +262,25 @@ public class Facility implements AutoCloseable {
      */
     public Set<String> getPropertyNames() {
         return properties.keySet();
+    }
+
+    /**
+     * The reactor used internally.
+     */
+    private class InternalReactor extends NonBlockingReactor {
+
+        /**
+         * Create an internal reactor.
+         */
+        public InternalReactor() throws Exception {
+            super(Facility.this);
+        }
+
+        /**
+         * No autoclose.
+         */
+        @Override
+        protected void addAutoClose() throws Exception {
+        }
     }
 }

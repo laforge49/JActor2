@@ -56,12 +56,19 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      */
     public ReactorBase(final Facility _facility,
                        final int _initialBufferSize,
-                       final int _initialLocalQueueSize) {
+                       final int _initialLocalQueueSize) throws Exception {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.getMessageProcessorLogger();
         outbox = new Outbox(facility, _initialBufferSize);
-        _facility.addAutoClosable(this);
+        addAutoClose();
+    }
+
+    /**
+     * Add to the facility's AutoClose set.
+     */
+    protected void addAutoClose() throws Exception {
+        facility.addAutoClosableSReq(this).signal();
     }
 
     /**

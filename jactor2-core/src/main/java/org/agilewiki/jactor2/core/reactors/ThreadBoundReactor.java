@@ -111,7 +111,7 @@ public class ThreadBoundReactor extends ReactorBase {
      * @param _boundProcessor The _messageProcessor.run method is called when there
      *                        are messages to be processed.
      */
-    public ThreadBoundReactor(Facility _facility, Runnable _boundProcessor) {
+    public ThreadBoundReactor(Facility _facility, Runnable _boundProcessor) throws Exception {
         super(_facility,
                 _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize());
@@ -136,7 +136,7 @@ public class ThreadBoundReactor extends ReactorBase {
     public ThreadBoundReactor(Facility _facility,
                               int _initialOutboxSize,
                               final int _initialLocalQueueSize,
-                              Runnable _boundProcessor) {
+                              Runnable _boundProcessor) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }

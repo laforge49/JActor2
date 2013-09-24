@@ -70,7 +70,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      *
      * @param _facility The facility of the targetReactor.
      */
-    public SwingBoundReactor(Facility _facility) {
+    public SwingBoundReactor(Facility _facility) throws Exception {
         super(_facility, null);
 
     }
@@ -82,7 +82,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      */
-    public SwingBoundReactor(Facility _facility, int _initialOutboxSize, int _initialLocalQueueSize) {
+    public SwingBoundReactor(Facility _facility, int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 

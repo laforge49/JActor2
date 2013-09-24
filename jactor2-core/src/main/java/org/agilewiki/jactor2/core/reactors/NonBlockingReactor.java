@@ -33,7 +33,7 @@ public class NonBlockingReactor extends UnboundReactor {
      *
      * @param _facility The facility of the targetReactor.
      */
-    public NonBlockingReactor(Facility _facility) {
+    public NonBlockingReactor(Facility _facility) throws Exception {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), null);
     }
@@ -45,7 +45,7 @@ public class NonBlockingReactor extends UnboundReactor {
      * @param _onIdle   Object to be run when the inbox is emptied, or null.
      */
     public NonBlockingReactor(Facility _facility,
-                              Runnable _onIdle) {
+                              Runnable _onIdle) throws Exception {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), _onIdle);
     }
@@ -61,7 +61,7 @@ public class NonBlockingReactor extends UnboundReactor {
     public NonBlockingReactor(Facility _facility,
                               int _initialOutboxSize,
                               final int _initialLocalQueueSize,
-                              Runnable _onIdle) {
+                              Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 

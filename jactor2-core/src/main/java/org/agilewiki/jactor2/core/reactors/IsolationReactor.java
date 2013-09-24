@@ -39,7 +39,7 @@ public class IsolationReactor extends UnboundReactor {
      *
      * @param _facility The facility of the targetReactor.
      */
-    public IsolationReactor(Facility _facility) {
+    public IsolationReactor(Facility _facility) throws Exception {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), null);
     }
@@ -50,7 +50,7 @@ public class IsolationReactor extends UnboundReactor {
      * @param _facility The facility of the targetReactor.
      * @param _onIdle   Object to be run when the inbox is emptied, or null.
      */
-    public IsolationReactor(Facility _facility, Runnable _onIdle) {
+    public IsolationReactor(Facility _facility, Runnable _onIdle) throws Exception {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), _onIdle);
     }
@@ -66,7 +66,7 @@ public class IsolationReactor extends UnboundReactor {
     public IsolationReactor(Facility _facility,
                             int _initialOutboxSize,
                             final int _initialLocalQueueSize,
-                            Runnable _onIdle) {
+                            Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 

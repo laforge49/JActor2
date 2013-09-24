@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class BladeE {
     private final Reactor reactor;
 
-    public BladeE(final Facility _facility) {
+    public BladeE(final Facility _facility) throws Exception {
         this.reactor = new IsolationReactor(_facility);
     }
 

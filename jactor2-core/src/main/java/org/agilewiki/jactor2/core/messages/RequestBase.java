@@ -256,7 +256,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             throws Exception {
         final Facility facility = targetReactor.getFacility();
         if (foreign)
-            facility.removeAutoClosable(RequestBase.this);
+            facility.removeAutoClosableSReq(RequestBase.this).signal();
         if (!responsePending)
             return false;
         setResponse(_response, targetReactor);
@@ -317,7 +317,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (responsePending) {
             final Facility facility = targetReactor.getFacility();
             if (foreign)
-                facility.addAutoClosable(this);
+                try {
+                    facility.addAutoClosableSReq(this).signal();
+                } catch (Exception e) {
+                }
             targetReactor.setExceptionHandler(null);
             targetReactor.setCurrentMessage(this);
             targetReactor.requestBegin();
@@ -325,7 +328,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 processRequestMessage();
             } catch (final Exception e) {
                 if (foreign)
-                    facility.removeAutoClosable(this);
+                    try {
+                        facility.removeAutoClosableSReq(this).signal();
+                    } catch (Exception e1) {
+                    }
                 processException(targetReactor, e);
             }
         } else {

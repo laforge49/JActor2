@@ -102,7 +102,7 @@ abstract public class FacilityActivator
      */
     protected final void facilityStart() throws Exception {
         facility = new Facility();
-        facility.addAutoClosable(this);
+        facility.addAutoClosableSReq(this).signal();
         facility.putProperty("bundleContext", bundleContext);
         initialize(new IsolationReactor(facility));
     }

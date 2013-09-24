@@ -12,7 +12,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class BladeD {
     private final Reactor reactor;
 
-    public BladeD(final Facility _facility) {
+    public BladeD(final Facility _facility) throws Exception {
         this.reactor = new IsolationReactor(_facility);
     }
 
@@ -56,7 +56,7 @@ public class BladeD {
 class Dd {
     private final Reactor reactor;
 
-    public Dd(final Facility _facility) {
+    public Dd(final Facility _facility) throws Exception {
         reactor = new IsolationReactor(_facility);
     }
 
