@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -181,7 +182,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                 if (!isClosing()) {
                     return closeables.add(_closeable);
                 } else {
-                    throw new IllegalStateException("Shuting down ...");
+                    return false;
                 }
             }
         };
@@ -206,18 +207,33 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
+    /**
+     * Returns a request to close the facility.
+     *
+     * @return The request.
+     */
+    private SyncRequest<Void> closeSReq() {
+        return new SyncBladeRequest<Void>() {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                threadManager.close();
+                final Iterator<AutoCloseable> it = closeables.iterator();
+                while (it.hasNext()) {
+                    try {
+                        it.next().close();
+                    } catch (final Throwable t) {
+                        t.printStackTrace();
+                    }
+                }
+                return null;
+            }
+        };
+    }
+
     @Override
     public final void close() throws Exception {
         if (shuttingDown.compareAndSet(false, true)) {
-            threadManager.close();
-            final Iterator<AutoCloseable> it = closeables.iterator();
-            while (it.hasNext()) {
-                try {
-                    it.next().close();
-                } catch (final Throwable t) {
-                    t.printStackTrace();
-                }
-            }
+            closeSReq().signal();
         }
     }
 

@@ -115,6 +115,8 @@ final public class ThreadManager {
      * @param _reactor The run method is to be called by the selected thread.
      */
     final public void execute(final Reactor _reactor) {
+        if (closing)
+            return;
         messageProcessors.add((ReactorBase) _reactor);
         taskRequest.release();
     }
