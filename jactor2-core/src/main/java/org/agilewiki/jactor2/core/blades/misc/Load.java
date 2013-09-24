@@ -22,6 +22,15 @@ public class Load extends BladeBase {
     }
 
     /**
+     * Create a Load blade.
+     *
+     * @param _isolationReactor The blade's facility.
+     */
+    public Load(final IsolationReactor _isolationReactor) throws Exception {
+        initialize(_isolationReactor);
+    }
+
+    /**
      * Returns a load request.
      *
      * @param _load The extent of the simulated load.

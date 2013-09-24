@@ -20,6 +20,15 @@ public class Delay extends BladeBase {
     }
 
     /**
+     * Create a Delay blade.
+     *
+     * @param _isolationReactor The blade's facility.
+     */
+    public Delay(final IsolationReactor _isolationReactor) throws Exception {
+        initialize(_isolationReactor);
+    }
+
+    /**
      * Returns a delay request.
      *
      * @param _delay The duration of the delay in milliseconds.
