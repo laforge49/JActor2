@@ -34,7 +34,23 @@ public class Facility extends BladeBase implements AutoCloseable {
      */
     public final static boolean DEBUG = false;
 
+    /**
+     * The facility's internal reactor for managing the auto closeable set and for closing itself.
+     */
     private final InternalReactor internalReactor;
+
+    /**
+     * A hash set of AutoCloseable objects.
+     * Can only be accessed via a request to the facility.
+     */
+    private final Set<AutoCloseable> closeables = Collections
+            .newSetFromMap(new WeakHashMap<AutoCloseable, Boolean>());
+
+    /**
+     * Set when the facility reaches end-of-life.
+     * Can only be updated via a request to the facility.
+     */
+    private boolean shuttingDown = false;
 
     /**
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
@@ -51,17 +67,6 @@ public class Facility extends BladeBase implements AutoCloseable {
      * The thread pool used by Facility.
      */
     private final ThreadManager threadManager;
-
-    /**
-     * A hash set of AutoCloseable objects.
-     */
-    private final Set<AutoCloseable> closeables = Collections
-            .newSetFromMap(new WeakHashMap<AutoCloseable, Boolean>());
-
-    /**
-     * Set when the facility reaches end-of-life.
-     */
-    private final AtomicBoolean shuttingDown = new AtomicBoolean();
 
     /**
      * How big should the initial inbox doLocal queue size be?
@@ -206,15 +211,14 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
-    /**
-     * Returns a request to close the facility.
-     *
-     * @return The request.
-     */
-    private SyncRequest<Void> closeSReq() {
-        return new SyncBladeRequest<Void>() {
+    @Override
+    public final void close() throws Exception {
+        new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
+                if (shuttingDown)
+                    return null;
+                shuttingDown = true;
                 threadManager.close();
                 final Iterator<AutoCloseable> it = closeables.iterator();
                 while (it.hasNext()) {
@@ -226,14 +230,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                 }
                 return null;
             }
-        };
-    }
-
-    @Override
-    public final void close() throws Exception {
-        if (shuttingDown.compareAndSet(false, true)) {
-            closeSReq().signal();
-        }
+        }.signal();
     }
 
     /**
@@ -242,7 +239,7 @@ public class Facility extends BladeBase implements AutoCloseable {
      * @return true if close() has already been called.
      */
     public final boolean isClosing() {
-        return shuttingDown.get();
+        return shuttingDown;
     }
 
     /**
