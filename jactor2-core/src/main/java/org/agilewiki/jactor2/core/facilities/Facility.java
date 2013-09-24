@@ -11,10 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -57,7 +56,7 @@ public class Facility extends BladeBase implements AutoCloseable {
      * A hash set of AutoCloseable objects.
      */
     private final Set<AutoCloseable> closeables = Collections
-            .newSetFromMap(new ConcurrentHashMap<AutoCloseable, Boolean>());
+            .newSetFromMap(new WeakHashMap<AutoCloseable, Boolean>());
 
     /**
      * Set when the facility reaches end-of-life.
