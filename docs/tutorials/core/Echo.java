@@ -16,18 +16,21 @@ public class Echo extends BladeBase {
     public AsyncRequest<String> echoAReq(final String sound) {
         return new AsyncBladeRequest<String>() {
             AsyncRequest<String> dis = this;
+
+            AsyncResponseProcessor<Void> sleepResponseProcessor = new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(final Void _response) throws Exception {
+                    dis.processAsyncResponse(sound);
+                }
+            };
+
             @Override
             protected void processAsyncRequest() throws Exception {
                 Reactor myReactor = getReactor();
                 Facility myFacility = myReactor.getFacility();
                 Delay delay = new Delay(new IsolationReactor(myFacility));
                 SyncRequest<Void> sleepSReq = delay.sleepSReq(2000);
-                send(sleepSReq, new AsyncResponseProcessor<Void>() {
-                    @Override
-                    public void processAsyncResponse(final Void _response) throws Exception {
-                        dis.processAsyncResponse(sound);
-                    }
-                });
+                send(sleepSReq, sleepResponseProcessor);
             }
         };
     }
