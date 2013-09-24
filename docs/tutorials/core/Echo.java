@@ -15,9 +15,9 @@ public class Echo extends BladeBase {
     
     public AsyncRequest<String> echoAReq(final String sound) {
         return new AsyncBladeRequest<String>() {
-            AsyncRequest<String> dis = this;
+            final AsyncRequest<String> dis = this;
 
-            AsyncResponseProcessor<Void> sleepResponseProcessor = new AsyncResponseProcessor<Void>() {
+            final AsyncResponseProcessor<Void> sleepResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
                     dis.processAsyncResponse(sound);
