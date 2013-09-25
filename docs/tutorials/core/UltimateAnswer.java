@@ -18,10 +18,12 @@ public class UltimateAnswer extends BladeBase {
     
     public AsyncRequest<Void> printAnswerAReq() {
         return new AsyncBladeRequest<Void>() {
+            final AsyncResponseProcessor<Void> dis = this;
+
             @Override
             protected void processAsyncRequest() throws Exception {
                 SyncRequest<Void> printRequest = printer.printlnSReq("*** 42 ***");
-                send(printRequest, this);
+                send(printRequest, dis);
             }
         };
     }

@@ -13,14 +13,14 @@ public class Echo extends BladeBase {
         initialize(_reactor);
     }
     
-    public AsyncRequest<String> echoAReq(final String sound) {
+    public AsyncRequest<String> echoAReq(final String text) {
         return new AsyncBladeRequest<String>() {
-            final AsyncRequest<String> dis = this;
+            final AsyncResponseProcessor<String> dis = this;
 
             final AsyncResponseProcessor<Void> sleepResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    dis.processAsyncResponse(sound);
+                    dis.processAsyncResponse(text);
                 }
             };
 
