@@ -1,3 +1,14 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Echo
+</p>
+<h1>Echo - AsyncResponseProcessor</h1>
+<p>
+An anonymous subclass of AsyncResponseProcessor is generally used to process the results of a send.
+In the <a href="Echo.java">Echo</a> blade, for example. we pass back a response after a 2 second delay.
+</p>
+<pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.facilities.Facility;
@@ -13,12 +24,12 @@ public class Echo extends BladeBase {
         initialize(_reactor);
     }
     
-    public AsyncRequest<String> echoAReq(final String text) {
-        return new AsyncBladeRequest<String>() {
-            final AsyncResponseProcessor<String> dis = this;
+    public AsyncRequest&lt;String&gt; echoAReq(final String text) {
+        return new AsyncBladeRequest&lt;String&gt;() {
+            final AsyncResponseProcessor&lt;String&gt; dis = this;
 
-            final AsyncResponseProcessor<Void> sleepResponseProcessor =
-                    new AsyncResponseProcessor<Void>() {
+            final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor =
+                    new AsyncResponseProcessor&lt;Void&gt;() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
                     dis.processAsyncResponse(text);
@@ -40,7 +51,7 @@ public class Echo extends BladeBase {
         Facility facility = new Facility();
         try {
             Echo echo = new Echo(new NonBlockingReactor(facility));
-            AsyncRequest<String> echoAReq = echo.echoAReq("Hello...");
+            AsyncRequest&lt;String&gt; echoAReq = echo.echoAReq("Hello...");
             String response = echoAReq.call();
             if (!"Hello...".equals(response))
                 throw new IllegalStateException("invalid response: " + response);
@@ -49,3 +60,26 @@ public class Echo extends BladeBase {
         }
     }
 }
+</pre>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncResponseProcessor.html">AsyncResponseProcessor</a>
+</h3>
+<pre>
+            final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor =
+                    new AsyncResponseProcessor&lt;Void&gt;() {
+                @Override
+                public void processAsyncResponse(final Void _response) throws Exception {
+                    dis.processAsyncResponse(text);
+                }
+            };
+            
+            ...
+            
+                send(sleepSReq, sleepResponseProcessor);
+</pre>
+<p>
+The sleepResponseProcessor object is used to receive the (Void) response
+from the sleep request and then pass back the text from the echo request.
+</p>
+</body>
+</html>

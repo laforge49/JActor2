@@ -4,6 +4,7 @@
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; UltimateAnswer
 </p>
 <h1>UltimateAnswer - send</h1>
+<p>
 How do blades with different reactors exchange messages? 
 The call method does not apply because the source of the request is on a pool thread.
 The local method does not apply either because the blades do not have a common reactor.
@@ -11,6 +12,11 @@ The answer is an asynchronous exchange using the send method with an instance of
 AsyncResponseProcessor
 <a href="../../api/org/agilewiki/jactor2/core/messages/AsyncResponseProcessor.html">AsyncResponseProcessor</a>
 as the callback.
+</p>
+<p>
+The <a href="UltimateAnswer.java">UltimateAnswer</a> blade sends a println request to Printer.
+And the Printer blade is in a different reactor.
+</p>
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
