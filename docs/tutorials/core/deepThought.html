@@ -1,0 +1,91 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; DeepThought
+</p>
+<h1>DeepThought - Multiple Exchanges</h1>
+<p>
+More often than not, a blade will need to exchange messages with more multiple blades on other reactors.
+The <a href="DeepThought.java">DeepThought</a> blade does just that. First it uses the Delay blade to pause for 4 seconds before
+printing a message using the Printer blade.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.misc.Delay;
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class DeepThought extends BladeBase {
+    private final Printer printer;
+
+    public DeepThought(final Reactor _reactor, final Printer _printer) throws Exception {
+        initialize(_reactor);
+        printer = _printer;
+    }
+    
+    public AsyncRequest<Void> printAnswerAReq() {
+        return new AsyncBladeRequest<Void>() {
+            final AsyncResponseProcessor<Void> dis = this;
+
+            final AsyncResponseProcessor<Void> sleepResponseProcessor =
+                    new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(final Void _response) throws Exception {
+                    SyncRequest<Void> printRequest = printer.printlnSReq("I am sorry, but did you say something?");
+                    send(printRequest, dis);
+                }
+            };
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                Reactor myReactor = getReactor();
+                Facility myFacility = myReactor.getFacility();
+                Delay delay = new Delay(new IsolationReactor(myFacility));
+                SyncRequest<Void> sleepSReq = delay.sleepSReq(4000);
+                send(sleepSReq, sleepResponseProcessor);
+            }
+        };
+    }
+    
+    public static void main(final String[] _args) throws Exception {
+        Facility facility = new Facility();
+        try {
+            Printer printer = new Printer(new IsolationReactor(facility));
+            DeepThought deepThought = new DeepThought(
+                new NonBlockingReactor(facility),
+                printer);
+            AsyncRequest<Void> printAnswerAReq = deepThought.printAnswerAReq();
+            printAnswerAReq.call();
+        } finally {
+            facility.close();
+        }
+    }
+}
+</pre>
+<h3>
+Chaining
+</h3>
+<pre>
+            final AsyncResponseProcessor<Void> sleepResponseProcessor =
+                    new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(final Void _response) throws Exception {
+                    SyncRequest<Void> printRequest = printer.printlnSReq("I am sorry, but did you say something?");
+                    send(printRequest, dis);
+                }
+            };
+</pre>
+<p>
+This is how multiple exchanges can be chained together.
+When the response from the sleep request is processed,
+the print request is sent to the printer.
+By this means, any number of exchanges can be performed, one after another.
+</p>
+</body>
+</html>
