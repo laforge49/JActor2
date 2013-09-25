@@ -29,15 +29,15 @@ public class DeepThought extends BladeBase {
         printer = _printer;
     }
     
-    public AsyncRequest<Void> printAnswerAReq() {
-        return new AsyncBladeRequest<Void>() {
-            final AsyncResponseProcessor<Void> dis = this;
+    public AsyncRequest&lt;Void&gt; printAnswerAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            final AsyncResponseProcessor&lt;Void&gt; dis = this;
 
-            final AsyncResponseProcessor<Void> sleepResponseProcessor =
-                    new AsyncResponseProcessor<Void>() {
+            final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor =
+                    new AsyncResponseProcessor&lt;Void&gt;() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    SyncRequest<Void> printRequest = printer.printlnSReq("I am sorry, but did you say something?");
+                    SyncRequest&lt;Void&gt; printRequest = printer.printlnSReq("I am sorry, but did you say something?");
                     send(printRequest, dis);
                 }
             };
@@ -47,7 +47,7 @@ public class DeepThought extends BladeBase {
                 Reactor myReactor = getReactor();
                 Facility myFacility = myReactor.getFacility();
                 Delay delay = new Delay(new IsolationReactor(myFacility));
-                SyncRequest<Void> sleepSReq = delay.sleepSReq(4000);
+                SyncRequest&lt;Void&gt; sleepSReq = delay.sleepSReq(4000);
                 send(sleepSReq, sleepResponseProcessor);
             }
         };
@@ -60,7 +60,7 @@ public class DeepThought extends BladeBase {
             DeepThought deepThought = new DeepThought(
                 new NonBlockingReactor(facility),
                 printer);
-            AsyncRequest<Void> printAnswerAReq = deepThought.printAnswerAReq();
+            AsyncRequest&lt;Void&gt; printAnswerAReq = deepThought.printAnswerAReq();
             printAnswerAReq.call();
         } finally {
             facility.close();
@@ -72,11 +72,11 @@ public class DeepThought extends BladeBase {
 Chaining
 </h3>
 <pre>
-            final AsyncResponseProcessor<Void> sleepResponseProcessor =
-                    new AsyncResponseProcessor<Void>() {
+            final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor =
+                    new AsyncResponseProcessor&lt;Void&gt;() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    SyncRequest<Void> printRequest = printer.printlnSReq("I am sorry, but did you say something?");
+                    SyncRequest&lt;Void&gt; printRequest = printer.printlnSReq("I am sorry, but did you say something?");
                     send(printRequest, dis);
                 }
             };
