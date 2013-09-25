@@ -1,0 +1,86 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; UltimateAnswer
+</p>
+<h1>UltimateAnswer - send</h1>
+How do blades with different reactors exchange messages? 
+The call method does not apply because the source of the request is on a pool thread.
+The local method does not apply either because the blades do not have a common reactor.
+The answer is an asynchronous exchange using the send method with an instance of
+AsyncResponseProcessor
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncResponseProcessor.html">AsyncResponseProcessor</a>
+as the callback.
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class UltimateAnswer extends BladeBase {
+    private final Printer printer;
+
+    public UltimateAnswer(final Reactor _reactor, final Printer _printer) throws Exception {
+        initialize(_reactor);
+        printer = _printer;
+    }
+    
+    public AsyncRequest&lt;Void&gt; printAnswerAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            final AsyncResponseProcessor&lt;Void&gt; dis = this;
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                SyncRequest&lt;Void&gt; printRequest = printer.printlnSReq("*** 42 ***");
+                send(printRequest, dis);
+            }
+        };
+    }
+    
+    public static void main(final String[] _args) throws Exception {
+        Facility facility = new Facility();
+        try {
+            Printer printer = new Printer(new IsolationReactor(facility));
+            UltimateAnswer ultimateAnswer = new UltimateAnswer(
+                new NonBlockingReactor(facility),
+                printer);
+            AsyncRequest&lt;Void&gt; printAnswerAReq = ultimateAnswer.printAnswerAReq();
+            printAnswerAReq.call();
+        } finally {
+            facility.close();
+        }
+    }
+}</pre>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#send(org.agilewiki.jactor2.core.messages.RequestBase, org.agilewiki.jactor2.core.messages.AsyncResponseProcessor)">send</a>
+</h3>
+<pre>
+    public AsyncRequest&lt;Void&gt; printAnswerAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            final AsyncResponseProcessor&lt;Void&gt; dis = this;
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                SyncRequest&lt;Void&gt; printRequest = printer.printlnSReq("*** 42 ***");
+                send(printRequest, dis);
+            }
+        };
+    }
+</pre>
+<p>
+The BladeBase.send method takes two arguments, a request and an AsyncResponseProcessor.
+And there is no return value. Rather, the response is passed back via the AsyncResponseProcessor.
+</p>
+<p>
+One complication with send is that it is not very useful within the body of a SyncRequest, as the response from
+the send will not be available until after the SyncRequest returns its own response.
+So the use of the send method, which is mandated for exchanges between reactors, in turn requires the use
+of an AsyncRequest.
+</p>
+</body>
+</html>
