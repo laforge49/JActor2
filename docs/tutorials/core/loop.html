@@ -1,0 +1,115 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Loop
+</p>
+<h1>Loop - Asynchronous Loops</h1>
+<p>
+Asynchronous loops have a unique form because a callback is needed to receive the results of each iteration.
+But it is all about the callback or, in the case of JActor2, the anonymous AsyncResponseProcessor.
+The <a href="Loop.java">Loop</a> class is a good example. It prints the numbers from 1 to 10.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class Loop extends BladeBase {
+    private final Printer printer;
+
+    public Loop(final Reactor _reactor, final Printer _printer) throws Exception {
+        initialize(_reactor);
+        printer = _printer;
+    }
+
+    public AsyncRequest&lt;Void&gt; loopAReq(final long _count) {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            final AsyncResponseProcessor&lt;Void&gt; dis = this;
+            long i = 0;
+
+            final AsyncResponseProcessor&lt;Void&gt; iterate = 
+                    new AsyncResponseProcessor&lt;Void&gt;() {
+
+                @Override
+                public void processAsyncResponse(final Void _response) throws Exception {
+                    if (i >= _count) {
+                        dis.processAsyncResponse(null);
+                        return;
+                    }
+                    i ++;
+                    SyncRequest&lt;Void&gt; printCount = printer.printlnSReq("" + i);
+                    send(printCount, iterate);
+                }
+            };
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                iterate.processAsyncResponse(null);
+            }
+        };
+    }
+    
+    public static void main(final String[] _args) throws Exception {
+        Facility facility = new Facility();
+        try {
+            Printer printer = new Printer(new IsolationReactor(facility));
+            Loop loop = new Loop(
+                new NonBlockingReactor(facility),
+                printer);
+            AsyncRequest&lt;Void&gt; loopAReq = loop.loopAReq(10L);
+            loopAReq.call();
+        } finally {
+            facility.close();
+        }
+    }
+}
+</pre>
+<h3>
+Requests are Not Reusable
+</h3>
+<pre>
+            long i = 0;
+</pre>
+<p>
+The index variable i is a member of the anonymous AsyncBladeRequest, rather than being a member of the Loop blade.
+And because requests are not reusable, the state of each request is completely isolated from the state of
+all other requests. Intermediate state should be kept as part of the request state, not as part of the blade state.
+</p>
+<p>
+One exception to this rule is when performing I/O, where intermediate state can not be isolated from different
+requests. This is why blades which perform I/O must use an IsolationReactoro, which only allows one request to
+be processed at a time.
+</p>
+<h3>
+iterate
+</h3>
+<pre>
+            final AsyncResponseProcessor&lt;Void&gt; iterate = 
+                    new AsyncResponseProcessor&lt;Void&gt;() {
+
+                @Override
+                public void processAsyncResponse(final Void _response) throws Exception {
+                    if (i >= _count) {
+                        dis.processAsyncResponse(null);
+                        return;
+                    }
+                    i ++;
+                    SyncRequest&lt;Void&gt; printCount = printer.printlnSReq("" + i);
+                    send(printCount, iterate);
+                }
+            };
+</pre>
+<p>
+Loops are best implemented by defining an anonymous AsyncResponseProcessor, iterate, which performs one iteration
+of the loop.
+Once the loop is complete, the response (null in this case) is passed back to the originator of the request.
+Otherwise the next iteration is performed and the result is passed back to iterate to perform the next iteration.
+</p>
+</body>
+</html>
