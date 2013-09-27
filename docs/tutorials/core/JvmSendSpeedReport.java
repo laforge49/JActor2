@@ -4,23 +4,24 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class LocalSendSpeedReport {
+public class JvmSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
-        final long count = 100000000L;
-        Facility facility = new Facility();
+        final long count = 1000000L;
+        Facility facility1 = new Facility();
+        Facility facility2 = new Facility();
         try {
-            NonBlockingReactor sharedReactor = new NonBlockingReactor(facility);
-            Ponger ponger = new Ponger(sharedReactor);
-            Pinger pinger = new Pinger(sharedReactor, ponger);
+            Ponger ponger = new Ponger(new NonBlockingReactor(facility1));
+            Pinger pinger = new Pinger(new NonBlockingReactor(facility2), ponger);
             AsyncRequest<Void> loopAReq = pinger.loopAReq(count);
             final long before = System.nanoTime();
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            Printer printer = new Printer(new IsolationReactor(facility));
-            SpeedReport.startSReq(printer, "Local Send Timings", duration, count).call();
+            Printer printer = new Printer(new IsolationReactor(facility1));
+            SpeedReport.startSReq(printer, "JVM Send Timings", duration, count).call();
         } finally {
-            facility.close();
+            facility1.close();
+            facility2.close();
         }
     }
 }
