@@ -106,5 +106,60 @@ Test duration in nanoseconds: 5,764,216,729
 Number of exchanges: 500,000,000
 Exchanges per second: 86,742,054
 </pre>
+<h3>
+FacilitySendSpeedReport
+</h3>
+<p>
+A very common case is sending a request between two blades with different reactors that are a part of the same facility:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+public class FacilitySendSpeedReport {
+    public static void main(final String[] _args) throws Exception {
+        final long count = 10000000L;
+        Facility facility = new Facility();
+        try {
+            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
+            Pinger pinger = new Pinger(new NonBlockingReactor(facility), ponger);
+            AsyncRequest&lt;Void&gt; loopAReq = pinger.loopAReq(count);
+            final long before = System.nanoTime();
+            loopAReq.call();
+            final long after = System.nanoTime();
+            final long duration = after - before;
+            Printer printer = new Printer(new IsolationReactor(facility));
+            SpeedReport.startSReq(printer, "Facility Send Timings", duration, count).call();
+        } finally {
+            facility.close();
+        }
+    }
+}
+</pre>
+<p>
+In this case the send is, as you would expect, much slower than when the two blades use a common reactor:
+</p>
+<pre>
+Facility Send Timings
+Test duration in nanoseconds: 4,351,072,002
+Number of exchanges: 10,000,000
+Exchanges per second: 2,298,284
+</pre>
+<p>
+Even slow, a send between two blades with different reactors but part of the same facility is
+much faster than when using a call method from a non-pool thread:
+</p>
+<pre>
+Call Timings
+Test duration in nanoseconds: 5,173,229,782
+Number of exchanges: 1,000,000
+Exchanges per second: 193,302
+</pre>
+<h3>
+JvmSendSpeedReport
+</h3>
 </body>
 </html>
