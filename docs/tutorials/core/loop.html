@@ -33,24 +33,28 @@ public class Loop extends BladeBase {
             final AsyncResponseProcessor&lt;Void&gt; dis = this;
             long i = 0;
 
-            final AsyncResponseProcessor&lt;Void&gt; iterate = 
+            final AsyncResponseProcessor&lt;Void&gt; printCountResponeProcessor = 
                     new AsyncResponseProcessor&lt;Void&gt;() {
 
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    if (i >= _count) {
-                        dis.processAsyncResponse(null);
-                        return;
-                    }
-                    i ++;
-                    SyncRequest&lt;Void&gt; printCount = printer.printlnSReq("" + i);
-                    send(printCount, iterate);
+                    iterate();
                 }
             };
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                iterate.processAsyncResponse(null);
+                iterate();
+            }
+            
+            public void iterate() throws Exception {
+                if (i >= _count) {
+                    dis.processAsyncResponse(null);
+                    return;
+                }
+                i++;
+                SyncRequest&lt;Void&gt; printCount = printer.printlnSReq(String.valueOf(i));
+                send(printCount, printCountResponeProcessor);
             }
         };
     }
@@ -83,7 +87,7 @@ all other requests. Intermediate state should be kept as part of the request sta
 </p>
 <p>
 One exception to this rule is when performing I/O, where intermediate state can not be isolated from different
-requests. This is why blades which perform I/O must use an IsolationReactoro, which only allows one request to
+requests. This is why blades which perform I/O must use an IsolationReactor, which only allows one request to
 be processed at a time.
 </p>
 <h3>
@@ -99,8 +103,8 @@ iterate
                         dis.processAsyncResponse(null);
                         return;
                     }
-                    i ++;
-                    SyncRequest&lt;Void&gt; printCount = printer.printlnSReq("" + i);
+                    i++;
+                    SyncRequest&lt;Void&gt; printCount = printer.printlnSReq(String.valueOf(i));
                     send(printCount, iterate);
                 }
             };

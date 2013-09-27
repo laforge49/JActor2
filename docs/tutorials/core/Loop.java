@@ -21,24 +21,28 @@ public class Loop extends BladeBase {
             final AsyncResponseProcessor<Void> dis = this;
             long i = 0;
 
-            final AsyncResponseProcessor<Void> iterate = 
+            final AsyncResponseProcessor<Void> printCountResponeProcessor = 
                     new AsyncResponseProcessor<Void>() {
 
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    if (i >= _count) {
-                        dis.processAsyncResponse(null);
-                        return;
-                    }
-                    i ++;
-                    SyncRequest<Void> printCount = printer.printlnSReq("" + i);
-                    send(printCount, iterate);
+                    iterate();
                 }
             };
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                iterate.processAsyncResponse(null);
+                iterate();
+            }
+            
+            public void iterate() throws Exception {
+                if (i >= _count) {
+                    dis.processAsyncResponse(null);
+                    return;
+                }
+                i++;
+                SyncRequest<Void> printCount = printer.printlnSReq(String.valueOf(i));
+                send(printCount, printCountResponeProcessor);
             }
         };
     }
