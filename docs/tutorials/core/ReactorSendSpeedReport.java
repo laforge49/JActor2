@@ -18,7 +18,7 @@ public class ReactorSendSpeedReport {
             final long after = System.nanoTime();
             final long duration = after - before;
             Printer printer = new Printer(new IsolationReactor(facility));
-            SpeedReport.startSReq(printer, "Local Send Timings", duration, count).call();
+            SpeedReport.startSReq(printer, "Reactor Send Timings", duration, count).call();
         } finally {
             facility.close();
         }
