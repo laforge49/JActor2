@@ -33,7 +33,7 @@ public class Loop extends BladeBase {
             final AsyncResponseProcessor&lt;Void&gt; dis = this;
             long i = 0;
 
-            final AsyncResponseProcessor&lt;Void&gt; printCountResponeProcessor = 
+            final AsyncResponseProcessor&lt;Void&gt; printCountResponseProcessor = 
                     new AsyncResponseProcessor&lt;Void&gt;() {
 
                 @Override
@@ -54,7 +54,7 @@ public class Loop extends BladeBase {
                 }
                 i++;
                 SyncRequest&lt;Void&gt; printCount = printer.printlnSReq(String.valueOf(i));
-                send(printCount, printCountResponeProcessor);
+                send(printCount, printCountResponseProcessor);
             }
         };
     }
@@ -91,29 +91,56 @@ requests. This is why blades which perform I/O must use an IsolationReactor, whi
 be processed at a time.
 </p>
 <h3>
-iterate
+printCountResponseProcessor
 </h3>
 <pre>
-            final AsyncResponseProcessor&lt;Void&gt; iterate = 
+            final AsyncResponseProcessor&lt;Void&gt; printCountResponseProcessor = 
                     new AsyncResponseProcessor&lt;Void&gt;() {
 
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    if (i >= _count) {
-                        dis.processAsyncResponse(null);
-                        return;
-                    }
-                    i++;
-                    SyncRequest&lt;Void&gt; printCount = printer.printlnSReq(String.valueOf(i));
-                    send(printCount, iterate);
+                    iterate();
                 }
             };
 </pre>
 <p>
-Loops are best implemented by defining an anonymous AsyncResponseProcessor, iterate, which performs one iteration
-of the loop.
-Once the loop is complete, the response (null in this case) is passed back to the originator of the request.
-Otherwise the next iteration is performed and the result is passed back to iterate to perform the next iteration.
+The printCountResponseProcessor is used to process the response from a println request sent to the Printer blade.
+The response is null and does not actually require any processing, but the receipt of
+the response triggers the next iteration of the loop, if needed.
+</p>
+<h3>
+processAsyncRequest
+</h3>
+<pre>
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                iterate();
+            }
+</pre>
+<p>
+The processAsyncRequest method is called to process the loop request sent to this blade.
+This method then begins the iteration through the numbers to be printed.
+</p>
+<h3>
+iterate
+</h3>
+<pre>
+            public void iterate() throws Exception {
+                if (i >= _count) {
+                    dis.processAsyncResponse(null);
+                    return;
+                }
+                i++;
+                SyncRequest&lt;Void&gt; printCount = printer.printlnSReq(String.valueOf(i));
+                send(printCount, printCountResponseProcessor);
+            }
+</pre>
+<p>
+The iterate method performs the actual loop.
+First the index variable, i, is compared with count.
+And if no further iterations are needed, the loop request completes by passing back a null result.
+Otherwise i is incremented and a println request is sent.
+And the printCountResponseProcessor is used as a callback to process the response from the send.
 </p>
 </body>
 </html>

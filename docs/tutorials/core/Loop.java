@@ -21,7 +21,7 @@ public class Loop extends BladeBase {
             final AsyncResponseProcessor<Void> dis = this;
             long i = 0;
 
-            final AsyncResponseProcessor<Void> printCountResponeProcessor = 
+            final AsyncResponseProcessor<Void> printCountResponseProcessor = 
                     new AsyncResponseProcessor<Void>() {
 
                 @Override
@@ -42,7 +42,7 @@ public class Loop extends BladeBase {
                 }
                 i++;
                 SyncRequest<Void> printCount = printer.printlnSReq(String.valueOf(i));
-                send(printCount, printCountResponeProcessor);
+                send(printCount, printCountResponseProcessor);
             }
         };
     }
