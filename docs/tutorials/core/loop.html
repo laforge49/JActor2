@@ -91,24 +91,6 @@ requests. This is why blades which perform I/O must use an IsolationReactor, whi
 be processed at a time.
 </p>
 <h3>
-printCountResponseProcessor
-</h3>
-<pre>
-            final AsyncResponseProcessor&lt;Void&gt; printCountResponseProcessor = 
-                    new AsyncResponseProcessor&lt;Void&gt;() {
-
-                @Override
-                public void processAsyncResponse(final Void _response) throws Exception {
-                    iterate();
-                }
-            };
-</pre>
-<p>
-The printCountResponseProcessor is used to process the response from a println request sent to the Printer blade.
-The response is null and does not actually require any processing, but the receipt of
-the response triggers the next iteration of the loop, if needed.
-</p>
-<h3>
 processAsyncRequest
 </h3>
 <pre>
@@ -141,6 +123,24 @@ First the index variable, i, is compared with count.
 And if no further iterations are needed, the loop request completes by passing back a null result.
 Otherwise i is incremented and a println request is sent.
 And the printCountResponseProcessor is used as a callback to process the response from the send.
+</p>
+<h3>
+printCountResponseProcessor
+</h3>
+<pre>
+            final AsyncResponseProcessor&lt;Void&gt; printCountResponseProcessor = 
+                    new AsyncResponseProcessor&lt;Void&gt;() {
+
+                @Override
+                public void processAsyncResponse(final Void _response) throws Exception {
+                    iterate();
+                }
+            };
+</pre>
+<p>
+The printCountResponseProcessor is used to process the response from a println request sent to the Printer blade.
+The response is null and does not actually require any processing, but the receipt of
+the response triggers the next iteration of the loop, if needed.
 </p>
 </body>
 </html>
