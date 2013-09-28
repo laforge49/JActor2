@@ -5,7 +5,8 @@
 </p>
 <h1>Hello World! - A First Look</h1>
 <p>
-We will begin our exploration of JActor2 with a program that prints "Hello World!".
+We will begin our exploration of JActor2 with a program, <a href="HelloWorld.java">HelloWorld</a>,
+that prints "Hello World!".
 In the process, we will encounter a number of classes which play a major role when using JActor.
 </p>
 <pre>
@@ -20,7 +21,7 @@ public class HelloWorld {
         try {
             IsolationReactor isolationReactor = new IsolationReactor(facility);
             Printer printer = new Printer(isolationReactor);
-            SyncRequest<Void> printRequest = printer.printlnSReq("Hello World!");
+            SyncRequest&lt;Void&gt; printRequest = printer.printlnSReq("Hello World!");
             printRequest.call();
         } finally {
             facility.close();
@@ -28,6 +29,74 @@ public class HelloWorld {
     }
 }
 </pre>
+<table style="border: 2px solid;" bgcolor="lightgray">
+<tr>
+<th style="padding: 5px;">
+Main Thread
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;">
+Isolation Reactor
+</th>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;">
+call
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;">
+wait
+</td>
+<td style="padding: 5px;">
+---println-->
+</td>
+<td style="border: 1px solid; padding: 5px;">
+allocate thread
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;">
+print "Hello World!"
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;">
+wakeup
+</td>
+<td style="padding: 5px;">
+<--null---
+</td>
+<td style="border: 1px solid; padding: 5px;">
+release thread
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;">
+close
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+</table>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/facilities/Facility.html">Facility</a>
 </h3>
