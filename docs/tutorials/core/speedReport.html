@@ -101,5 +101,255 @@ method provides the application logic for the startSReq implemented in SyncAgent
 Within this method the protected methods on PrinterAgent--println and printf--can be used
 for printing the report.
 </p>
+<h3>
+Test
+</h3>
+<p>
+We will use the <a href="SpeedReportValidator.java">SpeedReportValidator</a> program to test SpeedReport:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+
+public class SpeedReportValidator {
+    public static void main(final String[] _args) throws Exception {
+        Facility facility = new Facility();
+        try {
+            Printer printer = new Printer(new IsolationReactor(facility));
+            SpeedReport.startSReq(printer, "Speed Report Validation", 1000L, 1L).call();
+        } finally {
+            facility.close();
+        }
+    }
+}
+
+Output:
+
+Speed Report Validation
+Test duration in nanoseconds: 1,000
+Number of exchanges: 1
+Exchanges per second: 1,000,000
+</pre>
+<table style="border: 2px solid;" bgcolor="lightgray">
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Main Thread
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow" colspan="2">
+Isolation Reactor
+</th>
+</tr>
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+SpeedReportValidator
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+SpeedReport
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Printer
+</th>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+call
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+wait
+</td>
+<td style="padding: 5px;">
+---start-->
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+allocate thread
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+println ""
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+println
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+println heading
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+println
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+printf "Test duration in nanoseconds: %,d%n", ns
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+printf
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+printf "Number of exchanges: %,d%n", count
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+printf
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+printf "Exchanges per second: %,d%n%n", 1000000000L * count / ns
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+printf
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+wakeup
+</td>
+<td style="padding: 5px;">
+<--response: null---
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+release thread
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+close
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+</table>
 </body>
 </html>
