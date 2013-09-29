@@ -61,7 +61,146 @@ public class UltimateAnswer extends BladeBase {
             facility.close();
         }
     }
-}</pre>
+}
+</pre>
+<table style="border: 2px solid;" bgcolor="lightgray">
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Main Thread
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Non-blocking Reactor
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+IsolationReactor
+</th>
+</tr>
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+UltimateAnswer
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+UltimateAnswer
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Printer
+</th>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+call
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+wait
+</td>
+<td style="padding: 5px; text-align: center;">
+---printAnswer-->
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+allocate thread
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+send
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="padding: 5px; text-align: center;">
+---(thread, println)-->
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+println "*** 42 ***"
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+wakeup
+</td>
+<td style="padding: 5px; text-align: center;">
+<--response: null--
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+release thread
+</td>
+<td style="padding: 5px; text-align: center;">
+<--(thread, response: null)---
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+close
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+</table>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#send(org.agilewiki.jactor2.core.messages.RequestBase, org.agilewiki.jactor2.core.messages.AsyncResponseProcessor)">send</a>
 </h3>
