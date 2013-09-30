@@ -101,8 +101,8 @@ public class Printer extends IsolationBlade {
      * @param _args   The data to be formatted.
      * @return The request.
      */
-    public SyncRequest<Void> printSReq(final String _format,
-                                       final Object... _args) {
+    public SyncRequest<Void> printfSReq(final String _format,
+                                        final Object... _args) {
         return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {

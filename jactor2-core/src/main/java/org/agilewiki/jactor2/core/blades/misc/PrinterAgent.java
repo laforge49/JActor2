@@ -60,6 +60,6 @@ abstract public class PrinterAgent extends SyncAgentBase<Void, Printer> {
      */
     protected void printf(final String _format,
                           final Object... _args) throws Exception {
-        local(localBlade.printSReq(_format, _args));
+        local(localBlade.printfSReq(_format, _args));
     }
 }
