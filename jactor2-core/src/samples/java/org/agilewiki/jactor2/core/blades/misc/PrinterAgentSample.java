@@ -7,18 +7,13 @@ public class PrinterAgentSample extends PrinterAgent {
         super(_printer);
     }
 
-    // Returns a request to print a Hi! banner.
-    public SyncBladeRequest<Void> startSReq() {
-        return new SyncBladeRequest<Void>() {
-            @Override
-            protected Void processSyncRequest() throws Exception {
-                println("*********");
-                println("*       *");
-                println("*  Hi!  *");
-                println("*       *");
-                println("*********");
-                return null;
-            }
-        };
+    // Print a Hi! banner.
+    public Void start() throws Exception {
+        println("*********");
+        println("*       *");
+        println("*  Hi!  *");
+        println("*       *");
+        println("*********");
+        return null;
     }
 }

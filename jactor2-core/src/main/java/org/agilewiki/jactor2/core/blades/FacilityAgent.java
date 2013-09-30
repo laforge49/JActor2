@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * A convenience class for implementing facility agents.
  *
- * @param <RESPONSE_TYPE>    The type of response returned by startSReq.
+ * @param <RESPONSE_TYPE> The type of response returned by startSReq.
  */
 public abstract class FacilityAgent<RESPONSE_TYPE> extends SyncAgentBase<RESPONSE_TYPE, Facility> {
     /**
