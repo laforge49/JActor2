@@ -22,18 +22,28 @@ public class ParallelTest extends TestCase {
         reactor = new NonBlockingReactor(facility);
 
         start = new AsyncBladeRequest<Void>() {
-            AsyncRequest<Void> dis = this;
+            AsyncResponseProcessor<Void> dis = this;
+
+            AsyncResponseProcessor<Void> sleepResponseProcessor =
+                    new AsyncResponseProcessor<Void>() {
+                        int responseCount;
+
+                        @Override
+                        public void processAsyncResponse(Void _response) throws Exception {
+                            responseCount++;
+                            if (responseCount == LOADS)
+                                dis.processAsyncResponse(null);
+                        }
+                    };
 
             @Override
             protected void processAsyncRequest()
                     throws Exception {
-                final ResponseCounter<Void> responseCounter = new ResponseCounter<Void>(
-                        LOADS, null, dis);
                 int i = 0;
                 while (i < LOADS) {
                     final Delay dly = new Delay(facility);
                     send(dly.sleepSReq(ParallelTest.DELAY),
-                            responseCounter);
+                            sleepResponseProcessor);
                     i += 1;
                 }
             }
