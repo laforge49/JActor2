@@ -13,15 +13,13 @@ In the process, we will encounter a number of classes which play a major role wh
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            IsolationReactor isolationReactor = new IsolationReactor(facility);
             Printer printer = new Printer(isolationReactor);
-            SyncRequest&lt;Void&gt; printRequest = printer.printlnSReq("Hello World!");
+            SyncRequest&lt;Void&gt; printRequest = Printer.stdoutSReq(facility).call();
             printRequest.call();
         } finally {
             facility.close();
@@ -126,33 +124,21 @@ A program can have 1 or more facilities, and does not exit normally until
 all the facilities are closed.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>
-</h3>
-<pre>
-            IsolationReactor isolationReactor = new IsolationReactor(facility);
-</pre>
-<p>
-A
-<a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html">Reactor</a>
-processes messages and exchanges messages with other reactors.
-Thread safety is achieved by processing only one message at a time.
-</p>
-<p>
-An isolation reactor is a type of reactor which further isolates requests, 
-starting a new request only after a result was returned for the previous request.
-Isolation reactors are intended for use only when a thread may be blocked due to, for example, blocking I/O or
-extensive computations.
-</p>
-<h3>
 <a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html">Printer</a>
 </h3>
 <pre>
-            Printer printer = new Printer(isolationReactor);
+            Printer printer = Printer.stdoutSReq(facility).call();
 </pre>
 <p>
 A printer is an 
 <a href="../../api/org/agilewiki/jactor2/core/blades/IsolationBlade.html">IsolationBlade</a>,
-which is to say an application object that uses an isolation reactor. It prints to a PrintStream, System.out being the default.
+which is to say an application object that uses an 
+<a href="../../api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>. 
+It prints to a PrintStream, System.out being the default.
+</p>
+<p>
+The static method Printer.stdoutSReq returns a SyncRequest which, when called, returns the
+facility's printer. And if the facility has no printer, one is safely created.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;RESPONSE_TYPE&gt;</a>

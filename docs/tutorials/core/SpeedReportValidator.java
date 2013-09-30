@@ -1,12 +1,11 @@
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 public class SpeedReportValidator {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = new Printer(new IsolationReactor(facility));
+            Printer printer = Printer.stdoutSReq(facility).call();
             SpeedReport.startSReq(printer, "Speed Report Validation", 1000L, 1L).call();
         } finally {
             facility.close();

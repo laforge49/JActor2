@@ -44,7 +44,7 @@ public class DeepThought extends BladeBase {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = new Printer(new IsolationReactor(facility));
+            Printer printer = Printer.stdoutSReq(facility).call();
             DeepThought deepThought = new DeepThought(
                 new NonBlockingReactor(facility),
                 printer);

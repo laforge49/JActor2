@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -50,7 +49,7 @@ public class Loop extends BladeBase {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = new Printer(new IsolationReactor(facility));
+            Printer printer = Printer.stdoutSReq(facility).call();
             Loop loop = new Loop(
                 new NonBlockingReactor(facility),
                 printer);
