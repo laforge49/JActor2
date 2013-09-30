@@ -10,23 +10,29 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class DeepThought extends BladeBase {
-    private final Printer printer;
-
-    public DeepThought(final Reactor _reactor, final Printer _printer) throws Exception {
+    public DeepThought(final Reactor _reactor) throws Exception {
         initialize(_reactor);
-        printer = _printer;
     }
     
     public AsyncRequest<Void> printAnswerAReq() {
         return new AsyncBladeRequest<Void>() {
             final AsyncResponseProcessor<Void> dis = this;
 
+            final AsyncResponseProcessor<Printer> stdoutResponseProcessor =
+                    new AsyncResponseProcessor<Printer>() {
+                @Override
+                public void processAsyncResponse(final Printer _printer) throws Exception {
+                    SyncRequest<Void> printRequest = _printer.printlnSReq("I am sorry, but did you say something?");
+                    send(printRequest, dis);
+                }
+            };
+
             final AsyncResponseProcessor<Void> sleepResponseProcessor =
                     new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    SyncRequest<Void> printRequest = printer.printlnSReq("I am sorry, but did you say something?");
-                    send(printRequest, dis);
+                    SyncRequest<Printer> stdoutRequest = Printer.stdoutSReq(getReactor().getFacility());
+                    send(stdoutRequest, stdoutResponseProcessor);
                 }
             };
 
@@ -45,9 +51,7 @@ public class DeepThought extends BladeBase {
         Facility facility = new Facility();
         try {
             Printer printer = Printer.stdoutSReq(facility).call();
-            DeepThought deepThought = new DeepThought(
-                new NonBlockingReactor(facility),
-                printer);
+            DeepThought deepThought = new DeepThought(new NonBlockingReactor(facility));
             AsyncRequest<Void> printAnswerAReq = deepThought.printAnswerAReq();
             printAnswerAReq.call();
         } finally {
