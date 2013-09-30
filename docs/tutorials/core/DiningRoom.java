@@ -67,18 +67,18 @@ public class DiningRoom extends BladeBase {
             List<Integer> mealsEaten = feastAReq.call();
             long after = System.nanoTime();
             Printer printer = new Printer(new IsolationReactor(facility));
-            printer.printSReq("Seats: %,d%n", seats).call();
-            printer.printSReq("Meals: %,d%n", meals).call();
+            printer.printfSReq("Seats: %,d%n", seats).call();
+            printer.printfSReq("Meals: %,d%n", meals).call();
             printer.printlnSReq("\nMeals eaten by each philosopher:").call();
             Iterator<Integer> it = mealsEaten.iterator();
             while (it.hasNext()) {
                 int me = it.next();
-                printer.printSReq("    %,d%n", me).call();
+                printer.printfSReq("    %,d%n", me).call();
             }
             long duration = after - before;
-            printer.printSReq("\nTest duration in nanoseconds: %,d%n", duration).call();
+            printer.printfSReq("\nTest duration in nanoseconds: %,d%n", duration).call();
             if (duration > 0) {
-                printer.printSReq("Total meals eaten per second: %,d%n%n", 1000000000L * meals / duration).call();
+                printer.printfSReq("Total meals eaten per second: %,d%n%n", 1000000000L * meals / duration).call();
             }
         } finally {
             facility.close();
