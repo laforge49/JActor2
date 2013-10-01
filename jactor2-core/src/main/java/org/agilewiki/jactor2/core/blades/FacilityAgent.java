@@ -9,7 +9,7 @@ import java.util.Set;
  *
  * @param <RESPONSE_TYPE> The type of response returned by startSReq.
  */
-public abstract class FacilityAgent<RESPONSE_TYPE> extends SyncAgentBase<RESPONSE_TYPE, Facility> {
+public abstract class FacilityAgent<RESPONSE_TYPE> extends AsyncAgentBase<RESPONSE_TYPE, Facility> {
     /**
      * Create a facility agent.
      *

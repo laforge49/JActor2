@@ -12,7 +12,7 @@ public class PrinterSample {
         try {
 
             //Create a Printer.
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutAReq(facility).call();
 
             //Print something.
             printer.printlnSReq("Hello World!").call();

@@ -3,6 +3,8 @@ package org.agilewiki.jactor2.core.blades.misc;
 import org.agilewiki.jactor2.core.blades.FacilityAgent;
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
@@ -26,7 +28,7 @@ import java.util.Locale;
  *         try {
  *
  *             //Create a Printer.
- *             Printer printer = Printer.stdoutSReq(facility).call();
+ *             Printer printer = Printer.stdoutAReq(facility).call();
  *
  *             //Print something.
  *             printer.printlnSReq("Hello World!").call();
@@ -42,17 +44,17 @@ import java.util.Locale;
  */
 public class Printer extends IsolationBlade {
 
-    static public SyncRequest<Printer> stdoutSReq(final Facility _facility) throws Exception {
+    static public AsyncRequest<Printer> stdoutAReq(final Facility _facility) throws Exception {
         return new FacilityAgent<Printer>(_facility) {
-            protected Printer start() throws Exception {
+            protected void start(final AsyncResponseProcessor<Printer> dis) throws Exception {
                 Printer printer = (Printer) getProperty("stdout");
                 if (printer == null) {
                     printer = new Printer(new IsolationReactor(_facility));
                     putProperty("stdout", printer);
                 }
-                return printer;
+                dis.processAsyncResponse(printer);
             }
-        }.startSReq();
+        }.startAReq();
     }
 
     final public PrintStream printStream;

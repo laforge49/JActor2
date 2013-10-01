@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 /**
  * A SyncAgent is a blade with a StartSReq and which is dynamically added to a Reactor
- * to interact with the blades of that Reactor. One of the advantages of an SyncAgent is
+ * to interact with the blades of that Reactor. One of the advantages of a SyncAgent is
  * to reduce the number of requests that pass between threads. The other can be to perform
  * multiple local requests against the other blades in that targetReactor in isolation from other requests.
  * </p>
