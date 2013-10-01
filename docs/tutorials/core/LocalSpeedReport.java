@@ -14,7 +14,7 @@ public class LocalSpeedReport {
             startSReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutAReq(facility).call();
             SpeedReport.startSReq(printer, "Local Timings", duration, count).call();
         } finally {
             facility.close();

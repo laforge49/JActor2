@@ -37,7 +37,7 @@ public class CallSpeedReport {
             }
             final long after = System.nanoTime();
             final long duration = after - before;
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutAReq(facility).call();
             SpeedReport.startSReq(printer, "Call Timings", duration, count).call();
         } finally {
             facility.close();

@@ -83,7 +83,7 @@ public class ReactorSendSpeedReport {
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutAReq(facility).call();
             SpeedReport.startSReq(printer, "Reactor Send Timings", duration, count).call();
         } finally {
             facility.close();
@@ -130,7 +130,7 @@ public class FacilitySendSpeedReport {
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutAReq(facility).call();
             SpeedReport.startSReq(printer, "Facility Send Timings", duration, count).call();
         } finally {
             facility.close();

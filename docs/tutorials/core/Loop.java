@@ -49,7 +49,7 @@ public class Loop extends BladeBase {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutAReq(facility).call();
             Loop loop = new Loop(
                 new NonBlockingReactor(facility),
                 printer);

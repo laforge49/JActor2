@@ -30,7 +30,7 @@ public class UltimateAnswer extends BladeBase {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutAReq(facility).call();
             UltimateAnswer ultimateAnswer = new UltimateAnswer(
                 new NonBlockingReactor(facility),
                 printer);

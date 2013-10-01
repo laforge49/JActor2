@@ -18,7 +18,7 @@ public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = new Printer(isolationReactor);
+            Printer printer = Printer.stdoutAReq(facility).call();
             SyncRequest&lt;Void&gt; printRequest = Printer.stdoutSReq(facility).call();
             printRequest.call();
         } finally {
@@ -127,7 +127,7 @@ all the facilities are closed.
 <a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html">Printer</a>
 </h3>
 <pre>
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutAReq(facility).call();
 </pre>
 <p>
 A printer is an 
@@ -137,7 +137,7 @@ which is to say an application object that uses an
 It prints to a PrintStream, System.out being the default.
 </p>
 <p>
-The static method Printer.stdoutSReq returns a SyncRequest which, when called, returns the
+The static method Printer.stdoutAReq returns an AsyncRequest which, when called, returns the
 facility's printer. And if the facility has no printer, one is safely created.
 </p>
 <h3>
