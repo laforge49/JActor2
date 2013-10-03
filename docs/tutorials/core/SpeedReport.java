@@ -33,7 +33,8 @@ public class SpeedReport extends PrinterAgent {
         println(heading);
         printf("Test duration in nanoseconds: %,d%n", ns);
         printf("Number of exchanges: %,d%n", count);
-        printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
+        if (ns > 0)
+            printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
         return null;
     }
 }
