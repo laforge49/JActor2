@@ -1,0 +1,116 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Batcher
+</p>
+<h1>Batcher - Batched Messages per Second</h1>
+<p>
+As moving messages between blades is sometimes quite slow, 
+the send method provides for message batching where multiple
+messages sent to the same destination are sent together in a group.
+This is illustrated by <a href="Batcher.java">Batcher</a>.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+public class Batcher extends BladeBase {
+    private final long count;
+    private final Ponger ponger;
+    
+    public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger)
+            throws Exception {
+        initialize(_reactor);
+        count = _count;
+        ponger = _ponger;
+    }
+    
+    public AsyncRequest&lt;Void&gt; runAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            final AsyncResponseProcessor&lt;Void&gt; dis = this;
+            
+            final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
+                new AsyncResponseProcessor&lt;Long&gt;() {
+                
+                long i = 0;
+                
+                @Override
+                public void processAsyncResponse(final Long _response) throws Exception {
+                    i++;
+                    if (i == count)
+                        dis.processAsyncResponse(null);
+                }
+            };
+            
+            protected void processAsyncRequest() throws Exception {
+                long j = 0;
+                while(j < count) {
+                    j++;
+                    send(ponger.pingSReq(), pingResponseProcessor);
+                }
+            }
+        };
+    }
+    
+    public static void main(final String[] _args) throws Exception {
+        final long count = 1000000L;
+        Facility facility = new Facility();
+        try {
+            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
+            Batcher batcher = new Batcher(new NonBlockingReactor(facility), count, ponger);
+            AsyncRequest&lt;Void&gt; runAReq = batcher.runAReq();
+            final long before = System.nanoTime();
+            runAReq.call();
+            final long after = System.nanoTime();
+            final long duration = after - before;
+            Printer printer = Printer.stdoutAReq(facility).call();
+            SpeedReport.startSReq(printer, "Batch Timings", duration, count).call();
+        } finally {
+            facility.close();
+        }
+    }
+}
+   
+Output:
+
+Batch Timings
+Test duration in nanoseconds: 197,570,836
+Number of exchanges: 1,000,000
+Exchanges per second: 5,061,475
+<p>
+The code that drives this is fairly simple. We put the send invocation in a simple loop,
+which means that all the requests will be sent out at one time, when the loop completes.
+</p>
+<pre>
+            protected void processAsyncRequest() throws Exception {
+                long j = 0;
+                while(j < count) {
+                    j++;
+                    send(ponger.pingSReq(), pingResponseProcessor);
+                }
+            }
+</pre>
+<p>
+After the requests have been sent, the responses are counted. When 
+all the responses have been received, a result of null is returned.
+</p>
+<pre>
+            final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
+                new AsyncResponseProcessor&lt;Long&gt;() {
+                
+                long i = 0;
+                
+                @Override
+                public void processAsyncResponse(final Long _response) throws Exception {
+                    i++;
+                    if (i == count)
+                        dis.processAsyncResponse(null);
+                }
+            };
+</pre>
+</body>
+</html>
