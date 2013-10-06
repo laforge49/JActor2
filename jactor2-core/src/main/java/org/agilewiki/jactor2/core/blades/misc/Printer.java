@@ -45,16 +45,16 @@ import java.util.Locale;
 public class Printer extends IsolationBlade {
 
     static public AsyncRequest<Printer> stdoutAReq(final Facility _facility) throws Exception {
-        return new FacilityAgent<Printer>(_facility) {
-            protected void start(final AsyncResponseProcessor<Printer> dis) throws Exception {
-                Printer printer = (Printer) getProperty("stdout");
+        return new AsyncRequest<Printer>(_facility.getReactor()) {
+            public void processAsyncRequest() throws Exception {
+                Printer printer = (Printer) _facility.getProperty("stdout");
                 if (printer == null) {
                     printer = new Printer(new IsolationReactor(_facility));
-                    putProperty("stdout", printer);
+                    _facility.putProperty("stdout", printer);
                 }
-                dis.processAsyncResponse(printer);
+                processAsyncResponse(printer);
             }
-        }.startAReq();
+        };
     }
 
     final public PrintStream printStream;

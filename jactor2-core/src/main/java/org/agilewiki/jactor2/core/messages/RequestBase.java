@@ -416,6 +416,30 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     /**
+     * Process the request immediately.
+     *
+     * @param _syncRequest    The request to be processed.
+     * @param <RT> The type of value returned.
+     * @return The response from the request.
+     */
+    protected <RT> RT local(final SyncRequest<RT> _syncRequest)
+            throws Exception {
+        return SyncRequest.doLocal(targetReactor, _syncRequest);
+    }
+
+    /**
+     * Process the request immediately.
+     *
+     * @param _request        The request to be processed.
+     * @param <RT> The type of value returned.
+     */
+    protected <RT> void send(final RequestBase<RT> _request,
+                                        final AsyncResponseProcessor<RT> _responseProcessor)
+            throws Exception {
+        RequestBase.doSend(targetReactor, _request, _responseProcessor);
+    }
+
+    /**
      * Pender is used by the RequestBase.call method to block the current thread until a
      * result is available and then either return the result or rethrow it if the result
      * is an exception.
