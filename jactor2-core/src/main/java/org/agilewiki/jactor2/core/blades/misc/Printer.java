@@ -27,11 +27,8 @@ import java.util.Locale;
  *
  *         try {
  *
- *             //Create a Printer.
- *             Printer printer = Printer.stdoutAReq(facility).call();
- *
  *             //Print something.
- *             printer.printlnSReq("Hello World!").call();
+ *             Printer.printlnAReq(facility, "Hello World!").call();
  *
  *         } finally {
  *             //shutdown the facility
@@ -44,15 +41,33 @@ import java.util.Locale;
  */
 public class Printer extends IsolationBlade {
 
-    static public AsyncRequest<Printer> stdoutAReq(final Facility _facility) throws Exception {
-        return new AsyncRequest<Printer>(_facility.getReactor()) {
+    public static AsyncRequest<Void> printlnAReq(final Facility _facility, final String _string) throws Exception {
+        return new AsyncRequest<Void>(_facility.getReactor()) {
             public void processAsyncRequest() throws Exception {
+                Printer printer = local(stdoutSReq(_facility));
+                send(printer.printlnSReq(_string), this);
+            }
+        };
+    }
+
+    public static AsyncRequest<Void> printfAReq(final Facility _facility, final String _format, final Object... _args) throws Exception {
+        return new AsyncRequest<Void>(_facility.getReactor()) {
+            public void processAsyncRequest() throws Exception {
+                Printer printer = local(stdoutSReq(_facility));
+                send(printer.printfSReq(_format, _args), this);
+            }
+        };
+    }
+
+    static public SyncRequest<Printer> stdoutSReq(final Facility _facility) throws Exception {
+        return new SyncRequest<Printer>(_facility.getReactor()) {
+            public Printer processSyncRequest() throws Exception {
                 Printer printer = (Printer) _facility.getProperty("stdout");
                 if (printer == null) {
                     printer = new Printer(new IsolationReactor(_facility));
                     _facility.putProperty("stdout", printer);
                 }
-                processAsyncResponse(printer);
+                return printer;
             }
         };
     }
