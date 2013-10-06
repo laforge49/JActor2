@@ -8,11 +8,9 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Loop extends BladeBase {
-    private final Printer printer;
 
-    public Loop(final Reactor _reactor, final Printer _printer) throws Exception {
+    public Loop(final Reactor _reactor) throws Exception {
         initialize(_reactor);
-        printer = _printer;
     }
 
     public AsyncRequest<Void> loopAReq(final long _count) {
@@ -40,7 +38,8 @@ public class Loop extends BladeBase {
                     return;
                 }
                 i++;
-                SyncRequest<Void> printCount = printer.printlnSReq(String.valueOf(i));
+                Facility myFacility = getReactor().getFacility();
+                AsyncRequest<Void> printCount = Printer.printlnAReq(myFacility, String.valueOf(i));
                 send(printCount, printCountResponseProcessor);
             }
         };
@@ -49,10 +48,7 @@ public class Loop extends BladeBase {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = Printer.stdoutAReq(facility).call();
-            Loop loop = new Loop(
-                new NonBlockingReactor(facility),
-                printer);
+            Loop loop = new Loop(new NonBlockingReactor(facility));
             AsyncRequest<Void> loopAReq = loop.loopAReq(10L);
             loopAReq.call();
         } finally {

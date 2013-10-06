@@ -18,9 +18,7 @@ public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = Printer.stdoutAReq(facility).call();
-            SyncRequest&lt;Void&gt; printRequest = Printer.stdoutSReq(facility).call();
-            printRequest.call();
+            Printer.printlnAReq(facility, "Hello World!").call();
         } finally {
             facility.close();
         }
@@ -127,7 +125,7 @@ all the facilities are closed.
 <a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html">Printer</a>
 </h3>
 <pre>
-            Printer printer = Printer.stdoutAReq(facility).call();
+            Printer.printlnAReq(facility, "Hello World!").call();
 </pre>
 <p>
 A printer is an 
@@ -137,28 +135,13 @@ which is to say an application object that uses an
 It prints to a PrintStream, System.out being the default.
 </p>
 <p>
-The static method Printer.stdoutAReq returns an AsyncRequest which, when called, returns the
-facility's printer. And if the facility has no printer, one is safely created.
+The static method Printer.printlnAReq returns an AsyncRequest which, when called, prints the string. 
+And if the facility has no printer, one is safely created.
 </p>
-<h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;RESPONSE_TYPE&gt;</a>
-</h3>
-<pre>
-            SyncRequest<Void> printRequest = printer.printlnSReq("Hello World!");
-</pre>
 <p>
-Blades, like printer, expose requests which can be used to invoke various operations, 
-SyncRequest being a type of request whose implementation uses a return statement to return their result.
-In this case, printRequest is a request to print "Hello World!".
-</p>
-<h3>
+The 
 <a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
-</h3>
-<pre>
-            printRequest.call();
-</pre>
-<p>
-Here we print "Hello World!".
+method invokes the request to print the string.
 But it is printed from the printer's own thread, not from the main thread.
 </p>
 <p>

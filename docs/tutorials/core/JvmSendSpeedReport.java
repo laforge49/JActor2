@@ -18,7 +18,7 @@ public class JvmSendSpeedReport {
                 loopAReq.call();
                 final long after = System.nanoTime();
                 final long duration = after - before;
-                Printer printer = new Printer(new IsolationReactor(facility1));
+                Printer printer = Printer.stdoutSReq(facility1).call();
                 SpeedReport.startSReq(printer, "JVM Send Timings", duration, count).call();
             } finally {
                 facility2.close();

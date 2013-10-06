@@ -8,11 +8,9 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class UltimateAnswer extends BladeBase {
-    private final Printer printer;
 
-    public UltimateAnswer(final Reactor _reactor, final Printer _printer) throws Exception {
+    public UltimateAnswer(final Reactor _reactor) throws Exception {
         initialize(_reactor);
-        printer = _printer;
     }
     
     public AsyncRequest<Void> printAnswerAReq() {
@@ -21,7 +19,8 @@ public class UltimateAnswer extends BladeBase {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                SyncRequest<Void> printRequest = printer.printlnSReq("*** 42 ***");
+                Facility myFacility = getReactor().getFacility();
+                AsyncRequest<Void> printRequest = Printer.printlnAReq(myFacility, "*** 42 ***");
                 send(printRequest, dis);
             }
         };
@@ -30,10 +29,7 @@ public class UltimateAnswer extends BladeBase {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = Printer.stdoutAReq(facility).call();
-            UltimateAnswer ultimateAnswer = new UltimateAnswer(
-                new NonBlockingReactor(facility),
-                printer);
+            UltimateAnswer ultimateAnswer = new UltimateAnswer(new NonBlockingReactor(facility));
             AsyncRequest<Void> printAnswerAReq = ultimateAnswer.printAnswerAReq();
             printAnswerAReq.call();
         } finally {

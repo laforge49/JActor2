@@ -116,7 +116,7 @@ public class SpeedReportValidator {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = Printer.stdoutAReq(facility).call();
+            Printer printer = Printer.stdoutSReq(facility).call();
             SpeedReport.startSReq(printer, "Speed Report Validation", 1000L, 1L).call();
         } finally {
             facility.close();

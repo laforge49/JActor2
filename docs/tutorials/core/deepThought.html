@@ -44,7 +44,7 @@ public class DeepThought extends BladeBase {
                     new AsyncResponseProcessor&lt;Void&gt;() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    AsyncRequest&lt;Printer&gt; stdoutRequest = Printer.stdoutAReq(getReactor().getFacility());
+                    SyncRequest&lt;Printer&gt; stdoutRequest = Printer.stdoutSReq(getReactor().getFacility());
                     send(stdoutRequest, stdoutResponseProcessor);
                 }
             };
@@ -97,7 +97,7 @@ the stdout request is sent to fetch the facility printer.
                     new AsyncResponseProcessor&lt;Void&gt;() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    AsyncRequest&lt;Printer&gt; stdoutRequest = Printer.stdoutAReq(getReactor().getFacility());
+                    SyncRequest&lt;Printer&gt; stdoutRequest = Printer.stdoutSReq(getReactor().getFacility());
                     send(stdoutRequest, stdoutResponseProcessor);
                 }
             };

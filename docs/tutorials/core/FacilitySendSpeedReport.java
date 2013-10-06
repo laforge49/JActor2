@@ -15,7 +15,7 @@ public class FacilitySendSpeedReport {
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            Printer printer = Printer.stdoutAReq(facility).call();
+            Printer printer = Printer.stdoutSReq(facility).call();
             SpeedReport.startSReq(printer, "Facility Send Timings", duration, count).call();
         } finally {
             facility.close();

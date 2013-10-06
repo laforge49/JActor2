@@ -6,9 +6,7 @@ public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
         Facility facility = new Facility();
         try {
-            Printer printer = Printer.stdoutAReq(facility).call();
-            SyncRequest<Void> printRequest = printer.printlnSReq("Hello World!");
-            printRequest.call();
+            Printer.printlnAReq(facility, "Hello World!").call();
         } finally {
             facility.close();
         }
