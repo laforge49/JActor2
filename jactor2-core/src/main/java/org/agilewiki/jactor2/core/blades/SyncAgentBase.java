@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 /**
  * A convenience class for implementing sync agents.
  */
+@Deprecated
 abstract public class SyncAgentBase<RESPONSE_TYPE, BLADE_TYPE extends Blade>
         extends BladeBase implements SyncAgent {
     /**

@@ -28,6 +28,7 @@ import org.agilewiki.jactor2.core.blades.SyncAgentBase;
  * }
  * </pre>
  */
+@Deprecated
 abstract public class PrinterAgent extends SyncAgentBase<Void, Printer> {
     /**
      * Create a printer adjunct.

@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 /**
  * A convenience class for implementing async agents.
  */
+@Deprecated
 abstract public class AsyncAgentBase<RESPONSE_TYPE, BLADE_TYPE extends Blade>
         extends BladeBase implements AsyncAgent {
     /**

@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 //Prints a banner without allowing any intervening lines.
+@Deprecated
 public class PrinterAgentSample extends PrinterAgent {
     //Creates a PrinterAgentSample.
     public PrinterAgentSample(Printer _printer) throws Exception {

@@ -11,6 +11,7 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
  * Any needed parameters are not passed to the startAReq, but are instead are to be
  * passed in the constructor of the subclasses of AsyncAgent.
  */
+@Deprecated
 public interface AsyncAgent<RESPONSE_TYPE> extends Blade {
     abstract AsyncRequest<RESPONSE_TYPE> startAReq();
 }

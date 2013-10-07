@@ -11,6 +11,7 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
  * Any needed parameters are not passed to the startSReq, but are instead are to be
  * passed in the constructor of the subclasses of SyncAgent.
  */
+@Deprecated
 public interface SyncAgent<RESPONSE_TYPE> extends Blade {
     abstract SyncRequest<RESPONSE_TYPE> startSReq();
 }
