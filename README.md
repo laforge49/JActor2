@@ -1,4 +1,4 @@
-Programming for Performance
+Programming for Thread-Safety & Performance
 ======
 
 As the number of cores continue to increase, it becomes harder and harder to write software
