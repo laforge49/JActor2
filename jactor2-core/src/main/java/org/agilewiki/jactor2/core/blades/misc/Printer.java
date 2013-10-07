@@ -1,10 +1,8 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
-import org.agilewiki.jactor2.core.blades.FacilityAgent;
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 

@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.MigrationException;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.messages.MessageSource;
 import org.slf4j.Logger;
@@ -219,26 +218,6 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      */
     public boolean buffer(final Message _message, final Reactor _target) {
         return outbox.buffer(_message, _target);
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            final Message message = inbox.poll();
-            if (message == null) {
-                try {
-                    notBusy();
-                } catch (final MigrationException me) {
-                    throw me;
-                } catch (Exception e) {
-                    log.error("Exception thrown by onIdle", e);
-                }
-                if (hasWork())
-                    continue;
-                return;
-            }
-            processMessage(message);
-        }
     }
 
     /**

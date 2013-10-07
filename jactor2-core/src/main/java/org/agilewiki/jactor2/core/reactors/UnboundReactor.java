@@ -97,7 +97,7 @@ abstract public class UnboundReactor extends ReactorBase {
                         target instanceof UnboundReactor) {
                     if (!target.isRunning()) {
                         Thread currentThread = threadReference.get();
-                        ReactorBase targ = target;
+                        UnboundReactor targ = (UnboundReactor) target;
                         AtomicReference<Thread> targetThreadReference = targ.getThreadReference();
                         if (targetThreadReference.get() == null &&
                                 targetThreadReference.compareAndSet(null, currentThread)) {
@@ -113,5 +113,25 @@ abstract public class UnboundReactor extends ReactorBase {
             }
         }
         return result;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            final Message message = inbox.poll();
+            if (message == null) {
+                try {
+                    notBusy();
+                } catch (final MigrationException me) {
+                    throw me;
+                } catch (Exception e) {
+                    log.error("Exception thrown by onIdle", e);
+                }
+                if (hasWork())
+                    continue;
+                return;
+            }
+            processMessage(message);
+        }
     }
 }

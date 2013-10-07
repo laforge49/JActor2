@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * Base class for printer requests.
@@ -13,7 +12,7 @@ abstract public class SyncPrinterRequest extends SyncRequest<Void> {
     /**
      * Create a SyncPrinterRequest.
      *
-     * @param _printer    The blade this request is bound to.
+     * @param _printer The blade this request is bound to.
      */
     public SyncPrinterRequest(final Printer _printer) {
         super(_printer.getReactor());

@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.reactors.UnboundReactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,10 +29,10 @@ final public class ThreadManager {
     final private Semaphore taskRequest = new Semaphore(0);
 
     /**
-     * The messageProcessors queue holds the messageProcessors which have messages to be processed.
+     * The reactors queue holds the reactors which have messages to be processed.
      */
-    final private ConcurrentLinkedQueue<ReactorBase> messageProcessors =
-            new ConcurrentLinkedQueue<ReactorBase>();
+    final private ConcurrentLinkedQueue<UnboundReactor> reactors =
+            new ConcurrentLinkedQueue<UnboundReactor>();
 
     /**
      * When closing is true, the threads exit as they finish their current activity.
@@ -60,42 +61,46 @@ final public class ThreadManager {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                final Thread currentThread = Thread.currentThread();
+                final PoolThread currentThread = (PoolThread) Thread.currentThread();
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        ReactorBase messageProcessor = messageProcessors.poll();
-                        if (messageProcessor != null) {
-                            AtomicReference<Thread> threadReference = messageProcessor.getThreadReference();
+                        UnboundReactor reactor = reactors.poll();
+                        if (reactor != null) {
+                            AtomicReference<Thread> threadReference = reactor.getThreadReference();
                             if (threadReference.get() == null &&
                                     threadReference.compareAndSet(null, currentThread)) {
+                                currentThread.setCurrentReactor(reactor);
                                 while (true) {
                                     try {
-                                        messageProcessor.run();
+                                        reactor.run();
                                     } catch (final MigrationException me) {
-                                        boolean hasWork = messageProcessor.hasWork();
+                                        boolean hasWork = reactor.hasWork();
                                         threadReference.set(null);
-                                        if (messageProcessor.isIdler() || hasWork || messageProcessor.hasConcurrent()) {
-                                            execute(messageProcessor);
+                                        if (reactor.isIdler() || hasWork || reactor.hasConcurrent()) {
+                                            execute(reactor);
                                         }
-                                        messageProcessor = me.messageProcessor;
-                                        threadReference = messageProcessor.getThreadReference();
+                                        reactor = me.reactor;
+                                        threadReference = reactor.getThreadReference();
+                                        currentThread.setCurrentReactor(reactor);
                                         continue;
                                     } catch (final Throwable e) {
                                         logger.error(
                                                 "Exception thrown by a targetReactor's run method",
                                                 e);
                                     }
-                                    boolean hasWork = messageProcessor.hasWork();
+                                    boolean hasWork = reactor.hasWork();
                                     threadReference.set(null);
-                                    if (hasWork || messageProcessor.hasConcurrent())
-                                        execute(messageProcessor);
+                                    if (hasWork || reactor.hasConcurrent())
+                                        execute(reactor);
                                     break;
                                 }
+                                currentThread.setCurrentReactor(null);
                             }
                         }
                     } catch (final InterruptedException e) {
                     }
+                    currentThread.setCurrentReactor(null);
                     if (closing)
                         return;
                 }
@@ -117,7 +122,7 @@ final public class ThreadManager {
     final public void execute(final Reactor _reactor) {
         if (closing)
             return;
-        messageProcessors.add((ReactorBase) _reactor);
+        reactors.add((UnboundReactor) _reactor);
         taskRequest.release();
     }
 

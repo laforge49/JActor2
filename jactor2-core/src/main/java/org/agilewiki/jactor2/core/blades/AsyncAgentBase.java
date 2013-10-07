@@ -37,7 +37,7 @@ abstract public class AsyncAgentBase<RESPONSE_TYPE, BLADE_TYPE extends Blade>
     /**
      * The application logic of the agent.
      *
-     * @param dis    The response processor.
+     * @param dis The response processor.
      */
     abstract protected void start(final AsyncResponseProcessor<RESPONSE_TYPE> dis) throws Exception;
 }

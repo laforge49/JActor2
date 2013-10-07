@@ -196,4 +196,22 @@ public class ThreadBoundReactor extends ReactorBase {
         }
         return result;
     }
+
+    @Override
+    public void run() {
+        while (true) {
+            final Message message = inbox.poll();
+            if (message == null) {
+                try {
+                    notBusy();
+                } catch (Exception e) {
+                    log.error("Exception thrown by onIdle", e);
+                }
+                if (hasWork())
+                    continue;
+                return;
+            }
+            processMessage(message);
+        }
+    }
 }
