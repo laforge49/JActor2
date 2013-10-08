@@ -139,8 +139,19 @@ It is similar to SyncRequest.processSyncRequest, except that processAsyncRequest
 <p>
 The stdoutSReq method is a request to return the facility's  printer, safely creating and registering a printer
 if there was none.
-The request can be invoked using the local method because both the originator and target of this message use the
+The request can be invoked using the local method because both the invoker and target of this request use the
 same reactor.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#send(org.agilewiki.jactor2.core.messages.RequestBase, org.agilewiki.jactor2.core.messages.AsyncResponseProcessor)">send</a>
+</h3>
+<pre>
+                SpeedReport sr = new SpeedReport(printer, _heading, _ns, _count);
+                send(sr, this);
+</pre>
+<p>
+The send method invokes a request and provides a callback for processing the response.
+In this case, the response is sent back to the invoker of startAReq.
 </p>
 <h3>
 Test
