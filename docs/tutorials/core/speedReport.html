@@ -6,30 +6,38 @@
 <h1>SpeedReport - PrinterAgent</h1>
 <p>
 <a href="SpeedReport.java">SpeedReport</a>
-is a blade that prints a brief report that is useful when writing benchmarks.
+is a SyncRequest that prints a brief report that is useful when writing benchmarks.
 The report is generated entirely on the same thread used by Printer.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.blades.misc.PrinterAgent;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
+import org.agilewiki.jactor2.core.facilities.AsyncFacilityRequest;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
-public class SpeedReport extends PrinterAgent {
+public class SpeedReport extends SyncPrinterRequest {
+    
+    public static AsyncRequest<Void> startAReq(
+            final Facility _facility,
+            final String _heading, 
+            final long _ns, 
+            final long _count) {
+        return new AsyncFacilityRequest<Void>(_facility) {
+            @Override
+            public void processAsyncRequest() throws Exception {
+                Printer printer = local(Printer.stdoutSReq(_facility));
+                SpeedReport sr = new SpeedReport(printer, _heading, _ns, _count);
+                send(sr, this);
+            }
+        };
+    }
+
     private final String heading;
     private final long ns;
     private final long count;
     
-    public static SyncRequest&lt;Void&gt; startSReq(
-            final Printer _printer, 
-        final String _heading, 
-        final long _ns, 
-        final long _count)
-            throws Exception {
-        return new SpeedReport(_printer, _heading, _ns, _count).startSReq();
-    }
-
-    public SpeedReport(
-            final Printer _printer, 
+    private SpeedReport(final Printer _printer, 
             final String _heading, 
             final long _ns, 
             final long _count) throws Exception {
@@ -38,54 +46,41 @@ public class SpeedReport extends PrinterAgent {
         ns = _ns;
         count = _count;
     }
-    
+
     @Override
-    protected Void start() throws Exception {
+    protected Void processSyncRequest() throws Exception {
         println("");
         println(heading);
         printf("Test duration in nanoseconds: %,d%n", ns);
         printf("Number of exchanges: %,d%n", count);
-        printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
+        if (ns > 0)
+            printf("Exchanges per second: %,d%n%n", 1000000000L * count / ns);
         return null;
     }
 }
 </pre>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/misc/PrinterAgent.html">PrinterAgent</a>
+<a href="../../api/org/agilewiki/jactor2/core/blades/misc/SyncPrinterRequest.html">SyncPrinterRequest</a>
 </h3>
 <pre>
-public class SpeedReport extends PrinterAgent {
+public class SyncPrinterRequest extends PrinterAgent {
     ...
 }
 </pre>
 <p>
-PrinterAgent extends
-<a href="../../api/org/agilewiki/jactor2/core/blades/SyncAgent.html">SyncAgentBase</a>,
-which is to say that it is a blade that uses the same reactor as another blade.
-This allows PrinterAgent to access the requests of Printer locally, without recourse to messages.
-Local access to Printer means that PrinterAgent can easily implement protected methods, like println and printf,
-for using the Printer blade.
+SyncPrinterRequest extends
+<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest</a>.
+SyncPrinterRequest accesses the sync requests of Printer locally, without recourse to messages,
+as it operates as an extension of Printer.
+Local access to Printer means that SyncPrinterRequest can easily implement protected methods, i.e. println and printf,
+for working with the Printer blade.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/SyncAgent.html#startSReq()">startSReq</a>
+Processing a SpeedReport Request
 </h3>
 <pre>
-    public static SyncRequest&lt;Void&gt; startSReq(
-            final Printer _printer, 
-        final String _heading, 
-        final long _ns, 
-        final long _count)
-            throws Exception {
-        return new SpeedReport(_printer, _heading, _ns, _count).startSReq();
-    }
-</pre>
-<p>
-Sync agents have a single request, startSReq, which is called only once.
-So it makes a lot of sense to define a static method which creates the agent and returns the request.
-</p>
-<pre>
     @Override
-    protected Void start() throws Exception {
+    protected Void processSyncRequest() throws Exception {
         println("");
         println(heading);
         printf("Test duration in nanoseconds: %,d%n", ns);
@@ -96,12 +91,11 @@ So it makes a lot of sense to define a static method which creates the agent and
     }
 </pre>
 <p>
-The 
-<a href="../../api/org/agilewiki/jactor2/core/blades/SyncAgentBase.html#start()">start</a>
-method provides the application logic for the startSReq implemented in SyncAgentBase.
-Within this method the protected methods on PrinterAgent--println and printf--can be used
-for printing the report.
+When processing a SpeedReport request, the println and printf methods inherited from SyncPrinterRequest can be used directly.
 </p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/facilities/AsyncFacilityRequest.html">AsyncFacilityRequest</a>
+</h3>
 <h3>
 Test
 </h3>

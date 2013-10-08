@@ -1,10 +1,8 @@
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.blades.misc.PrinterAgent;
 import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
 import org.agilewiki.jactor2.core.facilities.AsyncFacilityRequest;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 public class SpeedReport extends SyncPrinterRequest {
     
@@ -27,7 +25,7 @@ public class SpeedReport extends SyncPrinterRequest {
     private final long ns;
     private final long count;
     
-    SpeedReport(final Printer _printer, 
+    private SpeedReport(final Printer _printer, 
             final String _heading, 
             final long _ns, 
             final long _count) throws Exception {
@@ -37,6 +35,7 @@ public class SpeedReport extends SyncPrinterRequest {
         count = _count;
     }
 
+    @Override
     protected Void processSyncRequest() throws Exception {
         println("");
         println(heading);
