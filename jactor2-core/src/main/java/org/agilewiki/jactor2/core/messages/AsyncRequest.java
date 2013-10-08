@@ -192,4 +192,16 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
     protected void processRequestMessage() throws Exception {
         processAsyncRequest();
     }
+
+    /**
+     * Process the request immediately.
+     *
+     * @param _request The request to be processed.
+     * @param <RT>     The type of value returned.
+     */
+    protected <RT> void send(final RequestBase<RT> _request,
+                             final AsyncResponseProcessor<RT> _responseProcessor)
+            throws Exception {
+        RequestBase.doSend(targetReactor, _request, _responseProcessor);
+    }
 }
