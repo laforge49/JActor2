@@ -1,23 +1,24 @@
-package org.agilewiki.jactor2.core.blades;
+package org.agilewiki.jactor2.core.facilities;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
 import java.util.Set;
 
 /**
- * A convenience class for implementing facility agents.
- *
- * @param <RESPONSE_TYPE> The type of response returned by startSReq.
+ * Base class for sync facility requests.
  */
-@Deprecated
-public abstract class FacilityAgent<RESPONSE_TYPE> extends AsyncAgentBase<RESPONSE_TYPE, Facility> {
+abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+
+    private final Facility facility;
+
     /**
-     * Create a facility agent.
+     * Create a SyncFacilityRequest.
      *
-     * @param _facility The facility which is to be local to this agent.
+     * @param _facility The facility on which this request operates.
      */
-    public FacilityAgent(final Facility _facility) throws Exception {
-        super(_facility);
+    public AsyncFacilityRequest(final Facility _facility) {
+        super(_facility.getReactor());
+        facility = _facility;
     }
 
     /**
@@ -26,8 +27,8 @@ public abstract class FacilityAgent<RESPONSE_TYPE> extends AsyncAgentBase<RESPON
      * @param _closeable The autoclosable to be added to the list.
      * @return True if the AutoClosable was added.
      */
-    protected boolean addAutoClosableSReq(final AutoCloseable _closeable) throws Exception {
-        return local(localBlade.addAutoClosableSReq(_closeable));
+    protected boolean addAutoClosable(final AutoCloseable _closeable) throws Exception {
+        return local(facility.addAutoClosableSReq(_closeable));
     }
 
     /**
@@ -36,8 +37,8 @@ public abstract class FacilityAgent<RESPONSE_TYPE> extends AsyncAgentBase<RESPON
      * @param _closeable The autoclosable to be removed.
      * @return True if the AutoClosable was removed.
      */
-    protected boolean removeAutoClosableSReq(final AutoCloseable _closeable) throws Exception {
-        return local(localBlade.removeAutoClosableSReq(_closeable));
+    protected boolean removeAutoClosable(final AutoCloseable _closeable) throws Exception {
+        return local(facility.removeAutoClosableSReq(_closeable));
     }
 
     /**
@@ -47,7 +48,7 @@ public abstract class FacilityAgent<RESPONSE_TYPE> extends AsyncAgentBase<RESPON
      * @return The property value, or null.
      */
     public Object getProperty(final String propertyName) {
-        return localBlade.getProperty(propertyName);
+        return facility.getProperty(propertyName);
     }
 
     /**
@@ -60,7 +61,7 @@ public abstract class FacilityAgent<RESPONSE_TYPE> extends AsyncAgentBase<RESPON
      */
     public Object putProperty(final String propertyName,
                               final Object propertyValue) {
-        return localBlade.putProperty(propertyName, propertyValue);
+        return facility.putProperty(propertyName, propertyValue);
     }
 
     /**
@@ -69,6 +70,6 @@ public abstract class FacilityAgent<RESPONSE_TYPE> extends AsyncAgentBase<RESPON
      * @return A set view of the property names.
      */
     public Set<String> getPropertyNames() {
-        return localBlade.getPropertyNames();
+        return facility.getPropertyNames();
     }
 }
