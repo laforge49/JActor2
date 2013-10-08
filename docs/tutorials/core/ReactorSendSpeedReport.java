@@ -16,8 +16,7 @@ public class ReactorSendSpeedReport {
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            Printer printer = Printer.stdoutSReq(facility).call();
-            SpeedReport.startSReq(printer, "Reactor Send Timings", duration, count).call();
+            SpeedReport.startAReq(facility, "Reactor Send Timings", duration, count).call();
         } finally {
             facility.close();
         }

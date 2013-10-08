@@ -67,8 +67,7 @@ public class Batcher extends BladeBase {
             runAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            Printer printer = Printer.stdoutSReq(facility).call();
-            SpeedReport.startSReq(printer, "Batch Timings", duration, count).call();
+            SpeedReport.startAReq(facility, "Batch Timings", duration, count).call();
         } finally {
             facility.close();
         }
