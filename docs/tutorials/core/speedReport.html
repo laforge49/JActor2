@@ -18,12 +18,12 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
 public class SpeedReport extends SyncPrinterRequest {
     
-    public static AsyncRequest<Void> startAReq(
+    public static AsyncRequest&lt;Void&gt; startAReq(
             final Facility _facility,
             final String _heading, 
             final long _ns, 
             final long _count) {
-        return new AsyncFacilityRequest<Void>(_facility) {
+        return new AsyncFacilityRequest&lt;Void&gt;(_facility) {
             @Override
             public void processAsyncRequest() throws Exception {
                 Printer printer = local(Printer.stdoutSReq(_facility));
@@ -63,14 +63,14 @@ public class SpeedReport extends SyncPrinterRequest {
 <a href="../../api/org/agilewiki/jactor2/core/blades/misc/SyncPrinterRequest.html">SyncPrinterRequest</a>
 </h3>
 <pre>
-public class SyncPrinterRequest extends PrinterAgent {
+public class SpeedReport extends SyncPrinterRequest {
     ...
 }
 </pre>
 <p>
 SyncPrinterRequest extends
-<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest</a>.
-SyncPrinterRequest accesses the sync requests of Printer locally, without recourse to messages,
+<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;Void&gt;</a>.
+SyncPrinterRequest accesses the public resources of Printer locally, without recourse to messages,
 as it operates as an extension of Printer.
 Local access to Printer means that SyncPrinterRequest can easily implement protected methods, i.e. println and printf,
 for working with the Printer blade.
@@ -96,6 +96,52 @@ When processing a SpeedReport request, the println and printf methods inherited 
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/facilities/AsyncFacilityRequest.html">AsyncFacilityRequest</a>
 </h3>
+<pre>
+    public static AsyncRequest&lt;Void&gt; startAReq(
+            final Facility _facility,
+            final String _heading, 
+            final long _ns, 
+            final long _count) {
+        return new AsyncFacilityRequest&lt;Void&gt;(_facility) {
+            ...
+        };
+    }
+</pre>
+<p>
+AsyncFacilityRequest&lt;RESPONSE_TYPE&gt; extends
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html">AsyncRequest&lt;RESPONSE_TYPE&gt;</a>.
+Async requests are similar to sync requests, only the response must be passed back using a callback and
+the local method does not apply.
+</p>
+<p>
+AsyncFacilityRequest accesses the public resources of a facility locally, without recourse to messages,
+as it operates as an extension of the facility's internal reactor.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncRequest()">processAsyncRequest</a>
+</h3>
+<pre>
+            @Override
+            public void processAsyncRequest() throws Exception {
+                ...
+            }
+</pre>
+<p>
+The processAsyncRequest method is called when the request is to be processed.
+It is similar to SyncRequest.processSyncRequest, except that processAsyncRequest has no return value.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html#stdoutSReq(org.agilewiki.jactor2.core.facilities.Facility)">stdoutSReq</a>
+</h3>
+<pre>
+                Printer printer = local(Printer.stdoutSReq(_facility));
+</pre>
+<p>
+The stdoutSReq method is a request to return the facility's  printer, safely creating and registering a printer
+if there was none.
+The request can be invoked using the local method because both the originator and target of this message use the
+same reactor.
+</p>
 <h3>
 Test
 </h3>
