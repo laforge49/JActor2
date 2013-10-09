@@ -1,7 +1,7 @@
 <html>
 <body>
 <p>
-<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; External Requests
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Speed Report
 </p>
 <h1>SpeedReport - External Requests</h1>
 <p>
@@ -215,12 +215,27 @@ Main Thread
 &nbsp;
 </th>
 <th style="padding: 5px;" bgcolor="lightyellow" colspan="2">
-Isolation Reactor
+Facility.InternalReactor
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow" colspan="2">
+IsolationReactor
 </th>
 </tr>
 <tr>
 <th style="padding: 5px;" bgcolor="lightyellow">
 SpeedReportValidator
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+SpeedReport.start
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Printer.stdout
 </th>
 <th>
 &nbsp;
@@ -235,6 +250,15 @@ Printer
 <tr>
 <td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
 call
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
 </td>
 <td style="padding: 5px;">
 &nbsp;
@@ -253,12 +277,119 @@ wait
 <td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
 allocate thread
 </td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+stdout
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+stdout
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+send
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td style="padding: 5px; text-align: center;" colspan="2">
+---(thread, start)-->
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+allocate thread
+</td>
 <td style="padding: 5px;">
 &nbsp;
 </td>
 </tr>
 <tr>
 <td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
 &nbsp;
 </td>
 <td style="padding: 5px;">
@@ -275,6 +406,15 @@ println ""
 <td style="padding: 5px;">
 &nbsp;
 </td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
 <td style="padding: 5px;">
 &nbsp;
 </td>
@@ -287,6 +427,15 @@ println
 </tr>
 <tr>
 <td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
 &nbsp;
 </td>
 <td style="padding: 5px;">
@@ -303,6 +452,15 @@ println heading
 <td style="padding: 5px;">
 &nbsp;
 </td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
 <td style="padding: 5px;">
 &nbsp;
 </td>
@@ -315,6 +473,15 @@ println
 </tr>
 <tr>
 <td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
 &nbsp;
 </td>
 <td style="padding: 5px;">
@@ -331,6 +498,15 @@ printf "Test duration in nanoseconds: %,d%n", ns
 <td style="padding: 5px;">
 &nbsp;
 </td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
 <td style="padding: 5px;">
 &nbsp;
 </td>
@@ -343,6 +519,15 @@ printf
 </tr>
 <tr>
 <td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
 &nbsp;
 </td>
 <td style="padding: 5px;">
@@ -359,6 +544,15 @@ printf "Number of exchanges: %,d%n", count
 <td style="padding: 5px;">
 &nbsp;
 </td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
 <td style="padding: 5px;">
 &nbsp;
 </td>
@@ -373,6 +567,15 @@ printf
 <td style="padding: 5px;">
 &nbsp;
 </td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
 <td style="padding: 5px;">
 &nbsp;
 </td>
@@ -385,6 +588,15 @@ printf "Exchanges per second: %,d%n%n", 1000000000L * count / ns
 </tr>
 <tr>
 <td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
 &nbsp;
 </td>
 <td style="padding: 5px;">
@@ -407,6 +619,12 @@ wakeup
 <td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
 release thread
 </td>
+<td style="padding: 5px; text-align: center;" colspan="2">
+<--(thread, response: null)---
+</td>
+<td>
+&nbsp;
+</td>
 <td style="padding: 5px;">
 &nbsp;
 </td>
@@ -414,6 +632,15 @@ release thread
 <tr>
 <td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
 close
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
 </td>
 <td style="padding: 5px;">
 &nbsp;
