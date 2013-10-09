@@ -9,9 +9,9 @@ public class LocalSpeedReport {
         Facility facility = new Facility();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor(facility));
-            SyncRequest<Void> startSReq = PongerAgent.startSReq(ponger, count);
+            SyncRequest<Void> loopSReq = new PongerLoop(ponger, count);
             final long before = System.nanoTime();
-            startSReq.call();
+            loopSReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
             SpeedReport.startAReq(facility, "Local Timings", duration, count).call();
