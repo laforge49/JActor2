@@ -24,11 +24,13 @@ public class SpeedReport extends SyncPrinterRequest {
             final long _ns, 
             final long _count) {
         return new AsyncFacilityRequest&lt;Void&gt;(_facility) {
+            AsyncResponseProcessor dis = this;
+
             @Override
             public void processAsyncRequest() throws Exception {
                 Printer printer = local(Printer.stdoutSReq(_facility));
                 SpeedReport sr = new SpeedReport(printer, _heading, _ns, _count);
-                send(sr, this);
+                send(sr, dis);
             }
         };
     }
@@ -110,12 +112,25 @@ When processing a SpeedReport request, the println and printf methods inherited 
 <p>
 AsyncFacilityRequest&lt;RESPONSE_TYPE&gt; extends
 <a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html">AsyncRequest&lt;RESPONSE_TYPE&gt;</a>.
-Async requests are similar to sync requests, only the response must be passed back using a callback and
-the local method does not apply.
+Async requests are similar to sync requests, only the response must be passed back via the processAsyncMethod 
+rather than with a return statement. And the local method does not apply to AsyncRequest.
+Also you can send requests that are tied to other reactors in an AsyncRequest but you can not do that within
+a SyncRequest.
 </p>
 <p>
 AsyncFacilityRequest accesses the public resources of a facility locally, without recourse to messages,
 as it operates as an extension of the facility's internal reactor.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncResponseProcessor.html">AsyncResponseProcessor</a>
+</h3>
+<pre>
+            AsyncResponseProcessor dis = this;
+</pre>
+<p>
+Subclasses of AsyncResponseProcessor are used to implement the logic that will be used to process a response.
+So when you use a send, you typically instantiate an anonymous subclass with a processAsyncResponse method.
+But AsyncRequest also implements the AsyncResponseProcessor to provide an easy means of passing back a result.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncRequest()">processAsyncRequest</a>
@@ -147,12 +162,22 @@ same reactor.
 </h3>
 <pre>
                 SpeedReport sr = new SpeedReport(printer, _heading, _ns, _count);
-                send(sr, this);
+                send(sr, dis);
 </pre>
 <p>
 The send method invokes a request and provides a callback for processing the response.
 In this case, the response is sent back to the invoker of startAReq.
+The alternative is usually to create a subclass of AsyncResponseProcessor, but that would be
+pretty redundant in this case:
 </p>
+<pre>
+                send(sr, new AsyncResponseProcessor&lt;Void&gt;() {
+                    @Override
+                    public void processAsyncResponse(final Void _response) throws Exception {
+                        dis.processAsyncResponse(null);
+                    }
+                });
+</pre>
 <h3>
 Test
 </h3>
