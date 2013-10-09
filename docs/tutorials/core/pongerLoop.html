@@ -1,67 +1,63 @@
 <html>
 <body>
 <p>
-<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; PongerAgent
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; PongerLoop
 </p>
-<h1>PongerAgent - Local Methods per Second</h1>
+<h1>PongerLoop - Local Methods per Second</h1>
 <p>
-Local access of requests by another blade in the same reactor are quite fast. 
-We will use <a href="PongerAgent.java">PongerAgent</a>, a sync agent of Ponger, to see just how fast local access can be.
+Local access of requests using the same reactor are quite fast. 
+We will use <a href="PongerLoop.java">PongerLoop</a>, an external sync request
+that extends Ponger, to see just how fast local access can be.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.SyncAgentBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
-public class PongerAgent extends SyncAgentBase&lt;Void, Ponger&gt; {
+public class PongerLoop extends SyncRequest&lt;Void&gt; {
+    private final Ponger ponger;
     private final long count;
-    
-    public static SyncRequest&lt;Void&gt; startSReq(
-            final Ponger _ponger, 
-            final long _count) throws Exception {
-        return new PongerAgent(_ponger, _count).startSReq();
-    }
 
-    public PongerAgent(
+    public PongerLoop(
             final Ponger _ponger, 
             final long _count) throws Exception {
-        super(_ponger);
+        super(_ponger.getReactor());
+        ponger = _ponger;
         count = _count;
     }
     
     @Override
-    public Void start() throws Exception {
+    protected Void processSyncRequest() throws Exception {
         long i = 0;
         while (i < count) {
             i++;
-            local(localBlade.pingSReq());
+            local(ponger.pingSReq());
         }
         return null;
     }
 }
 </pre>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/SyncAgentBase.html">SyncAgentBase&lt;RESULT_TYPE, BLADE_TYPE extends Blade&gt;</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;RESPONSE_TYPE&gt;</a>
 </h3>
 <pre>
-public class PongerAgent extends SyncAgentBase&lt;Void, Ponger&gt; {
+public class PongerLoop extends SyncRequest&lt;Void&gt; {
     ...
 }
 </pre>
 <p>
-PongerAgent extends SyncAgentBase. The result from start is Void. And the local blade is Ponger.
+PongerLoop extends SyncRequest. The response is Void.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#local(org.agilewiki.jactor2.core.messages.SyncRequest)">local</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#local(org.agilewiki.jactor2.core.messages.SyncRequest)">local</a>
 </h3>
 <pre>
         long i = 0;
         while (i < count) {
             i++;
-            local(localBlade.pingSReq());
+            local(ponger.pingSReq());
         }
 </pre>
 <p>
-The BladeBase.local method is used only to invoke requests on blades with the same reactor.
+The local method is used only to invoke requests on requests using the same reactor.
 Like call, local returns a result, Void in this case.
 Unlike call, no messages are passed between threads and no threads are blocked.
 </p>
@@ -73,7 +69,6 @@ LocalSpeedReport
 is a small program that times the Ponger agent and creates the speed report.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -84,7 +79,7 @@ public class LocalSpeedReport {
         Facility facility = new Facility();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor(facility));
-            SyncRequest<Void> startSReq = PongerAgent.startSReq(ponger, count);
+            SyncRequest<Void> startSReq = new PongerLoop(ponger, count);
             final long before = System.nanoTime();
             startSReq.call();
             final long after = System.nanoTime();

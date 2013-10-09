@@ -1,4 +1,3 @@
-import org.agilewiki.jactor2.core.blades.SyncAgentBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 public class PongerLoop extends SyncRequest<Void> {
