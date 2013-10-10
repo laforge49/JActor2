@@ -299,6 +299,20 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
+    protected void setName(final String _name) {
+        firstSet("name", _name);
+    }
+
+    public SyncRequest<Void> setNameSReq(final String _name) {
+        return new SyncBladeRequest<Void>() {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                setName(_name);
+                return null;
+            }
+        };
+    }
+
     /**
      * Returns a set view of the property names.
      *
