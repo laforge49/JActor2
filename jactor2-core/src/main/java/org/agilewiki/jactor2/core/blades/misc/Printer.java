@@ -63,7 +63,7 @@ public class Printer extends IsolationBlade {
                 Printer printer = (Printer) _facility.getProperty("stdout");
                 if (printer == null) {
                     printer = new Printer(new IsolationReactor(_facility));
-                    _facility.putProperty("stdout", printer);
+                    local(_facility.putPropertySReq("stdout", printer));
                 }
                 return printer;
             }

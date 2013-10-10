@@ -47,7 +47,7 @@ abstract public class SyncFacilityRequest<RESPONSE_TYPE> extends SyncRequest<RES
      * @param propertyName The property name.
      * @return The property value, or null.
      */
-    public Object getProperty(final String propertyName) {
+    protected Object getProperty(final String propertyName) {
         return facility.getProperty(propertyName);
     }
 
@@ -55,13 +55,18 @@ abstract public class SyncFacilityRequest<RESPONSE_TYPE> extends SyncRequest<RES
      * Assign a property value.
      * Or removes it if the value is set to null;
      *
-     * @param propertyName  The name of the property.
-     * @param propertyValue The value of the property, or null.
+     * @param _propertyName  The name of the property.
+     * @param _propertyValue The value of the property, or null.
      * @return The prior value of the property, or null.
      */
-    public Object putProperty(final String propertyName,
-                              final Object propertyValue) {
-        return facility.putProperty(propertyName, propertyValue);
+    protected Object putProperty(final String _propertyName,
+                                 final Object _propertyValue) throws Exception {
+        return local(facility.putPropertySReq(_propertyName, _propertyValue));
+    }
+
+    protected void firstSet(final String _propertyName,
+                            final Object _propertyValue) throws Exception {
+        local(facility.firstSetSReq(_propertyName, _propertyValue));
     }
 
     /**
@@ -69,7 +74,7 @@ abstract public class SyncFacilityRequest<RESPONSE_TYPE> extends SyncRequest<RES
      *
      * @return A set view of the property names.
      */
-    public Set<String> getPropertyNames() {
+    protected Set<String> getPropertyNames() {
         return facility.getPropertyNames();
     }
 }

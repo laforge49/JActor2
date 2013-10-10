@@ -255,15 +255,48 @@ public class Facility extends BladeBase implements AutoCloseable {
      * Assign a property value.
      * Or removes it if the value is set to null;
      *
-     * @param propertyName  The name of the property.
-     * @param propertyValue The value of the property, or null.
+     * @param _propertyName  The name of the property.
+     * @param _propertyValue The value of the property, or null.
      * @return The prior value of the property, or null.
      */
-    public Object putProperty(final String propertyName,
-                              final Object propertyValue) {
-        if (propertyValue == null)
-            return properties.remove(propertyName);
-        return properties.put(propertyName, propertyValue);
+    @Deprecated
+    public Object putProperty(final String _propertyName,
+                              final Object _propertyValue) {
+        if (_propertyValue == null)
+            return properties.remove(_propertyName);
+        return properties.put(_propertyName, _propertyValue);
+    }
+
+    public SyncRequest<Object> putPropertySReq(final String _propertyName,
+                                          final Object _propertyValue) {
+        return new SyncBladeRequest<Object>() {
+            @Override
+            protected Object processSyncRequest() throws Exception {
+                if (_propertyValue == null)
+                    return properties.remove(_propertyName);
+                return properties.put(_propertyName, _propertyValue);
+            }
+        };
+    }
+
+    private void firstSet(final String _propertyName,
+                          final Object _propertyValue) {
+        if (_propertyValue == null)
+            throw new IllegalArgumentException("value may not be null");
+        if (properties.get(_propertyName) != null)
+            throw new IllegalStateException("old value must be null");
+        properties.put(_propertyName, _propertyValue);
+    }
+
+    public SyncRequest<Void> firstSetSReq(final String _propertyName,
+                                          final Object _propertyValue) {
+        return new SyncBladeRequest<Void>() {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                firstSet(_propertyName, _propertyValue);
+                return null;
+            }
+        };
     }
 
     /**
