@@ -22,14 +22,14 @@ public class EventBusSample {
                     new EventBus<StatusListener>(new NonBlockingReactor(facility));
 
             //Add statusLogger and statusPrinter to the subscribers of the event bus.
-            eventBus.subscribeAReq(statusLogger).call();
-            eventBus.subscribeAReq(statusPrinter).call();
+            eventBus.subscribeSReq(statusLogger).call();
+            eventBus.subscribeSReq(statusPrinter).call();
 
             //Send a status update to all subscribers.
-            eventBus.publishAReq(new StatusUpdate("started")).call();
+            eventBus.publishSReq(new StatusUpdate("started")).call();
 
             //Send a status update to all subscribers.
-            eventBus.publishAReq(new StatusUpdate("stopped")).call();
+            eventBus.publishSReq(new StatusUpdate("stopped")).call();
         } finally {
             //Close the module facility.
             facility.close();

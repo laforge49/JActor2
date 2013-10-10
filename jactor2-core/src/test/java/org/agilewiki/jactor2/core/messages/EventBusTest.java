@@ -13,18 +13,18 @@ public class EventBusTest extends TestCase {
             Printer a = new Printer();
             a.initialize(new NonBlockingReactor(facility));
             a.setName("a");
-            p.subscribeAReq(a).call();
+            p.subscribeSReq(a).call();
             Printer b = new Printer();
             b.initialize(new NonBlockingReactor(facility));
             b.setName("b");
-            p.subscribeAReq(b).call();
+            p.subscribeSReq(b).call();
             Printer c = new Printer();
             c.initialize(new NonBlockingReactor(facility));
             c.setName("c");
-            p.subscribeAReq(c).call();
-            p.publishAReq(new Print("42")).call();
-            p.publishAReq(new Print("24")).call();
-            p.publishAReq(new Print("Hello world!")).call();
+            p.subscribeSReq(c).call();
+            p.publishSReq(new Print("42")).call();
+            p.publishSReq(new Print("24")).call();
+            p.publishSReq(new Print("Hello world!")).call();
         } finally {
             facility.close();
         }

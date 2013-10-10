@@ -1,8 +1,7 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.messages.RequestBase;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Outbox;
@@ -10,10 +9,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ThreadFactory;
 
@@ -82,6 +78,8 @@ public class Facility extends BladeBase implements AutoCloseable {
      */
     private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
+    private EventBus<FacilityPropertyChangeSubscriber> propertyChangeSubscribers;
+
     /**
      * Create a Facility.
      */
@@ -124,6 +122,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         initialBufferSize = _initialBufferSize;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
+        propertyChangeSubscribers = new EventBus<FacilityPropertyChangeSubscriber>(internalReactor);
     }
 
     /**
@@ -261,10 +260,15 @@ public class Facility extends BladeBase implements AutoCloseable {
      */
     @Deprecated
     public Object putProperty(final String _propertyName,
-                              final Object _propertyValue) {
+                              final Object _propertyValue) throws Exception {
+        Object old;
         if (_propertyValue == null)
-            return properties.remove(_propertyName);
-        return properties.put(_propertyName, _propertyValue);
+            old = properties.remove(_propertyName);
+        else
+            old = properties.put(_propertyName, _propertyValue);
+        FacilityPropertyChange change = new FacilityPropertyChange(this, _propertyName, old, _propertyValue);
+        propertyChangeSubscribers.publishSReq(change).signal();
+        return old;
     }
 
     public SyncRequest<Object> putPropertySReq(final String _propertyName,
@@ -272,9 +276,15 @@ public class Facility extends BladeBase implements AutoCloseable {
         return new SyncBladeRequest<Object>() {
             @Override
             protected Object processSyncRequest() throws Exception {
+                Object old;
                 if (_propertyValue == null)
-                    return properties.remove(_propertyName);
-                return properties.put(_propertyName, _propertyValue);
+                    old = properties.remove(_propertyName);
+                else
+                    old = properties.put(_propertyName, _propertyValue);
+                FacilityPropertyChange change =
+                        new FacilityPropertyChange(Facility.this, _propertyName, old, _propertyValue);
+                local(propertyChangeSubscribers.publishSReq(change));
+                return old;
             }
         };
     }
@@ -314,12 +324,29 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     /**
-     * Returns a set view of the property names.
+     * Returns a copy of the property names.
      *
-     * @return A set view of the property names.
+     * @return A copy of the property names.
      */
     public Set<String> getPropertyNames() {
-        return properties.keySet();
+        return new HashSet<String>(properties.keySet());
+    }
+
+    public SyncRequest<Map<String, Object>> subscribePropertyChangesSReq(
+            final FacilityPropertyChangeSubscriber _subscriber) {
+        return new SyncBladeRequest<Map<String, Object>>() {
+            @Override
+            protected Map<String, Object> processSyncRequest()
+                    throws Exception {
+                if (local(propertyChangeSubscribers.subscribeSReq(_subscriber)))
+                    return new HashMap<String, Object>(properties);
+                return null;
+            }
+        };
+    }
+
+    public SyncRequest<Boolean> unsubscribePropertyChangesSReq(final FacilityPropertyChangeSubscriber _subscriber) {
+        return propertyChangeSubscribers.unsubscribeSReq(_subscriber);
     }
 
     /**

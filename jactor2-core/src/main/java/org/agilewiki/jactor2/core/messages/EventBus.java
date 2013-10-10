@@ -36,14 +36,14 @@ import java.util.Set;
  *                 new EventBus&lt;StatusListener&gt;(new NonBlockingReactor(facility));
  *
  *             //Add statusLogger and statusPrinter to the subscribers of the event bus.
- *             eventBus.subscribeAReq(statusLogger).call();
- *             eventBus.subscribeAReq(statusPrinter).call();
+ *             eventBus.subscribeSReq(statusLogger).call();
+ *             eventBus.subscribeSReq(statusPrinter).call();
  *
  *             //Send a status update to all subscribers.
- *             eventBus.publishAReq(new StatusUpdate("started")).call();
+ *             eventBus.publishSReq(new StatusUpdate("started")).call();
  *
  *             //Send a status update to all subscribers.
- *             eventBus.publishAReq(new StatusUpdate("stopped")).call();
+ *             eventBus.publishSReq(new StatusUpdate("stopped")).call();
  *         } finally {
  *             //Close the facility.
  *             facility.close();
@@ -153,12 +153,12 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
      * @param _subscriber A blade that will receive the published events.
      * @return The request.
      */
-    public AsyncRequest<Boolean> subscribeAReq(final TARGET_BLADE_TYPE _subscriber) {
-        return new AsyncBladeRequest<Boolean>() {
+    public SyncRequest<Boolean> subscribeSReq(final TARGET_BLADE_TYPE _subscriber) {
+        return new SyncBladeRequest<Boolean>() {
             @Override
-            protected void processAsyncRequest()
+            protected Boolean processSyncRequest()
                     throws Exception {
-                processAsyncResponse(subscribers.add(_subscriber));
+                return subscribers.add(_subscriber);
             }
         };
     }
@@ -170,12 +170,12 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
      * @param _subscriber The blade that should no longer receive the published events.
      * @return The request.
      */
-    public AsyncRequest<Boolean> unsubscribeAReq(final TARGET_BLADE_TYPE _subscriber) {
-        return new AsyncBladeRequest<Boolean>() {
+    public SyncRequest<Boolean> unsubscribeSReq(final TARGET_BLADE_TYPE _subscriber) {
+        return new SyncBladeRequest<Boolean>() {
             @Override
-            protected void processAsyncRequest()
+            protected Boolean processSyncRequest()
                     throws Exception {
-                processAsyncResponse(subscribers.remove(_subscriber));
+                return subscribers.remove(_subscriber);
             }
         };
     }
@@ -189,17 +189,17 @@ public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
      * @param event The event to be published.
      * @return The request.
      */
-    public AsyncRequest<Void> publishAReq(
+    public SyncRequest<Void> publishSReq(
             final Event<TARGET_BLADE_TYPE> event) {
-        return new AsyncBladeRequest<Void>() {
+        return new SyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest()
+            protected Void processSyncRequest()
                     throws Exception {
                 Iterator<TARGET_BLADE_TYPE> it = subscribers.iterator();
                 while (it.hasNext()) {
                     event.signal(it.next());
                 }
-                processAsyncResponse(null);
+                return null;
             }
         };
     }

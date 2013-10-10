@@ -70,9 +70,9 @@ abstract public class SyncFacilityRequest<RESPONSE_TYPE> extends SyncRequest<RES
     }
 
     /**
-     * Returns a set view of the property names.
+     * Returns a copy of the property names.
      *
-     * @return A set view of the property names.
+     * @return A copy of the property names.
      */
     protected Set<String> getPropertyNames() {
         return facility.getPropertyNames();
