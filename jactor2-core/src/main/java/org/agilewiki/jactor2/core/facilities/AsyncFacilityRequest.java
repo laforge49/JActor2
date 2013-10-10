@@ -2,7 +2,9 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Base class for sync facility requests.
@@ -76,5 +78,19 @@ abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends AsyncRequest<R
      */
     protected Set<String> getPropertyNames() {
         return facility.getPropertyNames();
+    }
+
+    protected Map<String, Object> subscribePropertyChanges(
+            final FacilityPropertyChangeSubscriber _subscriber) throws Exception {
+        return local(facility.subscribePropertyChangesSReq(_subscriber));
+    }
+
+    protected Boolean unsubscribePropertyChanges(
+            final FacilityPropertyChangeSubscriber _subscriber) throws Exception {
+        return local(facility.unsubscribePropertyChangesSReq(_subscriber));
+    }
+
+    protected TreeMap<String, Object> matchingProperties(final String _prefix) throws Exception {
+        return local(facility.matchingPropertiesSReq(_prefix));
     }
 }

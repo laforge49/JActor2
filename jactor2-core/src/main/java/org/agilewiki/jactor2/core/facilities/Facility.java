@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ThreadFactory;
 
@@ -23,6 +24,10 @@ import java.util.concurrent.ThreadFactory;
  */
 
 public class Facility extends BladeBase implements AutoCloseable {
+
+    public final static String NAME_PROPERTY = "name";
+
+    public final static String DEPENDENCY_PROPERTY_PREFIX = "dependency_";
 
     /**
      * A "compile-time" flag to turn on debug;
@@ -309,8 +314,12 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
+    public String getName() {
+        return (String) getProperty(NAME_PROPERTY);
+    }
+
     protected void setName(final String _name) {
-        firstSet("name", _name);
+        firstSet(NAME_PROPERTY, _name);
     }
 
     public SyncRequest<Void> setNameSReq(final String _name) {
@@ -330,6 +339,55 @@ public class Facility extends BladeBase implements AutoCloseable {
      */
     public Set<String> getPropertyNames() {
         return new HashSet<String>(properties.keySet());
+    }
+
+    private ConcurrentNavigableMap<String, Object> matchingProperties(final String _prefix) throws Exception {
+        return properties.subMap(_prefix + Character.MIN_VALUE, _prefix + Character.MAX_VALUE);
+    }
+
+    public SyncRequest<TreeMap<String, Object>> matchingPropertiesSReq(final String _prefix) {
+        return new SyncBladeRequest<TreeMap<String, Object>>() {
+            @Override
+            protected TreeMap<String, Object> processSyncRequest() throws Exception {
+                return new TreeMap<String, Object>(matchingProperties(_prefix));
+            }
+        };
+    }
+
+    public AsyncRequest<Boolean> hasDependencyAReq(final String _name) {
+        return new AsyncBladeRequest<Boolean>() {
+            AsyncResponseProcessor<Boolean> dis = this;
+            int count;
+
+            AsyncResponseProcessor<Boolean> prp = new AsyncResponseProcessor<Boolean>() {
+                @Override
+                public void processAsyncResponse(Boolean _hasDependency) throws Exception {
+                    if (_hasDependency) {
+                        dis.processAsyncResponse(true);
+                        return;
+                    }
+                    count--;
+                    if (count == 0)
+                        dis.processAsyncResponse(false);
+                }
+            };
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                if (properties.containsKey(DEPENDENCY_PROPERTY_PREFIX + _name)) {
+                    processAsyncResponse(true);
+                    return;
+                }
+                ConcurrentNavigableMap<String, Object> cnm = matchingProperties(DEPENDENCY_PROPERTY_PREFIX);
+                Collection<Object> values = cnm.values();
+                Iterator<Object> it = values.iterator();
+                while(it.hasNext()) {
+                    Facility dependency = (Facility) it.next();
+                    count++;
+                    send(dependency.hasDependencyAReq(_name), prp);
+                }
+            }
+        };
     }
 
     public SyncRequest<Map<String, Object>> subscribePropertyChangesSReq(
