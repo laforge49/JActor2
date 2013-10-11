@@ -45,7 +45,7 @@ public class Facility extends BladeBase implements AutoCloseable {
      * A hash set of AutoCloseable objects.
      * Can only be accessed via a request to the facility.
      */
-    private final Set<AutoCloseable> closeables = Collections
+    protected final Set<AutoCloseable> closeables = Collections
             .newSetFromMap(new WeakHashMap<AutoCloseable, Boolean>());
 
     /**
@@ -130,6 +130,24 @@ public class Facility extends BladeBase implements AutoCloseable {
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         propertyChangeSubscribers = new EventBus<FacilityPropertyChangeSubscriber>(internalReactor);
+    }
+
+    /**
+     * Create a Facility.
+     *
+     * @param _name                         The name of the facility.
+     * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
+     * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
+     * @param _threadCount                  The thread pool size.
+     * @param _threadFactory                The factory used to create threads for the threadpool.
+     */
+    protected Facility(final String _name,
+                    final int _initialLocalMessageQueueSize,
+                    final int _initialBufferSize,
+                    final int _threadCount,
+                    final ThreadFactory _threadFactory) throws Exception {
+        this(_initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
+        firstSet(NAME_PROPERTY, _name);
     }
 
     /**

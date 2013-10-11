@@ -14,12 +14,8 @@ public class ServiceTest extends TestCase {
 
     public void test() throws Exception {
         Plant plant = new Plant();
-        Facility clientFacility = new Facility();
-        clientFacility.setNameSReq("client").call();
-        clientFacility.dependencyAReq(plant).call();
-        final Facility serverFacility = new Facility();
-        serverFacility.setNameSReq("server").call();
-        serverFacility.dependencyAReq(plant).call();
+        Facility clientFacility = plant.createFacilitySReq("Client").call();
+        final Facility serverFacility = plant.createFacilitySReq("Server").call();
         try {
             testReactor = new NonBlockingReactor(plant);
             Server server = new Server(new NonBlockingReactor(serverFacility));

@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.facilities;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.EventBus;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 
@@ -55,6 +56,59 @@ public class Plant extends Facility {
             @Override
             protected void processAsyncRequest() throws Exception {
                 throw new UnsupportedOperationException("Plant can have no dependencies");
+            }
+        };
+    }
+
+    public SyncRequest<Facility> createFacilitySReq(final String _name) throws Exception {
+        return new SyncBladeRequest<Facility>() {
+            @Override
+            protected Facility processSyncRequest() throws Exception {
+                Facility facility = new Facility(
+                        _name,
+                        Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
+                        Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
+                        20,
+                        new DefaultThreadFactory());
+                closeables.add(facility);
+                return facility;
+            }
+        };
+    }
+
+    public SyncRequest<Facility> createFacilitySReq(final String _name,
+                                                final int _threadCount) throws Exception {
+        return new SyncBladeRequest<Facility>() {
+            @Override
+            protected Facility processSyncRequest() throws Exception {
+                Facility facility = new Facility(
+                        _name,
+                        Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
+                        Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
+                        _threadCount,
+                        new DefaultThreadFactory());
+                closeables.add(facility);
+                return facility;
+            }
+        };
+    }
+
+    public SyncRequest<Facility> createFacilitySReq(final String _name,
+                                                final int _initialLocalMessageQueueSize,
+                                                final int _initialBufferSize,
+                                                final int _threadCount,
+                                                final ThreadFactory _threadFactory) throws Exception {
+        return new SyncBladeRequest<Facility>() {
+            @Override
+            protected Facility processSyncRequest() throws Exception {
+                Facility facility = new Facility(
+                        _name,
+                        _initialLocalMessageQueueSize,
+                        _initialBufferSize,
+                        _threadCount,
+                        _threadFactory);
+                closeables.add(facility);
+                return facility;
             }
         };
     }
