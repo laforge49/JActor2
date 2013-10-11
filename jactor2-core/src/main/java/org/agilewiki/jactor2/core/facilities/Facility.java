@@ -141,11 +141,28 @@ public class Facility extends BladeBase implements AutoCloseable {
      * @param _threadCount                  The thread pool size.
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
-    protected Facility(final String _name,
-                    final int _initialLocalMessageQueueSize,
-                    final int _initialBufferSize,
-                    final int _threadCount,
-                    final ThreadFactory _threadFactory) throws Exception {
+    protected Facility _createFacility(final String _name,
+                                       final int _initialLocalMessageQueueSize,
+                                       final int _initialBufferSize,
+                                       final int _threadCount,
+                                       final ThreadFactory _threadFactory) throws Exception {
+        return new Facility(_name, _initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
+    }
+
+    /**
+     * Create a Facility.
+     *
+     * @param _name                         The name of the facility.
+     * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
+     * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
+     * @param _threadCount                  The thread pool size.
+     * @param _threadFactory                The factory used to create threads for the threadpool.
+     */
+    private Facility(final String _name,
+                     final int _initialLocalMessageQueueSize,
+                     final int _initialBufferSize,
+                     final int _threadCount,
+                     final ThreadFactory _threadFactory) throws Exception {
         this(_initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
         firstSet(NAME_PROPERTY, _name);
     }
@@ -298,7 +315,7 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     public SyncRequest<Object> putPropertySReq(final String _propertyName,
-                                          final Object _propertyValue) {
+                                               final Object _propertyValue) {
         return new SyncBladeRequest<Object>() {
             @Override
             protected Object processSyncRequest() throws Exception {
@@ -316,7 +333,7 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     protected void firstSet(final String _propertyName,
-                          final Object _propertyValue) {
+                            final Object _propertyValue) {
         if (_propertyValue == null)
             throw new IllegalArgumentException("value may not be null");
         if (properties.get(_propertyName) != null)
@@ -392,7 +409,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                     return;
                 }
                 Iterator<Object> it = values.iterator();
-                while(it.hasNext()) {
+                while (it.hasNext()) {
                     Facility dependency = (Facility) it.next();
                     count++;
                     send(dependency.hasDependencyAReq(_name), prp);

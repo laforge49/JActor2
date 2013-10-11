@@ -1,8 +1,6 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.EventBus;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
@@ -44,9 +42,9 @@ public class Plant extends Facility {
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
     public Plant(final int _initialLocalMessageQueueSize,
-                    final int _initialBufferSize,
-                    final int _threadCount,
-                    final ThreadFactory _threadFactory) throws Exception {
+                 final int _initialBufferSize,
+                 final int _threadCount,
+                 final ThreadFactory _threadFactory) throws Exception {
         super(_initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
         firstSet(NAME_PROPERTY, PLANT_NAME);
     }
@@ -64,7 +62,7 @@ public class Plant extends Facility {
         return new SyncBladeRequest<Facility>() {
             @Override
             protected Facility processSyncRequest() throws Exception {
-                Facility facility = new Facility(
+                Facility facility = _createFacility(
                         _name,
                         Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                         Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -77,11 +75,11 @@ public class Plant extends Facility {
     }
 
     public SyncRequest<Facility> createFacilitySReq(final String _name,
-                                                final int _threadCount) throws Exception {
+                                                    final int _threadCount) throws Exception {
         return new SyncBladeRequest<Facility>() {
             @Override
             protected Facility processSyncRequest() throws Exception {
-                Facility facility = new Facility(
+                Facility facility = _createFacility(
                         _name,
                         Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                         Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -94,14 +92,14 @@ public class Plant extends Facility {
     }
 
     public SyncRequest<Facility> createFacilitySReq(final String _name,
-                                                final int _initialLocalMessageQueueSize,
-                                                final int _initialBufferSize,
-                                                final int _threadCount,
-                                                final ThreadFactory _threadFactory) throws Exception {
+                                                    final int _initialLocalMessageQueueSize,
+                                                    final int _initialBufferSize,
+                                                    final int _threadCount,
+                                                    final ThreadFactory _threadFactory) throws Exception {
         return new SyncBladeRequest<Facility>() {
             @Override
             protected Facility processSyncRequest() throws Exception {
-                Facility facility = new Facility(
+                Facility facility = _createFacility(
                         _name,
                         _initialLocalMessageQueueSize,
                         _initialBufferSize,

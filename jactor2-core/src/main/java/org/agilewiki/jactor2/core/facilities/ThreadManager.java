@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorBase;
 import org.agilewiki.jactor2.core.reactors.UnboundReactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
