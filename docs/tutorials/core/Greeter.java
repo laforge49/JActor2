@@ -1,5 +1,5 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -19,15 +19,15 @@ public class Greeter extends BladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            Greeter greeter = new Greeter(new NonBlockingReactor(facility));
+            Greeter greeter = new Greeter(new NonBlockingReactor(plant));
             AsyncRequest<String> greetingAReq = greeter.greetingAReq("Joe");
             String greeting = greetingAReq.call();
             if (!"Hi Joe".equals(greeting))
                 throw new IllegalStateException("invalid response: " + greeting);
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

@@ -186,15 +186,15 @@ We will use the <a href="SpeedReportValidator.java">SpeedReportValidator</a> pro
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 
 public class SpeedReportValidator {
     public static void main(final String[] _args) throws Exception {
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            SpeedReport.startAReq(facility, "Speed Report Validation", 1000L, 1L).call();
+            SpeedReport.startAReq(plant, "Speed Report Validation", 1000L, 1L).call();
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }
