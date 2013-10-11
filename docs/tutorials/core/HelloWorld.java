@@ -1,14 +1,14 @@
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            Printer.printlnAReq(facility, "Hello World!").call();
+            Printer.printlnAReq(plant, "Hello World!").call();
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

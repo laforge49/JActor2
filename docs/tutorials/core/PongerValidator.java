@@ -1,11 +1,11 @@
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PongerValidator {
     public static void main(final String[] _args) throws Exception {
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
+            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
             long i = 0;
             while (i < 10) {
                 i++;
@@ -14,7 +14,7 @@ public class PongerValidator {
                     throw new IllegalStateException("unexpected result");
             }
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }
