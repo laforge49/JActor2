@@ -13,16 +13,15 @@ public class ServiceTest extends TestCase {
     Reactor testReactor;
 
     public void test() throws Exception {
-        Facility testFacility = new Facility();
-        testFacility.setNameSReq("Plant").call();
+        Plant plant = new Plant();
         Facility clientFacility = new Facility();
         clientFacility.setNameSReq("client").call();
-        clientFacility.dependencyAReq(testFacility).call();
+        clientFacility.dependencyAReq(plant).call();
         final Facility serverFacility = new Facility();
         serverFacility.setNameSReq("server").call();
-        serverFacility.dependencyAReq(testFacility).call();
+        serverFacility.dependencyAReq(plant).call();
         try {
-            testReactor = new NonBlockingReactor(testFacility);
+            testReactor = new NonBlockingReactor(plant);
             Server server = new Server(new NonBlockingReactor(serverFacility));
             final Client client = new Client(new NonBlockingReactor(clientFacility), server);
             new AsyncBladeRequest<Void>() {
@@ -41,7 +40,7 @@ public class ServiceTest extends TestCase {
                 }
             }.call();
         } finally {
-            testFacility.close();
+            plant.close();
         }
     }
 

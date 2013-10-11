@@ -27,6 +27,8 @@ public class Facility extends BladeBase implements AutoCloseable {
 
     public final static String NAME_PROPERTY = "name";
 
+    public final static String PLANT_NAME = "Plant";
+
     public final static String DEPENDENCY_PROPERTY_PREFIX = "dependency_";
 
     /**
@@ -295,7 +297,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
-    private void firstSet(final String _propertyName,
+    protected void firstSet(final String _propertyName,
                           final Object _propertyValue) {
         if (_propertyValue == null)
             throw new IllegalArgumentException("value may not be null");
