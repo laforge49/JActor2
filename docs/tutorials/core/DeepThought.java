@@ -2,6 +2,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -48,13 +49,13 @@ public class DeepThought extends BladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            DeepThought deepThought = new DeepThought(new NonBlockingReactor(facility));
+            DeepThought deepThought = new DeepThought(new NonBlockingReactor(plant));
             AsyncRequest<Void> printAnswerAReq = deepThought.printAnswerAReq();
             printAnswerAReq.call();
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

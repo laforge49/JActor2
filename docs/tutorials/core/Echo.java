@@ -1,6 +1,7 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -37,15 +38,15 @@ public class Echo extends BladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            Echo echo = new Echo(new NonBlockingReactor(facility));
+            Echo echo = new Echo(new NonBlockingReactor(plant));
             AsyncRequest<String> echoAReq = echo.echoAReq("Hello...");
             String response = echoAReq.call();
             if (!"Hello...".equals(response))
                 throw new IllegalStateException("invalid response: " + response);
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }
