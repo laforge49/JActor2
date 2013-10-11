@@ -219,8 +219,9 @@ public class Facility extends BladeBase implements AutoCloseable {
         new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
-                if (shuttingDown)
+                if (shuttingDown) {
                     return null;
+                }
                 shuttingDown = true;
                 threadManager.close();
                 final Iterator<AutoCloseable> it = closeables.iterator();
@@ -380,12 +381,50 @@ public class Facility extends BladeBase implements AutoCloseable {
                 }
                 ConcurrentNavigableMap<String, Object> cnm = matchingProperties(DEPENDENCY_PROPERTY_PREFIX);
                 Collection<Object> values = cnm.values();
+                if (values.size() == 0) {
+                    processAsyncResponse(false);
+                    return;
+                }
                 Iterator<Object> it = values.iterator();
                 while(it.hasNext()) {
                     Facility dependency = (Facility) it.next();
                     count++;
                     send(dependency.hasDependencyAReq(_name), prp);
                 }
+            }
+        };
+    }
+
+    public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
+        return new AsyncBladeRequest<Void>() {
+
+            AsyncResponseProcessor<Void> dis = this;
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                final String myName = getName();
+                if (myName == null)
+                    throw new IllegalStateException("assign a name before adding a dependency");
+                final String name = _dependency.getName();
+                if (name == null)
+                    throw new IllegalArgumentException("the dependency has no name");
+                final String propertyName = DEPENDENCY_PROPERTY_PREFIX + name;
+                if (properties.containsKey(propertyName))
+                    throw new IllegalStateException("the dependency was already present");
+                send(_dependency.hasDependencyAReq(myName), new AsyncResponseProcessor<Boolean>() {
+                    @Override
+                    public void processAsyncResponse(Boolean _hasDependency) throws Exception {
+                        if (_hasDependency)
+                            throw new IllegalArgumentException("this would create a cyclic dependency");
+                        firstSet(propertyName, _dependency);
+                        send(_dependency.addAutoClosableSReq(Facility.this), new AsyncResponseProcessor<Boolean>() {
+                            @Override
+                            public void processAsyncResponse(Boolean _response) throws Exception {
+                                dis.processAsyncResponse(null);
+                            }
+                        });
+                    }
+                });
             }
         };
     }
