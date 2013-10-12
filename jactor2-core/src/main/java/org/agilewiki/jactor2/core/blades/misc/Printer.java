@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -42,7 +43,11 @@ public class Printer extends IsolationBlade {
     public static AsyncRequest<Void> printlnAReq(final Facility _facility, final String _string) throws Exception {
         return new AsyncRequest<Void>(_facility.getReactor()) {
             public void processAsyncRequest() throws Exception {
-                Printer printer = local(stdoutSReq(_facility));
+                Facility facility = _facility;
+                Plant plant = facility.getPlant();
+                if (plant != null)
+                    facility = plant;
+                Printer printer = local(stdoutSReq(facility));
                 send(printer.printlnSReq(_string), this);
             }
         };

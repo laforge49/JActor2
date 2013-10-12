@@ -293,6 +293,14 @@ public class Facility extends BladeBase implements AutoCloseable {
         return properties.get(propertyName);
     }
 
+    public String getName() {
+        return (String) getProperty(NAME_PROPERTY);
+    }
+
+    public Plant getPlant() {
+        return (Plant) getProperty(DEPENDENCY_PROPERTY_PREFIX + PLANT_NAME);
+    }
+
     /**
      * Assign a property value.
      * Or removes it if the value is set to null;
@@ -350,10 +358,6 @@ public class Facility extends BladeBase implements AutoCloseable {
                 return null;
             }
         };
-    }
-
-    public String getName() {
-        return (String) getProperty(NAME_PROPERTY);
     }
 
     /**
