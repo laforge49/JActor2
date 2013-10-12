@@ -6,17 +6,17 @@ import org.agilewiki.jactor2.core.reactors.*;
 public class ThreadMigration extends BladeBase {
     public static void main(final String[] _args) 
             throws Exception {
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
             System.out.println("\n           main thread: " + 
                 Thread.currentThread());
             Reactor reactor = 
-                new NonBlockingReactor(facility);
+                new NonBlockingReactor(plant);
             ThreadMigration threadMigration = 
                 new ThreadMigration(reactor);
             threadMigration.startAReq().call();
         } finally {
-            facility.close();
+            plant.close();
         }
     }
     

@@ -1,6 +1,6 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -45,18 +45,18 @@ public class Batcher extends BladeBase {
     
     public static void main(final String[] _args) throws Exception {
         final long count = 1000000L;
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(facility));
-            Batcher batcher = new Batcher(new NonBlockingReactor(facility), count, ponger);
+            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
+            Batcher batcher = new Batcher(new NonBlockingReactor(plant), count, ponger);
             AsyncRequest<Void> runAReq = batcher.runAReq();
             final long before = System.nanoTime();
             runAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq(facility, "Batch Timings", duration, count).call();
+            SpeedReport.startAReq(plant, "Batch Timings", duration, count).call();
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

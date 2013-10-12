@@ -2,6 +2,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -49,21 +50,21 @@ public class Parallel extends BladeBase {
     
     public static void main(final String[] _args) throws Exception {
         final long count = 10L;
-        Facility facility = new Facility(10);
+        Plant plant = new Plant(10);
         try {
-            Parallel parallel = new Parallel(new NonBlockingReactor(facility), count);
+            Parallel parallel = new Parallel(new NonBlockingReactor(plant), count);
             AsyncRequest<Void> runAReq = parallel.runAReq();
             final long before = System.currentTimeMillis();
             runAReq.call();
             final long after = System.currentTimeMillis();
             final long duration = after - before;
-            Printer printer = Printer.stdoutSReq(facility).call();
+            Printer printer = Printer.stdoutSReq(plant).call();
             printer.printlnSReq("Parallel Test with 10 Threads").call();
             printer.printlnSReq("count: " + count).call();
             printer.printlnSReq("sleep duration: 100 milliseconds").call();
             printer.printlnSReq("total time: " + duration + " milliseconds").call();
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }
