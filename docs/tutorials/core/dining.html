@@ -1,0 +1,84 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; DiningPhilosophers
+</p>
+<h1>DiningPhilosophers - Pending Responses</h1>
+<p>
+The <a href="http://en.wikipedia.org/wiki/Dining_philosophers_problem">Dining Philosophers</a> 
+is a classic problem in concurrency.
+Five philosophers sit at a table with 5 place settings and 5 forks. 
+Spaghetti is served, but the philosophers will only eat when they have two forks.
+The philosophers, once they have both forks, will eat a meal and then return the forks to the table before eating again.
+Our objective here is to see how fast our philosophers can eat.
+</p>
+<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Dining_philosophers.png/578px-Dining_philosophers.png"></a>
+<h2>DiningPhilosopher</h2>
+<p>
+As we are implementing our solution to this problem without built-in delays or locks, we will use 
+hungry philosophers who will eat as soon as they get both a left and right fork, put the forks back on the
+table and then immediately try to pick up their forks and eat again. This differs a bit from other solutions where the philosophers
+take time out to think when they can not immediately get a fork. 
+<a href="DiningPhilosopher.java">Here</a> is the code used to model a hungry philosopher:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class DiningPhilosopher extends BladeBase {
+    public DiningPhilosopher(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
+    }
+    
+    public AsyncRequest&lt;Integer&gt; feastAReq(final DiningTable _diningTable, final int _seat)
+            throws Exception {
+        return new AsyncBladeRequest&lt;Integer&gt;() {
+            final AsyncResponseProcessor&lt;Integer&gt; dis = this;
+            
+            private int mealsEaten;
+            private AsyncResponseProcessor&lt;Void&gt; ateResponseProcessor;
+            private AsyncResponseProcessor&lt;Boolean&gt; eatResponseProcessor;
+            
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                ateResponseProcessor = new AsyncResponseProcessor&lt;Void&gt;() {
+                    @Override
+                    public void processAsyncResponse(final Void _ateResponse) throws Exception {
+                        AsyncRequest&lt;Boolean&gt; eatAReq = _diningTable.eatAReq(_seat);
+                        send(eatAReq, eatResponseProcessor);
+                    }
+                };
+                eatResponseProcessor = new AsyncResponseProcessor&lt;Boolean&gt;() {
+                    @Override
+                    public void processAsyncResponse(final Boolean _eatResponse) throws Exception {
+                        if (!_eatResponse) {
+                            dis.processAsyncResponse(mealsEaten);
+                            return;
+                        }
+                        mealsEaten++;
+                        SyncRequest&lt;Void&gt; ateSReq = _diningTable.ateSReq(_seat);
+                        send(ateSReq, ateResponseProcessor);
+                    }
+                };
+                AsyncRequest&lt;Boolean&gt; eatAReq = _diningTable.eatAReq(_seat);
+                send(eatAReq, eatResponseProcessor);
+            }
+        };
+    }
+}
+</pre>
+<p>
+Each philosopher has a seat at the table, and the seats are numbered from 0 through 4.
+The DiningPhilosopher class implements a single public request, feastAReq, 
+which returns the number of meals the philosopher ate once all the spaghetti was eaten.
+</p>
+<p>
+The feast request executes a simple loop, calling eatAReq and ateAReq until eatAReq returns a result
+of false--which indicates that there is no more food to eat.
+</p>
+<h2>DiningTable</h2>
+</body>
+</html>
