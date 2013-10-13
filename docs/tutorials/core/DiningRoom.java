@@ -1,8 +1,11 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -55,33 +58,50 @@ public class DiningRoom extends BladeBase {
         };
     }
     
+    public static SyncRequest<Void> report(
+            final Printer _printer, 
+            final int _seats, 
+            final int _meals, 
+            final List<Integer> _mealsEaten, 
+            final long _duration) {
+        return new SyncPrinterRequest(_printer) {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                printf("Seats: %,d%n", _seats);
+                printf("Meals: %,d%n", _meals);
+                println("\nMeals eaten by each philosopher:");
+                if (_mealsEaten.size() < 11) {
+                    Iterator<Integer> it = _mealsEaten.iterator();
+                    while (it.hasNext()) {
+                        int me = it.next();
+                        printf("    %,d%n", me);
+                    }
+                }
+                printf("\nTest duration in nanoseconds: %,d%n", _duration);
+                if (_duration > 0) {
+                    printf("Total meals eaten per second: %,d%n%n", 1000000000L * _meals / _duration);
+                }
+                return null;
+            }
+        };
+    }
+    
     public static void main(String[] args) throws Exception {
-        int seats = 5;
+        int seats = 8;
         int meals = 1000000;
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            NonBlockingReactor diningRoomReactor = new NonBlockingReactor(facility);
+            NonBlockingReactor diningRoomReactor = new NonBlockingReactor(plant);
             DiningRoom diningRoom = new DiningRoom(diningRoomReactor);
             AsyncRequest<List<Integer>> feastAReq = diningRoom.feastAReq(seats, meals);
             long before = System.nanoTime();
             List<Integer> mealsEaten = feastAReq.call();
             long after = System.nanoTime();
-            Printer printer = new Printer(new IsolationReactor(facility));
-            printer.printfSReq("Seats: %,d%n", seats).call();
-            printer.printfSReq("Meals: %,d%n", meals).call();
-            printer.printlnSReq("\nMeals eaten by each philosopher:").call();
-            Iterator<Integer> it = mealsEaten.iterator();
-            while (it.hasNext()) {
-                int me = it.next();
-                printer.printfSReq("    %,d%n", me).call();
-            }
             long duration = after - before;
-            printer.printfSReq("\nTest duration in nanoseconds: %,d%n", duration).call();
-            if (duration > 0) {
-                printer.printfSReq("Total meals eaten per second: %,d%n%n", 1000000000L * meals / duration).call();
-            }
+            Printer printer = new Printer(new IsolationReactor(plant));
+            report(printer, seats, meals, mealsEaten, duration).call();
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }
