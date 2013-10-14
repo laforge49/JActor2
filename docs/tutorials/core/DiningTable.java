@@ -61,24 +61,28 @@ public class DiningTable extends BladeBase {
                 }
                 
                 if (getForks(_seat)) {
-                    mealsEaten++;
+                    chowTime(_seat);
                     dis.processAsyncResponse(true);
-                    if (mealsEaten == meals) {
-                        int i = 0;
-                        while (i < seats) {
-                            AsyncResponseProcessor<Boolean> pendingResponse = pendingResponses[i];
-                            if (pendingResponse != null) {
-                                pendingResponse.processAsyncResponse(false);
-                            }
-                            i++;
-                        }
-                    }
                     return;
                 }
                 
                 pendingResponses[_seat] = dis;
             }
         };
+    }
+    
+    private void chowTime(final int _seat) throws Exception {
+        mealsEaten++;
+        if (mealsEaten == meals) {
+            int i = 0;
+            while (i < seats) {
+                AsyncResponseProcessor<Boolean> pendingResponse = pendingResponses[i];
+                if (pendingResponse != null) {
+                    pendingResponse.processAsyncResponse(false);
+                }
+                i++;
+            }
+        }
     }
     
     private int leftSeat(final int _fork) {
@@ -95,11 +99,9 @@ public class DiningTable extends BladeBase {
             return;
         if (!getForks(_seat))
             return;
-        pendingResponses[_seat] = null;
-        if (mealsEaten == meals)
-            pendingResponse.processAsyncResponse(false);
-        else {
-            mealsEaten++;
+        if (mealsEaten < meals) {
+            pendingResponses[_seat] = null;
+            chowTime(_seat);
             pendingResponse.processAsyncResponse(true);
         }
     }

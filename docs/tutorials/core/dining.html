@@ -149,24 +149,28 @@ public class DiningTable extends BladeBase {
                 }
                 
                 if (getForks(_seat)) {
-                    mealsEaten++;
+                    chowTime(_seat);
                     dis.processAsyncResponse(true);
-                    if (mealsEaten == meals) {
-                        int i = 0;
-                        while (i < seats) {
-                            AsyncResponseProcessor&lt;Boolean&gt; pendingResponse = pendingResponses[i];
-                            if (pendingResponse != null) {
-                                pendingResponse.processAsyncResponse(false);
-                            }
-                            i++;
-                        }
-                    }
                     return;
                 }
                 
                 pendingResponses[_seat] = dis;
             }
         };
+    }
+    
+    private void chowTime(final int _seat) throws Exception {
+        mealsEaten++;
+        if (mealsEaten == meals) {
+            int i = 0;
+            while (i < seats) {
+                AsyncResponseProcessor<Boolean> pendingResponse = pendingResponses[i];
+                if (pendingResponse != null) {
+                    pendingResponse.processAsyncResponse(false);
+                }
+                i++;
+            }
+        }
     }
     
     private int leftSeat(final int _fork) {
@@ -184,10 +188,10 @@ public class DiningTable extends BladeBase {
         if (!getForks(_seat))
             return;
         pendingResponses[_seat] = null;
-        if (mealsEaten == meals)
+        if (mealsEaten < meals) {
+            chowTime(_seat);
             pendingResponse.processAsyncResponse(true);
-        mealsEaten++;
-        pendingResponse.processAsyncResponse(true);
+        }
     }
     
     public SyncRequest&ls;Void&gt; ateSReq(final int _seat) {
@@ -220,18 +224,8 @@ public class DiningTable extends BladeBase {
                 }
                 
                 if (getForks(_seat)) {
-                    mealsEaten++;
+                    chowTime(_seat);
                     dis.processAsyncResponse(true);
-                    if (mealsEaten == meals) {
-                        int i = 0;
-                        while (i < seats) {
-                            AsyncResponseProcessor&lt;Boolean&gt; pendingResponse = pendingResponses[i];
-                            if (pendingResponse != null) {
-                                pendingResponse.processAsyncResponse(false);
-                            }
-                            i++;
-                        }
-                    }
                     return;
                 }
                 
@@ -245,16 +239,28 @@ When an eat request is received but there are no more meals to serve,
 a response of false is passed back.
 </p>
 <p>
-If there are more meals remaining and both forks are acquired, then: 
-</p>
-<ol>
-<li>The number of meals eaten is incremented by 1.</li>
-<li>A response of true is passed back to the requesting philosopher.</li>
-<li>And if that was the last available meal, then all pending eat requests return a response of false.</li>
-</ol>
+If there are more meals remaining and both forks are acquired, then
+call the chowTime method and a response of true is passed back to the requesting philosopher.
 <p>
 Otherwise, the response is left pending until either there is no more spaghetti or both forks become available.
 </p>
+<pre>    
+    private void chowTime(final int _seat) throws Exception {
+        mealsEaten++;
+        if (mealsEaten == meals) {
+            int i = 0;
+            while (i < seats) {
+                AsyncResponseProcessor<Boolean> pendingResponse = pendingResponses[i];
+                if (pendingResponse != null) {
+                    pendingResponse.processAsyncResponse(false);
+                }
+                i++;
+            }
+        }
+    }
+</pre>
+The chowTime method increments the number of meals eaten by 1.
+Then if all the meals have been eaten, the pending philosophers are passed back a false.
 <h3>ateSReq</h3>
 <pre>
     public SyncRequest&ls;Void&gt; ateSReq(final int _seat) {
@@ -284,23 +290,17 @@ requests can be satisfied.
             return;
         if (!getForks(_seat))
             return;
-        pendingResponses[_seat] = null;
-        if (mealsEaten == meals)
-            pendingResponse.processAsyncResponse(false);
-        else {
-            mealsEaten++;
+        if (mealsEaten < meals) {
+            pendingResponses[_seat] = null;
+            chowTime(_seat);
             pendingResponse.processAsyncResponse(true);
         }
     }
 </pre>
 <p>
-If there is a pending request for the seat and both forks are acquired, then:
+If there is a pending request for the seat, both forks are acquired and there is some food left, then
+clear the pending request, call the chowTime method and pass true back to the pending philosopher.
 </p>
-<ol>
-<li>The seat is cleared of the pending response.</li>
-<li>if there is no spaghetti remaining, then a response of false is passed back to the philosopher.</li>
-<li>Otherwise the number of meals eaten is incremented by 1 and a response of true is passed back.</li>
-</ol>
 <h2>DiningRoom</h2>
 </body>
 </html>

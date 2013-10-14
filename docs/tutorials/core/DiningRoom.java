@@ -87,7 +87,7 @@ public class DiningRoom extends BladeBase {
     }
     
     public static void main(String[] args) throws Exception {
-        int seats = 8;
+        int seats = 5;
         int meals = 1000000;
         Plant plant = new Plant();
         try {
