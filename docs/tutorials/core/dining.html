@@ -286,9 +286,11 @@ requests can be satisfied.
             return;
         pendingResponses[_seat] = null;
         if (mealsEaten == meals)
+            pendingResponse.processAsyncResponse(false);
+        else {
+            mealsEaten++;
             pendingResponse.processAsyncResponse(true);
-        mealsEaten++;
-        pendingResponse.processAsyncResponse(true);
+        }
     }
 </pre>
 <p>

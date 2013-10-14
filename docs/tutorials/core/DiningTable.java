@@ -96,7 +96,12 @@ public class DiningTable extends BladeBase {
         if (!getForks(_seat))
             return;
         pendingResponses[_seat] = null;
-        pendingResponse.processAsyncResponse(true);
+        if (mealsEaten == meals)
+            pendingResponse.processAsyncResponse(false);
+        else {
+            mealsEaten++;
+            pendingResponse.processAsyncResponse(true);
+        }
     }
     
     public SyncRequest<Void> ateSReq(final int _seat) {
