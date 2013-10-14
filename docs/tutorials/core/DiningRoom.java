@@ -70,13 +70,16 @@ public class DiningRoom extends BladeBase {
                 printf("Seats: %,d%n", _seats);
                 printf("Meals: %,d%n", _meals);
                 println("\nMeals eaten by each philosopher:");
-                if (_mealsEaten.size() < 11) {
-                    Iterator<Integer> it = _mealsEaten.iterator();
-                    while (it.hasNext()) {
-                        int me = it.next();
+                Iterator<Integer> it = _mealsEaten.iterator();
+                int totalEaten = 0;
+                while (it.hasNext()) {
+                    int me = it.next();
+                    totalEaten += me;
+                    if (_mealsEaten.size() < 11)
                         printf("    %,d%n", me);
-                    }
                 }
+                if (totalEaten != _meals)
+                    throw new IllegalStateException("total meals eaten does not match: " + totalEaten);
                 printf("\nTest duration in nanoseconds: %,d%n", _duration);
                 if (_duration > 0) {
                     printf("Total meals eaten per second: %,d%n%n", 1000000000L * _meals / _duration);

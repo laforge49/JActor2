@@ -302,5 +302,136 @@ If there is a pending request for the seat, both forks are acquired and there is
 clear the pending request, call the chowTime method and pass true back to the pending philosopher.
 </p>
 <h2>DiningRoom</h2>
+<p>
+The <a href="DiningRoom.java">DiningRoom</a> class creates the dining table and the philosophers and invites the philosophers
+to the feast. When all the meals have been eaten, the dining room validates and reports the result.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
+
+public class DiningRoom extends BladeBase {
+    public DiningRoom(final Reactor _reactor)
+            throws Exception {
+        initialize(_reactor);
+    }
+    
+    public AsyncRequest&lt;List&lt;Integer&gt;&gt; feastAReq(final int _seats, final int _meals)
+            throws Exception {
+        return new AsyncBladeRequest&lt;List&lt;Integer&gt;&gt;() {
+            final AsyncResponseProcessor&lt;List&lt;Integer&gt;&gt; dis = this;
+            List&lt;Integer&gt; mealsEaten = new LinkedList&lt;Integer&gt;();
+            
+            AsyncResponseProcessor&lt;Integer&gt; feastResponseProcessor =
+                new AsyncResponseProcessor&lt;Integer&gt;() {
+                    @Override
+                    public void processAsyncResponse(final Integer _feastResponse) 
+                            throws Exception {
+                        mealsEaten.add(_feastResponse);
+                        if (mealsEaten.size() == _seats) {
+                            dis.processAsyncResponse(mealsEaten);
+                        }
+                    }
+            };
+            
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                int i = 0;
+                Reactor myReactor = getReactor();
+                Facility facility = myReactor.getFacility();
+                DiningTable diningTable = new DiningTable(
+                    new NonBlockingReactor(facility),
+                    _seats,
+                    _meals);
+                while (i < _seats) {
+                    DiningPhilosopher diningPhilosopher =
+                        new DiningPhilosopher(new NonBlockingReactor(facility));
+                    AsyncRequest&lt;Integer&gt; feastAReq = diningPhilosopher.feastAReq(diningTable, i);
+                    send(feastAReq, feastResponseProcessor);
+                    ++i;
+                }
+            }
+        };
+    }
+    
+    public static SyncRequest<Void> report(
+            final Printer _printer, 
+            final int _seats, 
+            final int _meals, 
+            final List&lt;Integer&gt; _mealsEaten, 
+            final long _duration) {
+        return new SyncPrinterRequest(_printer) {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                printf("Seats: %,d%n", _seats);
+                printf("Meals: %,d%n", _meals);
+                println("\nMeals eaten by each philosopher:");
+                Iterator&lt;Integer&gt; it = _mealsEaten.iterator();
+                int totalEaten = 0;
+                while (it.hasNext()) {
+                    int me = it.next();
+                    totalEaten += me;
+                    if (_mealsEaten.size() < 11)
+                        printf("    %,d%n", me);
+                }
+                if (totalEaten != _meals)
+                    throw new IllegalStateException("total meals eaten does not match: " + totalEaten);
+                printf("\nTest duration in nanoseconds: %,d%n", _duration);
+                if (_duration > 0) {
+                    printf("Total meals eaten per second: %,d%n%n", 1000000000L * _meals / _duration);
+                }
+                return null;
+            }
+        };
+    }
+    
+    public static void main(String[] args) throws Exception {
+        int seats = 5;
+        int meals = 1000000;
+        Plant plant = new Plant();
+        try {
+            NonBlockingReactor diningRoomReactor = new NonBlockingReactor(plant);
+            DiningRoom diningRoom = new DiningRoom(diningRoomReactor);
+            AsyncRequest&lt;List&lt;Integer&gt;&gt; feastAReq = diningRoom.feastAReq(seats, meals);
+            long before = System.nanoTime();
+            List&lt;Integer&gt; mealsEaten = feastAReq.call();
+            long after = System.nanoTime();
+            long duration = after - before;
+            Printer printer = new Printer(new IsolationReactor(plant));
+            report(printer, seats, meals, mealsEaten, duration).call();
+        } finally {
+            plant.close();
+        }
+    }
+}
+
+Output:
+
+Seats: 5
+Meals: 1,000,000
+
+Meals eaten by each philosopher:
+    157,930
+    331,681
+    174,580
+    152,758
+    183,051
+
+Test duration in nanoseconds: 1,425,761,890
+Total meals eaten per second: 701,379
+</pre>
 </body>
 </html>
