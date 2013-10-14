@@ -417,7 +417,59 @@ public class DiningRoom extends BladeBase {
         }
     }
 }
-
+</pre>
+<h3>feastAReq</h3>
+<p>
+The dining room implements a feast request, which creates the dining table and the philosophers
+and sends a feast request to all the philosophers. The result returned is a list of the number of
+meals eaten by each philosopher.
+</p>
+<pre>
+    public AsyncRequest&lt;List&lt;Integer&gt;&gt; feastAReq(final int _seats, final int _meals)
+            throws Exception {
+        return new AsyncBladeRequest&lt;List&lt;Integer&gt;&gt;() {
+            final AsyncResponseProcessor&lt;List&lt;Integer&gt;&gt; dis = this;
+            List&lt;Integer&gt; mealsEaten = new LinkedList&lt;Integer&gt;();
+            
+            AsyncResponseProcessor&lt;Integer&gt; feastResponseProcessor =
+                new AsyncResponseProcessor&lt;Integer&gt;() {
+                    @Override
+                    public void processAsyncResponse(final Integer _feastResponse) 
+                            throws Exception {
+                        mealsEaten.add(_feastResponse);
+                        if (mealsEaten.size() == _seats) {
+                            dis.processAsyncResponse(mealsEaten);
+                        }
+                    }
+            };
+            
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                int i = 0;
+                Reactor myReactor = getReactor();
+                Facility facility = myReactor.getFacility();
+                DiningTable diningTable = new DiningTable(
+                    new NonBlockingReactor(facility),
+                    _seats,
+                    _meals);
+                while (i < _seats) {
+                    DiningPhilosopher diningPhilosopher =
+                        new DiningPhilosopher(new NonBlockingReactor(facility));
+                    AsyncRequest&lt;Integer&gt; feastAReq = diningPhilosopher.feastAReq(diningTable, i);
+                    send(feastAReq, feastResponseProcessor);
+                    ++i;
+                }
+            }
+        };
+    }
+</pre>
+<p>
+As each philosopher finish the feast, the number of meals eaten by that philosopher is added
+to the list of meals eaten. And when the last philosopher finishes, the list is passed back as the result of the
+dining room feast.
+</p>
+<h3>Performance</h3>
+<pre>
 Output:
 
 Seats: 5
