@@ -5,9 +5,7 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.reactors.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -155,6 +153,15 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     private void doSend(final Reactor _source,
                         final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
         ReactorBase source = (ReactorBase) _source;
+        if (Plant.DEBUG) {
+            if (source instanceof ThreadBoundReactor) {
+                if (Thread.currentThread() instanceof PoolThread)
+                    throw new IllegalStateException("send from wrong thread");
+            } else {
+                if (source.getThreadReference().get() != Thread.currentThread())
+                    throw new IllegalStateException("send from wrong thread");
+            }
+        }
         if (!source.isRunning())
             throw new IllegalStateException(
                     "A valid source sourceReactor can not be idle");
@@ -255,6 +262,21 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     protected boolean processObjectResponse(final Object _response)
             throws Exception {
+        if (Plant.DEBUG) {
+            if (targetReactor instanceof ThreadBoundReactor) {
+                if (Thread.currentThread() instanceof PoolThread) {
+                    Exception ex = new IllegalStateException("response from wrong thread");
+                    targetReactor.getLogger().error("response from wrong thread", ex);
+                    throw ex;
+                }
+            } else {
+                if (targetReactor.getThreadReference().get() != Thread.currentThread()) {
+                    Exception ex = new IllegalStateException("response from wrong thread");
+                    targetReactor.getLogger().error("response from wrong thread", ex);
+                    throw ex;
+                }
+            }
+        }
         final Facility facility = targetReactor.getFacility();
         if (foreign)
             facility.removeAutoClosableSReq(RequestBase.this).signal();

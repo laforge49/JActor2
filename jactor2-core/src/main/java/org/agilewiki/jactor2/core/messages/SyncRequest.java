@@ -1,8 +1,11 @@
 package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 abstract public class SyncRequest<RESPONSE_TYPE>
         extends RequestBase<RESPONSE_TYPE> {
@@ -56,6 +59,15 @@ abstract public class SyncRequest<RESPONSE_TYPE>
     private RESPONSE_TYPE doLocal(final Reactor _source) throws Exception {
         use();
         ReactorBase messageProcessor = (ReactorBase) _source;
+        if (Plant.DEBUG) {
+            if (messageProcessor instanceof ThreadBoundReactor) {
+                if (Thread.currentThread() instanceof PoolThread)
+                    throw new IllegalStateException("send from wrong thread");
+            } else {
+                if (messageProcessor.getThreadReference().get() != Thread.currentThread())
+                    throw new IllegalStateException("send from wrong thread");
+            }
+        }
         if (!messageProcessor.isRunning())
             throw new IllegalStateException(
                     "A valid source targetReactor can not be idle");
