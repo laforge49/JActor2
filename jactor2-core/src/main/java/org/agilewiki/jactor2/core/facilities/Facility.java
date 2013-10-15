@@ -34,7 +34,7 @@ public class Facility extends BladeBase implements AutoCloseable {
     /**
      * A "compile-time" flag to turn on debug;
      */
-    public final static boolean DEBUG = false;
+    public final static boolean DEBUG = "true".equals(System.getProperty("jactor.debug"));
 
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.

@@ -46,6 +46,8 @@ public class Plant extends Facility {
                  final int _threadCount,
                  final ThreadFactory _threadFactory) throws Exception {
         super(_initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
+        if (DEBUG)
+            System.out.println("\n*** jactor.debug = true ***\n");
         firstSet(NAME_PROPERTY, PLANT_NAME);
     }
 

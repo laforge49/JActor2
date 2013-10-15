@@ -57,7 +57,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected boolean foreign;
 
     /**
-     * The source targetReactor or pender that will receive the results.
+     * The source reactor or pender that will receive the results.
      */
     protected MessageSource messageSource;
 
