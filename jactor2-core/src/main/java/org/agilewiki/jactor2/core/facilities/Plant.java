@@ -14,6 +14,12 @@ public class Plant extends Facility {
      */
     public final static boolean DEBUG = "true".equals(System.getProperty("jactor.debug"));
 
+    private static Plant singleton;
+
+    public static Plant getSingleton() {
+        return singleton;
+    }
+
     /**
      * Create a Plant.
      */
@@ -51,6 +57,11 @@ public class Plant extends Facility {
                  final int _threadCount,
                  final ThreadFactory _threadFactory) throws Exception {
         super(_initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
+        if (singleton != null) {
+            close();
+            throw new IllegalStateException("Only one Plant may be created per program.");
+        }
+        singleton = this;
         if (DEBUG)
             System.out.println("\n*** jactor.debug = true ***\n");
         firstSet(NAME_PROPERTY, PLANT_NAME);
