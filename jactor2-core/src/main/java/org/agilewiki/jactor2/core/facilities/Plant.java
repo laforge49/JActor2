@@ -10,6 +10,11 @@ import java.util.concurrent.ThreadFactory;
 public class Plant extends Facility {
 
     /**
+     * System property flag, jactor.debug, to turn on debug;
+     */
+    public final static boolean DEBUG = "true".equals(System.getProperty("jactor.debug"));
+
+    /**
      * Create a Plant.
      */
     public Plant() throws Exception {

@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -193,7 +194,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         use();
         if (Thread.currentThread() instanceof PoolThread)
             throw new UnsupportedOperationException("Use of call on a PoolThread can result in a deadlock");
-        if (Facility.DEBUG) {
+        if (Plant.DEBUG) {
             addDebugPending();
         }
         foreign = true;
@@ -207,7 +208,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * track pending requests.
      */
     private void addDebugPending() {
-        if (Facility.DEBUG) {
+        if (Plant.DEBUG) {
             debugTimestamp = System.nanoTime();
             Facility targetFacility = targetReactor.getFacility();
             Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
@@ -228,7 +229,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         ((ReactorBase) _activeReactor).requestEnd();
         responsePending = false;
         response = _response;
-        if (Facility.DEBUG) {
+        if (Plant.DEBUG) {
             Facility targetFacility = targetReactor.getFacility();
             Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
             Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);

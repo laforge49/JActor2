@@ -32,11 +32,6 @@ public class Facility extends BladeBase implements AutoCloseable {
     public final static String DEPENDENCY_PROPERTY_PREFIX = "dependency_";
 
     /**
-     * A "compile-time" flag to turn on debug;
-     */
-    public final static boolean DEBUG = "true".equals(System.getProperty("jactor.debug"));
-
-    /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
      */
     private final InternalReactor internalReactor;
@@ -58,7 +53,7 @@ public class Facility extends BladeBase implements AutoCloseable {
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
      */
     public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests =
-            DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>() : null;
+            Plant.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>() : null;
 
     /**
      * The logger used by targetReactor.
