@@ -194,8 +194,8 @@ public class DiningTable extends BladeBase {
         }
     }
     
-    public SyncRequest&ls;Void&gt; ateSReq(final int _seat) {
-        return new SyncBladeRequest&ls;Void&gt;() {
+    public SyncRequest&lt;Void&gt; ateSReq(final int _seat) {
+        return new SyncBladeRequest&lt;Void&gt;() {
             @Override
             protected Void processSyncRequest() throws Exception {
                 int leftFork = leftFork(_seat);
@@ -263,8 +263,8 @@ The chowTime method increments the number of meals eaten by 1.
 Then if all the meals have been eaten, the pending philosophers are passed back a false.
 <h3>ateSReq</h3>
 <pre>
-    public SyncRequest&ls;Void&gt; ateSReq(final int _seat) {
-        return new SyncBladeRequest&ls;Void&gt;() {
+    public SyncRequest&lt;Void&gt; ateSReq(final int _seat) {
+        return new SyncBladeRequest&lt;Void&gt;() {
             @Override
             protected Void processSyncRequest() throws Exception {
                 int leftFork = leftFork(_seat);
