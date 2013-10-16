@@ -69,6 +69,11 @@ public class Plant extends Facility {
         firstSet(NAME_PROPERTY, PLANT_NAME);
     }
 
+    @Override
+    public Plant getPlant() {
+        return this;
+    }
+
     public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
         return new AsyncBladeRequest<Void>() {
             @Override
@@ -132,7 +137,7 @@ public class Plant extends Facility {
     }
 
     @Override
-    protected void _close() {
+    protected void _close() throws Exception {
         singleton = null;
         super._close();
     }

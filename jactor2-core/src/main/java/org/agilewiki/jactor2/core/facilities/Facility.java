@@ -246,7 +246,11 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
-    protected void _close() {
+    protected void _close() throws Exception {
+        Plant plant = getPlant();
+        if (plant != null && plant != this) {
+            plant.removeAutoClosableSReq(this).signal();
+        }
         threadManager.close();
         final Iterator<AutoCloseable> it = closeables.iterator();
         while (it.hasNext()) {
