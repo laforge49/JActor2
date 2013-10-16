@@ -14,6 +14,15 @@ public class Plant extends Facility {
      */
     public final static boolean DEBUG = "true".equals(System.getProperty("jactor.debug"));
 
+    private static Plant singleton;
+
+    public static Plant getSingleton() {
+        if (singleton == null) {
+            throw new IllegalStateException("there is no singleton");
+        }
+        return singleton;
+    }
+
     /**
      * Create a Plant.
      */
@@ -51,6 +60,10 @@ public class Plant extends Facility {
                  final int _threadCount,
                  final ThreadFactory _threadFactory) throws Exception {
         super(_initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
+        if (singleton != null) {
+            throw new IllegalStateException("the singleton already exists");
+        }
+        singleton = this;
         if (DEBUG)
             System.out.println("\n*** jactor.debug = true ***\n");
         firstSet(NAME_PROPERTY, PLANT_NAME);
@@ -116,5 +129,11 @@ public class Plant extends Facility {
                 return facility;
             }
         };
+    }
+
+    @Override
+    protected void _close() {
+        singleton = null;
+        super._close();
     }
 }

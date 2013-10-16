@@ -246,6 +246,18 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
+    protected void _close() {
+        threadManager.close();
+        final Iterator<AutoCloseable> it = closeables.iterator();
+        while (it.hasNext()) {
+            try {
+                it.next().close();
+            } catch (final Throwable t) {
+                t.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public final void close() throws Exception {
         new SyncBladeRequest<Void>() {
@@ -255,15 +267,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                     return null;
                 }
                 shuttingDown = true;
-                threadManager.close();
-                final Iterator<AutoCloseable> it = closeables.iterator();
-                while (it.hasNext()) {
-                    try {
-                        it.next().close();
-                    } catch (final Throwable t) {
-                        t.printStackTrace();
-                    }
-                }
+                _close();
                 return null;
             }
         }.signal();
