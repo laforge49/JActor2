@@ -14,7 +14,7 @@ import java.awt.event.WindowListener;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.Facility;
+ * import org.agilewiki.jactor2.core.threading.Plant;
  * import org.agilewiki.jactor2.core.messaging.AsyncRequest;
  *
  * import javax.swing.*;
@@ -30,7 +30,7 @@ import java.awt.event.WindowListener;
  *     HelloWorld() throws Exception {
  *
  *         //Create a facility with 5 threads.
- *         Facility facility = new Facility(5);
+ *         Plant plant = new Plant(5);
  *
  *         initialize(new SwingBoundReactor(facility));
  *     }
@@ -43,7 +43,7 @@ import java.awt.event.WindowListener;
  *                 JFrame frame = new JFrame("HelloWorld");
  *                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
  *
- *                 //Close facility when window is closed.
+ *                 //Close plant when window is closed.
  *                 frame.addWindowListener((SwingBoundReactor) targetReactor);
  *
  *                 //Add the "Hello World!" label.

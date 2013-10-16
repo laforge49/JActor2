@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.Facility;
+ * import org.agilewiki.jactor2.core.threading.Plant;
  * import org.agilewiki.jactor2.core.messaging.Event;
  *
  * public class ThreadBoundMessageProcessorSample {
@@ -32,14 +32,14 @@ import java.util.concurrent.atomic.AtomicReference;
  *     public static void main(String[] args) throws Exception {
  *
  *         //A facility with no threads
- *         final Facility facility = new Facility(0);
+ *         final Plant plant = new Plant(0);
  *
  *         //Get a reference to the main thread
  *         final Thread mainThread = Thread.currentThread();
  *
  *         //Create a thread-bound targetReactor.
  *         final ThreadBoundReactor boundMessageProcessor =
- *             new ThreadBoundReactor(facility, new Runnable() {
+ *             new ThreadBoundReactor(plant, new Runnable() {
  *                 {@literal @}Override
  *                 public void run() {
  *                     //Interrupt the main thread when there are messages to process

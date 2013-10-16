@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -10,12 +10,12 @@ public class RequestSample {
     public static void main(String[] args) throws Exception {
 
         //A facility with two threads.
-        final Facility facility = new Facility(2);
+        final Plant plant = new Plant(2);
 
         try {
 
             //Create blade.
-            SampleBlade2 bladeA = new SampleBlade2(new NonBlockingReactor(facility));
+            SampleBlade2 bladeA = new SampleBlade2(new NonBlockingReactor(plant));
 
             //Initialize blade to 1.
             bladeA.updateAReq(1).signal();
@@ -24,14 +24,14 @@ public class RequestSample {
             System.out.println("was " + bladeA.updateAReq(2).call() + " but is now 2");
 
             //Create bladeB with a reference to blade.
-            IndirectBlade bladeB = new IndirectBlade(bladeA, new NonBlockingReactor(facility));
+            IndirectBlade bladeB = new IndirectBlade(bladeA, new NonBlockingReactor(plant));
 
             //Indirectly change blade to 42.
             System.out.println("was " + bladeB.indirectAReq(42).call() + " but is now 42");
 
         } finally {
             //shutdown the facility
-            facility.close();
+            plant.close();
         }
 
     }

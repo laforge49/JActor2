@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
 import javax.swing.*;
@@ -17,9 +17,9 @@ class HelloWorld extends BladeBase {
     HelloWorld() throws Exception {
 
         //Create a plant with 5 threads.
-        Facility facility = new Facility(5);
+        Plant plant = new Plant(5);
 
-        initialize(new SwingBoundReactor(facility));
+        initialize(new SwingBoundReactor(plant));
     }
 
     AsyncRequest<Void> createAndShowAReq() {

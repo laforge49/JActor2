@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.blades;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -11,12 +11,12 @@ public class ExceptionHandlerSample {
     public static void main(final String[] _args) throws Exception {
 
         //A facility with two threads.
-        final Facility facility = new Facility(2);
+        final Plant plant = new Plant(2);
 
         try {
 
             //Create an ExceptionBlade.
-            ExceptionBlade exceptionBlade = new ExceptionBlade(new NonBlockingReactor(facility));
+            ExceptionBlade exceptionBlade = new ExceptionBlade(new NonBlockingReactor(plant));
 
             try {
                 //Create and call an exception request.
@@ -28,13 +28,13 @@ public class ExceptionHandlerSample {
 
             //Create an ExceptionHandlerBlade.
             ExceptionHandlerBlade exceptionHandlerBlade =
-                    new ExceptionHandlerBlade(exceptionBlade, new NonBlockingReactor(facility));
+                    new ExceptionHandlerBlade(exceptionBlade, new NonBlockingReactor(plant));
             //Create a test request, call it and print the results.
             System.out.println(exceptionHandlerBlade.testAReq().call());
 
         } finally {
             //shutdown the facility
-            facility.close();
+            plant.close();
         }
     }
 }

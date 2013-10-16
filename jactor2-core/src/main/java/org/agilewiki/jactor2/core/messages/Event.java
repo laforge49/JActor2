@@ -26,7 +26,7 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.Facility;
+ * import org.agilewiki.jactor2.core.threading.Plant;
  * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
  *
@@ -35,10 +35,10 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
  *     public static void main(String[] args) throws Exception {
  *
  *         //A facility with one thread.
- *         final Facility facility = new Facility(1);
+ *         final Plant plant = new Plant(1);
  *
  *         //Create a SampleBlade1 instance.
- *         SampleBlade1 sampleBlade1 = new SampleBlade1(new NonBlockingReactor(facility));
+ *         SampleBlade1 sampleBlade1 = new SampleBlade1(new NonBlockingReactor(plant));
  *
  *         //Print "finished" and exit when the event is processed by SampleBlade1.
  *         new FinEvent("finished").signal(sampleBlade1);

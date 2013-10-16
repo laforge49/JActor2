@@ -11,7 +11,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 /**
- * An isolation bladefor printing.
+ * An isolation blade is used for printing.
  * By using an isolation blade, printing is done on a different thread, along with
  * formatting. In effect, Printer implements a simple logger.
  * </p>
@@ -22,16 +22,16 @@ import java.util.Locale;
  *     public static void main(String[] args) throws Exception {
  *
  *         //A facility with one thread.
- *         final Facility facility = new Facility(1);
+ *         final Plant plant = new Plant(1);
  *
  *         try {
  *
  *             //Print something.
- *             Printer.printlnAReq(facility, "Hello World!").call();
+ *             Printer.printlnAReq(plant, "Hello World!").call();
  *
  *         } finally {
- *             //shutdown the facility
- *             facility.close();
+ *             //shutdown the plant
+ *             plant.close();
  *         }
  *
  *     }

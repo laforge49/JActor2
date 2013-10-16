@@ -1,22 +1,22 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 
 public class PrinterSample {
 
     public static void main(String[] args) throws Exception {
 
         //A facility with one thread.
-        final Facility facility = new Facility(1);
+        final Plant plant = new Plant(1);
 
         try {
 
             //Print something.
-            Printer.printlnAReq(facility, "Hello World!").call();
+            Printer.printlnAReq(plant, "Hello World!").call();
 
         } finally {
-            //shutdown the facility
-            facility.close();
+            //shutdown the plant
+            plant.close();
         }
 
     }

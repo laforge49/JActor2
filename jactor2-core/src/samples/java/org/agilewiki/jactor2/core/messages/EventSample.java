@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -10,10 +10,10 @@ public class EventSample {
     public static void main(String[] args) throws Exception {
 
         //A facility with one thread.
-        final Facility facility = new Facility(1);
+        final Plant plant = new Plant(1);
 
         //Create a SampleBlade1 instance.
-        SampleBlade1 sampleBlade1 = new SampleBlade1(new NonBlockingReactor(facility));
+        SampleBlade1 sampleBlade1 = new SampleBlade1(new NonBlockingReactor(plant));
 
         new FinEvent("finished").signal(sampleBlade1);
 

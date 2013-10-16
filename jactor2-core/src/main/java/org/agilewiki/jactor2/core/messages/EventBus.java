@@ -16,24 +16,24 @@ import java.util.Set;
  * <pre>
  * import org.agilewiki.jactor2.core.messaging.EventBus;
  * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
- * import org.agilewiki.jactor2.core.threading.Facility;
+ * import org.agilewiki.jactor2.core.threading.Plant;
  *
  * public class EventBusSample {
  *
  *     public static void main(final String[] _args) throws Exception {
  *         //Create a facility.
- *         Facility facility = new Facility();
+ *         Plant plant = new Plant();
  *         try {
  *             //Create a status logger blade.
  *             StatusLogger statusLogger =
- *                 new StatusLogger(new NonBlockingReactor(facility));
+ *                 new StatusLogger(new NonBlockingReactor(plant));
  *
  *             //Create a status printer blade.
- *             StatusPrinter statusPrinter = new StatusPrinter(facility);
+ *             StatusPrinter statusPrinter = new StatusPrinter(plant);
  *
  *             //Define an event bus for StatusListener blades.
  *             EventBus&lt;StatusListener&gt; eventBus =
- *                 new EventBus&lt;StatusListener&gt;(new NonBlockingReactor(facility));
+ *                 new EventBus&lt;StatusListener&gt;(new NonBlockingReactor(plant));
  *
  *             //Add statusLogger and statusPrinter to the subscribers of the event bus.
  *             eventBus.subscribeSReq(statusLogger).call();
@@ -46,7 +46,7 @@ import java.util.Set;
  *             eventBus.publishSReq(new StatusUpdate("stopped")).call();
  *         } finally {
  *             //Close the facility.
- *             facility.close();
+ *             plant.close();
  *         }
  *     }
  * }

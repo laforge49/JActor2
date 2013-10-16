@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.Event;
 
 public class ThreadBoundReactorSample {
@@ -9,14 +10,14 @@ public class ThreadBoundReactorSample {
     public static void main(String[] args) throws Exception {
 
         //A plant with no threads.
-        final Facility facility = new Facility(0);
+        final Plant plant = new Plant(0);
 
         //Get a reference to the main thread.
         final Thread mainThread = Thread.currentThread();
 
         //Create a thread-bound processing.
         final ThreadBoundReactor boundMessageProcessor =
-                new ThreadBoundReactor(facility, new Runnable() {
+                new ThreadBoundReactor(plant, new Runnable() {
                     @Override
                     public void run() {
                         //Interrupt the main thread when there are messages to process
