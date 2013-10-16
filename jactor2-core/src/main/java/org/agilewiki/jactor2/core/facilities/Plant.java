@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 
+import java.util.Iterator;
 import java.util.concurrent.ThreadFactory;
 
 public class Plant extends Facility {
@@ -14,7 +15,7 @@ public class Plant extends Facility {
      */
     public final static boolean DEBUG = "true".equals(System.getProperty("jactor.debug"));
 
-    private static Plant singleton;
+    private static volatile Plant singleton;
 
     public static Plant getSingleton() {
         if (singleton == null) {
@@ -93,7 +94,7 @@ public class Plant extends Facility {
                         Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
                         20,
                         new DefaultThreadFactory());
-                closeables.add(facility);
+                initFacility(_name, facility);
                 return facility;
             }
         };
@@ -110,7 +111,7 @@ public class Plant extends Facility {
                         Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
                         _threadCount,
                         new DefaultThreadFactory());
-                closeables.add(facility);
+                initFacility(_name, facility);
                 return facility;
             }
         };
@@ -130,15 +131,20 @@ public class Plant extends Facility {
                         _initialBufferSize,
                         _threadCount,
                         _threadFactory);
-                closeables.add(facility);
+                initFacility(_name, facility);
                 return facility;
             }
         };
     }
 
+    private void initFacility(final String _name, final Facility _facility) throws Exception {
+        firstSet(FACILITY_PROPERTY_PREFIX + _name, _facility);
+        closeables.add(_facility);
+    }
+
     @Override
-    protected void _close() throws Exception {
+    public final void close() throws Exception {
         singleton = null;
-        super._close();
+        super.close();
     }
 }

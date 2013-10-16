@@ -25,11 +25,13 @@ import java.util.concurrent.ThreadFactory;
 
 public class Facility extends BladeBase implements AutoCloseable {
 
-    public final static String NAME_PROPERTY = "name";
+    public final static String NAME_PROPERTY = "core.name";
 
     public final static String PLANT_NAME = "Plant";
 
-    public final static String DEPENDENCY_PROPERTY_PREFIX = "dependency_";
+    public final static String DEPENDENCY_PROPERTY_PREFIX = "core.dependency_";
+
+    public final static String FACILITY_PROPERTY_PREFIX = "core.facility_";
 
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
@@ -246,32 +248,29 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
-    protected void _close() throws Exception {
-        Plant plant = getPlant();
-        if (plant != null && plant != this) {
-            plant.removeAutoClosableSReq(this).signal();
-        }
-        threadManager.close();
-        final Iterator<AutoCloseable> it = closeables.iterator();
-        while (it.hasNext()) {
-            try {
-                it.next().close();
-            } catch (final Throwable t) {
-                t.printStackTrace();
-            }
-        }
-    }
-
     @Override
-    public final void close() throws Exception {
+    public void close() throws Exception {
         new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
+                Plant plant = getPlant();
+                if (plant != null && plant != Facility.this) {
+                    plant.removeAutoClosableSReq(this).signal();
+                    plant.putPropertySReq(FACILITY_PROPERTY_PREFIX + getName(), null).signal();
+                }
                 if (shuttingDown) {
                     return null;
                 }
                 shuttingDown = true;
-                _close();
+                threadManager.close();
+                final Iterator<AutoCloseable> it = closeables.iterator();
+                while (it.hasNext()) {
+                    try {
+                        it.next().close();
+                    } catch (final Throwable t) {
+                        t.printStackTrace();
+                    }
+                }
                 return null;
             }
         }.signal();
@@ -315,6 +314,11 @@ public class Facility extends BladeBase implements AutoCloseable {
     @Deprecated
     public Object putProperty(final String _propertyName,
                               final Object _propertyValue) throws Exception {
+        return _putProperty(_propertyName, _propertyValue);
+    }
+
+     Object _putProperty(final String _propertyName,
+                              final Object _propertyValue) throws Exception {
         Object old;
         if (_propertyValue == null)
             old = properties.remove(_propertyName);
@@ -330,26 +334,18 @@ public class Facility extends BladeBase implements AutoCloseable {
         return new SyncBladeRequest<Object>() {
             @Override
             protected Object processSyncRequest() throws Exception {
-                Object old;
-                if (_propertyValue == null)
-                    old = properties.remove(_propertyName);
-                else
-                    old = properties.put(_propertyName, _propertyValue);
-                FacilityPropertyChange change =
-                        new FacilityPropertyChange(Facility.this, _propertyName, old, _propertyValue);
-                local(propertyChangeSubscribers.publishSReq(change));
-                return old;
+                return _putProperty(_propertyName, _propertyValue);
             }
         };
     }
 
     protected void firstSet(final String _propertyName,
-                            final Object _propertyValue) {
+                            final Object _propertyValue) throws Exception {
         if (_propertyValue == null)
             throw new IllegalArgumentException("value may not be null");
         if (properties.get(_propertyName) != null)
             throw new IllegalStateException("old value must be null");
-        properties.put(_propertyName, _propertyValue);
+        _putProperty(_propertyName, _propertyValue);
     }
 
     public SyncRequest<Void> firstSetSReq(final String _propertyName,
