@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BooleanTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JABoolean boolean1 = (JABoolean) Durables.newSerializable(plant, JABoolean.FACTORY_NAME);
             JABoolean boolean2 = (JABoolean) boolean1.copyReq(null).call();

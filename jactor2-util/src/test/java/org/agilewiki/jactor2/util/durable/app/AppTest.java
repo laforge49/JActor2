@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.util.durable.incDes.Box;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
             User.register(factoryLocator);
@@ -28,7 +28,7 @@ public class AppTest extends TestCase {
     }
 
     public void test2() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
             User.register(factoryLocator);

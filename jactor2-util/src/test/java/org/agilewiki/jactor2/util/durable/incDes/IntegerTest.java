@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IntegerTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAInteger int1 = (JAInteger) Durables.newSerializable(plant, JAInteger.FACTORY_NAME);
             JAInteger int2 = (JAInteger) int1.copyReq(null).call();

@@ -34,7 +34,7 @@ public class BListTimingsTest extends TestCase {
         //total run time (milliseconds) = 2877
         //time per update (microseconds) = 2877
 
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(plant, JAList.JAINTEGER_LIST);
             Reactor reactor = new NonBlockingReactor(plant);

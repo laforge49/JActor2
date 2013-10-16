@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class FloatTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAFloat float1 = (JAFloat) Durables.newSerializable(plant, JAFloat.FACTORY_NAME);
             JAFloat float2 = (JAFloat) float1.copyReq(null).call();

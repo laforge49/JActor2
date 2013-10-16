@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class DoubleTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JADouble double1 = (JADouble) Durables.newSerializable(plant, JADouble.FACTORY_NAME);
             JADouble double2 = (JADouble) double1.copy(null);

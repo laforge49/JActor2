@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 public class IncDesTest extends TestCase {
     public void test1() throws Exception {
         System.err.println("\nTest 1");
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             IncDes a = (IncDes) Durables.newSerializable(plant, IncDes.FACTORY_NAME);
             int l = a.getSerializedLengthReq().call();
@@ -22,7 +22,7 @@ public class IncDesTest extends TestCase {
 
     public void test4() throws Exception {
         System.err.println("\nTest 4");
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             IncDes a = (IncDes) Durables.newSerializable(plant, IncDes.FACTORY_NAME);
             byte[] bytes = a.getSerializedBytesReq().call();
@@ -36,7 +36,7 @@ public class IncDesTest extends TestCase {
 
     public void test5() throws Exception {
         System.err.println("\nTest 5");
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             IncDes a = (IncDes) Durables.newSerializable(plant, IncDes.FACTORY_NAME);
             a.load(new byte[0]);
@@ -50,7 +50,7 @@ public class IncDesTest extends TestCase {
 
     public void test6() throws Exception {
         System.err.println("\nTest 6");
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             IncDes jid1 = (IncDes) Durables.newSerializable(plant, IncDes.FACTORY_NAME);
             jid1.load(new byte[0]);

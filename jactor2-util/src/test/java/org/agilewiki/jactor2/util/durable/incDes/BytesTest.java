@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BytesTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             Bytes bytes1 = (Bytes) Durables.newSerializable(plant, Bytes.FACTORY_NAME);
             Bytes bytes2 = (Bytes) bytes1.copyReq(null).call();

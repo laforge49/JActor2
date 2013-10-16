@@ -28,7 +28,7 @@ public final class Durables {
      *
      * @return A facility whose properties include the factoryLocator.
      */
-    public static Plant createFacility() throws Exception {
+    public static Plant createPlant() throws Exception {
         Plant plant = new Plant();
         FactoryLocator factoryLocator =
                 createFactoryLocator(plant, "org.agilewiki.jactor2.util.durable", "", "");

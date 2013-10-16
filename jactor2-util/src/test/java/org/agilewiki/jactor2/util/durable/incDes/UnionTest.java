@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class UnionTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
             Durables.registerUnionFactory(factoryLocator, "siUnion", JAString.FACTORY_NAME, "siUnion");

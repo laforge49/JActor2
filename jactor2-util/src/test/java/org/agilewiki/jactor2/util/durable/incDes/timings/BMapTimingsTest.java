@@ -34,7 +34,7 @@ public class BMapTimingsTest extends TestCase {
         //total run time (milliseconds) =  9871
         //time per update (microseconds) = 9871
 
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;

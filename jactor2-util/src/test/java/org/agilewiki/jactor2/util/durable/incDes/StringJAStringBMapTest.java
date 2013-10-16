@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class StringJAStringBMapTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAMap<String, JAString> m = (JAMap) Durables.
                     newSerializable(plant, JAMap.STRING_JASTRING_MAP);

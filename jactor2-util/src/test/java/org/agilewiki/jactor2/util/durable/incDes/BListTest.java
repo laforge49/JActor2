@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BListTest extends TestCase {
     public void test1() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAList<JAString> stringList1 = (JAList) Durables.newSerializable(plant, JAList.JASTRING_LIST);
             stringList1.iAdd(0);
@@ -34,7 +34,7 @@ public class BListTest extends TestCase {
     }
 
     public void test2() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(plant, JAList.JAINTEGER_LIST);
             int i = 0;
@@ -56,7 +56,7 @@ public class BListTest extends TestCase {
     }
 
     public void test3() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(plant, JAList.JAINTEGER_LIST);
             int i = 0;
@@ -78,7 +78,7 @@ public class BListTest extends TestCase {
     }
 
     public void test4() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(plant, JAList.JAINTEGER_LIST);
             int i = 0;
@@ -100,7 +100,7 @@ public class BListTest extends TestCase {
     }
 
     public void test5() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(plant, JAList.JAINTEGER_LIST);
             int i = 0;
@@ -122,7 +122,7 @@ public class BListTest extends TestCase {
     }
 
     public void test6() throws Exception {
-        Plant plant = Durables.createFacility();
+        Plant plant = Durables.createPlant();
         try {
             JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(plant, JAList.JAINTEGER_LIST);
             int i = 0;
