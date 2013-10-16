@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.util.durable;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -27,12 +28,12 @@ public final class Durables {
      *
      * @return A facility whose properties include the factoryLocator.
      */
-    public static Facility createFacility() throws Exception {
-        Facility facility = new Facility();
+    public static Plant createFacility() throws Exception {
+        Plant plant = new Plant();
         FactoryLocator factoryLocator =
-                createFactoryLocator(facility, "org.agilewiki.jactor2.util.durable", "", "");
+                createFactoryLocator(plant, "org.agilewiki.jactor2.util.durable", "", "");
         registerFactories(factoryLocator);
-        return facility;
+        return plant;
     }
 
     /**

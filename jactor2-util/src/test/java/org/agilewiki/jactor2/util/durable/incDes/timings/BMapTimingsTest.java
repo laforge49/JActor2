@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -34,9 +34,9 @@ public class BMapTimingsTest extends TestCase {
         //total run time (milliseconds) =  9871
         //time per update (microseconds) = 9871
 
-        Facility facility = Durables.createFacility();
+        Plant plant = Durables.createFacility();
         try {
-            JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(facility, JAMap.INTEGER_JAINTEGER_MAP);
+            JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < s) {
                 m1.kMake(i);
@@ -47,7 +47,7 @@ public class BMapTimingsTest extends TestCase {
             m1.getSerializedBytes();
             int j = 0;
             i = s / 2;
-            Reactor reactor = new NonBlockingReactor(facility);
+            Reactor reactor = new NonBlockingReactor(plant);
             long t0 = System.currentTimeMillis();
             while (j < r) {
                 JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(reactor);
@@ -64,7 +64,7 @@ public class BMapTimingsTest extends TestCase {
             long tpu = rt * 1000L / r;
             System.out.println("time per update (microseconds) = " + tpu);
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

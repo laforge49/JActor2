@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -10,11 +10,11 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class BoxTest extends TestCase {
     public void test() throws Exception {
-        Facility facility = Durables.createFacility();
+        Plant plant = Durables.createFacility();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(facility);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
             Factory boxAFactory = factoryLocator.getFactory(Box.FACTORY_NAME);
-            Reactor reactor = new NonBlockingReactor(facility);
+            Reactor reactor = new NonBlockingReactor(plant);
             Box box1 = (Box) boxAFactory.newSerializable(reactor);
             int sl = box1.getSerializedLength();
             assertEquals(4, sl);
@@ -70,7 +70,7 @@ public class BoxTest extends TestCase {
             sl = rpa.getSerializedLength();
             assertEquals(0, sl);
 
-            Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, facility);
+            Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME, plant);
             sl = box3.getSerializedLength();
             assertEquals(4, sl);
             made = box3.makeValueReq(Box.FACTORY_NAME).call();
@@ -124,7 +124,7 @@ public class BoxTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

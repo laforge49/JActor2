@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class StringTest extends TestCase {
     public void test() throws Exception {
-        Facility facility = Durables.createFacility();
+        Plant plant = Durables.createFacility();
         try {
-            JAString jaString1 = (JAString) Durables.newSerializable(facility, JAString.FACTORY_NAME);
+            JAString jaString1 = (JAString) Durables.newSerializable(plant, JAString.FACTORY_NAME);
             JAString jaString2 = (JAString) jaString1.copyReq(null).call();
             jaString2.setValueReq("abc").call();
             JAString jaString3 = (JAString) jaString2.copyReq(null).call();
@@ -24,7 +24,7 @@ public class StringTest extends TestCase {
             assertEquals("abc", jaString2.getValueReq().call());
             assertEquals("abc", jaString3.getValueReq().call());
 
-            Box box = (Box) Durables.newSerializable(facility, Box.FACTORY_NAME);
+            Box box = (Box) Durables.newSerializable(plant, Box.FACTORY_NAME);
             box.setValueReq(JAString.FACTORY_NAME).call();
             JAString rpa = (JAString) box.resolvePathnameReq("0").call();
             assertNull(rpa.getValueReq().call());
@@ -40,7 +40,7 @@ public class StringTest extends TestCase {
             assertNull(rpa.getValueReq().call());
 
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

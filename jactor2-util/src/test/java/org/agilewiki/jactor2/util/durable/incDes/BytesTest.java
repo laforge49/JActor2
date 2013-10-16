@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BytesTest extends TestCase {
     public void test() throws Exception {
-        Facility facility = Durables.createFacility();
+        Plant plant = Durables.createFacility();
         try {
-            Bytes bytes1 = (Bytes) Durables.newSerializable(facility, Bytes.FACTORY_NAME);
+            Bytes bytes1 = (Bytes) Durables.newSerializable(plant, Bytes.FACTORY_NAME);
             Bytes bytes2 = (Bytes) bytes1.copyReq(null).call();
             bytes2.setValueReq(new byte[3]).call();
             Bytes bytes3 = (Bytes) bytes2.copyReq(null).call();
@@ -24,7 +24,7 @@ public class BytesTest extends TestCase {
             assertEquals(3, bytes2.getValueReq().call().length);
             assertEquals(3, bytes3.getValueReq().call().length);
 
-            Box box = (Box) Durables.newSerializable(facility, Box.FACTORY_NAME);
+            Box box = (Box) Durables.newSerializable(plant, Box.FACTORY_NAME);
             box.setValueReq(Bytes.FACTORY_NAME).call();
             Bytes rpa = (Bytes) box.resolvePathnameReq("0").call();
             assertNull(rpa.getValueReq().call());
@@ -36,7 +36,7 @@ public class BytesTest extends TestCase {
             assertNull(rpa.getValueReq().call());
 
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

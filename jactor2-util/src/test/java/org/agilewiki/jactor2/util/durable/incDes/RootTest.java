@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -10,11 +10,11 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class RootTest extends TestCase {
     public void test() throws Exception {
-        Facility facility = Durables.createFacility();
+        Plant plant = Durables.createFacility();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(facility);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
             Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            Reactor reactor = new NonBlockingReactor(facility);
+            Reactor reactor = new NonBlockingReactor(plant);
             Root root1 = (Root) rootFactory.newSerializable(reactor, factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);
@@ -70,7 +70,7 @@ public class RootTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

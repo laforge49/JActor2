@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -34,10 +34,10 @@ public class BListTimingsTest extends TestCase {
         //total run time (milliseconds) = 2877
         //time per update (microseconds) = 2877
 
-        Facility facility = Durables.createFacility();
+        Plant plant = Durables.createFacility();
         try {
-            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(facility, JAList.JAINTEGER_LIST);
-            Reactor reactor = new NonBlockingReactor(facility);
+            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(plant, JAList.JAINTEGER_LIST);
+            Reactor reactor = new NonBlockingReactor(plant);
             int i = 0;
             while (i < s) {
                 intList1.iAdd(-1);
@@ -62,7 +62,7 @@ public class BListTimingsTest extends TestCase {
             long tpu = rt * 1000L / r;
             System.out.println("time per update (microseconds) = " + tpu);
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

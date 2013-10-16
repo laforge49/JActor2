@@ -2,18 +2,18 @@ package org.agilewiki.jactor2.util.durable.app;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.incDes.Box;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {
-        Facility facility = Durables.createFacility();
+        Plant plant = Durables.createFacility();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(facility);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
             User.register(factoryLocator);
-            User user1 = (User) Durables.newSerializable(facility, "user");
+            User user1 = (User) Durables.newSerializable(plant, "user");
             user1.PAName().setValue("Joe");
             user1.PAAge().setValue(42);
             user1.PALocation().setValue("Boston");
@@ -23,16 +23,16 @@ public class AppTest extends TestCase {
             assertEquals(42, (int) user2.PAAge().getValue());
             Assert.assertEquals("Boston", user2.PALocation().getValue());
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 
     public void test2() throws Exception {
-        Facility facility = Durables.createFacility();
+        Plant plant = Durables.createFacility();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(facility);
+            FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
             User.register(factoryLocator);
-            Box box1 = (Box) Durables.newSerializable(facility, Box.FACTORY_NAME);
+            Box box1 = (Box) Durables.newSerializable(plant, Box.FACTORY_NAME);
             box1.setValue("user");
             User user1 = (User) box1.getValue();
             user1.PAName().setValue("Joe");
@@ -45,7 +45,7 @@ public class AppTest extends TestCase {
             assertEquals(42, (int) user2.PAAge().getValue());
             Assert.assertEquals("Boston", user2.PALocation().getValue());
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }
