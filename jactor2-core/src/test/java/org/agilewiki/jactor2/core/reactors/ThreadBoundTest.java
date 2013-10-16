@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Blade1;
 import org.agilewiki.jactor2.core.messages.RequestBase;
@@ -11,21 +11,21 @@ import org.agilewiki.jactor2.core.messages.RequestBase;
  */
 public class ThreadBoundTest extends TestCase {
     ThreadBoundReactor boundReactor;
-    Facility facility;
+    Plant plant;
 
     public void testa() throws Exception {
-        facility = new Facility();
-        boundReactor = new ThreadBoundReactor(facility, new Runnable() {
+        plant = new Plant();
+        boundReactor = new ThreadBoundReactor(plant, new Runnable() {
             @Override
             public void run() {
                 boundReactor.run();
                 try {
-                    facility.close();
+                    plant.close();
                 } catch (final Throwable x) {
                 }
             }
         });
-        final Reactor reactor = new IsolationReactor(facility);
+        final Reactor reactor = new IsolationReactor(plant);
         final Blade1 blade1 = new Blade1(reactor);
         send(blade1.hiSReq(), new AsyncResponseProcessor<String>() {
             @Override

@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.blade;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -12,17 +13,17 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class Test2 extends TestCase {
     public void testI() throws Exception {
         System.out.println("testI");
-        final Facility facility = new Facility();
-        final Reactor reactor = new NonBlockingReactor(facility);
+        final Plant plant = new Plant();
+        final Reactor reactor = new NonBlockingReactor(plant);
         final BladeA bladeA = new BladeA(reactor);
         final BladeB bladeB = new BladeB(reactor);
         try {
             bladeB.throwRequest(bladeA).call();
         } catch (final SecurityException se) {
-            facility.close();
+            plant.close();
             return;
         }
-        facility.close();
+        plant.close();
         throw new Exception("Security exception was not caught");
     }
 

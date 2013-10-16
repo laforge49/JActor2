@@ -8,7 +8,7 @@ public class ThreadBoundReactorSample {
 
     public static void main(String[] args) throws Exception {
 
-        //A facility with no threads.
+        //A plant with no threads.
         final Facility facility = new Facility(0);
 
         //Get a reference to the main thread.

@@ -16,7 +16,7 @@ public class SwingBoundReactorSample {
 class HelloWorld extends BladeBase {
     HelloWorld() throws Exception {
 
-        //Create a facility with 5 threads.
+        //Create a plant with 5 threads.
         Facility facility = new Facility(5);
 
         initialize(new SwingBoundReactor(facility));
@@ -30,7 +30,7 @@ class HelloWorld extends BladeBase {
                 JFrame frame = new JFrame("HelloWorld");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
 
-                //Close facility when window is closed.
+                //Close plant when window is closed.
                 frame.addWindowListener((SwingBoundReactor) targetReactor);
 
                 //Add the "Hello World!" label.

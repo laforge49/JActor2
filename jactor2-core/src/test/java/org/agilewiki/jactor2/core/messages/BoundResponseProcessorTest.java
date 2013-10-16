@@ -2,19 +2,19 @@ package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
-        final Facility facility = new Facility();
+        final Plant plant = new Plant();
         try {
             final Driver driver = new Driver();
-            driver.initialize(new NonBlockingReactor(facility));
+            driver.initialize(new NonBlockingReactor(plant));
             assertEquals("Hello world!", driver.doitAReq().call());
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

@@ -2,31 +2,31 @@ package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class EventBusTest extends TestCase {
     public void test() throws Exception {
-        Facility facility = new Facility();
+        Plant plant = new Plant();
         try {
-            EventBus p = new EventBus(new NonBlockingReactor(facility));
+            EventBus p = new EventBus(new NonBlockingReactor(plant));
             Printer a = new Printer();
-            a.initialize(new NonBlockingReactor(facility));
+            a.initialize(new NonBlockingReactor(plant));
             a.setName("a");
             p.subscribeSReq(a).call();
             Printer b = new Printer();
-            b.initialize(new NonBlockingReactor(facility));
+            b.initialize(new NonBlockingReactor(plant));
             b.setName("b");
             p.subscribeSReq(b).call();
             Printer c = new Printer();
-            c.initialize(new NonBlockingReactor(facility));
+            c.initialize(new NonBlockingReactor(plant));
             c.setName("c");
             p.subscribeSReq(c).call();
             p.publishSReq(new Print("42")).call();
             p.publishSReq(new Print("24")).call();
             p.publishSReq(new Print("Hello world!")).call();
         } finally {
-            facility.close();
+            plant.close();
         }
     }
 }

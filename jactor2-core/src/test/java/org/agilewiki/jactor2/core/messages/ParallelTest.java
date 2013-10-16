@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -13,13 +13,13 @@ public class ParallelTest extends TestCase {
     private static final int LOADS = 10;
     private static final long DELAY = 200;
 
-    private Reactor reactor;
-    private Facility facility;
+    private Reactor plant;
+    private Plant facility;
     private AsyncRequest<Void> start;
 
     public void test() throws Exception {
-        facility = new Facility();
-        reactor = new NonBlockingReactor(facility);
+        facility = new Plant();
+        plant = new NonBlockingReactor(facility);
 
         start = new AsyncBladeRequest<Void>() {
             AsyncResponseProcessor<Void> dis = this;
@@ -62,7 +62,7 @@ public class ParallelTest extends TestCase {
          * Create a SyncRequest.
          */
         public AsyncBladeRequest() {
-            super(ParallelTest.this.reactor);
+            super(ParallelTest.this.plant);
         }
     }
 
@@ -75,6 +75,6 @@ public class ParallelTest extends TestCase {
     protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
                                         final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
-        RequestBase.doSend(reactor, _request, _responseProcessor);
+        RequestBase.doSend(plant, _request, _responseProcessor);
     }
 }

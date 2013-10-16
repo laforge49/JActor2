@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -11,10 +12,10 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  */
 public class Test4 extends TestCase {
     public void testb() throws Exception {
-        final Facility facility = new Facility();
-        final Reactor reactor = new NonBlockingReactor(facility);
+        final Plant plant = new Plant();
+        final Reactor reactor = new NonBlockingReactor(plant);
         new Blade4(reactor).hi4SReq().call();
-        facility.close();
+        plant.close();
     }
 
     public void testd() throws Exception {
