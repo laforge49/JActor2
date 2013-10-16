@@ -2,6 +2,8 @@ package org.agilewiki.jactor2.util.durable;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.facilities.SyncFacilityRequest;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -31,7 +33,7 @@ public final class Durables {
     public static Plant createPlant() throws Exception {
         Plant plant = new Plant();
         FactoryLocator factoryLocator =
-                createFactoryLocator(plant, "org.agilewiki.jactor2.util.durable", "", "");
+                createFactoryLocatorSReq(plant, "org.agilewiki.jactor2.util.durable", "", "").call();
         registerFactories(factoryLocator);
         return plant;
     }
@@ -45,15 +47,20 @@ public final class Durables {
      * @param _location   The location of the OSGi bundle or an empty string.
      * @return The new factoryLocator.
      */
-    public static FactoryLocator createFactoryLocator(
+    public static SyncRequest<FactoryLocator> createFactoryLocatorSReq(
             final Facility _facility,
             final String _bundleName,
             final String _version,
             final String _location) throws Exception {
-        FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
-        factoryLocator.configure(_bundleName, _version, _location);
-        _facility.putProperty("factoryLocator", factoryLocator);
-        return factoryLocator;
+        return new SyncFacilityRequest<FactoryLocator>(_facility) {
+            @Override
+            protected FactoryLocator processSyncRequest() throws Exception {
+                FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
+                factoryLocator.configure(_bundleName, _version, _location);
+                putProperty("factoryLocator", factoryLocator);
+                return factoryLocator;
+            }
+        };
     }
 
     /**
