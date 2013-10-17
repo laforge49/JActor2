@@ -317,8 +317,8 @@ public class Facility extends BladeBase implements AutoCloseable {
         return _putProperty(_propertyName, _propertyValue);
     }
 
-     Object _putProperty(final String _propertyName,
-                              final Object _propertyValue) throws Exception {
+    Object _putProperty(final String _propertyName,
+                        final Object _propertyValue) throws Exception {
         Object old;
         if (_propertyValue == null)
             old = properties.remove(_propertyName);

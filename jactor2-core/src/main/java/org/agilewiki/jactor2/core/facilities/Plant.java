@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 
-import java.util.Iterator;
 import java.util.concurrent.ThreadFactory;
 
 public class Plant extends Facility {

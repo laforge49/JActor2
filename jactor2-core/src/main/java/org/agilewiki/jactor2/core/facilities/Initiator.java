@@ -6,5 +6,6 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public interface Initiator extends Blade {
     void initialize(final Reactor _reactor) throws Exception;
+
     AsyncRequest<Void> startAReq();
 }
