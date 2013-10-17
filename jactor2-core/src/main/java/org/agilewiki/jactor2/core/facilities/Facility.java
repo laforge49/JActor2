@@ -472,6 +472,19 @@ public class Facility extends BladeBase implements AutoCloseable {
         return propertyChangeSubscribers.unsubscribeSReq(_subscriber);
     }
 
+    protected ClassLoader getClassLoader() throws Exception {
+        return getClass().getClassLoader();
+    }
+
+    public AsyncRequest<ClassLoader> getClassLoaderAReq() {
+        return new AsyncBladeRequest<ClassLoader>() {
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                processAsyncResponse(getClassLoader());
+            }
+        };
+    }
+
     /**
      * The reactor used internally.
      */
