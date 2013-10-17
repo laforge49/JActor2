@@ -485,6 +485,18 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
+    public AsyncRequest<Void> initiateAReq(final String _initiatorClassName) {
+        return new AsyncBladeRequest<Void>() {
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                Class initiatorClass = getClassLoader().loadClass(_initiatorClassName);
+                Initiator initiator = (Initiator) initiatorClass.newInstance();
+                initiator.initialize(getReactor());
+                send(initiator.startAReq(), this);
+            }
+        };
+    }
+
     /**
      * The reactor used internally.
      */
