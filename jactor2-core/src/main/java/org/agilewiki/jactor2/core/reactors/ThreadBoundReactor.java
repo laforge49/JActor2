@@ -50,8 +50,15 @@ import java.util.concurrent.atomic.AtomicReference;
  *         //Create an blade that uses the thread-bound targetReactor.
  *         final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
  *
- *         //Pass a FinEvent signal to the blade
- *         new FinEvent().signal(threadBoundBlade);
+ *         //Terminate the blade.
+ *         new SyncRequest&lt;Void&gt;(threadBoundBlade.getReactor()) {
+ *
+ *             {@literal @}Override
+ *             protected Void processSyncRequest() throws Exception {
+ *                 threadBoundBlade.fin();
+ *                 return null;
+ *             }
+ *         }.signal();
  *
  *         //Process messages when this thread is interrupted
  *         while (true) {
@@ -76,14 +83,6 @@ import java.util.concurrent.atomic.AtomicReference;
  *     void fin() throws Exception {
  *         System.out.println("finished");
  *         System.exit(0);
- *     }
- * }
- *
- * //When a FinEvent is passed to an blade, the fin method is called
- * class FinEvent extends Event&lt;ThreadBoundBlade&gt; {
- *     {@literal @}Override
- *     public void processEvent(ThreadBoundBlade _targetBlade) throws Exception {
- *         _targetBlade.fin();
  *     }
  * }
  *

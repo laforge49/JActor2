@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.messages.Event;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 public class ThreadBoundReactorSample {
 
@@ -27,8 +27,15 @@ public class ThreadBoundReactorSample {
         //Create an blade that uses the thread-bound processing.
         final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
 
-        //Pass a FinEvent signal to the blade.
-        new FinEvent().signal(threadBoundBlade);
+        //Terminate the blade.
+        new SyncRequest<Void>(threadBoundBlade.getReactor()) {
+
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                threadBoundBlade.fin();
+                return null;
+            }
+        }.signal();
 
         //Process messages when this thread is interrupted.
         while (true) {
@@ -53,13 +60,5 @@ class ThreadBoundBlade extends BladeBase {
     void fin() throws Exception {
         System.out.println("finished");
         System.exit(0);
-    }
-}
-
-//When a FinEvent is passed to an blade, the fin method is called.
-class FinEvent extends Event<ThreadBoundBlade> {
-    @Override
-    protected void processEvent(ThreadBoundBlade _targetBlade) throws Exception {
-        _targetBlade.fin();
     }
 }
