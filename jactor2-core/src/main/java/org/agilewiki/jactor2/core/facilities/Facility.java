@@ -1,7 +1,10 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.RequestBase;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.slf4j.Logger;
@@ -80,7 +83,7 @@ public class Facility extends BladeBase implements AutoCloseable {
      */
     private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
 
-    private EventBus<FacilityPropertyChangeSubscriber> propertyChangeSubscribers;
+    private final Set<FacilityPropertyChangeSubscriber> propertyChangeSubscribers = new HashSet<FacilityPropertyChangeSubscriber>();
 
     /**
      * Create a Facility.
@@ -92,17 +95,16 @@ public class Facility extends BladeBase implements AutoCloseable {
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
     protected Facility(final String _name,
-                     final int _initialLocalMessageQueueSize,
-                     final int _initialBufferSize,
-                     final int _threadCount,
-                     final ThreadFactory _threadFactory) throws Exception {
+                       final int _initialLocalMessageQueueSize,
+                       final int _initialBufferSize,
+                       final int _threadCount,
+                       final ThreadFactory _threadFactory) throws Exception {
         threadManager = new ThreadManager(
                 _threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
         initialBufferSize = _initialBufferSize;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
-        propertyChangeSubscribers = new EventBus<FacilityPropertyChangeSubscriber>(internalReactor);
         firstSet(NAME_PROPERTY, _name);
     }
 
@@ -246,21 +248,31 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     public AsyncRequest<Object> putPropertyAReq(final String _propertyName,
-                                               final Object _propertyValue) {
+                                                final Object _propertyValue) {
         return new AsyncBladeRequest<Object>() {
-            AsyncResponseProcessor<Object> dis = this;
+            final AsyncResponseProcessor<Object> dis = this;
+            int count = propertyChangeSubscribers.size();
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                Object old;
-                if (_propertyValue == null)
-                    old = properties.remove(_propertyName);
-                else
-                    old = properties.put(_propertyName, _propertyValue);
-                FacilityPropertyChange change =
-                        new FacilityPropertyChange(Facility.this, _propertyName, old, _propertyValue);
-                propertyChangeSubscribers.publishSReq(change).signal();
-                dis.processAsyncResponse(old);
+                final Object old = _propertyValue == null ?
+                        properties.remove(_propertyName) : properties.put(_propertyName, _propertyValue);
+                if (count == 0) {
+                    dis.processAsyncResponse(old);
+                    return;
+                }
+                Iterator<FacilityPropertyChangeSubscriber> it = propertyChangeSubscribers.iterator();
+                while (it.hasNext()) {
+                    FacilityPropertyChangeSubscriber fpcs = it.next();
+                    send(fpcs.propertyChangedAReq(Facility.this, _propertyName, old, _propertyValue), new AsyncResponseProcessor<Void>() {
+                        @Override
+                        public void processAsyncResponse(Void _response) throws Exception {
+                            count--;
+                            if (count == 0)
+                                dis.processAsyncResponse(old);
+                        }
+                    });
+                }
             }
         };
     }
@@ -275,7 +287,7 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     public AsyncRequest<Void> firstSetAReq(final String _propertyName,
-                                          final Object _propertyValue) {
+                                           final Object _propertyValue) {
         return new AsyncBladeRequest<Void>() {
             AsyncResponseProcessor<Void> dis = this;
 
@@ -378,11 +390,15 @@ public class Facility extends BladeBase implements AutoCloseable {
                     public void processAsyncResponse(Boolean _hasDependency) throws Exception {
                         if (_hasDependency)
                             throw new IllegalArgumentException("this would create a cyclic dependency");
-                        firstSet(propertyName, _dependency);
-                        send(_dependency.addAutoClosableSReq(Facility.this), new AsyncResponseProcessor<Boolean>() {
+                        send(firstSetAReq(propertyName, _dependency), new AsyncResponseProcessor<Void>() {
                             @Override
-                            public void processAsyncResponse(Boolean _response) throws Exception {
-                                dis.processAsyncResponse(null);
+                            public void processAsyncResponse(Void _response) throws Exception {
+                                send(_dependency.addAutoClosableSReq(Facility.this), new AsyncResponseProcessor<Boolean>() {
+                                    @Override
+                                    public void processAsyncResponse(Boolean _response) throws Exception {
+                                        dis.processAsyncResponse(null);
+                                    }
+                                });
                             }
                         });
                     }
@@ -397,15 +413,22 @@ public class Facility extends BladeBase implements AutoCloseable {
             @Override
             protected Map<String, Object> processSyncRequest()
                     throws Exception {
-                if (local(propertyChangeSubscribers.subscribeSReq(_subscriber)))
+                if (propertyChangeSubscribers.add(_subscriber))
                     return new HashMap<String, Object>(properties);
                 return null;
             }
         };
     }
 
-    public SyncRequest<Boolean> unsubscribePropertyChangesSReq(final FacilityPropertyChangeSubscriber _subscriber) {
-        return propertyChangeSubscribers.unsubscribeSReq(_subscriber);
+    public SyncRequest<Boolean> unsubscribePropertyChangesSReq(
+            final FacilityPropertyChangeSubscriber _subscriber) {
+        return new SyncBladeRequest<Boolean>() {
+            @Override
+            protected Boolean processSyncRequest()
+                    throws Exception {
+                return propertyChangeSubscribers.remove(_subscriber);
+            }
+        };
     }
 
     protected ClassLoader getClassLoader() throws Exception {
