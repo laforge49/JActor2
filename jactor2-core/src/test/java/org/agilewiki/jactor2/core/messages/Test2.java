@@ -24,11 +24,11 @@ public class Test2 extends TestCase {
 
     public void testc() throws Exception {
         System.out.println("testb");
-        final Facility facility = new Facility();
-        final Blade1 blade1 = new Blade1(new IsolationReactor(facility));
-        final Blade2 blade2 = new Blade2(new IsolationReactor(facility));
+        final Plant plant = new Plant();
+        final Blade1 blade1 = new Blade1(new IsolationReactor(plant));
+        final Blade2 blade2 = new Blade2(new IsolationReactor(plant));
         final String result = blade2.hi2AReq(blade1).call();
         assertEquals("Hello world!", result);
-        facility.close();
+        plant.close();
     }
 }

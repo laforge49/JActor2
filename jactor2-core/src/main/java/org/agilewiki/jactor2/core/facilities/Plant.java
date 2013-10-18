@@ -59,14 +59,13 @@ public class Plant extends Facility {
                  final int _initialBufferSize,
                  final int _threadCount,
                  final ThreadFactory _threadFactory) throws Exception {
-        super(_initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
+        super(PLANT_NAME, _initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
         singleton = this;
         if (DEBUG)
             System.out.println("\n*** jactor.debug = true ***\n");
-        firstSet(NAME_PROPERTY, PLANT_NAME);
     }
 
     @Override
@@ -87,7 +86,7 @@ public class Plant extends Facility {
         return new SyncBladeRequest<Facility>() {
             @Override
             protected Facility processSyncRequest() throws Exception {
-                Facility facility = _createFacility(
+                Facility facility = new Facility(
                         _name,
                         Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                         Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -104,7 +103,7 @@ public class Plant extends Facility {
         return new SyncBladeRequest<Facility>() {
             @Override
             protected Facility processSyncRequest() throws Exception {
-                Facility facility = _createFacility(
+                Facility facility = new Facility(
                         _name,
                         Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                         Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
@@ -124,7 +123,7 @@ public class Plant extends Facility {
         return new SyncBladeRequest<Facility>() {
             @Override
             protected Facility processSyncRequest() throws Exception {
-                Facility facility = _createFacility(
+                Facility facility = new Facility(
                         _name,
                         _initialLocalMessageQueueSize,
                         _initialBufferSize,

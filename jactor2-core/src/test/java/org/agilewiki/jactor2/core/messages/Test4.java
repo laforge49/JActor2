@@ -19,8 +19,8 @@ public class Test4 extends TestCase {
     }
 
     public void testd() throws Exception {
-        final Facility facility = new Facility();
-        new Blade4(new IsolationReactor(facility)).hi4SReq().call();
-        facility.close();
+        final Plant plant = new Plant();
+        new Blade4(new IsolationReactor(plant)).hi4SReq().call();
+        plant.close();
     }
 }

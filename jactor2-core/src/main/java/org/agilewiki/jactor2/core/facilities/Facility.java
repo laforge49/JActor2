@@ -86,40 +86,18 @@ public class Facility extends BladeBase implements AutoCloseable {
 
     /**
      * Create a Facility.
-     */
-    public Facility() throws Exception {
-        this(
-                Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
-                20,
-                new DefaultThreadFactory());
-    }
-
-    /**
-     * Create a Facility.
      *
-     * @param _threadCount The thread pool size.
-     */
-    public Facility(final int _threadCount) throws Exception {
-        this(
-                Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
-                _threadCount,
-                new DefaultThreadFactory());
-    }
-
-    /**
-     * Create a Facility.
-     *
+     * @param _name                         The name of the facility.
      * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
      * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
      * @param _threadCount                  The thread pool size.
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
-    public Facility(final int _initialLocalMessageQueueSize,
-                    final int _initialBufferSize,
-                    final int _threadCount,
-                    final ThreadFactory _threadFactory) throws Exception {
+    protected Facility(final String _name,
+                     final int _initialLocalMessageQueueSize,
+                     final int _initialBufferSize,
+                     final int _threadCount,
+                     final ThreadFactory _threadFactory) throws Exception {
         threadManager = new ThreadManager(
                 _threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
@@ -127,40 +105,6 @@ public class Facility extends BladeBase implements AutoCloseable {
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         propertyChangeSubscribers = new EventBus<FacilityPropertyChangeSubscriber>(internalReactor);
-    }
-
-    /**
-     * Create a Facility.
-     *
-     * @param _name                         The name of the facility.
-     * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
-     * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
-     * @param _threadCount                  The thread pool size.
-     * @param _threadFactory                The factory used to create threads for the threadpool.
-     */
-    protected Facility _createFacility(final String _name,
-                                       final int _initialLocalMessageQueueSize,
-                                       final int _initialBufferSize,
-                                       final int _threadCount,
-                                       final ThreadFactory _threadFactory) throws Exception {
-        return new Facility(_name, _initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
-    }
-
-    /**
-     * Create a Facility.
-     *
-     * @param _name                         The name of the facility.
-     * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
-     * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
-     * @param _threadCount                  The thread pool size.
-     * @param _threadFactory                The factory used to create threads for the threadpool.
-     */
-    private Facility(final String _name,
-                     final int _initialLocalMessageQueueSize,
-                     final int _initialBufferSize,
-                     final int _threadCount,
-                     final ThreadFactory _threadFactory) throws Exception {
-        this(_initialLocalMessageQueueSize, _initialBufferSize, _threadCount, _threadFactory);
         firstSet(NAME_PROPERTY, _name);
     }
 
