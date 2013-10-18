@@ -247,21 +247,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         return (Plant) getProperty(DEPENDENCY_PROPERTY_PREFIX + PLANT_NAME);
     }
 
-    /**
-     * Assign a property value.
-     * Or removes it if the value is set to null;
-     *
-     * @param _propertyName  The name of the property.
-     * @param _propertyValue The value of the property, or null.
-     * @return The prior value of the property, or null.
-     */
-    @Deprecated
-    public Object putProperty(final String _propertyName,
-                              final Object _propertyValue) throws Exception {
-        return _putProperty(_propertyName, _propertyValue);
-    }
-
-    Object _putProperty(final String _propertyName,
+    private Object _putProperty(final String _propertyName,
                         final Object _propertyValue) throws Exception {
         Object old;
         if (_propertyValue == null)
