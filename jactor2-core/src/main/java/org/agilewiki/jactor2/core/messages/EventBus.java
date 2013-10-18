@@ -131,6 +131,7 @@ import java.util.Set;
  * @param <TARGET_BLADE_TYPE> A subclass of Blade implemented by all subscribers and
  *                            the target of the published events.
  */
+@Deprecated
 public class EventBus<TARGET_BLADE_TYPE extends Blade> extends BladeBase {
     /**
      * The blades which will receive the published events.

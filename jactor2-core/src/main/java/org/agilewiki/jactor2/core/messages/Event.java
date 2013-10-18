@@ -81,6 +81,7 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
  *
  * @param <TARGET_BLADE_TYPE> The class of the blade that will be targeted when this Event is passed.
  */
+@Deprecated
 public abstract class Event<TARGET_BLADE_TYPE extends Blade> {
 
     /**
