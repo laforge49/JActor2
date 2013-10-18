@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.BoundResponseProcessor;
-import org.agilewiki.jactor2.core.messages.Event;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 import java.util.ArrayList;
@@ -64,12 +64,13 @@ public class FirstStage extends BladeBase implements Runnable {
             }
         });
         t0 = System.currentTimeMillis();
-        new Event<FirstStage>() {
 
+        new SyncRequest<Void>(this.getReactor()) {
             @Override
-            protected void processEvent(FirstStage _targetBlade) throws Exception {
+            protected Void processSyncRequest() throws Exception {
+                return null;
             }
-        }.signal(this);
+        }.signal();
     }
 
     private void createList() {
