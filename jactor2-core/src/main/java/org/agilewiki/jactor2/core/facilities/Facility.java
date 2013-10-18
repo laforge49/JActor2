@@ -2,9 +2,7 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.*;
-import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Outbox;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -200,7 +198,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                 Plant plant = getPlant();
                 if (plant != null && plant != Facility.this) {
                     plant.removeAutoClosableSReq(this).signal();
-                    plant.putPropertySReq(FACILITY_PROPERTY_PREFIX + getName(), null).signal();
+                    plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(), null).signal();
                 }
                 if (shuttingDown) {
                     return null;
@@ -247,24 +245,22 @@ public class Facility extends BladeBase implements AutoCloseable {
         return (Plant) getProperty(DEPENDENCY_PROPERTY_PREFIX + PLANT_NAME);
     }
 
-    private Object _putProperty(final String _propertyName,
-                        final Object _propertyValue) throws Exception {
-        Object old;
-        if (_propertyValue == null)
-            old = properties.remove(_propertyName);
-        else
-            old = properties.put(_propertyName, _propertyValue);
-        FacilityPropertyChange change = new FacilityPropertyChange(this, _propertyName, old, _propertyValue);
-        propertyChangeSubscribers.publishSReq(change).signal();
-        return old;
-    }
-
-    public SyncRequest<Object> putPropertySReq(final String _propertyName,
+    public AsyncRequest<Object> putPropertyAReq(final String _propertyName,
                                                final Object _propertyValue) {
-        return new SyncBladeRequest<Object>() {
+        return new AsyncBladeRequest<Object>() {
+            AsyncResponseProcessor<Object> dis = this;
+
             @Override
-            protected Object processSyncRequest() throws Exception {
-                return _putProperty(_propertyName, _propertyValue);
+            protected void processAsyncRequest() throws Exception {
+                Object old;
+                if (_propertyValue == null)
+                    old = properties.remove(_propertyName);
+                else
+                    old = properties.put(_propertyName, _propertyValue);
+                FacilityPropertyChange change =
+                        new FacilityPropertyChange(Facility.this, _propertyName, old, _propertyValue);
+                propertyChangeSubscribers.publishSReq(change).signal();
+                dis.processAsyncResponse(old);
             }
         };
     }
@@ -275,16 +271,26 @@ public class Facility extends BladeBase implements AutoCloseable {
             throw new IllegalArgumentException("value may not be null");
         if (properties.get(_propertyName) != null)
             throw new IllegalStateException("old value must be null");
-        _putProperty(_propertyName, _propertyValue);
+        properties.put(_propertyName, _propertyValue);
     }
 
-    public SyncRequest<Void> firstSetSReq(final String _propertyName,
+    public AsyncRequest<Void> firstSetAReq(final String _propertyName,
                                           final Object _propertyValue) {
-        return new SyncBladeRequest<Void>() {
+        return new AsyncBladeRequest<Void>() {
+            AsyncResponseProcessor<Void> dis = this;
+
             @Override
-            protected Void processSyncRequest() throws Exception {
-                firstSet(_propertyName, _propertyValue);
-                return null;
+            protected void processAsyncRequest() throws Exception {
+                if (_propertyValue == null)
+                    throw new IllegalArgumentException("value may not be null");
+                if (properties.get(_propertyName) != null)
+                    throw new IllegalStateException("old value must be null");
+                send(putPropertyAReq(_propertyName, _propertyValue), new AsyncResponseProcessor<Object>() {
+                    @Override
+                    public void processAsyncResponse(Object _response) throws Exception {
+                        dis.processAsyncResponse(null);
+                    }
+                });
             }
         };
     }

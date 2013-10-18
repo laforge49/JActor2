@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
@@ -42,35 +43,58 @@ public class Printer extends IsolationBlade {
 
     public static AsyncRequest<Void> printlnAReq(final Facility _facility, final String _string) throws Exception {
         return new AsyncRequest<Void>(_facility.getReactor()) {
+            AsyncResponseProcessor<Void> dis = this;
+
             public void processAsyncRequest() throws Exception {
                 Facility facility = _facility;
                 Plant plant = facility.getPlant();
                 if (plant != null)
                     facility = plant;
-                Printer printer = local(stdoutSReq(facility));
-                send(printer.printlnSReq(_string), this);
+                send(stdoutAReq(facility), new AsyncResponseProcessor<Printer>() {
+                    @Override
+                    public void processAsyncResponse(Printer _printer) throws Exception {
+                        send(_printer.printlnSReq(_string), dis);
+                    }
+                });
             }
         };
     }
 
     public static AsyncRequest<Void> printfAReq(final Facility _facility, final String _format, final Object... _args) throws Exception {
         return new AsyncRequest<Void>(_facility.getReactor()) {
+            AsyncResponseProcessor<Void> dis = this;
+
             public void processAsyncRequest() throws Exception {
-                Printer printer = local(stdoutSReq(_facility));
-                send(printer.printfSReq(_format, _args), this);
+                Facility facility = _facility;
+                Plant plant = facility.getPlant();
+                if (plant != null)
+                    facility = plant;
+                send(stdoutAReq(facility), new AsyncResponseProcessor<Printer>() {
+                    @Override
+                    public void processAsyncResponse(Printer _printer) throws Exception {
+                        send(_printer.printfSReq(_format, _args), dis);
+                    }
+                });
             }
         };
     }
 
-    static public SyncRequest<Printer> stdoutSReq(final Facility _facility) throws Exception {
-        return new SyncRequest<Printer>(_facility.getReactor()) {
-            public Printer processSyncRequest() throws Exception {
+    static public AsyncRequest<Printer> stdoutAReq(final Facility _facility) throws Exception {
+        return new AsyncRequest<Printer>(_facility.getReactor()) {
+            AsyncResponseProcessor<Printer> dis = this;
+
+            public void processAsyncRequest() throws Exception {
                 Printer printer = (Printer) _facility.getProperty("stdout");
                 if (printer == null) {
-                    printer = new Printer(new IsolationReactor(_facility));
-                    local(_facility.putPropertySReq("stdout", printer));
-                }
-                return printer;
+                    final Printer p = new Printer(new IsolationReactor(_facility));
+                    send(_facility.putPropertyAReq("stdout", p), new AsyncResponseProcessor<Object>() {
+                        @Override
+                        public void processAsyncResponse(Object _response) throws Exception {
+                            dis.processAsyncResponse(p);
+                        }
+                    });
+                } else
+                    dis.processAsyncResponse(printer);
             }
         };
     }

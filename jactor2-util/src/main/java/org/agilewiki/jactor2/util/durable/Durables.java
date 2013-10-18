@@ -1,8 +1,11 @@
 package org.agilewiki.jactor2.util.durable;
 
+import org.agilewiki.jactor2.core.facilities.AsyncFacilityRequest;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.facilities.SyncFacilityRequest;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -33,7 +36,7 @@ public final class Durables {
     public static Plant createPlant() throws Exception {
         Plant plant = new Plant();
         FactoryLocator factoryLocator =
-                createFactoryLocatorSReq(plant, "org.agilewiki.jactor2.util.durable", "", "").call();
+                createFactoryLocatorAReq(plant, "org.agilewiki.jactor2.util.durable", "", "").call();
         registerFactories(factoryLocator);
         return plant;
     }
@@ -47,18 +50,24 @@ public final class Durables {
      * @param _location   The location of the OSGi bundle or an empty string.
      * @return The new factoryLocator.
      */
-    public static SyncRequest<FactoryLocator> createFactoryLocatorSReq(
+    public static AsyncRequest<FactoryLocator> createFactoryLocatorAReq(
             final Facility _facility,
             final String _bundleName,
             final String _version,
             final String _location) throws Exception {
-        return new SyncFacilityRequest<FactoryLocator>(_facility) {
+        return new AsyncFacilityRequest<FactoryLocator>(_facility) {
+            AsyncResponseProcessor<FactoryLocator> dis = this;
+
             @Override
-            protected FactoryLocator processSyncRequest() throws Exception {
-                FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
+            protected void processAsyncRequest() throws Exception {
+                final FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
                 factoryLocator.configure(_bundleName, _version, _location);
-                putProperty("factoryLocator", factoryLocator);
-                return factoryLocator;
+                send(_facility.putPropertyAReq("factoryLocator", factoryLocator), new AsyncResponseProcessor<Object>() {
+                    @Override
+                    public void processAsyncResponse(Object _response) throws Exception {
+                        dis.processAsyncResponse(factoryLocator);
+                    }
+                });
             }
         };
     }

@@ -54,24 +54,6 @@ abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends AsyncRequest<R
     }
 
     /**
-     * Assign a property value.
-     * Or removes it if the value is set to null;
-     *
-     * @param _propertyName  The name of the property.
-     * @param _propertyValue The value of the property, or null.
-     * @return The prior value of the property, or null.
-     */
-    protected Object putProperty(final String _propertyName,
-                                 final Object _propertyValue) throws Exception {
-        return local(facility.putPropertySReq(_propertyName, _propertyValue));
-    }
-
-    protected void firstSet(final String _propertyName,
-                            final Object _propertyValue) throws Exception {
-        local(facility.firstSetSReq(_propertyName, _propertyValue));
-    }
-
-    /**
      * Returns a copy of the property names.
      *
      * @return A copy of the property names.
