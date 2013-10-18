@@ -42,42 +42,12 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
      */
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE rsp) throws Exception {
-        new ContinuationEvent<RESPONSE_TYPE>(rp, rsp).signal(targetBlade);
+        new SyncRequest<Void>(targetBlade.getReactor()) {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                rp.processAsyncResponse(rsp);
+                return null;
+            }
+        }.signal();
     }
-
-    /**
-     * The request used to pass the response and the wrapped AsyncResponseProcessor back to the
-     * original target processing.
-     *
-     * @param <RESPONSE_TYPE> The type of response.
-     */
-    static class ContinuationEvent<RESPONSE_TYPE> extends Event<Blade> {
-        /**
-         * The wrapped AsyncResponseProcessor.
-         */
-        private final AsyncResponseProcessor<RESPONSE_TYPE> rp;
-
-        /**
-         * The response.
-         */
-        private final RESPONSE_TYPE rsp;
-
-        /**
-         * Creates the request used to pass the response and wrapped AsyncResponseProcessor
-         * back to the original target processing.
-         *
-         * @param _rp  The wrapped AsyncResponseProcessor.
-         * @param _rsp The response.
-         */
-        public ContinuationEvent(final AsyncResponseProcessor<RESPONSE_TYPE> _rp, final RESPONSE_TYPE _rsp) {
-            rp = _rp;
-            rsp = _rsp;
-        }
-
-        @Override
-        protected void processEvent(Blade _targetBlade) throws Exception {
-            rp.processAsyncResponse(rsp);
-        }
-    }
-
 }
