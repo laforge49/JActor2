@@ -15,21 +15,21 @@ You will need four things to work with JActor2 core:
 <a href="http://www.slf4j.org/download.html">slf4j</a>.
 </li>
 <li>
-The <a href="jactor2-core-0.3.6.jar">JActor2 core jar file</a>. And
+The <a href="jactor2-core-0.4.0.jar">JActor2 core jar file</a>. And
 </li>
 <li>
 A test script.
 For windows, you can use <a href="test.bat">test.bat</a>:
 <pre>
 del *.class
-javac -classpath jactor2-core-0.3.6.jar;slf4j-api-1.7.5.jar *.java
-java -classpath jactor2-core-0.3.6.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. %1
+javac -classpath jactor2-core-0.4.0.jar;slf4j-api-1.7.5.jar *.java
+java -classpath jactor2-core-0.4.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. %1
 </pre>
 Othrwise, you can likely use <a href="test.sh">test.sh</a>:
 <pre>
 rm -fr *.class
-javac -cp jactor2-core-0.3.6.jar:slf4j-api-1.7.5.jar *.java
-java -cp jactor2-core-0.3.6.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:. $1
+javac -cp jactor2-core-0.4.0.jar:slf4j-api-1.7.5.jar *.java
+java -cp jactor2-core-0.4.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:. $1
 </pre>
 </li>
 </ol>
