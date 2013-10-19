@@ -99,6 +99,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                        final int _initialBufferSize,
                        final int _threadCount,
                        final ThreadFactory _threadFactory) throws Exception {
+        validateName(_name);
         threadManager = new ThreadManager(
                 _threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
@@ -106,6 +107,17 @@ public class Facility extends BladeBase implements AutoCloseable {
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         firstSet(NAME_PROPERTY, _name);
+    }
+
+    protected void validateName(final String _name) throws Exception {
+        if (_name == null)
+            throw new IllegalArgumentException("name may not be null");
+        if (_name.length() == 0)
+            throw new IllegalArgumentException("name may not be empty");
+        if (_name.contains(" "))
+            throw new IllegalArgumentException("name may not contain spaces: " + _name);
+        if (_name.equals(PLANT_NAME))
+            throw new IllegalArgumentException("name may be " + PLANT_NAME);
     }
 
     /**

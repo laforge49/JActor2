@@ -69,6 +69,10 @@ public class Plant extends Facility {
     }
 
     @Override
+    protected void validateName(final String _name) throws Exception {
+    }
+
+    @Override
     public Plant getPlant() {
         return this;
     }
