@@ -17,9 +17,12 @@ public class SpeedReport extends SyncPrinterRequest {
             
             @Override
             public void processAsyncRequest() throws Exception {
-                Printer printer = local(Printer.stdoutSReq(_facility));
-                SpeedReport sr = new SpeedReport(printer, _heading, _ns, _count);
-                send(sr, dis);
+                send(Printer.stdoutAReq(_facility), new AsyncResponseProcessor<Printer>() {
+                    public void processAsyncResponse(final Printer _printer) throws Exception {
+                        SpeedReport sr = new SpeedReport(_printer, _heading, _ns, _count);
+                        send(sr, dis);
+                    }
+                });
             }
         };
     }

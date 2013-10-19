@@ -28,9 +28,12 @@ public class SpeedReport extends SyncPrinterRequest {
 
             @Override
             public void processAsyncRequest() throws Exception {
-                Printer printer = local(Printer.stdoutSReq(_facility));
-                SpeedReport sr = new SpeedReport(printer, _heading, _ns, _count);
-                send(sr, dis);
+                send(Printer.stdoutAReq(_facility), new AsyncResponseProcessor&lt;Printer&gt;() {
+                    public void processAsyncResponse(final Printer _printer) throws Exception {
+                        SpeedReport sr = new SpeedReport(_printer, _heading, _ns, _count);
+                        send(sr, dis);
+                    }
+                });
             }
         };
     }
@@ -146,22 +149,24 @@ The processAsyncRequest method is called when the request is to be processed.
 It is similar to SyncRequest.processSyncRequest, except that processAsyncRequest has no return value.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html#stdoutSReq(org.agilewiki.jactor2.core.facilities.Facility)">stdoutSReq</a>
+<a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html#stdoutSReq(org.agilewiki.jactor2.core.facilities.Facility)">stdoutAReq</a>
 </h3>
 <pre>
-                Printer printer = local(Printer.stdoutSReq(_facility));
+                send(Printer.stdoutAReq(_facility), new AsyncResponseProcessor&lt;Printer&gt;() {
+                    public void processAsyncResponse(final Printer _printer) throws Exception {
+                        ...
+                    }
+                });
 </pre>
 <p>
-The stdoutSReq method is a request to return the facility's  printer, safely creating and registering a printer
+The stdoutAReq method is an asynchronous request to return the facility's  printer, safely creating and registering a printer
 if there was none.
-The request can be invoked using the local method because both the invoker and target of this request use the
-same reactor.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#send(org.agilewiki.jactor2.core.messages.RequestBase, org.agilewiki.jactor2.core.messages.AsyncResponseProcessor)">send</a>
 </h3>
 <pre>
-                SpeedReport sr = new SpeedReport(printer, _heading, _ns, _count);
+                SpeedReport sr = new SpeedReport(_printer, _heading, _ns, _count);
                 send(sr, dis);
 </pre>
 <p>

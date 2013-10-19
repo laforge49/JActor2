@@ -74,7 +74,7 @@ public class Parallel extends BladeBase {
             runAReq.call();
             final long after = System.currentTimeMillis();
             final long duration = after - before;
-            Printer printer = Printer.stdoutSReq(plant).call();
+            Printer printer = Printer.stdoutAReq(plant).call();
             printer.printlnSReq("Parallel Test with 10 Threads").call();
             printer.printlnSReq("count: " + count).call();
             printer.printlnSReq("sleep duration: 100 milliseconds").call();
