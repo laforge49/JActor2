@@ -5,10 +5,6 @@ org.agilewiki.jactor2.core.blades.misc
 org.agilewiki.jactor2.core.facilities
 org.agilewiki.jactor2.core.messages
 org.agilewiki.jactor2.core.reactors
-org.agilewiki.jactor2.kdriver
-org.agilewiki.jactor2.osgi
-org.agilewiki.jactor2.testIface
-org.agilewiki.jactor2.testService
 org.agilewiki.jactor2.util
 org.agilewiki.jactor2.util.durable
 org.agilewiki.jactor2.util.durable.app
