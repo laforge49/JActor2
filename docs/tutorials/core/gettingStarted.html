@@ -15,23 +15,47 @@ You will need four things to work with JActor2 core:
 <a href="http://www.slf4j.org/download.html">slf4j</a>.
 </li>
 <li>
-The <a href="jactor2-core-0.4.0.jar">JActor2 core jar file</a>. And
+The <a href="jactor2-core-0.5.0.jar">JActor2 core jar file</a>. And
 </li>
 <li>
 A test script.
 For windows, you can use <a href="test.bat">test.bat</a>:
 <pre>
 del *.class
-javac -classpath jactor2-core-0.4.0.jar;slf4j-api-1.7.5.jar *.java
-java -classpath jactor2-core-0.4.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. %1
+javac -classpath jactor2-core-0.5.0.jar;slf4j-api-1.7.5.jar *.java
+java -classpath jactor2-core-0.5.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. %1
 </pre>
 Othrwise, you can likely use <a href="test.sh">test.sh</a>:
 <pre>
 rm -fr *.class
-javac -cp jactor2-core-0.4.0.jar:slf4j-api-1.7.5.jar *.java
-java -cp jactor2-core-0.4.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:. $1
+javac -cp jactor2-core-0.5.0.jar:slf4j-api-1.7.5.jar *.java
+java -cp jactor2-core-0.5.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:. $1
 </pre>
 </li>
 </ol>
+<h2>Debug</h2>
+<p>
+JActor has a debug mode. And when running in debug mode, additional checking is done that
+is likely too slow for production use. But it can be great when testing.
+Debug mode is set by assigning "true" to the jactor.debug system property.
+For example, you can turn debug mode on by adding this parameter when running jactor:
+</p>
+<pre>
+-Djactor.debug=true
+</pre>
+<p>
+One of the things that jactor does when in debug mode is to track all pending requests.
+They are kept in the pendingRequests variable in each Facility instance.
+</p>
+<pre>
+    /**
+     * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
+     */
+    public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests =
+            Plant.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>() : null;
+</pre>
+One fairly common bug is when no response is passed back for a request. This can cause an
+application to hang unexpectedly. Difficult to debug without some means of finding the pending requests.
+Fortunately, the presence of this type of bug is quickly discovered in unit testing.
 </body>
 </html>
