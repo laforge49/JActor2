@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.messages.Message;
+import org.agilewiki.jactor2.core.messages.Preempt;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -59,9 +60,9 @@ public class IsolationInbox extends Inbox {
 
     @Override
     protected void offerLocal(final Message msg) {
-        if (msg.isResponsePending())
+        if (msg.isResponsePending() && !(msg instanceof Preempt)) {
             localResponsePendingQueue.offer(msg);
-        else
+        } else
             localNoResponsePendingQueue.offer(msg);
     }
 
