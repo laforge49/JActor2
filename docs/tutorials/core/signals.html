@@ -1,0 +1,90 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Signals
+</p>
+<h1>Signals - One-way Messages</h1>
+<p>
+In addition to using call, local and send, 
+the signal method can be used to pass a request to its target blade for processing.
+Using signals means:
+</p>
+<ul>
+<li>
+Like local and send, signal does not block any thread.
+</li>
+<li>
+Unlike call, local and send, signal can be used from any thread.
+</li>
+<li>
+Like call, signal messages are unbuffered--they are sent immediately.
+</li>
+<li>
+Unlike call, local and send, there is no response passed back from the request passed as a signal.
+And if an exception is thrown and uncaught while processing the request, it is logged rather than being
+passed back to the source of the request.
+</li>
+</ul>
+<p>
+The following program illustrates the use of signals. 
+But note in particular the use of call in the main method to print an empty line just before
+closing the plant.
+The call forces the program to wait until the last line is printed.
+Without this call, the program would likely terminate before everything had been printed.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class Signals extends BladeBase {
+    
+    public static void main(final String[] _args) throws Exception {
+        Plant plant = new Plant();
+        try {
+            Printer.printlnAReq(plant, "\nCount to 10\n").signal();
+            new Signals(new NonBlockingReactor(plant)).countSReq().call();
+            Printer.printlnAReq(plant, "").call();
+        } finally {
+            plant.close();
+        }
+    }
+    
+    public Signals(final Reactor _reactor) throws Exception {
+        initialize(_reactor);
+    }
+        
+    SyncRequest&lt;Void&gt; countSReq() {
+        return new SyncBladeRequest&lt;Void&gt;() {
+            protected Void processSyncRequest() throws Exception {
+                int i = 0;
+                while (i < 10) {
+                    i++;
+                    Printer.printfAReq(getReactor().getFacility(), "%d\n", i).signal();
+                }
+                return null;
+            }
+        };
+    }
+}
+
+Output:
+
+Count to 10
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre>
+</body>
+</html>

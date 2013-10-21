@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Signals extends BladeBase {
+    
     public static void main(final String[] _args) throws Exception {
         Plant plant = new Plant();
         try {
