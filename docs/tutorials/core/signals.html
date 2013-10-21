@@ -32,6 +32,23 @@ closing the plant.
 The call forces the program to wait until the last line is printed.
 Without this call, the program would likely terminate before everything had been printed.
 </p>
+<p>
+You should also note the first call in main, passing the countS request to the Signals blade.
+This can also not be a signal as it would allow the main thread to race ahead to completion
+before the Signals blade had finished passing all its print requests to the printer.
+Signals are processed in order, but just relative to the source of those signals. 
+Since we are passing signals here from 2 different threads, care needs to be taken to
+prevent the creation of race conditions.
+</p>
+<p>
+Strange things also tend to happen when you overuse signals. In this case the Signals blade is
+passing 10 requests to the printer. But if that number is increased to something like 100 million,
+memory fills with these requests, the program starts paging to disk and slows to a crawl.
+</p>
+<p>
+Signals are supported because there are situations when they are invaluable. But their use is
+not entirely risk free.
+</p>
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
