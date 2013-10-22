@@ -11,6 +11,7 @@ An IsolationReactor differs from a NonBlockingReactor in three important ways:
 <li>
 Isolation reactors process one request at a time. Once processing begins on a request, only response messages are
 processed until the request completes and returns its own response.
+You can think of this as a kind of light-weight transaction processing.
 </li>
 <li>
 As requests are expected to take longer to process than with a NonBlockingReactor, buffered messages are 
@@ -26,7 +27,7 @@ This is done to prevent deadlocks.
 <p>
 Isolation reactors are recommended for use with I/O and also long computations.
 But there are times when their use is essential to properly process an asynchronous request.
-This happens when a request access the state of the blade,
+This happens when a request accesses the state of the blade,
 sends a request to another reactor,
 and then updates the state of the blade based on its old value.
 This is illustrated by the <a href="Isolation.java">Isolation</a> program:
