@@ -1,3 +1,37 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; IsolationReactor
+</p>
+<h1>IsolationReactor - Lightweight transaction processing</h1>
+<p>
+An IsolationReactor differs from a NonBlockingReactor in three important ways:
+</p>
+<ol>
+<li>
+Isolation reactors process one request at a time. Once processing begins on a request, only response messages are
+processed until the request completes and returns its own response.
+</li>
+<li>
+As requests are expected to take longer to process than with a NonBlockingReactor, buffered messages are 
+disbursed on completion of each request.
+</li>
+<li>
+Requests sent by an isolation reactor are marked as isolated requests.
+And requests sent by any reactor while processing an isolated request are also marked as isolated requests.
+But isolated requests can not be processed by an isolation reactor.
+This is done to prevent deadlocks.
+</li>
+</ol>
+<p>
+Isolation reactors are recommended for use with I/O and also long computations.
+But there are times when their use is essential to properly process an asynchronous request.
+This happens when a request access the state of the blade,
+sends a request to another reactor,
+and then updates the state of the blade based on its old value.
+This is illustrated by the <a href="Isolation.java">Isolation</a> program:
+</p>
+<pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Plant;
@@ -38,15 +72,15 @@ public class Isolation extends BladeBase {
         printer = _printer;
     }
     
-    AsyncRequest<Void> bumpAReq() {
-        return new AsyncBladeRequest<Void>() {
+    AsyncRequest&lt;Void&gt; bumpAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
             AsyncResponseProcessor dis = this;
 
             protected void processAsyncRequest() throws Exception {
                 int oldState = state;
                 int newState = state + 1;
                 send(printer.printfSReq("was %d, now %d\n", oldState, newState), 
-                        new AsyncResponseProcessor<Void>() {
+                        new AsyncResponseProcessor&lt;Void&gt;() {
                     public void processAsyncResponse(final Void _response) throws Exception {
                         state = newState; //belated update
                         dis.processAsyncResponse(null);
@@ -56,3 +90,20 @@ public class Isolation extends BladeBase {
         };
     }
 }
+
+Output:
+
+Bump with NonBlockingReactor
+
+was 0, now 1
+was 0, now 1
+was 0, now 1
+
+Bump with IsolationReactor
+
+was 0, now 1
+was 1, now 2
+was 2, now 3
+</pre>
+</body>
+</html>
