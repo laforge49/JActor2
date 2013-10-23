@@ -33,7 +33,7 @@ public class PropertiesProcessor extends TransactionProcessor
     }
 
     @Override
-    protected PropertyChanges getChanges(PropertiesWrapper _stateWrapper) {
+    protected PropertyChanges newChanges() {
         return new PropertyChanges(immutableState, newImmutableState, immutableChanges);
     }
 }

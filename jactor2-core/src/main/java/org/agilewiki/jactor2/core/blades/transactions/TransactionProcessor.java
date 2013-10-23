@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-abstract public class TransactionProcessor<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> extends BladeBase {
+abstract public class TransactionProcessor<STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES, IMMUTABLE_STATE> extends BladeBase {
     protected IMMUTABLE_STATE immutableState;
     private final Set<Validator<IMMUTABLE_CHANGES>> validators =
             new HashSet<Validator<IMMUTABLE_CHANGES>>();
@@ -27,7 +27,7 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, IMMUTABLE_CHANG
 
     abstract protected STATE_WRAPPER newStateWrapper();
 
-    abstract protected IMMUTABLE_CHANGES getChanges(STATE_WRAPPER _stateWrapper);
+    abstract protected IMMUTABLE_CHANGES newChanges();
 
     public IMMUTABLE_STATE getImmutableState() {
         return immutableState;
@@ -80,12 +80,12 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, IMMUTABLE_CHANG
         return new AsyncBladeRequest<String>() {
             AsyncResponseProcessor<String> dis = this;
             STATE_WRAPPER stateWrapper;
+            IMMUTABLE_CHANGES changes;
             int validatorsSize;
             int validatorsCount;
 
             private void changeNotifications() throws Exception {
                 newImmutableState();
-                IMMUTABLE_CHANGES changes = getChanges(stateWrapper);
                 Iterator<ChangeNotificationSubscriber<IMMUTABLE_CHANGES>> it = changeNotificationSubscribers.iterator();
                 while (it.hasNext()) {
                     ChangeNotificationSubscriber<IMMUTABLE_CHANGES> changeNotificationSubscriber = it.next();
@@ -108,12 +108,13 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, IMMUTABLE_CHANG
             AsyncResponseProcessor<Void> updateResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
+                    stateWrapper.close();
+                    changes = newChanges();
                     validatorsSize = validators.size();
                     if (validatorsSize == 0) {
                         changeNotifications();
                         return;
                     }
-                    IMMUTABLE_CHANGES changes = getChanges(stateWrapper);
                     Iterator<Validator<IMMUTABLE_CHANGES>> it = validators.iterator();
                     while (it.hasNext()) {
                         Validator<IMMUTABLE_CHANGES> validator = it.next();
