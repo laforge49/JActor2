@@ -5,9 +5,9 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 /**
  * Creates a validate request to validate the changes made by a transaction.
  *
- * @param <CHANGES>
+ * @param <IMMUTABLE_CHANGES>
  */
-public interface Validator<CHANGES> {
+public interface Validator<IMMUTABLE_CHANGES> {
     /**
      * Creates a request to validate the changes made by a transaction.
      * This request returns null if the changes are valid, otherwise
@@ -16,5 +16,5 @@ public interface Validator<CHANGES> {
      * @param _changes    The changes to be validated.
      * @return The validate request.
      */
-    AsyncRequest<String> validateAReq(CHANGES _changes);
+    AsyncRequest<String> validateAReq(IMMUTABLE_CHANGES _changes);
 }

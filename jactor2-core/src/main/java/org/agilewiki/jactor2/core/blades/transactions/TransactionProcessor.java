@@ -10,34 +10,31 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-abstract public class TransactionProcessor<STATE, STATE_WRAPPER, CHANGES, IMMUTABLE_STATE> extends BladeBase {
-    private STATE state;
-    private IMMUTABLE_STATE immutableState;
-    private final Set<Validator<CHANGES>> validators =
-            new HashSet<Validator<CHANGES>>();
-    private final Set<ChangeNotificationSubscriber<CHANGES>> changeNotificationSubscribers =
-            new HashSet<ChangeNotificationSubscriber<CHANGES>>();
+abstract public class TransactionProcessor<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> extends BladeBase {
+    protected IMMUTABLE_STATE immutableState;
+    private final Set<Validator<IMMUTABLE_CHANGES>> validators =
+            new HashSet<Validator<IMMUTABLE_CHANGES>>();
+    private final Set<ChangeNotificationSubscriber<IMMUTABLE_CHANGES>> changeNotificationSubscribers =
+            new HashSet<ChangeNotificationSubscriber<IMMUTABLE_CHANGES>>();
 
-    public TransactionProcessor(final IsolationReactor _isolationReactor, final STATE _initialState) throws Exception {
+    public TransactionProcessor(final IsolationReactor _isolationReactor,
+                                final IMMUTABLE_STATE _immutableState) throws Exception {
         initialize(_isolationReactor);
-        state = _initialState;
-        immutableState = newImmutableState(state);
+        immutableState = _immutableState;
     }
 
-    abstract protected IMMUTABLE_STATE newImmutableState(STATE _state);
+    abstract protected void newImmutableState();
 
-    abstract protected STATE_WRAPPER newStateWrapper(STATE _state);
+    abstract protected STATE_WRAPPER newStateWrapper();
 
-    abstract protected CHANGES getChanges(STATE_WRAPPER _stateWrapper);
-
-    abstract protected STATE updateState(STATE_WRAPPER _stateWrapper);
+    abstract protected IMMUTABLE_CHANGES getChanges(STATE_WRAPPER _stateWrapper);
 
     public IMMUTABLE_STATE getImmutableState() {
         return immutableState;
     }
 
     public SyncRequest<Boolean> addValidatorSReq(
-            final Validator<CHANGES> _validator) {
+            final Validator<IMMUTABLE_CHANGES> _validator) {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -47,7 +44,7 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, CHANGES, IMMUTA
     }
 
     public SyncRequest<Boolean> removeValidatorSReq(
-            final Validator<CHANGES> _validator) {
+            final Validator<IMMUTABLE_CHANGES> _validator) {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -57,7 +54,7 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, CHANGES, IMMUTA
     }
 
     public SyncRequest<IMMUTABLE_STATE> addChangeNotificationSubscriberSReq(
-            final ChangeNotificationSubscriber<CHANGES> _changeNotificationSubscriber) {
+            final ChangeNotificationSubscriber<IMMUTABLE_CHANGES> _changeNotificationSubscriber) {
         return new SyncBladeRequest<IMMUTABLE_STATE>() {
             @Override
             protected IMMUTABLE_STATE processSyncRequest() throws Exception {
@@ -70,7 +67,7 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, CHANGES, IMMUTA
     }
 
     public SyncRequest<Boolean> removeChangeNotificationSubscriberSReq(
-            final ChangeNotificationSubscriber<CHANGES> _changeNotificationSubscriber) {
+            final ChangeNotificationSubscriber<IMMUTABLE_CHANGES> _changeNotificationSubscriber) {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -87,12 +84,11 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, CHANGES, IMMUTA
             int validatorsCount;
 
             private void changeNotifications() throws Exception {
-                immutableState = newImmutableState(state);
-                state = updateState(stateWrapper);
-                CHANGES changes = getChanges(stateWrapper);
-                Iterator<ChangeNotificationSubscriber<CHANGES>> it = changeNotificationSubscribers.iterator();
+                newImmutableState();
+                IMMUTABLE_CHANGES changes = getChanges(stateWrapper);
+                Iterator<ChangeNotificationSubscriber<IMMUTABLE_CHANGES>> it = changeNotificationSubscribers.iterator();
                 while (it.hasNext()) {
-                    ChangeNotificationSubscriber<CHANGES> changeNotificationSubscriber = it.next();
+                    ChangeNotificationSubscriber<IMMUTABLE_CHANGES> changeNotificationSubscriber = it.next();
                     changeNotificationSubscriber.changeNotificationAReq(changes).signal();
                 }
                 dis.processAsyncResponse(null);
@@ -117,10 +113,10 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, CHANGES, IMMUTA
                         changeNotifications();
                         return;
                     }
-                    CHANGES changes = getChanges(stateWrapper);
-                    Iterator<Validator<CHANGES>> it = validators.iterator();
+                    IMMUTABLE_CHANGES changes = getChanges(stateWrapper);
+                    Iterator<Validator<IMMUTABLE_CHANGES>> it = validators.iterator();
                     while (it.hasNext()) {
-                        Validator<CHANGES> validator = it.next();
+                        Validator<IMMUTABLE_CHANGES> validator = it.next();
                         send(validator.validateAReq(changes), validatorsResponseProcessor);
                     }
                 }
@@ -128,7 +124,7 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER, CHANGES, IMMUTA
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                stateWrapper = newStateWrapper(state);
+                stateWrapper = newStateWrapper();
                 send(_transaction.updateAReq(stateWrapper), updateResponseProcessor);
             }
         };
