@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-abstract public class TransactionProcessor<STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES, IMMUTABLE_STATE> extends BladeBase {
+abstract public class TransactionProcessor
+        <STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES, IMMUTABLE_STATE> extends BladeBase {
     protected IMMUTABLE_STATE immutableState;
     private final Set<Validator<IMMUTABLE_CHANGES>> validators =
             new HashSet<Validator<IMMUTABLE_CHANGES>>();
@@ -76,7 +77,7 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER extends AutoClos
         };
     }
 
-    public AsyncRequest<String> processTransaction(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
+    public AsyncRequest<String> processTransactionAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
         return new AsyncBladeRequest<String>() {
             AsyncResponseProcessor<String> dis = this;
             STATE_WRAPPER stateWrapper;
@@ -97,7 +98,7 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER extends AutoClos
             AsyncResponseProcessor<String> validatorsResponseProcessor = new AsyncResponseProcessor<String>() {
                 @Override
                 public void processAsyncResponse(String _error) throws Exception {
-                    validatorsCount--;
+                    validatorsCount++;
                     if (_error != null)
                         dis.processAsyncResponse(_error);
                     else if (validatorsCount == validatorsSize)

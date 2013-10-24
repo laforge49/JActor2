@@ -11,7 +11,7 @@ public interface ChangeNotificationSubscriber<IMMUTABLE_CHANGES> {
     /**
      * Creates a request to notifiy the subscriber of the changes made by a transaction.
      *
-     * @param _changes    The changes that have been made.
+     * @param _changes The changes that have been made.
      * @return The changeNotification request.
      */
     AsyncRequest<Void> changeNotificationAReq(IMMUTABLE_CHANGES _changes);

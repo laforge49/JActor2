@@ -13,7 +13,7 @@ public interface Validator<IMMUTABLE_CHANGES> {
      * This request returns null if the changes are valid, otherwise
      * an error message is returned.
      *
-     * @param _changes    The changes to be validated.
+     * @param _changes The changes to be validated.
      * @return The validate request.
      */
     AsyncRequest<String> validateAReq(IMMUTABLE_CHANGES _changes);
