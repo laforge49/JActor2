@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
+import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
 /**
@@ -7,7 +8,7 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
  *
  * @param <IMMUTABLE_CHANGES>
  */
-public interface ChangeNotificationSubscriber<IMMUTABLE_CHANGES> {
+public interface ChangeNotificationSubscriber<IMMUTABLE_CHANGES> extends Blade {
     /**
      * Creates a request to notifiy the subscriber of the changes made by a transaction.
      *
