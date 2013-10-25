@@ -4,21 +4,16 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class RequestBus<CONTENT, RESPONSE> extends BladeBase {
-    private final Set<Subscription<CONTENT, RESPONSE>> subscriptions =
+    protected final Set<Subscription<CONTENT, RESPONSE>> subscriptions =
             new HashSet<Subscription<CONTENT, RESPONSE>>();
 
     public RequestBus(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
-    }
-
-    public Set<Subscription<CONTENT, RESPONSE>> getReadOnlySubscribers() {
-        return Collections.unmodifiableSet(new HashSet<Subscription<CONTENT, RESPONSE>>(subscriptions));
     }
 
     public SyncRequest<Void> signalSReq(final CONTENT _content) {
