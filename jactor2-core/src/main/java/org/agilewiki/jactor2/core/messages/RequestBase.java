@@ -168,11 +168,13 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (!source.isRunning())
             throw new IllegalStateException(
                     "A valid source sourceReactor can not be idle");
-        if (oldMessage != null && oldMessage.isIsolated())
+        if (oldMessage != null && oldMessage.isIsolated()) {
             isolated = true;
+        }
         if (targetReactor instanceof IsolationReactor) {
-            if (isolated)
+            if (oldMessage.isIsolated()) {
                 throw new UnsupportedOperationException("Isolated requests can not be nested, even indirectly.");
+            }
             isolated = true;
         }
         use();
