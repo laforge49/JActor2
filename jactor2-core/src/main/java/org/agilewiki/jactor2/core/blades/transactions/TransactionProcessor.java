@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.requestBus.RequestBus;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -15,14 +16,15 @@ abstract public class TransactionProcessor
         <STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES, IMMUTABLE_STATE> extends BladeBase {
     protected IMMUTABLE_STATE immutableState;
     final private ValidationBus<IMMUTABLE_CHANGES> validationBus;
-    private final Set<ChangeNotificationSubscriber<IMMUTABLE_CHANGES>> changeNotificationSubscribers =
-            new HashSet<ChangeNotificationSubscriber<IMMUTABLE_CHANGES>>();
+    final private RequestBus<IMMUTABLE_CHANGES, Void> changeBus;
 
     public TransactionProcessor(final IsolationReactor _isolationReactor,
                                 final IMMUTABLE_STATE _immutableState) throws Exception {
         initialize(_isolationReactor);
         immutableState = _immutableState;
-        validationBus = new ValidationBus<IMMUTABLE_CHANGES>(new NonBlockingReactor(_isolationReactor.getFacility()));
+        NonBlockingReactor busReactor = new NonBlockingReactor(_isolationReactor.getFacility());
+        validationBus = new ValidationBus<IMMUTABLE_CHANGES>(busReactor);
+        changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(busReactor);
     }
 
     abstract protected void newImmutableState();
@@ -35,7 +37,7 @@ abstract public class TransactionProcessor
         return immutableState;
     }
 
-    public AsyncRequest<ValidationSubscription<IMMUTABLE_CHANGES>> addValidatorSReq(
+    public AsyncRequest<ValidationSubscription<IMMUTABLE_CHANGES>> addValidatorAReq(
             final Validator<IMMUTABLE_CHANGES> _validator) {
         return new AsyncBladeRequest<ValidationSubscription<IMMUTABLE_CHANGES>>() {
             AsyncResponseProcessor<ValidationSubscription<IMMUTABLE_CHANGES>> dis = this;
@@ -54,7 +56,7 @@ abstract public class TransactionProcessor
         };
     }
 
-    public AsyncRequest<Boolean> removeValidatorSReq(
+    public AsyncRequest<Boolean> removeValidatorAReq(
             final ValidationSubscription<IMMUTABLE_CHANGES> _subscription) {
         return new AsyncBladeRequest<Boolean>() {
             AsyncResponseProcessor<Boolean> dis = this;
@@ -66,25 +68,33 @@ abstract public class TransactionProcessor
         };
     }
 
-    public SyncRequest<IMMUTABLE_STATE> addChangeNotificationSubscriberSReq(
+    public AsyncRequest<ChangeSubscription<IMMUTABLE_CHANGES>> addChangeNotificationSubscriberAReq(
             final ChangeNotificationSubscriber<IMMUTABLE_CHANGES> _changeNotificationSubscriber) {
-        return new SyncBladeRequest<IMMUTABLE_STATE>() {
+        return new AsyncBladeRequest<ChangeSubscription<IMMUTABLE_CHANGES>>() {
+            AsyncResponseProcessor<ChangeSubscription<IMMUTABLE_CHANGES>> dis = this;
+
             @Override
-            protected IMMUTABLE_STATE processSyncRequest() throws Exception {
-                if (changeNotificationSubscribers.add(_changeNotificationSubscriber))
-                    return immutableState;
-                else
-                    return null;
+            protected void processAsyncRequest() throws Exception {
+                final ChangeSubscription<IMMUTABLE_CHANGES> subscription =
+                        new ChangeSubscription<IMMUTABLE_CHANGES>(_changeNotificationSubscriber, changeBus);
+                send(subscription.subscribeAReq(), new AsyncResponseProcessor<Boolean>() {
+                    @Override
+                    public void processAsyncResponse(Boolean _response) throws Exception {
+                        dis.processAsyncResponse(_response ? subscription : null);
+                    }
+                });
             }
         };
     }
 
-    public SyncRequest<Boolean> removeChangeNotificationSubscriberSReq(
-            final ChangeNotificationSubscriber<IMMUTABLE_CHANGES> _changeNotificationSubscriber) {
-        return new SyncBladeRequest<Boolean>() {
+    public AsyncRequest<Boolean> removeChangeNotificationSubscriberAReq(
+            final ChangeSubscription<IMMUTABLE_CHANGES> _subscription) {
+        return new AsyncBladeRequest<Boolean>() {
+            AsyncResponseProcessor<Boolean> dis = this;
+
             @Override
-            protected Boolean processSyncRequest() throws Exception {
-                return changeNotificationSubscribers.remove(_changeNotificationSubscriber);
+            protected void processAsyncRequest() throws Exception {
+                send(_subscription.unsubscribeAReq(), dis);
             }
         };
     }
@@ -95,22 +105,20 @@ abstract public class TransactionProcessor
             STATE_WRAPPER stateWrapper;
             IMMUTABLE_CHANGES changes;
 
-            private void changeNotifications() throws Exception {
-                newImmutableState();
-                Iterator<ChangeNotificationSubscriber<IMMUTABLE_CHANGES>> it = changeNotificationSubscribers.iterator();
-                while (it.hasNext()) {
-                    ChangeNotificationSubscriber<IMMUTABLE_CHANGES> changeNotificationSubscriber = it.next();
-                    changeNotificationSubscriber.changeNotificationAReq(changes).signal();
-                }
-                dis.processAsyncResponse(null);
-            }
-
             AsyncResponseProcessor<String> validatorsResponseProcessor = new AsyncResponseProcessor<String>() {
                 @Override
                 public void processAsyncResponse(String _error) throws Exception {
                     if (_error != null)
                         dis.processAsyncResponse(_error);
-                    else changeNotifications();
+                    else {
+                        newImmutableState();
+                        send(changeBus.signalSReq(changes), new AsyncResponseProcessor<Void>() {
+                            @Override
+                            public void processAsyncResponse(Void _response) throws Exception {
+                                dis.processAsyncResponse(null);
+                            }
+                        });
+                    }
                 }
             };
 

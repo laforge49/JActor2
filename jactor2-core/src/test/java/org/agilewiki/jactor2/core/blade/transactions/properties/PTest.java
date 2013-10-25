@@ -21,8 +21,8 @@ public class PTest extends TestCase {
         try {
             PTDriver ptDriver = new PTDriver(new NonBlockingReactor(plant));
             PropertiesProcessor propertiesProcessor = ptDriver.getPropertiesProcessor();
-            propertiesProcessor.addValidatorSReq(ptDriver).call();
-            propertiesProcessor.addChangeNotificationSubscriberSReq(ptDriver).call();
+            propertiesProcessor.addValidatorAReq(ptDriver).call();
+            propertiesProcessor.addChangeNotificationSubscriberAReq(ptDriver).call();
 
             SortedMap<String, Object> immutableState = propertiesProcessor.getImmutableState();
             assertEquals(0, immutableState.size());
