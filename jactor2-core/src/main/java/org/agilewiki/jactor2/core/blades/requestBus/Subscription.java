@@ -26,7 +26,8 @@ abstract public class Subscription<CONTENT, RESPONSE> extends BladeBase implemen
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                local(getReactor().getFacility().addAutoClosableSReq(this));
+                if (getReactor() != requestBus.getReactor())
+                    local(getReactor().getFacility().addAutoClosableSReq(Subscription.this));
                 send(requestBus.subscribeSReq(Subscription.this), dis);
             }
         };
@@ -38,7 +39,8 @@ abstract public class Subscription<CONTENT, RESPONSE> extends BladeBase implemen
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                local(getReactor().getFacility().addAutoClosableSReq(this));
+                if (getReactor() != requestBus.getReactor())
+                    local(getReactor().getFacility().removeAutoClosableSReq(Subscription.this));
                 send(requestBus.unsubscribeSReq(Subscription.this), dis);
             }
         };
