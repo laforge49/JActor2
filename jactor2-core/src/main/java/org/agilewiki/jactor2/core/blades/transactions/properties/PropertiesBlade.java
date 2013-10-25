@@ -6,8 +6,6 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-import java.util.SortedMap;
-
 public class PropertiesBlade extends BladeBase {
 
     final private PropertiesProcessor propertiesProcessor;

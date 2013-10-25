@@ -1,0 +1,46 @@
+package org.agilewiki.jactor2.core.blades.requestBus;
+
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+abstract public class Subscription<CONTENT, RESPONSE> extends BladeBase implements AutoCloseable {
+    public final RequestBus<CONTENT, RESPONSE> requestBus;
+
+    public Subscription(final NonBlockingReactor _reactor, final RequestBus<CONTENT, RESPONSE> _requestBus) throws Exception {
+        initialize(_reactor);
+        requestBus = _requestBus;
+    }
+
+    abstract public AsyncRequest<RESPONSE> notificationAReq(CONTENT _content);
+
+    @Override
+    public void close() throws Exception {
+        requestBus.unsubscribeSReq(this).signal();
+    }
+
+    public AsyncRequest<Boolean> subscribeAReq() {
+        return new AsyncBladeRequest<Boolean>() {
+            AsyncResponseProcessor<Boolean> dis = this;
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                local(getReactor().getFacility().addAutoClosableSReq(this));
+                send(requestBus.subscribeSReq(Subscription.this), dis);
+            }
+        };
+    }
+
+    public AsyncRequest<Boolean> unsubscribeAReq() {
+        return new AsyncBladeRequest<Boolean>() {
+            AsyncResponseProcessor<Boolean> dis = this;
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                local(getReactor().getFacility().addAutoClosableSReq(this));
+                send(requestBus.unsubscribeSReq(Subscription.this), dis);
+            }
+        };
+    }
+}
