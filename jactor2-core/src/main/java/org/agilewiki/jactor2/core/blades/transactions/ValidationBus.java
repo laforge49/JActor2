@@ -1,7 +1,9 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
+import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.requestBus.RequestBus;
 import org.agilewiki.jactor2.core.blades.requestBus.Subscription;
+import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -35,6 +37,14 @@ public class ValidationBus<IMMUTABLE_CHANGES> extends RequestBus<IMMUTABLE_CHANG
 
             @Override
             protected void processAsyncRequest() throws Exception {
+                setExceptionHandler(new ExceptionHandler<String>() {
+                    @Override
+                    public String processException(Exception e) throws Exception {
+                        if (e instanceof ServiceClosedException)
+                            return null;
+                        throw e;
+                    }
+                });
                 count = subscriptions.size();
                 if (count == 0) {
                     dis.processAsyncResponse(null);
