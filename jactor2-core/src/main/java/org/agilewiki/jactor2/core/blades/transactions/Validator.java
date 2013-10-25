@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
-import org.agilewiki.jactor2.core.blades.requestBus.Subscriber;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
 /**
@@ -8,7 +7,7 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
  *
  * @param <IMMUTABLE_CHANGES>
  */
-public interface Validator<IMMUTABLE_CHANGES> extends Subscriber {
+public interface Validator<IMMUTABLE_CHANGES> {
     /**
      * Creates a request to validate the changes made by a transaction.
      * This request returns null if the changes are valid, otherwise
