@@ -20,11 +20,16 @@ abstract public class TransactionProcessor
 
     public TransactionProcessor(final IsolationReactor _isolationReactor,
                                 final IMMUTABLE_STATE _immutableState) throws Exception {
+        this(_isolationReactor, new NonBlockingReactor(_isolationReactor.getFacility()), _immutableState);
+    }
+
+    public TransactionProcessor(final IsolationReactor _isolationReactor,
+                                final NonBlockingReactor _nonBlockingReactor,
+                                final IMMUTABLE_STATE _immutableState) throws Exception {
         initialize(_isolationReactor);
         immutableState = _immutableState;
-        NonBlockingReactor busReactor = new NonBlockingReactor(_isolationReactor.getFacility());
-        validationBus = new ValidationBus<IMMUTABLE_CHANGES>(busReactor);
-        changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(busReactor);
+        validationBus = new ValidationBus<IMMUTABLE_CHANGES>(_nonBlockingReactor);
+        changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(_nonBlockingReactor);
     }
 
     abstract protected void newImmutableState();
