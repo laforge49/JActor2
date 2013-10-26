@@ -15,6 +15,7 @@ import java.util.Set;
 abstract public class TransactionProcessor
         <STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES, IMMUTABLE_STATE> extends BladeBase {
     protected IMMUTABLE_STATE immutableState;
+    private final NonBlockingReactor nonBlockingReactor;
     final private ValidationBus<IMMUTABLE_CHANGES> validationBus;
     final private RequestBus<IMMUTABLE_CHANGES, Void> changeBus;
 
@@ -27,6 +28,7 @@ abstract public class TransactionProcessor
                                 final NonBlockingReactor _nonBlockingReactor,
                                 final IMMUTABLE_STATE _immutableState) throws Exception {
         initialize(_isolationReactor);
+        nonBlockingReactor = _nonBlockingReactor;
         immutableState = _immutableState;
         validationBus = new ValidationBus<IMMUTABLE_CHANGES>(_nonBlockingReactor);
         changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(_nonBlockingReactor);
@@ -106,6 +108,16 @@ abstract public class TransactionProcessor
 
     public AsyncRequest<String> processTransactionAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
         return new AsyncBladeRequest<String>() {
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                send(ptAReq(_transaction), this);
+            }
+        };
+    }
+
+    private AsyncRequest<String> ptAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
+        return new AsyncRequest<String>(nonBlockingReactor) {
             AsyncResponseProcessor<String> dis = this;
             STATE_WRAPPER stateWrapper;
             IMMUTABLE_CHANGES changes;
