@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.transactions.Transaction;
 import org.agilewiki.jactor2.core.blades.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Collections;
 import java.util.NavigableMap;
@@ -16,8 +17,13 @@ public class PropertiesProcessor extends TransactionProcessor
     private SortedMap<String, Object> newImmutableState;
     private SortedMap<String, PropertyChange> immutableChanges;
 
-    public PropertiesProcessor(IsolationReactor _isolationReactor) throws Exception {
+    public PropertiesProcessor(final IsolationReactor _isolationReactor) throws Exception {
         super(_isolationReactor, Collections.unmodifiableSortedMap(new TreeMap<String, Object>()));
+    }
+
+    public PropertiesProcessor(final IsolationReactor _isolationReactor, final NonBlockingReactor _nonBlockingReactor)
+            throws Exception {
+        super(_isolationReactor, _nonBlockingReactor, Collections.unmodifiableSortedMap(new TreeMap<String, Object>()));
     }
 
     @Override

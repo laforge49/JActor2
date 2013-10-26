@@ -12,7 +12,7 @@ public class PropertiesBlade extends BladeBase {
 
     public PropertiesBlade(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
-        propertiesProcessor = new PropertiesProcessor(new IsolationReactor(_reactor.getFacility()));
+        propertiesProcessor = new PropertiesProcessor(new IsolationReactor(_reactor.getFacility()), _reactor);
     }
 
     public PropertiesProcessor getPropertiesProcessor() {
