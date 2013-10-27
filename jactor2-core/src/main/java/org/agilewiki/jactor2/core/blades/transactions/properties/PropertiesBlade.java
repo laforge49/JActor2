@@ -17,26 +17,46 @@ public class PropertiesBlade extends BladeBase {
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(_reactor.getFacility()), _reactor);
     }
 
-    public Transaction<PropertiesWrapper> putTransaction(final String _key, final Object _newValue) {
-        return new Transaction<PropertiesWrapper>() {
-            @Override
-            public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
-                return new AsyncBladeRequest<Void>() {
-                    @Override
-                    protected void processAsyncRequest() throws Exception {
-                        _stateWrapper.put(_key, _newValue);
-                        processAsyncResponse(null);
-                    }
-                };
-            }
-        };
-    }
-
     public AsyncRequest<String> putAReq(final String _key, final Object _newValue) {
         return new AsyncBladeRequest<String>() {
             @Override
             protected void processAsyncRequest() throws Exception {
-                Transaction<PropertiesWrapper> putTran = putTransaction(_key, _newValue);
+                Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
+                    @Override
+                    public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
+                        return new AsyncBladeRequest<Void>() {
+                            @Override
+                            protected void processAsyncRequest() throws Exception {
+                                _stateWrapper.put(_key, _newValue);
+                                processAsyncResponse(null);
+                            }
+                        };
+                    }
+                };
+                send(propertiesProcessor.processTransactionAReq(putTran), this);
+            }
+        };
+    }
+
+    public AsyncRequest<String> firstPutAReq(final String _key, final Object _newValue) {
+        return new AsyncBladeRequest<String>() {
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
+                    @Override
+                    public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
+                        return new AsyncBladeRequest<Void>() {
+                            @Override
+                            protected void processAsyncRequest() throws Exception {
+                                Object oldValue = _stateWrapper.oldReadOnlyProperties.get(_key);
+                                if (oldValue != null)
+                                    throw new UnsupportedOperationException(_key + " already has value " + oldValue);
+                                _stateWrapper.put(_key, _newValue);
+                                processAsyncResponse(null);
+                            }
+                        };
+                    }
+                };
                 send(propertiesProcessor.processTransactionAReq(putTran), this);
             }
         };
