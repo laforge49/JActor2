@@ -52,7 +52,7 @@ public class Printer extends IsolationBlade {
                 Plant plant = facility.getPlant();
                 if (plant != null)
                     facility = plant;
-                send(stdoutAReq(facility), new AsyncResponseProcessor<Printer>() {
+                send(stdoutAReq((Plant) facility), new AsyncResponseProcessor<Printer>() {
                     @Override
                     public void processAsyncResponse(Printer _printer) throws Exception {
                         send(_printer.printlnSReq(_string), dis);
@@ -71,7 +71,7 @@ public class Printer extends IsolationBlade {
                 Plant plant = facility.getPlant();
                 if (plant != null)
                     facility = plant;
-                send(stdoutAReq(facility), new AsyncResponseProcessor<Printer>() {
+                send(stdoutAReq((Plant) facility), new AsyncResponseProcessor<Printer>() {
                     @Override
                     public void processAsyncResponse(Printer _printer) throws Exception {
                         send(_printer.printfSReq(_format, _args), dis);
@@ -81,14 +81,14 @@ public class Printer extends IsolationBlade {
         };
     }
 
-    static public AsyncRequest<Printer> stdoutAReq(final Facility _facility) throws Exception {
-        return new AsyncRequest<Printer>(_facility.getReactor()) {
+    static public AsyncRequest<Printer> stdoutAReq(final Plant _plant) throws Exception {
+        return new AsyncRequest<Printer>(_plant.getReactor()) {
             final AsyncResponseProcessor<Printer> dis = this;
             Printer printer;
 
             @Override
             public void processAsyncRequest() throws Exception {
-                printer = (Printer) _facility.getProperty("stdout");
+                printer = (Printer) _plant.getProperty("stdout");
                 if (printer != null) {
                     processAsyncResponse(printer);
                     return;
@@ -96,12 +96,12 @@ public class Printer extends IsolationBlade {
                 Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
                     @Override
                     public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
-                        return new AsyncRequest<Void>(_facility.getReactor()) {
+                        return new AsyncRequest<Void>(_plant.getReactor()) {
                             @Override
                             protected void processAsyncRequest() throws Exception {
                                 printer = (Printer) _stateWrapper.oldReadOnlyProperties.get("stdout");
                                 if (printer == null) {
-                                    printer = new Printer(new IsolationReactor(_facility));
+                                    printer = new Printer(new IsolationReactor(_plant));
                                     _stateWrapper.put("stdout", printer);
                                 }
                                 processAsyncResponse(null);
@@ -109,7 +109,7 @@ public class Printer extends IsolationBlade {
                         };
                     }
                 };
-                send(_facility.getPropertiesBlade().getPropertiesProcessor().processTransactionAReq(putTran),
+                send(_plant.getPropertiesBlade().getPropertiesProcessor().processTransactionAReq(putTran),
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(Void _response) throws Exception {
