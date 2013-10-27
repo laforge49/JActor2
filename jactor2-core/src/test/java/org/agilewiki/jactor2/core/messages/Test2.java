@@ -20,14 +20,4 @@ public class Test2 extends TestCase {
         assertEquals("Hello world!", result);
         plant.close();
     }
-
-    public void testc() throws Exception {
-        System.out.println("testb");
-        final Plant plant = new Plant();
-        final Blade1 blade1 = new Blade1(new IsolationReactor(plant));
-        final Blade2 blade2 = new Blade2(new IsolationReactor(plant));
-        final String result = blade2.hi2AReq(blade1).call();
-        assertEquals("Hello world!", result);
-        plant.close();
-    }
 }
