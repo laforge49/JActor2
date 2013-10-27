@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
+import org.agilewiki.jactor2.core.blades.transactions.Transaction;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesWrapper;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
@@ -81,9 +83,37 @@ public class Printer extends IsolationBlade {
 
     static public AsyncRequest<Printer> stdoutAReq(final Facility _facility) throws Exception {
         return new AsyncRequest<Printer>(_facility.getReactor()) {
-            AsyncResponseProcessor<Printer> dis = this;
+            final AsyncResponseProcessor<Printer> dis = this;
+            Printer printer;
 
+            @Override
             public void processAsyncRequest() throws Exception {
+                Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
+                    @Override
+                    public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
+                        return new AsyncRequest<Void>(_facility.getReactor()) {
+                            @Override
+                            protected void processAsyncRequest() throws Exception {
+                                printer = (Printer) _stateWrapper.oldReadOnlyProperties.get("stdout");
+                                if (printer == null) {
+                                    printer = new Printer(new IsolationReactor(_facility));
+                                    _stateWrapper.put("stdout", printer);
+                                }
+                                processAsyncResponse(null);
+                            }
+                        };
+                    }
+                };
+                send(_facility.getPropertiesBlade().getPropertiesProcessor().processTransactionAReq(putTran),
+                        new AsyncResponseProcessor<Void>() {
+                            @Override
+                            public void processAsyncResponse(Void _response) throws Exception {
+                                dis.processAsyncResponse(printer);
+                            }
+                        });
+            }
+
+            public void xprocessAsyncRequest() throws Exception {
                 Printer printer = (Printer) _facility.getProperty("stdout");
                 if (printer == null) {
                     final Printer p = new Printer(new IsolationReactor(_facility));

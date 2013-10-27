@@ -28,6 +28,10 @@ public class PropertiesBlade extends BladeBase {
                 new PropertiesProcessor(new IsolationReactor(_reactor.getFacility()), _reactor, _initialState);
     }
 
+    public PropertiesProcessor getPropertiesProcessor() {
+        return propertiesProcessor;
+    }
+
     public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
         return new AsyncBladeRequest<Void>() {
             @Override
