@@ -26,6 +26,13 @@ public class PropertiesProcessor extends TransactionProcessor
         super(_isolationReactor, _nonBlockingReactor, Collections.unmodifiableSortedMap(new TreeMap<String, Object>()));
     }
 
+    public PropertiesProcessor(final IsolationReactor _isolationReactor,
+                               final NonBlockingReactor _nonBlockingReactor,
+                               final SortedMap<String, Object> _initialState)
+            throws Exception {
+        super(_isolationReactor, _nonBlockingReactor, Collections.unmodifiableSortedMap(_initialState));
+    }
+
     @Override
     protected void newImmutableState() {
         immutableState = newImmutableState;

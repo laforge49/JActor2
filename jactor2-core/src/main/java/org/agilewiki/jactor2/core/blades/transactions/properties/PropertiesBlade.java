@@ -17,6 +17,13 @@ public class PropertiesBlade extends BladeBase {
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(_reactor.getFacility()), _reactor);
     }
 
+    public PropertiesBlade(final NonBlockingReactor _reactor, final SortedMap<String, Object> _initialState)
+            throws Exception {
+        initialize(_reactor);
+        propertiesProcessor =
+                new PropertiesProcessor(new IsolationReactor(_reactor.getFacility()), _reactor, _initialState);
+    }
+
     public AsyncRequest<String> putAReq(final String _key, final Object _newValue) {
         return new AsyncBladeRequest<String>() {
             @Override
