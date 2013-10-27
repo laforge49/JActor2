@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.transactions.ChangeNotificationSubscriber;
 import org.agilewiki.jactor2.core.blades.transactions.Validator;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesBlade;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChanges;
 import org.agilewiki.jactor2.core.facilities.Plant;
@@ -38,7 +37,7 @@ public class PTest extends TestCase {
 
             String msg = null;
             try {
-                    ptDriver.putAReq("fudge", "second").call();
+                ptDriver.putAReq("fudge", "second").call();
             } catch (Exception e) {
                 msg = e.getMessage();
             }

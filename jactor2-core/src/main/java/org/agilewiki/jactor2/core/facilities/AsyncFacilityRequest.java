@@ -2,10 +2,6 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 /**
  * Base class for sync facility requests.
  */

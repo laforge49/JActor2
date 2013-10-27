@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ThreadFactory;
 
@@ -262,7 +261,7 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     public AsyncRequest<Void> putPropertyAReq(final String _propertyName,
-                                                final Object _propertyValue) {
+                                              final Object _propertyValue) {
         return propertiesBlade.putAReq(_propertyName, _propertyValue);
     }
 

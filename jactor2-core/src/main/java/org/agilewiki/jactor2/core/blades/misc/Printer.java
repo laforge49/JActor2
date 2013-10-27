@@ -112,20 +112,6 @@ public class Printer extends IsolationBlade {
                             }
                         });
             }
-
-            public void xprocessAsyncRequest() throws Exception {
-                Printer printer = (Printer) _facility.getProperty("stdout");
-                if (printer == null) {
-                    final Printer p = new Printer(new IsolationReactor(_facility));
-                    send(_facility.putPropertyAReq("stdout", p), new AsyncResponseProcessor<Void>() {
-                        @Override
-                        public void processAsyncResponse(Void _response) throws Exception {
-                            dis.processAsyncResponse(p);
-                        }
-                    });
-                } else
-                    dis.processAsyncResponse(printer);
-            }
         };
     }
 
