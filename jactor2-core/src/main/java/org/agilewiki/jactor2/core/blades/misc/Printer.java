@@ -88,6 +88,11 @@ public class Printer extends IsolationBlade {
 
             @Override
             public void processAsyncRequest() throws Exception {
+                printer = (Printer) _facility.getProperty("stdout");
+                if (printer != null) {
+                    processAsyncResponse(printer);
+                    return;
+                }
                 Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
                     @Override
                     public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
