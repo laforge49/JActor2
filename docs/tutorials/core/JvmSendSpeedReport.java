@@ -10,7 +10,7 @@ public class JvmSendSpeedReport {
         final long count = 1000000L;
         Plant plant = new Plant();
         try {
-            Facility facility2 = plant.createFacilitySReq("facility2").call();
+            Facility facility2 = plant.createFacilityAReq("facility2").call();
             Ponger ponger = new Ponger(new NonBlockingReactor(plant));
             Pinger pinger = new Pinger(new NonBlockingReactor(facility2), ponger);
             AsyncRequest<Void> loopAReq = pinger.loopAReq(count);

@@ -28,10 +28,10 @@ public class TransactionSpeedReport extends PropertiesBlade {
             long i;
             long before;
             
-            final AsyncResponseProcessor<String> putResponseProcessor =
-                    new AsyncResponseProcessor<String>() {
+            final AsyncResponseProcessor<Void> putResponseProcessor =
+                    new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(final String _error) throws Exception {
+                public void processAsyncResponse(final Void _response) throws Exception {
                     i++;
                     if (i == count) {
                         final long after = System.nanoTime();
