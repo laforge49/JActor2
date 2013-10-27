@@ -174,7 +174,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (source instanceof IsolationReactor)
             isolated = true;
         if (targetReactor instanceof IsolationReactor) {
-            if (isolated) {
+            if (isolated && _responseProcessor != null) {
                 throw new UnsupportedOperationException("Isolated requests can not be nested, even indirectly.");
             }
             isolated = true;
