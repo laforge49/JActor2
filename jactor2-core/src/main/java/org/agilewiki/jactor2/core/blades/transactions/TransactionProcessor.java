@@ -63,18 +63,6 @@ abstract public class TransactionProcessor
         };
     }
 
-    public AsyncRequest<Boolean> removeValidatorAReq(
-            final ValidationSubscription<IMMUTABLE_CHANGES> _subscription) {
-        return new AsyncBladeRequest<Boolean>() {
-            AsyncResponseProcessor<Boolean> dis = this;
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                send(_subscription.unsubscribeAReq(), dis);
-            }
-        };
-    }
-
     public AsyncRequest<ChangeSubscription<IMMUTABLE_CHANGES>> addChangeNotificationSubscriberAReq(
             final ChangeNotificationSubscriber<IMMUTABLE_CHANGES> _changeNotificationSubscriber) {
         return new AsyncBladeRequest<ChangeSubscription<IMMUTABLE_CHANGES>>() {
@@ -90,18 +78,6 @@ abstract public class TransactionProcessor
                         dis.processAsyncResponse(_response ? subscription : null);
                     }
                 });
-            }
-        };
-    }
-
-    public AsyncRequest<Boolean> removeChangeNotificationSubscriberAReq(
-            final ChangeSubscription<IMMUTABLE_CHANGES> _subscription) {
-        return new AsyncBladeRequest<Boolean>() {
-            AsyncResponseProcessor<Boolean> dis = this;
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                send(_subscription.unsubscribeAReq(), dis);
             }
         };
     }

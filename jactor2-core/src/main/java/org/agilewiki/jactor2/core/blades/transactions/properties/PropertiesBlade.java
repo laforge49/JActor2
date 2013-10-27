@@ -1,10 +1,12 @@
 package org.agilewiki.jactor2.core.blades.transactions.properties;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.transactions.Transaction;
+import org.agilewiki.jactor2.core.blades.transactions.*;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+import java.util.SortedMap;
 
 public class PropertiesBlade extends BladeBase {
 
@@ -13,10 +15,6 @@ public class PropertiesBlade extends BladeBase {
     public PropertiesBlade(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(_reactor.getFacility()), _reactor);
-    }
-
-    public PropertiesProcessor getPropertiesProcessor() {
-        return propertiesProcessor;
     }
 
     public Transaction<PropertiesWrapper> putTransaction(final String _key, final Object _newValue) {
@@ -42,5 +40,19 @@ public class PropertiesBlade extends BladeBase {
                 send(propertiesProcessor.processTransactionAReq(putTran), this);
             }
         };
+    }
+
+    public SortedMap<String, Object> getImmutableState() {
+        return propertiesProcessor.getImmutableState();
+    }
+
+    public AsyncRequest<ValidationSubscription<PropertyChanges>> addValidatorAReq(
+            final Validator<PropertyChanges> _validator) {
+        return propertiesProcessor.addValidatorAReq(_validator);
+    }
+
+    public AsyncRequest<ChangeSubscription<PropertyChanges>> addChangeNotificationSubscriberAReq(
+            final ChangeNotificationSubscriber<PropertyChanges> _changeNotificationSubscriber) {
+        return propertiesProcessor.addChangeNotificationSubscriberAReq(_changeNotificationSubscriber);
     }
 }

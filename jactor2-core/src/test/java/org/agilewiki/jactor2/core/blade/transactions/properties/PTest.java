@@ -20,30 +20,29 @@ public class PTest extends TestCase {
         final Plant plant = new Plant();
         try {
             PTDriver ptDriver = new PTDriver(new NonBlockingReactor(plant));
-            PropertiesProcessor propertiesProcessor = ptDriver.getPropertiesProcessor();
-            propertiesProcessor.addValidatorAReq(ptDriver).call();
-            propertiesProcessor.addChangeNotificationSubscriberAReq(ptDriver).call();
+            ptDriver.addValidatorAReq(ptDriver).call();
+            ptDriver.addChangeNotificationSubscriberAReq(ptDriver).call();
 
-            SortedMap<String, Object> immutableState = propertiesProcessor.getImmutableState();
+            SortedMap<String, Object> immutableState = ptDriver.getImmutableState();
             assertEquals(0, immutableState.size());
 
             assertNull(ptDriver.putAReq("1", "first").call());
             assertEquals(0, immutableState.size());
-            immutableState = propertiesProcessor.getImmutableState();
+            immutableState = ptDriver.getImmutableState();
             assertEquals(1, immutableState.size());
 
             assertNull(ptDriver.putAReq("1", "second").call());
             assertEquals(1, immutableState.size());
-            immutableState = propertiesProcessor.getImmutableState();
+            immutableState = ptDriver.getImmutableState();
             assertEquals(1, immutableState.size());
 
             assertEquals("no way", ptDriver.putAReq("fudge", "second").call());
             assertEquals(1, immutableState.size());
-            immutableState = propertiesProcessor.getImmutableState();
+            immutableState = ptDriver.getImmutableState();
             assertEquals(1, immutableState.size());
 
             assertNull(ptDriver.putAReq("1", null).call());
-            immutableState = propertiesProcessor.getImmutableState();
+            immutableState = ptDriver.getImmutableState();
             assertEquals(0, immutableState.size());
         } finally {
             plant.close();
