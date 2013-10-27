@@ -87,9 +87,9 @@ public class Printer extends IsolationBlade {
                 Printer printer = (Printer) _facility.getProperty("stdout");
                 if (printer == null) {
                     final Printer p = new Printer(new IsolationReactor(_facility));
-                    send(_facility.putPropertyAReq("stdout", p), new AsyncResponseProcessor<Object>() {
+                    send(_facility.putPropertyAReq("stdout", p), new AsyncResponseProcessor<Void>() {
                         @Override
-                        public void processAsyncResponse(Object _response) throws Exception {
+                        public void processAsyncResponse(Void _response) throws Exception {
                             dis.processAsyncResponse(p);
                         }
                     });

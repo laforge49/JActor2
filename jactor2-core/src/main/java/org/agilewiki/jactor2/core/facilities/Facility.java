@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesBlade;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
@@ -78,12 +79,7 @@ public class Facility extends BladeBase implements AutoCloseable {
      */
     private final int initialBufferSize;
 
-    /**
-     * Facility properties.
-     */
-    private ConcurrentSkipListMap<String, Object> properties = new ConcurrentSkipListMap<String, Object>();
-
-    private final Set<FacilityPropertyChangeSubscriber> propertyChangeSubscribers = new HashSet<FacilityPropertyChangeSubscriber>();
+    private final PropertiesBlade propertiesBlade;
 
     /**
      * Create a Facility.
@@ -106,7 +102,13 @@ public class Facility extends BladeBase implements AutoCloseable {
         initialBufferSize = _initialBufferSize;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
-        firstSet(NAME_PROPERTY, _name);
+        TreeMap<String, Object> initialState = new TreeMap<String, Object>();
+        initialState.put(NAME_PROPERTY, _name);
+        propertiesBlade = new PropertiesBlade(internalReactor, initialState);
+    }
+
+    public PropertiesBlade getPropertiesBlade() {
+        return propertiesBlade;
     }
 
     protected void validateName(final String _name) throws Exception {
@@ -248,7 +250,7 @@ public class Facility extends BladeBase implements AutoCloseable {
      * @return The property value, or null.
      */
     public Object getProperty(final String propertyName) {
-        return properties.get(propertyName);
+        return propertiesBlade.getImmutableState().get(propertyName);
     }
 
     public String getName() {
@@ -259,86 +261,9 @@ public class Facility extends BladeBase implements AutoCloseable {
         return (Plant) getProperty(DEPENDENCY_PROPERTY_PREFIX + PLANT_NAME);
     }
 
-    public AsyncRequest<Object> putPropertyAReq(final String _propertyName,
+    public AsyncRequest<Void> putPropertyAReq(final String _propertyName,
                                                 final Object _propertyValue) {
-        return new AsyncBladeRequest<Object>() {
-            final AsyncResponseProcessor<Object> dis = this;
-            int count = propertyChangeSubscribers.size();
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                final Object old = _propertyValue == null ?
-                        properties.remove(_propertyName) : properties.put(_propertyName, _propertyValue);
-                if (count == 0) {
-                    dis.processAsyncResponse(old);
-                    return;
-                }
-                Iterator<FacilityPropertyChangeSubscriber> it = propertyChangeSubscribers.iterator();
-                while (it.hasNext()) {
-                    FacilityPropertyChangeSubscriber fpcs = it.next();
-                    send(fpcs.propertyChangedAReq(Facility.this, _propertyName, old, _propertyValue), new AsyncResponseProcessor<Void>() {
-                        @Override
-                        public void processAsyncResponse(Void _response) throws Exception {
-                            count--;
-                            if (count == 0)
-                                dis.processAsyncResponse(old);
-                        }
-                    });
-                }
-            }
-        };
-    }
-
-    protected void firstSet(final String _propertyName,
-                            final Object _propertyValue) throws Exception {
-        if (_propertyValue == null)
-            throw new IllegalArgumentException("value may not be null");
-        if (properties.get(_propertyName) != null)
-            throw new IllegalStateException("old value must be null");
-        properties.put(_propertyName, _propertyValue);
-    }
-
-    public AsyncRequest<Void> firstSetAReq(final String _propertyName,
-                                           final Object _propertyValue) {
-        return new AsyncBladeRequest<Void>() {
-            AsyncResponseProcessor<Void> dis = this;
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                if (_propertyValue == null)
-                    throw new IllegalArgumentException("value may not be null");
-                if (properties.get(_propertyName) != null)
-                    throw new IllegalStateException("old value must be null");
-                send(putPropertyAReq(_propertyName, _propertyValue), new AsyncResponseProcessor<Object>() {
-                    @Override
-                    public void processAsyncResponse(Object _response) throws Exception {
-                        dis.processAsyncResponse(null);
-                    }
-                });
-            }
-        };
-    }
-
-    /**
-     * Returns a copy of the property names.
-     *
-     * @return A copy of the property names.
-     */
-    public Set<String> getPropertyNames() {
-        return new HashSet<String>(properties.keySet());
-    }
-
-    private ConcurrentNavigableMap<String, Object> matchingProperties(final String _prefix) throws Exception {
-        return properties.subMap(_prefix + Character.MIN_VALUE, _prefix + Character.MAX_VALUE);
-    }
-
-    public SyncRequest<TreeMap<String, Object>> matchingPropertiesSReq(final String _prefix) {
-        return new SyncBladeRequest<TreeMap<String, Object>>() {
-            @Override
-            protected TreeMap<String, Object> processSyncRequest() throws Exception {
-                return new TreeMap<String, Object>(matchingProperties(_prefix));
-            }
-        };
+        return propertiesBlade.putAReq(_propertyName, _propertyValue);
     }
 
     public AsyncRequest<Boolean> hasDependencyAReq(final String _name) {
@@ -361,11 +286,11 @@ public class Facility extends BladeBase implements AutoCloseable {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                if (properties.containsKey(DEPENDENCY_PROPERTY_PREFIX + _name)) {
+                if (getProperty(DEPENDENCY_PROPERTY_PREFIX + _name) != null) {
                     processAsyncResponse(true);
                     return;
                 }
-                ConcurrentNavigableMap<String, Object> cnm = matchingProperties(DEPENDENCY_PROPERTY_PREFIX);
+                SortedMap<String, Object> cnm = propertiesBlade.matchingProperties(DEPENDENCY_PROPERTY_PREFIX);
                 Collection<Object> values = cnm.values();
                 if (values.size() == 0) {
                     processAsyncResponse(false);
@@ -395,14 +320,14 @@ public class Facility extends BladeBase implements AutoCloseable {
                 if (name == null)
                     throw new IllegalArgumentException("the dependency has no name");
                 final String propertyName = DEPENDENCY_PROPERTY_PREFIX + name;
-                if (properties.containsKey(propertyName))
+                if (getProperty(propertyName) != null)
                     throw new IllegalStateException("the dependency was already present");
                 send(_dependency.hasDependencyAReq(myName), new AsyncResponseProcessor<Boolean>() {
                     @Override
                     public void processAsyncResponse(Boolean _hasDependency) throws Exception {
                         if (_hasDependency)
                             throw new IllegalArgumentException("this would create a cyclic dependency");
-                        send(firstSetAReq(propertyName, _dependency), new AsyncResponseProcessor<Void>() {
+                        send(propertiesBlade.firstPutAReq(propertyName, _dependency), new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(Void _response) throws Exception {
                                 send(_dependency.addAutoClosableSReq(Facility.this), new AsyncResponseProcessor<Boolean>() {
@@ -415,30 +340,6 @@ public class Facility extends BladeBase implements AutoCloseable {
                         });
                     }
                 });
-            }
-        };
-    }
-
-    public SyncRequest<Map<String, Object>> subscribePropertyChangesSReq(
-            final FacilityPropertyChangeSubscriber _subscriber) {
-        return new SyncBladeRequest<Map<String, Object>>() {
-            @Override
-            protected Map<String, Object> processSyncRequest()
-                    throws Exception {
-                if (propertyChangeSubscribers.add(_subscriber))
-                    return new HashMap<String, Object>(properties);
-                return null;
-            }
-        };
-    }
-
-    public SyncRequest<Boolean> unsubscribePropertyChangesSReq(
-            final FacilityPropertyChangeSubscriber _subscriber) {
-        return new SyncBladeRequest<Boolean>() {
-            @Override
-            protected Boolean processSyncRequest()
-                    throws Exception {
-                return propertyChangeSubscribers.remove(_subscriber);
             }
         };
     }

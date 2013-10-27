@@ -52,27 +52,4 @@ abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends AsyncRequest<R
     protected Object getProperty(final String propertyName) {
         return facility.getProperty(propertyName);
     }
-
-    /**
-     * Returns a copy of the property names.
-     *
-     * @return A copy of the property names.
-     */
-    protected Set<String> getPropertyNames() {
-        return facility.getPropertyNames();
-    }
-
-    protected Map<String, Object> subscribePropertyChanges(
-            final FacilityPropertyChangeSubscriber _subscriber) throws Exception {
-        return local(facility.subscribePropertyChangesSReq(_subscriber));
-    }
-
-    protected Boolean unsubscribePropertyChanges(
-            final FacilityPropertyChangeSubscriber _subscriber) throws Exception {
-        return local(facility.unsubscribePropertyChangesSReq(_subscriber));
-    }
-
-    protected TreeMap<String, Object> matchingProperties(final String _prefix) throws Exception {
-        return local(facility.matchingPropertiesSReq(_prefix));
-    }
 }

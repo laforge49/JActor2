@@ -82,8 +82,8 @@ abstract public class TransactionProcessor
         };
     }
 
-    public AsyncRequest<String> processTransactionAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
-        return new AsyncBladeRequest<String>() {
+    public AsyncRequest<Void> processTransactionAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
+        return new AsyncBladeRequest<Void>() {
 
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -92,9 +92,9 @@ abstract public class TransactionProcessor
         };
     }
 
-    private AsyncRequest<String> ptAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
-        return new AsyncRequest<String>(nonBlockingReactor) {
-            AsyncResponseProcessor<String> dis = this;
+    private AsyncRequest<Void> ptAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
+        return new AsyncRequest<Void>(nonBlockingReactor) {
+            AsyncResponseProcessor<Void> dis = this;
             STATE_WRAPPER stateWrapper;
             IMMUTABLE_CHANGES changes;
 
@@ -102,7 +102,7 @@ abstract public class TransactionProcessor
                 @Override
                 public void processAsyncResponse(String _error) throws Exception {
                     if (_error != null)
-                        dis.processAsyncResponse(_error);
+                        throw new IllegalArgumentException(_error);
                     else {
                         newImmutableState();
                         send(changeBus.signalSReq(changes), new AsyncResponseProcessor<Void>() {

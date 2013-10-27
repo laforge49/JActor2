@@ -60,9 +60,9 @@ public final class Durables {
             protected void processAsyncRequest() throws Exception {
                 final FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
                 factoryLocator.configure(_bundleName, _version, _location);
-                send(_facility.putPropertyAReq("factoryLocator", factoryLocator), new AsyncResponseProcessor<Object>() {
+                send(_facility.putPropertyAReq("factoryLocator", factoryLocator), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(Object _response) throws Exception {
+                    public void processAsyncResponse(Void _response) throws Exception {
                         dis.processAsyncResponse(factoryLocator);
                     }
                 });

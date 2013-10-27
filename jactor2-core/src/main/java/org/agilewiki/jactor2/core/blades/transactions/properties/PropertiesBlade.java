@@ -3,10 +3,14 @@ package org.agilewiki.jactor2.core.blades.transactions.properties;
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.transactions.*;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
+import java.util.Set;
 import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentNavigableMap;
 
 public class PropertiesBlade extends BladeBase {
 
@@ -24,8 +28,8 @@ public class PropertiesBlade extends BladeBase {
                 new PropertiesProcessor(new IsolationReactor(_reactor.getFacility()), _reactor, _initialState);
     }
 
-    public AsyncRequest<String> putAReq(final String _key, final Object _newValue) {
-        return new AsyncBladeRequest<String>() {
+    public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
@@ -45,8 +49,10 @@ public class PropertiesBlade extends BladeBase {
         };
     }
 
-    public AsyncRequest<String> firstPutAReq(final String _key, final Object _newValue) {
-        return new AsyncBladeRequest<String>() {
+    public AsyncRequest<Void> firstPutAReq(final String _key, final Object _newValue) {
+        if (_newValue == null)
+            throw new IllegalArgumentException("value may not be null");
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
@@ -81,5 +87,18 @@ public class PropertiesBlade extends BladeBase {
     public AsyncRequest<ChangeSubscription<PropertyChanges>> addChangeNotificationSubscriberAReq(
             final ChangeNotificationSubscriber<PropertyChanges> _changeNotificationSubscriber) {
         return propertiesProcessor.addChangeNotificationSubscriberAReq(_changeNotificationSubscriber);
+    }
+
+    /**
+     * Returns a copy of the property names.
+     *
+     * @return A copy of the property names.
+     */
+    public Set<String> getPropertyNames() {
+        return getImmutableState().keySet();
+    }
+
+    public SortedMap<String, Object> matchingProperties(final String _prefix) throws Exception {
+        return getImmutableState().subMap(_prefix + Character.MIN_VALUE, _prefix + Character.MAX_VALUE);
     }
 }

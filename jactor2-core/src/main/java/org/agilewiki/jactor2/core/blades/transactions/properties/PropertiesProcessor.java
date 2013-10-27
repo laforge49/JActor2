@@ -67,8 +67,8 @@ public class PropertiesProcessor extends TransactionProcessor
         };
     }
 
-    public AsyncRequest<String> putAReq(final String _key, final Object _newValue) {
-        return new AsyncBladeRequest<String>() {
+    public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
+        return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 Transaction<PropertiesWrapper> putTran = putTransaction(_key, _newValue);
