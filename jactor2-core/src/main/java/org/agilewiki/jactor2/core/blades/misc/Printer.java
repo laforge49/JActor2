@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
-import org.agilewiki.jactor2.core.blades.transactions.Transaction;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesWrapper;
 import org.agilewiki.jactor2.core.facilities.Facility;

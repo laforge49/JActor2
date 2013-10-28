@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.blades.transactions.properties;
 
 import org.agilewiki.jactor2.core.blades.transactions.TransactionAReq;
-import org.agilewiki.jactor2.core.blades.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.NavigableMap;
