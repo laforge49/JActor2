@@ -97,7 +97,7 @@ public class Printer extends IsolationBlade {
                 send(createStdoutAReq(_plant), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(Void _response) throws Exception {
-                        dis.processAsyncResponse((Printer) _plant.getProperty("stdout"));
+                        dis.processAsyncResponse(_plant.getProperty("stdout"));
                     }
                 });
             }
@@ -108,10 +108,11 @@ public class Printer extends IsolationBlade {
         return new PropertiesTransactionAReq((NonBlockingReactor) _plant.getReactor(),
                 _plant.getPropertiesBlade()) {
             @Override
-            protected void evalTransaction(PropertiesWrapper _stateWrapper, AsyncResponseProcessor<Void> rp)
+            protected void evalTransaction(final PropertiesWrapper _stateWrapper,
+                                           final AsyncResponseProcessor<Void> _rp)
                     throws Exception {
                 _stateWrapper.put("stdout", new Printer(new IsolationReactor(_plant)));
-                responseProcessor.processAsyncResponse(null);
+                _rp.processAsyncResponse(null);
             }
         };
     }
