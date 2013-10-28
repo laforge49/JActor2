@@ -12,12 +12,13 @@ abstract public class NewValidatorAReq<STATE, STATE_WRAPPER extends AutoCloseabl
 
     public NewValidatorAReq(
             final NonBlockingReactor _targetReactor,
-            final TransactionProcessor<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> _transactionProcessor) {
+            final TransactionProcessor<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>
+                    _transactionProcessor) {
         super(_targetReactor);
         transactionProcessor = _transactionProcessor;
     }
 
-    abstract protected String validateTransaction(IMMUTABLE_CHANGES _immutableChanges, AsyncResponseProcessor<String> rp)
+    abstract protected String validateChange(IMMUTABLE_CHANGES _immutableChanges, AsyncResponseProcessor<String> rp)
             throws Exception;
 
     @Override
@@ -28,7 +29,7 @@ abstract public class NewValidatorAReq<STATE, STATE_WRAPPER extends AutoCloseabl
                 return new AsyncRequest<String>(disReq.getTargetReactor()) {
                     @Override
                     protected void processAsyncRequest() throws Exception {
-                        validateTransaction(_immutableChanges, this);
+                        validateChange(_immutableChanges, this);
                     }
                 };
             }
