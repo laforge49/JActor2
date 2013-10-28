@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.blades.transactions.Transaction;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesWrapper;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
@@ -9,6 +10,7 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.io.PrintStream;
 import java.util.Locale;
@@ -84,38 +86,32 @@ public class Printer extends IsolationBlade {
     static public AsyncRequest<Printer> stdoutAReq(final Plant _plant) throws Exception {
         return new AsyncRequest<Printer>(_plant.getReactor()) {
             final AsyncResponseProcessor<Printer> dis = this;
-            Printer printer;
 
             @Override
             public void processAsyncRequest() throws Exception {
-                printer = (Printer) _plant.getProperty("stdout");
+                Printer printer = (Printer) _plant.getProperty("stdout");
                 if (printer != null) {
                     processAsyncResponse(printer);
                     return;
                 }
-                Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
+                send(createStdoutAReq(_plant), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
-                        return new AsyncRequest<Void>(_plant.getReactor()) {
-                            @Override
-                            protected void processAsyncRequest() throws Exception {
-                                printer = (Printer) _stateWrapper.oldReadOnlyProperties.get("stdout");
-                                if (printer == null) {
-                                    printer = new Printer(new IsolationReactor(_plant));
-                                    _stateWrapper.put("stdout", printer);
-                                }
-                                processAsyncResponse(null);
-                            }
-                        };
+                    public void processAsyncResponse(Void _response) throws Exception {
+                        dis.processAsyncResponse((Printer) _plant.getProperty("stdout"));
                     }
-                };
-                send(_plant.getPropertiesBlade().getPropertiesProcessor().processTransactionAReq(putTran),
-                        new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(Void _response) throws Exception {
-                                dis.processAsyncResponse(printer);
-                            }
-                        });
+                });
+            }
+        };
+    }
+
+    static private AsyncRequest<Void> createStdoutAReq(final Plant _plant) throws Exception {
+        return new PropertiesTransactionAReq((NonBlockingReactor) _plant.getReactor(),
+                _plant.getPropertiesBlade()) {
+            @Override
+            protected void evalTransaction(PropertiesWrapper _stateWrapper, AsyncResponseProcessor<Void> rp)
+                    throws Exception {
+                _stateWrapper.put("stdout", new Printer(new IsolationReactor(_plant)));
+                responseProcessor.processAsyncResponse(null);
             }
         };
     }

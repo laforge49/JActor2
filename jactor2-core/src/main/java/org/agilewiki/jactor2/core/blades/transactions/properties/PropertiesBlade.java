@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.blades.transactions.properties;
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.transactions.*;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
@@ -30,48 +31,26 @@ public class PropertiesBlade extends BladeBase {
     }
 
     public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
-        return new AsyncBladeRequest<Void>() {
+        return new PropertiesTransactionAReq((NonBlockingReactor) getReactor(), this) {
             @Override
-            protected void processAsyncRequest() throws Exception {
-                Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
-                    @Override
-                    public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
-                        return new AsyncBladeRequest<Void>() {
-                            @Override
-                            protected void processAsyncRequest() throws Exception {
-                                _stateWrapper.put(_key, _newValue);
-                                processAsyncResponse(null);
-                            }
-                        };
-                    }
-                };
-                send(propertiesProcessor.processTransactionAReq(putTran), this);
+            protected void evalTransaction(PropertiesWrapper _stateWrapper, AsyncResponseProcessor<Void> rp)
+                    throws Exception {
+                _stateWrapper.put(_key, _newValue);
+                rp.processAsyncResponse(null);
             }
         };
     }
 
     public AsyncRequest<Void> firstPutAReq(final String _key, final Object _newValue) {
-        if (_newValue == null)
-            throw new IllegalArgumentException("value may not be null");
-        return new AsyncBladeRequest<Void>() {
+        return new PropertiesTransactionAReq((NonBlockingReactor) getReactor(), this) {
             @Override
-            protected void processAsyncRequest() throws Exception {
-                Transaction<PropertiesWrapper> putTran = new Transaction<PropertiesWrapper>() {
-                    @Override
-                    public AsyncRequest<Void> updateAReq(final PropertiesWrapper _stateWrapper) {
-                        return new AsyncBladeRequest<Void>() {
-                            @Override
-                            protected void processAsyncRequest() throws Exception {
-                                Object oldValue = _stateWrapper.oldReadOnlyProperties.get(_key);
-                                if (oldValue != null)
-                                    throw new UnsupportedOperationException(_key + " already has value " + oldValue);
-                                _stateWrapper.put(_key, _newValue);
-                                processAsyncResponse(null);
-                            }
-                        };
-                    }
-                };
-                send(propertiesProcessor.processTransactionAReq(putTran), this);
+            protected void evalTransaction(PropertiesWrapper _stateWrapper, AsyncResponseProcessor<Void> rp)
+                    throws Exception {
+                Object oldValue = _stateWrapper.oldReadOnlyProperties.get(_key);
+                if (oldValue != null)
+                    throw new UnsupportedOperationException(_key + " already has value " + oldValue);
+                _stateWrapper.put(_key, _newValue);
+                rp.processAsyncResponse(null);
             }
         };
     }
