@@ -32,7 +32,7 @@ public class DeepThought extends BladeBase {
                     new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    AsyncRequest<Printer> stdoutRequest = Printer.stdoutAReq(getReactor().getFacility());
+                    AsyncRequest<Printer> stdoutRequest = Printer.stdoutAReq((Plant) getReactor().getFacility());
                     send(stdoutRequest, stdoutResponseProcessor);
                 }
             };
