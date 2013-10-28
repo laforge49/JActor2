@@ -97,7 +97,7 @@ public class Printer extends IsolationBlade {
                 send(createStdoutAReq(_plant), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(Void _response) throws Exception {
-                        dis.processAsyncResponse(_plant.getProperty("stdout"));
+                        dis.processAsyncResponse((Printer) _plant.getProperty("stdout"));
                     }
                 });
             }
