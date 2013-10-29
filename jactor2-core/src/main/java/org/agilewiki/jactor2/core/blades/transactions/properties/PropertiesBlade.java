@@ -10,6 +10,7 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
+import java.util.NavigableMap;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -62,7 +63,7 @@ public class PropertiesBlade extends BladeBase {
         return propertiesProcessor.getImmutableState();
     }
 
-    public AsyncRequest<ValidationSubscription<PropertyChanges>> addValidatorAReq(
+    public AsyncRequest<ValidationSubscription<NavigableMap<String, Object>, PropertiesWrapper, PropertyChanges, SortedMap<String, Object>>> addValidatorAReq(
             final Validator<PropertyChanges> _validator) {
         return propertiesProcessor.addValidatorAReq(_validator);
     }
@@ -86,7 +87,7 @@ public class PropertiesBlade extends BladeBase {
     }
 
     public NewPropertiesValidatorAReq writeOnceProperty(final String _propertyName) {
-        return new NewPropertiesValidatorAReq((NonBlockingReactor) getReactor(), this) {
+        return new NewPropertiesValidatorAReq((NonBlockingReactor) getReactor(), this, _propertyName) {
             @Override
             protected void validateChange(PropertyChanges _immutableChanges, AsyncResponseProcessor<Void> rp)
                     throws Exception {

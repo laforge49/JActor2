@@ -10,7 +10,8 @@ abstract public class NewPropertiesValidatorAReq extends NewValidatorAReq
         <NavigableMap<String, Object>, PropertiesWrapper, PropertyChanges, SortedMap<String, Object>> {
     public NewPropertiesValidatorAReq(
             final NonBlockingReactor _targetReactor,
-            final PropertiesBlade _propertiesBlade) {
-        super(_targetReactor, _propertiesBlade.getPropertiesProcessor());
+            final PropertiesBlade _propertiesBlade,
+            final String _prefix) {
+        super(_targetReactor, _propertiesBlade.getPropertiesProcessor(), _prefix);
     }
 }

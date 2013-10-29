@@ -8,10 +8,11 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 abstract public class TransactionProcessor
-        <STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES, IMMUTABLE_STATE> extends BladeBase {
+        <STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES extends ImmutableChanges, IMMUTABLE_STATE>
+        extends BladeBase {
     protected IMMUTABLE_STATE immutableState;
     private final NonBlockingReactor nonBlockingReactor;
-    final private ValidationBus<IMMUTABLE_CHANGES> validationBus;
+    final private ValidationBus<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> validationBus;
     final private RequestBus<IMMUTABLE_CHANGES, Void> changeBus;
 
     public TransactionProcessor(final IsolationReactor _isolationReactor,
@@ -25,7 +26,7 @@ abstract public class TransactionProcessor
         initialize(_isolationReactor);
         nonBlockingReactor = _nonBlockingReactor;
         immutableState = _immutableState;
-        validationBus = new ValidationBus<IMMUTABLE_CHANGES>(_nonBlockingReactor);
+        validationBus = new ValidationBus<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>(_nonBlockingReactor);
         changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(_nonBlockingReactor);
     }
 
@@ -39,15 +40,18 @@ abstract public class TransactionProcessor
         return immutableState;
     }
 
-    public AsyncRequest<ValidationSubscription<IMMUTABLE_CHANGES>> addValidatorAReq(
+    public AsyncRequest<ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>>
+    addValidatorAReq(
             final Validator<IMMUTABLE_CHANGES> _validator) {
-        return new AsyncBladeRequest<ValidationSubscription<IMMUTABLE_CHANGES>>() {
-            AsyncResponseProcessor<ValidationSubscription<IMMUTABLE_CHANGES>> dis = this;
+        return new AsyncBladeRequest<ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>>() {
+            AsyncResponseProcessor<ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>>
+                    dis = this;
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                final ValidationSubscription<IMMUTABLE_CHANGES> subscription =
-                        new ValidationSubscription<IMMUTABLE_CHANGES>(_validator, validationBus);
+                final ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> subscription =
+                        new ValidationSubscription
+                                <STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>(_validator, validationBus);
                 send(subscription.subscribeAReq(), new AsyncResponseProcessor<Boolean>() {
                     @Override
                     public void processAsyncResponse(Boolean _response) throws Exception {

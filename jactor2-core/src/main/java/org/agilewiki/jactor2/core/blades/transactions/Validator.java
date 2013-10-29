@@ -9,6 +9,8 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
  * @param <IMMUTABLE_CHANGES>
  */
 public interface Validator<IMMUTABLE_CHANGES> extends Blade {
+    String getPrefix();
+
     /**
      * Creates a request to validate the changes made by a transaction.
      * This request throws an exception if the change is not valid.

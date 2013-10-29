@@ -10,7 +10,11 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Iterator;
 
-public class ValidationBus<IMMUTABLE_CHANGES> extends RequestBus<IMMUTABLE_CHANGES, Void> {
+public class ValidationBus<
+        STATE,
+        STATE_WRAPPER extends AutoCloseable,
+        IMMUTABLE_CHANGES extends ImmutableChanges,
+        IMMUTABLE_STATE> extends RequestBus<IMMUTABLE_CHANGES, Void> {
     public ValidationBus(NonBlockingReactor _reactor) throws Exception {
         super(_reactor);
     }
@@ -42,14 +46,20 @@ public class ValidationBus<IMMUTABLE_CHANGES> extends RequestBus<IMMUTABLE_CHANG
                     }
                 });
                 count = subscriptions.size();
+                Iterator<Subscription<IMMUTABLE_CHANGES, Void>> it = subscriptions.iterator();
+                while (it.hasNext()) {
+                    ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>
+                            subscription = (ValidationSubscription) it.next();
+                    Validator<IMMUTABLE_CHANGES> validator = subscription.validator;
+                    String prefix = validator.getPrefix();
+                    if (_changes.hasMatchingChange(prefix))
+                        send(subscription.notificationAReq(_changes), notificationResponseProcessor);
+                    else
+                        count--;
+                }
                 if (count == 0) {
                     dis.processAsyncResponse(null);
                     return;
-                }
-                Iterator<Subscription<IMMUTABLE_CHANGES, Void>> it = subscriptions.iterator();
-                while (it.hasNext()) {
-                    Subscription<IMMUTABLE_CHANGES, Void> subscription = it.next();
-                    send(subscription.notificationAReq(_changes), notificationResponseProcessor);
                 }
             }
         };

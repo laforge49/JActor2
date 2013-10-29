@@ -5,7 +5,8 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-abstract public class NewNotifierAReq<STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES, IMMUTABLE_STATE>
+abstract public class NewNotifierAReq
+        <STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES extends ImmutableChanges, IMMUTABLE_STATE>
         extends AsyncRequest<ChangeSubscription<IMMUTABLE_CHANGES>> {
     private AsyncRequest<ChangeSubscription<IMMUTABLE_CHANGES>> disReq = this;
     private final TransactionProcessor<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> transactionProcessor;
