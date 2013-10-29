@@ -84,4 +84,19 @@ public class PropertiesBlade extends BladeBase {
     public SortedMap<String, Object> matchingProperties(final String _prefix) throws Exception {
         return getImmutableState().subMap(_prefix + Character.MIN_VALUE, _prefix + Character.MAX_VALUE);
     }
+
+    public NewPropertiesValidatorAReq writeOnceProperty(final String _propertyName) {
+        return new NewPropertiesValidatorAReq((NonBlockingReactor) getReactor(), this) {
+            @Override
+            protected void validateChange(PropertyChanges _immutableChanges, AsyncResponseProcessor<Void> rp)
+                    throws Exception {
+                PropertyChange pc = _immutableChanges.readOnlyPropertyChanges.get(_propertyName);
+                if (pc == null)
+                    rp.processAsyncResponse(null);
+                if (pc.oldValue != null)
+                    throw new IllegalArgumentException("once set, this property can not be changed: " + _propertyName);
+                rp.processAsyncResponse(null);
+            }
+        };
+    }
 }
