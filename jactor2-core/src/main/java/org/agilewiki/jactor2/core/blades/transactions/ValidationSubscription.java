@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.requestBus.Subscription;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class ValidationSubscription<IMMUTABLE_CHANGES> extends Subscription<IMMUTABLE_CHANGES, String> {
+public class ValidationSubscription<IMMUTABLE_CHANGES> extends Subscription<IMMUTABLE_CHANGES, Void> {
     final private Validator<IMMUTABLE_CHANGES> validator;
 
     public ValidationSubscription(final Validator<IMMUTABLE_CHANGES> _validator,
@@ -14,7 +14,7 @@ public class ValidationSubscription<IMMUTABLE_CHANGES> extends Subscription<IMMU
     }
 
     @Override
-    public AsyncRequest<String> notificationAReq(IMMUTABLE_CHANGES _content) {
+    public AsyncRequest<Void> notificationAReq(IMMUTABLE_CHANGES _content) {
         return validator.validateAReq(_content);
     }
 }

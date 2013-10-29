@@ -11,11 +11,10 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 public interface Validator<IMMUTABLE_CHANGES> extends Blade {
     /**
      * Creates a request to validate the changes made by a transaction.
-     * This request returns null if the changes are valid, otherwise
-     * an error message is returned.
+     * This request throws an exception if the change is not valid.
      *
      * @param _changes The changes to be validated.
      * @return The validate request.
      */
-    AsyncRequest<String> validateAReq(IMMUTABLE_CHANGES _changes);
+    AsyncRequest<Void> validateAReq(IMMUTABLE_CHANGES _changes);
 }

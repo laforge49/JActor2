@@ -400,8 +400,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             try {
                 processObjectResponse(exceptionHandler.processException(_e));
             } catch (final Throwable u) {
-                activeMessageProcessor.getLogger().error("Exception handler unable to process throwable "
-                        + exceptionHandler.getClass().getName(), u);
                 if (!(responseProcessor instanceof SignalResponseProcessor)) {
                     if (!responsePending)
                         return;

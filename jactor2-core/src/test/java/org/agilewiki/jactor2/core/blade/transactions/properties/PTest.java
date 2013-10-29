@@ -83,9 +83,9 @@ class PTDriver extends PropertiesBlade
     }
 
     @Override
-    public AsyncRequest<String> validateAReq(final PropertyChanges _changes) {
-        return new AsyncBladeRequest<String>() {
-            AsyncResponseProcessor<String> dis = this;
+    public AsyncRequest<Void> validateAReq(final PropertyChanges _changes) {
+        return new AsyncBladeRequest<Void>() {
+            AsyncResponseProcessor<Void> dis = this;
 
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -94,8 +94,7 @@ class PTDriver extends PropertiesBlade
                 while (it.hasNext()) {
                     PropertyChange propertyChange = it.next();
                     if (propertyChange.name.equals("fudge")) {
-                        dis.processAsyncResponse("no way");
-                        return;
+                        throw new IllegalArgumentException("no way");
                     }
                 }
                 dis.processAsyncResponse(null);

@@ -18,15 +18,15 @@ abstract public class NewValidatorAReq<STATE, STATE_WRAPPER extends AutoCloseabl
         transactionProcessor = _transactionProcessor;
     }
 
-    abstract protected String validateChange(IMMUTABLE_CHANGES _immutableChanges, AsyncResponseProcessor<String> rp)
+    abstract protected void validateChange(IMMUTABLE_CHANGES _immutableChanges, AsyncResponseProcessor<Void> rp)
             throws Exception;
 
     @Override
     protected void processAsyncRequest() throws Exception {
         Validator<IMMUTABLE_CHANGES> valTran = new Validator<IMMUTABLE_CHANGES>() {
             @Override
-            public AsyncRequest<String> validateAReq(final IMMUTABLE_CHANGES _immutableChanges) {
-                return new AsyncRequest<String>(disReq.getTargetReactor()) {
+            public AsyncRequest<Void> validateAReq(final IMMUTABLE_CHANGES _immutableChanges) {
+                return new AsyncRequest<Void>(disReq.getTargetReactor()) {
                     @Override
                     protected void processAsyncRequest() throws Exception {
                         validateChange(_immutableChanges, this);

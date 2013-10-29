@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Iterator;
 
-public class ValidationBus<IMMUTABLE_CHANGES> extends RequestBus<IMMUTABLE_CHANGES, String> {
+public class ValidationBus<IMMUTABLE_CHANGES> extends RequestBus<IMMUTABLE_CHANGES, Void> {
     public ValidationBus(NonBlockingReactor _reactor) throws Exception {
         super(_reactor);
     }
@@ -21,15 +21,11 @@ public class ValidationBus<IMMUTABLE_CHANGES> extends RequestBus<IMMUTABLE_CHANG
             int count;
             int i;
 
-            AsyncResponseProcessor<String> notificationResponseProcessor =
-                    new AsyncResponseProcessor<String>() {
+            AsyncResponseProcessor<Void> notificationResponseProcessor =
+                    new AsyncResponseProcessor<Void>() {
                         @Override
-                        public void processAsyncResponse(final String _error) throws Exception {
+                        public void processAsyncResponse(final Void _response) throws Exception {
                             i++;
-                            if (_error != null) {
-                                dis.processAsyncResponse(_error);
-                                return;
-                            }
                             if (count == i)
                                 dis.processAsyncResponse(null);
                         }
@@ -50,9 +46,9 @@ public class ValidationBus<IMMUTABLE_CHANGES> extends RequestBus<IMMUTABLE_CHANG
                     dis.processAsyncResponse(null);
                     return;
                 }
-                Iterator<Subscription<IMMUTABLE_CHANGES, String>> it = subscriptions.iterator();
+                Iterator<Subscription<IMMUTABLE_CHANGES, Void>> it = subscriptions.iterator();
                 while (it.hasNext()) {
-                    Subscription<IMMUTABLE_CHANGES, String> subscription = it.next();
+                    Subscription<IMMUTABLE_CHANGES, Void> subscription = it.next();
                     send(subscription.notificationAReq(_changes), notificationResponseProcessor);
                 }
             }
