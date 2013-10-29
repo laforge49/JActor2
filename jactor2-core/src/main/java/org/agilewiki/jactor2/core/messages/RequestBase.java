@@ -301,20 +301,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         return true;
     }
 
-    /**
-     * Returns the Facility of the request source.
-     *
-     * @return The Facility of the request source, or null when the request was
-     *         passed using signal or call.
-     */
-    public Facility getFacility() {
-        if (messageSource == null)
-            return null;
-        if (!(messageSource instanceof Reactor))
-            return null;
-        return ((ReactorBase) messageSource).getFacility();
-    }
-
     @Override
     public boolean isForeign() {
         return foreign;
