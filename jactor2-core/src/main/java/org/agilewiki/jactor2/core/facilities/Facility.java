@@ -1,7 +1,10 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.transactions.properties.NewPropertiesValidatorAReq;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesBlade;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChanges;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
@@ -26,7 +29,7 @@ import java.util.concurrent.ThreadFactory;
 
 public class Facility extends BladeBase implements AutoCloseable {
 
-    public final static String NAME_PROPERTY = "core.name";
+    public final static String NAME_PROPERTY = "core.facilityName";
 
     public final static String PLANT_NAME = "Plant";
 
@@ -104,6 +107,61 @@ public class Facility extends BladeBase implements AutoCloseable {
         TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, _name);
         propertiesBlade = new PropertiesBlade(internalReactor, initialState);
+        new NewPropertiesValidatorAReq((NonBlockingReactor) getReactor(), propertiesBlade, "core.") {
+            AsyncResponseProcessor<Void> rp;
+            int count;
+            int i;
+
+            AsyncResponseProcessor<Boolean> hasDependencyResponseProcessor =
+                    new AsyncResponseProcessor<Boolean>() {
+                        @Override
+                        public void processAsyncResponse(Boolean _cyclic) throws Exception {
+                            if (_cyclic)
+                                throw new IllegalArgumentException("Would create a dependency cycle.");
+                            i++;
+                            if (count == i)
+                                rp.processAsyncResponse(null);
+                        }
+                    };
+
+            @Override
+            protected void validateChange(final PropertyChanges _immutableChanges,
+                                          final AsyncResponseProcessor<Void> _rp)
+                    throws Exception {
+                rp = _rp;
+                SortedMap<String, PropertyChange> readOnlyPropertyChanges = _immutableChanges.readOnlyPropertyChanges;
+                PropertyChange pc = _immutableChanges.readOnlyPropertyChanges.get(NAME_PROPERTY);
+
+                if (pc != null && pc.oldValue != null)
+                    throw new IllegalArgumentException("once set, this property can not be changed: " + NAME_PROPERTY);
+
+                SortedMap<String, PropertyChange> facilityChanges =
+                        _immutableChanges.matchingPropertyChanges(FACILITY_PROPERTY_PREFIX);
+                Iterator<PropertyChange> fcit = facilityChanges.values().iterator();
+                while (fcit.hasNext()) {
+                    PropertyChange fc = fcit.next();
+                    if (!(fc.newValue instanceof Facility))
+                        throw new IllegalArgumentException(fc.name + " not set to a Facility " + fc.newValue);
+                }
+
+                SortedMap<String, PropertyChange> dependenciesChanges =
+                        _immutableChanges.matchingPropertyChanges(DEPENDENCY_PROPERTY_PREFIX);
+                count = dependenciesChanges.size();
+                if (count == 0)
+                    _rp.processAsyncResponse(null);
+
+                final String myName = getName();
+                Iterator<PropertyChange> dit = dependenciesChanges.values().iterator();
+                while (dit.hasNext()) {
+                    PropertyChange dc = dit.next();
+                    if (dc.oldValue != null)
+                        throw new UnsupportedOperationException(dc.name + "can not be changed once set");
+                    if (!(dc.newValue instanceof Facility))
+                        throw new IllegalArgumentException(dc.name + " not set to a Facility " + dc.newValue);
+                    send(hasDependencyAReq(myName), hasDependencyResponseProcessor);
+                }
+            }
+        };
     }
 
     public PropertiesBlade getPropertiesBlade() {

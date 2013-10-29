@@ -27,4 +27,8 @@ public class PropertyChanges implements ImmutableChanges {
         }
         return false;
     }
+
+    public SortedMap<String, PropertyChange> matchingPropertyChanges(final String _prefix) throws Exception {
+        return readOnlyPropertyChanges.subMap(_prefix + Character.MIN_VALUE, _prefix + Character.MAX_VALUE);
+    }
 }
