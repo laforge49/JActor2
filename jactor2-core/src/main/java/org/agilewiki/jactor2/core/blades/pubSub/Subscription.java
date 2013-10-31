@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.requestBus;
+package org.agilewiki.jactor2.core.blades.pubSub;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
