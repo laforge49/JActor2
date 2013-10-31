@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
-import org.agilewiki.jactor2.core.blades.requestBus.RequestBus;
-import org.agilewiki.jactor2.core.blades.requestBus.Subscription;
+import org.agilewiki.jactor2.core.blades.oldRequestBus.RequestBus;
+import org.agilewiki.jactor2.core.blades.oldRequestBus.Subscription;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 

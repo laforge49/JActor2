@@ -3,60 +3,50 @@ package org.agilewiki.jactor2.core.blades.requestBus;
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-abstract public class Subscription<CONTENT, RESPONSE> extends BladeBase implements AutoCloseable {
-    public final RequestBus<CONTENT, RESPONSE> requestBus;
+abstract public class Subscription<FILTER, CONTENT extends Content<FILTER>> extends BladeBase implements AutoCloseable {
+    private final RequestBus<FILTER, CONTENT> requestBus;
+    private final NonBlockingReactor subscriberReactor;
+    final FILTER filter;
 
-    public Subscription(final NonBlockingReactor _reactor, final RequestBus<CONTENT, RESPONSE> _requestBus) throws Exception {
-        initialize(_reactor);
+    Subscription(final RequestBus<FILTER, CONTENT> _requestBus,
+                 final NonBlockingReactor _subscriberReactor,
+                 final FILTER _filter) throws Exception {
+        initialize(_requestBus.getReactor());
         requestBus = _requestBus;
+        subscriberReactor = _subscriberReactor;
+        filter = _filter;
     }
 
-    abstract public AsyncRequest<RESPONSE> notificationAReq(CONTENT _content);
+    public SyncRequest<Boolean> unsubscribeSReq() {
+        return new SyncBladeRequest<Boolean>() {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                if (!requestBus.subscriptions.remove(this))
+                    return false;
+                subscriberReactor.getFacility().removeAutoClosableSReq(Subscription.this).signal();
+                return true;
+            }
+        };
+    }
 
     @Override
     public void close() throws Exception {
-        requestBus.unsubscribeSReq(this).signal();
+        unsubscribeSReq().signal();
     }
 
-    public AsyncRequest<Boolean> subscribeAReq() {
-        return new AsyncBladeRequest<Boolean>() {
-            AsyncResponseProcessor<Boolean> dis = this;
-
+    AsyncRequest<Void> notificationAReq(final CONTENT _content) {
+        return new AsyncRequest<Void>(subscriberReactor) {
             @Override
             protected void processAsyncRequest() throws Exception {
-                if (getReactor() != requestBus.getReactor()) {
-                    send(getReactor().getFacility().addAutoClosableSReq(Subscription.this),
-                            new AsyncResponseProcessor<Boolean>() {
-                                @Override
-                                public void processAsyncResponse(Boolean _response) throws Exception {
-                                    send(requestBus.subscribeSReq(Subscription.this), dis);
-                                }
-                            });
-                } else
-                    send(requestBus.subscribeSReq(Subscription.this), dis);
+                processNotification(_content, this);
             }
         };
     }
 
-    public AsyncRequest<Boolean> unsubscribeAReq() {
-        return new AsyncBladeRequest<Boolean>() {
-            AsyncResponseProcessor<Boolean> dis = this;
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                if (getReactor() != requestBus.getReactor()) {
-                    send(getReactor().getFacility().removeAutoClosableSReq(Subscription.this),
-                            new AsyncResponseProcessor<Boolean>() {
-                                @Override
-                                public void processAsyncResponse(Boolean _response) throws Exception {
-                                    send(requestBus.unsubscribeSReq(Subscription.this), dis);
-                                }
-                            });
-                } else
-                    send(requestBus.unsubscribeSReq(Subscription.this), dis);
-            }
-        };
-    }
+    abstract protected void processNotification(CONTENT content,
+                                                AsyncResponseProcessor<Void> asyncResponseProcessor)
+            throws Exception;
 }

@@ -110,7 +110,7 @@ public class Printer extends IsolationBlade {
             protected void evalTransaction(final PropertiesWrapper _stateWrapper,
                                            final AsyncResponseProcessor<Void> _rp)
                     throws Exception {
-                if (! _stateWrapper.oldReadOnlyProperties.containsKey("stdout")) {
+                if (!_stateWrapper.oldReadOnlyProperties.containsKey("stdout")) {
                     _stateWrapper.put("stdout", new Printer(new IsolationReactor(_plant)));
                     _plant.getPropertiesBlade().writeOnceProperty("stdout").signal();
                 }
