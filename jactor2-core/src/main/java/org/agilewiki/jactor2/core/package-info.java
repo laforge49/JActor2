@@ -9,7 +9,7 @@
  * </p>
  * <p>
  *     Events are reusable and generally immutable. This allows a single event to be passed to multiple
- *     blades. Event messages however must carry a reference to the target blade, so events are wrapped
+ *     blades. Event messages however must carry a reference to the target blades, so events are wrapped
  *     in an event message before being passed to the target targetReactor for delivery.
  * </p>
  * <p>
@@ -21,8 +21,8 @@
  *     Blades are the application logic. Blades define requests, create the requests for the blades
  *     they wish to doSend the requests too, doSend requests, process requests and doSend and process events.
  *     Blades also define and assign exception handlers for the messages they receive.
- *     Every blade has a targetReactor which processes the messages sent to that blade and for sending requests
- *     to other blades. Thread safety for a blade is achieved by the targetReactor, which processes only only one message at a time.
+ *     Every blades has a targetReactor which processes the messages sent to that blades and for sending requests
+ *     to other blades. Thread safety for a blades is achieved by the targetReactor, which processes only only one message at a time.
  * </p>
  * <h2>Reactors</h2>
  * <p>
@@ -43,7 +43,7 @@
  * <p>
  *     There can be more than one facility within a program--which is important when working
  *     with OSGi. Each facility has a property set and an independent lifecycle. When messages are or have been
- *     sent to a facility that is closed, an exception is raised in the originating blade.
+ *     sent to a facility that is closed, an exception is raised in the originating blades.
  * </p>
  * <p>
  *     Multiple facilities can also be important when a Swing program has multiple frames that

@@ -13,7 +13,7 @@ public class AncestorBase implements Ancestor {
     /**
      * Returns an ancestor, excluding the child, which is an instance of the target class.
      *
-     * @param child       The blade who's dependency stack is searched.
+     * @param child       The blades who's dependency stack is searched.
      * @param targetClass The class used to select the ancestor.
      * @return The ancestor that is an instance of the target class, or null.
      */
@@ -27,9 +27,9 @@ public class AncestorBase implements Ancestor {
     /**
      * Returns the child, or an ancestor, which is an instance of the target class.
      *
-     * @param child       The blade who's dependency stack is searched.
+     * @param child       The blades who's dependency stack is searched.
      * @param targetClass The class used to select the child or one of its ancestors.
-     * @return An blade that implements the target class, or null.
+     * @return An blades that implements the target class, or null.
      */
     public static Ancestor getMatch(Ancestor child, final Class targetClass) {
         while (child != null) {
@@ -46,9 +46,9 @@ public class AncestorBase implements Ancestor {
     private Ancestor parent;
 
     /**
-     * Returns true when the blade has been initialized.
+     * Returns true when the blades has been initialized.
      *
-     * @return True when the blade has been initialized.
+     * @return True when the blades has been initialized.
      */
     public boolean isInitialized() {
         return initialized;

@@ -17,7 +17,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      *                        must be the same as the targetReactor of the target.
      * @param _syncRequest    The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
-     * @return The value returned by the target blade.
+     * @return The value returned by the target blades.
      */
     public static <RESPONSE_TYPE> RESPONSE_TYPE doLocal(
             final Reactor _source,
@@ -39,7 +39,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      * The processSyncRequest method will be invoked by the target Reactor on its own thread
      * when the SyncRequest is dequeued from the target inbox for processing.
      *
-     * @return The value returned by the target blade.
+     * @return The value returned by the target blades.
      */
     abstract protected RESPONSE_TYPE processSyncRequest()
             throws Exception;
@@ -54,7 +54,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      *
      * @param _source The targetReactor on whose thread this method was invoked and which
      *                must be the same as the targetReactor of the target.
-     * @return The value returned by the target blade.
+     * @return The value returned by the target blades.
      */
     private RESPONSE_TYPE doLocal(final Reactor _source) throws Exception {
         use();

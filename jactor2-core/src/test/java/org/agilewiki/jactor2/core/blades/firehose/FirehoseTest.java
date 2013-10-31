@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blade.firehose;
+package org.agilewiki.jactor2.core.blades.firehose;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Plant;

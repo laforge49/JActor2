@@ -1,11 +1,8 @@
-package org.agilewiki.jactor2.core.blade.transactions.properties;
+package org.agilewiki.jactor2.core.blades.transactions.properties;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.transactions.ChangeNotificationSubscriber;
 import org.agilewiki.jactor2.core.blades.transactions.Validator;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesBlade;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChanges;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;

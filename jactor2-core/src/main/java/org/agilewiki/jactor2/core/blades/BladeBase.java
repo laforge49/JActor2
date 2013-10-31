@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 /**
  * <p>
  * BladeBase is a convenience class that implements an Blade. Initialization is not
- * thread-safe, so it should be done before a reference to the blade is shared.
+ * thread-safe, so it should be done before a reference to the blades is shared.
  * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
@@ -22,7 +22,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  */
 public class BladeBase implements Blade {
     /**
-     * The blade's targetReactor.
+     * The blades's targetReactor.
      */
     private Reactor reactor;
 
@@ -32,20 +32,20 @@ public class BladeBase implements Blade {
     private boolean initialized;
 
     /**
-     * Returns true when the blade has been initialized.
+     * Returns true when the blades has been initialized.
      *
-     * @return True when the blade has been initialized.
+     * @return True when the blades has been initialized.
      */
     public boolean isInitialized() {
         return initialized;
     }
 
     /**
-     * Initialize a blade. This method can only be called once
+     * Initialize a blades. This method can only be called once
      * without raising an illegal state exception, as the targetReactor
      * can not be changed.
      *
-     * @param _reactor The blade's targetReactor.
+     * @param _reactor The blades's targetReactor.
      */
     public void initialize(final Reactor _reactor) throws Exception {
         if (initialized)

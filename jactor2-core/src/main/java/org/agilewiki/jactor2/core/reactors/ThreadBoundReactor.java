@@ -47,10 +47,10 @@ import java.util.concurrent.atomic.AtomicReference;
  *                 }
  *             });
  *
- *         //Create an blade that uses the thread-bound targetReactor.
+ *         //Create an blades that uses the thread-bound targetReactor.
  *         final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
  *
- *         //Terminate the blade.
+ *         //Terminate the blades.
  *         new SyncRequest&lt;Void&gt;(threadBoundBlade.getReactor()) {
  *
  *             {@literal @}Override

@@ -5,9 +5,9 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 /**
  * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between blades.
  * Requests are typically created as an anonymous class within the targeted Blade and are bound
- * to that blade's targetReactor.
+ * to that blades's targetReactor.
  * The signal (1-way messaging) and call method (2-way messaging) pass unbuffered messages
- * to the target blade immediately, where they are enqueued for processing. But rather than being
+ * to the target blades immediately, where they are enqueued for processing. But rather than being
  * sent immediately, request messages passed using the doSend method
  * (2-way messages) and all response messages are buffered for improved throughput. The doSend method
  * also supports thread migration.
@@ -17,9 +17,9 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  * when processing a request. This makes it easier to keep requests atomic.
  * </p>
  * <p>
- * Some care needs to be taken with the parameters passed to the target blade when creating a
+ * Some care needs to be taken with the parameters passed to the target blades when creating a
  * AsyncRequest. The application must take care not to change the contents of these parameters,
- * as they will likely be accessed from a different thread when the target blade
+ * as they will likely be accessed from a different thread when the target blades
  * is operated on.
  * </p>
  * <h3>Sample Usage:</h3>
@@ -63,7 +63,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *
  * }
  *
- * //A simple blade with state.
+ * //A simple blades with state.
  * class SampleBlade2 extends BladeBase {
  *
  *     //Initial state is 0.
@@ -89,19 +89,19 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *
  * }
  *
- * //A blade which operates on another blade.
+ * //A blades which operates on another blades.
  * class IndirectBlade extends BladeBase {
  *
- *     //The other blade.
+ *     //The other blades.
  *     private final SampleBlade2 bladeA;
  *
- *     //Create an IndirectBlade with a reference to another blade.
+ *     //Create an IndirectBlade with a reference to another blades.
  *     IndirectBlade(final SampleBlade2 _bladeA, final Reactor _messageProcessor) throws Exception {
  *         bladeA = _bladeA;
  *         initialize(_messageProcessor);
  *     }
  *
- *     //Return a request to update the other blade and return its new state.
+ *     //Return a request to update the other blades and return its new state.
  *     AsyncRequest&lt;Integer&gt; indirectAReq(final int _newState) {
  *         return new AsyncBladeRequest&lt;Integer&gt;() {
  *             AsyncRequest<Integer> dis = this;
@@ -109,10 +109,10 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
  *
- *                 //Get a request from the other blade.
+ *                 //Get a request from the other blades.
  *                 AsyncRequest&lt;Integer&gt; req = bladeA.updateAReq(_newState);
  *
- *                 //Send the request to the other blade.
+ *                 //Send the request to the other blades.
  *                 send(req, new AsyncResponseProcessor&lt;Integer&gt;() {
  *
  *                     {@literal @}Override
@@ -132,7 +132,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  * was 2 but is now 42
  * </pre>
  *
- * @param <RESPONSE_TYPE> The class of the result returned after the AsyncRequest operates on the target blade.
+ * @param <RESPONSE_TYPE> The class of the result returned after the AsyncRequest operates on the target blades.
  */
 public abstract class AsyncRequest<RESPONSE_TYPE>
         extends RequestBase<RESPONSE_TYPE>
@@ -180,7 +180,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
     /**
      * Returns an exception as a response instead of throwing it.
      * But regardless of how a response is returned, if the response is an exception it
-     * is passed to the exception handler of the blade that did the call or doSend on the request.
+     * is passed to the exception handler of the blades that did the call or doSend on the request.
      *
      * @param _response An exception.
      */

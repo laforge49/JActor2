@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blade;
+package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;

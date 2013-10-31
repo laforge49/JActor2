@@ -24,9 +24,9 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  */
 public interface Blade {
     /**
-     * Returns the targetReactor associated with this blade.
+     * Returns the targetReactor associated with this blades.
      *
-     * @return The blade's targetReactor.
+     * @return The blades's targetReactor.
      */
     Reactor getReactor();
 }

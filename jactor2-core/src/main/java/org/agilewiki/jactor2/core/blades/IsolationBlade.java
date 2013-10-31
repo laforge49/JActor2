@@ -3,19 +3,19 @@ package org.agilewiki.jactor2.core.blades;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 /**
- * An isolation blade processes requests from other blades one at a time,
+ * An isolation blades processes requests from other blades one at a time,
  * starting a new request only when a result is returned for the previous
  * one.
  * </p>
- * This is just a convenience class, as any blade which uses an isolation targetReactor
- * is an isolation blade.
+ * This is just a convenience class, as any blades which uses an isolation targetReactor
+ * is an isolation blades.
  */
 public class IsolationBlade extends BladeBase {
 
     /**
-     * Create an isolation blade.
+     * Create an isolation blades.
      *
-     * @param _isolationReactor The reactor used by the isolation blade.
+     * @param _isolationReactor The reactor used by the isolation blades.
      */
     public IsolationBlade(final IsolationReactor _isolationReactor) throws Exception {
         initialize(_isolationReactor);

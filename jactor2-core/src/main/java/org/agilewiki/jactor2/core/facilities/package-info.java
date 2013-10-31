@@ -17,7 +17,7 @@
  *     Facility instances do not interact directly. But blades pass messages to other
  *     blades which may or may not be part of a different facility. And when a request message from one
  *     facility is passed to another facility that was or becomes closed, a ServiceClosedException
- *     is be raised in the source blade.
+ *     is be raised in the source blades.
  * </p>
  * <p>
  *     Each instance of Facility also maintains a table of properties.

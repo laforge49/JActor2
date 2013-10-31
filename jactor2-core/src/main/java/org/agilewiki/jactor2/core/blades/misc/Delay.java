@@ -11,18 +11,18 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 public class Delay extends BladeBase {
 
     /**
-     * Create a Delay blade.
+     * Create a Delay blades.
      *
-     * @param _facility The blade's facility.
+     * @param _facility The blades's facility.
      */
     public Delay(final Facility _facility) throws Exception {
         initialize(new IsolationReactor(_facility));
     }
 
     /**
-     * Create a Delay blade.
+     * Create a Delay blades.
      *
-     * @param _isolationReactor The blade's facility.
+     * @param _isolationReactor The blades's facility.
      */
     public Delay(final IsolationReactor _isolationReactor) throws Exception {
         initialize(_isolationReactor);

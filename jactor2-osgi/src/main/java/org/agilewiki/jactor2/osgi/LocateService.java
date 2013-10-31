@@ -20,7 +20,7 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     private Reactor reactor;
 
     /**
-     * The service tracker blade.
+     * The service tracker blades.
      */
     private JAServiceTracker<T> tracker;
 
@@ -30,9 +30,9 @@ public class LocateService<T> implements ServiceChangeReceiver<T> {
     private AsyncResponseProcessor<T> responseProcessor;
 
     /**
-     * Create a LocateService blade.
+     * Create a LocateService blades.
      *
-     * @param _reactor The blade processing.
+     * @param _reactor The blades processing.
      * @param clazz    Class name of the desired service.
      */
     public LocateService(Reactor _reactor, String clazz) throws Exception {

@@ -63,7 +63,7 @@ package org.agilewiki.jactor2.core.blades;
  *     }
  * }
  *
- * //A blade with a request that throws an exception.
+ * //A blades with a request that throws an exception.
  * class ExceptionBlade extends BladeBase {
  *
  *     //Create an ExceptionBlade.
@@ -83,13 +83,13 @@ package org.agilewiki.jactor2.core.blades;
  *     }
  * }
  *
- * //A blade with an exception handler.
+ * //A blades with an exception handler.
  * class ExceptionHandlerBlade extends BladeBase {
  *
- *     //A blade with a request that throws an exception.
+ *     //A blades with a request that throws an exception.
  *     private final ExceptionBlade exceptionBlade;
  *
- *     //Create an exception handler blade with a reference to an exception blade.
+ *     //Create an exception handler blades with a reference to an exception blades.
  *     ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final Reactor _messageProcessor) throws Exception {
  *         exceptionBlade = _exceptionBlade;
  *         initialize(_messageProcessor);
@@ -115,7 +115,7 @@ package org.agilewiki.jactor2.core.blades;
  *                     }
  *                 });
  *
- *                 //Create an exception request and send it to the exception blade for processing.
+ *                 //Create an exception request and send it to the exception blades for processing.
  *                 //The thrown exception is then caught by the assigned exception handler.
  *                 send(exceptionBlade.exceptionAReq(), new AsyncResponseProcessor&lt;Void&gt;() {
  *                     {@literal @}Override

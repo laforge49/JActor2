@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blade.firehose;
+package org.agilewiki.jactor2.core.blades.firehose;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;

@@ -15,8 +15,8 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 /**
- * An isolation blade is used for printing.
- * By using an isolation blade, printing is done on a different thread, along with
+ * An isolation blades is used for printing.
+ * By using an isolation blades, printing is done on a different thread, along with
  * formatting. In effect, Printer implements a simple logger.
  * </p>
  * <h3>Sample Usage:</h3>
@@ -124,18 +124,18 @@ public class Printer extends IsolationBlade {
     final public Locale locale;
 
     /**
-     * Create a Printer blade.
+     * Create a Printer blades.
      *
-     * @param _isolationReactor The reactor used by the isolation blade.
+     * @param _isolationReactor The reactor used by the isolation blades.
      */
     public Printer(final IsolationReactor _isolationReactor) throws Exception {
         this(_isolationReactor, System.out);
     }
 
     /**
-     * Create a Printer blade.
+     * Create a Printer blades.
      *
-     * @param _isolationReactor The reactor used by the isolation blade.
+     * @param _isolationReactor The reactor used by the isolation blades.
      * @param _printStream      Where to print the string.
      */
     public Printer(final IsolationReactor _isolationReactor,
@@ -144,9 +144,9 @@ public class Printer extends IsolationBlade {
     }
 
     /**
-     * Create a Printer blade.
+     * Create a Printer blades.
      *
-     * @param _isolationReactor The reactor used by the isolation blade.
+     * @param _isolationReactor The reactor used by the isolation blades.
      * @param _printStream      Where to print the string.
      */
     public Printer(final IsolationReactor _isolationReactor,

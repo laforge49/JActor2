@@ -24,10 +24,10 @@ public class ThreadBoundReactorSample {
                     }
                 });
 
-        //Create an blade that uses the thread-bound processing.
+        //Create an blades that uses the thread-bound processing.
         final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
 
-        //Terminate the blade.
+        //Terminate the blades.
         new SyncRequest<Void>(threadBoundBlade.getReactor()) {
 
             @Override

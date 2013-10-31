@@ -25,7 +25,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     /**
      * Create a thread-safe wrapper for a AsyncResponseProcessor.
      *
-     * @param _blade The blade which can process the AsyncResponseProcessor.
+     * @param _blade The blades which can process the AsyncResponseProcessor.
      * @param _rp    The wrapped AsyncResponseProcessor.
      */
     public BoundResponseProcessor(final Blade _blade,

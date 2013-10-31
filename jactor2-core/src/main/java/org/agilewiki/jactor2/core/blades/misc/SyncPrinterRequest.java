@@ -12,7 +12,7 @@ abstract public class SyncPrinterRequest extends SyncRequest<Void> {
     /**
      * Create a SyncPrinterRequest.
      *
-     * @param _printer The blade this request is bound to.
+     * @param _printer The blades this request is bound to.
      */
     public SyncPrinterRequest(final Printer _printer) {
         super(_printer.getReactor());

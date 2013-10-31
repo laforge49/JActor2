@@ -91,7 +91,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     private boolean isolated;
 
     /**
-     * The response created when this message is applied to the target blade.
+     * The response created when this message is applied to the target blades.
      */
     protected Object response;
 
@@ -141,7 +141,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     /**
      * Passes this Request together with the AsyncResponseProcessor to the target Reactor.
-     * Responses are passed back via the targetReactor of the source blade and processed by the
+     * Responses are passed back via the targetReactor of the source blades and processed by the
      * provided AsyncResponseProcessor and any exceptions
      * raised while processing the request are processed by the exception handler active when
      * the doSend method was called.
@@ -201,7 +201,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * as there is no targetReactor. The response message is buffered, though thread migration is
      * not possible.
      *
-     * @return The result from applying this Request to the target blade.
+     * @return The result from applying this Request to the target blades.
      * @throws Exception If the result is an exception, it is thrown rather than being returned.
      */
     public RESPONSE_TYPE call() throws Exception {

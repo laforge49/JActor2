@@ -14,19 +14,19 @@ public class RequestSample {
 
         try {
 
-            //Create blade.
+            //Create blades.
             SampleBlade2 bladeA = new SampleBlade2(new NonBlockingReactor(plant));
 
-            //Initialize blade to 1.
+            //Initialize blades to 1.
             bladeA.updateAReq(1).signal();
 
-            //Change blade to 2.
+            //Change blades to 2.
             System.out.println("was " + bladeA.updateAReq(2).call() + " but is now 2");
 
-            //Create bladeB with a reference to blade.
+            //Create bladeB with a reference to blades.
             IndirectBlade bladeB = new IndirectBlade(bladeA, new NonBlockingReactor(plant));
 
-            //Indirectly change blade to 42.
+            //Indirectly change blades to 42.
             System.out.println("was " + bladeB.indirectAReq(42).call() + " but is now 42");
 
         } finally {
@@ -38,7 +38,7 @@ public class RequestSample {
 
 }
 
-//A simple blade with state.
+//A simple blades with state.
 class SampleBlade2 extends BladeBase {
 
     //Initial state is 0.
@@ -64,19 +64,19 @@ class SampleBlade2 extends BladeBase {
 
 }
 
-//A blade which operates on another blade.
+//A blades which operates on another blades.
 class IndirectBlade extends BladeBase {
 
-    //The other blade.
+    //The other blades.
     private final SampleBlade2 blade;
 
-    //Create an IndirectBlade with a reference to another blade.
+    //Create an IndirectBlade with a reference to another blades.
     IndirectBlade(final SampleBlade2 _bladeA, final Reactor _reactor) throws Exception {
         blade = _bladeA;
         initialize(_reactor);
     }
 
-    //Return a request to update the other blade and return its new state.
+    //Return a request to update the other blades and return its new state.
     AsyncRequest<Integer> indirectAReq(final int _newState) {
         return new AsyncBladeRequest<Integer>() {
             AsyncRequest<Integer> dis = this;
@@ -84,10 +84,10 @@ class IndirectBlade extends BladeBase {
             @Override
             protected void processAsyncRequest() throws Exception {
 
-                //Get a request from the other blade.
+                //Get a request from the other blades.
                 AsyncRequest<Integer> req = blade.updateAReq(_newState);
 
-                //Send the request to the other blade.
+                //Send the request to the other blades.
                 send(req, new AsyncResponseProcessor<Integer>() {
 
                     @Override

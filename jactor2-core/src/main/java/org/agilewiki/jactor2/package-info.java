@@ -48,7 +48,7 @@
  * <h2>Composing Actors for Enhanced Performance</h2>
  * <p>
  *     In JActor, actors are in two parts: Reactors, which contain no application logic, and
- *     Blades. A targetReactor can have any number of blades, and every blade has one targetReactor. Messages
+ *     Blades. A targetReactor can have any number of blades, and every blades has one targetReactor. Messages
  *     are sourced by and targeted at blades, but it is the reactors which actually exchange and
  *     process those messages.
  * </p>

@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blade;
+package org.agilewiki.jactor2.core.blades;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Plant;
