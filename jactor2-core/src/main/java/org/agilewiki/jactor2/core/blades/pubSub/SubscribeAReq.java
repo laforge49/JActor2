@@ -28,7 +28,7 @@ abstract public class SubscribeAReq<FILTER, CONTENT extends Content<FILTER>>
                     protected void processNotification(final CONTENT _content,
                                                        final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                             throws Exception {
-                        processNotification(_content, _asyncResponseProcessor);
+                        SubscribeAReq.this.processNotification(_content, _asyncResponseProcessor);
                     }
                 };
         requestBus.subscriptions.add(subscription);

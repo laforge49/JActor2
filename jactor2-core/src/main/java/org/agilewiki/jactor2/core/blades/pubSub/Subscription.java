@@ -24,7 +24,7 @@ abstract public class Subscription<FILTER, CONTENT extends Content<FILTER>> exte
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                if (!requestBus.subscriptions.remove(this))
+                if (!requestBus.subscriptions.remove(Subscription.this))
                     return false;
                 subscriberReactor.getFacility().removeAutoClosableSReq(Subscription.this).signal();
                 return true;
