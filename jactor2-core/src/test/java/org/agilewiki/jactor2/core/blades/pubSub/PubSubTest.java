@@ -13,7 +13,7 @@ public class PubSubTest extends TestCase {
             RequestBus<Void> requestBus =
                     new RequestBus<Void>(reactor);
             requestBus.signalsContentSReq(null).call();
-            Subscription<Void> s1 = new SubscribeAReq<Void>(requestBus, reactor, null) {
+            Subscription<Void> s1 = new SubscribeAReq<Void>(requestBus, reactor) {
                 @Override
                 protected void processNotification(Void _content, AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                     System.out.println("ping");

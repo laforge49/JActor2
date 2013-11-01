@@ -6,15 +6,15 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
+/**
+ * A subscription allows a subscriber to receive content of interest from a RequestBus.
+ *
+ * @param <CONTENT> The type of content.
+ */
 abstract public class Subscription<CONTENT> extends BladeBase implements AutoCloseable {
     private final RequestBus<CONTENT> requestBus;
     private final NonBlockingReactor subscriberReactor;
     final Filter<CONTENT> filter;
-
-    Subscription(final RequestBus<CONTENT> _requestBus,
-                 final NonBlockingReactor _subscriberReactor) throws Exception {
-        this(_requestBus, _subscriberReactor, null);
-    }
 
     Subscription(final RequestBus<CONTENT> _requestBus,
                  final NonBlockingReactor _subscriberReactor,
@@ -23,11 +23,17 @@ abstract public class Subscription<CONTENT> extends BladeBase implements AutoClo
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
         if (_filter == null)
-            filter = new NullFilter();
+            filter = new NullFilter<CONTENT>();
         else
             filter = _filter;
     }
 
+    /**
+     * Returns a request to stop receiving the published content.
+     * The request returns true if the subscription was not previously unsubscribed.
+     *
+     * @return The request.
+     */
     public SyncRequest<Boolean> unsubscribeSReq() {
         return new SyncBladeRequest<Boolean>() {
             @Override
@@ -40,6 +46,9 @@ abstract public class Subscription<CONTENT> extends BladeBase implements AutoClo
         };
     }
 
+    /**
+     * Stops the receipt of published content.
+     */
     @Override
     public void close() throws Exception {
         unsubscribeSReq().signal();
@@ -54,7 +63,13 @@ abstract public class Subscription<CONTENT> extends BladeBase implements AutoClo
         };
     }
 
-    abstract protected void processNotification(CONTENT content,
-                                                AsyncResponseProcessor<Void> asyncResponseProcessor)
+    /**
+     * Process the content of interest using the reactor of the subscriber.
+     *
+     * @param _content                The received content.
+     * @param _asyncResponseProcessor Used to indicate when processing is complete.
+     */
+    abstract protected void processNotification(CONTENT _content,
+                                                AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception;
 }

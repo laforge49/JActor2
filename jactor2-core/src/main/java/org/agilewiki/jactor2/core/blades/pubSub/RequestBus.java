@@ -10,13 +10,30 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * A blade that publishes content to interested subscribers, using either signals or sends.
+ *
+ * @param <CONTENT> The type of content.
+ */
 public class RequestBus<CONTENT> extends BladeBase {
     final Set<Subscription<CONTENT>> subscriptions = new HashSet<Subscription<CONTENT>>();
 
+    /**
+     * Create a RequestBus blade
+     *
+     * @param _reactor The blade's reactor.
+     */
     public RequestBus(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
+    /**
+     * Returns a request to send some content to all the interested subscribers
+     * without waiting for those subscribers to process the content.
+     *
+     * @param _content The content to be published.
+     * @return The request.
+     */
     public SyncRequest<Void> signalsContentSReq(final CONTENT _content) {
         return new SyncBladeRequest<Void>() {
             @Override
@@ -33,6 +50,12 @@ public class RequestBus<CONTENT> extends BladeBase {
         };
     }
 
+    /**
+     * Returns a request to send some content to all the interested subscribers.
+     *
+     * @param _content The content to be published.
+     * @return The request.
+     */
     public AsyncRequest<Void> sendsContentAReq(final CONTENT _content) {
         return new AsyncBladeRequest<Void>() {
             final AsyncResponseProcessor<Void> dis = this;
