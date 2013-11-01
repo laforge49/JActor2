@@ -1,6 +1,6 @@
 /**
  * <p>
- * The pubSub package supports the management of a set of subscriptions and to publish content.
+ * The pubSub package supports the management of a set of subscriptions and the publishing of content.
  * Subscriptions are used to select the content of interest and to process that content.
  * </p>
  * <pre>
