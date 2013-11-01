@@ -6,10 +6,12 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**
  * A request to subscribe to the content published by a RequestBus.
+ * Note that one of the processContent methods must be overridden or
+ * an UnsupportedOperationException will be thrown when content is received.
  *
  * @param <CONTENT> The type of content.
  */
-abstract public class SubscribeAReq<CONTENT>
+public class SubscribeAReq<CONTENT>
         extends AsyncRequest<Subscription<CONTENT>> {
     private final RequestBus<CONTENT> requestBus;
     private final NonBlockingReactor subscriberReactor;
@@ -18,6 +20,7 @@ abstract public class SubscribeAReq<CONTENT>
 
     /**
      * Creates a request to subscribe to all the content published by a RequestBus.
+     * When invoked, the request passes back a subscription which can be used to unsubscribe.
      *
      * @param _requestBus        The RequestBus being subscribed to.
      * @param _subscriberReactor The reactor of the subscriber blade.
@@ -68,9 +71,22 @@ abstract public class SubscribeAReq<CONTENT>
      * Process the content of interest using the reactor of the subscriber.
      *
      * @param _content                The received content.
+     */
+    protected void processContent(CONTENT _content)
+            throws Exception {
+        throw new UnsupportedOperationException("The processContent method was not overridden.");
+    }
+
+    /**
+     * Process the content of interest using the reactor of the subscriber.
+     *
+     * @param _content                The received content.
      * @param _asyncResponseProcessor Used to indicate when processing is complete.
      */
-    abstract protected void processContent(CONTENT _content,
-                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
-            throws Exception;
+    protected void processContent(CONTENT _content,
+                                  AsyncResponseProcessor<Void> _asyncResponseProcessor)
+            throws Exception {
+        processContent(_content);
+        _asyncResponseProcessor.processAsyncResponse(null);
+    }
 }

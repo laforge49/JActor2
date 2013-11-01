@@ -13,19 +13,18 @@
  *         final Plant plant = new Plant();
  *         try {
  *             NonBlockingReactor reactor = new NonBlockingReactor(plant);
- *             RequestBus<String> requestBus =
- *                 new RequestBus<String>(reactor);
- *             new SubscribeAReq<String>(requestBus, reactor) {
+ *             RequestBus&lt;String&gt; requestBus =
+ *                 new RequestBus&lt;String&gt;(reactor);
+ *             new SubscribeAReq&lt;String&gt;(requestBus, reactor) {
  *                 {@literal @}Override
- *                 protected void processContent(String _content, AsyncResponseProcessor<Void> _asyncResponseProcessor)
+ *                 protected void processContent(String _content)
  *                         throws Exception {
  *                     System.out.println("got " + _content);
- *                     _asyncResponseProcessor.processAsyncResponse(null);
  *                 }
  *             }.call();
- *             new SubscribeAReq<String>(requestBus, reactor, new EqualsFilter<String>("ribit")) {
+ *             new SubscribeAReq&lt;String&gt;(requestBus, reactor, new EqualsFilter&lt;String&gt;("ribit")) {
  *                 {@literal @}Override
- *                 protected void processContent(String _content, AsyncResponseProcessor<Void> _asyncResponseProcessor)
+ *                 protected void processContent(String _content, AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor)
  *                         throws Exception {
  *                     System.out.println("*** Ribit! ***");
  *                     _asyncResponseProcessor.processAsyncResponse(null);
