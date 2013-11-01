@@ -43,7 +43,7 @@ public class RequestBus<CONTENT> extends BladeBase {
                     Subscription<CONTENT> subscription = it.next();
                     Filter<CONTENT> filter = subscription.filter;
                     if (filter.match(_content))
-                        subscription.notificationAReq(_content).signal();
+                        subscription.publicationAReq(_content).signal();
                 }
                 return null;
             }
@@ -80,7 +80,7 @@ public class RequestBus<CONTENT> extends BladeBase {
                     Subscription<CONTENT> subscription = it.next();
                     Filter<CONTENT> filter = subscription.filter;
                     if (filter.match(_content))
-                        send(subscription.notificationAReq(_content), sendResponse);
+                        send(subscription.publicationAReq(_content), sendResponse);
                     else
                         count--;
                 }

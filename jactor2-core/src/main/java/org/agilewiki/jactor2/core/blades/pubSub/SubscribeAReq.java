@@ -48,10 +48,10 @@ abstract public class SubscribeAReq<CONTENT>
         final Subscription<CONTENT> subscription =
                 new Subscription<CONTENT>(requestBus, subscriberReactor, filter) {
                     @Override
-                    protected void processNotification(final CONTENT _content,
-                                                       final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    protected void processContent(final CONTENT _content,
+                                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                             throws Exception {
-                        SubscribeAReq.this.processNotification(_content, _asyncResponseProcessor);
+                        SubscribeAReq.this.processContent(_content, _asyncResponseProcessor);
                     }
                 };
         requestBus.subscriptions.add(subscription);
@@ -70,7 +70,7 @@ abstract public class SubscribeAReq<CONTENT>
      * @param _content                The received content.
      * @param _asyncResponseProcessor Used to indicate when processing is complete.
      */
-    abstract protected void processNotification(CONTENT _content,
-                                                AsyncResponseProcessor<Void> _asyncResponseProcessor)
+    abstract protected void processContent(CONTENT _content,
+                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception;
 }

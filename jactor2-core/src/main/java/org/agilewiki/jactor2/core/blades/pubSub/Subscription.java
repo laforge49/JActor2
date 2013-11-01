@@ -54,11 +54,11 @@ abstract public class Subscription<CONTENT> extends BladeBase implements AutoClo
         unsubscribeSReq().signal();
     }
 
-    AsyncRequest<Void> notificationAReq(final CONTENT _content) {
+    AsyncRequest<Void> publicationAReq(final CONTENT _content) {
         return new AsyncRequest<Void>(subscriberReactor) {
             @Override
             protected void processAsyncRequest() throws Exception {
-                processNotification(_content, this);
+                processContent(_content, this);
             }
         };
     }
@@ -69,7 +69,7 @@ abstract public class Subscription<CONTENT> extends BladeBase implements AutoClo
      * @param _content                The received content.
      * @param _asyncResponseProcessor Used to indicate when processing is complete.
      */
-    abstract protected void processNotification(CONTENT _content,
-                                                AsyncResponseProcessor<Void> _asyncResponseProcessor)
+    abstract protected void processContent(CONTENT _content,
+                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception;
 }
