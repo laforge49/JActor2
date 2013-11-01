@@ -10,29 +10,22 @@ public class PubSubTest extends TestCase {
         final Plant plant = new Plant();
         try {
             NonBlockingReactor reactor = new NonBlockingReactor(plant);
-            RequestBus<Void, NullContent> requestBus =
-                    new RequestBus<Void, NullContent>(reactor);
-            requestBus.signalsContentSReq(new NullContent()).call();
-            Subscription<Void, NullContent> s1 = new SubscribeAReq<Void, NullContent>(requestBus, reactor, null) {
+            RequestBus<Void> requestBus =
+                    new RequestBus<Void>(reactor);
+            requestBus.signalsContentSReq(null).call();
+            Subscription<Void> s1 = new SubscribeAReq<Void>(requestBus, reactor, null) {
                 @Override
-                protected void processNotification(NullContent _content, AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+                protected void processNotification(Void _content, AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                     System.out.println("ping");
                     _asyncResponseProcessor.processAsyncResponse(null);
                 }
             }.call();
-            requestBus.signalsContentSReq(new NullContent()).call();
+            requestBus.signalsContentSReq(null).call();
             s1.unsubscribeSReq().call();
-            requestBus.signalsContentSReq(new NullContent()).call();
+            requestBus.signalsContentSReq(null).call();
         } finally {
             plant.close();
         }
-    }
-}
-
-class NullContent implements Content<Void> {
-    @Override
-    public boolean match(Void o) {
-        return true;
     }
 }
 

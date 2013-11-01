@@ -4,16 +4,16 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-abstract public class SubscribeAReq<FILTER, CONTENT extends Content<FILTER>>
-        extends AsyncRequest<Subscription<FILTER, CONTENT>> {
-    private final RequestBus<FILTER, CONTENT> requestBus;
+abstract public class SubscribeAReq<CONTENT>
+        extends AsyncRequest<Subscription<CONTENT>> {
+    private final RequestBus<CONTENT> requestBus;
     private final NonBlockingReactor subscriberReactor;
-    private final FILTER filter;
-    AsyncResponseProcessor<Subscription<FILTER, CONTENT>> dis = this;
+    private final Filter<CONTENT> filter;
+    AsyncResponseProcessor<Subscription<CONTENT>> dis = this;
 
-    public SubscribeAReq(final RequestBus<FILTER, CONTENT> _requestBus,
+    public SubscribeAReq(final RequestBus<CONTENT> _requestBus,
                          final NonBlockingReactor _subscriberReactor,
-                         final FILTER _filter) {
+                         final Filter<CONTENT> _filter) {
         super(_requestBus.getReactor());
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
@@ -22,8 +22,8 @@ abstract public class SubscribeAReq<FILTER, CONTENT extends Content<FILTER>>
 
     @Override
     protected void processAsyncRequest() throws Exception {
-        final Subscription<FILTER, CONTENT> subscription =
-                new Subscription<FILTER, CONTENT>(requestBus, subscriberReactor, filter) {
+        final Subscription<CONTENT> subscription =
+                new Subscription<CONTENT>(requestBus, subscriberReactor, filter) {
                     @Override
                     protected void processNotification(final CONTENT _content,
                                                        final AsyncResponseProcessor<Void> _asyncResponseProcessor)

@@ -6,18 +6,26 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-abstract public class Subscription<FILTER, CONTENT extends Content<FILTER>> extends BladeBase implements AutoCloseable {
-    private final RequestBus<FILTER, CONTENT> requestBus;
+abstract public class Subscription<CONTENT> extends BladeBase implements AutoCloseable {
+    private final RequestBus<CONTENT> requestBus;
     private final NonBlockingReactor subscriberReactor;
-    final FILTER filter;
+    final Filter<CONTENT> filter;
 
-    Subscription(final RequestBus<FILTER, CONTENT> _requestBus,
+    Subscription(final RequestBus<CONTENT> _requestBus,
+                 final NonBlockingReactor _subscriberReactor) throws Exception {
+        this(_requestBus, _subscriberReactor, null);
+    }
+
+    Subscription(final RequestBus<CONTENT> _requestBus,
                  final NonBlockingReactor _subscriberReactor,
-                 final FILTER _filter) throws Exception {
+                 final Filter<CONTENT> _filter) throws Exception {
         initialize(_requestBus.getReactor());
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
-        filter = _filter;
+        if (_filter == null)
+            filter = new NullFilter();
+        else
+            filter = _filter;
     }
 
     public SyncRequest<Boolean> unsubscribeSReq() {

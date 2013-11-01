@@ -10,8 +10,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class RequestBus<FILTER, CONTENT extends Content<FILTER>> extends BladeBase {
-    final Set<Subscription<FILTER, CONTENT>> subscriptions = new HashSet<Subscription<FILTER, CONTENT>>();
+public class RequestBus<CONTENT> extends BladeBase {
+    final Set<Subscription<CONTENT>> subscriptions = new HashSet<Subscription<CONTENT>>();
 
     public RequestBus(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
@@ -21,11 +21,11 @@ public class RequestBus<FILTER, CONTENT extends Content<FILTER>> extends BladeBa
         return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
-                Iterator<Subscription<FILTER, CONTENT>> it = subscriptions.iterator();
+                Iterator<Subscription<CONTENT>> it = subscriptions.iterator();
                 while (it.hasNext()) {
-                    Subscription<FILTER, CONTENT> subscription = it.next();
-                    FILTER filter = subscription.filter;
-                    if (_content.match(filter))
+                    Subscription<CONTENT> subscription = it.next();
+                    Filter<CONTENT> filter = subscription.filter;
+                    if (filter.match(_content))
                         subscription.notificationAReq(_content).signal();
                 }
                 return null;
@@ -52,11 +52,11 @@ public class RequestBus<FILTER, CONTENT extends Content<FILTER>> extends BladeBa
             @Override
             protected void processAsyncRequest() throws Exception {
                 count = subscriptions.size();
-                Iterator<Subscription<FILTER, CONTENT>> it = subscriptions.iterator();
+                Iterator<Subscription<CONTENT>> it = subscriptions.iterator();
                 while (it.hasNext()) {
-                    Subscription<FILTER, CONTENT> subscription = it.next();
-                    FILTER filter = subscription.filter;
-                    if (_content.match(filter))
+                    Subscription<CONTENT> subscription = it.next();
+                    Filter<CONTENT> filter = subscription.filter;
+                    if (filter.match(_content))
                         send(subscription.notificationAReq(_content), sendResponse);
                     else
                         count--;
