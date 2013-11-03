@@ -5,15 +5,9 @@ import org.agilewiki.jactor2.core.facilities.MigrationException;
 import org.agilewiki.jactor2.core.messages.Message;
 
 /**
- * A targetReactor which processes each request to completion. And unlike other types of
- * reactors, an IsolationReactor should usually be used only by a single blades.
- * <p>
- * For thread safety, the processing of each message is done in isolation from other messages, but when the processing of a message
- * results in the sending of a request message to another blades, other messages may be processed before a
- * response to that request message is received. However, an isolation targetReactor will not process a
- * request until a response is returned for the prior request. This does not however preclude
- * the processing of event messages.
- * </p>
+ * A targetReactor which should be used by blades
+ * which perform long computations, I/O, or otherwise block the thread. And unlike other types of
+ * reactors, a BlockingReactor should usually be used only by a single blades.
  * <p>
  * AsyncRequest/Response messages which are destined to a different targetReactor are buffered rather
  * than being sent immediately. These messages are disbursed to their destinations when the
@@ -28,50 +22,51 @@ import org.agilewiki.jactor2.core.messages.Message;
  * execution.
  * </p>
  * <p>
- * The Inbox used by IsolationReactor is IsolationInbox.
+ * The Inbox used by BlockingReactor is NonBlockingInbox.
  * </p>
  */
-public class IsolationReactor extends UnboundReactor {
+public class BlockingReactor extends UnboundReactor implements CommonReactor {
 
     /**
-     * Create an isolation targetReactor.
+     * Create a non-blocking targetReactor.
      *
      * @param _facility The facility of the targetReactor.
      */
-    public IsolationReactor(Facility _facility) throws Exception {
+    public BlockingReactor(Facility _facility) throws Exception {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), null);
     }
 
     /**
-     * Create an isolation targetReactor.
+     * Create a non-blocking targetReactor.
      *
      * @param _facility The facility of the targetReactor.
      * @param _onIdle   Object to be run when the inbox is emptied, or null.
      */
-    public IsolationReactor(Facility _facility, Runnable _onIdle) throws Exception {
+    public BlockingReactor(Facility _facility,
+                              Runnable _onIdle) throws Exception {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), _onIdle);
     }
 
     /**
-     * Create an isolation targetReactor.
+     * Create a non-blocking targetReactor.
      *
      * @param _facility              The facility of the targetReactor.
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public IsolationReactor(Facility _facility,
-                            int _initialOutboxSize,
-                            final int _initialLocalQueueSize,
-                            Runnable _onIdle) throws Exception {
+    public BlockingReactor(Facility _facility,
+                              int _initialOutboxSize,
+                              final int _initialLocalQueueSize,
+                              Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     @Override
     protected Inbox createInbox(int _initialLocalQueueSize) {
-        return new IsolationInbox(_initialLocalQueueSize);
+        return new NonBlockingInbox(_initialLocalQueueSize);
     }
 
     @Override
