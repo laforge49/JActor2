@@ -49,7 +49,7 @@ public class SubscribeAReq<CONTENT>
     @Override
     protected void processAsyncRequest() throws Exception {
         final Subscription<CONTENT> subscription =
-                new Subscription<CONTENT>(requestBus, subscriberReactor, filter) {
+                new Subscription<CONTENT>(requestBus, (NonBlockingReactor) targetReactor, filter) {
                     @Override
                     protected void processContent(final CONTENT _content,
                                                   final AsyncResponseProcessor<Void> _asyncResponseProcessor)
