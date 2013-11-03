@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.blades.misc;
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 
 /**
  * Simulates a load.
@@ -18,16 +18,16 @@ public class Load extends BladeBase {
      * @param _facility The blades's facility.
      */
     public Load(final Facility _facility) throws Exception {
-        initialize(new IsolationReactor(_facility));
+        initialize(new BlockingReactor(_facility));
     }
 
     /**
      * Create a Load blades.
      *
-     * @param _isolationReactor The blades's facility.
+     * @param _reactor The blades's facility.
      */
-    public Load(final IsolationReactor _isolationReactor) throws Exception {
-        initialize(_isolationReactor);
+    public Load(final BlockingReactor _reactor) throws Exception {
+        initialize(_reactor);
     }
 
     /**

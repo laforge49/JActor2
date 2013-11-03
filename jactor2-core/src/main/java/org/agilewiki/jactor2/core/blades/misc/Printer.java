@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
-import org.agilewiki.jactor2.core.blades.IsolationBlade;
+import org.agilewiki.jactor2.core.blades.BlockingBlade;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesWrapper;
 import org.agilewiki.jactor2.core.facilities.Facility;
@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.io.PrintStream;
@@ -42,7 +42,7 @@ import java.util.Locale;
  * }
  * </pre>
  */
-public class Printer extends IsolationBlade {
+public class Printer extends BlockingBlade {
 
     public static AsyncRequest<Void> printlnAReq(final Facility _facility, final String _string) throws Exception {
         return new AsyncRequest<Void>(_facility.getReactor()) {
@@ -111,7 +111,7 @@ public class Printer extends IsolationBlade {
                                            final AsyncResponseProcessor<Void> _rp)
                     throws Exception {
                 if (!_stateWrapper.oldReadOnlyProperties.containsKey("stdout")) {
-                    _stateWrapper.put("stdout", new Printer(new IsolationReactor(_plant)));
+                    _stateWrapper.put("stdout", new Printer(new BlockingReactor(_plant)));
                     _plant.getPropertiesBlade().writeOnceProperty("stdout").signal();
                 }
                 _rp.processAsyncResponse(null);
@@ -126,33 +126,33 @@ public class Printer extends IsolationBlade {
     /**
      * Create a Printer blades.
      *
-     * @param _isolationReactor The reactor used by the isolation blades.
+     * @param _reactor The reactor used by the blocking blade.
      */
-    public Printer(final IsolationReactor _isolationReactor) throws Exception {
-        this(_isolationReactor, System.out);
+    public Printer(final BlockingReactor _reactor) throws Exception {
+        this(_reactor, System.out);
     }
 
     /**
      * Create a Printer blades.
      *
-     * @param _isolationReactor The reactor used by the isolation blades.
-     * @param _printStream      Where to print the string.
+     * @param _reactor     The reactor used by the blocking blade.
+     * @param _printStream Where to print the string.
      */
-    public Printer(final IsolationReactor _isolationReactor,
+    public Printer(final BlockingReactor _reactor,
                    final PrintStream _printStream) throws Exception {
-        this(_isolationReactor, _printStream, null);
+        this(_reactor, _printStream, null);
     }
 
     /**
      * Create a Printer blades.
      *
-     * @param _isolationReactor The reactor used by the isolation blades.
-     * @param _printStream      Where to print the string.
+     * @param _reactor     The reactor used by the blocking blade.
+     * @param _printStream Where to print the string.
      */
-    public Printer(final IsolationReactor _isolationReactor,
+    public Printer(final BlockingReactor _reactor,
                    final PrintStream _printStream,
                    final Locale _locale) throws Exception {
-        super(_isolationReactor);
+        super(_reactor);
         printStream = _printStream;
         locale = _locale;
     }

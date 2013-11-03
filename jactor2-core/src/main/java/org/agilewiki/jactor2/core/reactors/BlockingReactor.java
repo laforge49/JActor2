@@ -44,7 +44,7 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
      * @param _onIdle   Object to be run when the inbox is emptied, or null.
      */
     public BlockingReactor(Facility _facility,
-                              Runnable _onIdle) throws Exception {
+                           Runnable _onIdle) throws Exception {
         super(_facility, _facility.getInitialBufferSize(),
                 _facility.getInitialLocalMessageQueueSize(), _onIdle);
     }
@@ -58,9 +58,9 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
     public BlockingReactor(Facility _facility,
-                              int _initialOutboxSize,
-                              final int _initialLocalQueueSize,
-                              Runnable _onIdle) throws Exception {
+                           int _initialOutboxSize,
+                           final int _initialLocalQueueSize,
+                           Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
