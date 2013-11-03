@@ -15,9 +15,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 /**
- * An isolation blades is used for printing.
- * By using an isolation blades, printing is done on a different thread, along with
- * formatting. In effect, Printer implements a simple logger.
+ * A blocking blade is used for printing.
  * </p>
  * <h3>Sample Usage:</h3>
  * <pre>
