@@ -6,14 +6,14 @@ package org.agilewiki.jactor2.core.blades.pubSub;
  * @param <CONTENT> The content class of interest.
  */
 public class IsInstanceFilter<CONTENT> implements Filter<CONTENT> {
-    private final Class<CONTENT> clazz;
+    private final Class clazz;
 
     /**
      * Create an IsInstanceFilter.
      *
      * @param _clazz The particular class of interest.
      */
-    public IsInstanceFilter(final Class<CONTENT> _clazz) {
+    public IsInstanceFilter(final Class _clazz) {
         clazz = _clazz;
     }
 
