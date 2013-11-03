@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.blades.pubSub;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 
 /**
  * A request to subscribe to the content published by a RequestBus.
@@ -14,7 +14,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class SubscribeAReq<CONTENT>
         extends AsyncRequest<Subscription<CONTENT>> {
     private final RequestBus<CONTENT> requestBus;
-    private final NonBlockingReactor subscriberReactor;
+    private final CommonReactor subscriberReactor;
     private final Filter<CONTENT> filter;
     AsyncResponseProcessor<Subscription<CONTENT>> dis = this;
 
@@ -26,7 +26,7 @@ public class SubscribeAReq<CONTENT>
      * @param _subscriberReactor The reactor of the subscriber blade.
      */
     public SubscribeAReq(final RequestBus<CONTENT> _requestBus,
-                         final NonBlockingReactor _subscriberReactor) {
+                         final CommonReactor _subscriberReactor) {
         this(_requestBus, _subscriberReactor, null);
     }
 
@@ -38,7 +38,7 @@ public class SubscribeAReq<CONTENT>
      * @param _filter            A Filter that selects content of interest.
      */
     public SubscribeAReq(final RequestBus<CONTENT> _requestBus,
-                         final NonBlockingReactor _subscriberReactor,
+                         final CommonReactor _subscriberReactor,
                          final Filter<CONTENT> _filter) {
         super(_requestBus.getReactor());
         requestBus = _requestBus;
@@ -49,7 +49,7 @@ public class SubscribeAReq<CONTENT>
     @Override
     protected void processAsyncRequest() throws Exception {
         final Subscription<CONTENT> subscription =
-                new Subscription<CONTENT>(requestBus, (NonBlockingReactor) targetReactor, filter) {
+                new Subscription<CONTENT>(requestBus, (CommonReactor) targetReactor, filter) {
                     @Override
                     protected void processContent(final CONTENT _content,
                                                   final AsyncResponseProcessor<Void> _asyncResponseProcessor)
@@ -70,7 +70,7 @@ public class SubscribeAReq<CONTENT>
     /**
      * Process the content of interest using the reactor of the subscriber.
      *
-     * @param _content                The received content.
+     * @param _content The received content.
      */
     protected void processContent(CONTENT _content)
             throws Exception {

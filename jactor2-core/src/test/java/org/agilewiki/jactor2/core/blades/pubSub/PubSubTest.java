@@ -3,13 +3,14 @@ package org.agilewiki.jactor2.core.blades.pubSub;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PubSubTest extends TestCase {
     public void testI() throws Exception {
         final Plant plant = new Plant();
         try {
-            NonBlockingReactor reactor = new NonBlockingReactor(plant);
+            CommonReactor reactor = new NonBlockingReactor(plant);
             RequestBus<Void> requestBus =
                     new RequestBus<Void>(reactor);
             requestBus.signalsContentSReq(null).call();

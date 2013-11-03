@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.oldRequestBus.RequestBus;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
@@ -11,7 +12,7 @@ abstract public class TransactionProcessor
         <STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES extends ImmutableChanges, IMMUTABLE_STATE>
         extends BladeBase {
     protected IMMUTABLE_STATE immutableState;
-    private final NonBlockingReactor nonBlockingReactor;
+    private final CommonReactor commonReactor;
     final private ValidationBus<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> validationBus;
     final private RequestBus<IMMUTABLE_CHANGES, Void> changeBus;
 
@@ -21,13 +22,13 @@ abstract public class TransactionProcessor
     }
 
     public TransactionProcessor(final IsolationReactor _isolationReactor,
-                                final NonBlockingReactor _nonBlockingReactor,
+                                final NonBlockingReactor _commonReactor,
                                 final IMMUTABLE_STATE _immutableState) throws Exception {
         initialize(_isolationReactor);
-        nonBlockingReactor = _nonBlockingReactor;
+        commonReactor = _commonReactor;
         immutableState = _immutableState;
-        validationBus = new ValidationBus<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>(_nonBlockingReactor);
-        changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(_nonBlockingReactor);
+        validationBus = new ValidationBus<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>(_commonReactor);
+        changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(_commonReactor);
     }
 
     abstract protected void newImmutableState();
@@ -92,7 +93,7 @@ abstract public class TransactionProcessor
     }
 
     private AsyncRequest<Void> ptAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
-        return new AsyncRequest<Void>(nonBlockingReactor) {
+        return new AsyncRequest<Void>(commonReactor) {
             AsyncResponseProcessor<Void> dis = this;
             STATE_WRAPPER stateWrapper;
             IMMUTABLE_CHANGES changes;

@@ -90,7 +90,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * finished
  * </pre>
  */
-public class ThreadBoundReactor extends ReactorBase {
+public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
 
     /**
      * The boundProcessor.run method is called when there are messages to be processed.

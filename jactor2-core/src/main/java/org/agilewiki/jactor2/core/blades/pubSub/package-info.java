@@ -6,13 +6,13 @@
  * <pre>
  * import org.agilewiki.jactor2.core.facilities.Plant;
  * import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
- * import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+ * import org.agilewiki.jactor2.core.reactors.CommonReactor;
  *
  * public class PubSubSample {
  *     public static void main(final String[] args) throws Exception {
  *         final Plant plant = new Plant();
  *         try {
- *             NonBlockingReactor reactor = new NonBlockingReactor(plant);
+ *             CommonReactor reactor = new NonBlockingReactor(plant);
  *             RequestBus&lt;String&gt; requestBus =
  *                 new RequestBus&lt;String&gt;(reactor);
  *             new SubscribeAReq&lt;String&gt;(requestBus, reactor) {

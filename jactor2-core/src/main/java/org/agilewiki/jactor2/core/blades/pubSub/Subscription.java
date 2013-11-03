@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 
 /**
  * A subscription allows a subscriber to receive content of interest from a RequestBus.
@@ -13,11 +13,11 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
  */
 abstract public class Subscription<CONTENT> extends BladeBase implements AutoCloseable {
     private final RequestBus<CONTENT> requestBus;
-    private final NonBlockingReactor subscriberReactor;
+    private final CommonReactor subscriberReactor;
     final Filter<CONTENT> filter;
 
     Subscription(final RequestBus<CONTENT> _requestBus,
-                 final NonBlockingReactor _subscriberReactor,
+                 final CommonReactor _subscriberReactor,
                  final Filter<CONTENT> _filter) throws Exception {
         initialize(_requestBus.getReactor());
         requestBus = _requestBus;

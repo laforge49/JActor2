@@ -26,7 +26,7 @@ import org.agilewiki.jactor2.core.facilities.Facility;
  * The Inbox used by NonBlockingReactor is NonBlockingInbox.
  * </p>
  */
-public class NonBlockingReactor extends UnboundReactor {
+public class NonBlockingReactor extends UnboundReactor implements CommonReactor {
 
     /**
      * Create a non-blocking targetReactor.

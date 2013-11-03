@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,7 +23,7 @@ public class RequestBus<CONTENT> extends BladeBase {
      *
      * @param _reactor The blade's reactor.
      */
-    public RequestBus(final NonBlockingReactor _reactor) throws Exception {
+    public RequestBus(final CommonReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 

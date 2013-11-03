@@ -2,13 +2,14 @@ package org.agilewiki.jactor2.core.blades.pubSub;
 
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PubSubSample {
     public static void main(final String[] args) throws Exception {
         final Plant plant = new Plant();
         try {
-            NonBlockingReactor reactor = new NonBlockingReactor(plant);
+            CommonReactor reactor = new NonBlockingReactor(plant);
             RequestBus<String> requestBus =
                     new RequestBus<String>(reactor);
             new SubscribeAReq<String>(requestBus, reactor) {
