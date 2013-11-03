@@ -1,0 +1,155 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; PubSub
+</p>
+<h1>PubSub - Publish/Subscribe</h1>
+<p>
+<a href="../../api/org/agilewiki/jactor2/core/blades/pubSub/RequestBus.html">RequestBus</a>&lt;CONTENT&gt;
+provides a means of publishing some content to a set of subscribers.
+The <a href="PubSub.java">PubSub</a> program demonstrates this capability.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.blades.pubSub.IsInstanceFilter;
+import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
+import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
+import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+
+public class PubSub {
+    public static void main(final String[] _args) throws Exception {
+        Plant plant = new Plant();
+        try {
+            Printer printer = Printer.stdoutAReq(plant).call();
+            RequestBus&lt;Object&gt; requestBus =
+                    new RequestBus&lt;Object&gt;(new NonBlockingReactor(plant));
+            Subscriber subscriber =
+                    new Subscriber(new NonBlockingReactor(plant), requestBus, printer);
+            subscriber.listenAReq().call();
+            Publisher publisher =
+                    new Publisher(new NonBlockingReactor(plant), requestBus);
+            publisher.goAReq().call();
+        } finally {
+            plant.close();
+        }
+    }
+}
+</pre>
+<p>
+In this program, the content can be any Object. Two blades are used: (1) Subscriber, which creates 2 subscriptions,
+and (2) Publisher, which publishes several strings and integers.
+</p>
+<h2>
+Publisher
+</h2>
+<p>
+The Publisher blade uses the RequestBus.signalsContentSReq and sendsContentAReq requests to publish a series
+of strings and integers.
+</p>
+<pre>
+class Publisher extends BladeBase {
+    final RequestBus&lt;Object&gt; requestBus;
+
+    Publisher(final NonBlockingReactor _reactor, final RequestBus&lt;Object&gt; _requestBus) 
+            throws Exception {
+        initialize(_reactor);
+        requestBus = _requestBus;
+    }
+    
+    AsyncRequest&lt;Void&gt; goAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            protected void processAsyncRequest() throws Exception {
+                requestBus.signalsContentSReq("start").signal();
+                requestBus.signalsContentSReq(1).signal();
+                requestBus.signalsContentSReq(2).signal();
+                requestBus.signalsContentSReq(3).signal();
+                send(requestBus.sendsContentAReq("done"), this);
+            }
+        };
+    }
+}
+</pre>
+<p>
+As we have seen before, when passing multiple requests between the same two blades we can often use
+signal. But the last request is passed using a send to ensure that processing of the requests is complete.
+</p>
+<h2>
+Subscriber
+</h2>
+<p>
+The Subscriber blade creates two subscriptions, one for strings and the other for integers, using 
+<a href="../../api/org/agilewiki/jactor2/core/blades/pubSub/SubscribeAReq.html">SubscribeAReq</a>&lt;CONTENT&gt;
+and
+<a href="../../api/org/agilewiki/jactor2/core/blades/pubSub/IsInstanceFilter.html">IsInstanceFilter</a>&lt;CONTENT&gt;.
+</p>
+<pre>
+class Subscriber extends BladeBase {
+    final RequestBus&lt;Object&gt; requestBus;
+    final Printer printer;
+    int state;
+
+    Subscriber(final NonBlockingReactor _reactor, final RequestBus&lt;Object&gt; _requestBus, final Printer _printer) 
+            throws Exception {
+        initialize(_reactor);
+        requestBus = _requestBus;
+        printer = _printer;
+    }
+
+    AsyncRequest&lt;Void&gt; listenAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            AsyncResponseProcessor dis = this;
+
+            protected void processAsyncRequest() throws Exception {
+                new SubscribeAReq&lt;Object&gt;(requestBus,
+                        (NonBlockingReactor) getReactor(),
+                        new IsInstanceFilter&lt;Object&gt;(Integer.class)) {
+                    @Override
+                    protected void processContent(Object _content, AsyncResponseProcessor&lt;Void&gt; arp)
+                            throws Exception {
+                        int oldState = state;
+                        int inc = (Integer) _content;
+                        state = state + inc;
+                        send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp);
+                    }
+                }.signal();
+
+                send(new SubscribeAReq&lt;Object&gt;(requestBus,
+                             (NonBlockingReactor) getReactor(),
+                             new IsInstanceFilter&lt;Object&gt;(String.class)) {
+                         @Override
+                         protected void processContent(Object _content, AsyncResponseProcessor&lt;Void&gt; arp)
+                                 throws Exception {
+                             send(printer.printlnSReq((String) _content), arp);
+                         }
+                     },
+                        new AsyncResponseProcessor&lt;Subscription&lt;Object&gt;&gt;() {
+                            public void processAsyncResponse(final Subscription&lt;Object&gt; _subscription)
+                                    throws Exception {
+                                dis.processAsyncResponse(null);
+                            }
+                        }
+                );
+            }
+        };
+    }
+}
+</pre>
+<p>
+When the subscriber receives string content, it prints it.
+Subscriber also maintains a state, which is incremented when it receives integer content.
+</p>
+<h2>Output</h2>
+<pre>
+start
+0 + 1 = 1
+1 + 2 = 3
+3 + 3 = 6
+done
+</pre>
+</body>
+</html>
