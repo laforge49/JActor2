@@ -8,7 +8,7 @@ public interface JABoolean extends FLenS<Boolean> {
     /**
      * Size of a serialized JABoolean in bytes.
      */
-    public final static int LENGTH = 1;
+    public static final int LENGTH = 1;
 
     /**
      * Factory name for JABoolean.

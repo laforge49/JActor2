@@ -11,21 +11,23 @@ import org.agilewiki.jactor2.core.reactors.CommonReactor;
  *
  * @param <CONTENT> The type of content.
  */
-abstract public class Subscription<CONTENT> extends BladeBase implements AutoCloseable {
+abstract public class Subscription<CONTENT> extends BladeBase implements
+        AutoCloseable {
     private final RequestBus<CONTENT> requestBus;
     private final CommonReactor subscriberReactor;
     final Filter<CONTENT> filter;
 
     Subscription(final RequestBus<CONTENT> _requestBus,
-                 final CommonReactor _subscriberReactor,
-                 final Filter<CONTENT> _filter) throws Exception {
+            final CommonReactor _subscriberReactor,
+            final Filter<CONTENT> _filter) throws Exception {
         initialize(_requestBus.getReactor());
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
-        if (_filter == null)
+        if (_filter == null) {
             filter = new NullFilter<CONTENT>();
-        else
+        } else {
             filter = _filter;
+        }
     }
 
     /**
@@ -38,9 +40,11 @@ abstract public class Subscription<CONTENT> extends BladeBase implements AutoClo
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                if (!requestBus.subscriptions.remove(Subscription.this))
+                if (!requestBus.subscriptions.remove(Subscription.this)) {
                     return false;
-                subscriberReactor.getFacility().removeAutoClosableSReq(Subscription.this).signal();
+                }
+                subscriberReactor.getFacility()
+                        .removeAutoClosableSReq(Subscription.this).signal();
                 return true;
             }
         };
@@ -70,6 +74,6 @@ abstract public class Subscription<CONTENT> extends BladeBase implements AutoClo
      * @param _asyncResponseProcessor Used to indicate when processing is complete.
      */
     abstract protected void processContent(CONTENT _content,
-                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
+            AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception;
 }

@@ -14,9 +14,8 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.IncDesImpl;
 /**
  * A collection of JID actors.
  */
-abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
-        extends IncDesImpl
-        implements Collection<ENTRY_TYPE> {
+abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable> extends
+        IncDesImpl implements Collection<ENTRY_TYPE> {
 
     /**
      * The size of the serialized data (exclusive of its length header).
@@ -59,7 +58,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
      *
      * @param readableBytes Holds the serialized data.
      */
-    protected void skipLen(ReadableBytes readableBytes) {
+    protected void skipLen(final ReadableBytes readableBytes) {
         readableBytes.skip(JAInteger.LENGTH);
     }
 
@@ -69,7 +68,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
      * @param readableBytes Holds the serialized data.
      * @return The size of the serialized data (exclusive of its length header).
      */
-    protected int loadLen(ReadableBytes readableBytes) {
+    protected int loadLen(final ReadableBytes readableBytes) {
         return readableBytes.readInt();
     }
 
@@ -78,7 +77,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
      *
      * @param appendableBytes The object written to.
      */
-    protected void saveLen(AppendableBytes appendableBytes) {
+    protected void saveLen(final AppendableBytes appendableBytes) {
         appendableBytes.writeInt(len);
     }
 
@@ -88,7 +87,7 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
      * @param lengthChange The change in the size of the serialized data.
      */
     @Override
-    public void change(int lengthChange) {
+    public void change(final int lengthChange) {
         len += lengthChange;
         super.change(lengthChange);
     }
@@ -100,33 +99,38 @@ abstract public class CollectionImpl<ENTRY_TYPE extends JASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public JASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(final String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
         int s = pathname.indexOf("/");
-        if (s == -1)
+        if (s == -1) {
             s = pathname.length();
-        if (s == 0)
+        }
+        if (s == 0) {
             throw new IllegalArgumentException("pathname " + pathname);
-        String ns = pathname.substring(0, s);
+        }
+        final String ns = pathname.substring(0, s);
         int n = 0;
         try {
             n = Integer.parseInt(ns);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new IllegalArgumentException("pathname " + pathname);
         }
-        if (n < 0 || n >= size())
+        if ((n < 0) || (n >= size())) {
             throw new IllegalArgumentException("pathname " + pathname);
-        JASerializable jid = iGet(n);
-        if (s == pathname.length())
+        }
+        final JASerializable jid = iGet(n);
+        if (s == pathname.length()) {
             return jid;
+        }
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
     }
 
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    @Override
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

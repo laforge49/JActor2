@@ -5,7 +5,7 @@ package org.agilewiki.jactor2.core.blades.pubSub;
  */
 public class NullFilter<CONTENT> implements Filter<CONTENT> {
     @Override
-    public boolean match(Object _content) {
+    public boolean match(final Object _content) {
         return true;
     }
 }

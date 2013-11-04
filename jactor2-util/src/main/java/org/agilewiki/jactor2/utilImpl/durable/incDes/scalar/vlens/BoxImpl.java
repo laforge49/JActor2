@@ -17,11 +17,12 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.IncDesImpl;
 /**
  * A JID actor that holds a JID actor.
  */
-public class BoxImpl
-        extends VLenScalar<String, JASerializable> implements Box {
+public class BoxImpl extends VLenScalar<String, JASerializable> implements Box {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Box.FACTORY_NAME) {
+    public static void registerFactory(final FactoryLocator _factoryLocator)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(
+                Box.FACTORY_NAME) {
             @Override
             final protected BoxImpl instantiateBlade() {
                 return new BoxImpl();
@@ -35,11 +36,13 @@ public class BoxImpl
      * @param _length The number of characters in the string.
      * @return The size in bytes.
      */
-    public final static int stringLength(final int _length) {
-        if (_length == -1)
+    public static final int stringLength(final int _length) {
+        if (_length == -1) {
             return JAInteger.LENGTH;
-        if (_length > -1)
-            return JAInteger.LENGTH + 2 * _length;
+        }
+        if (_length > -1) {
+            return JAInteger.LENGTH + (2 * _length);
+        }
         throw new IllegalArgumentException("invalid string length: " + _length);
     }
 
@@ -49,15 +52,17 @@ public class BoxImpl
      * @param _s The string.
      * @return The size in bytes.
      */
-    public final static int stringLength(final String _s) {
-        if (_s == null)
+    public static final int stringLength(final String _s) {
+        if (_s == null) {
             return JAInteger.LENGTH;
+        }
         return stringLength(_s.length());
     }
 
     @Override
     public AsyncRequest<Void> clearReq() {
         return new AsyncBladeRequest<Void>() {
+            @Override
             protected void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
@@ -80,9 +85,10 @@ public class BoxImpl
      */
     @Override
     public void clear() {
-        if (len == -1)
+        if (len == -1) {
             return;
-        int l = len;
+        }
+        final int l = len;
         if (value != null) {
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
             value = null;
@@ -100,10 +106,10 @@ public class BoxImpl
      * @return True if a new value is created.
      */
     @Override
-    public Boolean makeValue(final String jidType)
-            throws Exception {
-        if (len > -1)
+    public Boolean makeValue(final String jidType) throws Exception {
+        if (len > -1) {
             return false;
+        }
         setValue(jidType);
         return true;
     }
@@ -124,11 +130,11 @@ public class BoxImpl
      * @param jidType The jid type.
      */
     @Override
-    public void setValue(final String jidType)
-            throws Exception {
+    public void setValue(final String jidType) throws Exception {
         value = createSubordinate(jidType);
-        int l = stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
-                value.getDurable().getSerializedLength();
+        final int l = stringLength(((FactoryImpl) value.getDurable()
+                .getFactory()).getFactoryKey())
+                + value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
         serializedOffset = -1;
@@ -154,13 +160,15 @@ public class BoxImpl
     @Override
     public void setValue(final String jidType, final byte[] bytes)
             throws Exception {
-        if (len > -1)
+        if (len > -1) {
             clear();
+        }
         setBytes(jidType, bytes);
     }
 
     @Override
-    public AsyncRequest<Void> setValueReq(final String jidType, final byte[] bytes) {
+    public AsyncRequest<Void> setValueReq(final String jidType,
+            final byte[] bytes) {
         return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -180,14 +188,16 @@ public class BoxImpl
     @Override
     public Boolean makeValue(final String jidType, final byte[] bytes)
             throws Exception {
-        if (len > -1)
+        if (len > -1) {
             return false;
+        }
         setBytes(jidType, bytes);
         return true;
     }
 
     @Override
-    public AsyncRequest<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
+    public AsyncRequest<Boolean> makeValueReq(final String jidType,
+            final byte[] bytes) {
         return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -202,11 +212,12 @@ public class BoxImpl
      * @param jidType The jid type.
      * @param bytes   The serialized data.
      */
-    public void setBytes(String jidType, byte[] bytes)
+    public void setBytes(final String jidType, final byte[] bytes)
             throws Exception {
         value = createSubordinate(jidType, bytes);
-        int l = stringLength(((FactoryImpl) value.getDurable().getFactory()).getFactoryKey()) +
-                value.getDurable().getSerializedLength();
+        final int l = stringLength(((FactoryImpl) value.getDurable()
+                .getFactory()).getFactoryKey())
+                + value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
         serializedOffset = -1;
@@ -218,11 +229,11 @@ public class BoxImpl
      * @param jidFactory The jid factory.
      * @param bytes      The serialized data.
      */
-    public void setBytes(FactoryImpl jidFactory, byte[] bytes)
+    public void setBytes(final FactoryImpl jidFactory, final byte[] bytes)
             throws Exception {
         value = createSubordinate(jidFactory, bytes);
-        int l = stringLength(jidFactory.getFactoryKey()) +
-                value.getDurable().getSerializedLength();
+        final int l = stringLength(jidFactory.getFactoryKey())
+                + value.getDurable().getSerializedLength();
         change(l);
         serializedBytes = null;
         serializedOffset = -1;
@@ -234,18 +245,19 @@ public class BoxImpl
      * @return The actor held by this component, or null.
      */
     @Override
-    public JASerializable getValue()
-            throws Exception {
-        if (len == -1)
-            return null;
-        if (value != null)
-            return value;
+    public JASerializable getValue() throws Exception {
         if (len == -1) {
             return null;
         }
-        ReadableBytes readableBytes = readable();
+        if (value != null) {
+            return value;
+        }
+        if (len == -1) {
+            return null;
+        }
+        final ReadableBytes readableBytes = readable();
         skipLen(readableBytes);
-        String factoryKey = readableBytes.readString();
+        final String factoryKey = readableBytes.readString();
         value = createSubordinate(factoryKey, readableBytes);
         return value;
     }
@@ -256,12 +268,14 @@ public class BoxImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
+    protected void serialize(final AppendableBytes appendableBytes)
             throws Exception {
         saveLen(appendableBytes);
-        if (len == -1)
+        if (len == -1) {
             return;
-        String factoryKey = ((FactoryImpl) value.getDurable().getFactory()).getFactoryKey();
+        }
+        final String factoryKey = ((FactoryImpl) value.getDurable()
+                .getFactory()).getFactoryKey();
         appendableBytes.writeString(factoryKey);
         ((IncDesImpl) value.getDurable()).save(appendableBytes);
     }
@@ -273,7 +287,7 @@ public class BoxImpl
      * @return A JID actor or null.
      */
     @Override
-    public JASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(final String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
@@ -282,16 +296,18 @@ public class BoxImpl
             return getValue();
         }
         if (pathname.startsWith("0/")) {
-            JASerializable v = getValue();
-            if (v == null)
+            final JASerializable v = getValue();
+            if (v == null) {
                 return null;
+            }
             return v.getDurable().resolvePathname(pathname.substring(2));
         }
         throw new IllegalArgumentException("pathname " + pathname);
     }
 
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    @Override
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

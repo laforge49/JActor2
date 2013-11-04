@@ -134,9 +134,9 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *
  * @param <RESPONSE_TYPE> The class of the result returned after the AsyncRequest operates on the target blades.
  */
-public abstract class AsyncRequest<RESPONSE_TYPE>
-        extends RequestBase<RESPONSE_TYPE>
-        implements AsyncResponseProcessor<RESPONSE_TYPE> {
+public abstract class AsyncRequest<RESPONSE_TYPE> extends
+        RequestBase<RESPONSE_TYPE> implements
+        AsyncResponseProcessor<RESPONSE_TYPE> {
 
     /**
      * Create an AsyncRequest and bind it to its target targetReactor.
@@ -152,8 +152,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
      * The processAsyncRequest method will be invoked by the target Reactor on its own thread
      * when the AsyncRequest is dequeued from the target inbox for processing.
      */
-    abstract protected void processAsyncRequest()
-            throws Exception;
+    abstract protected void processAsyncRequest() throws Exception;
 
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE _response)
@@ -184,7 +183,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
      *
      * @param _response An exception.
      */
-    public void processAsyncException(final Exception _response) throws Exception {
+    public void processAsyncException(final Exception _response)
+            throws Exception {
         processObjectResponse(_response);
     }
 
@@ -198,20 +198,21 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
      * @param <RT>     The type of value returned.
      */
     protected <RT> void send(final RequestBase<RT> _request,
-                             final AsyncResponseProcessor<RT> _responseProcessor)
+            final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
         RequestBase.doSend(targetReactor, _request, _responseProcessor);
     }
 
     protected <RT, RT2> void send(final RequestBase<RT> _request,
-                             final AsyncResponseProcessor<RT2> _dis,
-                             final RT2 _fixedResponse)
+            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
             throws Exception {
-        RequestBase.doSend(targetReactor, _request, new AsyncResponseProcessor<RT>() {
-            @Override
-            public void processAsyncResponse(RT _response) throws Exception {
-                _dis.processAsyncResponse(_fixedResponse);
-            }
-        });
+        RequestBase.doSend(targetReactor, _request,
+                new AsyncResponseProcessor<RT>() {
+                    @Override
+                    public void processAsyncResponse(final RT _response)
+                            throws Exception {
+                        _dis.processAsyncResponse(_fixedResponse);
+                    }
+                });
     }
 }

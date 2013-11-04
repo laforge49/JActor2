@@ -5,7 +5,7 @@ public interface JALong extends FLenS<Long> {
     /**
      * Size of a serialized JALong in bytes.
      */
-    public final static int LENGTH = 8;
+    public static final int LENGTH = 8;
 
     /**
      * Factory name for JALong.

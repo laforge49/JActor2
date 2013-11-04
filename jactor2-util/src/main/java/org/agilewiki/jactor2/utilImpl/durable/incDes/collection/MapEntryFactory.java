@@ -14,23 +14,24 @@ import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
  */
 public class MapEntryFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator _factoryLocator,
-                                       String actorType,
-                                       String keyType,
-                                       String valueType) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
-                actorType, keyType, valueType));
+    public static void registerFactory(final FactoryLocator _factoryLocator,
+            final String actorType, final String keyType, final String valueType)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new MapEntryFactory(actorType, keyType,
+                        valueType));
     }
 
-    private String keyType;
-    private String valueType;
+    private final String keyType;
+    private final String valueType;
 
     /**
      * Create an FactoryImpl.
      *
      * @param jidType The jid type.
      */
-    public MapEntryFactory(String jidType, String keyType, String valueType) {
+    public MapEntryFactory(final String jidType, final String keyType,
+            final String valueType) {
         super(jidType);
         this.keyType = keyType;
         this.valueType = valueType;
@@ -54,11 +55,13 @@ public class MapEntryFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public MapEntryImpl newSerializable(Reactor reactor, Ancestor parent) throws Exception {
-        MapEntryImpl me = (MapEntryImpl) super.newSerializable(reactor, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(reactor);
-        Factory keyFactory = fl.getFactory(keyType);
-        Factory valueFactory = fl.getFactory(valueType);
+    public MapEntryImpl newSerializable(final Reactor reactor,
+            final Ancestor parent) throws Exception {
+        final MapEntryImpl me = (MapEntryImpl) super.newSerializable(reactor,
+                parent);
+        final FactoryLocator fl = Durables.getFactoryLocator(reactor);
+        final Factory keyFactory = fl.getFactory(keyType);
+        final Factory valueFactory = fl.getFactory(valueType);
         me.setFactories(keyFactory, valueFactory);
         return me;
     }

@@ -7,8 +7,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 public class EndStage extends BladeBase implements DataProcessor {
 
-    public EndStage(final Facility _facility)
-            throws Exception {
+    public EndStage(final Facility _facility) throws Exception {
         initialize(new IsolationReactor(_facility));
     }
 

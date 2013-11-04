@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -34,8 +35,7 @@ class Driver extends BladeBase {
             AsyncRequest<String> dis = this;
 
             @Override
-            protected void processAsyncRequest()
-                    throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 final BoundResponseProcessor<String> boundResponseProcessor = new BoundResponseProcessor<String>(
                         Driver.this, dis);
                 final Application application = new Application(

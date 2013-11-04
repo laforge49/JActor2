@@ -5,10 +5,12 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-abstract public class Subscription<CONTENT, RESPONSE> extends BladeBase implements AutoCloseable {
+abstract public class Subscription<CONTENT, RESPONSE> extends BladeBase
+        implements AutoCloseable {
     public final RequestBus<CONTENT, RESPONSE> requestBus;
 
-    public Subscription(final NonBlockingReactor _reactor, final RequestBus<CONTENT, RESPONSE> _requestBus) throws Exception {
+    public Subscription(final NonBlockingReactor _reactor,
+            final RequestBus<CONTENT, RESPONSE> _requestBus) throws Exception {
         initialize(_reactor);
         requestBus = _requestBus;
     }
@@ -27,15 +29,21 @@ abstract public class Subscription<CONTENT, RESPONSE> extends BladeBase implemen
             @Override
             protected void processAsyncRequest() throws Exception {
                 if (getReactor() != requestBus.getReactor()) {
-                    send(getReactor().getFacility().addAutoClosableSReq(Subscription.this),
+                    send(getReactor().getFacility().addAutoClosableSReq(
+                            Subscription.this),
                             new AsyncResponseProcessor<Boolean>() {
                                 @Override
-                                public void processAsyncResponse(Boolean _response) throws Exception {
-                                    send(requestBus.subscribeSReq(Subscription.this), dis);
+                                public void processAsyncResponse(
+                                        final Boolean _response)
+                                        throws Exception {
+                                    send(requestBus
+                                            .subscribeSReq(Subscription.this),
+                                            dis);
                                 }
                             });
-                } else
+                } else {
                     send(requestBus.subscribeSReq(Subscription.this), dis);
+                }
             }
         };
     }
@@ -47,15 +55,21 @@ abstract public class Subscription<CONTENT, RESPONSE> extends BladeBase implemen
             @Override
             protected void processAsyncRequest() throws Exception {
                 if (getReactor() != requestBus.getReactor()) {
-                    send(getReactor().getFacility().removeAutoClosableSReq(Subscription.this),
+                    send(getReactor().getFacility().removeAutoClosableSReq(
+                            Subscription.this),
                             new AsyncResponseProcessor<Boolean>() {
                                 @Override
-                                public void processAsyncResponse(Boolean _response) throws Exception {
-                                    send(requestBus.unsubscribeSReq(Subscription.this), dis);
+                                public void processAsyncResponse(
+                                        final Boolean _response)
+                                        throws Exception {
+                                    send(requestBus
+                                            .unsubscribeSReq(Subscription.this),
+                                            dis);
                                 }
                             });
-                } else
+                } else {
                     send(requestBus.unsubscribeSReq(Subscription.this), dis);
+                }
             }
         };
     }

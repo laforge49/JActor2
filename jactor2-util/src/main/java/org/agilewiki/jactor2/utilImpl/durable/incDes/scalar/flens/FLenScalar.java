@@ -8,9 +8,9 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.Scalar;
  * A JID actor that holds a fixed-length value.
  * The value is always present.
  */
-abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
-        extends Scalar<RESPONSE_TYPE, RESPONSE_TYPE>
-        implements ComparableKey<RESPONSE_TYPE> {
+abstract public class FLenScalar<RESPONSE_TYPE extends Comparable> extends
+        Scalar<RESPONSE_TYPE, RESPONSE_TYPE> implements
+        ComparableKey<RESPONSE_TYPE> {
 
     /**
      * The value.
@@ -30,8 +30,7 @@ abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(final ReadableBytes readableBytes) throws Exception {
         super.load(readableBytes);
         readableBytes.skip(getSerializedLength());
         value = null;
@@ -44,8 +43,9 @@ abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
      */
     @Override
     public void setValue(final RESPONSE_TYPE v) {
-        if (v.equals(value))
+        if (v.equals(value)) {
             return;
+        }
         value = v;
         serializedBytes = null;
         serializedOffset = -1;
@@ -59,8 +59,7 @@ abstract public class FLenScalar<RESPONSE_TYPE extends Comparable>
      * @return The result of a compareTo(o).
      */
     @Override
-    public int compareKeyTo(RESPONSE_TYPE o)
-            throws Exception {
+    public int compareKeyTo(final RESPONSE_TYPE o) throws Exception {
         return getValue().compareTo(o);
     }
 }

@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.messages.Message;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.agilewiki.jactor2.core.messages.Message;
 
 /**
  * The inbox used by IsolationReactor, the next request is not made available for processing
@@ -37,11 +37,15 @@ public class IsolationInbox extends Inbox {
     public IsolationInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
         if (initialLocalQueueSize > DEFAULT_INITIAL_LOCAL_QUEUE_SIZE) {
-            localResponsePendingQueue = new ArrayDeque<Message>(initialLocalQueueSize);
-            localNoResponsePendingQueue = new ArrayDeque<Message>(initialLocalQueueSize);
+            localResponsePendingQueue = new ArrayDeque<Message>(
+                    initialLocalQueueSize);
+            localNoResponsePendingQueue = new ArrayDeque<Message>(
+                    initialLocalQueueSize);
         } else {
-            localResponsePendingQueue = new ArrayDeque<Message>(DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
-            localNoResponsePendingQueue = new ArrayDeque<Message>(DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
+            localResponsePendingQueue = new ArrayDeque<Message>(
+                    DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
+            localNoResponsePendingQueue = new ArrayDeque<Message>(
+                    DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
         }
     }
 
@@ -52,7 +56,7 @@ public class IsolationInbox extends Inbox {
      */
     private void offerLocal(final Queue<Message> _msgs) {
         while (!_msgs.isEmpty()) {
-            Message msg = _msgs.poll();
+            final Message msg = _msgs.poll();
             offerLocal(msg);
         }
     }
@@ -61,15 +65,16 @@ public class IsolationInbox extends Inbox {
     protected void offerLocal(final Message msg) {
         if (msg.isResponsePending()) {
             localResponsePendingQueue.offer(msg);
-        } else
+        } else {
             localNoResponsePendingQueue.offer(msg);
+        }
     }
 
     @Override
     public boolean isEmpty() {
-        return localResponsePendingQueue.isEmpty() &&
-                localNoResponsePendingQueue.isEmpty() &&
-                concurrentQueue.peek() == null;
+        return localResponsePendingQueue.isEmpty()
+                && localNoResponsePendingQueue.isEmpty()
+                && (concurrentQueue.peek() == null);
     }
 
     @Override
@@ -79,13 +84,14 @@ public class IsolationInbox extends Inbox {
 
     @Override
     public boolean hasWork() {
-        while (localNoResponsePendingQueue.isEmpty() &&
-                (processingRequest || localResponsePendingQueue.isEmpty())) {
-            Object obj = concurrentQueue.poll();
-            if (obj == null)
+        while (localNoResponsePendingQueue.isEmpty()
+                && (processingRequest || localResponsePendingQueue.isEmpty())) {
+            final Object obj = concurrentQueue.poll();
+            if (obj == null) {
                 return false;
+            }
             if (obj instanceof Message) {
-                Message msg = (Message) obj;
+                final Message msg = (Message) obj;
                 offerLocal(msg);
             } else {
                 final Queue<Message> msgs = (Queue<Message>) obj;
@@ -97,9 +103,10 @@ public class IsolationInbox extends Inbox {
 
     @Override
     public Message poll() {
-        if (!hasWork())
+        if (!hasWork()) {
             return null;
-        Message msg = localNoResponsePendingQueue.poll();
+        }
+        final Message msg = localNoResponsePendingQueue.poll();
         if (msg != null) {
             return msg;
         } else {
@@ -109,15 +116,17 @@ public class IsolationInbox extends Inbox {
 
     @Override
     public void requestBegin() {
-        if (processingRequest)
+        if (processingRequest) {
             throw new IllegalStateException("already processing a request");
+        }
         processingRequest = true;
     }
 
     @Override
     public void requestEnd() {
-        if (!processingRequest)
+        if (!processingRequest) {
             throw new IllegalStateException("not processing a request");
+        }
         processingRequest = false;
     }
 }

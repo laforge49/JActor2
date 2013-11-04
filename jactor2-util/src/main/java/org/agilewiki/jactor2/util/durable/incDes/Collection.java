@@ -17,8 +17,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
      *
      * @return The size.
      */
-    int size()
-            throws Exception;
+    int size() throws Exception;
 
     /**
      * Returns a request that gets the ith element.
@@ -34,8 +33,7 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
      * @param _i An index, where 0 is the first element and -1 is the last element.
      * @return The ith element, or null if the index is out of range.
      */
-    ENTRY_TYPE iGet(final int _i)
-            throws Exception;
+    ENTRY_TYPE iGet(final int _i) throws Exception;
 
     /**
      * Returns a request that updates an existing serializable object.
@@ -54,6 +52,5 @@ public interface Collection<ENTRY_TYPE extends JASerializable> extends IncDes {
      * @param _i     An index, where 0 is the first element and -1 is the last element.
      * @param _bytes The new content.
      */
-    void iSet(final int _i, final byte[] _bytes)
-            throws Exception;
+    void iSet(final int _i, final byte[] _bytes) throws Exception;
 }

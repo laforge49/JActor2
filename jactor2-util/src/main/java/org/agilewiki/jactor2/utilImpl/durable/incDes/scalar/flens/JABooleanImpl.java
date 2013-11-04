@@ -14,11 +14,12 @@ import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
 /**
  * A JID actor that holds a boolean.
  */
-public class JABooleanImpl
-        extends FLenScalar<Boolean> implements JABoolean {
+public class JABooleanImpl extends FLenScalar<Boolean> implements JABoolean {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JABoolean.FACTORY_NAME) {
+    public static void registerFactory(final FactoryLocator _factoryLocator)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(
+                JABoolean.FACTORY_NAME) {
             @Override
             final protected JABooleanImpl instantiateBlade() {
                 return new JABooleanImpl();
@@ -53,9 +54,10 @@ public class JABooleanImpl
      */
     @Override
     public Boolean getValue() {
-        if (value != null)
+        if (value != null) {
             return value;
-        ReadableBytes readableBytes = readable();
+        }
+        final ReadableBytes readableBytes = readable();
         value = readableBytes.readBoolean();
         return value;
     }
@@ -87,13 +89,13 @@ public class JABooleanImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
-        appendableBytes.writeBoolean(((Boolean) value).booleanValue());
+    protected void serialize(final AppendableBytes appendableBytes) {
+        appendableBytes.writeBoolean(value.booleanValue());
     }
 
     @Override
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

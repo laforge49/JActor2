@@ -18,8 +18,9 @@ public class BladeB {
      * @param _request        The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
      */
-    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
-                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+    protected <RESPONSE_TYPE> void send(
+            final RequestBase<RESPONSE_TYPE> _request,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         RequestBase.doSend(reactor, _request, _responseProcessor);
     }
@@ -29,8 +30,7 @@ public class BladeB {
             AsyncRequest<Void> dis = this;
 
             @Override
-            protected void processAsyncRequest()
-                    throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 send(bladeA.throwRequest, this);
             }
         };

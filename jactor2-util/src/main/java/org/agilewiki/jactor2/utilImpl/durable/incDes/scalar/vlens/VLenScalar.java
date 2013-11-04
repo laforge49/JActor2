@@ -12,8 +12,8 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.Scalar;
 /**
  * A JID component that holds a variable-length value, or null.
  */
-abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
-        extends Scalar<SET_TYPE, RESPONSE_TYPE> {
+abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE> extends
+        Scalar<SET_TYPE, RESPONSE_TYPE> {
 
     /**
      * Holds the value, or null.
@@ -27,6 +27,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
 
     public AsyncRequest<Void> clearReq() {
         return new AsyncBladeRequest<Void>() {
+            @Override
             protected void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
@@ -40,16 +41,16 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param v The value.
      * @return True if a new value is created.
      */
-    abstract public Boolean makeValue(SET_TYPE v)
-            throws Exception;
+    abstract public Boolean makeValue(SET_TYPE v) throws Exception;
 
     /**
      * Clear the content.
      */
     public void clear() {
-        if (len == -1)
+        if (len == -1) {
             return;
-        int l = len;
+        }
+        final int l = len;
         value = null;
         serializedBytes = null;
         serializedOffset = -1;
@@ -63,10 +64,10 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength()
-            throws Exception {
-        if (len == -1)
+    public int getSerializedLength() throws Exception {
+        if (len == -1) {
             return JAInteger.LENGTH;
+        }
         return JAInteger.LENGTH + len;
     }
 
@@ -76,9 +77,8 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param readableBytes Holds the serialized data.
      * @return The size of the serialized data (exclusive of its length header).
      */
-    protected int loadLen(ReadableBytes readableBytes)
-            throws Exception {
-        int l = readableBytes.readInt();
+    protected int loadLen(final ReadableBytes readableBytes) throws Exception {
+        final int l = readableBytes.readInt();
         return l;
     }
 
@@ -87,7 +87,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      *
      * @param appendableBytes The object written to.
      */
-    protected void saveLen(AppendableBytes appendableBytes)
+    protected void saveLen(final AppendableBytes appendableBytes)
             throws Exception {
         appendableBytes.writeInt(len);
     }
@@ -97,8 +97,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      *
      * @param readableBytes Holds the serialized data.
      */
-    protected void skipLen(ReadableBytes readableBytes)
-            throws Exception {
+    protected void skipLen(final ReadableBytes readableBytes) throws Exception {
         readableBytes.skip(JAInteger.LENGTH);
     }
 
@@ -108,11 +107,12 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param lengthChange The change in the size of the serialized data.
      */
     @Override
-    public void change(int lengthChange) {
-        if (len == -1)
+    public void change(final int lengthChange) {
+        if (len == -1) {
             len = lengthChange;
-        else
+        } else {
             len += lengthChange;
+        }
         super.change(lengthChange);
     }
 
@@ -122,17 +122,18 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE>
      * @param readableBytes Holds the immutable serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(final ReadableBytes readableBytes) throws Exception {
         super.load(readableBytes);
         len = loadLen(readableBytes);
         value = null;
-        if (len > -1)
+        if (len > -1) {
             readableBytes.skip(len);
+        }
     }
 
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    @Override
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.messages.Message;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.agilewiki.jactor2.core.messages.Message;
 
 /**
  * The inbox used by NonBlockingReactor, ThreadBoundReactor
@@ -26,16 +26,19 @@ public class NonBlockingInbox extends Inbox {
      */
     public NonBlockingInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
-        if (initialLocalQueueSize > DEFAULT_INITIAL_LOCAL_QUEUE_SIZE)
+        if (initialLocalQueueSize > DEFAULT_INITIAL_LOCAL_QUEUE_SIZE) {
             localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
-        else
-            localQueue = new ArrayDeque<Object>(DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
+        } else {
+            localQueue = new ArrayDeque<Object>(
+                    DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
+        }
     }
 
     @Override
     public boolean hasWork() {
         //ConcurrentLinkedQueue.isEmpty() is not accurate enough
-        boolean rv = !localQueue.isEmpty() || concurrentQueue.peek() != null;
+        final boolean rv = !localQueue.isEmpty()
+                || (concurrentQueue.peek() != null);
         return rv;
     }
 

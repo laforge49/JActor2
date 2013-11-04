@@ -5,7 +5,8 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 /**
  * Base class for sync facility requests.
  */
-abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends
+        AsyncRequest<RESPONSE_TYPE> {
 
     private final Facility facility;
 
@@ -25,7 +26,8 @@ abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends AsyncRequest<R
      * @param _closeable The autoclosable to be added to the list.
      * @return True if the AutoClosable was added.
      */
-    protected boolean addAutoClosable(final AutoCloseable _closeable) throws Exception {
+    protected boolean addAutoClosable(final AutoCloseable _closeable)
+            throws Exception {
         return local(facility.addAutoClosableSReq(_closeable));
     }
 
@@ -35,7 +37,8 @@ abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends AsyncRequest<R
      * @param _closeable The autoclosable to be removed.
      * @return True if the AutoClosable was removed.
      */
-    protected boolean removeAutoClosable(final AutoCloseable _closeable) throws Exception {
+    protected boolean removeAutoClosable(final AutoCloseable _closeable)
+            throws Exception {
         return local(facility.removeAutoClosableSReq(_closeable));
     }
 

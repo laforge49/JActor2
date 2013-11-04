@@ -8,8 +8,7 @@ import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-abstract public class TransactionProcessor
-        <STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES extends ImmutableChanges, IMMUTABLE_STATE>
+abstract public class TransactionProcessor<STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES extends ImmutableChanges, IMMUTABLE_STATE>
         extends BladeBase {
     protected IMMUTABLE_STATE immutableState;
     private final CommonReactor commonReactor;
@@ -17,17 +16,19 @@ abstract public class TransactionProcessor
     final private RequestBus<IMMUTABLE_CHANGES, Void> changeBus;
 
     public TransactionProcessor(final IsolationReactor _isolationReactor,
-                                final IMMUTABLE_STATE _immutableState) throws Exception {
-        this(_isolationReactor, new NonBlockingReactor(_isolationReactor.getFacility()), _immutableState);
+            final IMMUTABLE_STATE _immutableState) throws Exception {
+        this(_isolationReactor, new NonBlockingReactor(
+                _isolationReactor.getFacility()), _immutableState);
     }
 
     public TransactionProcessor(final IsolationReactor _isolationReactor,
-                                final NonBlockingReactor _commonReactor,
-                                final IMMUTABLE_STATE _immutableState) throws Exception {
+            final NonBlockingReactor _commonReactor,
+            final IMMUTABLE_STATE _immutableState) throws Exception {
         initialize(_isolationReactor);
         commonReactor = _commonReactor;
         immutableState = _immutableState;
-        validationBus = new ValidationBus<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>(_commonReactor);
+        validationBus = new ValidationBus<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>(
+                _commonReactor);
         changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(_commonReactor);
     }
 
@@ -41,24 +42,24 @@ abstract public class TransactionProcessor
         return immutableState;
     }
 
-    public AsyncRequest<ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>>
-    addValidatorAReq(
+    public AsyncRequest<ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>> addValidatorAReq(
             final Validator<IMMUTABLE_CHANGES> _validator) {
         return new AsyncBladeRequest<ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>>() {
-            AsyncResponseProcessor<ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>>
-                    dis = this;
+            AsyncResponseProcessor<ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>> dis = this;
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                final ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> subscription =
-                        new ValidationSubscription
-                                <STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>(_validator, validationBus);
-                send(subscription.subscribeAReq(), new AsyncResponseProcessor<Boolean>() {
-                    @Override
-                    public void processAsyncResponse(Boolean _response) throws Exception {
-                        dis.processAsyncResponse(_response ? subscription : null);
-                    }
-                });
+                final ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE> subscription = new ValidationSubscription<STATE, STATE_WRAPPER, IMMUTABLE_CHANGES, IMMUTABLE_STATE>(
+                        _validator, validationBus);
+                send(subscription.subscribeAReq(),
+                        new AsyncResponseProcessor<Boolean>() {
+                            @Override
+                            public void processAsyncResponse(
+                                    final Boolean _response) throws Exception {
+                                dis.processAsyncResponse(_response ? subscription
+                                        : null);
+                            }
+                        });
             }
         };
     }
@@ -70,19 +71,23 @@ abstract public class TransactionProcessor
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                final ChangeSubscription<IMMUTABLE_CHANGES> subscription =
-                        new ChangeSubscription<IMMUTABLE_CHANGES>(_changeNotificationSubscriber, changeBus);
-                send(subscription.subscribeAReq(), new AsyncResponseProcessor<Boolean>() {
-                    @Override
-                    public void processAsyncResponse(Boolean _response) throws Exception {
-                        dis.processAsyncResponse(_response ? subscription : null);
-                    }
-                });
+                final ChangeSubscription<IMMUTABLE_CHANGES> subscription = new ChangeSubscription<IMMUTABLE_CHANGES>(
+                        _changeNotificationSubscriber, changeBus);
+                send(subscription.subscribeAReq(),
+                        new AsyncResponseProcessor<Boolean>() {
+                            @Override
+                            public void processAsyncResponse(
+                                    final Boolean _response) throws Exception {
+                                dis.processAsyncResponse(_response ? subscription
+                                        : null);
+                            }
+                        });
             }
         };
     }
 
-    public AsyncRequest<Void> processTransactionAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
+    public AsyncRequest<Void> processTransactionAReq(
+            final Transaction<STATE_WRAPPER> _transaction) throws Exception {
         return new AsyncBladeRequest<Void>() {
 
             @Override
@@ -92,7 +97,8 @@ abstract public class TransactionProcessor
         };
     }
 
-    private AsyncRequest<Void> ptAReq(final Transaction<STATE_WRAPPER> _transaction) throws Exception {
+    private AsyncRequest<Void> ptAReq(
+            final Transaction<STATE_WRAPPER> _transaction) throws Exception {
         return new AsyncRequest<Void>(commonReactor) {
             AsyncResponseProcessor<Void> dis = this;
             STATE_WRAPPER stateWrapper;
@@ -100,10 +106,11 @@ abstract public class TransactionProcessor
 
             AsyncResponseProcessor<String> validatorsResponseProcessor = new AsyncResponseProcessor<String>() {
                 @Override
-                public void processAsyncResponse(String _error) throws Exception {
-                    if (_error != null)
+                public void processAsyncResponse(final String _error)
+                        throws Exception {
+                    if (_error != null) {
                         throw new IllegalArgumentException(_error);
-                    else {
+                    } else {
                         newImmutableState();
                         send(changeBus.signalSReq(changes), dis, null);
                     }
@@ -112,17 +119,20 @@ abstract public class TransactionProcessor
 
             AsyncResponseProcessor<Void> updateResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
                     stateWrapper.close();
                     changes = newChanges();
-                    send(validationBus.sendAReq(changes), validatorsResponseProcessor);
+                    send(validationBus.sendAReq(changes),
+                            validatorsResponseProcessor);
                 }
             };
 
             @Override
             protected void processAsyncRequest() throws Exception {
                 stateWrapper = newStateWrapper();
-                send(_transaction.updateAReq(stateWrapper), updateResponseProcessor);
+                send(_transaction.updateAReq(stateWrapper),
+                        updateResponseProcessor);
             }
         };
     }

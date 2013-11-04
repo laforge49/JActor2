@@ -13,9 +13,9 @@ import org.agilewiki.jactor2.utilImpl.durable.FactoryImpl;
  */
 public abstract class AppFactory extends FactoryImpl {
     private Factory[] tupleFactories;
-    private String[] jidTypes;
+    private final String[] jidTypes;
 
-    public AppFactory(String subActorType) {
+    public AppFactory(final String subActorType) {
         super(subActorType);
         this.jidTypes = new String[0];
     }
@@ -26,7 +26,7 @@ public abstract class AppFactory extends FactoryImpl {
      * @param subJidType The jid type.
      * @param jidTypes   The element types.
      */
-    public AppFactory(String subJidType, String... jidTypes) {
+    public AppFactory(final String subJidType, final String... jidTypes) {
         super(subJidType);
         this.jidTypes = jidTypes;
     }
@@ -42,13 +42,14 @@ public abstract class AppFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public App newSerializable(Reactor reactor, Ancestor parent) throws Exception {
-        App a = instantiateBlade();
-        DurableImpl tj = new DurableImpl();
+    public App newSerializable(final Reactor reactor, final Ancestor parent)
+            throws Exception {
+        final App a = instantiateBlade();
+        final DurableImpl tj = new DurableImpl();
         a.setDurable(tj);
         tj.initialize(reactor, parent, this);
-        FactoryLocator fl = Durables.getFactoryLocator(reactor);
-        Factory[] afs = new FactoryImpl[jidTypes.length];
+        final FactoryLocator fl = Durables.getFactoryLocator(reactor);
+        final Factory[] afs = new FactoryImpl[jidTypes.length];
         int i = 0;
         while (i < jidTypes.length) {
             afs[i] = fl.getFactory(jidTypes[i]);

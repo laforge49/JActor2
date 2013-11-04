@@ -6,4 +6,7 @@ package org.agilewiki.jactor2.core.facilities;
  * This becomes important when working with OSGi and each bundle has its own lifecycle.
  */
 public class ServiceClosedException extends Exception {
+
+    /**  */
+    private static final long serialVersionUID = 1L;
 }

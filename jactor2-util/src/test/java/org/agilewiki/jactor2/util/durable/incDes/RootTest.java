@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -10,41 +11,47 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class RootTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
-            Factory rootFactory = factoryLocator.getFactory(Root.FACTORY_NAME);
-            Reactor reactor = new NonBlockingReactor(plant);
-            Root root1 = (Root) rootFactory.newSerializable(reactor, factoryLocator);
+            final FactoryLocator factoryLocator = Durables
+                    .getFactoryLocator(plant);
+            final Factory rootFactory = factoryLocator
+                    .getFactory(Root.FACTORY_NAME);
+            final Reactor reactor = new NonBlockingReactor(plant);
+            final Root root1 = (Root) rootFactory.newSerializable(reactor,
+                    factoryLocator);
             int sl = root1.getSerializedLength();
             //assertEquals(56, sl);
             root1.clearReq().call();
             sl = root1.getSerializedLength();
             //assertEquals(56, sl);
-            IncDes rootJid1a = (IncDes) root1.getValueReq().call();
+            final IncDes rootJid1a = (IncDes) root1.getValueReq().call();
             assertNull(rootJid1a);
             IncDes rpa = (IncDes) root1.resolvePathnameReq("0").call();
             assertNull(rpa);
-            Root root11 = (Root) root1.copyReq(null).call();
+            final Root root11 = (Root) root1.copyReq(null).call();
             assertNotNull(root11);
             sl = root11.getSerializedLength();
             //assertEquals(56, sl);
             rpa = (IncDes) root11.resolvePathnameReq("0").call();
             assertNull(rpa);
 
-            Factory stringAFactory = factoryLocator.getFactory(JAString.FACTORY_NAME);
-            JAString jaString1 = (JAString) stringAFactory.newSerializable(reactor, factoryLocator);
+            final Factory stringAFactory = factoryLocator
+                    .getFactory(JAString.FACTORY_NAME);
+            final JAString jaString1 = (JAString) stringAFactory
+                    .newSerializable(reactor, factoryLocator);
             jaString1.setValueReq("abc").call();
-            byte[] sb = jaString1.getSerializedBytesReq().call();
+            final byte[] sb = jaString1.getSerializedBytesReq().call();
             root1.setValueReq(jaString1.getFactoryName(), sb).call();
-            JAString sj = (JAString) root1.getValueReq().call();
+            final JAString sj = (JAString) root1.getValueReq().call();
             assertEquals("abc", sj.getValueReq().call());
 
-            Root root2 = (Root) rootFactory.newSerializable(reactor, factoryLocator);
+            final Root root2 = (Root) rootFactory.newSerializable(reactor,
+                    factoryLocator);
             sl = root2.getSerializedLength();
             //assertEquals(56, sl);
             root2.setValueReq(IncDes.FACTORY_NAME).call();
-            boolean made = root2.makeValueReq(IncDes.FACTORY_NAME).call();
+            final boolean made = root2.makeValueReq(IncDes.FACTORY_NAME).call();
             assertEquals(false, made);
             IncDes incDes2a = (IncDes) root2.getValueReq().call();
             assertNotNull(incDes2a);
@@ -55,7 +62,7 @@ public class RootTest extends TestCase {
             rpa = (IncDes) root2.resolvePathnameReq("0").call();
             assertNotNull(rpa);
             assertEquals(rpa, incDes2a);
-            Root root22 = (Root) root2.copyReq(null).call();
+            final Root root22 = (Root) root2.copyReq(null).call();
             root2.clearReq().call();
             sl = root2.getSerializedLength();
             //assertEquals(56, sl);

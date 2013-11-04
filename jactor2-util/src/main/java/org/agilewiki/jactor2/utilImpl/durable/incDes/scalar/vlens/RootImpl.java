@@ -22,8 +22,10 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.IncDesImpl;
  */
 public class RootImpl extends BoxImpl implements Root {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Root.FACTORY_NAME) {
+    public static void registerFactory(final FactoryLocator _factoryLocator)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(
+                Root.FACTORY_NAME) {
             @Override
             final protected RootImpl instantiateBlade() {
                 return new RootImpl();
@@ -34,18 +36,20 @@ public class RootImpl extends BoxImpl implements Root {
     private JAString bundleLocation;
 
     @Override
-    public String getBundleLocation()
-            throws Exception {
+    public String getBundleLocation() throws Exception {
         return bundleLocation.getValue();
     }
 
     @Override
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
-        FactoryLocator factoryLocator = Durables.getFactoryLocator(getReactor());
-        bundleLocation = (JAString) Durables.newSerializable(JAString.FACTORY_NAME, reactor);
-        bundleLocation.setValue(((FactoryLocatorImpl) factoryLocator).getLocation());
+        final FactoryLocator factoryLocator = Durables
+                .getFactoryLocator(getReactor());
+        bundleLocation = (JAString) Durables.newSerializable(
+                JAString.FACTORY_NAME, reactor);
+        bundleLocation.setValue(((FactoryLocatorImpl) factoryLocator)
+                .getLocation());
     }
 
     /**
@@ -55,7 +59,7 @@ public class RootImpl extends BoxImpl implements Root {
      * @param containerJid The container, or null.
      */
     @Override
-    public void setContainerJid(IncDesImpl containerJid) {
+    public void setContainerJid(final IncDesImpl containerJid) {
         throw new UnsupportedOperationException();
     }
 
@@ -66,12 +70,12 @@ public class RootImpl extends BoxImpl implements Root {
      * @return The size of the remaining bytes of serialized data.
      */
     @Override
-    protected int loadLen(ReadableBytes readableBytes)
-            throws Exception {
+    protected int loadLen(final ReadableBytes readableBytes) throws Exception {
         ((JAStringImpl) bundleLocation).load(readableBytes);
-        int l = readableBytes.remaining();
-        if (l == 0)
+        final int l = readableBytes.remaining();
+        if (l == 0) {
             return -1;
+        }
         return l;
     }
 
@@ -81,8 +85,7 @@ public class RootImpl extends BoxImpl implements Root {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    protected void skipLen(ReadableBytes readableBytes)
-            throws Exception {
+    protected void skipLen(final ReadableBytes readableBytes) throws Exception {
         readableBytes.skip(bundleLocation.getSerializedLength());
     }
 
@@ -92,7 +95,7 @@ public class RootImpl extends BoxImpl implements Root {
      * @param appendableBytes The object written to.
      */
     @Override
-    protected void saveLen(AppendableBytes appendableBytes)
+    protected void saveLen(final AppendableBytes appendableBytes)
             throws Exception {
         ((IncDesImpl) bundleLocation).save(appendableBytes);
     }
@@ -103,20 +106,23 @@ public class RootImpl extends BoxImpl implements Root {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength()
-            throws Exception {
-        if (len == -1)
+    public int getSerializedLength() throws Exception {
+        if (len == -1) {
             return bundleLocation.getSerializedLength();
+        }
         return bundleLocation.getSerializedLength() + len;
     }
 
-    public JASerializable copy(Reactor m)
-            throws Exception {
+    @Override
+    public JASerializable copy(final Reactor m) throws Exception {
         Reactor mb = m;
-        if (mb == null)
+        if (mb == null) {
             mb = getReactor();
-        JASerializable jid = getFactory().newSerializable(mb, getParent());
-        ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(getSerializedBytes(), 0));
+        }
+        final JASerializable jid = getFactory()
+                .newSerializable(mb, getParent());
+        ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(
+                getSerializedBytes(), 0));
         return jid;
     }
 }

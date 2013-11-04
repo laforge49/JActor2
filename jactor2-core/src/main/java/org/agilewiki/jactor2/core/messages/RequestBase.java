@@ -1,5 +1,11 @@
 package org.agilewiki.jactor2.core.messages;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Semaphore;
+
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
@@ -9,12 +15,6 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Semaphore;
 
 public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
@@ -29,10 +29,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *                           that originally invoked this method. If null, then no response is returned.
      * @param <RESPONSE_TYPE>    The type of value returned.
      */
-    public static <RESPONSE_TYPE> void doSend(
-            final Reactor _source,
+    public static <RESPONSE_TYPE> void doSend(final Reactor _source,
             final RequestBase<RESPONSE_TYPE> _request,
-            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+            throws Exception {
         _request.doSend(_source, _responseProcessor);
     }
 
@@ -122,8 +122,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * exception if the request was already used.
      */
     protected void use() {
-        if (used)
+        if (used) {
             throw new IllegalStateException("Already used");
+        }
         used = true;
     }
 
@@ -154,45 +155,53 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *                           that originally invoked this method. If null, then no response is returned.
      */
     private void doSend(final Reactor _source,
-                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) throws Exception {
-        ReactorBase source = (ReactorBase) _source;
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+            throws Exception {
+        final ReactorBase source = (ReactorBase) _source;
         if (Plant.DEBUG) {
             if (source instanceof ThreadBoundReactor) {
-                if (Thread.currentThread() instanceof PoolThread)
+                if (Thread.currentThread() instanceof PoolThread) {
                     throw new IllegalStateException("send from wrong thread");
+                }
             } else {
-                if (source.getThreadReference().get() != Thread.currentThread())
+                if (source.getThreadReference().get() != Thread.currentThread()) {
                     throw new IllegalStateException("send from wrong thread");
+                }
             }
         }
-        if (!source.isRunning())
+        if (!source.isRunning()) {
             throw new IllegalStateException(
                     "A valid source sourceReactor can not be idle");
-        if (oldMessage != null && oldMessage.isIsolated()) {
+        }
+        if ((oldMessage != null) && oldMessage.isIsolated()) {
             isolated = true;
         }
-        if (source instanceof IsolationReactor)
+        if (source instanceof IsolationReactor) {
             isolated = true;
+        }
         if (targetReactor instanceof IsolationReactor) {
-            if (isolated && _responseProcessor != null) {
-                throw new UnsupportedOperationException("Isolated requests can not be nested, even indirectly.");
+            if (isolated && (_responseProcessor != null)) {
+                throw new UnsupportedOperationException(
+                        "Isolated requests can not be nested, even indirectly.");
             }
             isolated = true;
         }
         use();
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
-        if (rp == null)
+        if (rp == null) {
             rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
-        else
+        } else {
             addDebugPending();
+        }
         foreign = source.getFacility() != targetReactor.getFacility();
         messageSource = source;
         oldMessage = source.getCurrentMessage();
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
-        boolean local = targetReactor == source;
-        if (local || !source.buffer(this, targetReactor))
+        final boolean local = targetReactor == source;
+        if (local || !source.buffer(this, targetReactor)) {
             targetReactor.unbufferedAddMessage(this, local);
+        }
     }
 
     /**
@@ -206,8 +215,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
-        if (Thread.currentThread() instanceof PoolThread)
-            throw new UnsupportedOperationException("Use of call on a PoolThread can result in a deadlock");
+        if (Thread.currentThread() instanceof PoolThread) {
+            throw new UnsupportedOperationException(
+                    "Use of call on a PoolThread can result in a deadlock");
+        }
         if (Plant.DEBUG) {
             addDebugPending();
         }
@@ -224,11 +235,12 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     private void addDebugPending() {
         if (Plant.DEBUG) {
             debugTimestamp = System.nanoTime();
-            Facility targetFacility = targetReactor.getFacility();
-            Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
+            final Facility targetFacility = targetReactor.getFacility();
+            final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
             Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet == null) {
-                nanoSet = Collections.newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>());
+                nanoSet = Collections
+                        .newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>());
             }
             pendingRequests.put(debugTimestamp, nanoSet);
         }
@@ -239,14 +251,16 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *
      * @param _response the response being returned
      */
-    protected void setResponse(final Object _response, final Reactor _activeReactor) {
+    protected void setResponse(final Object _response,
+            final Reactor _activeReactor) {
         ((ReactorBase) _activeReactor).requestEnd();
         responsePending = false;
         response = _response;
         if (Plant.DEBUG) {
-            Facility targetFacility = targetReactor.getFacility();
-            Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
-            Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
+            final Facility targetFacility = targetReactor.getFacility();
+            final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
+            final Set<RequestBase> nanoSet = pendingRequests
+                    .get(debugTimestamp);
             if (nanoSet != null) {
                 nanoSet.remove(this);
                 if (nanoSet.isEmpty()) {
@@ -272,23 +286,30 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (Plant.DEBUG) {
             if (targetReactor instanceof ThreadBoundReactor) {
                 if (Thread.currentThread() instanceof PoolThread) {
-                    Exception ex = new IllegalStateException("response from wrong thread");
-                    targetReactor.getLogger().error("response from wrong thread", ex);
+                    final Exception ex = new IllegalStateException(
+                            "response from wrong thread");
+                    targetReactor.getLogger().error(
+                            "response from wrong thread", ex);
                     throw ex;
                 }
             } else {
-                if (targetReactor.getThreadReference().get() != Thread.currentThread()) {
-                    Exception ex = new IllegalStateException("response from wrong thread");
-                    targetReactor.getLogger().error("response from wrong thread", ex);
+                if (targetReactor.getThreadReference().get() != Thread
+                        .currentThread()) {
+                    final Exception ex = new IllegalStateException(
+                            "response from wrong thread");
+                    targetReactor.getLogger().error(
+                            "response from wrong thread", ex);
                     throw ex;
                 }
             }
         }
         final Facility facility = targetReactor.getFacility();
-        if (foreign)
+        if (foreign) {
             facility.removeAutoClosableSReq(RequestBase.this).signal();
-        if (!responsePending)
+        }
+        if (!responsePending) {
             return false;
+        }
         setResponse(_response, targetReactor);
         if (responseProcessor != SignalResponseProcessor.SINGLETON) {
             messageSource.incomingResponse(RequestBase.this, targetReactor);
@@ -318,8 +339,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     @Override
     public void close() {
-        if (!responsePending)
+        if (!responsePending) {
             return;
+        }
         responsePending = false;
         response = new ServiceClosedException();
         messageSource.incomingResponse(this, null);
@@ -332,22 +354,24 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     public void eval() {
         if (responsePending) {
             final Facility facility = targetReactor.getFacility();
-            if (foreign)
+            if (foreign) {
                 try {
                     facility.addAutoClosableSReq(this).signal();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                 }
+            }
             targetReactor.setExceptionHandler(null);
             targetReactor.setCurrentMessage(this);
             targetReactor.requestBegin();
             try {
                 processRequestMessage();
             } catch (final Exception e) {
-                if (foreign)
+                if (foreign) {
                     try {
                         facility.removeAutoClosableSReq(this).signal();
-                    } catch (Exception e1) {
+                    } catch (final Exception e1) {
                     }
+                }
                 processException(targetReactor, e);
             }
         } else {
@@ -364,11 +388,12 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * Process a response.
      */
     private void processResponseMessage() {
-        ReactorBase sourceMessageProcessor = (ReactorBase) messageSource;
+        final ReactorBase sourceMessageProcessor = (ReactorBase) messageSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);
         if (response instanceof Exception) {
-            oldMessage.processException(sourceMessageProcessor, (Exception) response);
+            oldMessage.processException(sourceMessageProcessor,
+                    (Exception) response);
             return;
         }
         try {
@@ -379,21 +404,27 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     @Override
-    public void processException(final Reactor _activeReactor, final Exception _e) {
-        ReactorBase activeMessageProcessor = (ReactorBase) _activeReactor;
-        ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor.getExceptionHandler();
+    public void processException(final Reactor _activeReactor,
+            final Exception _e) {
+        final ReactorBase activeMessageProcessor = (ReactorBase) _activeReactor;
+        final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
+                .getExceptionHandler();
         if (exceptionHandler != null) {
             try {
                 processObjectResponse(exceptionHandler.processException(_e));
             } catch (final Throwable u) {
                 if (!(responseProcessor instanceof SignalResponseProcessor)) {
-                    if (!responsePending)
+                    if (!responsePending) {
                         return;
+                    }
                     setResponse(u, activeMessageProcessor);
-                    messageSource.incomingResponse(this, activeMessageProcessor);
+                    messageSource
+                            .incomingResponse(this, activeMessageProcessor);
                 } else {
-                    activeMessageProcessor.getLogger().error("Thrown by exception handler and uncaught "
-                            + exceptionHandler.getClass().getName(), _e);
+                    activeMessageProcessor
+                            .getLogger()
+                            .error("Thrown by exception handler and uncaught "
+                                    + exceptionHandler.getClass().getName(), _e);
                 }
             }
         } else {
@@ -401,10 +432,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 return;
             }
             setResponse(_e, activeMessageProcessor);
-            if (!(responseProcessor instanceof SignalResponseProcessor))
+            if (!(responseProcessor instanceof SignalResponseProcessor)) {
                 messageSource.incomingResponse(this, activeMessageProcessor);
-            else {
-                activeMessageProcessor.getLogger().warn("Uncaught throwable", _e);
+            } else {
+                activeMessageProcessor.getLogger().warn("Uncaught throwable",
+                        _e);
             }
         }
     }
@@ -423,8 +455,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * @return The exception handler that was previously in effect, or null if the
      *         default exception handler was in effect.
      */
-    public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
-        ExceptionHandler<RESPONSE_TYPE> old = targetReactor.getExceptionHandler();
+    public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(
+            final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
+        final ExceptionHandler<RESPONSE_TYPE> old = targetReactor
+                .getExceptionHandler();
         targetReactor.setExceptionHandler(_exceptionHandler);
         return old;
     }
@@ -466,16 +500,18 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
          */
         Object pend() throws Exception {
             done.acquire();
-            if (result instanceof Exception)
+            if (result instanceof Exception) {
                 throw (Exception) result;
-            if (result instanceof Error)
+            }
+            if (result instanceof Error) {
                 throw (Error) result;
+            }
             return result;
         }
 
         @Override
         public void incomingResponse(final Message _message,
-                                     final Reactor _responseSource) {
+                final Reactor _responseSource) {
             result = ((RequestBase) _message).response;
             done.release();
         }
@@ -485,7 +521,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * A subclass of AsyncResponseProcessor that is used as a place holder when the RequestBase.call
      * method is used.
      */
-    final private static class CallResponseProcessor implements AsyncResponseProcessor<Object> {
+    final private static class CallResponseProcessor implements
+            AsyncResponseProcessor<Object> {
         /**
          * The singleton.
          */

@@ -18,8 +18,7 @@ public interface Durable extends IncDes {
      * @param _i The index.
      * @return The ith element, or null if the index is out of range.
      */
-    JASerializable _iGet(final int _i)
-            throws Exception;
+    JASerializable _iGet(final int _i) throws Exception;
 
     /**
      * Initialize an element.
@@ -28,8 +27,7 @@ public interface Durable extends IncDes {
      * @param _i     The index.
      * @param _bytes The serialized data used to initialize the element.
      */
-    void _iSetBytes(final int _i, final byte[] _bytes)
-            throws Exception;
+    void _iSetBytes(final int _i, final byte[] _bytes) throws Exception;
 
     /**
      * Resolves a pathname, returning a serializable object or null.

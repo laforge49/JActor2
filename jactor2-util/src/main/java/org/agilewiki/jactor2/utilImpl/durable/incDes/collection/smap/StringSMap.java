@@ -8,14 +8,17 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.IncDesImpl;
 /**
  * Holds a map with String keys.
  */
-public class StringSMap<VALUE_TYPE extends IncDesImpl> extends SMap<String, VALUE_TYPE> {
+public class StringSMap<VALUE_TYPE extends IncDesImpl> extends
+        SMap<String, VALUE_TYPE> {
     /**
      * Returns the IncDesFactory for the key.
      *
      * @return The IncDesFactory for the key.
      */
+    @Override
     final protected Factory getKeyFactory() throws Exception {
-        return Durables.getFactoryLocator(getReactor()).getFactory(JAString.FACTORY_NAME);
+        return Durables.getFactoryLocator(getReactor()).getFactory(
+                JAString.FACTORY_NAME);
     }
 
     /**
@@ -24,7 +27,8 @@ public class StringSMap<VALUE_TYPE extends IncDesImpl> extends SMap<String, VALU
      * @param skey The string to be converted.
      * @return The key.
      */
-    final protected String stringToKey(String skey) {
+    @Override
+    final protected String stringToKey(final String skey) {
         return skey;
     }
 }

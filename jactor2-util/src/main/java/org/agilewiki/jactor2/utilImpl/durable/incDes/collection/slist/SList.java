@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.slist;
 
+import java.util.ArrayList;
+
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -13,14 +15,11 @@ import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
 import org.agilewiki.jactor2.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.jactor2.utilImpl.durable.incDes.collection.CollectionImpl;
 
-import java.util.ArrayList;
-
 /**
  * Holds an ArrayList of JID actors, all of the same type.
  */
-public class SList<ENTRY_TYPE extends JASerializable>
-        extends CollectionImpl<ENTRY_TYPE>
-        implements JAList<ENTRY_TYPE> {
+public class SList<ENTRY_TYPE extends JASerializable> extends
+        CollectionImpl<ENTRY_TYPE> implements JAList<ENTRY_TYPE> {
 
     public int initialCapacity = 10;
 
@@ -34,6 +33,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
      */
     protected ArrayList<ENTRY_TYPE> list;
 
+    @Override
     public AsyncRequest<Void> emptyReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
@@ -50,8 +50,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
      * @return The size of the collection.
      */
     @Override
-    public int size()
-            throws Exception {
+    public int size() throws Exception {
         initializeList();
         return list.size();
     }
@@ -65,13 +64,14 @@ public class SList<ENTRY_TYPE extends JASerializable>
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public ENTRY_TYPE iGet(int i)
-            throws Exception {
+    public ENTRY_TYPE iGet(int i) throws Exception {
         initializeList();
-        if (i < 0)
+        if (i < 0) {
             i += list.size();
-        if (i < 0 || i >= list.size())
+        }
+        if ((i < 0) || (i >= list.size())) {
             return null;
+        }
         return list.get(i);
     }
 
@@ -82,7 +82,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
      */
     @Override
     public int getSerializedLength() {
-        return JAInteger.LENGTH * 2 + len;
+        return (JAInteger.LENGTH * 2) + len;
     }
 
     /**
@@ -91,8 +91,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(final ReadableBytes readableBytes) throws Exception {
         super.load(readableBytes);
         len = loadLen(readableBytes);
         list = null;
@@ -105,30 +104,32 @@ public class SList<ENTRY_TYPE extends JASerializable>
      * @return The IncDesFactory for of all the elements in the list.
      */
     protected Factory getEntryFactory() throws Exception {
-        if (entryFactory == null)
+        if (entryFactory == null) {
             throw new IllegalStateException("entryFactory uninitialized");
+        }
         return entryFactory;
     }
 
     /**
      * Perform lazy initialization.
      */
-    protected void initializeList()
-            throws Exception {
-        if (list != null)
+    protected void initializeList() throws Exception {
+        if (list != null) {
             return;
+        }
         entryFactory = getEntryFactory();
         if (!isSerialized()) {
             list = new ArrayList<ENTRY_TYPE>();
             return;
         }
-        ReadableBytes readableBytes = readable();
+        final ReadableBytes readableBytes = readable();
         skipLen(readableBytes);
-        int count = readableBytes.readInt();
+        final int count = readableBytes.readInt();
         list = new ArrayList<ENTRY_TYPE>(count);
         int i = 0;
         while (i < count) {
-            ENTRY_TYPE elementJid = (ENTRY_TYPE) createSubordinate(entryFactory, this, readableBytes);
+            final ENTRY_TYPE elementJid = (ENTRY_TYPE) createSubordinate(
+                    entryFactory, this, readableBytes);
             list.add(elementJid);
             i += 1;
         }
@@ -140,7 +141,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
+    protected void serialize(final AppendableBytes appendableBytes)
             throws Exception {
         saveLen(appendableBytes);
         appendableBytes.writeInt(size());
@@ -158,7 +159,7 @@ public class SList<ENTRY_TYPE extends JASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public JASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(final String pathname)
             throws Exception {
         initializeList();
         return super.resolvePathname(pathname);
@@ -171,19 +172,21 @@ public class SList<ENTRY_TYPE extends JASerializable>
      * @param bytes Holds the serialized data.
      */
     @Override
-    public void iSet(int i, byte[] bytes)
-            throws Exception {
+    public void iSet(int i, final byte[] bytes) throws Exception {
         initializeList();
-        if (i < 0)
+        if (i < 0) {
             i += list.size();
-        if (i < 0 || i >= list.size())
+        }
+        if ((i < 0) || (i >= list.size())) {
             throw new IllegalArgumentException();
-        JASerializable elementJid = createSubordinate(entryFactory, this, bytes);
-        JASerializable oldElementJid = iGet(i);
+        }
+        final JASerializable elementJid = createSubordinate(entryFactory, this,
+                bytes);
+        final JASerializable oldElementJid = iGet(i);
         ((IncDesImpl) oldElementJid.getDurable()).setContainerJid(null);
         list.set(i, (ENTRY_TYPE) elementJid);
-        change(elementJid.getDurable().getSerializedLength() -
-                oldElementJid.getDurable().getSerializedLength());
+        change(elementJid.getDurable().getSerializedLength()
+                - oldElementJid.getDurable().getSerializedLength());
     }
 
     @Override
@@ -198,13 +201,13 @@ public class SList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public void iAdd(int i, byte[] bytes)
-            throws Exception {
+    public void iAdd(int i, final byte[] bytes) throws Exception {
         initializeList();
-        if (i < 0)
+        if (i < 0) {
             i = size() + 1 + i;
-        JASerializable jid = createSubordinate(entryFactory, this, bytes);
-        int c = jid.getDurable().getSerializedLength();
+        }
+        final JASerializable jid = createSubordinate(entryFactory, this, bytes);
+        final int c = jid.getDurable().getSerializedLength();
         list.add(i, (ENTRY_TYPE) jid);
         change(c);
     }
@@ -221,25 +224,24 @@ public class SList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public void iAdd(int i)
-            throws Exception {
+    public void iAdd(int i) throws Exception {
         initializeList();
-        if (i < 0)
+        if (i < 0) {
             i = size() + 1 + i;
-        JASerializable jid = createSubordinate(entryFactory, this);
-        int c = jid.getDurable().getSerializedLength();
+        }
+        final JASerializable jid = createSubordinate(entryFactory, this);
+        final int c = jid.getDurable().getSerializedLength();
         list.add(i, (ENTRY_TYPE) jid);
         change(c);
     }
 
     @Override
-    public void empty()
-            throws Exception {
+    public void empty() throws Exception {
         int c = 0;
         int i = 0;
-        int s = size();
+        final int s = size();
         while (i < s) {
-            JASerializable jid = iGet(i);
+            final JASerializable jid = iGet(i);
             ((IncDesImpl) jid.getDurable()).setContainerJid(null);
             c -= jid.getDurable().getSerializedLength();
             i += 1;
@@ -260,22 +262,24 @@ public class SList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public void iRemove(int i)
-            throws Exception {
-        int s = size();
-        if (i < 0)
+    public void iRemove(int i) throws Exception {
+        final int s = size();
+        if (i < 0) {
             i += s;
-        if (i < 0 || i >= s)
+        }
+        if ((i < 0) || (i >= s)) {
             throw new IllegalArgumentException();
-        JASerializable jid = (IncDesImpl) iGet(i);
+        }
+        final JASerializable jid = iGet(i);
         ((IncDesImpl) jid.getDurable()).setContainerJid(null);
-        int c = -jid.getDurable().getSerializedLength();
+        final int c = -jid.getDurable().getSerializedLength();
         list.remove(i);
         change(c);
     }
 
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    @Override
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

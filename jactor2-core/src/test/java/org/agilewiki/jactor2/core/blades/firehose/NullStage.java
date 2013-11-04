@@ -1,15 +1,15 @@
 package org.agilewiki.jactor2.core.blades.firehose;
 
+import java.util.List;
+
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
-import java.util.List;
-
 public class NullStage extends BladeBase implements DataProcessor {
 
-    private DataProcessor next;
+    private final DataProcessor next;
 
     public long total;
 
@@ -25,8 +25,8 @@ public class NullStage extends BladeBase implements DataProcessor {
             @Override
             protected void processAsyncRequest() throws Exception {
                 //Thread.sleep(1);
-                List<Long> list = _firehoseData.getContent();
-                int s = list.size();
+                final List<Long> list = _firehoseData.getContent();
+                final int s = list.size();
                 total = 0;
                 int x = 0;
                 while (x < s) {

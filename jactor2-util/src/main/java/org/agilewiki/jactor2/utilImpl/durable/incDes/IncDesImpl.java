@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
+import java.util.Arrays;
+
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
@@ -14,8 +16,6 @@ import org.agilewiki.jactor2.util.durable.incDes.IncDes;
 import org.agilewiki.jactor2.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
-
-import java.util.Arrays;
 
 /**
  * Base class for Incremental Deserialization Actors.
@@ -71,84 +71,99 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         };
     }
 
-    final public JASerializable createSubordinate(Factory factory)
+    public final JASerializable createSubordinate(final Factory factory)
             throws Exception {
         return createSubordinate(factory, getParent());
     }
 
-    final public JASerializable createSubordinate(String actorType)
+    public final JASerializable createSubordinate(final String actorType)
             throws Exception {
         return createSubordinate(actorType, getParent());
     }
 
-    final public JASerializable createSubordinate(Factory factory, Ancestor parent)
-            throws Exception {
-        JASerializable jid = factory.newSerializable(getReactor(), parent);
+    public final JASerializable createSubordinate(final Factory factory,
+            final Ancestor parent) throws Exception {
+        final JASerializable jid = factory
+                .newSerializable(getReactor(), parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public JASerializable createSubordinate(String actorType, Ancestor parent)
-            throws Exception {
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(reactor), actorType, getReactor(), parent);
+    public final JASerializable createSubordinate(final String actorType,
+            final Ancestor parent) throws Exception {
+        final JASerializable jid = Durables.newSerializable(
+                Durables.getFactoryLocator(reactor), actorType, getReactor(),
+                parent);
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public JASerializable createSubordinate(Factory factory, byte[] bytes)
-            throws Exception {
+    public final JASerializable createSubordinate(final Factory factory,
+            final byte[] bytes) throws Exception {
         return createSubordinate(factory, getParent(), bytes);
     }
 
-    final public JASerializable createSubordinate(String actorType, byte[] bytes)
-            throws Exception {
+    public final JASerializable createSubordinate(final String actorType,
+            final byte[] bytes) throws Exception {
         return createSubordinate(actorType, getParent(), bytes);
     }
 
-    final public JASerializable createSubordinate(Factory factory, Ancestor parent, byte[] bytes)
-            throws Exception {
-        if (bytes == null)
+    public final JASerializable createSubordinate(final Factory factory,
+            final Ancestor parent, final byte[] bytes) throws Exception {
+        if (bytes == null) {
             return createSubordinate(factory, parent);
-        JASerializable jid = factory.newSerializable(getReactor(), parent);
+        }
+        final JASerializable jid = factory
+                .newSerializable(getReactor(), parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public JASerializable createSubordinate(String actorType, Ancestor parent, byte[] bytes)
-            throws Exception {
-        if (bytes == null)
+    public final JASerializable createSubordinate(final String actorType,
+            final Ancestor parent, final byte[] bytes) throws Exception {
+        if (bytes == null) {
             return createSubordinate(actorType, parent);
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(reactor), actorType, getReactor(), parent);
+        }
+        final JASerializable jid = Durables.newSerializable(
+                Durables.getFactoryLocator(reactor), actorType, getReactor(),
+                parent);
         ((IncDesImpl) jid.getDurable()).load(new ReadableBytes(bytes, 0));
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public JASerializable createSubordinate(Factory factory, ReadableBytes readableBytes)
-            throws Exception {
+    public final JASerializable createSubordinate(final Factory factory,
+            final ReadableBytes readableBytes) throws Exception {
         return createSubordinate(factory, getParent(), readableBytes);
     }
 
-    final public JASerializable createSubordinate(String actorType, ReadableBytes readableBytes)
-            throws Exception {
+    public final JASerializable createSubordinate(final String actorType,
+            final ReadableBytes readableBytes) throws Exception {
         return createSubordinate(actorType, getParent(), readableBytes);
     }
 
-    final public JASerializable createSubordinate(Factory factory, Ancestor parent, ReadableBytes readableBytes)
+    public final JASerializable createSubordinate(final Factory factory,
+            final Ancestor parent, final ReadableBytes readableBytes)
             throws Exception {
-        JASerializable jid = factory.newSerializable(getReactor(), parent);
-        if (readableBytes != null)
+        final JASerializable jid = factory
+                .newSerializable(getReactor(), parent);
+        if (readableBytes != null) {
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
+        }
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
 
-    final public JASerializable createSubordinate(String actorType, Ancestor parent, ReadableBytes readableBytes)
+    public final JASerializable createSubordinate(final String actorType,
+            final Ancestor parent, final ReadableBytes readableBytes)
             throws Exception {
-        JASerializable jid = Durables.newSerializable(Durables.getFactoryLocator(reactor), actorType, getReactor(), parent);
-        if (readableBytes != null)
+        final JASerializable jid = Durables.newSerializable(
+                Durables.getFactoryLocator(reactor), actorType, getReactor(),
+                parent);
+        if (readableBytes != null) {
             ((IncDesImpl) jid.getDurable()).load(readableBytes);
+        }
         ((IncDesImpl) jid.getDurable()).setContainerJid(this);
         return jid;
     }
@@ -167,11 +182,12 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param lengthChange The change in the size of the serialized data.
      */
-    protected void changed(int lengthChange) {
+    protected void changed(final int lengthChange) {
         serializedBytes = null;
         serializedOffset = -1;
-        if (containerJid == null)
+        if (containerJid == null) {
             return;
+        }
         containerJid.change(lengthChange);
     }
 
@@ -180,7 +196,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param lengthChange The change in the size of the serialized data.
      */
-    public void change(int lengthChange) {
+    public void change(final int lengthChange) {
         changed(lengthChange);
     }
 
@@ -189,7 +205,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param containerJid The container, or null.
      */
-    public void setContainerJid(IncDesImpl containerJid) {
+    public void setContainerJid(final IncDesImpl containerJid) {
         this.containerJid = containerJid;
     }
 
@@ -199,8 +215,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength()
-            throws Exception {
+    public int getSerializedLength() throws Exception {
         return 0;
     }
 
@@ -218,7 +233,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
-    protected void serialize(AppendableBytes appendableBytes)
+    protected void serialize(final AppendableBytes appendableBytes)
             throws Exception {
     }
 
@@ -227,12 +242,12 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param appendableBytes Holds the byte array and offset.
      */
-    public void save(final AppendableBytes appendableBytes)
-            throws Exception {
+    public void save(final AppendableBytes appendableBytes) throws Exception {
         if (isSerialized()) {
-            byte[] bs = appendableBytes.getBytes();
-            int off = appendableBytes.getOffset();
-            appendableBytes.writeBytes(serializedBytes, serializedOffset, getSerializedLength());
+            final byte[] bs = appendableBytes.getBytes();
+            final int off = appendableBytes.getOffset();
+            appendableBytes.writeBytes(serializedBytes, serializedOffset,
+                    getSerializedLength());
             serializedBytes = bs;
             serializedOffset = off;
         } else {
@@ -240,15 +255,18 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             serializedOffset = appendableBytes.getOffset();
             serialize(appendableBytes);
         }
-        if (serializedOffset + getSerializedLength() != appendableBytes.getOffset()) {
+        if ((serializedOffset + getSerializedLength()) != appendableBytes
+                .getOffset()) {
             System.err.println("\n" + getClass().getName());
-            System.err.println("" + serializedOffset +
-                    " + " + getSerializedLength() + " != " + appendableBytes.getOffset());
+            System.err.println("" + serializedOffset + " + "
+                    + getSerializedLength() + " != "
+                    + appendableBytes.getOffset());
             throw new IllegalStateException();
         }
     }
 
-    final public AsyncRequest<Void> saveReq(final AppendableBytes appendableBytes) {
+    public final AsyncRequest<Void> saveReq(
+            final AppendableBytes appendableBytes) {
         return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -263,16 +281,17 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @return The byte array holding the serialized persistent data.
      */
-    public final byte[] getSerializedBytes()
-            throws Exception {
-        byte[] bs = new byte[getSerializedLength()];
-        AppendableBytes appendableBytes = new AppendableBytes(bs, 0);
+    @Override
+    public final byte[] getSerializedBytes() throws Exception {
+        final byte[] bs = new byte[getSerializedLength()];
+        final AppendableBytes appendableBytes = new AppendableBytes(bs, 0);
         save(appendableBytes);
         return bs;
     }
 
     @Override
-    final public AsyncRequest<Integer> getSerializedBytesReq(final byte[] bytes, final int offset) {
+    public final AsyncRequest<Integer> getSerializedBytesReq(
+            final byte[] bytes, final int offset) {
         return new AsyncBladeRequest<Integer>() {
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -282,9 +301,9 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     }
 
     @Override
-    public int save(byte[] bytes, int offset)
-            throws Exception {
-        AppendableBytes appendableBytes = new AppendableBytes(bytes, offset);
+    public int save(final byte[] bytes, final int offset) throws Exception {
+        final AppendableBytes appendableBytes = new AppendableBytes(bytes,
+                offset);
         save(appendableBytes);
         return appendableBytes.getOffset();
     }
@@ -294,25 +313,23 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      *
      * @param readableBytes Holds the serialized data.
      */
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(final ReadableBytes readableBytes) throws Exception {
         serializedBytes = readableBytes.getBytes();
         serializedOffset = readableBytes.getOffset();
     }
 
     @Override
-    public int load(byte[] bytes, int offset, int length)
+    public int load(final byte[] bytes, final int offset, final int length)
             throws Exception {
-        byte[] bs = new byte[length];
+        final byte[] bs = new byte[length];
         System.arraycopy(bytes, offset, bs, 0, length);
-        ReadableBytes rb = new ReadableBytes(bytes, 0);
+        final ReadableBytes rb = new ReadableBytes(bytes, 0);
         load(rb);
         return offset + length;
     }
 
     @Override
-    public void load(byte[] bytes)
-            throws Exception {
+    public void load(final byte[] bytes) throws Exception {
         load(bytes, 0, bytes.length);
     }
 
@@ -345,17 +362,19 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return a copy of the actor.
      */
     @Override
-    public JASerializable copy(final Reactor m)
-            throws Exception {
+    public JASerializable copy(final Reactor m) throws Exception {
         Reactor mb = m;
-        if (mb == null)
+        if (mb == null) {
             mb = getReactor();
-        JASerializable serializable = getFactory().newSerializable(mb, getParent());
-        IncDesImpl jid = (IncDesImpl) serializable.getDurable();
+        }
+        final JASerializable serializable = getFactory().newSerializable(mb,
+                getParent());
+        final IncDesImpl jid = (IncDesImpl) serializable.getDurable();
         jid.load(new ReadableBytes(getSerializedBytes(), 0));
         return serializable;
     }
 
+    @Override
     public final AsyncRequest<JASerializable> copyReq(final Reactor m) {
         return new AsyncBladeRequest<JASerializable>() {
             @Override
@@ -365,28 +384,36 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         };
     }
 
+    @Override
     public final AsyncRequest<Boolean> isEqualReq(final JASerializable jidA) {
         return new AsyncBladeRequest<Boolean>() {
             AsyncRequest<Boolean> dis = this;
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                send(getSerializedLengthReq(), new AsyncResponseProcessor<Integer>() {
-                    @Override
-                    public void processAsyncResponse(Integer response) throws Exception {
-                        if (response.intValue() != getSerializedLength()) {
-                            dis.processAsyncResponse(false);
-                            return;
-                        }
-                        send(getSerializedBytesReq(), new AsyncResponseProcessor<byte[]>() {
+                send(getSerializedLengthReq(),
+                        new AsyncResponseProcessor<Integer>() {
                             @Override
-                            public void processAsyncResponse(byte[] response) throws Exception {
-                                boolean eq = Arrays.equals(response, getSerializedBytes());
-                                dis.processAsyncResponse(eq);
+                            public void processAsyncResponse(
+                                    final Integer response) throws Exception {
+                                if (response.intValue() != getSerializedLength()) {
+                                    dis.processAsyncResponse(false);
+                                    return;
+                                }
+                                send(getSerializedBytesReq(),
+                                        new AsyncResponseProcessor<byte[]>() {
+                                            @Override
+                                            public void processAsyncResponse(
+                                                    final byte[] response)
+                                                    throws Exception {
+                                                final boolean eq = Arrays
+                                                        .equals(response,
+                                                                getSerializedBytes());
+                                                dis.processAsyncResponse(eq);
+                                            }
+                                        });
                             }
                         });
-                    }
-                });
             }
         };
     }
@@ -397,7 +424,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return The factory, or null.
      */
     @Override
-    final public FactoryImpl getFactory() {
+    public final FactoryImpl getFactory() {
         return factory;
     }
 
@@ -407,9 +434,10 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @return The jid type, or null.
      */
     @Override
-    final public String getFactoryName() {
-        if (factory == null)
+    public final String getFactoryName() {
+        if (factory == null) {
             return null;
+        }
         return factory.name;
     }
 
@@ -420,8 +448,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param _parent  The parent actor.
      * @param _factory The factory.
      */
-    public void initialize(final Reactor _reactor, final Ancestor _parent, final FactoryImpl _factory)
-            throws Exception {
+    public void initialize(final Reactor _reactor, final Ancestor _parent,
+            final FactoryImpl _factory) throws Exception {
         super.initialize(_parent);
         reactor = _reactor;
         factory = _factory;
@@ -432,7 +460,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         return reactor;
     }
 
-    abstract public class SyncBladeRequest<RESPONSE_TYPE> extends SyncRequest<RESPONSE_TYPE> {
+    abstract public class SyncBladeRequest<RESPONSE_TYPE> extends
+            SyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
@@ -442,7 +471,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
         }
     }
 
-    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends
+            AsyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
@@ -459,7 +489,8 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param <RESPONSE_TYPE> The type of value returned.
      * @return The response from the request.
      */
-    protected <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
+    protected <RESPONSE_TYPE> RESPONSE_TYPE local(
+            final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
         return SyncRequest.doLocal(reactor, _syncRequest);
     }
 
@@ -469,8 +500,9 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      * @param _request        The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
      */
-    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
-                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+    protected <RESPONSE_TYPE> void send(
+            final RequestBase<RESPONSE_TYPE> _request,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         RequestBase.doSend(reactor, _request, _responseProcessor);
     }

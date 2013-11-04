@@ -1,10 +1,11 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
-
-import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
+import javax.swing.SwingUtilities;
+
+import org.agilewiki.jactor2.core.facilities.Facility;
 
 /**
  * Messages are processed on Swing's event-dispatch thread when an blades uses
@@ -63,14 +64,15 @@ import java.awt.event.WindowListener;
  * }
  * </pre>
  */
-public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener {
+public class SwingBoundReactor extends ThreadBoundReactor implements
+        WindowListener {
 
     /**
      * Create a targetReactor bound to the Swing event-dispatch thread.
      *
      * @param _facility The facility of the targetReactor.
      */
-    public SwingBoundReactor(Facility _facility) throws Exception {
+    public SwingBoundReactor(final Facility _facility) throws Exception {
         super(_facility, null);
 
     }
@@ -82,7 +84,9 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      */
-    public SwingBoundReactor(Facility _facility, int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
+    public SwingBoundReactor(final Facility _facility,
+            final int _initialOutboxSize, final int _initialLocalQueueSize)
+            throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 
@@ -92,35 +96,35 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
     }
 
     @Override
-    public void windowOpened(WindowEvent e) {
+    public void windowOpened(final WindowEvent e) {
     }
 
     @Override
-    public void windowClosing(WindowEvent e) {
+    public void windowClosing(final WindowEvent e) {
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
+    public void windowClosed(final WindowEvent e) {
         try {
             getFacility().close();
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             getLogger().warn("Exception when closing Facility", ex);
         }
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {
+    public void windowIconified(final WindowEvent e) {
     }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {
+    public void windowDeiconified(final WindowEvent e) {
     }
 
     @Override
-    public void windowActivated(WindowEvent e) {
+    public void windowActivated(final WindowEvent e) {
     }
 
     @Override
-    public void windowDeactivated(WindowEvent e) {
+    public void windowDeactivated(final WindowEvent e) {
     }
 }

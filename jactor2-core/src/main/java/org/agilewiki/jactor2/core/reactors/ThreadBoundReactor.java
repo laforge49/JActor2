@@ -208,8 +208,9 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
                 } catch (final Exception e) {
                     log.error("Exception thrown by onIdle", e);
                 }
-                if (hasWork())
+                if (hasWork()) {
                     continue;
+                }
                 return;
             }
             processMessage(message);

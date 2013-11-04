@@ -17,8 +17,9 @@ public class AppBase implements App {
 
     @Override
     public void setDurable(final Durable _durable) {
-        if (durable != null)
+        if (durable != null) {
             throw new IllegalStateException("durable already set");
+        }
         durable = _durable;
     }
 
@@ -37,7 +38,8 @@ public class AppBase implements App {
         return durable.getParent();
     }
 
-    abstract public class SyncBladeRequest<RESPONSE_TYPE> extends SyncRequest<RESPONSE_TYPE> {
+    abstract public class SyncBladeRequest<RESPONSE_TYPE> extends
+            SyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
@@ -47,7 +49,8 @@ public class AppBase implements App {
         }
     }
 
-    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends
+            AsyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
@@ -64,7 +67,8 @@ public class AppBase implements App {
      * @param <RESPONSE_TYPE> The type of value returned.
      * @return The response from the request.
      */
-    protected <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
+    protected <RESPONSE_TYPE> RESPONSE_TYPE local(
+            final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
         return SyncRequest.doLocal(getReactor(), _syncRequest);
     }
 }

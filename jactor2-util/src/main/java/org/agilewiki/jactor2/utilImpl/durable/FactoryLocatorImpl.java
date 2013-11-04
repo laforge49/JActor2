@@ -1,5 +1,9 @@
 package org.agilewiki.jactor2.utilImpl.durable;
 
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
@@ -8,16 +12,13 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor2.util.durable.JASerializable;
 
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 /**
  * An actor for defining jid types and creating instances.
  */
-public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, AutoCloseable {
+public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator,
+        AutoCloseable {
 
-    private CopyOnWriteArrayList<FactoryLocator> factoryImports = new CopyOnWriteArrayList();
+    private final CopyOnWriteArrayList<FactoryLocator> factoryImports = new CopyOnWriteArrayList();
     private String bundleName = "";
     private String niceVersion = "";
     private String location = "";
@@ -28,9 +29,10 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
     /**
      * A table which maps type names to actor factories.
      */
-    private ConcurrentSkipListMap<String, Factory> types = new ConcurrentSkipListMap();
+    private final ConcurrentSkipListMap<String, Factory> types = new ConcurrentSkipListMap();
 
-    public void configure(final String _bundleName, final String _niceVersion, final String _location) {
+    public void configure(final String _bundleName, final String _niceVersion,
+            final String _location) {
         bundleName = _bundleName;
         niceVersion = _niceVersion;
         location = _location;
@@ -49,8 +51,9 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
     }
 
     public String getLocatorKey() {
-        if (locatorKey == null)
+        if (locatorKey == null) {
             locatorKey = bundleName + "|" + getNiceVersion();
+        }
         return locatorKey;
     }
 
@@ -66,11 +69,12 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
      * @param parent  The parent actor to which unrecognized requests are forwarded, or null.
      * @return The new jid.
      */
-    public JASerializable newSerializable(String jidType, Reactor reactor, Ancestor parent)
-            throws Exception {
-        if (reactor == null)
+    public JASerializable newSerializable(final String jidType,
+            final Reactor reactor, final Ancestor parent) throws Exception {
+        if (reactor == null) {
             throw new IllegalArgumentException("processing may not be null");
-        Factory af = getFactory(jidType);
+        }
+        final Factory af = getFactory(jidType);
         return af.newSerializable(reactor, parent);
     }
 
@@ -81,17 +85,18 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
      * @return The registered actor factory.
      */
     @Override
-    public Factory getFactory(String jidType) throws Exception {
-        Factory af = _getFactory(jidType);
+    public Factory getFactory(final String jidType) throws Exception {
+        final Factory af = _getFactory(jidType);
         if (af == null) {
             throw new IllegalArgumentException("Unknown jid type: " + jidType);
         }
         return af;
     }
 
-    public Factory _getFactory(String actorType) throws Exception {
-        if (closed)
+    public Factory _getFactory(final String actorType) throws Exception {
+        if (closed) {
             throw new FactoryLocatorClosedException();
+        }
         String factoryKey = null;
         if (actorType.contains("|")) {
             factoryKey = actorType;
@@ -100,13 +105,15 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
         }
         Factory af = types.get(factoryKey);
         if (af == null) {
-            Iterator<FactoryLocator> it = factoryImports.iterator();
+            final Iterator<FactoryLocator> it = factoryImports.iterator();
             while (it.hasNext()) {
                 try {
-                    af = ((FactoryLocatorImpl) it.next())._getFactory(actorType);
-                    if (af != null)
+                    af = ((FactoryLocatorImpl) it.next())
+                            ._getFactory(actorType);
+                    if (af != null) {
                         return af;
-                } catch (FactoryLocatorClosedException flce) {
+                    }
+                } catch (final FactoryLocatorClosedException flce) {
                     close();
                     throw flce;
                 }
@@ -120,17 +127,23 @@ public class FactoryLocatorImpl extends AncestorBase implements FactoryLocator, 
      *
      * @param factory An actor factory.
      */
-    public void registerFactory(Factory factory) throws FactoryLocatorClosedException {
-        if (closed)
+    public void registerFactory(final Factory factory)
+            throws FactoryLocatorClosedException {
+        if (closed) {
             throw new FactoryLocatorClosedException();
-        String actorType = factory.getName();
-        String factoryKey = actorType + "|" + bundleName + "|" + niceVersion;
-        Factory old = types.get(factoryKey);
+        }
+        final String actorType = factory.getName();
+        final String factoryKey = actorType + "|" + bundleName + "|"
+                + niceVersion;
+        final Factory old = types.get(factoryKey);
         ((FactoryImpl) factory).configure(factoryKey);
         if (old == null) {
             types.put(factoryKey, factory);
-        } else if (!old.equals(factory))
-            throw new IllegalArgumentException("IncDesImpl type is already defined differently: " + old.getFactoryKey());
+        } else if (!old.equals(factory)) {
+            throw new IllegalArgumentException(
+                    "IncDesImpl type is already defined differently: "
+                            + old.getFactoryKey());
+        }
     }
 
     @Override

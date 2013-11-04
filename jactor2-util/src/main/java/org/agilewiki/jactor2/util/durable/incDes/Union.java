@@ -32,8 +32,7 @@ public interface Union extends IncDes {
     /**
      * Clears the union.
      */
-    void clear()
-            throws Exception;
+    void clear() throws Exception;
 
     /**
      * Returns a request for creating a new serializable object and put it in the union.
@@ -48,8 +47,7 @@ public interface Union extends IncDes {
      *
      * @param _factoryName The type of the new serializable object.
      */
-    void setValue(final String _factoryName)
-            throws Exception;
+    void setValue(final String _factoryName) throws Exception;
 
     /**
      * Returns a request for creating and initializing a serializable object and put it in the union.
@@ -59,7 +57,8 @@ public interface Union extends IncDes {
      * @param _bytes       The content of the serializable object.
      * @return The request.
      */
-    AsyncRequest<Void> setValueReq(final String _factoryName, final byte[] _bytes);
+    AsyncRequest<Void> setValueReq(final String _factoryName,
+            final byte[] _bytes);
 
     /**
      * Create and initialize a serialize object and put it in the union.
@@ -85,8 +84,7 @@ public interface Union extends IncDes {
      * @param _factoryName The type of the new serializable object.
      * @return True if a new serializable object was created.
      */
-    Boolean makeValue(final String _factoryName)
-            throws Exception;
+    Boolean makeValue(final String _factoryName) throws Exception;
 
     /**
      * Returns a request to create and initialize a serializable object and put it in the union if the union was empty.
@@ -96,7 +94,8 @@ public interface Union extends IncDes {
      * @param _bytes       The content of the new serializable object.
      * @return True if a new serializable object was created.
      */
-    AsyncRequest<Boolean> makeValueReq(final String _factoryName, final byte[] _bytes);
+    AsyncRequest<Boolean> makeValueReq(final String _factoryName,
+            final byte[] _bytes);
 
     /**
      * Create and initialize a serializable object and put it in the union if the union was empty.

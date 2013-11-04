@@ -18,9 +18,10 @@ public class AncestorBase implements Ancestor {
      * @return The ancestor that is an instance of the target class, or null.
      */
     public static Ancestor getAncestor(final Ancestor child,
-                                       final Class targetClass) {
-        if (child == null)
+            final Class targetClass) {
+        if (child == null) {
             return null;
+        }
         return getMatch(child.getParent(), targetClass);
     }
 
@@ -33,8 +34,9 @@ public class AncestorBase implements Ancestor {
      */
     public static Ancestor getMatch(Ancestor child, final Class targetClass) {
         while (child != null) {
-            if (targetClass.isInstance(child))
+            if (targetClass.isInstance(child)) {
                 return child;
+            }
             child = child.getParent();
         }
         return null;
@@ -57,7 +59,7 @@ public class AncestorBase implements Ancestor {
     /**
      * Initialize with no ancestor stack.
      */
-    final public void initialize() throws Exception {
+    public final void initialize() throws Exception {
         initialize(null);
     }
 
@@ -67,8 +69,9 @@ public class AncestorBase implements Ancestor {
      * @param _parent The top of the immutable dependency stack.
      */
     public void initialize(final Ancestor _parent) {
-        if (initialized)
+        if (initialized) {
             throw new IllegalStateException("Already initialized");
+        }
         initialized = true;
         parent = _parent;
     }

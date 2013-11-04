@@ -19,8 +19,7 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
 /**
  * A balanced tree holding a list of JIDs, all of the same type.
  */
-public class BList<ENTRY_TYPE extends JASerializable>
-        extends DurableImpl
+public class BList<ENTRY_TYPE extends JASerializable> extends DurableImpl
         implements JAList<ENTRY_TYPE>, Collection<ENTRY_TYPE> {
     protected final int TUPLE_SIZE = 0;
     protected final int TUPLE_UNION = 1;
@@ -39,6 +38,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
         };
     }
 
+    @Override
     public AsyncRequest<Void> emptyReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
@@ -55,33 +55,35 @@ public class BList<ENTRY_TYPE extends JASerializable>
      * @return The IncDesFactory for of all the elements in the list.
      */
     protected Factory getEntryFactory() {
-        if (entryFactory == null)
+        if (entryFactory == null) {
             throw new IllegalStateException("entryFactory uninitialized");
+        }
         return entryFactory;
     }
 
     protected void init() throws Exception {
         String baseType = getFactoryName();
-        if (baseType.startsWith("IN."))
+        if (baseType.startsWith("IN.")) {
             baseType = baseType.substring(3);
+        }
         factoryLocator = Durables.getFactoryLocator(getReactor());
         tupleFactories = new FactoryImpl[2];
-        tupleFactories[TUPLE_SIZE] = factoryLocator.getFactory(JAInteger.FACTORY_NAME);
-        tupleFactories[TUPLE_UNION] = factoryLocator.getFactory("U." + baseType);
+        tupleFactories[TUPLE_SIZE] = factoryLocator
+                .getFactory(JAInteger.FACTORY_NAME);
+        tupleFactories[TUPLE_UNION] = factoryLocator
+                .getFactory("U." + baseType);
     }
 
-    protected void setNodeLeaf()
-            throws Exception {
+    protected void setNodeLeaf() throws Exception {
         getUnionJid().setValue(0);
     }
 
-    protected void setNodeFactory(FactoryImpl factoryImpl)
+    protected void setNodeFactory(final FactoryImpl factoryImpl)
             throws Exception {
         getUnionJid().setValue(factoryImpl);
     }
 
-    protected JAIntegerImpl getSizeJid()
-            throws Exception {
+    protected JAIntegerImpl getSizeJid() throws Exception {
         return (JAIntegerImpl) _iGet(TUPLE_SIZE);
     }
 
@@ -91,44 +93,36 @@ public class BList<ENTRY_TYPE extends JASerializable>
      * @return The size of the collection.
      */
     @Override
-    public int size()
-            throws Exception {
+    public int size() throws Exception {
         return getSizeJid().getValue();
     }
 
-    protected void incSize(int inc)
-            throws Exception {
-        JAIntegerImpl sj = getSizeJid();
+    protected void incSize(final int inc) throws Exception {
+        final JAIntegerImpl sj = getSizeJid();
         sj.setValue(sj.getValue() + inc);
     }
 
-    protected UnionImpl getUnionJid()
-            throws Exception {
+    protected UnionImpl getUnionJid() throws Exception {
         return (UnionImpl) _iGet(TUPLE_UNION);
     }
 
-    protected SList<ENTRY_TYPE> getNode()
-            throws Exception {
+    protected SList<ENTRY_TYPE> getNode() throws Exception {
         return (SList) getUnionJid().getValue();
     }
 
-    public String getNodeFactoryKey()
-            throws Exception {
+    public String getNodeFactoryKey() throws Exception {
         return getNode().getFactory().getFactoryKey();
     }
 
-    public boolean isLeaf()
-            throws Exception {
+    public boolean isLeaf() throws Exception {
         return getNodeFactoryKey().startsWith("LL.");
     }
 
-    public int nodeSize()
-            throws Exception {
+    public int nodeSize() throws Exception {
         return getNode().size();
     }
 
-    public boolean isFat()
-            throws Exception {
+    public boolean isFat() throws Exception {
         return nodeSize() >= nodeCapacity;
     }
 
@@ -149,20 +143,21 @@ public class BList<ENTRY_TYPE extends JASerializable>
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public ENTRY_TYPE iGet(int ndx)
-            throws Exception {
-        SList<ENTRY_TYPE> node = getNode();
+    public ENTRY_TYPE iGet(int ndx) throws Exception {
+        final SList<ENTRY_TYPE> node = getNode();
         if (isLeaf()) {
-            return (ENTRY_TYPE) node.iGet(ndx);
+            return node.iGet(ndx);
         }
-        if (ndx < 0)
+        if (ndx < 0) {
             ndx += size();
-        if (ndx < 0 || ndx >= size())
+        }
+        if ((ndx < 0) || (ndx >= size())) {
             return null;
+        }
         int i = 0;
         while (i < node.size()) {
-            BList<ENTRY_TYPE> bnode = (BList) node.iGet(i);
-            int bns = bnode.size();
+            final BList<ENTRY_TYPE> bnode = (BList) node.iGet(i);
+            final int bns = bnode.size();
             if (ndx < bns) {
                 return bnode.iGet(ndx);
             }
@@ -190,21 +185,22 @@ public class BList<ENTRY_TYPE extends JASerializable>
      * @param bytes Holds the serialized data.
      */
     @Override
-    public void iSet(int ndx, byte[] bytes)
-            throws Exception {
-        SList<ENTRY_TYPE> node = getNode();
+    public void iSet(int ndx, final byte[] bytes) throws Exception {
+        final SList<ENTRY_TYPE> node = getNode();
         if (isLeaf()) {
             node.iSet(ndx, bytes);
             return;
         }
-        if (ndx < 0)
+        if (ndx < 0) {
             ndx += size();
-        if (ndx < 0 || ndx >= size())
+        }
+        if ((ndx < 0) || (ndx >= size())) {
             throw new IllegalArgumentException();
+        }
         int i = 0;
         while (i < node.size()) {
-            BList<ENTRY_TYPE> bnode = (BList) node.iGet(i);
-            int bns = bnode.size();
+            final BList<ENTRY_TYPE> bnode = (BList) node.iGet(i);
+            final int bns = bnode.size();
             if (ndx < bns) {
                 bnode.iSet(ndx, bytes);
                 return;
@@ -222,28 +218,32 @@ public class BList<ENTRY_TYPE extends JASerializable>
      * @return A JID actor or null.
      */
     @Override
-    public JASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(final String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
         int s = pathname.indexOf("/");
-        if (s == -1)
+        if (s == -1) {
             s = pathname.length();
-        if (s == 0)
+        }
+        if (s == 0) {
             throw new IllegalArgumentException("pathname " + pathname);
-        String ns = pathname.substring(0, s);
+        }
+        final String ns = pathname.substring(0, s);
         int n = 0;
         try {
             n = Integer.parseInt(ns);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new IllegalArgumentException("pathname " + pathname);
         }
-        if (n < 0 || n >= size())
+        if ((n < 0) || (n >= size())) {
             throw new IllegalArgumentException("pathname " + pathname);
-        JASerializable jid = iGet(n);
-        if (s == pathname.length())
+        }
+        final JASerializable jid = iGet(n);
+        if (s == pathname.length()) {
             return jid;
+        }
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
     }
 
@@ -259,8 +259,7 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public void iAdd(int i)
-            throws Exception {
+    public void iAdd(final int i) throws Exception {
         iAdd(i, null);
     }
 
@@ -276,21 +275,24 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public void iAdd(int ndx, byte[] bytes)
-            throws Exception {
-        if (ndx < 0)
+    public void iAdd(int ndx, final byte[] bytes) throws Exception {
+        if (ndx < 0) {
             ndx = size() + 1 + ndx;
-        if (ndx < 0 || ndx > size())
+        }
+        if ((ndx < 0) || (ndx > size())) {
             throw new IllegalArgumentException();
+        }
         incSize(1);
-        SList<ENTRY_TYPE> node = getNode();
+        final SList<ENTRY_TYPE> node = getNode();
         if (isLeaf()) {
-            if (bytes == null)
+            if (bytes == null) {
                 node.iAdd(ndx);
-            else
+            } else {
                 node.iAdd(ndx, bytes);
-            if (node.size() < nodeCapacity)
+            }
+            if (node.size() < nodeCapacity) {
                 return;
+            }
             if (isRoot) {
                 rootSplit();
                 return;
@@ -299,18 +301,19 @@ public class BList<ENTRY_TYPE extends JASerializable>
         }
         int i = 0;
         while (true) {
-            BList<ENTRY_TYPE> bnode = (BList) node.iGet(i);
-            int bns = bnode.size();
+            final BList<ENTRY_TYPE> bnode = (BList) node.iGet(i);
+            final int bns = bnode.size();
             i += 1;
-            if (ndx < bns || i == node.size()) {
+            if ((ndx < bns) || (i == node.size())) {
                 bnode.iAdd(ndx, bytes);
                 if (bnode.isFat()) {
                     node.iAdd(i - 1);
-                    BList<ENTRY_TYPE> left = (BList) node.iGet(i - 1);
+                    final BList<ENTRY_TYPE> left = (BList) node.iGet(i - 1);
                     left.setNodeFactory(bnode.getNode().getFactory());
                     bnode.inodeSplit(left);
-                    if (node.size() < nodeCapacity)
+                    if (node.size() < nodeCapacity) {
                         return;
+                    }
                     if (isRoot) {
                         rootSplit();
                         return;
@@ -322,72 +325,71 @@ public class BList<ENTRY_TYPE extends JASerializable>
         }
     }
 
-    protected void rootSplit()
-            throws Exception {
-        SList<ENTRY_TYPE> oldRootNode = getNode();
-        FactoryImpl oldFactory = oldRootNode.getFactory();
+    protected void rootSplit() throws Exception {
+        final SList<ENTRY_TYPE> oldRootNode = getNode();
+        final FactoryImpl oldFactory = oldRootNode.getFactory();
         getUnionJid().setValue(1);
-        SList<ENTRY_TYPE> newRootNode = getNode();
+        final SList<ENTRY_TYPE> newRootNode = getNode();
         newRootNode.iAdd(0);
         newRootNode.iAdd(1);
-        BList<ENTRY_TYPE> leftBNode = (BList) newRootNode.iGet(0);
-        BList<ENTRY_TYPE> rightBNode = (BList) newRootNode.iGet(1);
+        final BList<ENTRY_TYPE> leftBNode = (BList) newRootNode.iGet(0);
+        final BList<ENTRY_TYPE> rightBNode = (BList) newRootNode.iGet(1);
         leftBNode.setNodeFactory(oldFactory);
         rightBNode.setNodeFactory(oldFactory);
-        int h = nodeCapacity / 2;
+        final int h = nodeCapacity / 2;
         int i = 0;
         if (oldFactory.name.startsWith("LL.")) {
             while (i < h) {
-                JASerializable e = oldRootNode.iGet(i);
-                byte[] bytes = e.getDurable().getSerializedBytes();
+                final JASerializable e = oldRootNode.iGet(i);
+                final byte[] bytes = e.getDurable().getSerializedBytes();
                 leftBNode.iAdd(-1, bytes);
                 i += 1;
             }
             while (i < nodeCapacity) {
-                JASerializable e = oldRootNode.iGet(i);
-                byte[] bytes = e.getDurable().getSerializedBytes();
+                final JASerializable e = oldRootNode.iGet(i);
+                final byte[] bytes = e.getDurable().getSerializedBytes();
                 rightBNode.iAdd(-1, bytes);
                 i += 1;
             }
         } else {
             while (i < h) {
-                BList<ENTRY_TYPE> e = (BList) oldRootNode.iGet(i);
-                int eSize = e.size();
-                byte[] bytes = e.getSerializedBytes();
+                final BList<ENTRY_TYPE> e = (BList) oldRootNode.iGet(i);
+                final int eSize = e.size();
+                final byte[] bytes = e.getSerializedBytes();
                 leftBNode.append(bytes, eSize);
                 i += 1;
             }
             while (i < nodeCapacity) {
-                BList<ENTRY_TYPE> e = (BList) oldRootNode.iGet(i);
-                int eSize = e.size();
-                byte[] bytes = e.getSerializedBytes();
+                final BList<ENTRY_TYPE> e = (BList) oldRootNode.iGet(i);
+                final int eSize = e.size();
+                final byte[] bytes = e.getSerializedBytes();
                 rightBNode.append(bytes, eSize);
                 i += 1;
             }
         }
     }
 
-    protected void inodeSplit(BList<ENTRY_TYPE> leftBNode)
+    protected void inodeSplit(final BList<ENTRY_TYPE> leftBNode)
             throws Exception {
-        SList<ENTRY_TYPE> node = getNode();
-        int h = nodeCapacity / 2;
+        final SList<ENTRY_TYPE> node = getNode();
+        final int h = nodeCapacity / 2;
         int i = 0;
         if (isLeaf()) {
             while (i < h) {
-                JASerializable e = node.iGet(0);
+                final JASerializable e = node.iGet(0);
                 node.iRemove(0);
-                byte[] bytes = e.getDurable().getSerializedBytes();
+                final byte[] bytes = e.getDurable().getSerializedBytes();
                 leftBNode.iAdd(-1, bytes);
                 i += 1;
             }
             incSize(-h);
         } else {
             while (i < h) {
-                BList<ENTRY_TYPE> e = (BList) node.iGet(0);
+                final BList<ENTRY_TYPE> e = (BList) node.iGet(0);
                 node.iRemove(0);
-                int eSize = e.size();
+                final int eSize = e.size();
                 incSize(-eSize);
-                byte[] bytes = e.getSerializedBytes();
+                final byte[] bytes = e.getSerializedBytes();
                 leftBNode.append(bytes, eSize);
                 i += 1;
             }
@@ -395,11 +397,10 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public void empty()
-            throws Exception {
-        SList<ENTRY_TYPE> node = getNode();
+    public void empty() throws Exception {
+        final SList<ENTRY_TYPE> node = getNode();
         node.empty();
-        JAIntegerImpl sj = getSizeJid();
+        final JAIntegerImpl sj = getSizeJid();
         sj.setValue(0);
     }
 
@@ -415,14 +416,15 @@ public class BList<ENTRY_TYPE extends JASerializable>
     }
 
     @Override
-    public void iRemove(int ndx)
-            throws Exception {
-        int s = size();
-        if (ndx < 0)
+    public void iRemove(int ndx) throws Exception {
+        final int s = size();
+        if (ndx < 0) {
             ndx += s;
-        if (ndx < 0 || ndx >= s)
+        }
+        if ((ndx < 0) || (ndx >= s)) {
             throw new IllegalArgumentException();
-        SList<ENTRY_TYPE> node = getNode();
+        }
+        final SList<ENTRY_TYPE> node = getNode();
         if (isLeaf()) {
             node.iRemove(ndx);
             incSize(-1);
@@ -431,35 +433,38 @@ public class BList<ENTRY_TYPE extends JASerializable>
         int i = 0;
         while (i < node.size()) {
             BList<ENTRY_TYPE> bnode = (BList) node.iGet(i);
-            int bns = bnode.size();
+            final int bns = bnode.size();
             if (ndx < bns) {
                 bnode.iRemove(ndx);
                 incSize(-1);
-                int bnodeSize = bnode.size();
-                if (bnodeSize > nodeCapacity / 3)
+                final int bnodeSize = bnode.size();
+                if (bnodeSize > (nodeCapacity / 3)) {
                     return;
+                }
                 if (bnodeSize == 0) {
                     node.iRemove(ndx);
                 } else {
                     if (i > 0) {
-                        BList<ENTRY_TYPE> leftBNode = (BList) node.iGet(i - 1);
-                        if (leftBNode.nodeSize() + bnodeSize < nodeCapacity) {
+                        final BList<ENTRY_TYPE> leftBNode = (BList) node
+                                .iGet(i - 1);
+                        if ((leftBNode.nodeSize() + bnodeSize) < nodeCapacity) {
                             bnode.append(leftBNode);
                             node.iRemove(i);
                         }
                     }
-                    if (i + 1 < node.size()) {
-                        BList<ENTRY_TYPE> rightBNode = (BList) node.iGet(i + 1);
-                        if (bnodeSize + rightBNode.nodeSize() < nodeCapacity) {
+                    if ((i + 1) < node.size()) {
+                        final BList<ENTRY_TYPE> rightBNode = (BList) node
+                                .iGet(i + 1);
+                        if ((bnodeSize + rightBNode.nodeSize()) < nodeCapacity) {
                             rightBNode.append(bnode);
                             node.iRemove(i + 1);
                         }
                     }
                 }
-                if (node.size() == 1 && isRoot && !isLeaf()) {
+                if ((node.size() == 1) && isRoot && !isLeaf()) {
                     bnode = (BList) node.iGet(0);
                     setNodeFactory(bnode.getNode().getFactory());
-                    JAIntegerImpl sj = getSizeJid();
+                    final JAIntegerImpl sj = getSizeJid();
                     sj.setValue(0);
                     bnode.append(this);
                 }
@@ -471,34 +476,33 @@ public class BList<ENTRY_TYPE extends JASerializable>
         throw new IllegalArgumentException();
     }
 
-    void append(BList<ENTRY_TYPE> leftNode)
-            throws Exception {
-        SList<ENTRY_TYPE> node = getNode();
+    void append(final BList<ENTRY_TYPE> leftNode) throws Exception {
+        final SList<ENTRY_TYPE> node = getNode();
         int i = 0;
         if (isLeaf()) {
             while (i < node.size()) {
-                JASerializable e = node.iGet(i);
+                final JASerializable e = node.iGet(i);
                 leftNode.append(e.getDurable().getSerializedBytes(), 1);
                 i += 1;
             }
         } else {
             while (i < node.size()) {
-                BList<ENTRY_TYPE> e = (BList) node.iGet(i);
+                final BList<ENTRY_TYPE> e = (BList) node.iGet(i);
                 leftNode.append(e.getSerializedBytes(), e.size());
                 i += 1;
             }
         }
     }
 
-    void append(byte[] bytes, int eSize)
-            throws Exception {
-        SList<ENTRY_TYPE> node = getNode();
+    void append(final byte[] bytes, final int eSize) throws Exception {
+        final SList<ENTRY_TYPE> node = getNode();
         node.iAdd(-1, bytes);
         incSize(eSize);
     }
 
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    @Override
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

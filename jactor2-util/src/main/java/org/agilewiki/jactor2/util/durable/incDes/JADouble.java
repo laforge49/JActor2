@@ -8,7 +8,7 @@ public interface JADouble extends FLenS<Double> {
     /**
      * Size of a serialized JADouble in bytes.
      */
-    public final static int LENGTH = 8;
+    public static final int LENGTH = 8;
 
     /**
      * Factory name for JADouble.

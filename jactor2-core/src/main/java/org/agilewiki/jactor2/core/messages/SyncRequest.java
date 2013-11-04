@@ -7,8 +7,8 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
-abstract public class SyncRequest<RESPONSE_TYPE>
-        extends RequestBase<RESPONSE_TYPE> {
+abstract public class SyncRequest<RESPONSE_TYPE> extends
+        RequestBase<RESPONSE_TYPE> {
 
     /**
      * Process the request immediately.
@@ -19,8 +19,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      * @param <RESPONSE_TYPE> The type of value returned.
      * @return The value returned by the target blades.
      */
-    public static <RESPONSE_TYPE> RESPONSE_TYPE doLocal(
-            final Reactor _source,
+    public static <RESPONSE_TYPE> RESPONSE_TYPE doLocal(final Reactor _source,
             final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
         return _syncRequest.doLocal(_source);
     }
@@ -31,7 +30,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      * @param _targetReactor The targetReactor where this SyncRequest Objects is passed for processing.
      *                       The thread owned by this targetReactor will process this SyncRequest.
      */
-    public SyncRequest(Reactor _targetReactor) {
+    public SyncRequest(final Reactor _targetReactor) {
         super(_targetReactor);
     }
 
@@ -41,8 +40,7 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      *
      * @return The value returned by the target blades.
      */
-    abstract protected RESPONSE_TYPE processSyncRequest()
-            throws Exception;
+    abstract protected RESPONSE_TYPE processSyncRequest() throws Exception;
 
     @Override
     protected void processRequestMessage() throws Exception {
@@ -58,21 +56,26 @@ abstract public class SyncRequest<RESPONSE_TYPE>
      */
     private RESPONSE_TYPE doLocal(final Reactor _source) throws Exception {
         use();
-        ReactorBase messageProcessor = (ReactorBase) _source;
+        final ReactorBase messageProcessor = (ReactorBase) _source;
         if (Plant.DEBUG) {
             if (messageProcessor instanceof ThreadBoundReactor) {
-                if (Thread.currentThread() instanceof PoolThread)
+                if (Thread.currentThread() instanceof PoolThread) {
                     throw new IllegalStateException("send from wrong thread");
+                }
             } else {
-                if (messageProcessor.getThreadReference().get() != Thread.currentThread())
+                if (messageProcessor.getThreadReference().get() != Thread
+                        .currentThread()) {
                     throw new IllegalStateException("send from wrong thread");
+                }
             }
         }
-        if (!messageProcessor.isRunning())
+        if (!messageProcessor.isRunning()) {
             throw new IllegalStateException(
                     "A valid source targetReactor can not be idle");
-        if (messageProcessor != getTargetReactor())
+        }
+        if (messageProcessor != getTargetReactor()) {
             throw new IllegalArgumentException("Reactor is not shared");
+        }
         messageSource = messageProcessor;
         oldMessage = messageProcessor.getCurrentMessage();
         sourceExceptionHandler = messageProcessor.getExceptionHandler();
@@ -80,10 +83,12 @@ abstract public class SyncRequest<RESPONSE_TYPE>
         messageProcessor.setExceptionHandler(null);
         try {
             return processSyncRequest();
-        } catch (Exception e) {
-            ExceptionHandler<RESPONSE_TYPE> currentExceptionHandler = messageProcessor.getExceptionHandler();
-            if (currentExceptionHandler == null)
+        } catch (final Exception e) {
+            final ExceptionHandler<RESPONSE_TYPE> currentExceptionHandler = messageProcessor
+                    .getExceptionHandler();
+            if (currentExceptionHandler == null) {
                 throw e;
+            }
             return currentExceptionHandler.processException(e);
         } finally {
             messageProcessor.setCurrentMessage(oldMessage);

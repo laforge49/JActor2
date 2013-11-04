@@ -16,5 +16,6 @@ public interface AsyncResponseProcessor<RESPONSE_TYPE> {
      *
      * @param _response The response to a request.
      */
-    public void processAsyncResponse(final RESPONSE_TYPE _response) throws Exception;
+    public void processAsyncResponse(final RESPONSE_TYPE _response)
+            throws Exception;
 }

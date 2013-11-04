@@ -14,26 +14,28 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
  * Creates LongBMap's.
  */
 public class LongBMapFactory extends FactoryImpl {
-    private final static int NODE_CAPACITY = 28;
+    private static final int NODE_CAPACITY = 28;
 
-    public static void registerFactory(FactoryLocator _factoryLocator,
-                                       String actorType,
-                                       String valueType) throws FactoryLocatorClosedException {
-        UnionImpl.registerFactory(_factoryLocator,
-                "U." + actorType, "LM." + actorType, "IM." + actorType);
+    public static void registerFactory(final FactoryLocator _factoryLocator,
+            final String actorType, final String valueType)
+            throws FactoryLocatorClosedException {
+        UnionImpl.registerFactory(_factoryLocator, "U." + actorType, "LM."
+                + actorType, "IM." + actorType);
 
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new LongBMapFactory(
-                actorType, valueType, true, true));
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new LongBMapFactory(
-                "IN." + actorType, valueType, false, false));
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new LongBMapFactory(actorType, valueType,
+                        true, true));
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new LongBMapFactory("IN." + actorType,
+                        valueType, false, false));
 
-        LongSMapFactory.registerFactory(
-                _factoryLocator, "LM." + actorType, valueType, NODE_CAPACITY);
-        LongSMapFactory.registerFactory(
-                _factoryLocator, "IM." + actorType, "IN." + actorType, NODE_CAPACITY);
+        LongSMapFactory.registerFactory(_factoryLocator, "LM." + actorType,
+                valueType, NODE_CAPACITY);
+        LongSMapFactory.registerFactory(_factoryLocator, "IM." + actorType,
+                "IN." + actorType, NODE_CAPACITY);
     }
 
-    private String valueType;
+    private final String valueType;
     private boolean isRoot = true;
     private boolean auto = true;
 
@@ -43,8 +45,8 @@ public class LongBMapFactory extends FactoryImpl {
      * @param jidType   The jid type.
      * @param valueType The value type.
      */
-    protected LongBMapFactory(String jidType, String valueType,
-                              boolean isRoot, boolean auto) {
+    protected LongBMapFactory(final String jidType, final String valueType,
+            final boolean isRoot, final boolean auto) {
         super(jidType);
         this.valueType = valueType;
         this.isRoot = isRoot;
@@ -69,16 +71,17 @@ public class LongBMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public LongBMap newSerializable(Reactor reactor, Ancestor parent)
+    public LongBMap newSerializable(final Reactor reactor, final Ancestor parent)
             throws Exception {
-        LongBMap imj = (LongBMap) super.newSerializable(reactor, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(reactor);
+        final LongBMap imj = (LongBMap) super.newSerializable(reactor, parent);
+        final FactoryLocator fl = Durables.getFactoryLocator(reactor);
         imj.valueFactory = fl.getFactory(valueType);
         imj.nodeCapacity = NODE_CAPACITY;
         imj.isRoot = isRoot;
         imj.init();
-        if (auto)
+        if (auto) {
             imj.setNodeLeaf();
+        }
         return imj;
     }
 }

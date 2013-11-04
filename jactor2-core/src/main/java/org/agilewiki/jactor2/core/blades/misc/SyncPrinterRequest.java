@@ -34,8 +34,8 @@ abstract public class SyncPrinterRequest extends SyncRequest<Void> {
      * @param _format The formatting.
      * @param _args   The data to be formatted.
      */
-    protected void printf(final String _format,
-                          final Object... _args) throws Exception {
+    protected void printf(final String _format, final Object... _args)
+            throws Exception {
         local(printer.printfSReq(_format, _args));
     }
 }

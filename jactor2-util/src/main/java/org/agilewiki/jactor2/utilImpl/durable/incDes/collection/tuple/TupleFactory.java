@@ -14,12 +14,14 @@ import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
  */
 public class TupleFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator _factoryLocator,
-                                       String subActorType, String... actorTypes) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new TupleFactory(subActorType, actorTypes));
+    public static void registerFactory(final FactoryLocator _factoryLocator,
+            final String subActorType, final String... actorTypes)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new TupleFactory(subActorType, actorTypes));
     }
 
-    private String[] jidTypes;
+    private final String[] jidTypes;
 
     /**
      * Create a JLPCActorFactory.
@@ -27,7 +29,7 @@ public class TupleFactory extends FactoryImpl {
      * @param subJidType The jid type.
      * @param jidTypes   The element types.
      */
-    protected TupleFactory(String subJidType, String... jidTypes) {
+    protected TupleFactory(final String subJidType, final String... jidTypes) {
         super(subJidType);
         this.jidTypes = jidTypes;
     }
@@ -50,11 +52,11 @@ public class TupleFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public TupleImpl newSerializable(Reactor reactor, Ancestor parent)
-            throws Exception {
-        TupleImpl tj = (TupleImpl) super.newSerializable(reactor, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(reactor);
-        Factory[] afs = new FactoryImpl[jidTypes.length];
+    public TupleImpl newSerializable(final Reactor reactor,
+            final Ancestor parent) throws Exception {
+        final TupleImpl tj = (TupleImpl) super.newSerializable(reactor, parent);
+        final FactoryLocator fl = Durables.getFactoryLocator(reactor);
+        final Factory[] afs = new FactoryImpl[jidTypes.length];
         int i = 0;
         while (i < jidTypes.length) {
             afs[i] = fl.getFactory(jidTypes[i]);

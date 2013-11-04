@@ -15,122 +15,122 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
     /**
      * Factory name for a JAMap&lt;String, JAString&gt;.
      */
-    public final static String STRING_JASTRING_MAP = "stringStringMap";
+    public static final String STRING_JASTRING_MAP = "stringStringMap";
 
     /**
      * Factory name for a JAMap&lt;String, Bytes&gt;.
      */
-    public final static String STRING_BYTES_MAP = "stringBytesMap";
+    public static final String STRING_BYTES_MAP = "stringBytesMap";
 
     /**
      * Factory name for a JAMap&lt;String, Box&gt;.
      */
-    public final static String STRING_BOX_MAP = "stringBoxMap";
+    public static final String STRING_BOX_MAP = "stringBoxMap";
 
     /**
      * Factory name for a JAMap&lt;String, JALong&gt;.
      */
-    public final static String STRING_JALONG_MAP = "stringLongMap";
+    public static final String STRING_JALONG_MAP = "stringLongMap";
 
     /**
      * Factory name for a JAMap&lt;String, JAInteger&gt;.
      */
-    public final static String STRING_JAINTEGER_MAP = "stringIntMap";
+    public static final String STRING_JAINTEGER_MAP = "stringIntMap";
 
     /**
      * Factory name for a JAMap&lt;String, JAFloat&gt;.
      */
-    public final static String STRING_JAFLOAT_MAP = "stringFloatMap";
+    public static final String STRING_JAFLOAT_MAP = "stringFloatMap";
 
     /**
      * Factory name for a JAMap&lt;String, JADouble&gt;.
      */
-    public final static String STRING_JADOUBLE_MAP = "stringDoubleMap";
+    public static final String STRING_JADOUBLE_MAP = "stringDoubleMap";
 
     /**
      * Factory name for a JAMap&lt;String, JABoolean&gt;.
      */
-    public final static String STRING_JABOOLEAN_MAP = "stringBoolMap";
+    public static final String STRING_JABOOLEAN_MAP = "stringBoolMap";
 
     /**
      * Factory name for a JAMap&lt;Integer, JAString&gt;.
      */
-    public final static String INTEGER_JASTRING_MAP = "intStringMap";
+    public static final String INTEGER_JASTRING_MAP = "intStringMap";
 
     /**
      * Factory name for a JAMap&lt;Integer, Bytes&gt;.
      */
-    public final static String INTEGER_BYTES_MAP = "intBytesMap";
+    public static final String INTEGER_BYTES_MAP = "intBytesMap";
 
     /**
      * Factory name for a JAMap&lt;Integer, Box&gt;.
      */
-    public final static String INTEGER_BOX_MAP = "intBoxMap";
+    public static final String INTEGER_BOX_MAP = "intBoxMap";
 
     /**
      * Factory name for a JAMap&lt;Integer, JALong&gt;.
      */
-    public final static String INTEGER_JALONG_MAP = "intLongMap";
+    public static final String INTEGER_JALONG_MAP = "intLongMap";
 
     /**
      * Factory name for a JAMap&lt;Integer, JAInteger&gt;.
      */
-    public final static String INTEGER_JAINTEGER_MAP = "intIntMap";
+    public static final String INTEGER_JAINTEGER_MAP = "intIntMap";
 
     /**
      * Factory name for a JAMap&lt;Integer, JAFloat&gt;.
      */
-    public final static String INTEGER_JAFLOAT_MAP = "intFloatMap";
+    public static final String INTEGER_JAFLOAT_MAP = "intFloatMap";
 
     /**
      * Factory name for a JAMap&lt;Integer, JADouble&gt;.
      */
-    public final static String INTEGER_JADOUBLE_MAP = "intDoubleMap";
+    public static final String INTEGER_JADOUBLE_MAP = "intDoubleMap";
 
     /**
      * Factory name for a JAMap&lt;Integer, JABoolean&gt;.
      */
-    public final static String INTEGER_JABOOLEAN_MAP = "intBoolMap";
+    public static final String INTEGER_JABOOLEAN_MAP = "intBoolMap";
 
     /**
      * Factory name for a JAMap&lt;Long, JAString&gt;.
      */
-    public final static String LONG_JASTRING_MAP = "longStringMap";
+    public static final String LONG_JASTRING_MAP = "longStringMap";
 
     /**
      * Factory name for a JAMap&lt;Long, Bytes&gt;.
      */
-    public final static String LONG_BYTES_MAP = "longBytesMap";
+    public static final String LONG_BYTES_MAP = "longBytesMap";
 
     /**
      * Factory name for a JAMap&lt;Long, Box&gt;.
      */
-    public final static String LONG_BOX_MAP = "longBoxMap";
+    public static final String LONG_BOX_MAP = "longBoxMap";
 
     /**
      * Factory name for a JAMap&lt;Long, JALong&gt;.
      */
-    public final static String LONG_JALONG_MAP = "longLongMap";
+    public static final String LONG_JALONG_MAP = "longLongMap";
 
     /**
      * Factory name for a JAMap&lt;Long, JAInteger&gt;.
      */
-    public final static String LONG_JAINTEGER_MAP = "longIntMap";
+    public static final String LONG_JAINTEGER_MAP = "longIntMap";
 
     /**
      * Factory name for a JAMap&lt;Long, JAFloat&gt;.
      */
-    public final static String LONG_JAFLOAT_MAP = "longFloatMap";
+    public static final String LONG_JAFLOAT_MAP = "longFloatMap";
 
     /**
      * Factory name for a JAMap&lt;Long, JADouble&gt;.
      */
-    public final static String LONG_JADOUBLE_MAP = "longDoubleMap";
+    public static final String LONG_JADOUBLE_MAP = "longDoubleMap";
 
     /**
      * Factory name for a JAMap&lt;Long, JABoolean&gt;.
      */
-    public final static String LONG_JABOOLEAN_MAP = "longBoolMap";
+    public static final String LONG_JABOOLEAN_MAP = "longBoolMap";
 
     /**
      * Returns a request to get the first entry.
@@ -144,8 +144,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      *
      * @return The first entry, or null.
      */
-    MapEntry<KEY_TYPE, VALUE_TYPE> getFirst()
-            throws Exception;
+    MapEntry<KEY_TYPE, VALUE_TYPE> getFirst() throws Exception;
 
     /**
      * Returns a request to get the last entry.
@@ -159,8 +158,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      *
      * @return The last entry, or null.
      */
-    MapEntry<KEY_TYPE, VALUE_TYPE> getLast()
-            throws Exception;
+    MapEntry<KEY_TYPE, VALUE_TYPE> getLast() throws Exception;
 
     /**
      * Returns a request to get the serializable object assigned to a given key.
@@ -176,8 +174,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return The assigned serializable object, or null.
      */
-    VALUE_TYPE kGet(final KEY_TYPE _key)
-            throws Exception;
+    VALUE_TYPE kGet(final KEY_TYPE _key) throws Exception;
 
     /**
      * Returns a request to get an entry with a higher key.
@@ -185,7 +182,8 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return The request.
      */
-    AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(final KEY_TYPE _key);
+    AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getHigherReq(
+            final KEY_TYPE _key);
 
     /**
      * Returns the entry with a higher key.
@@ -202,7 +200,8 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return The request.
      */
-    AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(final KEY_TYPE _key);
+    AsyncRequest<MapEntry<KEY_TYPE, VALUE_TYPE>> getCeilingReq(
+            final KEY_TYPE _key);
 
     /**
      * Returns an entry with a key greater or equal to the given key.
@@ -230,8 +229,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key   The key of the serializable object.
      * @param _bytes The serialized data used to update the object.
      */
-    void kSet(final KEY_TYPE _key, final byte[] _bytes)
-            throws Exception;
+    void kSet(final KEY_TYPE _key, final byte[] _bytes) throws Exception;
 
     /**
      * Returns a request to create a new serializable object and add it to the map, unless there is
@@ -251,8 +249,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return True if a new entry was added.
      */
-    Boolean kMake(final KEY_TYPE _key)
-            throws Exception;
+    Boolean kMake(final KEY_TYPE _key) throws Exception;
 
     /**
      * Returns a request to create a new serializable object and add it to the map, unless there is
@@ -274,8 +271,7 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _bytes The serialized data used to initialize the new object.
      * @return True if a new entry was added.
      */
-    Boolean kMake(final KEY_TYPE _key, final byte[] _bytes)
-            throws Exception;
+    Boolean kMake(final KEY_TYPE _key, final byte[] _bytes) throws Exception;
 
     /**
      * Returns a request to remove an entry with a given key.
@@ -291,6 +287,5 @@ public interface JAMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE extends
      * @param _key The key.
      * @return True when an entry was present and removed.
      */
-    boolean kRemove(final KEY_TYPE _key)
-            throws Exception;
+    boolean kRemove(final KEY_TYPE _key) throws Exception;
 }

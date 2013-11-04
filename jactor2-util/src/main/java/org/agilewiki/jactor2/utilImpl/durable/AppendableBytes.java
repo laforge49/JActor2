@@ -9,7 +9,7 @@ package org.agilewiki.jactor2.utilImpl.durable;
  * while advancing an internal offset.
  * </p>
  */
-final public class AppendableBytes {
+public final class AppendableBytes {
     /**
      * The wrapped immutable array of bytes.
      */
@@ -26,7 +26,7 @@ final public class AppendableBytes {
      * @param bytes  The bytes to be wrapped.
      * @param offset An offset.
      */
-    public AppendableBytes(byte[] bytes, int offset) {
+    public AppendableBytes(final byte[] bytes, final int offset) {
         this.bytes = bytes;
         this.offset = offset;
     }
@@ -36,7 +36,7 @@ final public class AppendableBytes {
      *
      * @param size The size of the byte array.
      */
-    public AppendableBytes(int size) {
+    public AppendableBytes(final int size) {
         this(new byte[size], 0);
     }
 
@@ -64,7 +64,8 @@ final public class AppendableBytes {
      * @param readableBytes The source of the bytes to be written.
      * @param length        The number of bytes to be written.
      */
-    public void writeReadableBytes(ReadableBytes readableBytes, int length) {
+    public void writeReadableBytes(final ReadableBytes readableBytes,
+            final int length) {
         readableBytes.readBytes(bytes, offset, length);
         offset += length;
     }
@@ -74,7 +75,7 @@ final public class AppendableBytes {
      *
      * @param b The byte to be written.
      */
-    public void writeByte(byte b) {
+    public void writeByte(final byte b) {
         bytes[offset] = b;
         offset += 1;
     }
@@ -84,9 +85,12 @@ final public class AppendableBytes {
      *
      * @param b The boolean to be written.
      */
-    public void writeBoolean(boolean b) {
-        if (b) writeByte((byte) 1);
-        else writeByte((byte) 0);
+    public void writeBoolean(final boolean b) {
+        if (b) {
+            writeByte((byte) 1);
+        } else {
+            writeByte((byte) 0);
+        }
     }
 
     /**
@@ -94,8 +98,10 @@ final public class AppendableBytes {
      *
      * @param ba The bytes to be written.
      */
-    public void writeBytes(byte[] ba) {
-        if (ba.length == 0) return;
+    public void writeBytes(final byte[] ba) {
+        if (ba.length == 0) {
+            return;
+        }
         System.arraycopy(ba, 0, bytes, offset, ba.length);
         offset += ba.length;
     }
@@ -107,8 +113,10 @@ final public class AppendableBytes {
      * @param off The offset to the bytes to be written.
      * @param len The number of bytes to be written.
      */
-    public void writeBytes(byte[] ba, int off, int len) {
-        if (len == 0) return;
+    public void writeBytes(final byte[] ba, final int off, final int len) {
+        if (len == 0) {
+            return;
+        }
         System.arraycopy(ba, off, bytes, offset, len);
         offset += len;
     }
@@ -118,7 +126,7 @@ final public class AppendableBytes {
      *
      * @param i The int to be written.
      */
-    public void writeInt(int i) {
+    public void writeInt(final int i) {
         bytes[offset + 3] = (byte) (i & 255);
         int w = i >> 8;
         bytes[offset + 2] = (byte) (w & 255);
@@ -134,7 +142,7 @@ final public class AppendableBytes {
      *
      * @param l The long to be written.
      */
-    public void writeLong(long l) {
+    public void writeLong(final long l) {
         bytes[offset + 7] = (byte) (l & 255);
         long w = l >> 8;
         bytes[offset + 6] = (byte) (w & 255);
@@ -158,7 +166,7 @@ final public class AppendableBytes {
      *
      * @param c The char to be written.
      */
-    public void writeChar(char c) {
+    public void writeChar(final char c) {
         writeByte((byte) (255 & (c >> 8)));
         writeByte((byte) (255 & c));
     }
@@ -168,7 +176,7 @@ final public class AppendableBytes {
      *
      * @param ca The array to be written.
      */
-    public void writeChars(char[] ca) {
+    public void writeChars(final char[] ca) {
         int i = 0;
         while (i < ca.length) {
             writeChar(ca[i]);
@@ -183,14 +191,15 @@ final public class AppendableBytes {
      *
      * @param s The string to be written, or null.
      */
-    public void writeString(String s) {
+    public void writeString(final String s) {
         if (s == null) {
             writeInt(-1);
             return;
         }
         writeInt(s.length() * 2);
-        if (s.length() == 0)
+        if (s.length() == 0) {
             return;
+        }
         writeChars(s.toCharArray());
     }
 
@@ -199,8 +208,8 @@ final public class AppendableBytes {
      *
      * @param f The float to be written.
      */
-    public void writeFloat(float f) {
-        int i = Float.floatToIntBits(f);
+    public void writeFloat(final float f) {
+        final int i = Float.floatToIntBits(f);
         writeInt(i);
     }
 
@@ -209,8 +218,8 @@ final public class AppendableBytes {
      *
      * @param d The double to be written.
      */
-    public void writeDouble(double d) {
-        long l = Double.doubleToLongBits(d);
+    public void writeDouble(final double d) {
+        final long l = Double.doubleToLongBits(d);
         writeLong(l);
     }
 }

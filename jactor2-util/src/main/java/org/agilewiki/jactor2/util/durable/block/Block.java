@@ -23,8 +23,7 @@ public interface Block {
      *
      * @return The bytes of the header and serialized Root.
      */
-    public byte[] serialize()
-            throws Exception;
+    public byte[] serialize() throws Exception;
 
     /**
      * The length of the header which prefaces the actual data on disk.
@@ -78,8 +77,7 @@ public interface Block {
      *
      * @return The Root.
      */
-    public Root getRoot()
-            throws Exception;
+    public Root getRoot() throws Exception;
 
     /**
      * Return the Root, partially deserializing it as needed..
@@ -88,8 +86,8 @@ public interface Block {
      * @param parent  The parent.
      * @return The Root, or null.
      */
-    public Root getRoot(FactoryLocator factoryLocator, Reactor reactor, Ancestor parent)
-            throws Exception;
+    public Root getRoot(FactoryLocator factoryLocator, Reactor reactor,
+            Ancestor parent) throws Exception;
 
     /**
      * Indicates the absence of a root object.

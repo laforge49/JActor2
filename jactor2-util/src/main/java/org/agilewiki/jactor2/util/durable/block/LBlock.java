@@ -24,17 +24,17 @@ public class LBlock implements Block {
     private Root rootJid;
 
     @Override
-    public void setRootJid(Root rootJid) {
+    public void setRootJid(final Root rootJid) {
         blockBytes = null;
         rootJidBytes = null;
         this.rootJid = rootJid;
     }
 
     @Override
-    public byte[] serialize()
-            throws Exception {
-        if (blockBytes != null)
+    public byte[] serialize() throws Exception {
+        if (blockBytes != null) {
             return blockBytes;
+        }
         l = rootJid.getSerializedLength();
         blockBytes = new byte[headerLength() + l];
         AppendableBytes ab = new AppendableBytes(blockBytes, headerLength());
@@ -50,7 +50,7 @@ public class LBlock implements Block {
      * @param ab Append the data to this.
      * @param l  The length of the data.
      */
-    protected void saveHeader(AppendableBytes ab, int l)
+    protected void saveHeader(final AppendableBytes ab, final int l)
             throws Exception {
         ab.writeInt(l);
     }
@@ -60,11 +60,13 @@ public class LBlock implements Block {
         return JAInteger.LENGTH;
     }
 
+    @Override
     public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
+    @Override
+    public void setFileName(final String fileName) {
         this.fileName = fileName;
     }
 
@@ -74,19 +76,19 @@ public class LBlock implements Block {
     }
 
     @Override
-    public void setCurrentPosition(long position) {
+    public void setCurrentPosition(final long position) {
         currentPosition = position;
     }
 
     @Override
-    public int setHeaderBytes(byte[] bytes) {
+    public int setHeaderBytes(final byte[] bytes) {
         rb = new ReadableBytes(bytes, 0);
         l = rb.readInt();
         return l;
     }
 
     @Override
-    public boolean setRootBytes(byte[] rootJidBytes) {
+    public boolean setRootBytes(final byte[] rootJidBytes) {
         if (l != rootJidBytes.length) {
             System.out.println("wrong length");
             return false;
@@ -95,8 +97,8 @@ public class LBlock implements Block {
         return true;
     }
 
-    public Root getRoot()
-            throws Exception {
+    @Override
+    public Root getRoot() throws Exception {
         if (rootJid == null) {
             throw new IllegalStateException("there is no RootImpl");
         }
@@ -104,20 +106,24 @@ public class LBlock implements Block {
     }
 
     @Override
-    public Root getRoot(FactoryLocator factoryLocator, Reactor reactor, Ancestor parent)
-            throws Exception {
-        if (rootJid != null)
+    public Root getRoot(final FactoryLocator factoryLocator,
+            final Reactor reactor, final Ancestor parent) throws Exception {
+        if (rootJid != null) {
             return rootJid;
+        }
         rb = null;
-        if (rootJidBytes == null)
+        if (rootJidBytes == null) {
             return null;
-        rootJid = (Root) Durables.newSerializable(factoryLocator, Root.FACTORY_NAME, reactor, parent);
+        }
+        rootJid = (Root) Durables.newSerializable(factoryLocator,
+                Root.FACTORY_NAME, reactor, parent);
         ((RootImpl) rootJid).load(new ReadableBytes(rootJidBytes, 0));
         return rootJid;
     }
 
+    @Override
     public boolean isEmpty() {
-        return rootJid == null && rootJidBytes == null;
+        return (rootJid == null) && (rootJidBytes == null);
     }
 
     @Override
@@ -126,7 +132,7 @@ public class LBlock implements Block {
     }
 
     @Override
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(final long timestamp) {
         throw new UnsupportedOperationException();
     }
 }

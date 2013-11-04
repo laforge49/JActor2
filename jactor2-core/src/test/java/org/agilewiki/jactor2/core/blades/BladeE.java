@@ -20,8 +20,9 @@ public class BladeE {
      * @param _request        The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
      */
-    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
-                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+    protected <RESPONSE_TYPE> void send(
+            final RequestBase<RESPONSE_TYPE> _request,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         RequestBase.doSend(reactor, _request, _responseProcessor);
     }
@@ -31,8 +32,7 @@ public class BladeE {
             AsyncRequest<Void> dis = this;
 
             @Override
-            protected void processAsyncRequest()
-                    throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 // Note: we only respond to responseProcessor if we get a
                 // response to our own request, which should NOT happen.
                 // Therefore, responseProcessor is NOT called.
@@ -41,8 +41,8 @@ public class BladeE {
                             new AsyncResponseProcessor<Void>() {
 
                                 @Override
-                                public void processAsyncResponse(final Void response)
-                                        throws Exception {
+                                public void processAsyncResponse(
+                                        final Void response) throws Exception {
                                     // Should NOT happen!
                                     dis.processAsyncException(new IllegalStateException(
                                             "We should have never got here!"));

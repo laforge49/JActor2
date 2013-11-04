@@ -29,7 +29,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
      * @param _rp    The wrapped AsyncResponseProcessor.
      */
     public BoundResponseProcessor(final Blade _blade,
-                                  final AsyncResponseProcessor<RESPONSE_TYPE> _rp) {
+            final AsyncResponseProcessor<RESPONSE_TYPE> _rp) {
         targetBlade = _blade;
         rp = _rp;
     }

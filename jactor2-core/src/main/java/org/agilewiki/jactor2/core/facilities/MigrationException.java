@@ -9,6 +9,8 @@ import org.agilewiki.jactor2.core.reactors.UnboundReactor;
  */
 public class MigrationException extends RuntimeException {
 
+    /**  */
+    private static final long serialVersionUID = 1L;
     /**
      * The newly active targetReactor.
      */

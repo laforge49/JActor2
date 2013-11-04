@@ -1,16 +1,15 @@
 package org.agilewiki.jactor2.core.blades.oldRequestBus;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
 public class RequestBus<CONTENT, RESPONSE> extends BladeBase {
-    protected final Set<Subscription<CONTENT, RESPONSE>> subscriptions =
-            new HashSet<Subscription<CONTENT, RESPONSE>>();
+    protected final Set<Subscription<CONTENT, RESPONSE>> subscriptions = new HashSet<Subscription<CONTENT, RESPONSE>>();
 
     public RequestBus(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
@@ -20,9 +19,11 @@ public class RequestBus<CONTENT, RESPONSE> extends BladeBase {
         return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
-                Iterator<Subscription<CONTENT, RESPONSE>> it = subscriptions.iterator();
+                final Iterator<Subscription<CONTENT, RESPONSE>> it = subscriptions
+                        .iterator();
                 while (it.hasNext()) {
-                    Subscription<CONTENT, RESPONSE> subscription = it.next();
+                    final Subscription<CONTENT, RESPONSE> subscription = it
+                            .next();
                     subscription.notificationAReq(_content).signal();
                 }
                 return null;

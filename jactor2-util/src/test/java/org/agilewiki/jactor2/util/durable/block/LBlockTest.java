@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.util.durable.block;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -8,32 +9,31 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.incDes.Root;
 
 public class LBlockTest extends TestCase {
-    public void test()
-            throws Exception {
-        Plant plant = Durables.createPlant();
+    public void test() throws Exception {
+        final Plant plant = Durables.createPlant();
         try {
-            FactoryLocator factoryLocator = Durables.getFactoryLocator(plant);
-            Root rj = (Root) Durables.newSerializable(
-                    factoryLocator,
-                    Root.FACTORY_NAME,
-                    new NonBlockingReactor(plant));
-            LBlock lb1 = new LBlock();
+            final FactoryLocator factoryLocator = Durables
+                    .getFactoryLocator(plant);
+            final Root rj = (Root) Durables.newSerializable(factoryLocator,
+                    Root.FACTORY_NAME, new NonBlockingReactor(plant));
+            final LBlock lb1 = new LBlock();
             lb1.setRootJid(rj);
-            byte[] bs = lb1.serialize();
+            final byte[] bs = lb1.serialize();
 
-            int hl = lb1.headerLength();
-            int rjl = rj.getSerializedLength();
+            final int hl = lb1.headerLength();
+            final int rjl = rj.getSerializedLength();
             assertEquals(bs.length, hl + rjl);
 
-            byte[] h = new byte[hl];
+            final byte[] h = new byte[hl];
             System.arraycopy(bs, 0, h, 0, hl);
-            byte[] sd = new byte[rjl];
+            final byte[] sd = new byte[rjl];
             System.arraycopy(bs, hl, sd, 0, rjl);
 
-            LBlock lb2 = new LBlock();
-            int rjl2 = lb2.setHeaderBytes(h);
+            final LBlock lb2 = new LBlock();
+            final int rjl2 = lb2.setHeaderBytes(h);
             lb2.setRootBytes(sd);
-            Root rj2 = lb2.getRoot(factoryLocator, new NonBlockingReactor(plant), null);
+            final Root rj2 = lb2.getRoot(factoryLocator,
+                    new NonBlockingReactor(plant), null);
         } finally {
             plant.close();
         }

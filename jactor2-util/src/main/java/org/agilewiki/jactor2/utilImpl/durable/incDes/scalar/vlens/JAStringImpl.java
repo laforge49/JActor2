@@ -6,17 +6,22 @@ import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor2.util.durable.incDes.JAString;
-import org.agilewiki.jactor2.utilImpl.durable.*;
+import org.agilewiki.jactor2.utilImpl.durable.AppendableBytes;
+import org.agilewiki.jactor2.utilImpl.durable.ComparableKey;
+import org.agilewiki.jactor2.utilImpl.durable.FactoryImpl;
+import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
+import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
 
 /**
  * A JID actor that holds a String.
  */
-public class JAStringImpl
-        extends VLenScalar<String, String>
-        implements ComparableKey<String>, JAString {
+public class JAStringImpl extends VLenScalar<String, String> implements
+        ComparableKey<String>, JAString {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JAString.FACTORY_NAME) {
+    public static void registerFactory(final FactoryLocator _factoryLocator)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(
+                JAString.FACTORY_NAME) {
             @Override
             final protected JAStringImpl instantiateBlade() {
                 return new JAStringImpl();
@@ -24,6 +29,7 @@ public class JAStringImpl
         });
     }
 
+    @Override
     public AsyncRequest<String> getValueReq() {
         return new AsyncBladeRequest<String>() {
             @Override
@@ -41,17 +47,20 @@ public class JAStringImpl
     @Override
     public void setValue(final String v) {
         int c = v.length() * 2;
-        if (len > -1)
+        if (len > -1) {
             c -= len;
+        }
         value = v;
         serializedBytes = null;
         serializedOffset = -1;
         change(c);
     }
 
+    @Override
     public AsyncRequest<Void> setValueReq(final String v) {
-        if (v == null)
+        if (v == null) {
             throw new IllegalArgumentException("value may not be null");
+        }
         return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -68,12 +77,14 @@ public class JAStringImpl
      * @return True if a new value is created.
      */
     @Override
-    public Boolean makeValue(String v) {
-        if (len > -1)
+    public Boolean makeValue(final String v) {
+        if (len > -1) {
             return false;
+        }
         int c = v.length() * 2;
-        if (len > -1)
+        if (len > -1) {
             c -= len;
+        }
         value = v;
         serializedBytes = null;
         serializedOffset = -1;
@@ -81,9 +92,11 @@ public class JAStringImpl
         return true;
     }
 
+    @Override
     public AsyncRequest<Boolean> makeValueReq(final String v) {
-        if (v == null)
+        if (v == null) {
             throw new IllegalArgumentException("value may not be null");
+        }
         return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -98,13 +111,14 @@ public class JAStringImpl
      * @return The value held by this component, or null.
      */
     @Override
-    public String getValue()
-            throws Exception {
-        if (len == -1)
+    public String getValue() throws Exception {
+        if (len == -1) {
             return null;
-        if (value != null)
+        }
+        if (value != null) {
             return value;
-        ReadableBytes readableBytes = readable();
+        }
+        final ReadableBytes readableBytes = readable();
         skipLen(readableBytes);
         value = readableBytes.readString(len);
         return value;
@@ -116,12 +130,13 @@ public class JAStringImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
+    protected void serialize(final AppendableBytes appendableBytes)
             throws Exception {
-        if (len == -1)
+        if (len == -1) {
             saveLen(appendableBytes);
-        else
+        } else {
             appendableBytes.writeString(value);
+        }
     }
 
     /**
@@ -131,13 +146,13 @@ public class JAStringImpl
      * @return The result of a compareTo(o).
      */
     @Override
-    public int compareKeyTo(String o)
-            throws Exception {
+    public int compareKeyTo(final String o) throws Exception {
         return getValue().compareTo(o);
     }
 
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    @Override
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

@@ -33,21 +33,22 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @return An array of element factories.
      */
     protected Factory[] getTupleFactories() {
-        if (tupleFactories != null)
+        if (tupleFactories != null) {
             return tupleFactories;
+        }
         throw new IllegalStateException("tupleFactories is null");
     }
 
     @Override
-    public void _iSetBytes(int i, byte[] bytes)
-            throws Exception {
+    public void _iSetBytes(final int i, final byte[] bytes) throws Exception {
         _initialize();
-        JASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
-        JASerializable oldElementJid = _iGet(i);
+        final JASerializable elementJid = createSubordinate(tupleFactories[i],
+                bytes);
+        final JASerializable oldElementJid = _iGet(i);
         ((IncDesImpl) oldElementJid.getDurable()).setContainerJid(null);
         tuple[i] = elementJid;
-        change(elementJid.getDurable().getSerializedLength() -
-                oldElementJid.getDurable().getSerializedLength());
+        change(elementJid.getDurable().getSerializedLength()
+                - oldElementJid.getDurable().getSerializedLength());
     }
 
     @Override
@@ -56,49 +57,54 @@ public class DurableImpl extends IncDesImpl implements Durable {
     }
 
     @Override
-    public JASerializable _iGet(int i)
-            throws Exception {
+    public JASerializable _iGet(int i) throws Exception {
         _initialize();
-        if (i < 0)
+        if (i < 0) {
             i += _size();
-        if (i < 0 || i >= _size())
+        }
+        if ((i < 0) || (i >= _size())) {
             return null;
+        }
         return tuple[i];
     }
 
     @Override
-    public JASerializable _resolvePathname(String pathname)
+    public JASerializable _resolvePathname(final String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
         int s = pathname.indexOf("/");
-        if (s == -1)
+        if (s == -1) {
             s = pathname.length();
-        if (s == 0)
+        }
+        if (s == 0) {
             throw new IllegalArgumentException("pathname " + pathname);
-        String ns = pathname.substring(0, s);
+        }
+        final String ns = pathname.substring(0, s);
         int n = 0;
         try {
             n = Integer.parseInt(ns);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new IllegalArgumentException("pathname " + pathname);
         }
-        if (n < 0 || n >= _size())
+        if ((n < 0) || (n >= _size())) {
             throw new IllegalArgumentException("pathname " + pathname);
-        JASerializable jid = _iGet(n);
-        if (s == pathname.length())
+        }
+        final JASerializable jid = _iGet(n);
+        if (s == pathname.length()) {
             return jid;
+        }
         return jid.getDurable().resolvePathname(pathname.substring(s + 1));
     }
 
     /**
      * Perform lazy initialization.
      */
-    private void _initialize()
-            throws Exception {
-        if (tuple != null)
+    private void _initialize() throws Exception {
+        if (tuple != null) {
             return;
+        }
         tupleFactories = getTupleFactories();
         ReadableBytes readableBytes = null;
         if (isSerialized()) {
@@ -109,7 +115,8 @@ public class DurableImpl extends IncDesImpl implements Durable {
         int i = 0;
         _len = 0;
         while (i < _size()) {
-            JASerializable elementJid = createSubordinate(tupleFactories[i], readableBytes);
+            final JASerializable elementJid = createSubordinate(
+                    tupleFactories[i], readableBytes);
             _len += elementJid.getDurable().getSerializedLength();
             tuple[i] = elementJid;
             i += 1;
@@ -121,7 +128,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      *
      * @param readableBytes Holds the serialized data.
      */
-    private void _skipLen(ReadableBytes readableBytes) {
+    private void _skipLen(final ReadableBytes readableBytes) {
         readableBytes.skip(JAInteger.LENGTH);
     }
 
@@ -131,7 +138,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param readableBytes Holds the serialized data.
      * @return The size of the serialized data (exclusive of its length header).
      */
-    private int _loadLen(ReadableBytes readableBytes) {
+    private int _loadLen(final ReadableBytes readableBytes) {
         return readableBytes.readInt();
     }
 
@@ -140,7 +147,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      *
      * @param appendableBytes The object written to.
      */
-    private void _saveLen(AppendableBytes appendableBytes) {
+    private void _saveLen(final AppendableBytes appendableBytes) {
         appendableBytes.writeInt(_len);
     }
 
@@ -150,8 +157,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength()
-            throws Exception {
+    public int getSerializedLength() throws Exception {
         _initialize();
         return JAInteger.LENGTH + _len;
     }
@@ -162,7 +168,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
+    protected void serialize(final AppendableBytes appendableBytes)
             throws Exception {
         _saveLen(appendableBytes);
         int i = 0;
@@ -178,8 +184,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(final ReadableBytes readableBytes) throws Exception {
         super.load(readableBytes);
         _len = _loadLen(readableBytes);
         tuple = null;
@@ -192,7 +197,7 @@ public class DurableImpl extends IncDesImpl implements Durable {
      * @param lengthChange The change in the size of the serialized data.
      */
     @Override
-    public void change(int lengthChange) {
+    public void change(final int lengthChange) {
         _len += lengthChange;
         super.change(lengthChange);
     }

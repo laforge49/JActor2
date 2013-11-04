@@ -145,9 +145,10 @@ abstract public class ReactorBase implements Reactor, MessageSource,
     @Override
     public final ExceptionHandler setExceptionHandler(
             final ExceptionHandler _handler) {
-        if (!isRunning())
+        if (!isRunning()) {
             throw new IllegalStateException(
                     "Attempt to set an exception handler on an idle targetReactor");
+        }
         final ExceptionHandler rv = this.exceptionHandler;
         this.exceptionHandler = _handler;
         return rv;
@@ -171,11 +172,12 @@ abstract public class ReactorBase implements Reactor, MessageSource,
     public void unbufferedAddMessage(final Message _message,
             final boolean _local) throws Exception {
         if (facility.isClosing()) {
-            if (_message.isForeign() && _message.isResponsePending())
+            if (_message.isForeign() && _message.isResponsePending()) {
                 try {
                     _message.close();
                 } catch (final Throwable t) {
                 }
+            }
             return;
         }
         inbox.offer(_local, _message);
@@ -193,11 +195,12 @@ abstract public class ReactorBase implements Reactor, MessageSource,
             final Iterator<Message> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final Message message = itm.next();
-                if (message.isForeign() && message.isResponsePending())
+                if (message.isForeign() && message.isResponsePending()) {
                     try {
                         message.close();
                     } catch (final Throwable t) {
                     }
+                }
             }
             return;
         }
@@ -241,9 +244,10 @@ abstract public class ReactorBase implements Reactor, MessageSource,
         try {
             final ReactorBase responseSource = (ReactorBase) _responseSource;
             final boolean local = this == _responseSource;
-            if (local || _responseSource == null
-                    || !responseSource.buffer(_message, this))
+            if (local || (_responseSource == null)
+                    || !responseSource.buffer(_message, this)) {
                 unbufferedAddMessage(_message, local);
+            }
         } catch (final Throwable t) {
             log.error("unable to add response message", t);
         }

@@ -32,9 +32,9 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
      *
      * @param _facility The facility of the targetReactor.
      */
-    public BlockingReactor(Facility _facility) throws Exception {
-        super(_facility, _facility.getInitialBufferSize(),
-                _facility.getInitialLocalMessageQueueSize(), null);
+    public BlockingReactor(final Facility _facility) throws Exception {
+        super(_facility, _facility.getInitialBufferSize(), _facility
+                .getInitialLocalMessageQueueSize(), null);
     }
 
     /**
@@ -43,10 +43,10 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
      * @param _facility The facility of the targetReactor.
      * @param _onIdle   Object to be run when the inbox is emptied, or null.
      */
-    public BlockingReactor(Facility _facility,
-                           Runnable _onIdle) throws Exception {
-        super(_facility, _facility.getInitialBufferSize(),
-                _facility.getInitialLocalMessageQueueSize(), _onIdle);
+    public BlockingReactor(final Facility _facility, final Runnable _onIdle)
+            throws Exception {
+        super(_facility, _facility.getInitialBufferSize(), _facility
+                .getInitialLocalMessageQueueSize(), _onIdle);
     }
 
     /**
@@ -57,15 +57,14 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public BlockingReactor(Facility _facility,
-                           int _initialOutboxSize,
-                           final int _initialLocalQueueSize,
-                           Runnable _onIdle) throws Exception {
+    public BlockingReactor(final Facility _facility,
+            final int _initialOutboxSize, final int _initialLocalQueueSize,
+            final Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     @Override
-    protected Inbox createInbox(int _initialLocalQueueSize) {
+    protected Inbox createInbox(final int _initialLocalQueueSize) {
         return new NonBlockingInbox(_initialLocalQueueSize);
     }
 
@@ -76,7 +75,7 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
             flush(true);
         } catch (final MigrationException me) {
             throw me;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Exception thrown by flush", e);
         }
     }

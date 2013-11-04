@@ -1,5 +1,10 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -11,19 +16,15 @@ import org.agilewiki.jactor2.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 /**
  * A JID component that holds a byte array.
  */
-public class BytesImpl
-        extends VLenScalar<byte[], byte[]> implements Bytes {
+public class BytesImpl extends VLenScalar<byte[], byte[]> implements Bytes {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(Bytes.FACTORY_NAME) {
+    public static void registerFactory(final FactoryLocator _factoryLocator)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(
+                Bytes.FACTORY_NAME) {
             @Override
             final protected BytesImpl instantiateBlade() {
                 return new BytesImpl();
@@ -49,8 +50,9 @@ public class BytesImpl
     @Override
     public void setValue(final byte[] v) {
         int c = v.length;
-        if (len > -1)
+        if (len > -1) {
             c -= len;
+        }
         value = v;
         serializedBytes = null;
         serializedOffset = -1;
@@ -69,12 +71,12 @@ public class BytesImpl
     }
 
     @Override
-    public void setObject(Object v) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
+    public void setObject(final Object v) throws Exception {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(v);
         oos.close();
-        byte[] bytes = baos.toByteArray();
+        final byte[] bytes = baos.toByteArray();
         setValue(bytes);
     }
 
@@ -87,11 +89,13 @@ public class BytesImpl
      */
     @Override
     public Boolean makeValue(final byte[] v) {
-        if (len > -1)
+        if (len > -1) {
             return false;
+        }
         int c = v.length;
-        if (len > -1)
+        if (len > -1) {
             c -= len;
+        }
         value = v;
         serializedBytes = null;
         serializedOffset = -1;
@@ -115,13 +119,14 @@ public class BytesImpl
      * @return The value held by this component, or null.
      */
     @Override
-    public byte[] getValue()
-            throws Exception {
-        if (len == -1)
+    public byte[] getValue() throws Exception {
+        if (len == -1) {
             return null;
-        if (value != null)
+        }
+        if (value != null) {
             return value;
-        ReadableBytes readableBytes = readable();
+        }
+        final ReadableBytes readableBytes = readable();
         skipLen(readableBytes);
         value = readableBytes.readBytes(len);
         return value;
@@ -129,12 +134,13 @@ public class BytesImpl
 
     @Override
     public Object getObject() throws Exception {
-        byte[] bytes = getValue();
-        if (bytes == null)
+        final byte[] bytes = getValue();
+        if (bytes == null) {
             return null;
-        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        Object o = ois.readObject();
+        }
+        final ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        final ObjectInputStream ois = new ObjectInputStream(bais);
+        final Object o = ois.readObject();
         ois.close();
         return o;
     }
@@ -145,17 +151,18 @@ public class BytesImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
+    protected void serialize(final AppendableBytes appendableBytes)
             throws Exception {
         saveLen(appendableBytes);
-        if (len == -1)
+        if (len == -1) {
             return;
+        }
         appendableBytes.writeBytes(value);
     }
 
     @Override
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

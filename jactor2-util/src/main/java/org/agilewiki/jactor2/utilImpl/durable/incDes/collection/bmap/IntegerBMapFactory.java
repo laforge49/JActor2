@@ -15,26 +15,28 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
  */
 public class IntegerBMapFactory extends FactoryImpl {
 
-    private final static int NODE_CAPACITY = 28;
+    private static final int NODE_CAPACITY = 28;
 
-    public static void registerFactory(FactoryLocator _factoryLocator,
-                                       String actorType,
-                                       String valueType) throws FactoryLocatorClosedException {
-        UnionImpl.registerFactory(_factoryLocator,
-                "U." + actorType, "LM." + actorType, "IM." + actorType);
+    public static void registerFactory(final FactoryLocator _factoryLocator,
+            final String actorType, final String valueType)
+            throws FactoryLocatorClosedException {
+        UnionImpl.registerFactory(_factoryLocator, "U." + actorType, "LM."
+                + actorType, "IM." + actorType);
 
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IntegerBMapFactory(
-                actorType, valueType, true, true));
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IntegerBMapFactory(
-                "IN." + actorType, valueType, false, false));
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new IntegerBMapFactory(actorType, valueType,
+                        true, true));
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new IntegerBMapFactory("IN." + actorType,
+                        valueType, false, false));
 
-        IntegerSMapFactory.registerFactory(
-                _factoryLocator, "LM." + actorType, valueType, NODE_CAPACITY);
-        IntegerSMapFactory.registerFactory(
-                _factoryLocator, "IM." + actorType, "IN." + actorType, NODE_CAPACITY);
+        IntegerSMapFactory.registerFactory(_factoryLocator, "LM." + actorType,
+                valueType, NODE_CAPACITY);
+        IntegerSMapFactory.registerFactory(_factoryLocator, "IM." + actorType,
+                "IN." + actorType, NODE_CAPACITY);
     }
 
-    private String valueType;
+    private final String valueType;
     private boolean isRoot = true;
     private boolean auto = true;
 
@@ -44,8 +46,8 @@ public class IntegerBMapFactory extends FactoryImpl {
      * @param jidType   The jid type.
      * @param valueType The value type.
      */
-    protected IntegerBMapFactory(String jidType, String valueType,
-                                 boolean isRoot, boolean auto) {
+    protected IntegerBMapFactory(final String jidType, final String valueType,
+            final boolean isRoot, final boolean auto) {
         super(jidType);
         this.valueType = valueType;
         this.isRoot = isRoot;
@@ -70,16 +72,18 @@ public class IntegerBMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public IntegerBMap newSerializable(Reactor reactor, Ancestor parent)
-            throws Exception {
-        IntegerBMap imj = (IntegerBMap) super.newSerializable(reactor, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(reactor);
+    public IntegerBMap newSerializable(final Reactor reactor,
+            final Ancestor parent) throws Exception {
+        final IntegerBMap imj = (IntegerBMap) super.newSerializable(reactor,
+                parent);
+        final FactoryLocator fl = Durables.getFactoryLocator(reactor);
         imj.valueFactory = fl.getFactory(valueType);
         imj.nodeCapacity = NODE_CAPACITY;
         imj.isRoot = isRoot;
         imj.init();
-        if (auto)
+        if (auto) {
             imj.setNodeLeaf();
+        }
         return imj;
     }
 }

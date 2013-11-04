@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -11,8 +12,8 @@ import org.agilewiki.jactor2.util.durable.incDes.JAList;
 public class BListTimingsTest extends TestCase {
     public void test() throws Exception {
 
-        int s = 1000;
-        int r = 1000;
+        final int s = 1000;
+        final int r = 1000;
 
         //list size = 1,000
         //repetitions = 1,000
@@ -34,32 +35,34 @@ public class BListTimingsTest extends TestCase {
         //total run time (milliseconds) = 2877
         //time per update (microseconds) = 2877
 
-        Plant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
-            JAList<JAInteger> intList1 = (JAList) Durables.newSerializable(plant, JAList.JAINTEGER_LIST);
-            Reactor reactor = new NonBlockingReactor(plant);
+            final JAList<JAInteger> intList1 = (JAList) Durables
+                    .newSerializable(plant, JAList.JAINTEGER_LIST);
+            final Reactor reactor = new NonBlockingReactor(plant);
             int i = 0;
             while (i < s) {
                 intList1.iAdd(-1);
-                JAInteger ij0 = intList1.iGet(-1);
+                final JAInteger ij0 = intList1.iGet(-1);
                 ij0.setValue(i);
                 i += 1;
             }
             intList1.getSerializedBytes();
-            long t0 = System.currentTimeMillis();
+            final long t0 = System.currentTimeMillis();
             int j = 0;
             while (j < r) {
-                JAList<JAInteger> intList2 = (JAList) intList1.copy(reactor);
+                final JAList<JAInteger> intList2 = (JAList) intList1
+                        .copy(reactor);
                 intList1.iAdd(s / 2);
                 intList2.getSerializedBytes();
                 j += 1;
             }
-            long t1 = System.currentTimeMillis();
+            final long t1 = System.currentTimeMillis();
             System.out.println("list size = " + s);
             System.out.println("repetitions = " + r);
-            long rt = t1 - t0;
+            final long rt = t1 - t0;
             System.out.println("total run time (milliseconds) = " + rt);
-            long tpu = rt * 1000L / r;
+            final long tpu = (rt * 1000L) / r;
             System.out.println("time per update (microseconds) = " + tpu);
         } finally {
             plant.close();

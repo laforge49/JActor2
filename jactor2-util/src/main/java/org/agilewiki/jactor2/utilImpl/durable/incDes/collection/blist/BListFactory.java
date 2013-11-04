@@ -14,31 +14,33 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
  * Creates ListJids.
  */
 public class BListFactory extends FactoryImpl {
-    private final static int NODE_CAPACITY = 28;
+    private static final int NODE_CAPACITY = 28;
 
-    public static void registerFactory(FactoryLocator _factoryLocator,
-                                       String actorType,
-                                       String entryType) throws FactoryLocatorClosedException {
-        UnionImpl.registerFactory(_factoryLocator,
-                "U." + actorType, "LL." + actorType, "IL." + actorType);
+    public static void registerFactory(final FactoryLocator _factoryLocator,
+            final String actorType, final String entryType)
+            throws FactoryLocatorClosedException {
+        UnionImpl.registerFactory(_factoryLocator, "U." + actorType, "LL."
+                + actorType, "IL." + actorType);
 
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new BListFactory(
-                actorType, entryType, true, true));
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new BListFactory(
-                "IN." + actorType, entryType, false, false));
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new BListFactory(actorType, entryType, true,
+                        true));
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new BListFactory("IN." + actorType, entryType,
+                        false, false));
 
-        SListFactory.registerFactory(_factoryLocator,
-                "LL." + actorType, entryType, NODE_CAPACITY);
-        SListFactory.registerFactory(_factoryLocator,
-                "IL." + actorType, "IN." + actorType, NODE_CAPACITY);
+        SListFactory.registerFactory(_factoryLocator, "LL." + actorType,
+                entryType, NODE_CAPACITY);
+        SListFactory.registerFactory(_factoryLocator, "IL." + actorType, "IN."
+                + actorType, NODE_CAPACITY);
     }
 
-    private String entryType;
+    private final String entryType;
     private boolean isRoot = true;
     private boolean auto = true;
 
-    private BListFactory(String actorType, String entryType,
-                         boolean isRoot, boolean auto) {
+    private BListFactory(final String actorType, final String entryType,
+            final boolean isRoot, final boolean auto) {
         super(actorType);
         this.entryType = entryType;
         this.isRoot = isRoot;
@@ -63,16 +65,17 @@ public class BListFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public BList newSerializable(Reactor reactor, Ancestor parent)
+    public BList newSerializable(final Reactor reactor, final Ancestor parent)
             throws Exception {
-        BList lj = (BList) super.newSerializable(reactor, parent);
-        FactoryLocator f = Durables.getFactoryLocator(reactor);
+        final BList lj = (BList) super.newSerializable(reactor, parent);
+        final FactoryLocator f = Durables.getFactoryLocator(reactor);
         lj.entryFactory = f.getFactory(entryType);
         lj.nodeCapacity = NODE_CAPACITY;
         lj.isRoot = isRoot;
         lj.init();
-        if (auto)
+        if (auto) {
             lj.setNodeLeaf();
+        }
         return lj;
     }
 }

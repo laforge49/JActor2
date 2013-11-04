@@ -48,7 +48,8 @@ abstract public class FactoryImpl implements Factory {
     abstract protected JASerializable instantiateBlade() throws Exception;
 
     @Override
-    public JASerializable newSerializable(final Reactor _reactor) throws Exception {
+    public JASerializable newSerializable(final Reactor _reactor)
+            throws Exception {
         return newSerializable(_reactor, null);
     }
 
@@ -60,19 +61,22 @@ abstract public class FactoryImpl implements Factory {
      * @return The new actor.
      */
     @Override
-    public JASerializable newSerializable(final Reactor _reactor, final Ancestor _parent) throws Exception {
-        JASerializable a = instantiateBlade();
+    public JASerializable newSerializable(final Reactor _reactor,
+            final Ancestor _parent) throws Exception {
+        final JASerializable a = instantiateBlade();
         ((IncDesImpl) a.getDurable()).initialize(_reactor, _parent, this);
         return a;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(final Object o) {
+        if (this == o) {
             return true;
-        if (!(o instanceof Factory))
+        }
+        if (!(o instanceof Factory)) {
             return false;
-        Factory af = (Factory) o;
+        }
+        final Factory af = (Factory) o;
         return factoryKey.equals(af.getFactoryKey());
     }
 }

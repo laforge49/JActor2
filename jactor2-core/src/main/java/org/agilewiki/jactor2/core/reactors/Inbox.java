@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.messages.Message;
-
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.agilewiki.jactor2.core.messages.Message;
 
 /**
  * Provides at least two queues for a targetReactor's incoming messages, where the first queue is a
@@ -114,13 +114,15 @@ public abstract class Inbox implements AutoCloseable {
     public void close() {
         while (true) {
             final Message message = poll();
-            if (message == null)
+            if (message == null) {
                 return;
-            if (message.isForeign() && message.isResponsePending())
+            }
+            if (message.isForeign() && message.isResponsePending()) {
                 try {
                     message.close();
                 } catch (final Throwable t) {
                 }
+            }
         }
     }
 }

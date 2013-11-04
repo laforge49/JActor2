@@ -14,11 +14,12 @@ import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
 /**
  * A JID actor that holds a double.
  */
-public class JADoubleImpl
-        extends FLenScalar<Double> implements JADouble {
+public class JADoubleImpl extends FLenScalar<Double> implements JADouble {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JADouble.FACTORY_NAME) {
+    public static void registerFactory(final FactoryLocator _factoryLocator)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(
+                JADouble.FACTORY_NAME) {
             @Override
             final protected JADoubleImpl instantiateBlade() {
                 return new JADoubleImpl();
@@ -53,9 +54,10 @@ public class JADoubleImpl
      */
     @Override
     public Double getValue() {
-        if (value != null)
+        if (value != null) {
             return value;
-        ReadableBytes readableBytes = readable();
+        }
+        final ReadableBytes readableBytes = readable();
         value = readableBytes.readDouble();
         return value;
     }
@@ -87,13 +89,13 @@ public class JADoubleImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(final AppendableBytes appendableBytes) {
         appendableBytes.writeDouble(value);
     }
 
     @Override
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

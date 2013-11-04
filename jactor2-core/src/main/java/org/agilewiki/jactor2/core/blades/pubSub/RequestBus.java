@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * A blade that publishes content to interested subscribers, using either signals or sends.
@@ -38,12 +38,14 @@ public class RequestBus<CONTENT> extends BladeBase {
         return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
-                Iterator<Subscription<CONTENT>> it = subscriptions.iterator();
+                final Iterator<Subscription<CONTENT>> it = subscriptions
+                        .iterator();
                 while (it.hasNext()) {
-                    Subscription<CONTENT> subscription = it.next();
-                    Filter<CONTENT> filter = subscription.filter;
-                    if (filter.match(_content))
+                    final Subscription<CONTENT> subscription = it.next();
+                    final Filter<CONTENT> filter = subscription.filter;
+                    if (filter.match(_content)) {
                         subscription.publicationAReq(_content).signal();
+                    }
                 }
                 return null;
             }
@@ -65,24 +67,29 @@ public class RequestBus<CONTENT> extends BladeBase {
 
             final AsyncResponseProcessor<Void> sendResponse = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
                     i++;
-                    if (i == count)
+                    if (i == count) {
                         dis.processAsyncResponse(null);
+                    }
                 }
             };
 
             @Override
             protected void processAsyncRequest() throws Exception {
                 count = subscriptions.size();
-                Iterator<Subscription<CONTENT>> it = subscriptions.iterator();
+                final Iterator<Subscription<CONTENT>> it = subscriptions
+                        .iterator();
                 while (it.hasNext()) {
-                    Subscription<CONTENT> subscription = it.next();
-                    Filter<CONTENT> filter = subscription.filter;
-                    if (filter.match(_content))
-                        send(subscription.publicationAReq(_content), sendResponse);
-                    else
+                    final Subscription<CONTENT> subscription = it.next();
+                    final Filter<CONTENT> filter = subscription.filter;
+                    if (filter.match(_content)) {
+                        send(subscription.publicationAReq(_content),
+                                sendResponse);
+                    } else {
                         count--;
+                    }
                 }
                 if (count == 0) {
                     dis.processAsyncResponse(null);

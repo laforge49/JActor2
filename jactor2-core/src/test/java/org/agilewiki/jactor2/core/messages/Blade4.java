@@ -12,15 +12,15 @@ public class Blade4 {
         reactor = mbox;
     }
 
-    public <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
+    public <RESPONSE_TYPE> RESPONSE_TYPE local(
+            final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
         return SyncRequest.doLocal(reactor, _syncRequest);
     }
 
     public SyncRequest<Void> hi4SReq() {
         return new SyncRequest<Void>(reactor) {
             @Override
-            protected Void processSyncRequest()
-                    throws Exception {
+            protected Void processSyncRequest() throws Exception {
                 local(new Blade1(targetReactor).hiSReq());
                 System.out.println(response);
                 return null;

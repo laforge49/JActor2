@@ -48,10 +48,12 @@ public class BladeBase implements Blade {
      * @param _reactor The blades's targetReactor.
      */
     public void initialize(final Reactor _reactor) throws Exception {
-        if (initialized)
+        if (initialized) {
             throw new IllegalStateException("Already initialized");
-        if (_reactor == null)
+        }
+        if (_reactor == null) {
             throw new IllegalArgumentException("Reactor may not be null");
+        }
         initialized = true;
         reactor = _reactor;
     }
@@ -61,7 +63,8 @@ public class BladeBase implements Blade {
         return reactor;
     }
 
-    protected abstract class SyncBladeRequest<RESPONSE_TYPE> extends SyncRequest<RESPONSE_TYPE> {
+    protected abstract class SyncBladeRequest<RESPONSE_TYPE> extends
+            SyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
@@ -71,7 +74,8 @@ public class BladeBase implements Blade {
         }
     }
 
-    protected abstract class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+    protected abstract class AsyncBladeRequest<RESPONSE_TYPE> extends
+            AsyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
@@ -88,8 +92,8 @@ public class BladeBase implements Blade {
      * @param <RESPONSE_TYPE> The type of value returned.
      * @return The response from the request.
      */
-    protected <RESPONSE_TYPE> RESPONSE_TYPE local(final SyncRequest<RESPONSE_TYPE> _syncRequest)
-            throws Exception {
+    protected <RESPONSE_TYPE> RESPONSE_TYPE local(
+            final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
         return SyncRequest.doLocal(reactor, _syncRequest);
     }
 
@@ -99,8 +103,9 @@ public class BladeBase implements Blade {
      * @param _request        The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
      */
-    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
-                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+    protected <RESPONSE_TYPE> void send(
+            final RequestBase<RESPONSE_TYPE> _request,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         RequestBase.doSend(reactor, _request, _responseProcessor);
     }

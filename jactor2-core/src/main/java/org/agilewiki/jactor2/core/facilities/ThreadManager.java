@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * ThreadManager is also responsible for assigning the threadReference
  * when a Reactor is run.
  */
-final public class ThreadManager {
+public final class ThreadManager {
     final Logger logger = LoggerFactory.getLogger(ThreadManager.class);
 
     /**
@@ -68,7 +68,7 @@ final public class ThreadManager {
                         if (reactor != null) {
                             AtomicReference<PoolThread> threadReference = reactor
                                     .getThreadReference();
-                            if (threadReference.get() == null
+                            if ((threadReference.get() == null)
                                     && threadReference.compareAndSet(null,
                                             currentThread)) {
                                 currentThread.setCurrentReactor(reactor);
@@ -96,8 +96,9 @@ final public class ThreadManager {
                                     }
                                     final boolean hasWork = reactor.hasWork();
                                     threadReference.set(null);
-                                    if (hasWork || reactor.hasConcurrent())
+                                    if (hasWork || reactor.hasConcurrent()) {
                                         execute(reactor);
+                                    }
                                     break;
                                 }
                                 currentThread.setCurrentReactor(null);
@@ -106,8 +107,9 @@ final public class ThreadManager {
                     } catch (final InterruptedException e) {
                     }
                     currentThread.setCurrentReactor(null);
-                    if (closing)
+                    if (closing) {
                         return;
+                    }
                 }
             }
         };
@@ -124,9 +126,10 @@ final public class ThreadManager {
      *
      * @param _reactor The run method is to be called by the selected thread.
      */
-    final public void execute(final Reactor _reactor) {
-        if (closing)
+    public final void execute(final Reactor _reactor) {
+        if (closing) {
             return;
+        }
         reactors.add((UnboundReactor) _reactor);
         taskRequest.release();
     }
@@ -137,9 +140,10 @@ final public class ThreadManager {
      * and then wakes up all the threads.
      * This method only returns after all the threads have died.
      */
-    final public void close() {
-        if (closing)
+    public final void close() {
+        if (closing) {
             return;
+        }
         closing = true;
         taskRequest.release(threadCount);
         final Thread ct = Thread.currentThread();

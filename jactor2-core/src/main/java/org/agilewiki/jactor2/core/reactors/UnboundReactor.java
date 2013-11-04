@@ -55,7 +55,7 @@ abstract public class UnboundReactor extends ReactorBase {
 
     @Override
     protected void notBusy() throws Exception {
-        if (onIdle != null && inbox.isIdle()) {
+        if ((onIdle != null) && inbox.isIdle()) {
             flush(true);
             onIdle.run();
         }
@@ -94,14 +94,14 @@ abstract public class UnboundReactor extends ReactorBase {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
-                        && getFacility() == target.getFacility()
-                        && target instanceof UnboundReactor) {
+                        && (getFacility() == target.getFacility())
+                        && (target instanceof UnboundReactor)) {
                     if (!target.isRunning()) {
                         final PoolThread currentThread = threadReference.get();
                         final UnboundReactor targ = (UnboundReactor) target;
                         final AtomicReference<PoolThread> targetThreadReference = targ
                                 .getThreadReference();
-                        if (targetThreadReference.get() == null
+                        if ((targetThreadReference.get() == null)
                                 && targetThreadReference.compareAndSet(null,
                                         currentThread)) {
                             while (!messages.isEmpty()) {
@@ -130,8 +130,9 @@ abstract public class UnboundReactor extends ReactorBase {
                 } catch (final Exception e) {
                     log.error("Exception thrown by onIdle", e);
                 }
-                if (hasWork())
+                if (hasWork()) {
                     continue;
+                }
                 return;
             }
             processMessage(message);

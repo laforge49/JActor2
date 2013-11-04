@@ -29,8 +29,7 @@ public interface IncDes extends JASerializable, Blade, Ancestor {
      *
      * @return The actual size of the byte array needed to serialize the persistent data.
      */
-    int getSerializedLength()
-            throws Exception;
+    int getSerializedLength() throws Exception;
 
     /**
      * Returns a request to get the serialized data.
@@ -46,8 +45,7 @@ public interface IncDes extends JASerializable, Blade, Ancestor {
      *
      * @return The serialized data.
      */
-    byte[] getSerializedBytes()
-            throws Exception;
+    byte[] getSerializedBytes() throws Exception;
 
     /**
      * Returns a request to copy the serialized data into a byte array.
@@ -65,8 +63,7 @@ public interface IncDes extends JASerializable, Blade, Ancestor {
      * @param offset The starting offset into the array.
      * @return The revised offset.
      */
-    int save(byte[] bytes, int offset)
-            throws Exception;
+    int save(byte[] bytes, int offset) throws Exception;
 
     /**
      * Load the serialized data.
@@ -100,8 +97,7 @@ public interface IncDes extends JASerializable, Blade, Ancestor {
      * @param _pathname A pathname.
      * @return A serializable object or null.
      */
-    JASerializable resolvePathname(final String _pathname)
-            throws Exception;
+    JASerializable resolvePathname(final String _pathname) throws Exception;
 
     /**
      * Returns the factory used to create the serializable object.

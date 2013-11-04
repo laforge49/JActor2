@@ -14,5 +14,6 @@ public interface PropertyChangeValidator {
      * @param _newValue     The proposed new value.
      * @return Error message or null.
      */
-    AsyncRequest<String> validatePropertyChangeAReq(String _propertyName, Object _oldValue, Object _newValue);
+    AsyncRequest<String> validatePropertyChangeAReq(String _propertyName,
+            Object _oldValue, Object _newValue);
 }

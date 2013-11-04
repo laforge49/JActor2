@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -24,21 +25,21 @@ public class ParallelTest extends TestCase {
         start = new AsyncBladeRequest<Void>() {
             AsyncResponseProcessor<Void> dis = this;
 
-            AsyncResponseProcessor<Void> sleepResponseProcessor =
-                    new AsyncResponseProcessor<Void>() {
-                        int responseCount;
+            AsyncResponseProcessor<Void> sleepResponseProcessor = new AsyncResponseProcessor<Void>() {
+                int responseCount;
 
-                        @Override
-                        public void processAsyncResponse(Void _response) throws Exception {
-                            responseCount++;
-                            if (responseCount == LOADS)
-                                dis.processAsyncResponse(null);
-                        }
-                    };
+                @Override
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
+                    responseCount++;
+                    if (responseCount == LOADS) {
+                        dis.processAsyncResponse(null);
+                    }
+                }
+            };
 
             @Override
-            protected void processAsyncRequest()
-                    throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 int i = 0;
                 while (i < LOADS) {
                     final Delay dly = new Delay(facility);
@@ -52,11 +53,12 @@ public class ParallelTest extends TestCase {
         final long t0 = System.currentTimeMillis();
         start.call();
         final long t1 = System.currentTimeMillis();
-        assertTrue((t1 - t0) < DELAY + DELAY / 2);
+        assertTrue((t1 - t0) < (DELAY + (DELAY / 2)));
         facility.close();
     }
 
-    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
+    abstract public class AsyncBladeRequest<RESPONSE_TYPE> extends
+            AsyncRequest<RESPONSE_TYPE> {
 
         /**
          * Create a SyncRequest.
@@ -72,8 +74,9 @@ public class ParallelTest extends TestCase {
      * @param _request        The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
      */
-    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
-                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+    protected <RESPONSE_TYPE> void send(
+            final RequestBase<RESPONSE_TYPE> _request,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         RequestBase.doSend(plant, _request, _responseProcessor);
     }

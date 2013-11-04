@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.blades.firehose;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FirstStage extends BladeBase implements Runnable {
 
@@ -32,37 +32,40 @@ public class FirstStage extends BladeBase implements Runnable {
 
     long t0;
 
-    public FirstStage(final Facility _facility,
-                      final DataProcessor _next,
-                      final long _count,
-                      final int _maxWindowSize)
-            throws Exception {
+    public FirstStage(final Facility _facility, final DataProcessor _next,
+            final long _count, final int _maxWindowSize) throws Exception {
         mainThread = Thread.currentThread();
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
         initialize(new IsolationReactor(_facility, this));
-        ack = new BoundResponseProcessor<Void>(this, new AsyncResponseProcessor<Void>() {
-            @Override
-            public void processAsyncResponse(Void response) throws Exception {
-                ackCount -= 1;
-                if (list != null) {
-                    send();
-                }
-                if (ackCount == 0 && ndx >= _count) {
-                    long t1 = System.currentTimeMillis();
-                    long d = t1 - t0;
-                    System.out.println("time in millis: " + d);
-                    System.out.println("number of Long: " + count);
-                    System.out.println("window size: " + maxWindowSize);
-                    if (d > 0) {
-                        System.out.println("Longs/second through the firehose: " + count * 1000L / d);
-                        System.out.println("Longs/second passed between stages: " + 10L * count * 1000L / d);
+        ack = new BoundResponseProcessor<Void>(this,
+                new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(final Void response)
+                            throws Exception {
+                        ackCount -= 1;
+                        if (list != null) {
+                            send();
+                        }
+                        if ((ackCount == 0) && (ndx >= _count)) {
+                            final long t1 = System.currentTimeMillis();
+                            final long d = t1 - t0;
+                            System.out.println("time in millis: " + d);
+                            System.out.println("number of Long: " + count);
+                            System.out.println("window size: " + maxWindowSize);
+                            if (d > 0) {
+                                System.out
+                                        .println("Longs/second through the firehose: "
+                                                + ((count * 1000L) / d));
+                                System.out
+                                        .println("Longs/second passed between stages: "
+                                                + ((10L * count * 1000L) / d));
+                            }
+                            mainThread.interrupt();
+                        }
                     }
-                    mainThread.interrupt();
-                }
-            }
-        });
+                });
         t0 = System.currentTimeMillis();
 
         new SyncRequest<Void>(this.getReactor()) {
@@ -74,8 +77,9 @@ public class FirstStage extends BladeBase implements Runnable {
     }
 
     private void createList() {
-        if (list != null)
+        if (list != null) {
             return;
+        }
         list = new ArrayList<Long>();
         firehoseData = new FirehoseData(ack, list);
     }
@@ -87,11 +91,11 @@ public class FirstStage extends BladeBase implements Runnable {
         ackCount += 1;
     }
 
-    private void exception(Exception e) {
+    private void exception(final Exception e) {
         e.printStackTrace();
         try {
             getReactor().getFacility().close();
-        } catch (Exception e1) {
+        } catch (final Exception e1) {
             e1.printStackTrace();
             return;
         }
@@ -104,19 +108,20 @@ public class FirstStage extends BladeBase implements Runnable {
 
     @Override
     public void run() {
-        while (ndx < count && ackCount < maxWindowSize) {
+        while ((ndx < count) && (ackCount < maxWindowSize)) {
             createList();
             add();
             try {
                 send();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 exception(e);
             }
         }
-        if (ndx >= count)
+        if (ndx >= count) {
             return;
+        }
         createList();
-        while (getReactor().isInboxEmpty() && ndx < count) {
+        while (getReactor().isInboxEmpty() && (ndx < count)) {
             add();
         }
     }

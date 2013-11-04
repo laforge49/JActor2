@@ -1,17 +1,19 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class IntegerTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
-            JAInteger int1 = (JAInteger) Durables.newSerializable(plant, JAInteger.FACTORY_NAME);
-            JAInteger int2 = (JAInteger) int1.copyReq(null).call();
+            final JAInteger int1 = (JAInteger) Durables.newSerializable(plant,
+                    JAInteger.FACTORY_NAME);
+            final JAInteger int2 = (JAInteger) int1.copyReq(null).call();
             int2.setValueReq(1).call();
-            JAInteger int3 = (JAInteger) int2.copyReq(null).call();
+            final JAInteger int3 = (JAInteger) int2.copyReq(null).call();
 
             int sl = int1.getSerializedLength();
             assertEquals(4, sl);
@@ -27,7 +29,8 @@ public class IntegerTest extends TestCase {
             v = int3.getValueReq().call();
             assertEquals(1, v);
 
-            Box box1 = (Box) Durables.newSerializable(plant, Box.FACTORY_NAME);
+            final Box box1 = (Box) Durables.newSerializable(plant,
+                    Box.FACTORY_NAME);
             box1.setValueReq(JAInteger.FACTORY_NAME).call();
             JAInteger rpa = (JAInteger) box1.resolvePathnameReq("0").call();
             v = rpa.getValueReq().call();

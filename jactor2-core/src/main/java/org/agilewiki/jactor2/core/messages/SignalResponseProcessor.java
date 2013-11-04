@@ -5,7 +5,8 @@ package org.agilewiki.jactor2.core.messages;
  * so no response is ever returned and consequently the processAsyncResponse method
  * should never actually be invoked.
  */
-final public class SignalResponseProcessor implements AsyncResponseProcessor<Void> {
+public final class SignalResponseProcessor implements
+        AsyncResponseProcessor<Void> {
     /**
      * The class singleton.
      */

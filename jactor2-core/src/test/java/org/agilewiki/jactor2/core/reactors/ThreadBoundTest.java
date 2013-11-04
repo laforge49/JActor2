@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Blade1;
@@ -29,7 +30,8 @@ public class ThreadBoundTest extends TestCase {
         final Blade1 blade1 = new Blade1(reactor);
         send(blade1.hiSReq(), new AsyncResponseProcessor<String>() {
             @Override
-            public void processAsyncResponse(final String response) throws Exception {
+            public void processAsyncResponse(final String response)
+                    throws Exception {
                 System.out.println(response);
                 assertEquals("Hello world!", response);
             }
@@ -42,8 +44,9 @@ public class ThreadBoundTest extends TestCase {
      * @param _request        The request to be processed.
      * @param <RESPONSE_TYPE> The type of value returned.
      */
-    protected <RESPONSE_TYPE> void send(final RequestBase<RESPONSE_TYPE> _request,
-                                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+    protected <RESPONSE_TYPE> void send(
+            final RequestBase<RESPONSE_TYPE> _request,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         RequestBase.doSend(boundReactor, _request, _responseProcessor);
     }

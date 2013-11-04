@@ -25,8 +25,9 @@ public class NamedBase implements Named {
      * @param _name The blades name.
      */
     public void setName(final String _name) {
-        if (name != null)
+        if (name != null) {
             throw new UnsupportedOperationException("Already named: " + name);
+        }
         name = _name;
     }
 }

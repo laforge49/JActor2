@@ -8,7 +8,8 @@ import org.agilewiki.jactor2.util.durable.incDes.JAString;
 public class User extends AppBase {
     static void register(final FactoryLocator _factoryLocator) throws Exception {
         Durables.registerAppFactory(_factoryLocator, User.class, "user",
-                JAString.FACTORY_NAME, JAInteger.FACTORY_NAME, JAString.FACTORY_NAME);
+                JAString.FACTORY_NAME, JAInteger.FACTORY_NAME,
+                JAString.FACTORY_NAME);
     }
 
     static int NAME = 0;

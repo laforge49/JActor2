@@ -26,7 +26,8 @@ public interface Factory extends Named {
      * @param _parent  The dependency to be injected.
      * @return The sew serializable object.
      */
-    JASerializable newSerializable(final Reactor _reactor, final Ancestor _parent) throws Exception;
+    JASerializable newSerializable(final Reactor _reactor,
+            final Ancestor _parent) throws Exception;
 
     /**
      * Returns a string that uniquely identifies the type of serializable object across

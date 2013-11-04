@@ -3,7 +3,11 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
-import org.agilewiki.jactor2.util.durable.*;
+import org.agilewiki.jactor2.util.durable.Durables;
+import org.agilewiki.jactor2.util.durable.Factory;
+import org.agilewiki.jactor2.util.durable.FactoryLocator;
+import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
+import org.agilewiki.jactor2.util.durable.JASerializable;
 import org.agilewiki.jactor2.util.durable.incDes.JAInteger;
 import org.agilewiki.jactor2.util.durable.incDes.Union;
 import org.agilewiki.jactor2.utilImpl.durable.AppendableBytes;
@@ -16,9 +20,10 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.Scalar;
 public class UnionImpl extends Scalar<String, JASerializable> implements Union {
 
     public static void registerFactory(final FactoryLocator _factoryLocator,
-                                       final String _subActorType,
-                                       final String... _actorTypes) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(_subActorType) {
+            final String _subActorType, final String... _actorTypes)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(
+                _subActorType) {
 
             @Override
             protected UnionImpl instantiateBlade() {
@@ -26,10 +31,11 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
             }
 
             @Override
-            public UnionImpl newSerializable(Reactor reactor, Ancestor parent)
-                    throws Exception {
-                UnionImpl uj = (UnionImpl) super.newSerializable(reactor, parent);
-                Factory[] afs = new FactoryImpl[_actorTypes.length];
+            public UnionImpl newSerializable(final Reactor reactor,
+                    final Ancestor parent) throws Exception {
+                final UnionImpl uj = (UnionImpl) super.newSerializable(reactor,
+                        parent);
+                final Factory[] afs = new FactoryImpl[_actorTypes.length];
                 int i = 0;
                 while (i < _actorTypes.length) {
                     afs[i] = _factoryLocator.getFactory(_actorTypes[i]);
@@ -45,8 +51,10 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     protected int factoryIndex = -1;
     protected JASerializable value;
 
+    @Override
     public AsyncRequest<Void> clearReq() {
         return new AsyncBladeRequest<Void>() {
+            @Override
             protected void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
@@ -65,27 +73,31 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     protected Factory[] getUnionFactories() {
-        if (unionFactories != null)
+        if (unionFactories != null) {
             return unionFactories;
+        }
         throw new IllegalStateException("unionFactories is null");
     }
 
-    protected int getFactoryIndex(String actorType) throws Exception {
-        FactoryLocator factoryLocator = Durables.getFactoryLocator(getReactor());
-        Factory actorFactory = factoryLocator.getFactory(actorType);
+    protected int getFactoryIndex(final String actorType) throws Exception {
+        final FactoryLocator factoryLocator = Durables
+                .getFactoryLocator(getReactor());
+        final Factory actorFactory = factoryLocator.getFactory(actorType);
         return getFactoryIndex(actorFactory);
     }
 
-    protected int getFactoryIndex(Factory actorFactory) {
-        String factoryKey = ((FactoryImpl) actorFactory).getFactoryKey();
-        Factory[] uf = getUnionFactories();
+    protected int getFactoryIndex(final Factory actorFactory) {
+        final String factoryKey = ((FactoryImpl) actorFactory).getFactoryKey();
+        final Factory[] uf = getUnionFactories();
         int i = 0;
         while (i < uf.length) {
-            if (((FactoryImpl) uf[i]).getFactoryKey().equals(factoryKey))
+            if (((FactoryImpl) uf[i]).getFactoryKey().equals(factoryKey)) {
                 return i;
+            }
             i += 1;
         }
-        throw new IllegalArgumentException("Not a valid union type: " + factoryKey);
+        throw new IllegalArgumentException("Not a valid union type: "
+                + factoryKey);
     }
 
     /**
@@ -94,13 +106,13 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(final ReadableBytes readableBytes) throws Exception {
         super.load(readableBytes);
         factoryIndex = readableBytes.readInt();
-        if (factoryIndex == -1)
+        if (factoryIndex == -1) {
             return;
-        Factory factory = getUnionFactories()[factoryIndex];
+        }
+        final Factory factory = getUnionFactories()[factoryIndex];
         value = factory.newSerializable(getReactor(), getParent());
         ((IncDesImpl) value.getDurable()).load(readableBytes);
         ((IncDesImpl) value.getDurable()).setContainerJid(this);
@@ -112,10 +124,10 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength()
-            throws Exception {
-        if (factoryIndex == -1)
+    public int getSerializedLength() throws Exception {
+        if (factoryIndex == -1) {
             return JAInteger.LENGTH;
+        }
         return JAInteger.LENGTH + value.getDurable().getSerializedLength();
     }
 
@@ -123,14 +135,12 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
      * Clear the content.
      */
     @Override
-    public void clear()
-            throws Exception {
+    public void clear() throws Exception {
         setValue(-1);
     }
 
     @Override
-    public void setValue(final String actorType)
-            throws Exception {
+    public void setValue(final String actorType) throws Exception {
         setValue(getFactoryIndex(actorType));
     }
 
@@ -145,21 +155,20 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         };
     }
 
-    public void setValue(final FactoryImpl factoryImpl)
-            throws Exception {
+    public void setValue(final FactoryImpl factoryImpl) throws Exception {
         setValue(getFactoryIndex(factoryImpl));
     }
 
-    public void setValue(Integer ndx)
-            throws Exception {
-        int oldLength = getSerializedLength();
-        if (value != null)
+    public void setValue(final Integer ndx) throws Exception {
+        final int oldLength = getSerializedLength();
+        if (value != null) {
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
+        }
         if (ndx == -1) {
             factoryIndex = -1;
             value = null;
         } else {
-            Factory factory = getUnionFactories()[ndx];
+            final Factory factory = getUnionFactories()[ndx];
             factoryIndex = ndx;
             value = factory.newSerializable(getReactor(), getParent());
             ((IncDesImpl) value.getDurable()).setContainerJid(this);
@@ -180,7 +189,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     @Override
-    public AsyncRequest<Void> setValueReq(final String jidType, final byte[] bytes) {
+    public AsyncRequest<Void> setValueReq(final String jidType,
+            final byte[] bytes) {
         return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -196,12 +206,13 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
      * @param ndx   The factory index.
      * @param bytes The serialized data.
      */
-    public void setUnionBytes(Integer ndx, byte[] bytes)
+    public void setUnionBytes(final Integer ndx, final byte[] bytes)
             throws Exception {
-        int oldLength = getSerializedLength();
-        if (value != null)
+        final int oldLength = getSerializedLength();
+        if (value != null) {
             ((IncDesImpl) value.getDurable()).setContainerJid(null);
-        Factory factory = getUnionFactories()[ndx];
+        }
+        final Factory factory = getUnionFactories()[ndx];
         factoryIndex = ndx;
         value = factory.newSerializable(getReactor(), getParent());
         ((IncDesImpl) value.getDurable()).setContainerJid(this);
@@ -216,8 +227,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
      * @return True if a new value is created.
      */
     @Override
-    public Boolean makeValue(final String jidType)
-            throws Exception {
+    public Boolean makeValue(final String jidType) throws Exception {
         return makeUnionValue(getFactoryIndex(jidType));
     }
 
@@ -237,10 +247,10 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
      * @param ndx The Make request.
      * @return True if a new value is created.
      */
-    public Boolean makeUnionValue(Integer ndx)
-            throws Exception {
-        if (factoryIndex > -1)
+    public Boolean makeUnionValue(final Integer ndx) throws Exception {
+        if (factoryIndex > -1) {
             return false;
+        }
         setValue(ndx);
         return true;
     }
@@ -259,7 +269,8 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
     }
 
     @Override
-    public AsyncRequest<Boolean> makeValueReq(final String jidType, final byte[] bytes) {
+    public AsyncRequest<Boolean> makeValueReq(final String jidType,
+            final byte[] bytes) {
         return new AsyncBladeRequest<Boolean>() {
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -268,10 +279,11 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
         };
     }
 
-    public Boolean makeUnionBytes(Integer ndx, byte[] bytes)
+    public Boolean makeUnionBytes(final Integer ndx, final byte[] bytes)
             throws Exception {
-        if (factoryIndex > -1)
+        if (factoryIndex > -1) {
             return false;
+        }
         setUnionBytes(ndx, bytes);
         return true;
     }
@@ -287,11 +299,12 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
+    protected void serialize(final AppendableBytes appendableBytes)
             throws Exception {
         appendableBytes.writeInt(factoryIndex);
-        if (factoryIndex == -1)
+        if (factoryIndex == -1) {
             return;
+        }
         ((IncDesImpl) value.getDurable()).save(appendableBytes);
     }
 
@@ -302,7 +315,7 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
      * @return A JID actor or null.
      */
     @Override
-    public JASerializable resolvePathname(String pathname)
+    public JASerializable resolvePathname(final String pathname)
             throws Exception {
         if (pathname.length() == 0) {
             throw new IllegalArgumentException("empty string");
@@ -311,16 +324,18 @@ public class UnionImpl extends Scalar<String, JASerializable> implements Union {
             return getValue();
         }
         if (pathname.startsWith("0/")) {
-            JASerializable v = getValue();
-            if (v == null)
+            final JASerializable v = getValue();
+            if (v == null) {
                 return null;
+            }
             return v.getDurable().resolvePathname(pathname.substring(2));
         }
         throw new IllegalArgumentException("pathname " + pathname);
     }
 
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    @Override
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

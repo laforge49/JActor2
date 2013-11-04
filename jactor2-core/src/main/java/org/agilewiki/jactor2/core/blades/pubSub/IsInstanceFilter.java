@@ -18,7 +18,7 @@ public class IsInstanceFilter<CONTENT> implements Filter<CONTENT> {
     }
 
     @Override
-    public boolean match(Object _content) {
+    public boolean match(final Object _content) {
         return clazz.isInstance(_content);
     }
 }

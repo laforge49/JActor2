@@ -11,7 +11,7 @@ public class LTBlock extends LBlock {
     long timestamp;
 
     @Override
-    public void setRootJid(Root rootJid) {
+    public void setRootJid(final Root rootJid) {
         super.setRootJid(rootJid);
         timestamp = 0L;
     }
@@ -22,17 +22,18 @@ public class LTBlock extends LBlock {
     }
 
     @Override
-    protected void saveHeader(AppendableBytes ab, int l)
+    protected void saveHeader(final AppendableBytes ab, final int l)
             throws Exception {
-        if (timestamp == 0)
+        if (timestamp == 0) {
             throw new IllegalStateException("timestamp not set");
+        }
         super.saveHeader(ab, l);
         ab.writeLong(timestamp);
     }
 
     @Override
-    public int setHeaderBytes(byte[] bytes) {
-        int l = super.setHeaderBytes(bytes);
+    public int setHeaderBytes(final byte[] bytes) {
+        final int l = super.setHeaderBytes(bytes);
         timestamp = rb.readLong();
         return l;
     }
@@ -43,7 +44,7 @@ public class LTBlock extends LBlock {
     }
 
     @Override
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(final long timestamp) {
         this.timestamp = timestamp;
     }
 }

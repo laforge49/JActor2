@@ -15,23 +15,24 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.collection.MapEntryFactory;
  */
 public class IntegerSMapFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator factoryLocator,
-                                       String actorType,
-                                       String valueType) throws FactoryLocatorClosedException {
+    public static void registerFactory(final FactoryLocator factoryLocator,
+            final String actorType, final String valueType)
+            throws FactoryLocatorClosedException {
         registerFactory(factoryLocator, actorType, valueType, 10);
     }
 
-    public static void registerFactory(FactoryLocator _factoryLocator,
-                                       String actorType,
-                                       String valueType,
-                                       int initialCapacity) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
-                "E." + actorType, JAInteger.FACTORY_NAME, valueType));
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IntegerSMapFactory(
-                actorType, valueType, initialCapacity));
+    public static void registerFactory(final FactoryLocator _factoryLocator,
+            final String actorType, final String valueType,
+            final int initialCapacity) throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new MapEntryFactory("E." + actorType,
+                        JAInteger.FACTORY_NAME, valueType));
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new IntegerSMapFactory(actorType, valueType,
+                        initialCapacity));
     }
 
-    private String valueType;
+    private final String valueType;
     private int initialCapacity = 10;
 
     /**
@@ -40,7 +41,8 @@ public class IntegerSMapFactory extends FactoryImpl {
      * @param jidType   The jid type.
      * @param valueType The value type.
      */
-    protected IntegerSMapFactory(String jidType, String valueType, int initialCapacity) {
+    protected IntegerSMapFactory(final String jidType, final String valueType,
+            final int initialCapacity) {
         super(jidType);
         this.valueType = valueType;
         this.initialCapacity = initialCapacity;
@@ -64,10 +66,11 @@ public class IntegerSMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public IntegerSMap newSerializable(Reactor reactor, Ancestor parent)
-            throws Exception {
-        IntegerSMap imj = (IntegerSMap) super.newSerializable(reactor, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(reactor);
+    public IntegerSMap newSerializable(final Reactor reactor,
+            final Ancestor parent) throws Exception {
+        final IntegerSMap imj = (IntegerSMap) super.newSerializable(reactor,
+                parent);
+        final FactoryLocator fl = Durables.getFactoryLocator(reactor);
         imj.valueFactory = fl.getFactory(valueType);
         imj.initialCapacity = initialCapacity;
         return imj;

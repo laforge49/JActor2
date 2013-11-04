@@ -15,6 +15,5 @@ public interface Root extends Box {
      *
      * @return The associated bundle location.
      */
-    String getBundleLocation()
-            throws Exception;
+    String getBundleLocation() throws Exception;
 }

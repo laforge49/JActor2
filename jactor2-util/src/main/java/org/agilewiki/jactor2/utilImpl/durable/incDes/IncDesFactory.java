@@ -11,8 +11,10 @@ import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
  */
 public class IncDesFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new IncDesFactory());
+    public static void registerFactory(final FactoryLocator _factoryLocator)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new IncDesFactory());
     }
 
     /**

@@ -15,23 +15,24 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.collection.MapEntryFactory;
  */
 public class LongSMapFactory extends FactoryImpl {
 
-    public static void registerFactory(FactoryLocator factoryLocator,
-                                       String actorType,
-                                       String valueType) throws FactoryLocatorClosedException {
+    public static void registerFactory(final FactoryLocator factoryLocator,
+            final String actorType, final String valueType)
+            throws FactoryLocatorClosedException {
         registerFactory(factoryLocator, actorType, valueType, 10);
     }
 
-    public static void registerFactory(FactoryLocator _factoryLocator,
-                                       String actorType,
-                                       String valueType,
-                                       int initialCapacity) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new MapEntryFactory(
-                "E." + actorType, JALong.FACTORY_NAME, valueType));
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new LongSMapFactory(
-                actorType, valueType, initialCapacity));
+    public static void registerFactory(final FactoryLocator _factoryLocator,
+            final String actorType, final String valueType,
+            final int initialCapacity) throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new MapEntryFactory("E." + actorType,
+                        JALong.FACTORY_NAME, valueType));
+        ((FactoryLocatorImpl) _factoryLocator)
+                .registerFactory(new LongSMapFactory(actorType, valueType,
+                        initialCapacity));
     }
 
-    private String valueType;
+    private final String valueType;
     private int initialCapacity = 10;
 
     /**
@@ -41,7 +42,8 @@ public class LongSMapFactory extends FactoryImpl {
      * @param valueType       The value type.
      * @param initialCapacity The initial capacity.
      */
-    protected LongSMapFactory(String jidType, String valueType, int initialCapacity) {
+    protected LongSMapFactory(final String jidType, final String valueType,
+            final int initialCapacity) {
         super(jidType);
         this.valueType = valueType;
         this.initialCapacity = initialCapacity;
@@ -65,10 +67,10 @@ public class LongSMapFactory extends FactoryImpl {
      * @return The new actor.
      */
     @Override
-    public LongSMap newSerializable(Reactor reactor, Ancestor parent)
+    public LongSMap newSerializable(final Reactor reactor, final Ancestor parent)
             throws Exception {
-        LongSMap imj = (LongSMap) super.newSerializable(reactor, parent);
-        FactoryLocator fl = Durables.getFactoryLocator(reactor);
+        final LongSMap imj = (LongSMap) super.newSerializable(reactor, parent);
+        final FactoryLocator fl = Durables.getFactoryLocator(reactor);
         imj.valueFactory = fl.getFactory(valueType);
         imj.initialCapacity = initialCapacity;
         return imj;

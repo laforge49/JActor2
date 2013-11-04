@@ -13,9 +13,8 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.collection.CollectionImpl;
 /**
  * Holds a fixed-size array of JID actors of various types.
  */
-public class TupleImpl
-        extends CollectionImpl<JASerializable>
-        implements ComparableKey<Object>, Tuple {
+public class TupleImpl extends CollectionImpl<JASerializable> implements
+        ComparableKey<Object>, Tuple {
     /**
      * An array of jid factories, one for each element in the tuple.
      */
@@ -29,10 +28,10 @@ public class TupleImpl
     /**
      * Perform lazy initialization.
      */
-    private void initializeTuple()
-            throws Exception {
-        if (tuple != null)
+    private void initializeTuple() throws Exception {
+        if (tuple != null) {
             return;
+        }
         tupleFactories = getTupleFactories();
         ReadableBytes readableBytes = null;
         if (isSerialized()) {
@@ -43,7 +42,8 @@ public class TupleImpl
         int i = 0;
         len = 0;
         while (i < size()) {
-            JASerializable elementJid = createSubordinate(tupleFactories[i], readableBytes);
+            final JASerializable elementJid = createSubordinate(
+                    tupleFactories[i], readableBytes);
             len += elementJid.getDurable().getSerializedLength();
             tuple[i] = elementJid;
             i += 1;
@@ -56,8 +56,9 @@ public class TupleImpl
      * @return An array of element factories.
      */
     protected Factory[] getTupleFactories() {
-        if (tupleFactories != null)
+        if (tupleFactories != null) {
             return tupleFactories;
+        }
         throw new IllegalStateException("tupleFactories is null");
     }
 
@@ -68,15 +69,15 @@ public class TupleImpl
      * @param bytes Holds the serialized data.
      */
     @Override
-    public void iSet(int i, byte[] bytes)
-            throws Exception {
+    public void iSet(final int i, final byte[] bytes) throws Exception {
         initializeTuple();
-        JASerializable elementJid = createSubordinate(tupleFactories[i], bytes);
-        JASerializable oldElementJid = iGet(i);
+        final JASerializable elementJid = createSubordinate(tupleFactories[i],
+                bytes);
+        final JASerializable oldElementJid = iGet(i);
         ((IncDesImpl) oldElementJid.getDurable()).setContainerJid(null);
         tuple[i] = elementJid;
-        change(elementJid.getDurable().getSerializedLength() -
-                oldElementJid.getDurable().getSerializedLength());
+        change(elementJid.getDurable().getSerializedLength()
+                - oldElementJid.getDurable().getSerializedLength());
     }
 
     /**
@@ -85,8 +86,7 @@ public class TupleImpl
      * @return The minimum size of the byte array needed to serialize the persistent data.
      */
     @Override
-    public int getSerializedLength()
-            throws Exception {
+    public int getSerializedLength() throws Exception {
         initializeTuple();
         return JAInteger.LENGTH + len;
     }
@@ -108,13 +108,14 @@ public class TupleImpl
      * @return The ith JID component, or null if the index is out of range.
      */
     @Override
-    public JASerializable iGet(int i)
-            throws Exception {
+    public JASerializable iGet(int i) throws Exception {
         initializeTuple();
-        if (i < 0)
+        if (i < 0) {
             i += size();
-        if (i < 0 || i >= size())
+        }
+        if ((i < 0) || (i >= size())) {
             return null;
+        }
         return tuple[i];
     }
 
@@ -124,7 +125,7 @@ public class TupleImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes)
+    protected void serialize(final AppendableBytes appendableBytes)
             throws Exception {
         saveLen(appendableBytes);
         int i = 0;
@@ -140,8 +141,7 @@ public class TupleImpl
      * @param readableBytes Holds the serialized data.
      */
     @Override
-    public void load(ReadableBytes readableBytes)
-            throws Exception {
+    public void load(final ReadableBytes readableBytes) throws Exception {
         super.load(readableBytes);
         len = loadLen(readableBytes);
         tuple = null;
@@ -155,9 +155,8 @@ public class TupleImpl
      * @return The result of a compareTo(o) using element 0.
      */
     @Override
-    public int compareKeyTo(Object o)
-            throws Exception {
-        ComparableKey<Object> e0 = (ComparableKey<Object>) iGet(0);
+    public int compareKeyTo(final Object o) throws Exception {
+        final ComparableKey<Object> e0 = (ComparableKey<Object>) iGet(0);
         return e0.compareKeyTo(o);
     }
 }

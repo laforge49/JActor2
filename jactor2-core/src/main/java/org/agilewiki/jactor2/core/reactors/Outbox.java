@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.Message;
-
 import java.util.ArrayDeque;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.Message;
 
 /**
  * An outbox holds a collection of doSend buffers.
@@ -17,7 +17,7 @@ public class Outbox implements AutoCloseable {
     /**
      * Default initial (per target Reactor) buffer.
      */
-    public final static int DEFAULT_INITIAL_BUFFER_SIZE = 16;
+    public static final int DEFAULT_INITIAL_BUFFER_SIZE = 16;
 
     /**
      * Initial size of the outbox for each unique message destination.
@@ -50,8 +50,9 @@ public class Outbox implements AutoCloseable {
      * @return An iterator of the doSend buffers held by the outbox.
      */
     public Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> getIterator() {
-        if (sendBuffer == null)
+        if (sendBuffer == null) {
             return null;
+        }
         return sendBuffer.entrySet().iterator();
     }
 
@@ -63,8 +64,9 @@ public class Outbox implements AutoCloseable {
      * @return True if the message was successfully buffered.
      */
     public boolean buffer(final Message _message, final Reactor _target) {
-        if (facility.isClosing())
+        if (facility.isClosing()) {
             return false;
+        }
         ArrayDeque<Message> buffer = null;
         if (sendBuffer == null) {
             sendBuffer = new IdentityHashMap<ReactorBase, ArrayDeque<Message>>();
@@ -84,17 +86,19 @@ public class Outbox implements AutoCloseable {
         final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
-                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter.next();
+                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter
+                        .next();
                 final ReactorBase target = entry.getKey();
                 if (target.getFacility() != facility) {
                     final ArrayDeque<Message> messages = entry.getValue();
                     iter.remove();
                     try {
                         target.unbufferedAddMessages(messages);
-                    } catch (Exception x) {
+                    } catch (final Exception x) {
                     }
-                } else
+                } else {
                     iter.remove();
+                }
             }
         }
         sendBuffer = null;

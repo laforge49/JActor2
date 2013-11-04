@@ -1,5 +1,15 @@
 package org.agilewiki.jactor2.core.facilities;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ThreadFactory;
+
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.transactions.properties.NewPropertiesValidatorAReq;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesBlade;
@@ -14,10 +24,6 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ThreadFactory;
-
 /**
  * Provides a thread pool for
  * non-blocking and isolation targetReactor. Multiple facilities with independent life cycles
@@ -29,13 +35,13 @@ import java.util.concurrent.ThreadFactory;
 
 public class Facility extends BladeBase implements AutoCloseable {
 
-    public final static String NAME_PROPERTY = "core.facilityName";
+    public static final String NAME_PROPERTY = "core.facilityName";
 
-    public final static String PLANT_NAME = "Plant";
+    public static final String PLANT_NAME = "Plant";
 
-    public final static String DEPENDENCY_PROPERTY_PREFIX = "core.dependency_";
+    public static final String DEPENDENCY_PROPERTY_PREFIX = "core.dependency_";
 
-    public final static String FACILITY_PROPERTY_PREFIX = "core.facility_";
+    public static final String FACILITY_PROPERTY_PREFIX = "core.facility_";
 
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
@@ -58,13 +64,14 @@ public class Facility extends BladeBase implements AutoCloseable {
     /**
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
      */
-    public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests =
-            Plant.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>() : null;
+    public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests = Plant.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>()
+            : null;
 
     /**
      * The logger used by targetReactor.
      */
-    private final Logger messageProcessorLogger = LoggerFactory.getLogger(Reactor.class);
+    private final Logger messageProcessorLogger = LoggerFactory
+            .getLogger(Reactor.class);
 
     /**
      * The thread pool used by Facility.
@@ -93,72 +100,88 @@ public class Facility extends BladeBase implements AutoCloseable {
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
     protected Facility(final String _name,
-                       final int _initialLocalMessageQueueSize,
-                       final int _initialBufferSize,
-                       final int _threadCount,
-                       final ThreadFactory _threadFactory) throws Exception {
+            final int _initialLocalMessageQueueSize,
+            final int _initialBufferSize, final int _threadCount,
+            final ThreadFactory _threadFactory) throws Exception {
         validateName(_name);
-        threadManager = new ThreadManager(
-                _threadCount, _threadFactory);
+        threadManager = new ThreadManager(_threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
         initialBufferSize = _initialBufferSize;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
-        TreeMap<String, Object> initialState = new TreeMap<String, Object>();
+        final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, _name);
         propertiesBlade = new PropertiesBlade(internalReactor, initialState);
-        new NewPropertiesValidatorAReq((NonBlockingReactor) getReactor(), propertiesBlade, "core.") {
+        new NewPropertiesValidatorAReq((NonBlockingReactor) getReactor(),
+                propertiesBlade, "core.") {
             AsyncResponseProcessor<Void> rp;
             int count;
             int i;
 
-            AsyncResponseProcessor<Boolean> hasDependencyResponseProcessor =
-                    new AsyncResponseProcessor<Boolean>() {
-                        @Override
-                        public void processAsyncResponse(Boolean _cyclic) throws Exception {
-                            if (_cyclic)
-                                throw new IllegalArgumentException("Would create a dependency cycle.");
-                            i++;
-                            if (count == i)
-                                rp.processAsyncResponse(null);
-                        }
-                    };
+            AsyncResponseProcessor<Boolean> hasDependencyResponseProcessor = new AsyncResponseProcessor<Boolean>() {
+                @Override
+                public void processAsyncResponse(final Boolean _cyclic)
+                        throws Exception {
+                    if (_cyclic) {
+                        throw new IllegalArgumentException(
+                                "Would create a dependency cycle.");
+                    }
+                    i++;
+                    if (count == i) {
+                        rp.processAsyncResponse(null);
+                    }
+                }
+            };
 
             @Override
-            protected void validateChange(final PropertyChanges _immutableChanges,
-                                          final AsyncResponseProcessor<Void> _rp)
-                    throws Exception {
+            protected void validateChange(
+                    final PropertyChanges _immutableChanges,
+                    final AsyncResponseProcessor<Void> _rp) throws Exception {
                 rp = _rp;
-                SortedMap<String, PropertyChange> readOnlyPropertyChanges = _immutableChanges.readOnlyPropertyChanges;
-                PropertyChange pc = _immutableChanges.readOnlyPropertyChanges.get(NAME_PROPERTY);
+                final SortedMap<String, PropertyChange> readOnlyPropertyChanges = _immutableChanges.readOnlyPropertyChanges;
+                final PropertyChange pc = _immutableChanges.readOnlyPropertyChanges
+                        .get(NAME_PROPERTY);
 
-                if (pc != null && pc.oldValue != null)
-                    throw new IllegalArgumentException("once set, this property can not be changed: " + NAME_PROPERTY);
-
-                SortedMap<String, PropertyChange> facilityChanges =
-                        _immutableChanges.matchingPropertyChanges(FACILITY_PROPERTY_PREFIX);
-                Iterator<PropertyChange> fcit = facilityChanges.values().iterator();
-                while (fcit.hasNext()) {
-                    PropertyChange fc = fcit.next();
-                    if (!(fc.newValue instanceof Facility))
-                        throw new IllegalArgumentException(fc.name + " not set to a Facility " + fc.newValue);
+                if ((pc != null) && (pc.oldValue != null)) {
+                    throw new IllegalArgumentException(
+                            "once set, this property can not be changed: "
+                                    + NAME_PROPERTY);
                 }
 
-                SortedMap<String, PropertyChange> dependenciesChanges =
-                        _immutableChanges.matchingPropertyChanges(DEPENDENCY_PROPERTY_PREFIX);
+                final SortedMap<String, PropertyChange> facilityChanges = _immutableChanges
+                        .matchingPropertyChanges(FACILITY_PROPERTY_PREFIX);
+                final Iterator<PropertyChange> fcit = facilityChanges.values()
+                        .iterator();
+                while (fcit.hasNext()) {
+                    final PropertyChange fc = fcit.next();
+                    if (!(fc.newValue instanceof Facility)) {
+                        throw new IllegalArgumentException(fc.name
+                                + " not set to a Facility " + fc.newValue);
+                    }
+                }
+
+                final SortedMap<String, PropertyChange> dependenciesChanges = _immutableChanges
+                        .matchingPropertyChanges(DEPENDENCY_PROPERTY_PREFIX);
                 count = dependenciesChanges.size();
-                if (count == 0)
+                if (count == 0) {
                     _rp.processAsyncResponse(null);
+                }
 
                 final String myName = getName();
-                Iterator<PropertyChange> dit = dependenciesChanges.values().iterator();
+                final Iterator<PropertyChange> dit = dependenciesChanges
+                        .values().iterator();
                 while (dit.hasNext()) {
-                    PropertyChange dc = dit.next();
-                    if (dc.oldValue != null)
-                        throw new UnsupportedOperationException(dc.name + "can not be changed once set");
-                    if (!(dc.newValue instanceof Facility))
-                        throw new IllegalArgumentException(dc.name + " not set to a Facility " + dc.newValue);
-                    send(hasDependencyAReq(myName), hasDependencyResponseProcessor);
+                    final PropertyChange dc = dit.next();
+                    if (dc.oldValue != null) {
+                        throw new UnsupportedOperationException(dc.name
+                                + "can not be changed once set");
+                    }
+                    if (!(dc.newValue instanceof Facility)) {
+                        throw new IllegalArgumentException(dc.name
+                                + " not set to a Facility " + dc.newValue);
+                    }
+                    send(hasDependencyAReq(myName),
+                            hasDependencyResponseProcessor);
                 }
             }
         };
@@ -169,14 +192,19 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     protected void validateName(final String _name) throws Exception {
-        if (_name == null)
+        if (_name == null) {
             throw new IllegalArgumentException("name may not be null");
-        if (_name.length() == 0)
+        }
+        if (_name.length() == 0) {
             throw new IllegalArgumentException("name may not be empty");
-        if (_name.contains(" "))
-            throw new IllegalArgumentException("name may not contain spaces: " + _name);
-        if (_name.equals(PLANT_NAME))
+        }
+        if (_name.contains(" ")) {
+            throw new IllegalArgumentException("name may not contain spaces: "
+                    + _name);
+        }
+        if (_name.equals(PLANT_NAME)) {
             throw new IllegalArgumentException("name may be " + PLANT_NAME);
+        }
     }
 
     /**
@@ -211,16 +239,17 @@ public class Facility extends BladeBase implements AutoCloseable {
      *
      * @param _reactor The targetReactor to be run.
      */
-    public final void submit(final Reactor _reactor)
-            throws Exception {
+    public final void submit(final Reactor _reactor) throws Exception {
         try {
             threadManager.execute(_reactor);
         } catch (final Exception e) {
-            if (!isClosing())
+            if (!isClosing()) {
                 throw e;
+            }
         } catch (final Error e) {
-            if (!isClosing())
+            if (!isClosing()) {
                 throw e;
+            }
         }
     }
 
@@ -231,7 +260,8 @@ public class Facility extends BladeBase implements AutoCloseable {
      * @param _closeable The autoclosable to be added to the list.
      * @return The request.
      */
-    public SyncRequest<Boolean> addAutoClosableSReq(final AutoCloseable _closeable) {
+    public SyncRequest<Boolean> addAutoClosableSReq(
+            final AutoCloseable _closeable) {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -251,7 +281,8 @@ public class Facility extends BladeBase implements AutoCloseable {
      * @param _closeable The autoclosable to be removed.
      * @return The request.
      */
-    public SyncRequest<Boolean> removeAutoClosableSReq(final AutoCloseable _closeable) {
+    public SyncRequest<Boolean> removeAutoClosableSReq(
+            final AutoCloseable _closeable) {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -268,10 +299,11 @@ public class Facility extends BladeBase implements AutoCloseable {
         new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
-                Plant plant = getPlant();
-                if (plant != null && plant != Facility.this) {
+                final Plant plant = getPlant();
+                if ((plant != null) && (plant != Facility.this)) {
                     plant.removeAutoClosableSReq(this).signal();
-                    plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(), null).signal();
+                    plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
+                            null).signal();
                 }
                 if (shuttingDown) {
                     return null;
@@ -319,7 +351,7 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     public AsyncRequest<Void> putPropertyAReq(final String _propertyName,
-                                              final Object _propertyValue) {
+            final Object _propertyValue) {
         return propertiesBlade.putAReq(_propertyName, _propertyValue);
     }
 
@@ -330,14 +362,16 @@ public class Facility extends BladeBase implements AutoCloseable {
 
             AsyncResponseProcessor<Boolean> prp = new AsyncResponseProcessor<Boolean>() {
                 @Override
-                public void processAsyncResponse(Boolean _hasDependency) throws Exception {
+                public void processAsyncResponse(final Boolean _hasDependency)
+                        throws Exception {
                     if (_hasDependency) {
                         dis.processAsyncResponse(true);
                         return;
                     }
                     count--;
-                    if (count == 0)
+                    if (count == 0) {
                         dis.processAsyncResponse(false);
+                    }
                 }
             };
 
@@ -347,15 +381,16 @@ public class Facility extends BladeBase implements AutoCloseable {
                     processAsyncResponse(true);
                     return;
                 }
-                SortedMap<String, Object> cnm = propertiesBlade.matchingProperties(DEPENDENCY_PROPERTY_PREFIX);
-                Collection<Object> values = cnm.values();
+                final SortedMap<String, Object> cnm = propertiesBlade
+                        .matchingProperties(DEPENDENCY_PROPERTY_PREFIX);
+                final Collection<Object> values = cnm.values();
                 if (values.size() == 0) {
                     processAsyncResponse(false);
                     return;
                 }
-                Iterator<Object> it = values.iterator();
+                final Iterator<Object> it = values.iterator();
                 while (it.hasNext()) {
-                    Facility dependency = (Facility) it.next();
+                    final Facility dependency = (Facility) it.next();
                     count++;
                     send(dependency.hasDependencyAReq(_name), prp);
                 }
@@ -371,27 +406,44 @@ public class Facility extends BladeBase implements AutoCloseable {
             @Override
             protected void processAsyncRequest() throws Exception {
                 final String myName = getName();
-                if (myName == null)
-                    throw new IllegalStateException("assign a name before adding a dependency");
+                if (myName == null) {
+                    throw new IllegalStateException(
+                            "assign a name before adding a dependency");
+                }
                 final String name = _dependency.getName();
-                if (name == null)
-                    throw new IllegalArgumentException("the dependency has no name");
+                if (name == null) {
+                    throw new IllegalArgumentException(
+                            "the dependency has no name");
+                }
                 final String propertyName = DEPENDENCY_PROPERTY_PREFIX + name;
-                if (getProperty(propertyName) != null)
-                    throw new IllegalStateException("the dependency was already present");
-                send(_dependency.hasDependencyAReq(myName), new AsyncResponseProcessor<Boolean>() {
-                    @Override
-                    public void processAsyncResponse(Boolean _hasDependency) throws Exception {
-                        if (_hasDependency)
-                            throw new IllegalArgumentException("this would create a cyclic dependency");
-                        send(propertiesBlade.firstPutAReq(propertyName, _dependency), new AsyncResponseProcessor<Void>() {
+                if (getProperty(propertyName) != null) {
+                    throw new IllegalStateException(
+                            "the dependency was already present");
+                }
+                send(_dependency.hasDependencyAReq(myName),
+                        new AsyncResponseProcessor<Boolean>() {
                             @Override
-                            public void processAsyncResponse(Void _response) throws Exception {
-                                send(_dependency.addAutoClosableSReq(Facility.this), dis, null);
+                            public void processAsyncResponse(
+                                    final Boolean _hasDependency)
+                                    throws Exception {
+                                if (_hasDependency) {
+                                    throw new IllegalArgumentException(
+                                            "this would create a cyclic dependency");
+                                }
+                                send(propertiesBlade.firstPutAReq(propertyName,
+                                        _dependency),
+                                        new AsyncResponseProcessor<Void>() {
+                                            @Override
+                                            public void processAsyncResponse(
+                                                    final Void _response)
+                                                    throws Exception {
+                                                send(_dependency
+                                                        .addAutoClosableSReq(Facility.this),
+                                                        dis, null);
+                                            }
+                                        });
                             }
                         });
-                    }
-                });
             }
         };
     }
@@ -413,8 +465,10 @@ public class Facility extends BladeBase implements AutoCloseable {
         return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
-                Class initiatorClass = getClassLoader().loadClass(_initiatorClassName);
-                Initiator initiator = (Initiator) initiatorClass.newInstance();
+                final Class initiatorClass = getClassLoader().loadClass(
+                        _initiatorClassName);
+                final Initiator initiator = (Initiator) initiatorClass
+                        .newInstance();
                 initiator.initialize(getReactor());
                 send(initiator.startAReq(), this);
             }

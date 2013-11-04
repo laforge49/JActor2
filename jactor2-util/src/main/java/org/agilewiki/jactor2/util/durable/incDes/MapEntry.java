@@ -14,14 +14,12 @@ public interface MapEntry<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE>
      *
      * @return The key.
      */
-    KEY_TYPE getKey()
-            throws Exception;
+    KEY_TYPE getKey() throws Exception;
 
     /**
      * Returns the value.
      *
      * @return The value.
      */
-    VALUE_TYPE getValue()
-            throws Exception;
+    VALUE_TYPE getValue() throws Exception;
 }

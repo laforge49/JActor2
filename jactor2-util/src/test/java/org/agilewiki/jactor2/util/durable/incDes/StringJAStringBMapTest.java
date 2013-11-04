@@ -1,22 +1,23 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class StringJAStringBMapTest extends TestCase {
     public void test() throws Exception {
-        Plant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
-            JAMap<String, JAString> m = (JAMap) Durables.
-                    newSerializable(plant, JAMap.STRING_JASTRING_MAP);
+            final JAMap<String, JAString> m = (JAMap) Durables.newSerializable(
+                    plant, JAMap.STRING_JASTRING_MAP);
             assertEquals(0, m.size());
             assertTrue(m.kMake("1"));
             assertFalse(m.kMake("1"));
             assertEquals(1, m.size());
             MapEntry<String, JAString> me = m.iGet(0);
             assertEquals("1", me.getKey());
-            JAString v = m.kGet("1");
+            final JAString v = m.kGet("1");
             assertEquals(v, me.getValue());
             assertEquals(me, m.getCeiling("0"));
             assertEquals(me, m.getCeiling("1"));

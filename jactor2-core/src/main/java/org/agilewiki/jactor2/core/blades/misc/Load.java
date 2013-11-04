@@ -39,8 +39,7 @@ public class Load extends BladeBase {
     public SyncRequest<Void> loadSReq(final long _load) {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest()
-                    throws Exception {
+            protected Void processSyncRequest() throws Exception {
                 i = 0;
                 while (i < _load) {
                     i++;

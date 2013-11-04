@@ -18,9 +18,10 @@ public class EqualsFilter<CONTENT> implements Filter<CONTENT> {
     }
 
     @Override
-    public boolean match(Object _content) {
-        if (selection == null)
+    public boolean match(final Object _content) {
+        if (selection == null) {
             return _content == null;
+        }
         return selection.equals(_content);
     }
 }

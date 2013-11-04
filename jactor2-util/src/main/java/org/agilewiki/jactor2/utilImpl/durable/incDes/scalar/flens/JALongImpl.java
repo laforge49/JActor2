@@ -14,11 +14,12 @@ import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
 /**
  * A JID actor that holds a long.
  */
-public class JALongImpl
-        extends FLenScalar<Long> implements JALong {
+public class JALongImpl extends FLenScalar<Long> implements JALong {
 
-    public static void registerFactory(FactoryLocator _factoryLocator) throws FactoryLocatorClosedException {
-        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(JALong.FACTORY_NAME) {
+    public static void registerFactory(final FactoryLocator _factoryLocator)
+            throws FactoryLocatorClosedException {
+        ((FactoryLocatorImpl) _factoryLocator).registerFactory(new FactoryImpl(
+                JALong.FACTORY_NAME) {
             @Override
             final protected JALongImpl instantiateBlade() {
                 return new JALongImpl();
@@ -53,9 +54,10 @@ public class JALongImpl
      */
     @Override
     public Long getValue() {
-        if (value != null)
+        if (value != null) {
             return value;
-        ReadableBytes readableBytes = readable();
+        }
+        final ReadableBytes readableBytes = readable();
         value = readableBytes.readLong();
         return value;
     }
@@ -87,13 +89,13 @@ public class JALongImpl
      * @param appendableBytes The wrapped byte array into which the persistent data is to be serialized.
      */
     @Override
-    protected void serialize(AppendableBytes appendableBytes) {
+    protected void serialize(final AppendableBytes appendableBytes) {
         appendableBytes.writeLong(value);
     }
 
     @Override
-    public void initialize(final Reactor reactor, Ancestor parent, FactoryImpl factory)
-            throws Exception {
+    public void initialize(final Reactor reactor, final Ancestor parent,
+            final FactoryImpl factory) throws Exception {
         super.initialize(reactor, parent, factory);
     }
 }

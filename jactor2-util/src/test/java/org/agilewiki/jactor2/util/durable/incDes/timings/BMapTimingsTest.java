@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -11,8 +12,8 @@ import org.agilewiki.jactor2.util.durable.incDes.JAMap;
 public class BMapTimingsTest extends TestCase {
     public void test1() throws Exception {
 
-        int s = 1000;
-        int r = 1000;
+        final int s = 1000;
+        final int r = 1000;
 
         //map size = 1,000
         //repetitions = 1,000
@@ -34,34 +35,35 @@ public class BMapTimingsTest extends TestCase {
         //total run time (milliseconds) =  9871
         //time per update (microseconds) = 9871
 
-        Plant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
-            JAMap<Integer, JAInteger> m1 = (JAMap) Durables.newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
+            final JAMap<Integer, JAInteger> m1 = (JAMap) Durables
+                    .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
             int i = 0;
             while (i < s) {
                 m1.kMake(i);
-                JAInteger ij0 = m1.kGet(i);
+                final JAInteger ij0 = m1.kGet(i);
                 ij0.setValue(i);
                 i += 1;
             }
             m1.getSerializedBytes();
             int j = 0;
             i = s / 2;
-            Reactor reactor = new NonBlockingReactor(plant);
-            long t0 = System.currentTimeMillis();
+            final Reactor reactor = new NonBlockingReactor(plant);
+            final long t0 = System.currentTimeMillis();
             while (j < r) {
-                JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(reactor);
-                JAInteger ij0 = m1.kGet(i);
+                final JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(reactor);
+                final JAInteger ij0 = m1.kGet(i);
                 ij0.setValue(-i);
                 m2.getSerializedBytes();
                 j += 1;
             }
-            long t1 = System.currentTimeMillis();
+            final long t1 = System.currentTimeMillis();
             System.out.println("map size = " + s);
             System.out.println("repetitions = " + r);
-            long rt = t1 - t0;
+            final long rt = t1 - t0;
             System.out.println("total run time (milliseconds) = " + rt);
-            long tpu = rt * 1000L / r;
+            final long tpu = (rt * 1000L) / r;
             System.out.println("time per update (microseconds) = " + tpu);
         } finally {
             plant.close();
