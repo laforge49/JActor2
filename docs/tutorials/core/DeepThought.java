@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -41,7 +41,7 @@ public class DeepThought extends BladeBase {
             protected void processAsyncRequest() throws Exception {
                 Reactor myReactor = getReactor();
                 Facility myFacility = myReactor.getFacility();
-                Delay delay = new Delay(new IsolationReactor(myFacility));
+                Delay delay = new Delay(new BlockingReactor(myFacility));
                 SyncRequest<Void> sleepSReq = delay.sleepSReq(4000);
                 send(sleepSReq, sleepResponseProcessor);
             }

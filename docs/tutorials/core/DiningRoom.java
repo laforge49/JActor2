@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -101,7 +101,7 @@ public class DiningRoom extends BladeBase {
             List<Integer> mealsEaten = feastAReq.call();
             long after = System.nanoTime();
             long duration = after - before;
-            Printer printer = new Printer(new IsolationReactor(plant));
+            Printer printer = new Printer(new BlockingReactor(plant));
             report(printer, seats, meals, mealsEaten, duration).call();
         } finally {
             plant.close();

@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -41,7 +41,7 @@ public class Parallel extends BladeBase {
                 long j = 0;
                 while(j < count) {
                     j++;
-                    Delay delay = new Delay(new IsolationReactor(facility));
+                    Delay delay = new Delay(new BlockingReactor(facility));
                     send(delay.sleepSReq(100), sleepResponseProcessor);
                 }
             }
