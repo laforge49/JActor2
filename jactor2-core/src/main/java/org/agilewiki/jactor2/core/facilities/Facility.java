@@ -387,12 +387,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                         send(propertiesBlade.firstPutAReq(propertyName, _dependency), new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(Void _response) throws Exception {
-                                send(_dependency.addAutoClosableSReq(Facility.this), new AsyncResponseProcessor<Boolean>() {
-                                    @Override
-                                    public void processAsyncResponse(Boolean _response) throws Exception {
-                                        dis.processAsyncResponse(null);
-                                    }
-                                });
+                                send(_dependency.addAutoClosableSReq(Facility.this), dis, null);
                             }
                         });
                     }

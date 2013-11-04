@@ -58,13 +58,7 @@ public class SubscribeAReq<CONTENT>
                     }
                 };
         requestBus.subscriptions.add(subscription);
-        send(subscriberReactor.getFacility().addAutoClosableSReq(this),
-                new AsyncResponseProcessor<Boolean>() {
-                    @Override
-                    public void processAsyncResponse(Boolean _response) throws Exception {
-                        dis.processAsyncResponse(subscription);
-                    }
-                });
+        send(subscriberReactor.getFacility().addAutoClosableSReq(this), dis, subscription);
     }
 
     /**

@@ -87,12 +87,7 @@ class Client extends BladeBase {
                         return false;
                     }
                 });
-                send(server.hangAReq(), new AsyncResponseProcessor<Void>() {
-                    @Override
-                    public void processAsyncResponse(Void response) throws Exception {
-                        dis.processAsyncResponse(true);
-                    }
-                });
+                send(server.hangAReq(), dis, true);
             }
         };
     }

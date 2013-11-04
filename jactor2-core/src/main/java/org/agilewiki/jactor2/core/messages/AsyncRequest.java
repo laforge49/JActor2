@@ -194,8 +194,6 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
     }
 
     /**
-     * Process the request immediately.
-     *
      * @param _request The request to be processed.
      * @param <RT>     The type of value returned.
      */
@@ -203,5 +201,17 @@ public abstract class AsyncRequest<RESPONSE_TYPE>
                              final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
         RequestBase.doSend(targetReactor, _request, _responseProcessor);
+    }
+
+    protected <RT, RT2> void send(final RequestBase<RT> _request,
+                             final AsyncResponseProcessor<RT2> _dis,
+                             final RT2 _fixedResponse)
+            throws Exception {
+        RequestBase.doSend(targetReactor, _request, new AsyncResponseProcessor<RT>() {
+            @Override
+            public void processAsyncResponse(RT _response) throws Exception {
+                _dis.processAsyncResponse(_fixedResponse);
+            }
+        });
     }
 }

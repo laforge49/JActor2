@@ -105,12 +105,7 @@ abstract public class TransactionProcessor
                         throw new IllegalArgumentException(_error);
                     else {
                         newImmutableState();
-                        send(changeBus.signalSReq(changes), new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(Void _response) throws Exception {
-                                dis.processAsyncResponse(null);
-                            }
-                        });
+                        send(changeBus.signalSReq(changes), dis, null);
                     }
                 }
             };
