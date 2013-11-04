@@ -1,0 +1,438 @@
+diff --git a/jactor2-core/src/main/java/org/agilewiki/jactor2/core/facilities/Facility.java b/jactor2-core/src/main/java/org/agilewiki/jactor2/core/facilities/Facility.java
+index 3a5c8bb..2ed0ff0 100644
+--- a/jactor2-core/src/main/java/org/agilewiki/jactor2/core/facilities/Facility.java
++++ b/jactor2-core/src/main/java/org/agilewiki/jactor2/core/facilities/Facility.java
+@@ -1,12 +1,10 @@
+ package org.agilewiki.jactor2.core.facilities;
+ 
+ import java.util.Collection;
+-import java.util.Collections;
+ import java.util.Iterator;
+ import java.util.Set;
+ import java.util.SortedMap;
+ import java.util.TreeMap;
+-import java.util.WeakHashMap;
+ import java.util.concurrent.ConcurrentSkipListMap;
+ import java.util.concurrent.ThreadFactory;
+ 
+@@ -21,6 +19,7 @@ import org.agilewiki.jactor2.core.messages.RequestBase;
+ import org.agilewiki.jactor2.core.messages.SyncRequest;
+ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+ import org.agilewiki.jactor2.core.reactors.Reactor;
++import org.agilewiki.jactor2.core.util.AutoCloseableSet;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+@@ -49,21 +48,21 @@ public class Facility extends BladeBase implements AutoCloseable {
+     private final InternalReactor internalReactor;
+ 
+     /**
+-     * A hash set of AutoCloseable objects.
++     * A set of AutoCloseable objects.
+      * Can only be accessed via a request to the facility.
+      */
+-    protected final Set<AutoCloseable> closeables = Collections
+-            .newSetFromMap(new WeakHashMap<AutoCloseable, Boolean>());
++    private AutoCloseableSet closeables;
+ 
+     /**
+      * Set when the facility reaches end-of-life.
+      * Can only be updated via a request to the facility.
+      */
+-    private boolean shuttingDown = false;
++    private volatile boolean shuttingDown;
+ 
+     /**
+      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
+      */
++    @SuppressWarnings("rawtypes")
+     public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests = Plant.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>()
+             : null;
+ 
+@@ -138,7 +137,6 @@ public class Facility extends BladeBase implements AutoCloseable {
+                     final PropertyChanges _immutableChanges,
+                     final AsyncResponseProcessor<Void> _rp) throws Exception {
+                 rp = _rp;
+-                final SortedMap<String, PropertyChange> readOnlyPropertyChanges = _immutableChanges.readOnlyPropertyChanges;
+                 final PropertyChange pc = _immutableChanges.readOnlyPropertyChanges
+                         .get(NAME_PROPERTY);
+ 
+@@ -187,6 +185,14 @@ public class Facility extends BladeBase implements AutoCloseable {
+         };
+     }
+ 
++    /** Returns the AutoCloseableSet. Creates it if needed. */
++    protected final AutoCloseableSet getAutoCloseableSet() {
++        if (closeables == null) {
++            closeables = new AutoCloseableSet();
++        }
++        return closeables;
++    }
++
+     public PropertiesBlade getPropertiesBlade() {
+         return propertiesBlade;
+     }
+@@ -266,7 +272,7 @@ public class Facility extends BladeBase implements AutoCloseable {
+             @Override
+             protected Boolean processSyncRequest() throws Exception {
+                 if (!isClosing()) {
+-                    return closeables.add(_closeable);
++                    return getAutoCloseableSet().add(_closeable);
+                 } else {
+                     return false;
+                 }
+@@ -287,7 +293,8 @@ public class Facility extends BladeBase implements AutoCloseable {
+             @Override
+             protected Boolean processSyncRequest() throws Exception {
+                 if (!isClosing()) {
+-                    return closeables.remove(_closeable);
++                    return (closeables == null) ? false : closeables
++                            .remove(_closeable);
+                 }
+                 return false;
+             }
+@@ -299,32 +306,28 @@ public class Facility extends BladeBase implements AutoCloseable {
+         new SyncBladeRequest<Void>() {
+             @Override
+             protected Void processSyncRequest() throws Exception {
++                if (shuttingDown) {
++                    return null;
++                }
++                shuttingDown = true;
+                 final Plant plant = getPlant();
+                 if ((plant != null) && (plant != Facility.this)) {
+                     plant.removeAutoClosableSReq(this).signal();
+                     plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
+                             null).signal();
+                 }
+-                if (shuttingDown) {
+-                    return null;
+-                }
+-                shuttingDown = true;
+                 threadManager.close();
+-                final Iterator<AutoCloseable> it = closeables.iterator();
+-                while (it.hasNext()) {
+-                    try {
+-                        it.next().close();
+-                    } catch (final Throwable t) {
+-                        t.printStackTrace();
+-                    }
++                if (closeables != null) {
++                    closeables.close();
+                 }
+                 return null;
+             }
+-        }.signal();
++        }.call();
+     }
+ 
+     /**
+      * Returns true if close() has been called already.
++     * Can be called from anywhere.
+      *
+      * @return true if close() has already been called.
+      */
+@@ -465,7 +468,7 @@ public class Facility extends BladeBase implements AutoCloseable {
+         return new AsyncBladeRequest<Void>() {
+             @Override
+             protected void processAsyncRequest() throws Exception {
+-                final Class initiatorClass = getClassLoader().loadClass(
++                final Class<?> initiatorClass = getClassLoader().loadClass(
+                         _initiatorClassName);
+                 final Initiator initiator = (Initiator) initiatorClass
+                         .newInstance();
+diff --git a/jactor2-core/src/main/java/org/agilewiki/jactor2/core/facilities/Plant.java b/jactor2-core/src/main/java/org/agilewiki/jactor2/core/facilities/Plant.java
+index a64a96c..5aaeded 100644
+--- a/jactor2-core/src/main/java/org/agilewiki/jactor2/core/facilities/Plant.java
++++ b/jactor2-core/src/main/java/org/agilewiki/jactor2/core/facilities/Plant.java
+@@ -103,7 +103,7 @@ public class Plant extends Facility {
+                             @Override
+                             public void processAsyncResponse(
+                                     final Void _response) throws Exception {
+-                                closeables.add(facility);
++                                getAutoCloseableSet().add(facility);
+                                 dis.processAsyncResponse(facility);
+                             }
+                         });
+@@ -128,7 +128,7 @@ public class Plant extends Facility {
+                             @Override
+                             public void processAsyncResponse(
+                                     final Void _response) throws Exception {
+-                                closeables.add(facility);
++                                getAutoCloseableSet().add(facility);
+                                 dis.processAsyncResponse(facility);
+                             }
+                         });
+@@ -154,7 +154,7 @@ public class Plant extends Facility {
+                             @Override
+                             public void processAsyncResponse(
+                                     final Void _response) throws Exception {
+-                                closeables.add(facility);
++                                getAutoCloseableSet().add(facility);
+                                 dis.processAsyncResponse(facility);
+                             }
+                         });
+diff --git a/jactor2-core/src/main/java/org/agilewiki/jactor2/core/reactors/Reactor.java b/jactor2-core/src/main/java/org/agilewiki/jactor2/core/reactors/Reactor.java
+index f985e2a..4b6748a 100644
+--- a/jactor2-core/src/main/java/org/agilewiki/jactor2/core/reactors/Reactor.java
++++ b/jactor2-core/src/main/java/org/agilewiki/jactor2/core/reactors/Reactor.java
+@@ -2,11 +2,12 @@ package org.agilewiki.jactor2.core.reactors;
+ 
+ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+ import org.agilewiki.jactor2.core.facilities.Facility;
++import org.agilewiki.jactor2.core.messages.SyncRequest;
+ 
+ /**
+  * The Reactor interface identifies the processing methods that can be used by applications.
+  */
+-public interface Reactor extends Runnable {
++public interface Reactor extends Runnable, AutoCloseable {
+ 
+     /**
+      * Returns the facility.
+@@ -47,4 +48,30 @@ public interface Reactor extends Runnable {
+      */
+     @Override
+     void run();
++
++    /**
++     * Returns a request to add an auto closeable, to be closed when the Facility closes.
++     * This request returns true if the AutoClosable was added.
++     *
++     * @param _closeable The autoclosable to be added to the list.
++     * @return The request.
++     */
++    SyncRequest<Boolean> addAutoClosableSReq(final AutoCloseable _closeable);
++
++    /**
++     * Returns a request to remove an auto closeable.
++     * This request returns true if the AutoClosable was removed.
++     *
++     * @param _closeable The autoclosable to be removed.
++     * @return The request.
++     */
++    SyncRequest<Boolean> removeAutoClosableSReq(final AutoCloseable _closeable);
++
++    /**
++     * Returns true if close() has been called already.
++     * Can be called from anywhere.
++     *
++     * @return true if close() has already been called.
++     */
++    boolean isClosing();
+ }
+diff --git a/jactor2-core/src/main/java/org/agilewiki/jactor2/core/reactors/ReactorBase.java b/jactor2-core/src/main/java/org/agilewiki/jactor2/core/reactors/ReactorBase.java
+index bbadb3a..72a3b1e 100644
+--- a/jactor2-core/src/main/java/org/agilewiki/jactor2/core/reactors/ReactorBase.java
++++ b/jactor2-core/src/main/java/org/agilewiki/jactor2/core/reactors/ReactorBase.java
+@@ -9,13 +9,14 @@ import org.agilewiki.jactor2.core.facilities.Facility;
+ import org.agilewiki.jactor2.core.facilities.PoolThread;
+ import org.agilewiki.jactor2.core.messages.Message;
+ import org.agilewiki.jactor2.core.messages.MessageSource;
++import org.agilewiki.jactor2.core.messages.SyncRequest;
++import org.agilewiki.jactor2.core.util.AutoCloseableSet;
+ import org.slf4j.Logger;
+ 
+ /**
+  * Base class for targetReactor.
+  */
+-abstract public class ReactorBase implements Reactor, MessageSource,
+-        AutoCloseable {
++abstract public class ReactorBase implements Reactor, MessageSource {
+ 
+     /**
+      * Reactor logger.
+@@ -49,6 +50,18 @@ abstract public class ReactorBase implements Reactor, MessageSource,
+     private Message currentMessage;
+ 
+     /**
++     * A set of AutoCloseable objects.
++     * Can only be accessed via a request to this reactor.
++     */
++    private AutoCloseableSet closeables;
++
++    /**
++     * Set when the reactor reaches end-of-life.
++     * Can only be updated via a request to the reactor.
++     */
++    private volatile boolean shuttingDown;
++
++    /**
+      * Create a targetReactor.
+      *
+      * @param _facility              The facility of this targetReactor.
+@@ -64,6 +77,96 @@ abstract public class ReactorBase implements Reactor, MessageSource,
+         addAutoClose();
+     }
+ 
++    /** Returns the AutoCloseableSet. Creates it if needed. */
++    protected final AutoCloseableSet getAutoCloseableSet() {
++        if (closeables == null) {
++            closeables = new AutoCloseableSet();
++        }
++        return closeables;
++    }
++
++    /**
++     * Returns true if close() has been called already.
++     * Can be called from anywhere.
++     *
++     * @return true if close() has already been called.
++     */
++    public final boolean isClosing() {
++        return shuttingDown;
++    }
++
++    /**
++     * Returns a request to add an auto closeable, to be closed when the Facility closes.
++     * This request returns true if the AutoClosable was added.
++     *
++     * @param _closeable The autoclosable to be added to the list.
++     * @return The request.
++     */
++    @Override
++    public SyncRequest<Boolean> addAutoClosableSReq(
++            final AutoCloseable _closeable) {
++        return new SyncRequest<Boolean>(this) {
++            @Override
++            protected Boolean processSyncRequest() throws Exception {
++                if (!isClosing()) {
++                    return getAutoCloseableSet().add(_closeable);
++                } else {
++                    return false;
++                }
++            }
++        };
++    }
++
++    /**
++     * Returns a request to remove an auto closeable.
++     * This request returns true if the AutoClosable was removed.
++     *
++     * @param _closeable The autoclosable to be removed.
++     * @return The request.
++     */
++    @Override
++    public SyncRequest<Boolean> removeAutoClosableSReq(
++            final AutoCloseable _closeable) {
++        return new SyncRequest<Boolean>(this) {
++            @Override
++            protected Boolean processSyncRequest() throws Exception {
++                if (!isClosing()) {
++                    return (closeables == null) ? false : closeables
++                            .remove(_closeable);
++                }
++                return false;
++            }
++        };
++    }
++
++    @Override
++    public void close() throws Exception {
++        new SyncRequest<Void>(this) {
++            @Override
++            protected Void processSyncRequest() throws Exception {
++                if (shuttingDown) {
++                    return null;
++                }
++                if (closeables != null) {
++                    try {
++                        closeables.close();
++                    } catch (final Exception e) {
++                    }
++                }
++                try {
++                    outbox.close();
++                } catch (final Exception e) {
++                }
++                try {
++                    inbox.close();
++                } catch (final Exception e) {
++                }
++                shuttingDown = true;
++                return null;
++            }
++        }.signal();
++    }
++
+     /**
+      * Add to the facility's AutoClose set.
+      */
+@@ -131,18 +234,6 @@ abstract public class ReactorBase implements Reactor, MessageSource,
+     }
+ 
+     @Override
+-    public void close() {
+-        try {
+-            outbox.close();
+-        } catch (final Exception e) {
+-        }
+-        try {
+-            inbox.close();
+-        } catch (final Exception e) {
+-        }
+-    }
+-
+-    @Override
+     public final ExceptionHandler setExceptionHandler(
+             final ExceptionHandler _handler) {
+         if (!isRunning()) {
+diff --git a/jactor2-core/src/test/java/org/agilewiki/jactor2/core/reactors/ThreadBoundTest.java b/jactor2-core/src/test/java/org/agilewiki/jactor2/core/reactors/ThreadBoundTest.java
+index 1a28977..c25f903 100644
+--- a/jactor2-core/src/test/java/org/agilewiki/jactor2/core/reactors/ThreadBoundTest.java
++++ b/jactor2-core/src/test/java/org/agilewiki/jactor2/core/reactors/ThreadBoundTest.java
+@@ -12,30 +12,33 @@ import org.agilewiki.jactor2.core.messages.RequestBase;
+  */
+ public class ThreadBoundTest extends TestCase {
+     ThreadBoundReactor boundReactor;
+-    Plant plant;
+ 
+     public void testa() throws Exception {
+-        plant = new Plant();
+-        boundReactor = new ThreadBoundReactor(plant, new Runnable() {
+-            @Override
+-            public void run() {
+-                boundReactor.run();
+-                try {
+-                    plant.close();
+-                } catch (final Throwable x) {
++        final Plant plant = new Plant();
++        try {
++            boundReactor = new ThreadBoundReactor(plant, new Runnable() {
++                @Override
++                public void run() {
++                    boundReactor.run();
++                    try {
++                        plant.close();
++                    } catch (final Throwable x) {
++                    }
+                 }
+-            }
+-        });
+-        final Reactor reactor = new IsolationReactor(plant);
+-        final Blade1 blade1 = new Blade1(reactor);
+-        send(blade1.hiSReq(), new AsyncResponseProcessor<String>() {
+-            @Override
+-            public void processAsyncResponse(final String response)
+-                    throws Exception {
+-                System.out.println(response);
+-                assertEquals("Hello world!", response);
+-            }
+-        });
++            });
++            final Reactor reactor = new IsolationReactor(plant);
++            final Blade1 blade1 = new Blade1(reactor);
++            send(blade1.hiSReq(), new AsyncResponseProcessor<String>() {
++                @Override
++                public void processAsyncResponse(final String response)
++                        throws Exception {
++                    System.out.println(response);
++                    assertEquals("Hello world!", response);
++                }
++            });
++        } finally {
++            plant.close();
++        }
+     }
+ 
+     /**

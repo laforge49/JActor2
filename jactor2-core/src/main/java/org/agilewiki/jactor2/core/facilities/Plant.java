@@ -103,7 +103,7 @@ public class Plant extends Facility {
                             @Override
                             public void processAsyncResponse(
                                     final Void _response) throws Exception {
-                                closeables.add(facility);
+                                getAutoCloseableSet().add(facility);
                                 dis.processAsyncResponse(facility);
                             }
                         });
@@ -128,7 +128,7 @@ public class Plant extends Facility {
                             @Override
                             public void processAsyncResponse(
                                     final Void _response) throws Exception {
-                                closeables.add(facility);
+                                getAutoCloseableSet().add(facility);
                                 dis.processAsyncResponse(facility);
                             }
                         });
@@ -154,7 +154,7 @@ public class Plant extends Facility {
                             @Override
                             public void processAsyncResponse(
                                     final Void _response) throws Exception {
-                                closeables.add(facility);
+                                getAutoCloseableSet().add(facility);
                                 dis.processAsyncResponse(facility);
                             }
                         });

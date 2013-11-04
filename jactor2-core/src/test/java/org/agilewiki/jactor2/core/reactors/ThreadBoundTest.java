@@ -12,30 +12,33 @@ import org.agilewiki.jactor2.core.messages.RequestBase;
  */
 public class ThreadBoundTest extends TestCase {
     ThreadBoundReactor boundReactor;
-    Plant plant;
 
     public void testa() throws Exception {
-        plant = new Plant();
-        boundReactor = new ThreadBoundReactor(plant, new Runnable() {
-            @Override
-            public void run() {
-                boundReactor.run();
-                try {
-                    plant.close();
-                } catch (final Throwable x) {
+        final Plant plant = new Plant();
+        try {
+            boundReactor = new ThreadBoundReactor(plant, new Runnable() {
+                @Override
+                public void run() {
+                    boundReactor.run();
+                    try {
+                        plant.close();
+                    } catch (final Throwable x) {
+                    }
                 }
-            }
-        });
-        final Reactor reactor = new IsolationReactor(plant);
-        final Blade1 blade1 = new Blade1(reactor);
-        send(blade1.hiSReq(), new AsyncResponseProcessor<String>() {
-            @Override
-            public void processAsyncResponse(final String response)
-                    throws Exception {
-                System.out.println(response);
-                assertEquals("Hello world!", response);
-            }
-        });
+            });
+            final Reactor reactor = new IsolationReactor(plant);
+            final Blade1 blade1 = new Blade1(reactor);
+            send(blade1.hiSReq(), new AsyncResponseProcessor<String>() {
+                @Override
+                public void processAsyncResponse(final String response)
+                        throws Exception {
+                    System.out.println(response);
+                    assertEquals("Hello world!", response);
+                }
+            });
+        } finally {
+            plant.close();
+        }
     }
 
     /**

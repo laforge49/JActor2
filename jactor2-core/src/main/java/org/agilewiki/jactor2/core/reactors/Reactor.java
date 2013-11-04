@@ -2,11 +2,12 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 /**
  * The Reactor interface identifies the processing methods that can be used by applications.
  */
-public interface Reactor extends Runnable {
+public interface Reactor extends Runnable, AutoCloseable {
 
     /**
      * Returns the facility.
@@ -47,4 +48,30 @@ public interface Reactor extends Runnable {
      */
     @Override
     void run();
+
+    /**
+     * Returns a request to add an auto closeable, to be closed when the Facility closes.
+     * This request returns true if the AutoClosable was added.
+     *
+     * @param _closeable The autoclosable to be added to the list.
+     * @return The request.
+     */
+    SyncRequest<Boolean> addAutoClosableSReq(final AutoCloseable _closeable);
+
+    /**
+     * Returns a request to remove an auto closeable.
+     * This request returns true if the AutoClosable was removed.
+     *
+     * @param _closeable The autoclosable to be removed.
+     * @return The request.
+     */
+    SyncRequest<Boolean> removeAutoClosableSReq(final AutoCloseable _closeable);
+
+    /**
+     * Returns true if close() has been called already.
+     * Can be called from anywhere.
+     *
+     * @return true if close() has already been called.
+     */
+    boolean isClosing();
 }

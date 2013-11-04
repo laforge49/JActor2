@@ -1,12 +1,10 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ThreadFactory;
 
@@ -21,6 +19,7 @@ import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.util.AutoCloseableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,21 +48,21 @@ public class Facility extends BladeBase implements AutoCloseable {
     private final InternalReactor internalReactor;
 
     /**
-     * A hash set of AutoCloseable objects.
+     * A set of AutoCloseable objects.
      * Can only be accessed via a request to the facility.
      */
-    protected final Set<AutoCloseable> closeables = Collections
-            .newSetFromMap(new WeakHashMap<AutoCloseable, Boolean>());
+    private AutoCloseableSet closeables;
 
     /**
      * Set when the facility reaches end-of-life.
      * Can only be updated via a request to the facility.
      */
-    private boolean shuttingDown = false;
+    private volatile boolean shuttingDown;
 
     /**
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
      */
+    @SuppressWarnings("rawtypes")
     public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests = Plant.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>()
             : null;
 
@@ -138,7 +137,6 @@ public class Facility extends BladeBase implements AutoCloseable {
                     final PropertyChanges _immutableChanges,
                     final AsyncResponseProcessor<Void> _rp) throws Exception {
                 rp = _rp;
-                final SortedMap<String, PropertyChange> readOnlyPropertyChanges = _immutableChanges.readOnlyPropertyChanges;
                 final PropertyChange pc = _immutableChanges.readOnlyPropertyChanges
                         .get(NAME_PROPERTY);
 
@@ -185,6 +183,14 @@ public class Facility extends BladeBase implements AutoCloseable {
                 }
             }
         };
+    }
+
+    /** Returns the AutoCloseableSet. Creates it if needed. */
+    protected final AutoCloseableSet getAutoCloseableSet() {
+        if (closeables == null) {
+            closeables = new AutoCloseableSet();
+        }
+        return closeables;
     }
 
     public PropertiesBlade getPropertiesBlade() {
@@ -266,7 +272,7 @@ public class Facility extends BladeBase implements AutoCloseable {
             @Override
             protected Boolean processSyncRequest() throws Exception {
                 if (!isClosing()) {
-                    return closeables.add(_closeable);
+                    return getAutoCloseableSet().add(_closeable);
                 } else {
                     return false;
                 }
@@ -287,7 +293,8 @@ public class Facility extends BladeBase implements AutoCloseable {
             @Override
             protected Boolean processSyncRequest() throws Exception {
                 if (!isClosing()) {
-                    return closeables.remove(_closeable);
+                    return (closeables == null) ? false : closeables
+                            .remove(_closeable);
                 }
                 return false;
             }
@@ -299,32 +306,28 @@ public class Facility extends BladeBase implements AutoCloseable {
         new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
+                if (shuttingDown) {
+                    return null;
+                }
+                shuttingDown = true;
                 final Plant plant = getPlant();
                 if ((plant != null) && (plant != Facility.this)) {
                     plant.removeAutoClosableSReq(this).signal();
                     plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
                             null).signal();
                 }
-                if (shuttingDown) {
-                    return null;
-                }
-                shuttingDown = true;
                 threadManager.close();
-                final Iterator<AutoCloseable> it = closeables.iterator();
-                while (it.hasNext()) {
-                    try {
-                        it.next().close();
-                    } catch (final Throwable t) {
-                        t.printStackTrace();
-                    }
+                if (closeables != null) {
+                    closeables.close();
                 }
                 return null;
             }
-        }.signal();
+        }.call();
     }
 
     /**
      * Returns true if close() has been called already.
+     * Can be called from anywhere.
      *
      * @return true if close() has already been called.
      */
@@ -465,7 +468,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
-                final Class initiatorClass = getClassLoader().loadClass(
+                final Class<?> initiatorClass = getClassLoader().loadClass(
                         _initiatorClassName);
                 final Initiator initiator = (Initiator) initiatorClass
                         .newInstance();

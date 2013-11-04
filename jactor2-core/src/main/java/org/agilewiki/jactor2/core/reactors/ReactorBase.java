@@ -9,13 +9,14 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.messages.MessageSource;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.util.AutoCloseableSet;
 import org.slf4j.Logger;
 
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorBase implements Reactor, MessageSource,
-        AutoCloseable {
+abstract public class ReactorBase implements Reactor, MessageSource {
 
     /**
      * Reactor logger.
@@ -49,6 +50,18 @@ abstract public class ReactorBase implements Reactor, MessageSource,
     private Message currentMessage;
 
     /**
+     * A set of AutoCloseable objects.
+     * Can only be accessed via a request to this reactor.
+     */
+    private AutoCloseableSet closeables;
+
+    /**
+     * Set when the reactor reaches end-of-life.
+     * Can only be updated via a request to the reactor.
+     */
+    private volatile boolean shuttingDown;
+
+    /**
      * Create a targetReactor.
      *
      * @param _facility              The facility of this targetReactor.
@@ -62,6 +75,96 @@ abstract public class ReactorBase implements Reactor, MessageSource,
         log = _facility.getMessageProcessorLogger();
         outbox = new Outbox(facility, _initialBufferSize);
         addAutoClose();
+    }
+
+    /** Returns the AutoCloseableSet. Creates it if needed. */
+    protected final AutoCloseableSet getAutoCloseableSet() {
+        if (closeables == null) {
+            closeables = new AutoCloseableSet();
+        }
+        return closeables;
+    }
+
+    /**
+     * Returns true if close() has been called already.
+     * Can be called from anywhere.
+     *
+     * @return true if close() has already been called.
+     */
+    public final boolean isClosing() {
+        return shuttingDown;
+    }
+
+    /**
+     * Returns a request to add an auto closeable, to be closed when the Facility closes.
+     * This request returns true if the AutoClosable was added.
+     *
+     * @param _closeable The autoclosable to be added to the list.
+     * @return The request.
+     */
+    @Override
+    public SyncRequest<Boolean> addAutoClosableSReq(
+            final AutoCloseable _closeable) {
+        return new SyncRequest<Boolean>(this) {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                if (!isClosing()) {
+                    return getAutoCloseableSet().add(_closeable);
+                } else {
+                    return false;
+                }
+            }
+        };
+    }
+
+    /**
+     * Returns a request to remove an auto closeable.
+     * This request returns true if the AutoClosable was removed.
+     *
+     * @param _closeable The autoclosable to be removed.
+     * @return The request.
+     */
+    @Override
+    public SyncRequest<Boolean> removeAutoClosableSReq(
+            final AutoCloseable _closeable) {
+        return new SyncRequest<Boolean>(this) {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                if (!isClosing()) {
+                    return (closeables == null) ? false : closeables
+                            .remove(_closeable);
+                }
+                return false;
+            }
+        };
+    }
+
+    @Override
+    public void close() throws Exception {
+        new SyncRequest<Void>(this) {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                if (shuttingDown) {
+                    return null;
+                }
+                if (closeables != null) {
+                    try {
+                        closeables.close();
+                    } catch (final Exception e) {
+                    }
+                }
+                try {
+                    outbox.close();
+                } catch (final Exception e) {
+                }
+                try {
+                    inbox.close();
+                } catch (final Exception e) {
+                }
+                shuttingDown = true;
+                return null;
+            }
+        }.signal();
     }
 
     /**
@@ -128,18 +231,6 @@ abstract public class ReactorBase implements Reactor, MessageSource,
     @Override
     public final boolean isInboxEmpty() {
         return inbox.isEmpty();
-    }
-
-    @Override
-    public void close() {
-        try {
-            outbox.close();
-        } catch (final Exception e) {
-        }
-        try {
-            inbox.close();
-        } catch (final Exception e) {
-        }
     }
 
     @Override
