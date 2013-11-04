@@ -126,14 +126,7 @@ class Subscriber extends BladeBase {
                                  throws Exception {
                              send(printer.printlnSReq((String) _content), arp);
                          }
-                     },
-                        new AsyncResponseProcessor&lt;Subscription&lt;Object&gt;&gt;() {
-                            public void processAsyncResponse(final Subscription&lt;Object&gt; _subscription)
-                                    throws Exception {
-                                dis.processAsyncResponse(null);
-                            }
-                        }
-                );
+                }, dis, null);
             }
         };
     }
