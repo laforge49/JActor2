@@ -105,28 +105,34 @@ class Subscriber extends BladeBase {
             AsyncResponseProcessor dis = this;
 
             protected void processAsyncRequest() throws Exception {
+                //Creates a subscription that updates the state when an int is passed as content.
                 new SubscribeAReq&lt;Object&gt;(requestBus,
                         (NonBlockingReactor) getReactor(),
                         new IsInstanceFilter&lt;Object&gt;(Integer.class)) {
                     @Override
                     protected void processContent(Object _content, AsyncResponseProcessor&lt;Void&gt; arp)
                             throws Exception {
+                        //This code is executed safely under the subscriber's reactor/thread.
                         int oldState = state;
                         int inc = (Integer) _content;
                         state = state + inc;
+                        //After printing, a null is passed back to the transaction processor.
                         send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp);
                     }
                 }.signal();
 
+                //Creates a subscription that prints any strings received as content.
                 send(new SubscribeAReq&lt;Object&gt;(requestBus,
                              (NonBlockingReactor) getReactor(),
                              new IsInstanceFilter&lt;Object&gt;(String.class)) {
                          @Override
                          protected void processContent(Object _content, AsyncResponseProcessor&lt;Void&gt; arp)
                                  throws Exception {
-                             send(printer.printlnSReq((String) _content), arp);
+                            //After printing, a null is passed back to the transaction processor.
+                            send(printer.printlnSReq((String) _content), arp);
                          }
-                }, dis, null);
+                }, dis, null); //A send with 3 arguments means that the response from the request is ignored
+                               //and, in this case, a null is passed back as the response from the listen request.
             }
         };
     }
