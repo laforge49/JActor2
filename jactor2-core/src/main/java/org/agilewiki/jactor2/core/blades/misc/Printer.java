@@ -91,7 +91,12 @@ public class Printer extends BlockingBlade {
                     processAsyncResponse(printer);
                     return;
                 }
-                send(createStdoutAReq(_plant), dis, (Printer) _plant.getProperty("stdout"));
+                send(createStdoutAReq(_plant), new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(Void _response) throws Exception {
+                        dis.processAsyncResponse((Printer) _plant.getProperty("stdout"));
+                    }
+                });
             }
         };
     }
