@@ -1,19 +1,21 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.Message;
-import org.agilewiki.jactor2.core.messages.MessageSource;
-import org.slf4j.Logger;
-
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.PoolThread;
+import org.agilewiki.jactor2.core.messages.Message;
+import org.agilewiki.jactor2.core.messages.MessageSource;
+import org.slf4j.Logger;
+
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseable {
+abstract public class ReactorBase implements Reactor, MessageSource,
+        AutoCloseable {
 
     /**
      * Reactor logger.
@@ -53,9 +55,8 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      */
-    public ReactorBase(final Facility _facility,
-                       final int _initialBufferSize,
-                       final int _initialLocalQueueSize) throws Exception {
+    public ReactorBase(final Facility _facility, final int _initialBufferSize,
+            final int _initialLocalQueueSize) throws Exception {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.getMessageProcessorLogger();
@@ -101,7 +102,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      *
      * @param _message The message currently being processed.
      */
-    public final void setCurrentMessage(Message _message) {
+    public final void setCurrentMessage(final Message _message) {
         currentMessage = _message;
     }
 
@@ -133,11 +134,11 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
     public void close() {
         try {
             outbox.close();
-        } catch (Exception e) {
+        } catch (final Exception e) {
         }
         try {
             inbox.close();
-        } catch (Exception e) {
+        } catch (final Exception e) {
         }
     }
 
@@ -167,8 +168,8 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      * @param _message A message.
      * @param _local   True when the current thread is bound to the targetReactor.
      */
-    public void unbufferedAddMessage(final Message _message, final boolean _local)
-            throws Exception {
+    public void unbufferedAddMessage(final Message _message,
+            final boolean _local) throws Exception {
         if (facility.isClosing()) {
             if (_message.isForeign() && _message.isResponsePending())
                 try {
@@ -236,11 +237,12 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
 
     @Override
     public final void incomingResponse(final Message _message,
-                                       final Reactor _responseSource) {
+            final Reactor _responseSource) {
         try {
-            ReactorBase responseSource = (ReactorBase) _responseSource;
-            boolean local = this == _responseSource;
-            if (local || _responseSource == null || !responseSource.buffer(_message, this))
+            final ReactorBase responseSource = (ReactorBase) _responseSource;
+            final boolean local = this == _responseSource;
+            if (local || _responseSource == null
+                    || !responseSource.buffer(_message, this))
                 unbufferedAddMessage(_message, local);
         } catch (final Throwable t) {
             log.error("unable to add response message", t);
@@ -271,7 +273,7 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      *
      * @return The atomic reference to the current thread.
      */
-    abstract public AtomicReference<Thread> getThreadReference();
+    abstract public AtomicReference<PoolThread> getThreadReference();
 
     /**
      * Returns true, if this targetReactor is actively processing messages.
@@ -284,6 +286,5 @@ abstract public class ReactorBase implements Reactor, MessageSource, AutoCloseab
      * @return True when there is code to be executed when the inbox is emptied.
      */
     abstract public boolean isIdler();
-
 
 }

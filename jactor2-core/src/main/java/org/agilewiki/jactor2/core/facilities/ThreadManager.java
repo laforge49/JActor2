@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.facilities;
 
-import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.UnboundReactor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.UnboundReactor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The ThreadManager is used to process a queue of Reactor's
@@ -30,8 +30,7 @@ final public class ThreadManager {
     /**
      * The reactors queue holds the reactors which have messages to be processed.
      */
-    final private ConcurrentLinkedQueue<UnboundReactor> reactors =
-            new ConcurrentLinkedQueue<UnboundReactor>();
+    final private ConcurrentLinkedQueue<UnboundReactor> reactors = new ConcurrentLinkedQueue<UnboundReactor>();
 
     /**
      * When closing is true, the threads exit as they finish their current activity.
@@ -55,40 +54,47 @@ final public class ThreadManager {
      * @param _threadFactory Used to create the threads.
      */
     public ThreadManager(final int _threadCount,
-                         final ThreadFactory _threadFactory) {
+            final ThreadFactory _threadFactory) {
         this.threadCount = _threadCount;
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                final PoolThread currentThread = (PoolThread) Thread.currentThread();
+                final PoolThread currentThread = (PoolThread) Thread
+                        .currentThread();
                 while (true) {
                     try {
                         taskRequest.acquire();
                         UnboundReactor reactor = reactors.poll();
                         if (reactor != null) {
-                            AtomicReference<Thread> threadReference = reactor.getThreadReference();
-                            if (threadReference.get() == null &&
-                                    threadReference.compareAndSet(null, currentThread)) {
+                            AtomicReference<PoolThread> threadReference = reactor
+                                    .getThreadReference();
+                            if (threadReference.get() == null
+                                    && threadReference.compareAndSet(null,
+                                            currentThread)) {
                                 currentThread.setCurrentReactor(reactor);
                                 while (true) {
                                     try {
                                         reactor.run();
                                     } catch (final MigrationException me) {
-                                        boolean hasWork = reactor.hasWork();
+                                        final boolean hasWork = reactor
+                                                .hasWork();
                                         threadReference.set(null);
-                                        if (reactor.isIdler() || hasWork || reactor.hasConcurrent()) {
+                                        if (reactor.isIdler() || hasWork
+                                                || reactor.hasConcurrent()) {
                                             execute(reactor);
                                         }
                                         reactor = me.reactor;
-                                        threadReference = reactor.getThreadReference();
-                                        currentThread.setCurrentReactor(reactor);
+                                        threadReference = reactor
+                                                .getThreadReference();
+                                        currentThread
+                                                .setCurrentReactor(reactor);
                                         continue;
                                     } catch (final Throwable e) {
                                         logger.error(
                                                 "Exception thrown by a targetReactor's run method",
                                                 e);
                                     }
-                                    boolean hasWork = reactor.hasWork();
+                                    final boolean hasWork = reactor.hasWork();
                                     threadReference.set(null);
                                     if (hasWork || reactor.hasConcurrent())
                                         execute(reactor);

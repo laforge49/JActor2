@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadFactory;
 /**
  * DefaultThreadFactory is used to create pool threads.
  */
-final public class DefaultThreadFactory implements ThreadFactory {
+public final class DefaultThreadFactory implements ThreadFactory {
     /**
      * The newThread method returns a newly created PoolThread.
      *
@@ -13,6 +13,6 @@ final public class DefaultThreadFactory implements ThreadFactory {
      */
     @Override
     public Thread newThread(final Runnable _runnable) {
-        return new PoolThread(_runnable);
+        return new PoolThreadImpl(_runnable);
     }
 }

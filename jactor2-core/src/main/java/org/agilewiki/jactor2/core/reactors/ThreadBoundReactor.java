@@ -1,12 +1,13 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.Message;
-
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.PoolThread;
+import org.agilewiki.jactor2.core.messages.Message;
 
 /**
  * A targetReactor bound to a pre-existing thread, a thread-bound targetReactor can use
@@ -110,10 +111,10 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
      * @param _boundProcessor The _messageProcessor.run method is called when there
      *                        are messages to be processed.
      */
-    public ThreadBoundReactor(Facility _facility, Runnable _boundProcessor) throws Exception {
-        super(_facility,
-                _facility.getInitialBufferSize(),
-                _facility.getInitialLocalMessageQueueSize());
+    public ThreadBoundReactor(final Facility _facility,
+            final Runnable _boundProcessor) throws Exception {
+        super(_facility, _facility.getInitialBufferSize(), _facility
+                .getInitialLocalMessageQueueSize());
         boundProcessor = _boundProcessor;
     }
 
@@ -132,10 +133,9 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
      * @param _boundProcessor        The _messageProcessor.run method is called when there
      *                               are messages to be processed.
      */
-    public ThreadBoundReactor(Facility _facility,
-                              int _initialOutboxSize,
-                              final int _initialLocalQueueSize,
-                              Runnable _boundProcessor) throws Exception {
+    public ThreadBoundReactor(final Facility _facility,
+            final int _initialOutboxSize, final int _initialLocalQueueSize,
+            final Runnable _boundProcessor) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }
@@ -151,7 +151,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
     }
 
     @Override
-    public AtomicReference<Thread> getThreadReference() {
+    public AtomicReference<PoolThread> getThreadReference() {
         throw new UnsupportedOperationException();
     }
 
@@ -161,7 +161,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
     }
 
     @Override
-    protected Inbox createInbox(int _initialLocalQueueSize) {
+    protected Inbox createInbox(final int _initialLocalQueueSize) {
         return new NonBlockingInbox(_initialLocalQueueSize);
     }
 
@@ -182,11 +182,13 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
      */
     public final boolean flush() throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = outbox.getIterator();
+        final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = outbox
+                .getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter.next();
+                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter
+                        .next();
                 final ReactorBase target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
@@ -203,7 +205,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
             if (message == null) {
                 try {
                     notBusy();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     log.error("Exception thrown by onIdle", e);
                 }
                 if (hasWork())
