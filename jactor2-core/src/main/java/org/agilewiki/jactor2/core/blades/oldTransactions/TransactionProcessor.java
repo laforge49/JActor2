@@ -32,12 +32,6 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER extends AutoClos
         changeBus = new RequestBus<IMMUTABLE_CHANGES, Void>(_commonReactor);
     }
 
-    abstract protected void newImmutableState();
-
-    abstract protected STATE_WRAPPER newStateWrapper();
-
-    abstract protected IMMUTABLE_CHANGES newChanges();
-
     public IMMUTABLE_STATE getImmutableState() {
         return immutableState;
     }
@@ -85,6 +79,12 @@ abstract public class TransactionProcessor<STATE, STATE_WRAPPER extends AutoClos
             }
         };
     }
+
+    abstract protected void newImmutableState();
+
+    abstract protected STATE_WRAPPER newStateWrapper();
+
+    abstract protected IMMUTABLE_CHANGES newChanges();
 
     public AsyncRequest<Void> processTransactionAReq(
             final Transaction<STATE_WRAPPER> _transaction) throws Exception {
