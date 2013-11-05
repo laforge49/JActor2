@@ -93,7 +93,10 @@ public class AutoCloseableSet implements Iterable<AutoCloseable>, AutoCloseable 
      */
     @Override
     public void close() {
-        for (final AutoCloseable ac : closeables.keySet()) {
+        final AutoCloseable[] array = closeables.keySet().toArray(
+                new AutoCloseable[closeables.size()]);
+        closeables.clear();
+        for (final AutoCloseable ac : array) {
             try {
                 ac.close();
             } catch (final Throwable t) {
@@ -102,6 +105,5 @@ public class AutoCloseableSet implements Iterable<AutoCloseable>, AutoCloseable 
                 }
             }
         }
-        closeables.clear();
     }
 }
