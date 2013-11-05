@@ -9,6 +9,7 @@ org.agilewiki.jactor2.core.blades.transactions.properties
 org.agilewiki.jactor2.core.facilities
 org.agilewiki.jactor2.core.messages
 org.agilewiki.jactor2.core.reactors
+org.agilewiki.jactor2.core.util
 org.agilewiki.jactor2.util
 org.agilewiki.jactor2.util.durable
 org.agilewiki.jactor2.util.durable.app
