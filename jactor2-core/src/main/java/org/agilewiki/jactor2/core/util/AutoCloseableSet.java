@@ -29,6 +29,10 @@ import org.slf4j.LoggerFactory;
  * @author monster
  */
 public class AutoCloseableSet implements Iterable<AutoCloseable>, AutoCloseable {
+
+    /** Should we log errors in calls to close()? */
+    private static volatile boolean LOG_CLOSE_ERRORS = true;
+
     /** The logger. */
     private static final Logger LOG = LoggerFactory
             .getLogger(AutoCloseableSet.class);
@@ -41,6 +45,16 @@ public class AutoCloseableSet implements Iterable<AutoCloseable>, AutoCloseable 
      * Can only be accessed via a request to the facility.
      */
     protected final Map<AutoCloseable, Object> closeables = new WeakHashMap<AutoCloseable, Object>();
+
+    /** Disable close() error logging. */
+    public static void disableCloseErrorLogging() {
+        LOG_CLOSE_ERRORS = false;
+    }
+
+    /** Enable close() error logging. */
+    public static void enableCloseErrorLogging() {
+        LOG_CLOSE_ERRORS = true;
+    }
 
     /**
      * Adds an AutoCloseable resource.
@@ -83,7 +97,9 @@ public class AutoCloseableSet implements Iterable<AutoCloseable>, AutoCloseable 
             try {
                 ac.close();
             } catch (final Throwable t) {
-                LOG.warn("Error closing a " + ac.getClass().getName(), t);
+                if (LOG_CLOSE_ERRORS) {
+                    LOG.warn("Error closing a " + ac.getClass().getName(), t);
+                }
             }
         }
         closeables.clear();

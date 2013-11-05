@@ -303,7 +303,12 @@ public class Facility extends BladeBase implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        new SyncBladeRequest<Void>() {
+        closeSReq().signal();
+    }
+
+    /** Returns a Request to perform a close(). */
+    public SyncRequest<Void> closeSReq() {
+        return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
                 if (shuttingDown) {
@@ -322,7 +327,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                 }
                 return null;
             }
-        }.signal();
+        };
     }
 
     /**

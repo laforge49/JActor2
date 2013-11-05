@@ -4,6 +4,7 @@ import java.util.concurrent.ThreadFactory;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 
@@ -162,9 +163,10 @@ public class Plant extends Facility {
         };
     }
 
+    /** Returns a Request to perform a close(). */
     @Override
-    public final void close() throws Exception {
+    public final SyncRequest<Void> closeSReq() {
         singleton = null;
-        super.close();
+        return super.closeSReq();
     }
 }

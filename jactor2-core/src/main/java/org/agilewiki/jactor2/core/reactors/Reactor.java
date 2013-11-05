@@ -74,4 +74,7 @@ public interface Reactor extends Runnable, AutoCloseable {
      * @return true if close() has already been called.
      */
     boolean isClosing();
+
+    /** Returns a Request to perform a close(). */
+    public SyncRequest<Void> closeSReq();
 }

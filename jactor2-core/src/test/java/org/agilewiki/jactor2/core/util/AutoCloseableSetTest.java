@@ -10,8 +10,6 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  * Test code.
  */
 public class AutoCloseableSetTest extends TestCase {
-    static volatile int closed;
-
     private static class MyAutoCloseable implements AutoCloseable {
         public volatile int closed;
 
@@ -21,7 +19,6 @@ public class AutoCloseableSetTest extends TestCase {
         @Override
         public void close() throws Exception {
             closed++;
-            AutoCloseableSetTest.closed++;
         }
     }
 
@@ -36,11 +33,17 @@ public class AutoCloseableSetTest extends TestCase {
         }
     }
 
+    @Override
+    protected void setUp() throws Exception {
+        AutoCloseableSet.disableCloseErrorLogging();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        AutoCloseableSet.enableCloseErrorLogging();
+    }
+
     public void testSet() throws Exception {
-        /*
-
-        //keep commented out, as it logs a trace.
-
         final AutoCloseableSet set = new AutoCloseableSet();
         final MyAutoCloseable mac1 = new MyAutoCloseable();
         final MyAutoCloseable mac2 = new MyAutoCloseable();
@@ -95,14 +98,9 @@ public class AutoCloseableSetTest extends TestCase {
             foundAny = true;
         }
         assertFalse(foundAny);
-        */
     }
 
     public void testFacility() throws Exception {
-        /*
-
-        //this test does not work
-
         // a Plant is also a Facility, so I only need to test the Plant ...
         final Plant plant = new Plant();
         try {
@@ -117,14 +115,9 @@ public class AutoCloseableSetTest extends TestCase {
             plant.addAutoClosableSReq(mac4).signal();
             plant.addAutoClosableSReq(mfac).signal();
             plant.removeAutoClosableSReq(mac4).call();
-            final int before = closed;
-            plant.close();
-            // You cannot wait on close() ...
-            int count = 0;
-            while ((closed < before - 4) && (count < 10)) {
-                Thread.sleep(100);
-                count++;
-            }
+
+            plant.closeSReq().call();
+
             assertEquals(mac1.closed, 1);
             assertEquals(mac2.closed, 1);
             assertEquals(mac3.closed, 1);
@@ -138,14 +131,9 @@ public class AutoCloseableSetTest extends TestCase {
                 // NOP
             }
         }
-        */
     }
 
     public void testReactor() throws Exception {
-        /*
-
-        //this test does not work
-
         final Plant plant = new Plant();
         try {
             final Reactor reactor = new NonBlockingReactor(plant);
@@ -161,15 +149,9 @@ public class AutoCloseableSetTest extends TestCase {
             reactor.addAutoClosableSReq(mac4).signal();
             reactor.addAutoClosableSReq(mfac).signal();
             reactor.removeAutoClosableSReq(mac4).call();
-            final int before = closed;
-            reactor.close();
-            // You cannot wait on close() ...
-            int count = 0;
-            while ((closed < before - 4) && (count < 10)
-                    && !reactor.isClosing()) {
-                Thread.sleep(100);
-                count++;
-            }
+
+            reactor.closeSReq().call();
+
             assertEquals(mac1.closed, 1);
             assertEquals(mac2.closed, 1);
             assertEquals(mac3.closed, 1);
@@ -183,6 +165,5 @@ public class AutoCloseableSetTest extends TestCase {
                 // NOP
             }
         }
-        */
     }
 }

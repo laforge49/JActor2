@@ -91,6 +91,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      *
      * @return true if close() has already been called.
      */
+    @Override
     public final boolean isClosing() {
         return shuttingDown;
     }
@@ -141,12 +142,18 @@ abstract public class ReactorBase implements Reactor, MessageSource {
 
     @Override
     public void close() throws Exception {
-        new SyncRequest<Void>(this) {
+        closeSReq().signal();
+    }
+
+    /** Returns a Request to perform a close(). */
+    public SyncRequest<Void> closeSReq() {
+        return new SyncRequest<Void>(this) {
             @Override
             protected Void processSyncRequest() throws Exception {
                 if (shuttingDown) {
                     return null;
                 }
+                shuttingDown = true;
                 if (closeables != null) {
                     try {
                         closeables.close();
@@ -161,10 +168,9 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                     inbox.close();
                 } catch (final Exception e) {
                 }
-                shuttingDown = true;
                 return null;
             }
-        }.signal();
+        };
     }
 
     /**
