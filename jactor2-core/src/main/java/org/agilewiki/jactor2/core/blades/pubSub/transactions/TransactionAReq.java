@@ -38,6 +38,7 @@ public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMUTABLE_STA
         final AsyncResponseProcessor<Void> validatorsResponseProcessor = new AsyncResponseProcessor<Void>() {
             @Override
             public void processAsyncResponse(Void _response) throws Exception {
+                transactionProcessor.newImmutableState();
                 send(transactionProcessor.changeBus.sendsContentAReq(immutableChanges), dis);
             }
         };

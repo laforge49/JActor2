@@ -33,9 +33,9 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
         return immutableState;
     }
 
-    abstract protected void newImmutableState();
-
     abstract protected CHANGE_MANAGER newChangeManager();
 
     abstract protected IMMUTABLE_CHANGES newChanges();
+
+    abstract protected void newImmutableState();
 }
