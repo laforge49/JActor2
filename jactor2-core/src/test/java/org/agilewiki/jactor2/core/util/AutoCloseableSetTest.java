@@ -38,6 +38,9 @@ public class AutoCloseableSetTest extends TestCase {
 
     public void testSet() throws Exception {
         /*
+
+        //keep commented out, as it logs a trace.
+
         final AutoCloseableSet set = new AutoCloseableSet();
         final MyAutoCloseable mac1 = new MyAutoCloseable();
         final MyAutoCloseable mac2 = new MyAutoCloseable();
@@ -97,6 +100,9 @@ public class AutoCloseableSetTest extends TestCase {
 
     public void testFacility() throws Exception {
         /*
+
+        //this test does not work
+
         // a Plant is also a Facility, so I only need to test the Plant ...
         final Plant plant = new Plant();
         try {
@@ -137,6 +143,9 @@ public class AutoCloseableSetTest extends TestCase {
 
     public void testReactor() throws Exception {
         /*
+
+        //this test does not work
+
         final Plant plant = new Plant();
         try {
             final Reactor reactor = new NonBlockingReactor(plant);
