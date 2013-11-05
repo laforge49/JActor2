@@ -146,6 +146,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
     }
 
     /** Returns a Request to perform a close(). */
+    @Override
     public SyncRequest<Void> closeSReq() {
         return new SyncRequest<Void>(this) {
             @Override
@@ -168,6 +169,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                     inbox.close();
                 } catch (final Exception e) {
                 }
+                facility.removeAutoClosableSReq(this).signal();
                 return null;
             }
         };
