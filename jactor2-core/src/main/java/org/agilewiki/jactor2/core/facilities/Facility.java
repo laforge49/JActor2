@@ -9,10 +9,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ThreadFactory;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.transactions.properties.NewPropertiesValidatorAReq;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesBlade;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChanges;
+import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.NewPropertiesValidatorAReq;
+import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesBlade;
+import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertyChange;
+import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertyChanges;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;

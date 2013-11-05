@@ -1,12 +1,12 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties;
 
 import java.util.Iterator;
 import java.util.SortedMap;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.jactor2.core.blades.transactions.ChangeNotificationSubscriber;
-import org.agilewiki.jactor2.core.blades.transactions.Validator;
+import org.agilewiki.jactor2.core.blades.oldTransactions.ChangeNotificationSubscriber;
+import org.agilewiki.jactor2.core.blades.oldTransactions.Validator;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;

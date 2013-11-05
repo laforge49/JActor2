@@ -1,15 +1,15 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties;
+
+import org.agilewiki.jactor2.core.blades.oldTransactions.Transaction;
+import org.agilewiki.jactor2.core.blades.oldTransactions.TransactionProcessor;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Collections;
 import java.util.NavigableMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.agilewiki.jactor2.core.blades.transactions.Transaction;
-import org.agilewiki.jactor2.core.blades.transactions.TransactionProcessor;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PropertiesProcessor
         extends

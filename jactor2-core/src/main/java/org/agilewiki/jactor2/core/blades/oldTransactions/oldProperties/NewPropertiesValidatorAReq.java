@@ -1,10 +1,10 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties;
+
+import org.agilewiki.jactor2.core.blades.oldTransactions.NewValidatorAReq;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.NavigableMap;
 import java.util.SortedMap;
-
-import org.agilewiki.jactor2.core.blades.transactions.NewValidatorAReq;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 abstract public class NewPropertiesValidatorAReq
         extends

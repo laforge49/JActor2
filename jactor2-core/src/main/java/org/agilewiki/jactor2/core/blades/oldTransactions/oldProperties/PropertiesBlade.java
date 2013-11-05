@@ -1,18 +1,18 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
-
-import java.util.NavigableMap;
-import java.util.Set;
-import java.util.SortedMap;
+package org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.transactions.ChangeNotificationSubscriber;
-import org.agilewiki.jactor2.core.blades.transactions.ChangeSubscription;
-import org.agilewiki.jactor2.core.blades.transactions.ValidationSubscription;
-import org.agilewiki.jactor2.core.blades.transactions.Validator;
+import org.agilewiki.jactor2.core.blades.oldTransactions.ChangeNotificationSubscriber;
+import org.agilewiki.jactor2.core.blades.oldTransactions.ChangeSubscription;
+import org.agilewiki.jactor2.core.blades.oldTransactions.ValidationSubscription;
+import org.agilewiki.jactor2.core.blades.oldTransactions.Validator;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+import java.util.NavigableMap;
+import java.util.Set;
+import java.util.SortedMap;
 
 public class PropertiesBlade extends BladeBase {
 

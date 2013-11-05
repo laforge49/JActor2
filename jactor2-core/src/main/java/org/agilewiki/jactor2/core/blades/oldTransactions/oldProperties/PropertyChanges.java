@@ -1,9 +1,9 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties;
+
+import org.agilewiki.jactor2.core.blades.oldTransactions.ImmutableChanges;
 
 import java.util.Iterator;
 import java.util.SortedMap;
-
-import org.agilewiki.jactor2.core.blades.transactions.ImmutableChanges;
 
 public class PropertyChanges implements ImmutableChanges {
     public final SortedMap<String, Object> oldReadOnlyProperties;

@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties;
 
 public class PropertyChange {
     public final String name;

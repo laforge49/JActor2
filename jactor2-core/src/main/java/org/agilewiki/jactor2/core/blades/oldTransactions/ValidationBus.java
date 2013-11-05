@@ -1,6 +1,4 @@
-package org.agilewiki.jactor2.core.blades.transactions;
-
-import java.util.Iterator;
+package org.agilewiki.jactor2.core.blades.oldTransactions;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.oldRequestBus.RequestBus;
@@ -9,6 +7,8 @@ import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+import java.util.Iterator;
 
 public class ValidationBus<STATE, STATE_WRAPPER extends AutoCloseable, IMMUTABLE_CHANGES extends ImmutableChanges, IMMUTABLE_STATE>
         extends RequestBus<IMMUTABLE_CHANGES, Void> {

@@ -1,7 +1,7 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.transactions.Transaction;
+import org.agilewiki.jactor2.core.blades.oldTransactions.Transaction;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
 public class PutTransaction extends BladeBase implements

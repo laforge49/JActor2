@@ -4,8 +4,8 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 import org.agilewiki.jactor2.core.blades.BlockingBlade;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesWrapper;
+import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesTransactionAReq;
+import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesWrapper;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
