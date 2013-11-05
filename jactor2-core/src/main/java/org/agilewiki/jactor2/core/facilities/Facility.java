@@ -322,7 +322,7 @@ public class Facility extends BladeBase implements AutoCloseable {
                 }
                 return null;
             }
-        }.call();
+        }.signal();
     }
 
     /**
