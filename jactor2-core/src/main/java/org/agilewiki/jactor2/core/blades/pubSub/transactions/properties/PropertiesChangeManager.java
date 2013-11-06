@@ -17,6 +17,11 @@ public class PropertiesChangeManager implements AutoCloseable {
         propertyChangesBuilder = _propertyChangesBuilder;
     }
 
+    public void put(final String _key, final Object _newValue) {
+        Object oldValue = oldImmutableProperties.get(_key);
+
+    }
+
     @Override
     public void close() throws Exception {
         closed = true;
