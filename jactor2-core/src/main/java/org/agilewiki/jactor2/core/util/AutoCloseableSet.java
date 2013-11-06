@@ -100,7 +100,7 @@ public class AutoCloseableSet implements Iterable<AutoCloseable>, AutoCloseable 
             try {
                 ac.close();
             } catch (final Throwable t) {
-                if (LOG_CLOSE_ERRORS) {
+                if (ac != null && LOG_CLOSE_ERRORS) {
                     LOG.warn("Error closing a " + ac.getClass().getName(), t);
                 }
             }
