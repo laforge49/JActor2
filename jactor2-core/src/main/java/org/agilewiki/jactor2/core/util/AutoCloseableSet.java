@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
 
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +31,13 @@ import org.slf4j.LoggerFactory;
  */
 public class AutoCloseableSet implements Iterable<AutoCloseable>, AutoCloseable {
 
-    /** Should we log errors in calls to close()? */
-    private static volatile boolean LOG_CLOSE_ERRORS = true;
+    /*
+     * Should we log errors in calls to close()?
+     *  Generally not. Wierdness will often occur when closing. It should be robust and graceful.
+     *  The problem is that close exceptions are often red herings. They are errors caused by other errors,
+     *  and they typically occur after the original error was detected.
+     */
+    private static volatile boolean LOG_CLOSE_ERRORS = Plant.DEBUG;
 
     /** The logger. */
     private static final Logger LOG = LoggerFactory
