@@ -5,15 +5,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-public interface ImmutableProperties<VALUE> {
+public interface ImmutableProperties<VALUE> extends Map<String, VALUE> {
     ImmutableProperties<VALUE> minus(String key);
-    ImmutableProperties<VALUE> minusAll(Collection<String> keys);
-    ImmutableProperties<VALUE> plus(String keys, VALUE value);
+    ImmutableProperties<VALUE> plus(String key, VALUE value);
     ImmutableProperties<VALUE> plusAll(Map<String, VALUE> m);
     ImmutableProperties<VALUE> subMap(String keyPrefix);
     VALUE get(String key);
     boolean containsKey(String key);
-    Set<String> keySet();
     SortedSet<String> sortedKeySet();
     int size();
     boolean isEmpty();
