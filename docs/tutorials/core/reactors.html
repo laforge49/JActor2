@@ -18,6 +18,10 @@ Several different types of reactors are provided:
 Reactor Class
 </th>
 <th style="padding: 5px;" bgcolor="lightyellow">
+Implements<br>
+<a href="../../api/org/agilewiki/jactor2/core/reactors/CommonReactor.html">CommonReactor</a>
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
 Usage
 </th>
 <th style="padding: 5px;" bgcolor="lightyellow">
@@ -28,6 +32,9 @@ Buffered Messages
 <tr>
 <td style="padding: 5px;" bgcolor="lightyellow">
 <a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+True
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 Messages are processed quickly.
@@ -42,6 +49,9 @@ Disbursed when there are no more messages to be processed.
 <a href="../../api/org/agilewiki/jactor2/core/reactors/BlockingReactor.html">BlockingReactor</a>
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
+True
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
 Messages may block the thread or perform long computations.
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
@@ -52,6 +62,9 @@ Disbursed after processing each message.
 <tr>
 <td style="padding: 5px;" bgcolor="lightyellow">
 <a href="../../api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+False
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 Requests are processed to completion before the next request is processed.
@@ -66,6 +79,9 @@ Disbursed after processing each message.
 <a href="../../api/org/agilewiki/jactor2/core/reactors/ThreadBoundReactor.html">ThreadBoundReactor</a>
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
+True
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
 The reactor always uses the same thread.
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
@@ -76,6 +92,9 @@ Disbursed when there are no more messages to be processed.
 <tr>
 <td style="padding: 5px;" bgcolor="lightyellow">
 <a href="../../api/org/agilewiki/jactor2/core/reactors/SwingBoundReactor.html">SwingBoundReactor</a>
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+True
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 The reactor uses the Swing UI thread.

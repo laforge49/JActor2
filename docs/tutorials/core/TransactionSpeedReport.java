@@ -1,4 +1,4 @@
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesBlade;
+import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesBlade;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
