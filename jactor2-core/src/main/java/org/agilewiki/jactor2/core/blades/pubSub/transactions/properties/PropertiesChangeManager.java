@@ -1,25 +1,19 @@
 package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
 
-import com.google.common.collect.ImmutableSortedMap;
+import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.ImmutableProperties;
 
+import java.util.Collections;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class PropertiesChangeManager implements AutoCloseable {
-    public final SortedMap<String, Object> oldImmutableProperties;
-    final private ImmutableSortedMap.Builder newPropertiesBuilder;
-    final private ImmutableSortedMap.Builder propertyChangesBuilder;
+    final ImmutableProperties<Object> immutableProperties;
+    final TreeMap<String, PropertyChange> changes = new TreeMap<String, PropertyChange>();
+    final public SortedMap<String, PropertyChange> readOnlyChanges = Collections.unmodifiableSortedMap(changes);
     private boolean closed;
-    public PropertiesChangeManager(final SortedMap<String, Object> _oldImmutableProperties,
-                                   final ImmutableSortedMap.Builder<String, Object> _newPropertiesBuilder,
-                                   final ImmutableSortedMap.Builder<String, PropertyChange> _propertyChangesBuilder) {
-        oldImmutableProperties = _oldImmutableProperties;
-        newPropertiesBuilder = _newPropertiesBuilder;
-        propertyChangesBuilder = _propertyChangesBuilder;
-    }
 
-    public void put(final String _key, final Object _newValue) {
-        Object oldValue = oldImmutableProperties.get(_key);
-
+    public PropertiesChangeManager(final ImmutableProperties<Object> _immutableProperties) {
+        immutableProperties = _immutableProperties;
     }
 
     @Override

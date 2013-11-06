@@ -1,17 +1,15 @@
 package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
 
+import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.ImmutableProperties;
+
 import java.util.SortedMap;
 
 public class ImmutablePropertyChanges {
-    public final SortedMap<String, Object> oldImmutableProperties;
-    public final SortedMap<String, Object> newImmutableProperties;
-    public final SortedMap<String, PropertyChange> immutablePropertyChanges;
+    public final ImmutableProperties<Object> immutableProperties;
+    public final SortedMap<String, PropertyChange> readOnlyChanges;
 
-    public ImmutablePropertyChanges(final SortedMap<String, Object> _oldImmutableProperties,
-                           final SortedMap<String, Object> _newImmutableProperties,
-                           final SortedMap<String, PropertyChange> _immutablePropertyChanges) {
-        oldImmutableProperties = _oldImmutableProperties;
-        newImmutableProperties = _newImmutableProperties;
-        immutablePropertyChanges = _immutablePropertyChanges;
+    public ImmutablePropertyChanges(final PropertiesChangeManager propertiesChangeManager) {
+        immutableProperties = propertiesChangeManager.immutableProperties;
+        readOnlyChanges = propertiesChangeManager.readOnlyChanges;
     }
 }

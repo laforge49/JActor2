@@ -25,7 +25,7 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
      * @param _subscriberReactor The reactor of the subscriber blade.
      */
     public SubscribeAReq(final RequestBus<CONTENT> _requestBus,
-            final CommonReactor _subscriberReactor) {
+                         final CommonReactor _subscriberReactor) {
         this(_requestBus, _subscriberReactor, null);
     }
 
@@ -37,8 +37,8 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
      * @param _filter            A Filter that selects content of interest.
      */
     public SubscribeAReq(final RequestBus<CONTENT> _requestBus,
-            final CommonReactor _subscriberReactor,
-            final Filter<CONTENT> _filter) {
+                         final CommonReactor _subscriberReactor,
+                         final Filter<CONTENT> _filter) {
         super(_requestBus.getReactor());
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
@@ -51,7 +51,7 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
                 requestBus, (CommonReactor) targetReactor, filter) {
             @Override
             protected void processContent(final CONTENT _content,
-                    final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                                          final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 SubscribeAReq.this.processContent(_content,
                         _asyncResponseProcessor);
@@ -80,7 +80,7 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
      * @param _asyncResponseProcessor Used to indicate when processing is complete.
      */
     protected void processContent(final CONTENT _content,
-            final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception {
         processContent(_content);
         _asyncResponseProcessor.processAsyncResponse(null);

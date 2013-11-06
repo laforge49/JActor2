@@ -1,62 +1,60 @@
 package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
 
-import com.google.common.collect.ImmutableSortedMap;
 import org.agilewiki.jactor2.core.blades.pubSub.transactions.TransactionProcessor;
+import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.SimpleImmutableProperties;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 public class PropertiesProcessor extends TransactionProcessor
-        <PropertiesChangeManager, SortedMap<String, Object>, ImmutablePropertyChanges> {
+        <PropertiesChangeManager, ImmutableProperties<Object>, ImmutablePropertyChanges> {
 
-    static SortedMap<String, Object> makeImmutableState(Map<String, Object> mutableState) {
-        ImmutableSortedMap.Builder<String, Object> stateBuilder = ImmutableSortedMap.naturalOrder();
-        stateBuilder.putAll(mutableState);
-        return stateBuilder.build();
+    public static <V> ImmutableProperties<V> empty() {
+        return SimpleImmutableProperties.empty();
     }
 
-    ImmutableSortedMap.Builder<String, Object> stateBuilder;
+    public static <V> ImmutableProperties<V> singleton(String key, V value) {
+        return SimpleImmutableProperties.singleton(key, value);
+    }
 
-    ImmutableSortedMap.Builder<String, PropertyChange> changeBuilder;
+    public static <V> ImmutableProperties<V> from(Map<String, V> m) {
+        return SimpleImmutableProperties.from(m);
+    }
 
-    SortedMap<String, Object> newImmutableProperties;
+    PropertiesChangeManager propertiesChangeManager;
 
     public PropertiesProcessor(IsolationReactor _isolationReactor) throws Exception {
-        this(_isolationReactor, makeImmutableState(new TreeMap()));
+        super(_isolationReactor, empty());
     }
 
     public PropertiesProcessor(IsolationReactor _isolationReactor,
                                Map<String, Object> _initialState) throws Exception {
-        this(_isolationReactor, new NonBlockingReactor(
-                _isolationReactor.getFacility()), makeImmutableState(_initialState));
+        super(_isolationReactor, new NonBlockingReactor(
+                _isolationReactor.getFacility()), from(_initialState));
     }
 
     public PropertiesProcessor(final IsolationReactor _isolationReactor,
-                                final CommonReactor _commonReactor,
-                                final Map<String, Object> _initialState) throws Exception {
-        super(_isolationReactor, _commonReactor, makeImmutableState(_initialState));
-        stateBuilder = ImmutableSortedMap.naturalOrder();
-        stateBuilder.putAll(_initialState);
+                               final CommonReactor _commonReactor,
+                               final Map<String, Object> _initialState) throws Exception {
+        super(_isolationReactor, _commonReactor, from(_initialState));
     }
 
     @Override
     protected PropertiesChangeManager newChangeManager() {
-        changeBuilder = ImmutableSortedMap.naturalOrder();
-        return new PropertiesChangeManager(immutableState, stateBuilder, changeBuilder);
+        propertiesChangeManager = new PropertiesChangeManager(immutableState);
+        return propertiesChangeManager;
     }
 
     @Override
     protected ImmutablePropertyChanges newChanges() {
-        newImmutableProperties = stateBuilder.build();
-        return new ImmutablePropertyChanges(immutableState, newImmutableProperties, changeBuilder.build());
+        return new ImmutablePropertyChanges(propertiesChangeManager);
     }
 
     @Override
     protected void newImmutableState() {
-        immutableState = newImmutableProperties;
+        immutableState = propertiesChangeManager.immutableProperties;
     }
 }

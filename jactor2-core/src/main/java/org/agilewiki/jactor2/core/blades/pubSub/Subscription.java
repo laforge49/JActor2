@@ -18,8 +18,8 @@ abstract public class Subscription<CONTENT> extends BladeBase implements
     final Filter<CONTENT> filter;
 
     Subscription(final RequestBus<CONTENT> _requestBus,
-            final CommonReactor _subscriberReactor,
-            final Filter<CONTENT> _filter) throws Exception {
+                 final CommonReactor _subscriberReactor,
+                 final Filter<CONTENT> _filter) throws Exception {
         initialize(_requestBus.getReactor());
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
@@ -75,6 +75,6 @@ abstract public class Subscription<CONTENT> extends BladeBase implements
      * @param _asyncResponseProcessor Used to indicate when processing is complete.
      */
     abstract protected void processContent(CONTENT _content,
-            AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception;
 }

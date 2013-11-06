@@ -3,13 +3,32 @@ package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutab
 import java.util.*;
 
 public class SimpleImmutableProperties<VALUE> implements ImmutableProperties<VALUE> {
+
+    public static <V> ImmutableProperties<V> empty() {
+        return new SimpleImmutableProperties<V>();
+    }
+
+    public static <V> ImmutableProperties<V> singleton(String key, V value) {
+        return new SimpleImmutableProperties<V>(key, value);
+    }
+
+    public static <V> ImmutableProperties<V> from(Map<String, V> m) {
+        return new SimpleImmutableProperties<V>(m);
+    }
+
     private final SortedMap<String, VALUE> base;
 
-    public SimpleImmutableProperties() {
+    private SimpleImmutableProperties() {
         base = Collections.unmodifiableSortedMap(new TreeMap<String, VALUE>());
     }
 
-    public SimpleImmutableProperties(Map<String, VALUE> m) {
+    private SimpleImmutableProperties(String key, VALUE value) {
+        TreeMap<String, VALUE> tm = new TreeMap<String, VALUE>();
+        tm.put(key, value);
+        base = Collections.unmodifiableSortedMap(tm);
+    }
+
+    private SimpleImmutableProperties(Map<String, VALUE> m) {
         base = Collections.unmodifiableSortedMap(new TreeMap<String, VALUE>(m));
     }
 

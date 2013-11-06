@@ -14,8 +14,8 @@ public class PropertyChangesFilter implements Filter<ImmutablePropertyChanges> {
 
     @Override
     public boolean match(ImmutablePropertyChanges _changes) {
-        SortedMap<String, PropertyChange> immutablePropertyChanges = _changes.immutablePropertyChanges;
-        Iterator<String> it = immutablePropertyChanges.keySet().iterator();
+        SortedMap<String, PropertyChange> readOnlyChanges = _changes.readOnlyChanges;
+        Iterator<String> it = readOnlyChanges.keySet().iterator();
         while (it.hasNext()) {
             if (it.next().startsWith(prefix))
                 return true;

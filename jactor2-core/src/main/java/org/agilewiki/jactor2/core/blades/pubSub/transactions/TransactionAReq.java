@@ -24,7 +24,7 @@ public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMUTABLE_STA
     }
 
     protected void update(final CHANGE_MANAGER _contentManager,
-                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                          final AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception {
         update(_contentManager);
         _asyncResponseProcessor.processAsyncResponse(null);
