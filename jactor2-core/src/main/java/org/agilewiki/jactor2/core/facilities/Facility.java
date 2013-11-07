@@ -5,10 +5,12 @@ import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.NewProper
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesBlade;
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertyChange;
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertyChanges;
+import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.AutoCloseableSet;
@@ -85,6 +87,8 @@ public class Facility extends BladeBase implements AutoCloseable {
 
     private final PropertiesBlade propertiesBlade;
 
+    public final PropertiesProcessor propertiesProcessor;
+
     /**
      * Create a Facility.
      *
@@ -107,6 +111,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, _name);
         propertiesBlade = new PropertiesBlade(internalReactor, initialState);
+        propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
         new NewPropertiesValidatorAReq((NonBlockingReactor) getReactor(),
                 propertiesBlade, "core.") {
             AsyncResponseProcessor<Void> rp;
