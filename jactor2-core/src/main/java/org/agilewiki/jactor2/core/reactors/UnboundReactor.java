@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.MigrationException;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.messages.Message;
+
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Common code for NonBlockingReactor and IsolationReactor, which are not bound to a thread.

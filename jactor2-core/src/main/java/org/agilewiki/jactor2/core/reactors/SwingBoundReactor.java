@@ -1,11 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.facilities.Facility;
+
+import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
-import javax.swing.SwingUtilities;
-
-import org.agilewiki.jactor2.core.facilities.Facility;
 
 /**
  * Messages are processed on Swing's event-dispatch thread when an blades uses

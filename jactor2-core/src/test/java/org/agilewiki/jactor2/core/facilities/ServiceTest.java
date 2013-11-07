@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;

@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Blade1;

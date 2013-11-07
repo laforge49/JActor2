@@ -60,7 +60,7 @@ public class PropertiesProcessor extends TransactionProcessor
     }
 
     public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
-        return new PropertiesTransactionAReq((CommonReactor) getReactor(), this) {
+        return new PropertiesTransactionAReq(commonReactor, this) {
             protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                 _changeManager.put(_key, _newValue);
             }

@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.facilities.Plant;
 
 /**

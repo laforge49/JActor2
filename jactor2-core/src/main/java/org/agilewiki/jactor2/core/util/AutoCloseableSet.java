@@ -15,14 +15,14 @@
  */
 package org.agilewiki.jactor2.core.util;
 
+import org.agilewiki.jactor2.core.facilities.Plant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
-
-import org.agilewiki.jactor2.core.facilities.Plant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A (non-thread-safe) set of AutoCloseable resources.

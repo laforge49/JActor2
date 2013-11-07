@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.messages.Message;
+
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.agilewiki.jactor2.core.messages.Message;
 
 /**
  * The inbox used by IsolationReactor, the next request is not made available for processing

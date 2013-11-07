@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.messages.Message;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.agilewiki.jactor2.core.messages.Message;
 
 /**
  * Provides at least two queues for a targetReactor's incoming messages, where the first queue is a

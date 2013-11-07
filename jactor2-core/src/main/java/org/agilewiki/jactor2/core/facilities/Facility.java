@@ -1,13 +1,5 @@
 package org.agilewiki.jactor2.core.facilities;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ThreadFactory;
-
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.NewPropertiesValidatorAReq;
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesBlade;
@@ -22,6 +14,10 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.AutoCloseableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Provides a thread pool for

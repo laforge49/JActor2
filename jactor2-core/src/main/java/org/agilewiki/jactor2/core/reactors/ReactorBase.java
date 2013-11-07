@@ -1,9 +1,5 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
@@ -12,6 +8,10 @@ import org.agilewiki.jactor2.core.messages.MessageSource;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.util.AutoCloseableSet;
 import org.slf4j.Logger;
+
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for targetReactor.

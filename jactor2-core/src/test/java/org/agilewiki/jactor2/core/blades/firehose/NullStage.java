@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.blades.firehose;
 
-import java.util.List;
-
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+
+import java.util.List;
 
 public class NullStage extends BladeBase implements DataProcessor {
 

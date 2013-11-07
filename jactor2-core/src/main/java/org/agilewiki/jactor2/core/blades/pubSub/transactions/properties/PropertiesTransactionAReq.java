@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
 
 import org.agilewiki.jactor2.core.blades.pubSub.transactions.TransactionAReq;
-import org.agilewiki.jactor2.core.blades.pubSub.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 

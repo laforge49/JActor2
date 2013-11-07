@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable, IMMUTABLE_STATE, IMMUTABLE_CHANGES>
         extends BladeBase {
     protected IMMUTABLE_STATE immutableState;
-    private final CommonReactor commonReactor;
+    protected final CommonReactor commonReactor;
     public final RequestBus<IMMUTABLE_CHANGES> validationBus;
     public final RequestBus<IMMUTABLE_CHANGES> changeBus;
 

@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.messages.Message;
+
 import java.util.ArrayDeque;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.Message;
 
 /**
  * An outbox holds a collection of doSend buffers.

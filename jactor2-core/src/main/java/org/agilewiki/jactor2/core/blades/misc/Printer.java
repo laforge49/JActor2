@@ -1,8 +1,5 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
-import java.io.PrintStream;
-import java.util.Locale;
-
 import org.agilewiki.jactor2.core.blades.BlockingBlade;
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesWrapper;
@@ -13,6 +10,9 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+import java.io.PrintStream;
+import java.util.Locale;
 
 /**
  * A blocking blade is used for printing.

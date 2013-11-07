@@ -1,13 +1,12 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PubSubTest extends TestCase {
     public void testI() throws Exception {

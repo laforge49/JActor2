@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.facilities;
 
-import java.util.concurrent.ThreadFactory;
-
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
+
+import java.util.concurrent.ThreadFactory;
 
 public class Plant extends Facility {
 
