@@ -95,9 +95,9 @@ public class Facility extends BladeBase implements AutoCloseable {
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
     protected Facility(final String _name,
-            final int _initialLocalMessageQueueSize,
-            final int _initialBufferSize, final int _threadCount,
-            final ThreadFactory _threadFactory) throws Exception {
+                       final int _initialLocalMessageQueueSize,
+                       final int _initialBufferSize, final int _threadCount,
+                       final ThreadFactory _threadFactory) throws Exception {
         validateName(_name);
         threadManager = new ThreadManager(_threadCount, _threadFactory);
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
@@ -112,21 +112,6 @@ public class Facility extends BladeBase implements AutoCloseable {
             AsyncResponseProcessor<Void> rp;
             int count;
             int i;
-
-            AsyncResponseProcessor<Boolean> hasDependencyResponseProcessor = new AsyncResponseProcessor<Boolean>() {
-                @Override
-                public void processAsyncResponse(final Boolean _cyclic)
-                        throws Exception {
-                    if (_cyclic) {
-                        throw new IllegalArgumentException(
-                                "Would create a dependency cycle.");
-                    }
-                    i++;
-                    if (count == i) {
-                        rp.processAsyncResponse(null);
-                    }
-                }
-            };
 
             @Override
             protected void validateChange(
@@ -174,14 +159,19 @@ public class Facility extends BladeBase implements AutoCloseable {
                         throw new IllegalArgumentException(dc.name
                                 + " not set to a Facility " + dc.newValue);
                     }
-                    send(hasDependencyAReq(myName),
-                            hasDependencyResponseProcessor);
+                    if (hasDependency(myName))
+                        throw new IllegalArgumentException(
+                                "Would create a dependency cycle.");
                 }
+
+                rp.processAsyncResponse(null);
             }
         };
     }
 
-    /** Returns the AutoCloseableSet. Creates it if needed. */
+    /**
+     * Returns the AutoCloseableSet. Creates it if needed.
+     */
     protected final AutoCloseableSet getAutoCloseableSet() {
         if (closeables == null) {
             closeables = new AutoCloseableSet();
@@ -302,7 +292,9 @@ public class Facility extends BladeBase implements AutoCloseable {
         closeSReq().signal();
     }
 
-    /** Returns a Request to perform a close(). */
+    /**
+     * Returns a Request to perform a close().
+     */
     public SyncRequest<Void> closeSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
@@ -355,51 +347,25 @@ public class Facility extends BladeBase implements AutoCloseable {
     }
 
     public AsyncRequest<Void> putPropertyAReq(final String _propertyName,
-            final Object _propertyValue) {
+                                              final Object _propertyValue) {
         return propertiesBlade.putAReq(_propertyName, _propertyValue);
     }
 
-    public AsyncRequest<Boolean> hasDependencyAReq(final String _name) {
-        return new AsyncBladeRequest<Boolean>() {
-            AsyncResponseProcessor<Boolean> dis = this;
-            int count;
-
-            AsyncResponseProcessor<Boolean> prp = new AsyncResponseProcessor<Boolean>() {
-                @Override
-                public void processAsyncResponse(final Boolean _hasDependency)
-                        throws Exception {
-                    if (_hasDependency) {
-                        dis.processAsyncResponse(true);
-                        return;
-                    }
-                    count--;
-                    if (count == 0) {
-                        dis.processAsyncResponse(false);
-                    }
-                }
-            };
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                if (getProperty(DEPENDENCY_PROPERTY_PREFIX + _name) != null) {
-                    processAsyncResponse(true);
-                    return;
-                }
-                final SortedMap<String, Object> cnm = propertiesBlade
-                        .matchingProperties(DEPENDENCY_PROPERTY_PREFIX);
-                final Collection<Object> values = cnm.values();
-                if (values.size() == 0) {
-                    processAsyncResponse(false);
-                    return;
-                }
-                final Iterator<Object> it = values.iterator();
-                while (it.hasNext()) {
-                    final Facility dependency = (Facility) it.next();
-                    count++;
-                    send(dependency.hasDependencyAReq(_name), prp);
-                }
-            }
-        };
+    public boolean hasDependency(final String _name) throws Exception {
+        if (getProperty(DEPENDENCY_PROPERTY_PREFIX + _name) != null)
+            return true;
+        final SortedMap<String, Object> cnm = propertiesBlade
+                .matchingProperties(DEPENDENCY_PROPERTY_PREFIX);
+        final Collection<Object> values = cnm.values();
+        if (values.size() == 0)
+            return false;
+        final Iterator<Object> it = values.iterator();
+        while (it.hasNext()) {
+            final Facility dependency = (Facility) it.next();
+            if (dependency.hasDependency(_name))
+                return false;
+        }
+        return true;
     }
 
     public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
@@ -424,28 +390,19 @@ public class Facility extends BladeBase implements AutoCloseable {
                     throw new IllegalStateException(
                             "the dependency was already present");
                 }
-                send(_dependency.hasDependencyAReq(myName),
-                        new AsyncResponseProcessor<Boolean>() {
+                if (_dependency.hasDependency(myName))
+                    throw new IllegalArgumentException(
+                            "this would create a cyclic dependency");
+                send(propertiesBlade.firstPutAReq(propertyName,
+                        _dependency),
+                        new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(
-                                    final Boolean _hasDependency)
+                                    final Void _response)
                                     throws Exception {
-                                if (_hasDependency) {
-                                    throw new IllegalArgumentException(
-                                            "this would create a cyclic dependency");
-                                }
-                                send(propertiesBlade.firstPutAReq(propertyName,
-                                        _dependency),
-                                        new AsyncResponseProcessor<Void>() {
-                                            @Override
-                                            public void processAsyncResponse(
-                                                    final Void _response)
-                                                    throws Exception {
-                                                send(_dependency
-                                                        .addAutoClosableSReq(Facility.this),
-                                                        dis, null);
-                                            }
-                                        });
+                                send(_dependency
+                                        .addAutoClosableSReq(Facility.this),
+                                        dis, null);
                             }
                         });
             }
