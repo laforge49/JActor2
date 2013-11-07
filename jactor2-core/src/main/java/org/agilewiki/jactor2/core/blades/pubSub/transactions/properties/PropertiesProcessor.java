@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
 import org.agilewiki.jactor2.core.blades.pubSub.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.SimpleImmutableProperties;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -56,5 +57,13 @@ public class PropertiesProcessor extends TransactionProcessor
     @Override
     protected void newImmutableState() {
         immutableState = propertiesChangeManager.immutableProperties;
+    }
+
+    public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
+        return new PropertiesTransactionAReq((CommonReactor) getReactor(), this) {
+            protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+                _changeManager.put(_key, _newValue);
+            }
+        };
     }
 }
