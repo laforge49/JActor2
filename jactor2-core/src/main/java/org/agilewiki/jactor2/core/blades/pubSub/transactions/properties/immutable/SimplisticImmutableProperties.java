@@ -2,37 +2,37 @@ package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutab
 
 import java.util.*;
 
-public class SimpleImmutableProperties<VALUE> implements ImmutableProperties<VALUE> {
+public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties<VALUE> {
 
     public static <V> ImmutableProperties<V> empty() {
-        return new SimpleImmutableProperties<V>();
+        return new SimplisticImmutableProperties<V>();
     }
 
     public static <V> ImmutableProperties<V> singleton(String key, V value) {
-        return new SimpleImmutableProperties<V>(key, value);
+        return new SimplisticImmutableProperties<V>(key, value);
     }
 
     public static <V> ImmutableProperties<V> from(Map<String, V> m) {
-        return new SimpleImmutableProperties<V>(m);
+        return new SimplisticImmutableProperties<V>(m);
     }
 
     private final SortedMap<String, VALUE> base;
 
-    private SimpleImmutableProperties() {
+    private SimplisticImmutableProperties() {
         base = Collections.unmodifiableSortedMap(new TreeMap<String, VALUE>());
     }
 
-    private SimpleImmutableProperties(String key, VALUE value) {
+    private SimplisticImmutableProperties(String key, VALUE value) {
         TreeMap<String, VALUE> tm = new TreeMap<String, VALUE>();
         tm.put(key, value);
         base = Collections.unmodifiableSortedMap(tm);
     }
 
-    private SimpleImmutableProperties(Map<String, VALUE> m) {
+    private SimplisticImmutableProperties(Map<String, VALUE> m) {
         base = Collections.unmodifiableSortedMap(new TreeMap<String, VALUE>(m));
     }
 
-    private SimpleImmutableProperties(SortedMap<String, VALUE> immutableMap) {
+    private SimplisticImmutableProperties(SortedMap<String, VALUE> immutableMap) {
         base = Collections.unmodifiableSortedMap(immutableMap);
     }
 
@@ -40,26 +40,26 @@ public class SimpleImmutableProperties<VALUE> implements ImmutableProperties<VAL
     public ImmutableProperties<VALUE> minus(String key) {
         TreeMap<String, VALUE> tm = new TreeMap<String, VALUE>(base);
         tm.remove(key);
-        return new SimpleImmutableProperties<VALUE>(tm);
+        return new SimplisticImmutableProperties<VALUE>(tm);
     }
 
     @Override
     public ImmutableProperties<VALUE> plus(String key, VALUE value) {
         TreeMap<String, VALUE> tm = new TreeMap<String, VALUE>(base);
         tm.put(key, value);
-        return new SimpleImmutableProperties<VALUE>(tm);
+        return new SimplisticImmutableProperties<VALUE>(tm);
     }
 
     @Override
     public ImmutableProperties<VALUE> plusAll(Map<String, VALUE> m) {
         TreeMap<String, VALUE> tm = new TreeMap<String, VALUE>(base);
         tm.putAll(m);
-        return new SimpleImmutableProperties<VALUE>(tm);
+        return new SimplisticImmutableProperties<VALUE>(tm);
     }
 
     @Override
     public ImmutableProperties<VALUE> subMap(String keyPrefix) {
-        return new SimpleImmutableProperties<VALUE>(base.subMap(keyPrefix, keyPrefix + Character.MAX_VALUE));
+        return new SimplisticImmutableProperties<VALUE>(base.subMap(keyPrefix, keyPrefix + Character.MAX_VALUE));
     }
 
     @Override
