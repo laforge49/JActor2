@@ -63,13 +63,8 @@ public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties
     }
 
     @Override
-    public VALUE get(String key) {
+    public VALUE get(Object key) {
         return base.get(key);
-    }
-
-    @Override
-    public boolean containsKey(String key) {
-        return base.containsKey(key);
     }
 
     @Override
@@ -85,11 +80,6 @@ public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties
     @Override
     public boolean containsKey(Object key) {
         return base.containsKey(key);
-    }
-
-    @Override
-    public VALUE get(Object key) {
-        return base.get(key);
     }
 
     @Override

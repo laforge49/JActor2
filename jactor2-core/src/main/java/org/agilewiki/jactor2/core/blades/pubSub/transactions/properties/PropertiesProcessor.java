@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
 
 import org.agilewiki.jactor2.core.blades.pubSub.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.ImmutableProperties;
-import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.SimplisticImmutableProperties;
+import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.HashTreePProperties;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -14,15 +14,15 @@ public class PropertiesProcessor extends TransactionProcessor
         <PropertiesChangeManager, ImmutableProperties<Object>, ImmutablePropertyChanges> {
 
     static <V> ImmutableProperties<V> empty() {
-        return SimplisticImmutableProperties.empty();
+        return HashTreePProperties.empty();
     }
 
     static <V> ImmutableProperties<V> singleton(String key, V value) {
-        return SimplisticImmutableProperties.singleton(key, value);
+        return HashTreePProperties.singleton(key, value);
     }
 
     static <V> ImmutableProperties<V> from(Map<String, V> m) {
-        return SimplisticImmutableProperties.from(m);
+        return HashTreePProperties.from(m);
     }
 
     PropertiesChangeManager propertiesChangeManager;

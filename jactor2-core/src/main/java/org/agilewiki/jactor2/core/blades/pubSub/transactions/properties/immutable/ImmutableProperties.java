@@ -12,13 +12,5 @@ public interface ImmutableProperties<VALUE> extends Map<String, VALUE> {
 
     ImmutableProperties<VALUE> subMap(String keyPrefix);
 
-    VALUE get(String key);
-
-    boolean containsKey(String key);
-
     SortedSet<String> sortedKeySet();
-
-    int size();
-
-    boolean isEmpty();
 }
