@@ -12,15 +12,15 @@ import java.util.Map;
 public class PropertiesProcessor extends TransactionProcessor
         <PropertiesChangeManager, ImmutableProperties<Object>, ImmutablePropertyChanges> {
 
-    public static <V> ImmutableProperties<V> empty() {
+    static <V> ImmutableProperties<V> empty() {
         return SimpleImmutableProperties.empty();
     }
 
-    public static <V> ImmutableProperties<V> singleton(String key, V value) {
+    static <V> ImmutableProperties<V> singleton(String key, V value) {
         return SimpleImmutableProperties.singleton(key, value);
     }
 
-    public static <V> ImmutableProperties<V> from(Map<String, V> m) {
+    static <V> ImmutableProperties<V> from(Map<String, V> m) {
         return SimpleImmutableProperties.from(m);
     }
 

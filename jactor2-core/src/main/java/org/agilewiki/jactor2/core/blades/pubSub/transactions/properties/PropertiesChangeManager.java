@@ -16,6 +16,10 @@ public class PropertiesChangeManager implements AutoCloseable {
         immutableProperties = _immutableProperties;
     }
 
+    public ImmutableProperties<Object> getImmutableProperties() {
+        return immutableProperties;
+    }
+
     public void put(final String _key, final Object _newValue) {
         if (closed) {
             throw new IllegalStateException(
