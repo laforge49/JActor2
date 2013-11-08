@@ -7,14 +7,35 @@ import java.util.*;
 
 public class HashTreePProperties<VALUE> implements ImmutableProperties<VALUE> {
 
+    /**
+     * Make an empty ImmutableProperties instance.
+     *
+     * @param <V> The type of value.
+     * @return The empty instance.
+     */
     public static <V> ImmutableProperties<V> empty() {
         return new HashTreePProperties<V>();
     }
 
+    /**
+     * Make an ImmutableProperties instance with a single key/value pair.
+     *
+     * @param key The key to be included.
+     * @param value The value to be included.
+     * @param <V>   The type of value.
+     * @return The instance with one key/value pair.
+     */
     public static <V> ImmutableProperties<V> singleton(String key, V value) {
         return new HashTreePProperties<V>(key, value);
     }
 
+    /**
+     * Make an ImmutableProperties instance that includes a copy of a map.
+     *
+     * @param m      The map to be included.
+     * @param <V>    The type of value.
+     * @return The instance that includes the map.
+     */
     public static <V> ImmutableProperties<V> from(Map<String, V> m) {
         return new HashTreePProperties<V>(m);
     }
