@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;

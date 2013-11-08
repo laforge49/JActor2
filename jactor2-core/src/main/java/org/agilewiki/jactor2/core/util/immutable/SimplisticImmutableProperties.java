@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable;
+package org.agilewiki.jactor2.core.util.immutable;
 
 import java.util.*;
 

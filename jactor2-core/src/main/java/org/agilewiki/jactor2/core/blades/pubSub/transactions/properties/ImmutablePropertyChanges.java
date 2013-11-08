@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
 
-import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 import java.util.SortedMap;
 
