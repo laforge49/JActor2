@@ -95,26 +95,6 @@ public class HashTreePProperties<VALUE> implements ImmutableProperties<VALUE> {
     }
 
     @Override
-    public VALUE put(String key, VALUE value) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public VALUE remove(Object key) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void putAll(Map<? extends String, ? extends VALUE> m) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void clear() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Set<String> keySet() {
         return sortedKeySet();
     }
@@ -127,5 +107,25 @@ public class HashTreePProperties<VALUE> implements ImmutableProperties<VALUE> {
     @Override
     public Set<Entry<String, VALUE>> entrySet() {
         return Collections.unmodifiableSet(new TreeSet<Entry<String, VALUE>>(base.entrySet()));
+    }
+
+    @Deprecated
+    public VALUE put(String key, VALUE value) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Deprecated
+    public VALUE remove(Object key) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Deprecated
+    public void putAll(Map<? extends String, ? extends VALUE> m) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Deprecated
+    public void clear() {
+        throw new UnsupportedOperationException();
     }
 }

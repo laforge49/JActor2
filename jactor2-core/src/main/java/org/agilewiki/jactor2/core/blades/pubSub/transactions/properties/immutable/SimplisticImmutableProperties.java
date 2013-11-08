@@ -87,44 +87,42 @@ public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties
         return Collections.unmodifiableSortedSet(new TreeSet<String>(base.keySet()));
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-
     @Override
     public Set<String> keySet() {
-        throw new UnsupportedOperationException();
+        return sortedKeySet();
     }
 
     @Override
     public Collection<VALUE> values() {
-        throw new UnsupportedOperationException();
+        return Collections.unmodifiableCollection(base.values());
     }
 
     @Override
     public Set<Entry<String, VALUE>> entrySet() {
-        throw new UnsupportedOperationException();
+        return Collections.unmodifiableSet(base.entrySet());
     }
 
     @Override
     public boolean containsValue(Object value) {
-        throw new UnsupportedOperationException();
+        return base.containsValue(value);
     }
 
-    @Override
+    @Deprecated
     public VALUE put(String key, VALUE value) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
+    @Deprecated
     public VALUE remove(Object key) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
+    @Deprecated
     public void putAll(Map<? extends String, ? extends VALUE> m) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
+    @Deprecated
     public void clear() {
         throw new UnsupportedOperationException();
     }
