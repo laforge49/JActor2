@@ -18,6 +18,10 @@
  * unaffected by the switch to the new structure.
  * </p>
  * <p>
+ *     Immutable data structures are threadsafe. But their iterators may not be. This is not usually an issue
+ *     however, as iterators are rarely if ever used by more than one thread at a time.
+ * </p>
+ * <p>
  *     Implementing immutable data structures is difficult. Any substructures common to the original and the virtual
  *     copy need to be used by both, while any substructures not used by the virtual copy should be available for
  *     garbage collection when there are no references remaining to the original data structure.
