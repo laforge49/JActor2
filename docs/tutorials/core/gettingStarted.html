@@ -5,14 +5,17 @@
 </p>
 <h1>Getting Started - Jars and Scripts</h1>
 <p>
-You will need four things to work with JActor2 core:
+You will need a few things to work with JActor2 core:
 </p>
-<ol>
+<ul>
 <li>
 <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">JDK 7</a> or later.
 </li>
 <li>
 <a href="http://www.slf4j.org/download.html">slf4j</a>.
+</li>
+<li>
+<a href="https://code.google.com/p/pcollections/downloads/detail?name=pcollections-2.1.2.jar">pcollections</a>.
 </li>
 <li>
 The <a href="jactor2-core-0.5.0.jar">JActor2 core jar file</a>. And
@@ -23,16 +26,16 @@ For windows, you can use <a href="test.bat">test.bat</a>:
 <pre>
 del *.class
 javac -classpath jactor2-core-0.5.0.jar;slf4j-api-1.7.5.jar *.java
-java -classpath jactor2-core-0.5.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;. %1
+java -classpath jactor2-core-0.5.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;pcollections-2.1.2.jar;. %1
 </pre>
 Othrwise, you can likely use <a href="test.sh">test.sh</a>:
 <pre>
 rm -fr *.class
 javac -cp jactor2-core-0.5.0.jar:slf4j-api-1.7.5.jar *.java
-java -cp jactor2-core-0.5.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:. $1
+java -cp jactor2-core-0.5.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:pcollections-2.1.2.jar:. $1
 </pre>
 </li>
-</ol>
+</ull>
 <h2>Debug</h2>
 <p>
 JActor has a debug mode. And when running in debug mode, additional checking is done that
