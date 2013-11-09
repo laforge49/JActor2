@@ -39,7 +39,7 @@ public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMUTABLE_STA
             @Override
             public void processAsyncResponse(Void _response) throws Exception {
                 transactionProcessor.newImmutableState();
-                send(transactionProcessor.changeBus.sendsContentAReq(immutableChanges), dis);
+                send(transactionProcessor.changeBus.signalsContentSReq(immutableChanges), dis);
             }
         };
 
