@@ -2,6 +2,33 @@ package org.agilewiki.jactor2.core.util.immutable;
 
 import java.util.*;
 
+/**
+ * <p>
+ * A brute-force implementation of ImmutableProperties.
+ * </p>
+ * <pre>
+ * Sample:
+ *
+ * public class SimplisticImmutablePropertiesSample {
+ *     public static void main(final String[] args) {
+ *         ImmutableProperties<String> ip = SimplisticImmutableProperties.empty();
+ *         ip = ip.plus("one", "1");
+ *         ip = ip.plus("two", "2");
+ *         ImmutableProperties<String> ip2 = ip;
+ *         ip = ip.plus("three", "3");
+ *         System.out.println(ip2.sortedKeySet());
+ *         System.out.println(ip.subMap("t").sortedKeySet());
+ *     }
+ * }
+ *
+ * Output:
+ *
+ * [one, two]
+ * [three, two]
+ * </pre>
+ *
+ * @param <VALUE> The type of value.
+ */
 public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties<VALUE> {
     /**
      * Make an empty ImmutableProperties instance.
@@ -16,7 +43,7 @@ public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties
     /**
      * Make an ImmutableProperties instance with a single key/value pair.
      *
-     * @param key The key to be included.
+     * @param key   The key to be included.
      * @param value The value to be included.
      * @param <V>   The type of value.
      * @return The instance with one key/value pair.
@@ -28,8 +55,8 @@ public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties
     /**
      * Make an ImmutableProperties instance that includes a copy of a map.
      *
-     * @param m      The map to be included.
-     * @param <V>    The type of value.
+     * @param m   The map to be included.
+     * @param <V> The type of value.
      * @return The instance that includes the map.
      */
     public static <V> ImmutableProperties<V> from(Map<String, V> m) {

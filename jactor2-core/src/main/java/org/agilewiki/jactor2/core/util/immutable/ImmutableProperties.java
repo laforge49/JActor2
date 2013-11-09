@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.SortedSet;
 
 /**
- * An ImmutableProperties is an immutable map with keys that are strings,
+ * ImmutableProperties is an immutable map with keys that are strings,
  * but with the addition of subMap and sortedKeySet methods.
  *
  * @param <VALUE> Tye type of property value, typically Object.
