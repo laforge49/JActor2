@@ -94,25 +94,4 @@ public class PropertiesProcessor extends TransactionProcessor
             }
         };
     }
-
-    /**
-     * A first put request.
-     * The request throws an IllegalStateException if the old value was not null.
-     *
-     * @param _key         The property name.
-     * @param _newValue    The new value.
-     * @return The request.
-     */
-    public AsyncRequest<Void> firstPutAReq(final String _key, final Object _newValue) {
-        return new PropertiesTransactionAReq(commonReactor, this) {
-            protected void update(final PropertiesChangeManager _changeManager) throws Exception {
-                Object oldValue = _changeManager.immutableProperties.get(_key);
-                if (oldValue != null) {
-                    throw new IllegalStateException(_key
-                            + " already has value " + oldValue);
-                }
-                _changeManager.put(_key, _newValue);
-            }
-        };
-    }
 }
