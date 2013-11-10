@@ -4,14 +4,14 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 
-public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMUTABLE_STATE, IMMUTABLE_CHANGES>
+abstract public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMUTABLE_STATE, IMMUTABLE_CHANGES>
         extends AsyncRequest<Void> {
     private final CommonReactor updateReactor;
     private final TransactionProcessor<CHANGE_MANAGER, IMMUTABLE_STATE, IMMUTABLE_CHANGES> transactionProcessor;
     final AsyncResponseProcessor<Void> dis = this;
     private IMMUTABLE_CHANGES immutableChanges;
 
-    public TransactionAReq(final CommonReactor _updateReactor,
+    protected TransactionAReq(final CommonReactor _updateReactor,
                            final TransactionProcessor<CHANGE_MANAGER, IMMUTABLE_STATE, IMMUTABLE_CHANGES> _transactionProcessor) {
         super(_transactionProcessor.getReactor());
         updateReactor = _updateReactor;
