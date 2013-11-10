@@ -10,6 +10,9 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Map;
 
+/**
+ * Transaction-based updates to an immutable properties map.
+ */
 public class PropertiesProcessor extends TransactionProcessor
         <PropertiesChangeManager, ImmutableProperties<Object>, ImmutablePropertyChanges> {
 
@@ -27,16 +30,34 @@ public class PropertiesProcessor extends TransactionProcessor
 
     PropertiesChangeManager propertiesChangeManager;
 
+    /**
+     * Create a PropertiesProcessor.
+     *
+     * @param _isolationReactor    The isolation reactor used to isolate the transactions.
+     */
     public PropertiesProcessor(IsolationReactor _isolationReactor) throws Exception {
         super(_isolationReactor, empty());
     }
 
+    /**
+     * Create a PropertiesProcessor.
+     *
+     * @param _isolationReactor    The isolation reactor used to isolate the transactions.
+     * @param _initialState        The initial state of the property map.
+     */
     public PropertiesProcessor(IsolationReactor _isolationReactor,
                                Map<String, Object> _initialState) throws Exception {
         super(_isolationReactor, new NonBlockingReactor(
                 _isolationReactor.getFacility()), from(_initialState));
     }
 
+    /**
+     * Create a PropertiesProcessor.
+     *
+     * @param _isolationReactor    The isolation reactor used to isolate the transactions.
+     * @param _commonReactor       The reactor used for transaction processing and by the two ReactorBus instances.
+     * @param _initialState        The initial state of the property map.
+     */
     public PropertiesProcessor(final IsolationReactor _isolationReactor,
                                final CommonReactor _commonReactor,
                                final Map<String, Object> _initialState) throws Exception {
@@ -59,6 +80,13 @@ public class PropertiesProcessor extends TransactionProcessor
         immutableState = propertiesChangeManager.immutableProperties;
     }
 
+    /**
+     * A transactional put request.
+     *
+     * @param _key         The property name.
+     * @param _newValue    The new value.
+     * @return The request.
+     */
     public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
         return new PropertiesTransactionAReq(commonReactor, this) {
             protected void update(final PropertiesChangeManager _changeManager) throws Exception {
@@ -67,12 +95,20 @@ public class PropertiesProcessor extends TransactionProcessor
         };
     }
 
+    /**
+     * A first put request.
+     * The request throws an IllegalStateException if the old value was not null.
+     *
+     * @param _key         The property name.
+     * @param _newValue    The new value.
+     * @return The request.
+     */
     public AsyncRequest<Void> firstPutAReq(final String _key, final Object _newValue) {
         return new PropertiesTransactionAReq(commonReactor, this) {
             protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                 Object oldValue = _changeManager.immutableProperties.get(_key);
                 if (oldValue != null) {
-                    throw new UnsupportedOperationException(_key
+                    throw new IllegalStateException(_key
                             + " already has value " + oldValue);
                 }
                 _changeManager.put(_key, _newValue);

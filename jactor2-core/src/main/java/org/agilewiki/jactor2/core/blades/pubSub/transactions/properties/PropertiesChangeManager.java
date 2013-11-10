@@ -6,20 +6,41 @@ import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * The change manager used by transactions to update the immutable properties map.
+ */
 public class PropertiesChangeManager implements AutoCloseable {
+
     ImmutableProperties<Object> immutableProperties;
+
     final TreeMap<String, PropertyChange> changes = new TreeMap<String, PropertyChange>();
+
+    /**
+     * An unmodifiable view of the property changes.
+     */
     final public SortedMap<String, PropertyChange> readOnlyChanges = Collections.unmodifiableSortedMap(changes);
+
     private boolean closed;
 
-    public PropertiesChangeManager(final ImmutableProperties<Object> _immutableProperties) {
+    PropertiesChangeManager(final ImmutableProperties<Object> _immutableProperties) {
         immutableProperties = _immutableProperties;
     }
 
+    /**
+     * Returns the latest version of the immutable properties map.
+     *
+     * @return The latest version of the immutable properties map.
+     */
     public ImmutableProperties<Object> getImmutableProperties() {
         return immutableProperties;
     }
 
+    /**
+     * Update the immutable properties map.
+     *
+     * @param _key      The property name.
+     * @param _newValue The new value of the property, or null.
+     */
     public void put(final String _key, final Object _newValue) {
         if (closed) {
             throw new IllegalStateException(
