@@ -10,14 +10,14 @@ This needs to change, as immutable data structures are ideal for use on multi-co
 These are write-once data structures, so there are no complications when accessed from more than one core.
 </p>
 <p>
-But the good news dos not end there. Updates to immutable data structure are handled by creating virtual copies
+But the good news does not end there. Updates to immutable data structure are handled by creating virtual copies
 that share most of the sub-structures of the original. This minimizes the amount of data that needs to be loaded
 into the local cache when accessing an updated version.
 </p>
 <p>
 Immutable data structures should not be confused with the unmodifiable collections created by the Collections class in util.
-Those are unmodifyable views over a mutable collection, giving rise to the distinct possibility that the so called 
-unmodifyable collection will be modified.
+Those are unmodifiable views over a mutable collection, giving rise to the distinct possibility that the so called 
+unmodifiable collection will be modified.
 </p>
 <p>
 Immutable data structures then have the distinct feature of providing a consistent view across the contents of the 
@@ -28,7 +28,7 @@ read/write locks or transactional queries.
 <p>
 The <a href="../../api/org/agilewiki/jactor2/core/util/immutable/package-summary.html">immutable</a> package
 has an <a href="../../api/org/agilewiki/jactor2/core/util/immutable/ImmutableProperties.html">ImmutableProperties</a>
-class for an extended immutable map&lt;String, ?&gt;.
+interface for an extended immutable map&lt;String, ?&gt;.
 This package also provides an implementation of that interface,
 <a href="../../api/org/agilewiki/jactor2/core/util/immutable/HashTreePProperties.html">HashTreePProperties</a>.
 And <a href="HashTreePPropertiesSample.java">here</a> is a sample usage:
