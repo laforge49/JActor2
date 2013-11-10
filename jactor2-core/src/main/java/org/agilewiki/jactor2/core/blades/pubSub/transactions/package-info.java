@@ -1,5 +1,5 @@
 /**
- * <p></p>
+ * <p>
  * Support is provided for non-durable (in-memory) transactions.
  * </p>
  * <ol>
