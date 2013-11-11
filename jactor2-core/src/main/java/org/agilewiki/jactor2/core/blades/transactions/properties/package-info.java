@@ -1,6 +1,6 @@
 /**
  * <p>
- * Full-featured in-memory immutable transactional property Map&lt;String, ?&gt;.
+ * Full-featured, lock-free, in-memory immutable transactional properties.
  * </p>
  * <ul>
  *     <li>Filtering of validation and change notifications based on property prefix.</li>
