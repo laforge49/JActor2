@@ -1,6 +1,6 @@
-package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
+package org.agilewiki.jactor2.core.blades.transactions.properties;
 
-import org.agilewiki.jactor2.core.blades.pubSub.transactions.TransactionProcessor;
+import org.agilewiki.jactor2.core.blades.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.core.util.immutable.HashTreePProperties;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;

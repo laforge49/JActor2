@@ -11,4 +11,4 @@
  *     Properties assigned a null value are simply removed.
  * </p>
  */
-package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
+package org.agilewiki.jactor2.core.blades.transactions.properties;

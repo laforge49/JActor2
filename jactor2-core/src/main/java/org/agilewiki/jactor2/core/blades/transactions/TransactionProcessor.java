@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.pubSub.transactions;
+package org.agilewiki.jactor2.core.blades.transactions;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;

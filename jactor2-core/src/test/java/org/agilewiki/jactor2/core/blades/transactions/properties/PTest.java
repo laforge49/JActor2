@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.pubSub.transactions.properties;
+package org.agilewiki.jactor2.core.blades.transactions.properties;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;

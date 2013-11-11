@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.NewProper
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesBlade;
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertyChange;
 import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertyChanges;
-import org.agilewiki.jactor2.core.blades.pubSub.transactions.properties.PropertiesProcessor;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
