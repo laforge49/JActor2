@@ -24,7 +24,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
     protected IMMUTABLE_STATE immutableState;
 
     /**
-     * The reactor used for transaction processing and by the two ReactorBus instances.
+     * The reactor used for transaction processing and by the two RequestBus instances.
      */
     protected final CommonReactor commonReactor;
 
@@ -40,6 +40,8 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
 
     /**
      * Create a transaction processor.
+     * The CommonReactor used by the transaction processor is created using the
+     * isolation reactor's facility.
      *
      * @param _isolationReactor    The IsolationReactor used to isolate transactions.
      * @param _initialState        The initial state to be used.
@@ -54,7 +56,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
      * Create a transaction processor.
      *
      * @param _isolationReactor    The IsolationReactor used to isolate transactions.
-     * @param _commonReactor       The reactor used for transaction processing and by the two ReactorBus instances.
+     * @param _commonReactor       The reactor used for transaction processing and by the two RequestBus instances.
      * @param _initialState        The initial state to be used.
      */
     protected TransactionProcessor(final IsolationReactor _isolationReactor,
@@ -77,7 +79,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
     }
 
     /**
-     * Creates the change manager to be used to process a transaction.
+     * Creates the change manager to be used to manage the updates of a single transaction.
      *
      * @return The change manager.
      */

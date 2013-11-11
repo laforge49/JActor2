@@ -39,7 +39,7 @@ abstract public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMU
 
     /**
      * Updates the change manager.
-     * By default, this method simply calls the update(CHANGE_MANAGER) method.
+     * By default, this method simply throws an UnsupportedOperationException.
      *
      * @param _contentManager The change manager to be updated by the transaction.
      * @throws UnsupportedOperationException Thrown by default.
@@ -51,7 +51,7 @@ abstract public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMU
 
     /**
      * Updates the change manager.
-     * By default, this method simply throws an UnsupportedOperationException.
+     * By default, this method simply calls the update(CHANGE_MANAGER) method.
      *
      * @param _contentManager         The change manager to be updated by the transaction.
      * @param _asyncResponseProcessor The response processor to be used when the change is complete.
