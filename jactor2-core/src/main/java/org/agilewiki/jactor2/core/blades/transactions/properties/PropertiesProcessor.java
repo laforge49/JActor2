@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.blades.transactions.properties;
 
 import org.agilewiki.jactor2.core.blades.transactions.TransactionProcessor;
-import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
-import org.agilewiki.jactor2.core.util.immutable.HashTreePProperties;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.util.immutable.HashTreePProperties;
+import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class PropertiesProcessor extends TransactionProcessor
     /**
      * Create a PropertiesProcessor.
      *
-     * @param _isolationReactor    The isolation reactor used to isolate the transactions.
+     * @param _isolationReactor The isolation reactor used to isolate the transactions.
      */
     public PropertiesProcessor(IsolationReactor _isolationReactor) throws Exception {
         super(_isolationReactor, empty());
@@ -42,8 +42,8 @@ public class PropertiesProcessor extends TransactionProcessor
     /**
      * Create a PropertiesProcessor.
      *
-     * @param _isolationReactor    The isolation reactor used to isolate the transactions.
-     * @param _initialState        The initial state of the property map.
+     * @param _isolationReactor The isolation reactor used to isolate the transactions.
+     * @param _initialState     The initial state of the property map.
      */
     public PropertiesProcessor(IsolationReactor _isolationReactor,
                                Map<String, Object> _initialState) throws Exception {
@@ -54,9 +54,9 @@ public class PropertiesProcessor extends TransactionProcessor
     /**
      * Create a PropertiesProcessor.
      *
-     * @param _isolationReactor    The isolation reactor used to isolate the transactions.
-     * @param _commonReactor       The reactor used for transaction processing and by the two ReactorBus instances.
-     * @param _initialState        The initial state of the property map.
+     * @param _isolationReactor The isolation reactor used to isolate the transactions.
+     * @param _commonReactor    The reactor used for transaction processing and by the two ReactorBus instances.
+     * @param _initialState     The initial state of the property map.
      */
     public PropertiesProcessor(final IsolationReactor _isolationReactor,
                                final CommonReactor _commonReactor,
@@ -83,14 +83,35 @@ public class PropertiesProcessor extends TransactionProcessor
     /**
      * A transactional put request.
      *
-     * @param _key         The property name.
-     * @param _newValue    The new value.
+     * @param _key      The property name.
+     * @param _newValue The new value.
      * @return The request.
      */
     public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
         return new PropertiesTransactionAReq(commonReactor, this) {
             protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                 _changeManager.put(_key, _newValue);
+            }
+        };
+    }
+
+    /**
+     * A transactional compare and set request.
+     * A put is performed only if the old value was equal to the expected value.
+     *
+     * @param _key           The property name.
+     * @param _expectedValue The new value.
+     * @param _newValue      The new value.
+     * @return The request.
+     */
+    public AsyncRequest<Void> compareAndSetAReq(final String _key, final Object _expectedValue, final Object _newValue) {
+        return new PropertiesTransactionAReq(commonReactor, this) {
+            protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+                Object oldValue = _changeManager.getImmutableProperties().get("stdout");
+                if ((oldValue != null && oldValue.equals(_expectedValue) ||
+                        (oldValue == null && _expectedValue == null))) {
+                    _changeManager.put(_key, _newValue);
+                }
             }
         };
     }

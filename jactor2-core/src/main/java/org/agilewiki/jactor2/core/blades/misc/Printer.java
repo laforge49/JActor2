@@ -1,15 +1,21 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.BlockingBlade;
-import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesTransactionAReq;
-import org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties.PropertiesWrapper;
+import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
+import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChangesFilter;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 import java.io.PrintStream;
 import java.util.Locale;
@@ -89,7 +95,7 @@ public class Printer extends BlockingBlade {
             }
         };
     }
-
+    /*
     public static AsyncRequest<Printer> stdoutAReq(final Plant _plant)
             throws Exception {
         return new AsyncRequest<Printer>(_plant.getReactor()) {
@@ -114,9 +120,54 @@ public class Printer extends BlockingBlade {
             }
         };
     }
+    */
 
-    static private AsyncRequest<Void> createStdoutAReq(final Plant _plant)
+    static public AsyncRequest<Printer> stdoutAReq(final Facility _facility)
             throws Exception {
+        final Plant plant = _facility.getPlant();
+        return new AsyncRequest<Printer>(plant.getReactor()) {
+            AsyncResponseProcessor<Printer> dis = this;
+            PropertiesProcessor propertiesProcessor = plant.propertiesProcessor;
+            ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
+            Printer printer = (Printer) immutableProperties.get("stdout");
+
+            AsyncResponseProcessor<Void> cnsResponseProcessor = new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(Void _response) throws Exception {
+                    immutableProperties = propertiesProcessor.getImmutableState();
+                    Printer printer2 = (Printer) immutableProperties.get("stdout");
+                    if (printer != printer2) {
+                        dis.processAsyncResponse(printer2);
+                        return;
+                    }
+                    RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
+                    send(new SubscribeAReq<ImmutablePropertyChanges>(
+                            validationBus,
+                            (CommonReactor) getTargetReactor(),
+                            new PropertyChangesFilter("stdout")) {
+                        @Override
+                        protected void processContent(ImmutablePropertyChanges _changes) throws Exception {
+                            PropertyChange propertyChange = _changes.readOnlyChanges.get("stdout");
+                            if (propertyChange == null)
+                                return;
+                            if (propertyChange.oldValue != null)
+                                throw new IllegalStateException("stdout property can not be changed");
+                        }
+                    }, dis, printer);
+                }
+            };
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                if (printer != null) {
+                    dis.processAsyncResponse(printer);
+                    return;
+                }
+                printer = new Printer(new BlockingReactor(plant));
+                send(propertiesProcessor.compareAndSetAReq("stdout", null, printer), cnsResponseProcessor);
+            }
+        };
+        /*
         return new PropertiesTransactionAReq(
                 (NonBlockingReactor) _plant.getReactor(),
                 _plant.getPropertiesBlade()) {
@@ -133,6 +184,7 @@ public class Printer extends BlockingBlade {
                 _rp.processAsyncResponse(null);
             }
         };
+        */
     }
 
     public final PrintStream printStream;

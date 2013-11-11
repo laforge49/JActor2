@@ -72,6 +72,7 @@
  *
  * Output:
  *
+ * Immutable property can not be changed: immutable.fudge
  * [fruit, immutable.fudge]
  * </pre>
  */
