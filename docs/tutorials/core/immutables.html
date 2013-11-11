@@ -10,7 +10,7 @@ This needs to change, as immutable data structures are ideal for use on multi-co
 These are write-once data structures, so there are no complications when accessed from more than one core.
 </p>
 <p>
-But the good news does not end there. Updates to immutable data structure are handled by creating virtual copies
+But the good news does not end there. Updates to immutable data structures are handled by creating virtual copies
 that share most of the sub-structures of the original. This minimizes the amount of data that needs to be loaded
 into the local cache when accessing an updated version.
 </p>
