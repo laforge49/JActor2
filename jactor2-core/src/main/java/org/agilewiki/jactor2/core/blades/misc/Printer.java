@@ -95,32 +95,6 @@ public class Printer extends BlockingBlade {
             }
         };
     }
-    /*
-    public static AsyncRequest<Printer> stdoutAReq(final Plant _plant)
-            throws Exception {
-        return new AsyncRequest<Printer>(_plant.getReactor()) {
-            final AsyncResponseProcessor<Printer> dis = this;
-
-            @Override
-            public void processAsyncRequest() throws Exception {
-                final Printer printer = (Printer) _plant.getProperty("stdout");
-                if (printer != null) {
-                    processAsyncResponse(printer);
-                    return;
-                }
-                send(createStdoutAReq(_plant),
-                        new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(
-                                    final Void _response) throws Exception {
-                                dis.processAsyncResponse((Printer) _plant
-                                        .getProperty("stdout"));
-                            }
-                        });
-            }
-        };
-    }
-    */
 
     static public AsyncRequest<Printer> stdoutAReq(final Facility _facility)
             throws Exception {
@@ -167,24 +141,6 @@ public class Printer extends BlockingBlade {
                 send(propertiesProcessor.compareAndSetAReq("stdout", null, printer), cnsResponseProcessor);
             }
         };
-        /*
-        return new PropertiesTransactionAReq(
-                (NonBlockingReactor) _plant.getReactor(),
-                _plant.getPropertiesBlade()) {
-            @Override
-            protected void evalTransaction(
-                    final PropertiesWrapper _stateWrapper,
-                    final AsyncResponseProcessor<Void> _rp) throws Exception {
-                if (!_stateWrapper.oldReadOnlyProperties.containsKey("stdout")) {
-                    _stateWrapper.put("stdout", new Printer(
-                            new BlockingReactor(_plant)));
-                    _plant.getPropertiesBlade().writeOnceProperty("stdout")
-                            .signal();
-                }
-                _rp.processAsyncResponse(null);
-            }
-        };
-        */
     }
 
     public final PrintStream printStream;
