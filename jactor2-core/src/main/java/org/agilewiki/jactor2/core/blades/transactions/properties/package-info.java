@@ -31,17 +31,17 @@
  *     try {
  *         PropertiesProcessor propertiesProcessor = new PropertiesProcessor(new IsolationReactor(plant));
  *         final CommonReactor reactor = new NonBlockingReactor(plant);
- *         RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
+ *         RequestBus&lt;ImmutablePropertyChanges&gt; validationBus = propertiesProcessor.validationBus;
  *
- *         new SubscribeAReq<ImmutablePropertyChanges>(
+ *         new SubscribeAReq&lt;ImmutablePropertyChanges&gt;(
  *                  validationBus,
  *                  reactor,
  *                  new PropertyChangesFilter("immutable.")){
  *              {@literal @}Override
  *              protected void processContent(final ImmutablePropertyChanges _content)
  *                      throws Exception {
- *                  SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
- *                  final Iterator<PropertyChange> it = readOnlyChanges.values().iterator();
+ *                  SortedMap&lt;String, PropertyChange&gt; readOnlyChanges = _content.readOnlyChanges;
+ *                  final Iterator&lt;PropertyChange&gt; it = readOnlyChanges.values().iterator();
  *                  while (it.hasNext()) {
  *                      final PropertyChange propertyChange = it.next();
  *                      if (propertyChange.oldValue != null) {

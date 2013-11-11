@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.SortedMap;
 
 /**
- * A RequestBus filter for use with ImmutablePropertyChanges.
+ * A RequestBus filter for use with ImmutablePropertyChanges that selects based on a property name prefix.
  */
 public class PropertyChangesFilter implements Filter<ImmutablePropertyChanges> {
     private final String prefix;
