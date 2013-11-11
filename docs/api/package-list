@@ -6,8 +6,8 @@ org.agilewiki.jactor2.core.blades.oldRequestBus
 org.agilewiki.jactor2.core.blades.oldTransactions
 org.agilewiki.jactor2.core.blades.oldTransactions.oldProperties
 org.agilewiki.jactor2.core.blades.pubSub
-org.agilewiki.jactor2.core.blades.pubSub.transactions
-org.agilewiki.jactor2.core.blades.pubSub.transactions.properties
+org.agilewiki.jactor2.core.blades.transactions
+org.agilewiki.jactor2.core.blades.transactions.properties
 org.agilewiki.jactor2.core.facilities
 org.agilewiki.jactor2.core.messages
 org.agilewiki.jactor2.core.reactors
