@@ -98,7 +98,7 @@ public class Plant extends Facility {
                         Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                         Outbox.DEFAULT_INITIAL_BUFFER_SIZE, 20,
                         new DefaultThreadFactory());
-                send(getPropertiesBlade().firstPutAReq(
+                send(propertiesProcessor.putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),
                         new AsyncResponseProcessor<Void>() {
                             @Override
@@ -123,7 +123,7 @@ public class Plant extends Facility {
                         Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
                         Outbox.DEFAULT_INITIAL_BUFFER_SIZE, _threadCount,
                         new DefaultThreadFactory());
-                send(getPropertiesBlade().firstPutAReq(
+                send(propertiesProcessor.putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),
                         new AsyncResponseProcessor<Void>() {
                             @Override
@@ -149,7 +149,7 @@ public class Plant extends Facility {
                 final Facility facility = new Facility(_name,
                         _initialLocalMessageQueueSize, _initialBufferSize,
                         _threadCount, _threadFactory);
-                send(getPropertiesBlade().firstPutAReq(
+                send(propertiesProcessor.putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),
                         new AsyncResponseProcessor<Void>() {
                             @Override
