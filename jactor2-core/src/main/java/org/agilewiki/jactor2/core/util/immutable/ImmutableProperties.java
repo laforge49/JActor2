@@ -61,12 +61,6 @@ public interface ImmutableProperties<VALUE> extends Map<String, VALUE> {
      * An incompatible operation.
      */
     @Deprecated
-    public Set<Entry<String, VALUE>> entrySet();
-
-    /**
-     * An incompatible operation.
-     */
-    @Deprecated
     public VALUE put(String key, VALUE value);
 
     /**
