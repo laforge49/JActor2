@@ -14,19 +14,12 @@ public class Properties {
             PropertiesProcessor propertiesProcessor = 
                 new PropertiesProcessor(new IsolationReactor(plant));
             propertiesProcessor.putAReq("a", 1).call();
-            printIt(propertiesProcessor);
+            System.out.println(propertiesProcessor.getImmutableState());
             new IncAReq(propertiesProcessor, "a", 41).call();
-            printIt(propertiesProcessor);
+            System.out.println(propertiesProcessor.getImmutableState());
         } finally {
             plant.close();
         }
-    }
-    
-    static void printIt(final PropertiesProcessor _propertiesProcessor) {
-        ImmutableProperties<Object> immutableProperties = _propertiesProcessor.getImmutableState();
-        System.out.println("\n");
-        Set<Map.Entry<String, Object>> entries = immutableProperties.entrySet();
-        System.out.println(entries);
     }
 }
 
@@ -42,6 +35,7 @@ class IncAReq extends PropertiesTransactionAReq {
         increment = _increment;
     }
 
+    @Override
     protected void update(final PropertiesChangeManager _contentManager) throws Exception {
         int oldValue = (Integer) _contentManager.getImmutableProperties().get(name);
         int newValue = oldValue + increment;
