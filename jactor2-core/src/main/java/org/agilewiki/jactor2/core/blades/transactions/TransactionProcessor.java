@@ -26,7 +26,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
     /**
      * The reactor used for transaction processing and by the two RequestBus instances.
      */
-    protected final CommonReactor commonReactor;
+    public final CommonReactor commonReactor;
 
     /**
      * The RequestBus used to validate the changes made by a transaction.
