@@ -115,4 +115,8 @@ public class PropertiesProcessor extends TransactionProcessor
             }
         };
     }
+
+    public String toString() {
+        return getImmutableState().toString();
+    }
 }

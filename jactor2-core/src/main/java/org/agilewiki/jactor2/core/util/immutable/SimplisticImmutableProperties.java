@@ -135,6 +135,11 @@ public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties
     }
 
     @Override
+    public String toString() {
+        return new TreeMap<String, Object>(base).toString();
+    }
+
+    @Override
     public Set<String> keySet() {
         return sortedKeySet();
     }

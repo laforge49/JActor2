@@ -128,6 +128,11 @@ public class HashTreePProperties<VALUE> implements ImmutableProperties<VALUE> {
     }
 
     @Override
+    public String toString() {
+        return new TreeMap<String, Object>(base).toString();
+    }
+
+    @Override
     public int size() {
         return base.size();
     }
