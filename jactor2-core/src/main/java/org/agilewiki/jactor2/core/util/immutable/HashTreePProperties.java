@@ -154,7 +154,7 @@ public class HashTreePProperties<VALUE> implements ImmutableProperties<VALUE> {
 
     @Override
     public Set<Entry<String, VALUE>> entrySet() {
-        return Collections.unmodifiableSet(new TreeSet<Entry<String, VALUE>>(base.entrySet()));
+        return base.entrySet();
     }
 
     @Deprecated
