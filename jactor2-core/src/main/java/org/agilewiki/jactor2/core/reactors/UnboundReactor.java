@@ -94,7 +94,6 @@ abstract public class UnboundReactor extends ReactorBase {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
-                        && (getFacility() == target.getFacility())
                         && (target instanceof UnboundReactor)) {
                     if (!target.isRunning()) {
                         final PoolThread currentThread = threadReference.get();
