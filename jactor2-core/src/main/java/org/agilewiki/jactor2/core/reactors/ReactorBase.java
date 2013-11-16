@@ -270,7 +270,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      */
     public void unbufferedAddMessage(final Message _message,
             final boolean _local) throws Exception {
-        if (facility.isClosing()) {
+        if (isClosing()) {
             if (_message.isForeign() && _message.isResponsePending()) {
                 try {
                     _message.close();
@@ -290,7 +290,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      */
     public void unbufferedAddMessages(final Queue<Message> _messages)
             throws Exception {
-        if (facility.isClosing()) {
+        if (isClosing()) {
             final Iterator<Message> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final Message message = itm.next();

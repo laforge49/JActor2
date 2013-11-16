@@ -110,7 +110,6 @@ public class BListTest extends TestCase {
     }
 
     public void test5() throws Exception {
-        /*  Intermittent plant close failures
         System.out.println("5");
         final Plant plant = Durables.createPlant();
         try {
@@ -132,7 +131,6 @@ public class BListTest extends TestCase {
         } finally {
             plant.close();
         }
-        */
     }
 
     public void test6() throws Exception {

@@ -67,7 +67,7 @@ public class Outbox implements AutoCloseable {
      * @return True if the message was successfully buffered.
      */
     public boolean buffer(final Message _message, final Reactor _target) {
-        if (facility.isClosing()) {
+        if (reactor.isClosing()) {
             return false;
         }
         ArrayDeque<Message> buffer = null;

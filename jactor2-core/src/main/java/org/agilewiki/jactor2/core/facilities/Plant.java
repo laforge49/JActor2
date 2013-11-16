@@ -163,10 +163,9 @@ public class Plant extends Facility {
         };
     }
 
-    /** Returns a Request to perform a close(). */
     @Override
-    public final SyncRequest<Void> closeSReq() {
+    public void close() throws Exception {
         singleton = null;
-        return super.closeSReq();
+        super.close();
     }
 }

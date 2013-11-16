@@ -226,11 +226,11 @@ public class Facility extends BladeBase implements AutoCloseable {
         try {
             threadManager.execute(_reactor);
         } catch (final Exception e) {
-            if (!isClosing()) {
+            if (!shuttingDown) {
                 throw e;
             }
         } catch (final Error e) {
-            if (!isClosing()) {
+            if (!shuttingDown) {
                 throw e;
             }
         }
@@ -269,7 +269,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                if (!isClosing()) {
+                if (!shuttingDown) {
                     boolean rv = (closeables == null) ? false : closeables
                             .remove(_closeable);
                     if (startClosing && closeables.isEmpty())
@@ -326,16 +326,6 @@ public class Facility extends BladeBase implements AutoCloseable {
                 return null;
             }
         };
-    }
-
-    /**
-     * Returns true if close() has been called already.
-     * Can be called from anywhere.
-     *
-     * @return true if close() has already been called.
-     */
-    public final boolean isClosing() {
-        return shuttingDown;
     }
 
     /**
