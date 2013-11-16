@@ -73,7 +73,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.getMessageProcessorLogger();
-        outbox = new Outbox(facility, _initialBufferSize);
+        outbox = new Outbox(this, _initialBufferSize);
         addAutoClose();
     }
 
