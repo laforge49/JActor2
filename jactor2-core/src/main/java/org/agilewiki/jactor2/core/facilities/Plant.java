@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 
@@ -126,7 +125,7 @@ public class Plant extends Facility {
                             @Override
                             public void processAsyncResponse(
                                     final Void _response) throws Exception {
-                                getAutoCloseableSet().add(facility);
+                                getCloseableSet().add(facility);
                                 dis.processAsyncResponse(facility);
                             }
                         });

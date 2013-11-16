@@ -169,7 +169,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
     /**
      * Returns the CloseableSet. Creates it if needed.
      */
-    protected final CloseableSet getAutoCloseableSet() {
+    protected final CloseableSet getCloseableSet() {
         if (closeables == null) {
             closeables = new CloseableSet();
         }
@@ -245,7 +245,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
             @Override
             protected Boolean processSyncRequest() throws Exception {
                 if (!startClosing) {
-                    return getAutoCloseableSet().add(_closeable);
+                    return getCloseableSet().add(_closeable);
                 } else {
                     return false;
                 }
@@ -263,7 +263,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
                     boolean rv = (closeables == null) ? false : closeables
                             .remove(_closeable);
                     if (startClosing && closeables.isEmpty())
-                        closeSReq().signal();
+                        close2SReq().signal();
                     return rv;
                 }
                 return false;
@@ -275,22 +275,31 @@ public class Facility extends BladeBase implements Closeable, Closer {
     public void close() throws Exception {
         if (shuttingDown)
             return;
-        startClosingSReq().signal();
+        closeAReq().signal();
     }
 
-    private SyncRequest<Void> startClosingSReq() {
-        return new SyncBladeRequest<Void>() {
+    AsyncResponseProcessor<Void> startClosingResponseProcessor;
+
+    public AsyncRequest<Void> closeAReq() {
+        return new AsyncBladeRequest<Void>() {
+
             @Override
-            protected Void processSyncRequest() throws Exception {
+            protected void processAsyncRequest() throws Exception {
                 if (startClosing) {
-                    return null;
+                    this.processAsyncResponse(null);
                 }
                 startClosing = true;
+                startClosingResponseProcessor = this;
+                final Plant plant = getPlant();
+                if ((plant != null) && (plant != Facility.this)) {
+                    plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
+                            null).signal();
+                }
                 if (closeables == null || closeables.isEmpty())
-                    closeSReq().signal();
-                else
+                    send(close2SReq(), startClosingResponseProcessor);
+                else {
                     closeables.close();
-                return null;
+                }
             }
         };
     }
@@ -298,7 +307,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
     /**
      * Returns a Request to perform a close().
      */
-    public SyncRequest<Void> closeSReq() {
+    private SyncRequest<Void> close2SReq() {
         return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
@@ -309,10 +318,9 @@ public class Facility extends BladeBase implements Closeable, Closer {
                 final Plant plant = getPlant();
                 if ((plant != null) && (plant != Facility.this)) {
                     plant.removeCloseableSReq(Facility.this).signal();
-                    plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
-                            null).signal();
                 }
                 threadManager.close();
+                startClosingResponseProcessor.processAsyncResponse(null);
                 return null;
             }
         };

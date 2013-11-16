@@ -339,6 +339,11 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         return facility;
     }
 
+    @Override
+    public Reactor getReactor() {
+        return this;
+    }
+
     /**
      * Signals the start of a request.
      */

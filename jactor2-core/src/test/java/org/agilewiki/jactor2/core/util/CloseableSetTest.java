@@ -11,16 +11,13 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  * Test code.
  */
 public class CloseableSetTest extends TestCase {
-    private static class MyAutoCloseable extends BladeBase implements Closeable {
+    private static class MyCloseable extends BladeBase implements Closeable {
         public volatile int closed;
 
-        MyAutoCloseable(Plant plant) throws Exception {
+        MyCloseable(Plant plant) throws Exception {
             initialize(new NonBlockingReactor(plant));
         }
 
-        /* (non-Javadoc)
-         * @see java.lang.AutoCloseable#close()
-         */
         @Override
         public void close() throws Exception {
             closed++;
@@ -47,15 +44,12 @@ public class CloseableSetTest extends TestCase {
         }
     }
 
-    private static class MyFailedAutoCloseable extends MyAutoCloseable {
+    private static class MyFailedCloseable extends MyCloseable {
 
-        MyFailedAutoCloseable(Plant plant) throws Exception {
+        MyFailedCloseable(Plant plant) throws Exception {
             super(plant);
         }
 
-        /* (non-Javadoc)
-         * @see java.lang.AutoCloseable#close()
-         */
         @Override
         public void close() throws Exception {
             super.close();
@@ -77,11 +71,11 @@ public class CloseableSetTest extends TestCase {
         final Plant plant = new Plant();
         try {
             final CloseableSet set = new CloseableSet();
-            final MyAutoCloseable mac1 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac2 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac3 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac4 = new MyAutoCloseable(plant);
-            final MyFailedAutoCloseable mfac = new MyFailedAutoCloseable(plant);
+            final MyCloseable mac1 = new MyCloseable(plant);
+            final MyCloseable mac2 = new MyCloseable(plant);
+            final MyCloseable mac3 = new MyCloseable(plant);
+            final MyCloseable mac4 = new MyCloseable(plant);
+            final MyFailedCloseable mfac = new MyFailedCloseable(plant);
             set.add(mac1);
             set.add(mac2);
             set.add(mac3);
@@ -94,7 +88,7 @@ public class CloseableSetTest extends TestCase {
             int mac4Count = 0;
             int mfacCount = 0;
             int otherCount = 0;
-            for (final AutoCloseable ac : set) {
+            for (final Closeable ac : set) {
                 if (ac == mac1) {
                     mac1Count++;
                 } else if (ac == mac2) {
@@ -126,7 +120,7 @@ public class CloseableSetTest extends TestCase {
             assertEquals(mfac.closed, 1);
 
             boolean foundAny = false;
-            for (final AutoCloseable ac : set) {
+            for (final Closeable ac : set) {
                 foundAny = true;
             }
             assertFalse(foundAny);
@@ -144,11 +138,11 @@ public class CloseableSetTest extends TestCase {
         // a Plant is also a Facility, so I only need to test the Plant ...
         final Plant plant = new Plant();
         try {
-            final MyAutoCloseable mac1 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac2 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac3 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac4 = new MyAutoCloseable(plant);
-            final MyFailedAutoCloseable mfac = new MyFailedAutoCloseable(plant);
+            final MyCloseable mac1 = new MyCloseable(plant);
+            final MyCloseable mac2 = new MyCloseable(plant);
+            final MyCloseable mac3 = new MyCloseable(plant);
+            final MyCloseable mac4 = new MyCloseable(plant);
+            final MyFailedCloseable mfac = new MyFailedCloseable(plant);
             plant.addCloseableSReq(mac1).signal();
             plant.addCloseableSReq(mac2).signal();
             plant.addCloseableSReq(mac3).signal();
@@ -156,13 +150,13 @@ public class CloseableSetTest extends TestCase {
             plant.addCloseableSReq(mfac).signal();
             plant.removeCloseableSReq(mac4).call();
 
-            plant.closeSReq().call();
+            plant.closeAReq().call();
 
-            assertEquals(mac1.closed, 0);
-            assertEquals(mac2.closed, 0);
-            assertEquals(mac3.closed, 0);
+            assertEquals(mac1.closed, 1);
+            assertEquals(mac2.closed, 1);
+            assertEquals(mac3.closed, 1);
             assertEquals(mac4.closed, 0);
-            assertEquals(mfac.closed, 0);
+            assertEquals(mfac.closed, 1);
         } finally {
             // Close it again, just in case ...
             try {
@@ -178,11 +172,11 @@ public class CloseableSetTest extends TestCase {
         try {
             final Reactor reactor = new NonBlockingReactor(plant);
 
-            final MyAutoCloseable mac1 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac2 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac3 = new MyAutoCloseable(plant);
-            final MyAutoCloseable mac4 = new MyAutoCloseable(plant);
-            final MyFailedAutoCloseable mfac = new MyFailedAutoCloseable(plant);
+            final MyCloseable mac1 = new MyCloseable(plant);
+            final MyCloseable mac2 = new MyCloseable(plant);
+            final MyCloseable mac3 = new MyCloseable(plant);
+            final MyCloseable mac4 = new MyCloseable(plant);
+            final MyFailedCloseable mfac = new MyFailedCloseable(plant);
             reactor.addCloseableSReq(mac1).signal();
             reactor.addCloseableSReq(mac2).signal();
             reactor.addCloseableSReq(mac3).signal();
