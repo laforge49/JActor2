@@ -150,7 +150,7 @@ public class CloseableSetTest extends TestCase {
             plant.addCloseableSReq(mfac).signal();
             plant.removeCloseableSReq(mac4).call();
 
-            plant.closeAReq().call();
+            plant.close();
 
             assertEquals(mac1.closed, 1);
             assertEquals(mac2.closed, 1);

@@ -135,7 +135,9 @@ public class Plant extends Facility {
 
     @Override
     public void close() throws Exception {
+        if (singleton == null)
+            return;
         singleton = null;
-        super.close();
+        closeAReq().call();
     }
 }
