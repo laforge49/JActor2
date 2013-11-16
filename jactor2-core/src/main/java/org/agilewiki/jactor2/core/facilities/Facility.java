@@ -307,7 +307,7 @@ public class Facility extends BladeBase implements AutoCloseable, Closer {
                 shuttingDown = true;
                 final Plant plant = getPlant();
                 if ((plant != null) && (plant != Facility.this)) {
-                    plant.removeAutoClosableSReq(this).signal();
+                    plant.removeAutoClosableSReq(Facility.this).signal();
                     plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
                             null).signal();
                 }

@@ -304,9 +304,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             }
         }
         final Facility facility = targetReactor.getFacility();
-        if (foreign) {
-            facility.removeAutoClosableSReq(RequestBase.this).signal();
-        }
         if (!responsePending) {
             return false;
         }
@@ -320,11 +317,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             }
         }
         return true;
-    }
-
-    @Override
-    public boolean isForeign() {
-        return foreign;
     }
 
     @Override
@@ -354,24 +346,12 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     public void eval() {
         if (responsePending) {
             final Facility facility = targetReactor.getFacility();
-            if (foreign) {
-                try {
-                    facility.addAutoClosableSReq(this).signal();
-                } catch (final Exception e) {
-                }
-            }
             targetReactor.setExceptionHandler(null);
             targetReactor.setCurrentMessage(this);
             targetReactor.requestBegin();
             try {
                 processRequestMessage();
             } catch (final Exception e) {
-                if (foreign) {
-                    try {
-                        facility.removeAutoClosableSReq(this).signal();
-                    } catch (final Exception e1) {
-                    }
-                }
                 processException(targetReactor, e);
             }
         } else {

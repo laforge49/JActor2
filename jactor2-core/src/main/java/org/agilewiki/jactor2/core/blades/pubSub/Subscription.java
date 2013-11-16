@@ -45,7 +45,6 @@ abstract public class Subscription<CONTENT> extends BladeBase implements
                 }
                 subscriberReactor.getFacility()
                         .removeAutoClosableSReq(Subscription.this).signal();
-                subscriberReactor.removeAutoClosableSReq(this).signal();
                 return true;
             }
         };

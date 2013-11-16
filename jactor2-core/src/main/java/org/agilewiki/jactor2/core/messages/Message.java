@@ -11,17 +11,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  * </p>
  */
 
-public interface Message extends AutoCloseable {
-
-    /**
-     * Returns true when the response is to be sent to a targetReactor created with a different
-     * facility.
-     *
-     * @return True when the response is to be sent to a targetReactor created with a different
-     *         facility.
-     */
-    boolean isForeign();
-
+public interface Message {
     /**
      * Returns true when a response is expected but has not yet been placed in the message.
      *
@@ -50,4 +40,6 @@ public interface Message extends AutoCloseable {
      * @param _e             The exception to be processed.
      */
     void processException(final Reactor _activeReactor, final Exception _e);
+
+    void close();
 }

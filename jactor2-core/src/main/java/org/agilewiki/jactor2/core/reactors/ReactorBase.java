@@ -149,7 +149,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                     inbox.close();
                 } catch (final Exception e) {
                 }
-                facility.removeAutoClosableSReq(this).signal();
+                facility.removeAutoClosableSReq(ReactorBase.this).signal();
                 return null;
             }
         };
@@ -251,7 +251,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
     public void unbufferedAddMessage(final Message _message,
             final boolean _local) throws Exception {
         if (isClosing()) {
-            if (_message.isForeign() && _message.isResponsePending()) {
+            if (_message.isResponsePending()) {
                 try {
                     _message.close();
                 } catch (final Throwable t) {
@@ -274,7 +274,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
             final Iterator<Message> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final Message message = itm.next();
-                if (message.isForeign() && message.isResponsePending()) {
+                if (message.isResponsePending()) {
                     try {
                         message.close();
                     } catch (final Throwable t) {
