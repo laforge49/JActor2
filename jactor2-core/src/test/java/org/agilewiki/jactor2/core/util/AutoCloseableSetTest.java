@@ -117,11 +117,11 @@ public class AutoCloseableSetTest extends TestCase {
 
             plant.closeSReq().call();
 
-            assertEquals(mac1.closed, 1);
-            assertEquals(mac2.closed, 1);
-            assertEquals(mac3.closed, 1);
+            assertEquals(mac1.closed, 0);
+            assertEquals(mac2.closed, 0);
+            assertEquals(mac3.closed, 0);
             assertEquals(mac4.closed, 0);
-            assertEquals(mfac.closed, 1);
+            assertEquals(mfac.closed, 0);
         } finally {
             // Close it again, just in case ...
             try {

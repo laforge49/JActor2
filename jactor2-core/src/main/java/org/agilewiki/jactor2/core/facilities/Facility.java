@@ -59,6 +59,8 @@ public class Facility extends BladeBase implements AutoCloseable {
      */
     private volatile boolean shuttingDown;
 
+    private volatile boolean startClosing;
+
     /**
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
      */
@@ -115,7 +117,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         new SubscribeAReq<ImmutablePropertyChanges>(
                 validationBus,
                 (NonBlockingReactor) getReactor(),
-                new PropertyChangesFilter("immutable.")){
+                new PropertyChangesFilter("immutable.")) {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
@@ -246,7 +248,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                if (!isClosing()) {
+                if (!startClosing) {
                     return getAutoCloseableSet().add(_closeable);
                 } else {
                     return false;
@@ -268,8 +270,11 @@ public class Facility extends BladeBase implements AutoCloseable {
             @Override
             protected Boolean processSyncRequest() throws Exception {
                 if (!isClosing()) {
-                    return (closeables == null) ? false : closeables
+                    boolean rv = (closeables == null) ? false : closeables
                             .remove(_closeable);
+                    if (startClosing && closeables.isEmpty())
+                        closeSReq().signal();
+                    return rv;
                 }
                 return false;
             }
@@ -278,7 +283,26 @@ public class Facility extends BladeBase implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        closeSReq().signal();
+        if (shuttingDown)
+            return;
+        startClosingSReq().signal();
+    }
+
+    private SyncRequest<Void> startClosingSReq() {
+        return new SyncBladeRequest<Void>() {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                if (startClosing) {
+                    return null;
+                }
+                startClosing = true;
+                if (closeables == null || closeables.isEmpty())
+                    closeSReq().signal();
+                else
+                    closeables.close();
+                return null;
+            }
+        };
     }
 
     /**
@@ -299,9 +323,6 @@ public class Facility extends BladeBase implements AutoCloseable {
                             null).signal();
                 }
                 threadManager.close();
-                if (closeables != null) {
-                    closeables.close();
-                }
                 return null;
             }
         };
