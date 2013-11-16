@@ -15,6 +15,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.AutoCloseableSet;
+import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ import java.util.concurrent.ThreadFactory;
  * when the facility is closed, as well as a table of properties.
  */
 
-public class Facility extends BladeBase implements AutoCloseable {
+public class Facility extends BladeBase implements AutoCloseable, Closer {
 
     public static final String NAME_PROPERTY = "core.facilityName";
 
@@ -236,13 +237,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         }
     }
 
-    /**
-     * Returns a request to add an auto closeable, to be closed when the Facility closes.
-     * This request returns true if the AutoClosable was added.
-     *
-     * @param _closeable The autoclosable to be added to the list.
-     * @return The request.
-     */
+    @Override
     public SyncRequest<Boolean> addAutoClosableSReq(
             final AutoCloseable _closeable) {
         return new SyncBladeRequest<Boolean>() {
@@ -257,13 +252,7 @@ public class Facility extends BladeBase implements AutoCloseable {
         };
     }
 
-    /**
-     * Returns a request to remove an auto closeable.
-     * This request returns true if the AutoClosable was removed.
-     *
-     * @param _closeable The autoclosable to be removed.
-     * @return The request.
-     */
+    @Override
     public SyncRequest<Boolean> removeAutoClosableSReq(
             final AutoCloseable _closeable) {
         return new SyncBladeRequest<Boolean>() {

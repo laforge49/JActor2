@@ -85,24 +85,11 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         return closeables;
     }
 
-    /**
-     * Returns true if close() has been called already.
-     * Can be called from anywhere.
-     *
-     * @return true if close() has already been called.
-     */
     @Override
     public final boolean isClosing() {
         return shuttingDown;
     }
 
-    /**
-     * Returns a request to add an auto closeable, to be closed when the Facility closes.
-     * This request returns true if the AutoClosable was added.
-     *
-     * @param _closeable The autoclosable to be added to the list.
-     * @return The request.
-     */
     @Override
     public SyncRequest<Boolean> addAutoClosableSReq(
             final AutoCloseable _closeable) {
@@ -118,13 +105,6 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         };
     }
 
-    /**
-     * Returns a request to remove an auto closeable.
-     * This request returns true if the AutoClosable was removed.
-     *
-     * @param _closeable The autoclosable to be removed.
-     * @return The request.
-     */
     @Override
     public SyncRequest<Boolean> removeAutoClosableSReq(
             final AutoCloseable _closeable) {
