@@ -135,9 +135,21 @@ public class Plant extends Facility {
 
     @Override
     public void close() throws Exception {
-        if (singleton == null)
-            return;
+        if (singleton != null)
+            closeAReq().call();
+    }
+
+    @Override
+    public AsyncRequest<Void> closeAReq() {
+        if (singleton == null) {
+            return new AsyncBladeRequest<Void>() {
+                @Override
+                protected void processAsyncRequest() throws Exception {
+                    processAsyncResponse(null);
+                }
+            };
+        }
         singleton = null;
-        closeAReq().call();
+        return super.closeAReq();
     }
 }

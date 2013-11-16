@@ -280,7 +280,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
 
     AsyncResponseProcessor<Void> startClosingResponseProcessor;
 
-    protected AsyncRequest<Void> closeAReq() {
+    public AsyncRequest<Void> closeAReq() {
         return new AsyncBladeRequest<Void>() {
 
             @Override
