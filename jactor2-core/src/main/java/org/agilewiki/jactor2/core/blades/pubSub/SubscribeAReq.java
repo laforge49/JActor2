@@ -58,7 +58,7 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
             }
         };
         requestBus.subscriptions.add(subscription);
-        subscriberReactor.addAutoClosableSReq(subscription);
+        subscriberReactor.addClosableSReq(subscription);
         dis.processAsyncResponse(subscription);
     }
 

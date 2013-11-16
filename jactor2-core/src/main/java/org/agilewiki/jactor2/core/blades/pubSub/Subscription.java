@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.util.Closeable;
 
 /**
  * A subscription allows a subscriber to receive content of interest from a RequestBus.
@@ -12,7 +13,7 @@ import org.agilewiki.jactor2.core.reactors.CommonReactor;
  * @param <CONTENT> The type of content.
  */
 abstract public class Subscription<CONTENT> extends BladeBase implements
-        AutoCloseable {
+        Closeable {
     private final RequestBus<CONTENT> requestBus;
     private final CommonReactor subscriberReactor;
     final Filter<CONTENT> filter;
@@ -44,7 +45,7 @@ abstract public class Subscription<CONTENT> extends BladeBase implements
                     return false;
                 }
                 subscriberReactor.getFacility()
-                        .removeAutoClosableSReq(Subscription.this).signal();
+                        .removeClosableSReq(Subscription.this).signal();
                 return true;
             }
         };

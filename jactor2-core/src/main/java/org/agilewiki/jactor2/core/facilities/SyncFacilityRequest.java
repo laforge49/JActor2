@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.util.Closeable;
 
 /**
  * Base class for sync facility requests.
@@ -23,23 +24,23 @@ abstract public class SyncFacilityRequest<RESPONSE_TYPE> extends
     /**
      * Add an auto closeable, to be closed when the Facility closes.
      *
-     * @param _closeable The autoclosable to be added to the list.
-     * @return True if the AutoClosable was added.
+     * @param _closeable The closeable to be added to the list.
+     * @return True if the Closeable was added.
      */
-    protected boolean addAutoClosable(final AutoCloseable _closeable)
+    protected boolean addAutoClosable(final Closeable _closeable)
             throws Exception {
-        return local(facility.addAutoClosableSReq(_closeable));
+        return local(facility.addClosableSReq(_closeable));
     }
 
     /**
      * Remove an auto closeable.
      *
-     * @param _closeable The autoclosable to be removed.
-     * @return True if the AutoClosable was removed.
+     * @param _closeable The closeable to be removed.
+     * @return True if the Closeable was removed.
      */
-    protected boolean removeAutoClosable(final AutoCloseable _closeable)
+    protected boolean removeAutoClosable(final Closeable _closeable)
             throws Exception {
-        return local(facility.removeAutoClosableSReq(_closeable));
+        return local(facility.removeClosableSReq(_closeable));
     }
 
     /**

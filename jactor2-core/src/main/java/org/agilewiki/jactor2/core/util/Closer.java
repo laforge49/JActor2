@@ -5,20 +5,20 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 public interface Closer {
 
     /**
-     * Returns a request to add an auto closeable, to be closed when the Facility closes.
-     * This request returns true if the AutoClosable was added.
+     * Returns a request to add a closeable, to be closed when the Facility closes.
+     * This request returns true if the  Closeable was added.
      *
-     * @param _closeable The autoclosable to be added to the list.
+     * @param _closeable The closeable to be added to the list.
      * @return The request.
      */
-    SyncRequest<Boolean> addAutoClosableSReq(final AutoCloseable _closeable);
+    SyncRequest<Boolean> addClosableSReq(final Closeable _closeable);
 
     /**
-     * Returns a request to remove an auto closeable.
-     * This request returns true if the AutoClosable was removed.
+     * Returns a request to remove a closeable.
+     * This request returns true if the Closeable was removed.
      *
-     * @param _closeable The autoclosable to be removed.
+     * @param _closeable The closeable to be removed.
      * @return The request.
      */
-    SyncRequest<Boolean> removeAutoClosableSReq(final AutoCloseable _closeable);
+    SyncRequest<Boolean> removeClosableSReq(final Closeable _closeable);
 }

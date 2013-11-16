@@ -6,7 +6,8 @@ import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.messages.MessageSource;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.util.AutoCloseableSet;
+import org.agilewiki.jactor2.core.util.Closeable;
+import org.agilewiki.jactor2.core.util.CloseableSet;
 import org.slf4j.Logger;
 
 import java.util.Iterator;
@@ -53,7 +54,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      * A set of AutoCloseable objects.
      * Can only be accessed via a request to this reactor.
      */
-    private AutoCloseableSet closeables;
+    private CloseableSet closeables;
 
     /**
      * Set when the reactor reaches end-of-life.
@@ -77,10 +78,10 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         addAutoClose();
     }
 
-    /** Returns the AutoCloseableSet. Creates it if needed. */
-    protected final AutoCloseableSet getAutoCloseableSet() {
+    /** Returns the CloseableSet. Creates it if needed. */
+    protected final CloseableSet getAutoCloseableSet() {
         if (closeables == null) {
-            closeables = new AutoCloseableSet();
+            closeables = new CloseableSet();
         }
         return closeables;
     }
@@ -91,8 +92,8 @@ abstract public class ReactorBase implements Reactor, MessageSource {
     }
 
     @Override
-    public SyncRequest<Boolean> addAutoClosableSReq(
-            final AutoCloseable _closeable) {
+    public SyncRequest<Boolean> addClosableSReq(
+            final Closeable _closeable) {
         return new SyncRequest<Boolean>(this) {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -106,8 +107,8 @@ abstract public class ReactorBase implements Reactor, MessageSource {
     }
 
     @Override
-    public SyncRequest<Boolean> removeAutoClosableSReq(
-            final AutoCloseable _closeable) {
+    public SyncRequest<Boolean> removeClosableSReq(
+            final Closeable _closeable) {
         return new SyncRequest<Boolean>(this) {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -149,7 +150,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                     inbox.close();
                 } catch (final Exception e) {
                 }
-                facility.removeAutoClosableSReq(ReactorBase.this).signal();
+                facility.removeClosableSReq(ReactorBase.this).signal();
                 return null;
             }
         };
@@ -159,7 +160,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      * Add to the facility's AutoClose set.
      */
     protected void addAutoClose() throws Exception {
-        facility.addAutoClosableSReq(this).signal();
+        facility.addClosableSReq(this).signal();
     }
 
     /**

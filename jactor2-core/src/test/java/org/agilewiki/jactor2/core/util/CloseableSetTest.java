@@ -8,8 +8,8 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 /**
  * Test code.
  */
-public class AutoCloseableSetTest extends TestCase {
-    private static class MyAutoCloseable implements AutoCloseable {
+public class CloseableSetTest extends TestCase {
+    private static class MyAutoCloseable implements Closeable {
         public volatile int closed;
 
         /* (non-Javadoc)
@@ -34,16 +34,16 @@ public class AutoCloseableSetTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        AutoCloseableSet.disableCloseErrorLogging();
+        CloseableSet.disableCloseErrorLogging();
     }
 
     @Override
     protected void tearDown() throws Exception {
-        AutoCloseableSet.enableCloseErrorLogging();
+        CloseableSet.enableCloseErrorLogging();
     }
 
     public void testSet() throws Exception {
-        final AutoCloseableSet set = new AutoCloseableSet();
+        final CloseableSet set = new CloseableSet();
         final MyAutoCloseable mac1 = new MyAutoCloseable();
         final MyAutoCloseable mac2 = new MyAutoCloseable();
         final MyAutoCloseable mac3 = new MyAutoCloseable();
@@ -108,12 +108,12 @@ public class AutoCloseableSetTest extends TestCase {
             final MyAutoCloseable mac3 = new MyAutoCloseable();
             final MyAutoCloseable mac4 = new MyAutoCloseable();
             final MyFailedAutoCloseable mfac = new MyFailedAutoCloseable();
-            plant.addAutoClosableSReq(mac1).signal();
-            plant.addAutoClosableSReq(mac2).signal();
-            plant.addAutoClosableSReq(mac3).signal();
-            plant.addAutoClosableSReq(mac4).signal();
-            plant.addAutoClosableSReq(mfac).signal();
-            plant.removeAutoClosableSReq(mac4).call();
+            plant.addClosableSReq(mac1).signal();
+            plant.addClosableSReq(mac2).signal();
+            plant.addClosableSReq(mac3).signal();
+            plant.addClosableSReq(mac4).signal();
+            plant.addClosableSReq(mfac).signal();
+            plant.removeClosableSReq(mac4).call();
 
             plant.closeSReq().call();
 
@@ -142,12 +142,12 @@ public class AutoCloseableSetTest extends TestCase {
             final MyAutoCloseable mac3 = new MyAutoCloseable();
             final MyAutoCloseable mac4 = new MyAutoCloseable();
             final MyFailedAutoCloseable mfac = new MyFailedAutoCloseable();
-            reactor.addAutoClosableSReq(mac1).signal();
-            reactor.addAutoClosableSReq(mac2).signal();
-            reactor.addAutoClosableSReq(mac3).signal();
-            reactor.addAutoClosableSReq(mac4).signal();
-            reactor.addAutoClosableSReq(mfac).signal();
-            reactor.removeAutoClosableSReq(mac4).call();
+            reactor.addClosableSReq(mac1).signal();
+            reactor.addClosableSReq(mac2).signal();
+            reactor.addClosableSReq(mac3).signal();
+            reactor.addClosableSReq(mac4).signal();
+            reactor.addClosableSReq(mfac).signal();
+            reactor.removeClosableSReq(mac4).call();
 
             reactor.closeSReq().call();
 

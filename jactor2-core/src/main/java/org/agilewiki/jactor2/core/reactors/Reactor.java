@@ -3,12 +3,13 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Closer;
 
 /**
  * The Reactor interface identifies the processing methods that can be used by applications.
  */
-public interface Reactor extends Runnable, AutoCloseable, Closer {
+public interface Reactor extends Runnable, Closeable, Closer {
 
     /**
      * Returns the facility.
@@ -42,31 +43,8 @@ public interface Reactor extends Runnable, AutoCloseable, Closer {
      */
     boolean isInboxEmpty();
 
-    /**
-     * Processes the messages in the inbox. For a thread-bound processing this method must
-     * be called by the thread it is bound to, while for non-blocking and isolation reactors
-     * this method is called by ThreadManager.
-     */
     @Override
     void run();
-
-    /**
-     * Returns a request to add an auto closeable, to be closed when the Facility closes.
-     * This request returns true if the AutoClosable was added.
-     *
-     * @param _closeable The autoclosable to be added to the list.
-     * @return The request.
-     */
-    SyncRequest<Boolean> addAutoClosableSReq(final AutoCloseable _closeable);
-
-    /**
-     * Returns a request to remove an auto closeable.
-     * This request returns true if the AutoClosable was removed.
-     *
-     * @param _closeable The autoclosable to be removed.
-     * @return The request.
-     */
-    SyncRequest<Boolean> removeAutoClosableSReq(final AutoCloseable _closeable);
 
     /**
      * Returns true if close() has been called already.

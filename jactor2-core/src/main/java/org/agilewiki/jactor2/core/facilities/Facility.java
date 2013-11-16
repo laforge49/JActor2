@@ -14,7 +14,8 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.util.AutoCloseableSet;
+import org.agilewiki.jactor2.core.util.Closeable;
+import org.agilewiki.jactor2.core.util.CloseableSet;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ import java.util.concurrent.ThreadFactory;
  * when the facility is closed, as well as a table of properties.
  */
 
-public class Facility extends BladeBase implements AutoCloseable, Closer {
+public class Facility extends BladeBase implements Closeable, Closer {
 
     public static final String NAME_PROPERTY = "core.facilityName";
 
@@ -52,7 +53,7 @@ public class Facility extends BladeBase implements AutoCloseable, Closer {
      * A set of AutoCloseable objects.
      * Can only be accessed via a request to the facility.
      */
-    private AutoCloseableSet closeables;
+    private CloseableSet closeables;
 
     /**
      * Set when the facility reaches end-of-life.
@@ -166,11 +167,11 @@ public class Facility extends BladeBase implements AutoCloseable, Closer {
     }
 
     /**
-     * Returns the AutoCloseableSet. Creates it if needed.
+     * Returns the CloseableSet. Creates it if needed.
      */
-    protected final AutoCloseableSet getAutoCloseableSet() {
+    protected final CloseableSet getAutoCloseableSet() {
         if (closeables == null) {
-            closeables = new AutoCloseableSet();
+            closeables = new CloseableSet();
         }
         return closeables;
     }
@@ -238,8 +239,8 @@ public class Facility extends BladeBase implements AutoCloseable, Closer {
     }
 
     @Override
-    public SyncRequest<Boolean> addAutoClosableSReq(
-            final AutoCloseable _closeable) {
+    public SyncRequest<Boolean> addClosableSReq(
+            final Closeable _closeable) {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -253,8 +254,8 @@ public class Facility extends BladeBase implements AutoCloseable, Closer {
     }
 
     @Override
-    public SyncRequest<Boolean> removeAutoClosableSReq(
-            final AutoCloseable _closeable) {
+    public SyncRequest<Boolean> removeClosableSReq(
+            final Closeable _closeable) {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -307,7 +308,7 @@ public class Facility extends BladeBase implements AutoCloseable, Closer {
                 shuttingDown = true;
                 final Plant plant = getPlant();
                 if ((plant != null) && (plant != Facility.this)) {
-                    plant.removeAutoClosableSReq(Facility.this).signal();
+                    plant.removeClosableSReq(Facility.this).signal();
                     plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
                             null).signal();
                 }
@@ -395,7 +396,7 @@ public class Facility extends BladeBase implements AutoCloseable, Closer {
                                 if (PLANT_NAME.equals(_dependency.getName()))
                                     dis.processAsyncResponse(null);
                                 else
-                                    send(_dependency.addAutoClosableSReq(Facility.this), dis, null);
+                                    send(_dependency.addClosableSReq(Facility.this), dis, null);
                             }
                         });
             }
