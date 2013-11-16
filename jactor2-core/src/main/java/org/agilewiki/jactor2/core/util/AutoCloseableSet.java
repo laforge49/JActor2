@@ -87,6 +87,15 @@ public class AutoCloseableSet implements Iterable<AutoCloseable>, AutoCloseable 
         return closeables.remove(resource) != null;
     }
 
+    /**
+     * Returns true when all closeables have been removed.
+     *
+     * @return True when all closeables have been removed.
+     */
+    public boolean isEmpty() {
+        return closeables.isEmpty();
+    }
+
     /** Iterates over the resources. */
     @Override
     public Iterator<AutoCloseable> iterator() {
