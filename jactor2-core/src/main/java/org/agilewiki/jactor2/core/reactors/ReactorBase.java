@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.messages.MessageSource;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.CloseableSet;
+import org.agilewiki.jactor2.core.util.Closer;
 import org.slf4j.Logger;
 
 import java.util.Iterator;
@@ -92,7 +93,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
     }
 
     @Override
-    public SyncRequest<Boolean> addClosableSReq(
+    public SyncRequest<Boolean> addCloseableSReq(
             final Closeable _closeable) {
         return new SyncRequest<Boolean>(this) {
             @Override
@@ -107,7 +108,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
     }
 
     @Override
-    public SyncRequest<Boolean> removeClosableSReq(
+    public SyncRequest<Boolean> removeCloseableSReq(
             final Closeable _closeable) {
         return new SyncRequest<Boolean>(this) {
             @Override
@@ -150,7 +151,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                     inbox.close();
                 } catch (final Exception e) {
                 }
-                facility.removeClosableSReq(ReactorBase.this).signal();
+                facility.removeCloseableSReq(ReactorBase.this).signal();
                 return null;
             }
         };
@@ -160,7 +161,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      * Add to the facility's AutoClose set.
      */
     protected void addAutoClose() throws Exception {
-        facility.addClosableSReq(this).signal();
+        facility.addCloseableSReq(this).signal();
     }
 
     /**
@@ -371,4 +372,23 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      */
     abstract public boolean isIdler();
 
+    @Override
+    public SyncRequest<Boolean> addCloserSReq(Closer _closer) {
+        return new SyncRequest<Boolean>(this) {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                return true;
+            }
+        };
+    }
+
+    @Override
+    public SyncRequest<Boolean> removeCloserSReq(Closer _closer) {
+        return new SyncRequest<Boolean>(this) {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                return true;
+            }
+        };
+    }
 }

@@ -29,7 +29,7 @@ abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends
      */
     protected boolean addAutoClosable(final Closeable _closeable)
             throws Exception {
-        return local(facility.addClosableSReq(_closeable));
+        return local(facility.addCloseableSReq(_closeable));
     }
 
     /**
@@ -40,7 +40,7 @@ abstract public class AsyncFacilityRequest<RESPONSE_TYPE> extends
      */
     protected boolean removeAutoClosable(final Closeable _closeable)
             throws Exception {
-        return local(facility.removeClosableSReq(_closeable));
+        return local(facility.removeCloseableSReq(_closeable));
     }
 
     /**

@@ -11,7 +11,7 @@ public interface Closer {
      * @param _closeable The closeable to be added to the list.
      * @return The request.
      */
-    SyncRequest<Boolean> addClosableSReq(final Closeable _closeable);
+    SyncRequest<Boolean> addCloseableSReq(final Closeable _closeable);
 
     /**
      * Returns a request to remove a closeable.
@@ -20,5 +20,5 @@ public interface Closer {
      * @param _closeable The closeable to be removed.
      * @return The request.
      */
-    SyncRequest<Boolean> removeClosableSReq(final Closeable _closeable);
+    SyncRequest<Boolean> removeCloseableSReq(final Closeable _closeable);
 }

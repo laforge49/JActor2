@@ -239,7 +239,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
     }
 
     @Override
-    public SyncRequest<Boolean> addClosableSReq(
+    public SyncRequest<Boolean> addCloseableSReq(
             final Closeable _closeable) {
         return new SyncBladeRequest<Boolean>() {
             @Override
@@ -254,7 +254,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
     }
 
     @Override
-    public SyncRequest<Boolean> removeClosableSReq(
+    public SyncRequest<Boolean> removeCloseableSReq(
             final Closeable _closeable) {
         return new SyncBladeRequest<Boolean>() {
             @Override
@@ -308,7 +308,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
                 shuttingDown = true;
                 final Plant plant = getPlant();
                 if ((plant != null) && (plant != Facility.this)) {
-                    plant.removeClosableSReq(Facility.this).signal();
+                    plant.removeCloseableSReq(Facility.this).signal();
                     plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
                             null).signal();
                 }
@@ -396,7 +396,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
                                 if (PLANT_NAME.equals(_dependency.getName()))
                                     dis.processAsyncResponse(null);
                                 else
-                                    send(_dependency.addClosableSReq(Facility.this), dis, null);
+                                    send(_dependency.addCloseableSReq(Facility.this), dis, null);
                             }
                         });
             }
@@ -430,6 +430,26 @@ public class Facility extends BladeBase implements Closeable, Closer {
         };
     }
 
+    @Override
+    public SyncRequest<Boolean> addCloserSReq(Closer _closer) {
+        return new SyncBladeRequest<Boolean>() {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                return true;
+            }
+        };
+    }
+
+    @Override
+    public SyncRequest<Boolean> removeCloserSReq(Closer _closer) {
+        return new SyncBladeRequest<Boolean>() {
+            @Override
+            protected Boolean processSyncRequest() throws Exception {
+                return true;
+            }
+        };
+    }
+
     /**
      * The reactor used internally.
      */
@@ -447,6 +467,16 @@ public class Facility extends BladeBase implements Closeable, Closer {
          */
         @Override
         protected void addAutoClose() throws Exception {
+        }
+
+        @Override
+        public SyncRequest<Boolean> addCloserSReq(Closer _closer) {
+            return null;
+        }
+
+        @Override
+        public SyncRequest<Boolean> removeCloserSReq(Closer _closer) {
+            return null;
         }
     }
 }
