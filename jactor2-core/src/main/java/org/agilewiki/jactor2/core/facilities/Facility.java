@@ -403,7 +403,10 @@ public class Facility extends BladeBase implements AutoCloseable {
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(Void _response) throws Exception {
-                                send(_dependency.addAutoClosableSReq(Facility.this), dis, null);
+                                if (PLANT_NAME.equals(_dependency.getName()))
+                                    dis.processAsyncResponse(null);
+                                else
+                                    send(_dependency.addAutoClosableSReq(Facility.this), dis, null);
                             }
                         });
             }

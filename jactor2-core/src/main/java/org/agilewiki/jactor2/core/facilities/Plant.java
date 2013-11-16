@@ -9,6 +9,7 @@ import org.agilewiki.jactor2.core.reactors.Outbox;
 import java.util.concurrent.ThreadFactory;
 
 public class Plant extends Facility {
+    public final static int DEFAULT_THREAD_COUNT = 20;
 
     /**
      * System property flag, jactor.debug, to turn on debug;
@@ -30,7 +31,7 @@ public class Plant extends Facility {
      */
     public Plant() throws Exception {
         this(Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                Outbox.DEFAULT_INITIAL_BUFFER_SIZE, 20,
+                Outbox.DEFAULT_INITIAL_BUFFER_SIZE, DEFAULT_THREAD_COUNT,
                 new DefaultThreadFactory());
     }
 
@@ -89,52 +90,22 @@ public class Plant extends Facility {
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name)
             throws Exception {
-        return new AsyncBladeRequest<Facility>() {
-            final AsyncResponseProcessor<Facility> dis = this;
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                final Facility facility = new Facility(_name,
-                        Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                        Outbox.DEFAULT_INITIAL_BUFFER_SIZE, 20,
-                        new DefaultThreadFactory());
-                send(propertiesProcessor.putAReq(
-                        FACILITY_PROPERTY_PREFIX + _name, facility),
-                        new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(
-                                    final Void _response) throws Exception {
-                                getAutoCloseableSet().add(facility);
-                                dis.processAsyncResponse(facility);
-                            }
-                        });
-            }
-        };
+        return createFacilityAReq(
+                _name,
+                Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
+                Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
+                DEFAULT_THREAD_COUNT,
+                new DefaultThreadFactory());
     }
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name,
             final int _threadCount) throws Exception {
-        return new AsyncBladeRequest<Facility>() {
-            final AsyncResponseProcessor<Facility> dis = this;
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                final Facility facility = new Facility(_name,
-                        Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                        Outbox.DEFAULT_INITIAL_BUFFER_SIZE, _threadCount,
-                        new DefaultThreadFactory());
-                send(propertiesProcessor.putAReq(
-                        FACILITY_PROPERTY_PREFIX + _name, facility),
-                        new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(
-                                    final Void _response) throws Exception {
-                                getAutoCloseableSet().add(facility);
-                                dis.processAsyncResponse(facility);
-                            }
-                        });
-            }
-        };
+        return createFacilityAReq(
+                _name,
+                Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
+                Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
+                _threadCount,
+                new DefaultThreadFactory());
     }
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name,
