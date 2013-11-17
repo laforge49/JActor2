@@ -7,6 +7,10 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+
 /**
  * Test code.
  */
@@ -21,7 +25,6 @@ public class CloseableSetTest extends TestCase {
         @Override
         public void close() throws Exception {
             closed++;
-            System.out.println("remove closable "+getReactor().isClosing());
             getReactor().removeCloseableSReq(this).signal();
         }
 
@@ -59,21 +62,11 @@ public class CloseableSetTest extends TestCase {
         }
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        CloseableSet.disableCloseErrorLogging();
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        CloseableSet.enableCloseErrorLogging();
-    }
-
     public void testSet() throws Exception {
         System.out.println("S");
         final Plant plant = new Plant();
         try {
-            final CloseableSet set = new CloseableSet();
+            final Set<Closeable> set = Collections.newSetFromMap(new WeakHashMap<Closeable, Boolean>());
             final MyCloseable mac1 = new MyCloseable(plant);
             final MyCloseable mac2 = new MyCloseable(plant);
             final MyCloseable mac3 = new MyCloseable(plant);
@@ -114,8 +107,16 @@ public class CloseableSetTest extends TestCase {
             assertEquals(mfacCount, 1);
             assertEquals(otherCount, 0);
 
-            set.close();
-            set.close();
+            final Closeable[] array = set.toArray(
+                    new Closeable[set.size()]);
+            set.clear();
+            for (final Closeable ac : array) {
+                try {
+                    ac.close();
+                } catch (final Throwable t) {
+                    //System.out.println("Error closing a " + ac.getClass().getName()+" "+t);
+                }
+            }
             assertEquals(mac1.closed, 1);
             assertEquals(mac2.closed, 1);
             assertEquals(mac3.closed, 1);

@@ -15,7 +15,6 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.CloseableSet;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.slf4j.Logger;
@@ -53,7 +52,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
      * A set of AutoCloseable objects.
      * Can only be accessed via a request to the facility.
      */
-    private CloseableSet closeables;
+    private Set<Closeable> closeables;
 
     /**
      * Set when the facility reaches end-of-life.
@@ -73,7 +72,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
     /**
      * The logger used by targetReactor.
      */
-    private final Logger messageProcessorLogger = LoggerFactory
+    private final Logger log = LoggerFactory
             .getLogger(Reactor.class);
 
     /**
@@ -169,9 +168,9 @@ public class Facility extends BladeBase implements Closeable, Closer {
     /**
      * Returns the CloseableSet. Creates it if needed.
      */
-    protected final CloseableSet getCloseableSet() {
+    protected final Set<Closeable> getCloseableSet() {
         if (closeables == null) {
-            closeables = new CloseableSet();
+            closeables = Collections.newSetFromMap(new WeakHashMap<Closeable, Boolean>());
         }
         return closeables;
     }
@@ -197,8 +196,8 @@ public class Facility extends BladeBase implements Closeable, Closer {
      *
      * @return A logger.
      */
-    public Logger getMessageProcessorLogger() {
-        return messageProcessorLogger;
+    public Logger getLog() {
+        return log;
     }
 
     /**
@@ -299,7 +298,18 @@ public class Facility extends BladeBase implements Closeable, Closer {
                     close2();
                     startClosingResponseProcessor.processAsyncResponse(null);
                 } else {
-                    closeables.close();
+                    final Closeable[] array = closeables.toArray(
+                            new Closeable[closeables.size()]);
+                    closeables.clear();
+                    for (final Closeable ac : array) {
+                        try {
+                            ac.close();
+                        } catch (final Throwable t) {
+                            if (ac != null && Plant.DEBUG) {
+                                log.warn("Error closing a " + ac.getClass().getName(), t);
+                            }
+                        }
+                    }
                 }
             }
         };

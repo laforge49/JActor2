@@ -2,16 +2,15 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.CloseableSet;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.slf4j.Logger;
 
-import java.util.Iterator;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -54,7 +53,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      * A set of AutoCloseable objects.
      * Can only be accessed via a request to this reactor.
      */
-    private CloseableSet closeables;
+    private Set<Closeable> closeables;
 
     /**
      * Set when the reactor reaches end-of-life.
@@ -75,7 +74,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                        final int _initialLocalQueueSize) throws Exception {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
-        log = _facility.getMessageProcessorLogger();
+        log = _facility.getLog();
         outbox = new Outbox(this, _initialBufferSize);
         addAutoClose();
     }
@@ -83,9 +82,9 @@ abstract public class ReactorBase implements Reactor, MessageSource {
     /**
      * Returns the CloseableSet. Creates it if needed.
      */
-    protected final CloseableSet getAutoCloseableSet() {
+    protected final Set<Closeable> getCloseableSet() {
         if (closeables == null) {
-            closeables = new CloseableSet();
+            closeables = Collections.newSetFromMap(new WeakHashMap<Closeable, Boolean>());
         }
         return closeables;
     }
@@ -103,7 +102,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
             protected Boolean processSyncRequest() throws Exception {
                 if (startClosing)
                     throw new ServiceClosedException();
-                return getAutoCloseableSet().add(_closeable);
+                return getCloseableSet().add(_closeable);
             }
         };
     }
@@ -114,10 +113,8 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         return new SyncRequest<Boolean>(this) {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                System.out.println("##############"+this);
                 if (closeables == null)
                     return false;
-                System.out.println("removal "+closeables.isEmpty());
                 boolean rv = closeables.remove(_closeable);
                 if (startClosing && closeables.isEmpty())
                     close2();
@@ -151,8 +148,20 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                 if (closeables == null || closeables.isEmpty()) {
                     close2();
                     startClosingResponseProcessor.processAsyncResponse(null);
-                } else
-                    closeables.close();
+                } else {
+                    final Closeable[] array = closeables.toArray(
+                            new Closeable[closeables.size()]);
+                    closeables.clear();
+                    for (final Closeable ac : array) {
+                        try {
+                            ac.close();
+                        } catch (final Throwable t) {
+                            if (ac != null && Plant.DEBUG) {
+                                log.warn("Error closing a " + ac.getClass().getName(), t);
+                            }
+                        }
+                    }
+                }
             }
         };
     }
