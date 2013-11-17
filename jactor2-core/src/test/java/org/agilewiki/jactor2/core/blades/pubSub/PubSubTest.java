@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.blades.pubSub;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -10,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PubSubTest extends TestCase {
     public void testI() throws Exception {
+        System.out.println("I");
         final Plant plant = new Plant();
         try {
             final CommonReactor reactor = new NonBlockingReactor(plant);
@@ -35,6 +37,7 @@ public class PubSubTest extends TestCase {
     }
 
     public void testJ() throws Exception {
+        System.out.println("J");
         final Plant plant = new Plant();
         try {
             final AtomicInteger counter = new AtomicInteger();
@@ -58,15 +61,12 @@ public class PubSubTest extends TestCase {
             }.call();
             requestBus.sendsContentAReq(null).call();
             assertEquals(counter.get(), 1);
-            subscriberReactor.closeSReq().call();
-            requestBus.sendsContentAReq(null).call();
-            // This does not always work, because while we do a subscriberReactor.closeSReq().call(),
-            // This only ensure that the close was performed, BUT since the close of the reactor
-            // call the "normal close()" of it's resources, and that those use signal internally,
-            // there is no guarantee that the subscription itself is closed.
-            // In other words, it is not possible to TEST if the
-            // "close subscription on subscriber reactor close" actually works. :(
-//            assertEquals(counter.get(), 1);
+            subscriberReactor.closeAReq().call();
+            try {
+             requestBus.sendsContentAReq(null).call();
+            } catch (ServiceClosedException e) {
+            }
+            assertEquals(counter.get(), 1);
         } finally {
             plant.close();
         }

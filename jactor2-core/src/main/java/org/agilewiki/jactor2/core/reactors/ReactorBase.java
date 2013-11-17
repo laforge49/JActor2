@@ -3,9 +3,8 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
-import org.agilewiki.jactor2.core.messages.Message;
-import org.agilewiki.jactor2.core.messages.MessageSource;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
+import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.CloseableSet;
 import org.agilewiki.jactor2.core.util.Closer;
@@ -63,6 +62,8 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      */
     private volatile boolean shuttingDown;
 
+    private boolean startClosing;
+
     /**
      * Create a targetReactor.
      *
@@ -71,7 +72,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      */
     public ReactorBase(final Facility _facility, final int _initialBufferSize,
-            final int _initialLocalQueueSize) throws Exception {
+                       final int _initialLocalQueueSize) throws Exception {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.getMessageProcessorLogger();
@@ -79,7 +80,9 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         addAutoClose();
     }
 
-    /** Returns the CloseableSet. Creates it if needed. */
+    /**
+     * Returns the CloseableSet. Creates it if needed.
+     */
     protected final CloseableSet getAutoCloseableSet() {
         if (closeables == null) {
             closeables = new CloseableSet();
@@ -98,11 +101,9 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         return new SyncRequest<Boolean>(this) {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                if (!isClosing()) {
-                    return getAutoCloseableSet().add(_closeable);
-                } else {
-                    return false;
-                }
+                if (startClosing)
+                    throw new ServiceClosedException();
+                return getAutoCloseableSet().add(_closeable);
             }
         };
     }
@@ -113,48 +114,63 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         return new SyncRequest<Boolean>(this) {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                if (!isClosing()) {
-                    return (closeables == null) ? false : closeables
-                            .remove(_closeable);
-                }
-                return false;
+                System.out.println("##############"+this);
+                if (closeables == null)
+                    return false;
+                System.out.println("removal "+closeables.isEmpty());
+                boolean rv = closeables.remove(_closeable);
+                if (startClosing && closeables.isEmpty())
+                    close2();
+                return rv;
             }
         };
     }
 
     @Override
     public void close() throws Exception {
-        closeSReq().signal();
+        if (startClosing)
+            return;
+        closeAReq().signal();
     }
 
-    /** Returns a Request to perform a close(). */
+    AsyncResponseProcessor<Void> startClosingResponseProcessor;
+
+    /**
+     * Returns a Request to perform a close().
+     */
     @Override
-    public SyncRequest<Void> closeSReq() {
-        return new SyncRequest<Void>(this) {
+    public AsyncRequest<Void> closeAReq() {
+        return new AsyncRequest<Void>(this) {
             @Override
-            protected Void processSyncRequest() throws Exception {
-                if (shuttingDown) {
-                    return null;
+            protected void processAsyncRequest() throws Exception {
+                if (startClosing) {
+                    processAsyncResponse(null);
                 }
-                shuttingDown = true;
-                if (closeables != null) {
-                    try {
-                        closeables.close();
-                    } catch (final Exception e) {
-                    }
-                }
-                try {
-                    outbox.close();
-                } catch (final Exception e) {
-                }
-                try {
-                    inbox.close();
-                } catch (final Exception e) {
-                }
-                facility.removeCloseableSReq(ReactorBase.this).signal();
-                return null;
+                startClosing = true;
+                startClosingResponseProcessor = this;
+                if (closeables == null || closeables.isEmpty()) {
+                    close2();
+                    startClosingResponseProcessor.processAsyncResponse(null);
+                } else
+                    closeables.close();
             }
         };
+    }
+
+    private void close2() throws Exception {
+        if (shuttingDown) {
+            return;
+        }
+        shuttingDown = true;
+        try {
+            outbox.close();
+        } catch (final Exception e) {
+        }
+        try {
+            inbox.close();
+        } catch (final Exception e) {
+        }
+        facility.removeCloseableSReq(ReactorBase.this).signal();
     }
 
     /**
@@ -251,7 +267,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      * @param _local   True when the current thread is bound to the targetReactor.
      */
     public void unbufferedAddMessage(final Message _message,
-            final boolean _local) throws Exception {
+                                     final boolean _local) throws Exception {
         if (isClosing()) {
             if (_message.isResponsePending()) {
                 try {
@@ -321,7 +337,7 @@ abstract public class ReactorBase implements Reactor, MessageSource {
 
     @Override
     public final void incomingResponse(final Message _message,
-            final Reactor _responseSource) {
+                                       final Reactor _responseSource) {
         try {
             final ReactorBase responseSource = (ReactorBase) _responseSource;
             final boolean local = this == _responseSource;

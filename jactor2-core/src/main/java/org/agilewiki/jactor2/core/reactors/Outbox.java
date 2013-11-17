@@ -92,16 +92,12 @@ public class Outbox implements AutoCloseable {
                 final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter
                         .next();
                 final ReactorBase target = entry.getKey();
-                if (target.getFacility() != facility) {
                     final ArrayDeque<Message> messages = entry.getValue();
                     iter.remove();
                     try {
                         target.unbufferedAddMessages(messages);
                     } catch (final Exception x) {
                     }
-                } else {
-                    iter.remove();
-                }
             }
         }
         sendBuffer = null;

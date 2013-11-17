@@ -244,11 +244,9 @@ public class Facility extends BladeBase implements Closeable, Closer {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                if (!startClosing) {
-                    return getCloseableSet().add(_closeable);
-                } else {
-                    return false;
-                }
+                if (startClosing)
+                    throw new ServiceClosedException();
+                return getCloseableSet().add(_closeable);
             }
         };
     }
@@ -259,34 +257,36 @@ public class Facility extends BladeBase implements Closeable, Closer {
         return new SyncBladeRequest<Boolean>() {
             @Override
             protected Boolean processSyncRequest() throws Exception {
-                if (!shuttingDown) {
-                    boolean rv = (closeables == null) ? false : closeables
-                            .remove(_closeable);
-                    if (startClosing && closeables.isEmpty())
-                        close2SReq().signal();
-                    return rv;
+                if (closeables == null)
+                    return false;
+                boolean rv = closeables.remove(_closeable);
+                if (startClosing && closeables.isEmpty()) {
+                    close2();
                 }
-                return false;
+                return rv;
             }
         };
     }
 
     @Override
     public void close() throws Exception {
-        if (shuttingDown)
+        if (startClosing)
             return;
         closeAReq().signal();
     }
 
     AsyncResponseProcessor<Void> startClosingResponseProcessor;
 
+    /**
+     * Returns a Request to perform a close().
+     */
     public AsyncRequest<Void> closeAReq() {
         return new AsyncBladeRequest<Void>() {
 
             @Override
             protected void processAsyncRequest() throws Exception {
                 if (startClosing) {
-                    this.processAsyncResponse(null);
+                    processAsyncResponse(null);
                 }
                 startClosing = true;
                 startClosingResponseProcessor = this;
@@ -295,24 +295,19 @@ public class Facility extends BladeBase implements Closeable, Closer {
                     plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
                             null).signal();
                 }
-                if (closeables == null || closeables.isEmpty())
-                    send(close2SReq(), startClosingResponseProcessor);
-                else {
+                if (closeables == null || closeables.isEmpty()) {
+                    close2();
+                    startClosingResponseProcessor.processAsyncResponse(null);
+                } else {
                     closeables.close();
                 }
             }
         };
     }
 
-    /**
-     * Returns a Request to perform a close().
-     */
-    private SyncRequest<Void> close2SReq() {
-        return new SyncBladeRequest<Void>() {
-            @Override
-            protected Void processSyncRequest() throws Exception {
+    private void close2() throws Exception {
                 if (shuttingDown) {
-                    return null;
+                    return;
                 }
                 shuttingDown = true;
                 final Plant plant = getPlant();
@@ -321,9 +316,7 @@ public class Facility extends BladeBase implements Closeable, Closer {
                 }
                 threadManager.close();
                 startClosingResponseProcessor.processAsyncResponse(null);
-                return null;
-            }
-        };
+                return;
     }
 
     /**
