@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.facilities;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
@@ -15,6 +14,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.Closeable;
+import org.agilewiki.jactor2.core.util.CloseableBase;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ import java.util.concurrent.ThreadFactory;
  * when the facility is closed, as well as a table of properties.
  */
 
-public class Facility extends BladeBase implements Closeable, Closer {
+public class Facility extends CloseableBase implements Closer {
 
     public static final String NAME_PROPERTY = "core.facilityName";
 
@@ -240,12 +240,15 @@ public class Facility extends BladeBase implements Closeable, Closer {
     @Override
     public SyncRequest<Boolean> addCloseableSReq(
             final Closeable _closeable) {
-        return new SyncBladeRequest<Boolean>() {
+        return new SyncRequest<Boolean>(getReactor()) {
             @Override
             protected Boolean processSyncRequest() throws Exception {
                 if (startClosing)
                     throw new ServiceClosedException();
-                return getCloseableSet().add(_closeable);
+                if (!getCloseableSet().add(_closeable))
+                    return false;
+                _closeable.addCloserSReq(Facility.this).signal();
+                return true;
             }
         };
     }
@@ -300,7 +303,6 @@ public class Facility extends BladeBase implements Closeable, Closer {
                 } else {
                     final Closeable[] array = closeables.toArray(
                             new Closeable[closeables.size()]);
-                    closeables.clear();
                     for (final Closeable ac : array) {
                         try {
                             ac.close();
@@ -316,17 +318,15 @@ public class Facility extends BladeBase implements Closeable, Closer {
     }
 
     private void close2() throws Exception {
-                if (shuttingDown) {
-                    return;
-                }
-                shuttingDown = true;
-                final Plant plant = getPlant();
-                if ((plant != null) && (plant != Facility.this)) {
-                    plant.removeCloseableSReq(Facility.this).signal();
-                }
-                threadManager.close();
-                startClosingResponseProcessor.processAsyncResponse(null);
-                return;
+        if (shuttingDown) {
+            return;
+        }
+        shuttingDown = true;
+        final Plant plant = getPlant();
+        threadManager.close();
+        super.close();
+        startClosingResponseProcessor.processAsyncResponse(null);
+        return;
     }
 
     /**
@@ -441,26 +441,6 @@ public class Facility extends BladeBase implements Closeable, Closer {
         };
     }
 
-    @Override
-    public SyncRequest<Boolean> addCloserSReq(Closer _closer) {
-        return new SyncBladeRequest<Boolean>() {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                return true;
-            }
-        };
-    }
-
-    @Override
-    public SyncRequest<Boolean> removeCloserSReq(Closer _closer) {
-        return new SyncBladeRequest<Boolean>() {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                return true;
-            }
-        };
-    }
-
     /**
      * The reactor used internally.
      */
@@ -477,16 +457,16 @@ public class Facility extends BladeBase implements Closeable, Closer {
          * No autoclose.
          */
         @Override
-        protected void addAutoClose() throws Exception {
+        protected void addClose() throws Exception {
         }
 
         @Override
-        public SyncRequest<Boolean> addCloserSReq(Closer _closer) {
+        public SyncRequest<Void> addCloserSReq(Closer _closer) {
             return null;
         }
 
         @Override
-        public SyncRequest<Boolean> removeCloserSReq(Closer _closer) {
+        public SyncRequest<Void> removeCloserSReq(Closer _closer) {
             return null;
         }
     }

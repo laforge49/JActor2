@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.Closer;
+import org.agilewiki.jactor2.core.util.CloseableBase;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorBase implements Reactor, MessageSource {
+abstract public class ReactorBase extends CloseableBase implements Reactor, MessageSource {
 
     /**
      * Reactor logger.
@@ -76,7 +76,8 @@ abstract public class ReactorBase implements Reactor, MessageSource {
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.getLog();
         outbox = new Outbox(this, _initialBufferSize);
-        addAutoClose();
+        initialize(this);
+        addClose();
     }
 
     /**
@@ -102,7 +103,10 @@ abstract public class ReactorBase implements Reactor, MessageSource {
             protected Boolean processSyncRequest() throws Exception {
                 if (startClosing)
                     throw new ServiceClosedException();
-                return getCloseableSet().add(_closeable);
+                if (!getCloseableSet().add(_closeable))
+                    return false;
+                _closeable.addCloserSReq(ReactorBase.this).signal();
+                return true;
             }
         };
     }
@@ -116,8 +120,9 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                 if (closeables == null)
                     return false;
                 boolean rv = closeables.remove(_closeable);
-                if (startClosing && closeables.isEmpty())
+                if (startClosing && closeables.isEmpty()) {
                     close2();
+                }
                 return rv;
             }
         };
@@ -147,11 +152,9 @@ abstract public class ReactorBase implements Reactor, MessageSource {
                 startClosingResponseProcessor = this;
                 if (closeables == null || closeables.isEmpty()) {
                     close2();
-                    startClosingResponseProcessor.processAsyncResponse(null);
                 } else {
                     final Closeable[] array = closeables.toArray(
                             new Closeable[closeables.size()]);
-                    closeables.clear();
                     for (final Closeable ac : array) {
                         try {
                             ac.close();
@@ -179,13 +182,14 @@ abstract public class ReactorBase implements Reactor, MessageSource {
             inbox.close();
         } catch (final Exception e) {
         }
-        facility.removeCloseableSReq(ReactorBase.this).signal();
+        super.close();
+        startClosingResponseProcessor.processAsyncResponse(null);
     }
 
     /**
      * Add to the facility's AutoClose set.
      */
-    protected void addAutoClose() throws Exception {
+    protected void addClose() throws Exception {
         facility.addCloseableSReq(this).signal();
     }
 
@@ -401,24 +405,4 @@ abstract public class ReactorBase implements Reactor, MessageSource {
      * @return True when there is code to be executed when the inbox is emptied.
      */
     abstract public boolean isIdler();
-
-    @Override
-    public SyncRequest<Boolean> addCloserSReq(Closer _closer) {
-        return new SyncRequest<Boolean>(this) {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                return true;
-            }
-        };
-    }
-
-    @Override
-    public SyncRequest<Boolean> removeCloserSReq(Closer _closer) {
-        return new SyncRequest<Boolean>(this) {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                return true;
-            }
-        };
-    }
 }

@@ -4,6 +4,6 @@ import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 public interface Closeable extends AutoCloseable, Blade {
-    SyncRequest<Boolean> addCloserSReq(final Closer _closer);
-    SyncRequest<Boolean> removeCloserSReq(final Closer _closer);
+    SyncRequest<Void> addCloserSReq(final Closer _closer);
+    SyncRequest<Void> removeCloserSReq(final Closer _closer);
 }

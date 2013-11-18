@@ -10,6 +10,8 @@ public class FirehoseData {
 
     public FirehoseData(final BoundResponseProcessor<Void> _ack,
             final List<Long> _content) {
+        if (_ack == null)
+            throw new IllegalArgumentException();
         ack = _ack;
         content = _content;
     }

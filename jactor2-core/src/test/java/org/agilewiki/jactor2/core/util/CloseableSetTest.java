@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -15,53 +14,6 @@ import java.util.WeakHashMap;
  * Test code.
  */
 public class CloseableSetTest extends TestCase {
-    private static class MyCloseable extends BladeBase implements Closeable {
-        public volatile int closed;
-
-        MyCloseable(Plant plant) throws Exception {
-            initialize(new NonBlockingReactor(plant));
-        }
-
-        @Override
-        public void close() throws Exception {
-            closed++;
-            getReactor().removeCloseableSReq(this).signal();
-        }
-
-        @Override
-        public SyncRequest<Boolean> addCloserSReq(Closer _closer) {
-            return new SyncBladeRequest<Boolean>() {
-                @Override
-                protected Boolean processSyncRequest() throws Exception {
-                    return true;
-                }
-            };
-        }
-
-        @Override
-        public SyncRequest<Boolean> removeCloserSReq(Closer _closer) {
-            return new SyncBladeRequest<Boolean>() {
-                @Override
-                protected Boolean processSyncRequest() throws Exception {
-                    return true;
-                }
-            };
-        }
-    }
-
-    private static class MyFailedCloseable extends MyCloseable {
-
-        MyFailedCloseable(Plant plant) throws Exception {
-            super(plant);
-        }
-
-        @Override
-        public void close() throws Exception {
-            super.close();
-            throw new IllegalStateException("FAIL!");
-        }
-    }
-
     public void testSet() throws Exception {
         System.out.println("S");
         final Plant plant = new Plant();
@@ -109,7 +61,6 @@ public class CloseableSetTest extends TestCase {
 
             final Closeable[] array = set.toArray(
                     new Closeable[set.size()]);
-            set.clear();
             for (final Closeable ac : array) {
                 try {
                     ac.close();
@@ -122,12 +73,6 @@ public class CloseableSetTest extends TestCase {
             assertEquals(mac3.closed, 1);
             assertEquals(mac4.closed, 0);
             assertEquals(mfac.closed, 1);
-
-            boolean foundAny = false;
-            for (final Closeable ac : set) {
-                foundAny = true;
-            }
-            assertFalse(foundAny);
         } finally {
             // Close it again, just in case ...
             try {
@@ -155,6 +100,7 @@ public class CloseableSetTest extends TestCase {
             plant.addCloseableSReq(mfac).signal();
             plant.removeCloseableSReq(mac4).call();
 
+            System.out.println("first plant.close");
             plant.close();
 
             assertEquals(mac1.closed, 1);
@@ -165,6 +111,7 @@ public class CloseableSetTest extends TestCase {
         } finally {
             // Close it again, just in case ...
             try {
+                System.out.println("second plant.close");
                 plant.close();
             } catch (final Throwable t) {
                 // NOP
@@ -173,7 +120,6 @@ public class CloseableSetTest extends TestCase {
     }
 
     public void testReactor() throws Exception {
-        /*
         System.out.println("R");
         final Plant plant = new Plant();
         try {
@@ -183,31 +129,54 @@ public class CloseableSetTest extends TestCase {
             final MyCloseable mac2 = new MyCloseable(plant);
             final MyCloseable mac3 = new MyCloseable(plant);
             final MyCloseable mac4 = new MyCloseable(plant);
-            //final MyFailedCloseable mfac = new MyFailedCloseable(plant);
+            final MyFailedCloseable mfac = new MyFailedCloseable(plant);
             reactor.addCloseableSReq(mac1).signal();
             reactor.addCloseableSReq(mac2).signal();
             reactor.addCloseableSReq(mac3).signal();
             reactor.addCloseableSReq(mac4).signal();
-            //reactor.addCloseableSReq(mfac).signal();
-            //reactor.removeCloseableSReq(mac4).call();
+            reactor.addCloseableSReq(mfac).signal();
+            reactor.removeCloseableSReq(mac4).call();
 
-            System.out.println("force reactor closed "+reactor);
             reactor.closeAReq().call();
-            System.out.println("forceed reactor closed");
 
             assertEquals(mac1.closed, 1);
             assertEquals(mac2.closed, 1);
             assertEquals(mac3.closed, 1);
             assertEquals(mac4.closed, 0);
-            //assertEquals(mfac.closed, 1);
+            assertEquals(mfac.closed, 1);
         } finally {
             try {
-                System.out.println("close plant");
                 plant.close();
             } catch (final Throwable t) {
                 // NOP
             }
         }
-        */
+    }
+}
+
+class MyCloseable extends CloseableBase {
+    public volatile int closed;
+
+    MyCloseable(Plant plant) throws Exception {
+        initialize(new NonBlockingReactor(plant));
+    }
+
+    @Override
+    public void close() throws Exception {
+        closed++;
+        super.close();
+    }
+}
+
+class MyFailedCloseable extends MyCloseable {
+
+    MyFailedCloseable(Plant plant) throws Exception {
+        super(plant);
+    }
+
+    @Override
+    public void close() throws Exception {
+        super.close();
+        throw new IllegalStateException("FAIL!");
     }
 }

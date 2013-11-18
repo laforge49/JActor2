@@ -1,20 +1,18 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.SyncFacilityRequest;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.Closer;
+import org.agilewiki.jactor2.core.util.CloseableBase;
 
 /**
  * A subscription allows a subscriber to receive content of interest from a RequestBus.
  *
  * @param <CONTENT> The type of content.
  */
-abstract public class Subscription<CONTENT> extends BladeBase implements
+abstract public class Subscription<CONTENT> extends CloseableBase implements
         Closeable {
     private final RequestBus<CONTENT> requestBus;
     private final CommonReactor subscriberReactor;
@@ -79,24 +77,4 @@ abstract public class Subscription<CONTENT> extends BladeBase implements
     abstract protected void processContent(CONTENT _content,
                                            AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception;
-
-    @Override
-    public SyncRequest<Boolean> addCloserSReq(Closer _closer) {
-        return new SyncBladeRequest<Boolean>() {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                return true;
-            }
-        };
-    }
-
-    @Override
-    public SyncRequest<Boolean> removeCloserSReq(Closer _closer) {
-        return new SyncBladeRequest<Boolean>() {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                return true;
-            }
-        };
-    }
 }

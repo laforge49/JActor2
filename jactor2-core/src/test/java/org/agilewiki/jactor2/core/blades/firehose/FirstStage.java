@@ -78,6 +78,7 @@ public class FirstStage extends BladeBase implements Runnable {
 
     private void createList() {
         if (list != null) {
+            System.out.println("!!! bug !!!");
             return;
         }
         list = new ArrayList<Long>();
@@ -108,6 +109,8 @@ public class FirstStage extends BladeBase implements Runnable {
 
     @Override
     public void run() {
+        if (ack == null)
+            return;
         while ((ndx < count) && (ackCount < maxWindowSize)) {
             createList();
             add();
