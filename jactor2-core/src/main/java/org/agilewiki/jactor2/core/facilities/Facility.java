@@ -16,6 +16,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.CloseableBase;
 import org.agilewiki.jactor2.core.util.Closer;
+import org.agilewiki.jactor2.core.util.CloserBase;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ import java.util.concurrent.ThreadFactory;
  * when the facility is closed, as well as a table of properties.
  */
 
-public class Facility extends CloseableBase implements Closer {
+public class Facility extends CloserBase {
 
     public static final String NAME_PROPERTY = "core.facilityName";
 
@@ -47,12 +48,6 @@ public class Facility extends CloseableBase implements Closer {
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
      */
     private final InternalReactor internalReactor;
-
-    /**
-     * A set of AutoCloseable objects.
-     * Can only be accessed via a request to the facility.
-     */
-    private Set<Closeable> closeables;
 
     /**
      * Set when the facility reaches end-of-life.
@@ -165,14 +160,9 @@ public class Facility extends CloseableBase implements Closer {
         }.signal();
     }
 
-    /**
-     * Returns the CloseableSet. Creates it if needed.
-     */
-    protected final Set<Closeable> getCloseableSet() {
-        if (closeables == null) {
-            closeables = Collections.newSetFromMap(new WeakHashMap<Closeable, Boolean>());
-        }
-        return closeables;
+    @Override
+    protected final boolean startedClosing() {
+        return startClosing;
     }
 
     protected void validateName(final String _name) throws Exception {
@@ -191,11 +181,7 @@ public class Facility extends CloseableBase implements Closer {
         }
     }
 
-    /**
-     * Returns the logger to be used by targetReactor.
-     *
-     * @return A logger.
-     */
+    @Override
     public Logger getLog() {
         return log;
     }
@@ -238,39 +224,6 @@ public class Facility extends CloseableBase implements Closer {
     }
 
     @Override
-    public SyncRequest<Boolean> addCloseableSReq(
-            final Closeable _closeable) {
-        return new SyncRequest<Boolean>(getReactor()) {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                if (startClosing)
-                    throw new ServiceClosedException();
-                if (!getCloseableSet().add(_closeable))
-                    return false;
-                _closeable.addCloserSReq(Facility.this).signal();
-                return true;
-            }
-        };
-    }
-
-    @Override
-    public SyncRequest<Boolean> removeCloseableSReq(
-            final Closeable _closeable) {
-        return new SyncBladeRequest<Boolean>() {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                if (closeables == null)
-                    return false;
-                boolean rv = closeables.remove(_closeable);
-                if (startClosing && closeables.isEmpty()) {
-                    close2();
-                }
-                return rv;
-            }
-        };
-    }
-
-    @Override
     public void close() throws Exception {
         if (startClosing)
             return;
@@ -297,27 +250,16 @@ public class Facility extends CloseableBase implements Closer {
                     plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
                             null).signal();
                 }
-                if (closeables == null || closeables.isEmpty()) {
+                if (isCloseablesEmpty()) {
                     close2();
-                    startClosingResponseProcessor.processAsyncResponse(null);
                 } else {
-                    final Closeable[] array = closeables.toArray(
-                            new Closeable[closeables.size()]);
-                    for (final Closeable ac : array) {
-                        try {
-                            ac.close();
-                        } catch (final Throwable t) {
-                            if (ac != null && Plant.DEBUG) {
-                                log.warn("Error closing a " + ac.getClass().getName(), t);
-                            }
-                        }
-                    }
+                    closeAll();
                 }
             }
         };
     }
 
-    private void close2() throws Exception {
+    protected void close2() throws Exception {
         if (shuttingDown) {
             return;
         }

@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.CloseableBase;
+import org.agilewiki.jactor2.core.util.CloserBase;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -16,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorBase extends CloseableBase implements Reactor, MessageSource {
+abstract public class ReactorBase extends CloserBase implements Reactor, MessageSource {
 
     /**
      * Reactor logger.
@@ -50,12 +51,6 @@ abstract public class ReactorBase extends CloseableBase implements Reactor, Mess
     private Message currentMessage;
 
     /**
-     * A set of AutoCloseable objects.
-     * Can only be accessed via a request to this reactor.
-     */
-    private Set<Closeable> closeables;
-
-    /**
      * Set when the reactor reaches end-of-life.
      * Can only be updated via a request to the reactor.
      */
@@ -80,52 +75,19 @@ abstract public class ReactorBase extends CloseableBase implements Reactor, Mess
         addClose();
     }
 
-    /**
-     * Returns the CloseableSet. Creates it if needed.
-     */
-    protected final Set<Closeable> getCloseableSet() {
-        if (closeables == null) {
-            closeables = Collections.newSetFromMap(new WeakHashMap<Closeable, Boolean>());
-        }
-        return closeables;
+    @Override
+    public Logger getLog() {
+        return log;
+    }
+
+    @Override
+    protected final boolean startedClosing() {
+        return startClosing;
     }
 
     @Override
     public final boolean isClosing() {
         return shuttingDown;
-    }
-
-    @Override
-    public SyncRequest<Boolean> addCloseableSReq(
-            final Closeable _closeable) {
-        return new SyncRequest<Boolean>(this) {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                if (startClosing)
-                    throw new ServiceClosedException();
-                if (!getCloseableSet().add(_closeable))
-                    return false;
-                _closeable.addCloserSReq(ReactorBase.this).signal();
-                return true;
-            }
-        };
-    }
-
-    @Override
-    public SyncRequest<Boolean> removeCloseableSReq(
-            final Closeable _closeable) {
-        return new SyncRequest<Boolean>(this) {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                if (closeables == null)
-                    return false;
-                boolean rv = closeables.remove(_closeable);
-                if (startClosing && closeables.isEmpty()) {
-                    close2();
-                }
-                return rv;
-            }
-        };
     }
 
     @Override
@@ -150,26 +112,16 @@ abstract public class ReactorBase extends CloseableBase implements Reactor, Mess
                 }
                 startClosing = true;
                 startClosingResponseProcessor = this;
-                if (closeables == null || closeables.isEmpty()) {
+                if (isCloseablesEmpty()) {
                     close2();
                 } else {
-                    final Closeable[] array = closeables.toArray(
-                            new Closeable[closeables.size()]);
-                    for (final Closeable ac : array) {
-                        try {
-                            ac.close();
-                        } catch (final Throwable t) {
-                            if (ac != null && Plant.DEBUG) {
-                                log.warn("Error closing a " + ac.getClass().getName(), t);
-                            }
-                        }
-                    }
+                    closeAll();
                 }
             }
         };
     }
 
-    private void close2() throws Exception {
+    protected void close2() throws Exception {
         if (shuttingDown) {
             return;
         }
