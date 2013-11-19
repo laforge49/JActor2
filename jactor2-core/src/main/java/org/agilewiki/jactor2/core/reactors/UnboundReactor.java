@@ -70,7 +70,7 @@ abstract public class UnboundReactor extends ReactorBase {
     @Override
     protected void afterAdd() throws Exception {
         if (threadReference.get() == null) {
-            facility.submit(this);
+            facility.getPlant().submit(this);
         }
     }
 

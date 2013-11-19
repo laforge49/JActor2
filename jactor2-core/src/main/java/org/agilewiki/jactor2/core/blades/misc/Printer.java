@@ -101,7 +101,7 @@ public class Printer extends BlockingBlade {
         final Plant plant = _facility.getPlant();
         return new AsyncRequest<Printer>(plant.getReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
-            PropertiesProcessor propertiesProcessor = plant.propertiesProcessor;
+            PropertiesProcessor propertiesProcessor = plant.getPropertiesProcessor();
             ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
             Printer printer = (Printer) immutableProperties.get("stdout");
 

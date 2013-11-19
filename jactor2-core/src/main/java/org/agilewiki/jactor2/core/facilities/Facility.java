@@ -45,13 +45,13 @@ public class Facility extends CloserBase {
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
      */
-    private final InternalReactor internalReactor;
+    private InternalReactor internalReactor;
 
     /**
      * Set when the facility reaches end-of-life.
      * Can only be updated via a request to the facility.
      */
-    private volatile boolean shuttingDown;
+    protected volatile boolean shuttingDown;
 
     private volatile boolean startClosing;
 
@@ -69,11 +69,6 @@ public class Facility extends CloserBase {
             .getLogger(Reactor.class);
 
     /**
-     * The thread pool used by Facility.
-     */
-    private final ThreadManager threadManager;
-
-    /**
      * How big should the initial inbox doLocal queue size be?
      */
     private final int initialLocalMessageQueueSize;
@@ -83,7 +78,9 @@ public class Facility extends CloserBase {
      */
     private final int initialBufferSize;
 
-    public final PropertiesProcessor propertiesProcessor;
+    private PropertiesProcessor propertiesProcessor;
+
+    public final String name;
 
     /**
      * Create a Facility.
@@ -91,21 +88,21 @@ public class Facility extends CloserBase {
      * @param _name                         The name of the facility.
      * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
      * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
-     * @param _threadCount                  The thread pool size.
-     * @param _threadFactory                The factory used to create threads for the threadpool.
      */
     protected Facility(final String _name,
                        final int _initialLocalMessageQueueSize,
-                       final int _initialBufferSize, final int _threadCount,
-                       final ThreadFactory _threadFactory) throws Exception {
+                       final int _initialBufferSize) throws Exception {
         validateName(_name);
-        threadManager = new ThreadManager(_threadCount, _threadFactory);
+        name = _name;
         initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
         initialBufferSize = _initialBufferSize;
+    }
+
+    public void initialize() throws Exception {
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
-        initialState.put(NAME_PROPERTY, _name);
+        initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
         RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
@@ -149,13 +146,17 @@ public class Facility extends CloserBase {
                             throw new IllegalArgumentException(name
                                     + " not set to a Facility " + newValue);
                         Facility facility = (Facility) newValue;
-                        if (facility.hasDependency(Facility.this.getName()))
+                        if (facility.hasDependency(name))
                             throw new IllegalArgumentException(
                                     "Would create a dependency cycle.");
                     }
                 }
             }
         }.signal();
+    }
+
+    public PropertiesProcessor getPropertiesProcessor() {
+        return propertiesProcessor;
     }
 
     @Override
@@ -202,25 +203,6 @@ public class Facility extends CloserBase {
         return initialLocalMessageQueueSize;
     }
 
-    /**
-     * Submit a Reactor for subsequent execution.
-     *
-     * @param _reactor The targetReactor to be run.
-     */
-    public final void submit(final Reactor _reactor) throws Exception {
-        try {
-            threadManager.execute(_reactor);
-        } catch (final Exception e) {
-            if (!shuttingDown) {
-                throw e;
-            }
-        } catch (final Error e) {
-            if (!shuttingDown) {
-                throw e;
-            }
-        }
-    }
-
     @Override
     public void close() throws Exception {
         if (startClosing)
@@ -245,7 +227,7 @@ public class Facility extends CloserBase {
                 startClosingResponseProcessor = this;
                 final Plant plant = getPlant();
                 if ((plant != null) && (plant != Facility.this)) {
-                    plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + getName(),
+                    plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                             null).signal();
                 }
                 if (isCloseablesEmpty()) {
@@ -262,11 +244,12 @@ public class Facility extends CloserBase {
             return;
         }
         shuttingDown = true;
-        final Plant plant = getPlant();
-        threadManager.close();
+        close3();
+    }
+
+    protected void close3() throws Exception {
         super.close();
         startClosingResponseProcessor.processAsyncResponse(null);
-        return;
     }
 
     /**
@@ -333,12 +316,12 @@ public class Facility extends CloserBase {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                final String myName = getName();
+                final String myName = name;
                 if (myName == null) {
                     throw new IllegalStateException(
                             "assign a name before adding a dependency");
                 }
-                final String name = _dependency.getName();
+                final String name = _dependency.name;
                 if (name == null) {
                     throw new IllegalArgumentException(
                             "the dependency has no name");
@@ -351,7 +334,7 @@ public class Facility extends CloserBase {
                 if (_dependency.hasDependency(myName))
                     throw new IllegalArgumentException(
                             "this would create a cyclic dependency");
-                if (PLANT_NAME.equals(_dependency.getName())) {
+                if (PLANT_NAME.equals(_dependency.name)) {
                     send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency),dis);
                 } else
                     send(_dependency.addCloseableSReq(Facility.this), addCloseableResponseProcessor);
@@ -387,7 +370,7 @@ public class Facility extends CloserBase {
     }
 
     /**
-     * The reactor used internally.
+     * The reactor used internally, is not a functional closer.
      */
     private class InternalReactor extends NonBlockingReactor {
 
@@ -407,7 +390,7 @@ public class Facility extends CloserBase {
 
         @Override
         public SyncRequest<Void> addCloserSReq(Closer _closer) {
-            return null;
+            throw new UnsupportedOperationException();
         }
 
         @Override

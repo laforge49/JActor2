@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -24,6 +25,11 @@ public class Plant extends Facility {
         }
         return singleton;
     }
+
+    /**
+     * The thread pool.
+     */
+    private final ThreadManager threadManager;
 
     /**
      * Create a Plant.
@@ -56,14 +62,34 @@ public class Plant extends Facility {
     public Plant(final int _initialLocalMessageQueueSize,
             final int _initialBufferSize, final int _threadCount,
             final ThreadFactory _threadFactory) throws Exception {
-        super(PLANT_NAME, _initialLocalMessageQueueSize, _initialBufferSize,
-                _threadCount, _threadFactory);
+        super(PLANT_NAME, _initialLocalMessageQueueSize, _initialBufferSize);
+        threadManager = new ThreadManager(_threadCount, _threadFactory);
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
         singleton = this;
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
+        }
+        initialize();
+    }
+
+    /**
+     * Submit a Reactor for subsequent execution.
+     *
+     * @param _reactor The targetReactor to be run.
+     */
+    public final void submit(final Reactor _reactor) throws Exception {
+        try {
+            threadManager.execute(_reactor);
+        } catch (final Exception e) {
+            if (!shuttingDown) {
+                throw e;
+            }
+        } catch (final Error e) {
+            if (!shuttingDown) {
+                throw e;
+            }
         }
     }
 
@@ -92,34 +118,21 @@ public class Plant extends Facility {
         return createFacilityAReq(
                 _name,
                 Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
-                DEFAULT_THREAD_COUNT,
-                new DefaultThreadFactory());
-    }
-
-    public AsyncRequest<Facility> createFacilityAReq(final String _name,
-            final int _threadCount) throws Exception {
-        return createFacilityAReq(
-                _name,
-                Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                Outbox.DEFAULT_INITIAL_BUFFER_SIZE,
-                _threadCount,
-                new DefaultThreadFactory());
+                Outbox.DEFAULT_INITIAL_BUFFER_SIZE);
     }
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name,
             final int _initialLocalMessageQueueSize,
-            final int _initialBufferSize, final int _threadCount,
-            final ThreadFactory _threadFactory) throws Exception {
+            final int _initialBufferSize) throws Exception {
         return new AsyncBladeRequest<Facility>() {
             final AsyncResponseProcessor<Facility> dis = this;
 
             @Override
             protected void processAsyncRequest() throws Exception {
                 final Facility facility = new Facility(_name,
-                        _initialLocalMessageQueueSize, _initialBufferSize,
-                        _threadCount, _threadFactory);
-                send(propertiesProcessor.putAReq(
+                        _initialLocalMessageQueueSize, _initialBufferSize);
+                initialize();
+                send(getPropertiesProcessor().putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),
                         new AsyncResponseProcessor<Void>() {
                             @Override
@@ -151,5 +164,15 @@ public class Plant extends Facility {
         }
         singleton = null;
         return super.closeAReq();
+    }
+
+    @Override
+    protected void close2() throws Exception {
+        if (shuttingDown) {
+            return;
+        }
+        shuttingDown = true;
+        threadManager.close();
+        close3();
     }
 }

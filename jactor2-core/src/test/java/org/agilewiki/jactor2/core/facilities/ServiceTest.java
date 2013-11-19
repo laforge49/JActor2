@@ -16,8 +16,10 @@ public class ServiceTest extends TestCase {
         System.out.println("disabled until there is a single thread pool");
         /*
         final Plant plant = new Plant();
+        System.out.println("create client facility");
         final Facility clientFacility = plant.createFacilityAReq("Client")
                 .call();
+        System.out.println("create server facility");
         final Facility serverFacility = plant.createFacilityAReq("Server")
                 .call();
         try {
@@ -41,6 +43,7 @@ public class ServiceTest extends TestCase {
                                     dis.processAsyncResponse(null);
                                 }
                             });
+                    System.out.println("close server facility");
                     serverFacility.close();
                 }
             }.call();
