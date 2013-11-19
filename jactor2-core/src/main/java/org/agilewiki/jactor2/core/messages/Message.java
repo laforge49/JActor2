@@ -44,4 +44,6 @@ public interface Message extends AutoCloseable {
     void close();
 
     boolean isForeign();
+
+    boolean isSignal();
 }

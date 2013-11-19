@@ -290,7 +290,7 @@ abstract public class ReactorBase extends CloserBase implements Reactor, Message
      */
     protected void processMessage(final Message _message) {
         _message.eval();
-        if (_message.isResponsePending() && _message.isForeign() && !startClosing) {
+        if (_message.isResponsePending() && _message.isForeign() && !startClosing && !_message.isSignal()) {
             getCloseableSet().add(_message);
         }
     }

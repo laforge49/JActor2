@@ -108,8 +108,14 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         targetReactor = (ReactorBase) _targetReactor;
     }
 
+    @Override
     public boolean isForeign() {
         return foreign;
+    }
+
+    @Override
+    public boolean isSignal() {
+        return responseProcessor == SignalResponseProcessor.SINGLETON;
     }
 
     /**
