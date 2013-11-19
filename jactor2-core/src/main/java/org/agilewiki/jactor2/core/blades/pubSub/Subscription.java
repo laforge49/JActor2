@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
+import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -12,8 +13,8 @@ import org.agilewiki.jactor2.core.util.CloseableBase;
  *
  * @param <CONTENT> The type of content.
  */
-abstract public class Subscription<CONTENT> extends CloseableBase implements
-        Closeable {
+abstract public class Subscription<CONTENT> extends BladeBase implements
+        AutoCloseable {
     private final RequestBus<CONTENT> requestBus;
     private final CommonReactor subscriberReactor;
     final Filter<CONTENT> filter;
