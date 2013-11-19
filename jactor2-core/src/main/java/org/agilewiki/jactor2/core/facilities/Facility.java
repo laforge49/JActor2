@@ -13,8 +13,6 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.CloseableBase;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.CloserBase;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -318,9 +316,20 @@ public class Facility extends CloserBase {
     }
 
     public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
+
         return new AsyncBladeRequest<Void>() {
 
             AsyncResponseProcessor<Void> dis = this;
+
+            String dependencyPropertyName;
+
+            AsyncResponseProcessor<Boolean> addCloseableResponseProcessor =
+                    new AsyncResponseProcessor<Boolean>() {
+                        @Override
+                        public void processAsyncResponse(Boolean _response) throws Exception {
+                            send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency), dis);
+                        }
+                    };
 
             @Override
             protected void processAsyncRequest() throws Exception {
@@ -334,24 +343,18 @@ public class Facility extends CloserBase {
                     throw new IllegalArgumentException(
                             "the dependency has no name");
                 }
-                final String propertyName = DEPENDENCY_PROPERTY_PREFIX + name;
-                if (getProperty(propertyName) != null) {
+                dependencyPropertyName = DEPENDENCY_PROPERTY_PREFIX + name;
+                if (getProperty(dependencyPropertyName) != null) {
                     throw new IllegalStateException(
                             "the dependency was already present");
                 }
                 if (_dependency.hasDependency(myName))
                     throw new IllegalArgumentException(
                             "this would create a cyclic dependency");
-                send(propertiesProcessor.putAReq(propertyName, _dependency),
-                        new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(Void _response) throws Exception {
-                                if (PLANT_NAME.equals(_dependency.getName()))
-                                    dis.processAsyncResponse(null);
-                                else
-                                    send(_dependency.addCloseableSReq(Facility.this), dis, null);
-                            }
-                        });
+                if (PLANT_NAME.equals(_dependency.getName())) {
+                    send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency),dis);
+                } else
+                    send(_dependency.addCloseableSReq(Facility.this), addCloseableResponseProcessor);
             }
         };
     }
