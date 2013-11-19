@@ -91,8 +91,9 @@ abstract public class CloserBase extends CloseableBase implements Closer {
             AutoCloseable closeable = it.next();
             try {
                 closeable.close();
-                if (!(closeable instanceof Closeable))
+                if (!(closeable instanceof Closeable)) {
                     it.remove();
+                }
             } catch (final Throwable t) {
                 if (closeable != null && Plant.DEBUG) {
                     getLog().warn("Error closing a " + closeable.getClass().getName(), t);

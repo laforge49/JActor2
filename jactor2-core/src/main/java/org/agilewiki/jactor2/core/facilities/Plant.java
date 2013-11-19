@@ -71,7 +71,7 @@ public class Plant extends Facility {
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
         }
-        initialize();
+        initialize(this);
     }
 
     /**
@@ -95,11 +95,6 @@ public class Plant extends Facility {
 
     @Override
     protected void validateName(final String _name) throws Exception {
-    }
-
-    @Override
-    public Plant getPlant() {
-        return this;
     }
 
     @Override
@@ -131,7 +126,7 @@ public class Plant extends Facility {
             protected void processAsyncRequest() throws Exception {
                 final Facility facility = new Facility(_name,
                         _initialLocalMessageQueueSize, _initialBufferSize);
-                initialize();
+                facility.initialize(Plant.this);
                 send(getPropertiesProcessor().putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),
                         new AsyncResponseProcessor<Void>() {

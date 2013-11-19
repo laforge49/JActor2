@@ -2,16 +2,13 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
-import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.*;
-import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.CloseableBase;
 import org.agilewiki.jactor2.core.util.CloserBase;
 import org.slf4j.Logger;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -293,6 +290,9 @@ abstract public class ReactorBase extends CloserBase implements Reactor, Message
      */
     protected void processMessage(final Message _message) {
         _message.eval();
+        if (_message.isResponsePending() && _message.isForeign() && !startClosing) {
+            getCloseableSet().add(_message);
+        }
     }
 
     /**
@@ -335,7 +335,10 @@ abstract public class ReactorBase extends CloserBase implements Reactor, Message
     /**
      * Signals that a request has completed.
      */
-    public void requestEnd() {
+    public void requestEnd(final RequestBase _message) {
+        if (_message.isForeign()) {
+            boolean b = getCloseableSet().remove(_message);
+        }
         inbox.requestEnd();
     }
 

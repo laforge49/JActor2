@@ -49,7 +49,7 @@ public class BladeBase implements Blade {
      */
     public void initialize(final Reactor _reactor) throws Exception {
         if (initialized) {
-            throw new IllegalStateException("Already initialized");
+            throw new IllegalStateException("Already initialized " + this);
         }
         if (_reactor == null) {
             throw new IllegalArgumentException("Reactor may not be null");

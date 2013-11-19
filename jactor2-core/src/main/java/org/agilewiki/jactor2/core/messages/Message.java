@@ -11,7 +11,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  * </p>
  */
 
-public interface Message {
+public interface Message extends AutoCloseable {
     /**
      * Returns true when a response is expected but has not yet been placed in the message.
      *
@@ -42,4 +42,6 @@ public interface Message {
     void processException(final Reactor _activeReactor, final Exception _e);
 
     void close();
+
+    boolean isForeign();
 }

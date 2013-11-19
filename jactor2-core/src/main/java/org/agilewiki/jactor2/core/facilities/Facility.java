@@ -82,6 +82,8 @@ public class Facility extends CloserBase {
 
     public final String name;
 
+    protected Plant plant;
+
     /**
      * Create a Facility.
      *
@@ -98,7 +100,8 @@ public class Facility extends CloserBase {
         initialBufferSize = _initialBufferSize;
     }
 
-    public void initialize() throws Exception {
+    public void initialize(final Plant _plant) throws Exception {
+        plant = _plant;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
@@ -267,7 +270,7 @@ public class Facility extends CloserBase {
     }
 
     public Plant getPlant() {
-        return (Plant) getProperty(DEPENDENCY_PROPERTY_PREFIX + PLANT_NAME);
+        return plant;
     }
 
     public AsyncRequest<Void> putPropertyAReq(final String _propertyName,

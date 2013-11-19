@@ -70,7 +70,7 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
 
     @Override
     protected void processMessage(final Message message) {
-        message.eval();
+        super.processMessage(message);
         try {
             flush(true);
         } catch (final MigrationException me) {

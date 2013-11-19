@@ -108,6 +108,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         targetReactor = (ReactorBase) _targetReactor;
     }
 
+    public boolean isForeign() {
+        return foreign;
+    }
+
     /**
      * Returns the Reactor to which this Request is bound and to which this Request is to be passed.
      *
@@ -253,7 +257,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     protected void setResponse(final Object _response,
             final Reactor _activeReactor) {
-        ((ReactorBase) _activeReactor).requestEnd();
+        ((ReactorBase) _activeReactor).requestEnd(this);
         responsePending = false;
         response = _response;
         if (Plant.DEBUG) {
@@ -303,7 +307,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 }
             }
         }
-        final Facility facility = targetReactor.getFacility();
         if (!responsePending) {
             return false;
         }
@@ -345,7 +348,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     @Override
     public void eval() {
         if (responsePending) {
-            final Facility facility = targetReactor.getFacility();
             targetReactor.setExceptionHandler(null);
             targetReactor.setCurrentMessage(this);
             targetReactor.requestBegin();

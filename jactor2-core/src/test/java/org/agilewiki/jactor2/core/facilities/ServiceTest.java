@@ -13,7 +13,7 @@ public class ServiceTest extends TestCase {
     Reactor testReactor;
 
     public void test() throws Exception {
-        System.out.println("disabled until there is a single thread pool");
+        System.out.println("disabled for the moment");
         /*
         final Plant plant = new Plant();
         System.out.println("create client facility");
