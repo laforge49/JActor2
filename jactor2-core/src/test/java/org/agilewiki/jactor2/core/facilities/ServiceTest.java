@@ -22,7 +22,6 @@ public class ServiceTest extends TestCase {
             final Client client = new Client(new NonBlockingReactor(
                     clientFacility), server);
             NonBlockingReactor testReactor = new NonBlockingReactor(plant);
-            System.out.println("created blades");
             new AsyncRequest<Void>(testReactor) {
                 AsyncRequest<Void> dis = this;
 
@@ -43,8 +42,8 @@ public class ServiceTest extends TestCase {
                             });
                 }
             }.signal();
-            serverReactor.closeAReq().call();
-            //serverFacility.closeAReq().call();
+            serverReactor.closeAReq().call();     //this works
+            //serverFacility.closeAReq().call();  //this also works
         } finally {
             plant.close();
         }

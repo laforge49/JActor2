@@ -37,8 +37,8 @@ abstract public class UnboundReactor extends ReactorBase {
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
     public UnboundReactor(final Facility _facility,
-            final int _initialOutboxSize, final int _initialLocalQueueSize,
-            final Runnable _onIdle) throws Exception {
+                          final int _initialOutboxSize, final int _initialLocalQueueSize,
+                          final Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         onIdle = _onIdle;
     }
@@ -69,6 +69,16 @@ abstract public class UnboundReactor extends ReactorBase {
 
     @Override
     protected void afterAdd() throws Exception {
+        if (threadReference == null) {
+            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err.println("this=" + this);
+            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            throw new NullPointerException();
+        }
         if (threadReference.get() == null) {
             facility.getPlant().submit(this);
         }
@@ -102,7 +112,7 @@ abstract public class UnboundReactor extends ReactorBase {
                                 .getThreadReference();
                         if ((targetThreadReference.get() == null)
                                 && targetThreadReference.compareAndSet(null,
-                                        currentThread)) {
+                                currentThread)) {
                             while (!messages.isEmpty()) {
                                 final Message m = messages.poll();
                                 targ.unbufferedAddMessage(m, true);

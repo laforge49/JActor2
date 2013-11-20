@@ -393,13 +393,12 @@ public class Facility extends CloserBase {
         }
 
         @Override
-        public SyncRequest<Void> addCloserSReq(Closer _closer) {
+        public void addCloser(Closer _closer) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public SyncRequest<Void> removeCloserSReq(Closer _closer) {
-            return null;
+        public void removeCloser(Closer _closer) {
         }
     }
 }

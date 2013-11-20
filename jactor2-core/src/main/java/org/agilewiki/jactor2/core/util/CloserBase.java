@@ -61,7 +61,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
                 if (!getCloseableSet().add(_closeable))
                     return false;
                 if (_closeable instanceof Closeable) {
-                    ((Closeable) _closeable).addCloserSReq(CloserBase.this).signal();
+                    ((Closeable) _closeable).addCloser(CloserBase.this);
                 }
                 return true;
             }
@@ -78,7 +78,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
                 if (!closeables.remove(_closeable))
                     return false;
                 if (_closeable instanceof Closeable)
-                    ((Closeable) _closeable).removeCloserSReq(CloserBase.this).signal();
+                    ((Closeable) _closeable).removeCloser(CloserBase.this);
                 if (startedClosing() && closeables.isEmpty()) {
                     close2();
                 }
