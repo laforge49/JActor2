@@ -11,8 +11,6 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class ServiceTest extends TestCase {
     public void test() throws Exception {
-        System.out.println("disabled for the moment");
-        /*
         final Plant plant = new Plant();
         final Facility clientFacility = plant.createFacilityAReq("Client")
                 .call();
@@ -23,8 +21,9 @@ public class ServiceTest extends TestCase {
             final Server server = new Server(serverReactor);
             final Client client = new Client(new NonBlockingReactor(
                     clientFacility), server);
+            NonBlockingReactor testReactor = new NonBlockingReactor(plant);
             System.out.println("created blades");
-            new AsyncRequest<Void>(new NonBlockingReactor(plant)) {
+            new AsyncRequest<Void>(testReactor) {
                 AsyncRequest<Void> dis = this;
 
                 @Override
@@ -44,17 +43,11 @@ public class ServiceTest extends TestCase {
                             });
                 }
             }.signal();
-            Thread.sleep(100);
-            System.out.println("close server reactor");
-            Thread.sleep(1000);
             serverReactor.closeAReq().call();
-            System.out.println("closed server reactor");
-            Thread.sleep(100);
+            //serverFacility.closeAReq().call();
         } finally {
-            System.out.println("close plant");
             plant.close();
         }
-        */
     }
 }
 

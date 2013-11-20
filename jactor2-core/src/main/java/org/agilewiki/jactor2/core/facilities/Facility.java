@@ -104,6 +104,8 @@ public class Facility extends CloserBase {
         plant = _plant;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
+        if (this != plant)
+            _plant.addCloseableSReq(this).signal();
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
