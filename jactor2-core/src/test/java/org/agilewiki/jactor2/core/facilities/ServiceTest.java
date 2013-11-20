@@ -10,25 +10,21 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class ServiceTest extends TestCase {
-    Reactor testReactor;
-
     public void test() throws Exception {
         System.out.println("disabled for the moment");
         /*
         final Plant plant = new Plant();
-        System.out.println("create client facility");
         final Facility clientFacility = plant.createFacilityAReq("Client")
                 .call();
-        System.out.println("create server facility");
         final Facility serverFacility = plant.createFacilityAReq("Server")
                 .call();
         try {
-            testReactor = new NonBlockingReactor(plant);
-            final Server server = new Server(new NonBlockingReactor(
-                    serverFacility));
+            NonBlockingReactor serverReactor = new NonBlockingReactor(serverFacility);
+            final Server server = new Server(serverReactor);
             final Client client = new Client(new NonBlockingReactor(
                     clientFacility), server);
-            new AsyncRequest<Void>(testReactor) {
+            System.out.println("created blades");
+            new AsyncRequest<Void>(new NonBlockingReactor(plant)) {
                 AsyncRequest<Void> dis = this;
 
                 @Override
@@ -39,14 +35,21 @@ public class ServiceTest extends TestCase {
                                 public void processAsyncResponse(
                                         final Boolean response)
                                         throws Exception {
+                                    Thread.sleep(10);
+                                    System.out.println("Bingo!");
+                                    Thread.sleep(10);
                                     assertFalse(response);
                                     dis.processAsyncResponse(null);
                                 }
                             });
-                    System.out.println("close server facility");
-                    serverFacility.close();
                 }
-            }.call();
+            }.signal();
+            Thread.sleep(100);
+            System.out.println("close server reactor");
+            Thread.sleep(1000);
+            serverReactor.closeAReq().call();
+            System.out.println("closed server reactor");
+            Thread.sleep(100);
         } finally {
             System.out.println("close plant");
             plant.close();
@@ -74,13 +77,18 @@ class Client extends BladeBase {
                     @Override
                     public Boolean processException(final Exception exception)
                             throws Exception {
+                        System.out.println("client got exception");
                         if (!(exception instanceof ServiceClosedException)) {
                             throw exception;
                         }
                         return false;
                     }
                 });
-                send(server.hangAReq(), dis, true);
+                Thread.sleep(10);
+                RequestBase rb = server.hangAReq();
+                System.out.println("client send hang "+rb);
+                Thread.sleep(10);
+                send(rb, dis, true);
             }
         };
     }

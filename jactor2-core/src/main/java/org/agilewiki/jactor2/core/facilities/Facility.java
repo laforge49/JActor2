@@ -233,10 +233,9 @@ public class Facility extends CloserBase {
                     plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                             null).signal();
                 }
+                closeAll();
                 if (isCloseablesEmpty()) {
                     close2();
-                } else {
-                    closeAll();
                 }
             }
         };

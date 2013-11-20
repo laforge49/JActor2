@@ -109,10 +109,9 @@ abstract public class ReactorBase extends CloserBase implements Reactor, Message
                 }
                 startClosing = true;
                 startClosingResponseProcessor = this;
+                closeAll();
                 if (isCloseablesEmpty()) {
                     close2();
-                } else {
-                    closeAll();
                 }
             }
         };

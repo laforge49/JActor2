@@ -74,24 +74,31 @@ abstract public class CloserBase extends CloseableBase implements Closer {
             protected Boolean processSyncRequest() throws Exception {
                 if (closeables == null)
                     return false;
-                boolean rv = closeables.remove(_closeable);
-                if (rv && _closeable instanceof Closeable)
+                if (!closeables.remove(_closeable))
+                    return false;
+                if (_closeable instanceof Closeable)
                     ((Closeable) _closeable).removeCloserSReq(CloserBase.this).signal();
+//                System.out.println("removeClosable "+closeables.size());
                 if (startedClosing() && closeables.isEmpty()) {
                     close2();
                 }
-                return rv;
+                return true;
             }
         };
     }
 
     protected void closeAll() {
+        if (closeables == null)
+            return;
+//        System.out.println("to close "+closeables.size());
         Iterator<AutoCloseable> it = closeables.iterator();
         while (it.hasNext()) {
             AutoCloseable closeable = it.next();
             try {
+//                System.out.println("    "+closeable);
                 closeable.close();
                 if (!(closeable instanceof Closeable)) {
+//                    System.out.println("    removed");
                     it.remove();
                 }
             } catch (final Throwable t) {
