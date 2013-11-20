@@ -47,10 +47,6 @@ abstract public class CloserBase extends CloseableBase implements Closer {
         return closeables;
     }
 
-    protected boolean isCloseablesEmpty() {
-        return closeables == null || closeables.isEmpty();
-    }
-
     @Override
     public SyncRequest<Boolean> addCloseableSReq(final AutoCloseable _closeable) {
         return new SyncRequest<Boolean>(getReactor()) {
@@ -87,9 +83,11 @@ abstract public class CloserBase extends CloseableBase implements Closer {
         };
     }
 
-    protected void closeAll() {
-        if (closeables == null)
+    protected void closeAll() throws Exception {
+        if (closeables == null) {
+            close2();
             return;
+        }
         Iterator<AutoCloseable> it = closeables.iterator();
         while (it.hasNext()) {
             AutoCloseable closeable = it.next();
@@ -104,5 +102,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
                 }
             }
         }
+        if (closeables.isEmpty())
+            close2();
     }
 }

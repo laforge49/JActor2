@@ -236,9 +236,6 @@ public class Facility extends CloserBase {
                             null).signal();
                 }
                 closeAll();
-                if (isCloseablesEmpty()) {
-                    close2();
-                }
             }
         };
     }
