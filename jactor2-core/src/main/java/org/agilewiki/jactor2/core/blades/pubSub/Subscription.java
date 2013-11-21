@@ -13,7 +13,7 @@ import org.agilewiki.jactor2.core.util.CloseableBase;
  *
  * @param <CONTENT> The type of content.
  */
-abstract public class Subscription<CONTENT> extends BladeBase implements
+abstract public class Subscription<CONTENT> extends CloseableBase implements
         AutoCloseable {
     private final RequestBus<CONTENT> requestBus;
     private final CommonReactor subscriberReactor;

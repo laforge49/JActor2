@@ -13,10 +13,10 @@ import java.util.WeakHashMap;
 abstract public class CloserBase extends CloseableBase implements Closer {
 
     /**
-     * A set of AutoCloseable objects.
+     * A set of Closeable objects.
      * Can only be accessed via a request to the facility.
      */
-    private Set<AutoCloseable> closeables;
+    private Set<Closeable> closeables;
 
     /**
      * Returns true when the first phase of closing has begun.
@@ -40,15 +40,15 @@ abstract public class CloserBase extends CloseableBase implements Closer {
     /**
      * Returns the CloseableSet. Creates it if needed.
      */
-    protected final Set<AutoCloseable> getCloseableSet() {
+    protected final Set<Closeable> getCloseableSet() {
         if (closeables == null) {
-            closeables = Collections.newSetFromMap(new WeakHashMap<AutoCloseable, Boolean>());
+            closeables = Collections.newSetFromMap(new WeakHashMap<Closeable, Boolean>());
         }
         return closeables;
     }
 
     @Override
-    public SyncRequest<Boolean> addCloseableSReq(final AutoCloseable _closeable) {
+    public SyncRequest<Boolean> addCloseableSReq(final Closeable _closeable) {
         return new SyncRequest<Boolean>(getReactor()) {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -56,16 +56,14 @@ abstract public class CloserBase extends CloseableBase implements Closer {
                     throw new ServiceClosedException();
                 if (!getCloseableSet().add(_closeable))
                     return false;
-                if (_closeable instanceof Closeable) {
-                    ((Closeable) _closeable).addCloser(CloserBase.this);
-                }
+                _closeable.addCloser(CloserBase.this);
                 return true;
             }
         };
     }
 
     @Override
-    public SyncRequest<Boolean> removeCloseableSReq(final AutoCloseable _closeable) {
+    public SyncRequest<Boolean> removeCloseableSReq(final Closeable _closeable) {
         return new SyncRequest<Boolean>(getReactor()) {
             @Override
             protected Boolean processSyncRequest() throws Exception {
@@ -73,8 +71,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
                     return false;
                 if (!closeables.remove(_closeable))
                     return false;
-                if (_closeable instanceof Closeable)
-                    ((Closeable) _closeable).removeCloser(CloserBase.this);
+                _closeable.removeCloser(CloserBase.this);
                 if (startedClosing() && closeables.isEmpty()) {
                     close2();
                 }
@@ -88,14 +85,11 @@ abstract public class CloserBase extends CloseableBase implements Closer {
             close2();
             return;
         }
-        Iterator<AutoCloseable> it = closeables.iterator();
+        Iterator<Closeable> it = closeables.iterator();
         while (it.hasNext()) {
             AutoCloseable closeable = it.next();
             try {
                 closeable.close();
-                if (!(closeable instanceof Closeable)) {
-                    it.remove();
-                }
             } catch (final Throwable t) {
                 if (closeable != null && Plant.DEBUG) {
                     getLog().warn("Error closing a " + closeable.getClass().getName(), t);
