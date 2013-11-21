@@ -250,7 +250,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet == null) {
                 nanoSet = Collections
-                        .newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>());
+                        .newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>(8, 0.9f, 1));
             }
             pendingRequests.put(debugTimestamp, nanoSet);
         }
