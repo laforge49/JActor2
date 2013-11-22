@@ -29,7 +29,7 @@ public class PubSubTest extends TestCase {
                 }
             }.call();
             requestBus.signalsContentSReq(null).call();
-            s1.unsubscribeSReq().call();
+            s1.unsubscribe();
             requestBus.signalsContentSReq(null).call();
         } finally {
             plant.close();
