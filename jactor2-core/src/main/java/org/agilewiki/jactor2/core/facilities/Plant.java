@@ -26,6 +26,8 @@ public class Plant extends Facility {
         return singleton;
     }
 
+    private boolean exitOnClose;
+
     /**
      * The thread pool.
      */
@@ -157,5 +159,22 @@ public class Plant extends Facility {
         shuttingDown = true;
         threadManager.close();
         close3();
+    }
+
+    @Override
+    protected void close3() throws Exception {
+        super.close();
+        if (exitOnClose)
+            System.exit(0);
+    }
+
+    public void exit() {
+        exitOnClose = true;
+        try {
+            close();
+        } catch (Throwable t) {
+            getLog().error("exception on exit", t);
+            System.exit(1);
+        }
     }
 }
