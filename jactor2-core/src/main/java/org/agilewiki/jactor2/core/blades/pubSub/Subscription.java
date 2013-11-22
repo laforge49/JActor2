@@ -1,11 +1,8 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.CloseableBase;
 
 /**
@@ -37,21 +34,11 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
      *
      * @return The request.
      */
-    public SyncRequest<Void> unsubscribeSReq() {
-        return new SyncRequest<Void>(subscriberReactor) {
-            @Override
-            protected Void processSyncRequest() throws Exception {
-                new SyncRequest<Void>(getReactor()) {
-                    @Override
-                    protected Void processSyncRequest() throws Exception {
-                        requestBus.subscriptions.remove(Subscription.this);
-                        return null;
-                    }
-                }.signal();
-                subscriberReactor.removeCloseableSReq(Subscription.this).signal();
-                return null;
-            }
-        };
+    public boolean unsubscribe() throws Exception {
+        if (!requestBus.subscriptions.remove(Subscription.this))
+            return false;
+        subscriberReactor.removeCloseableSReq(Subscription.this).signal();
+        return true;
     }
 
     /**
@@ -59,7 +46,7 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
      */
     @Override
     public void close() throws Exception {
-        unsubscribeSReq().signal();
+        unsubscribe();
     }
 
     AsyncRequest<Void> publicationAReq(final CONTENT _content) {

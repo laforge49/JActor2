@@ -6,9 +6,7 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A blade that publishes content to interested subscribers, using either signals or sends.
@@ -16,7 +14,8 @@ import java.util.Set;
  * @param <CONTENT> The type of content.
  */
 public class RequestBus<CONTENT> extends BladeBase {
-    final Set<Subscription<CONTENT>> subscriptions = new HashSet<Subscription<CONTENT>>();
+    final Set<Subscription<CONTENT>> subscriptions =
+            Collections.newSetFromMap(new HashMap<Subscription<CONTENT>, Boolean>());
 
     /**
      * Create a RequestBus blade
