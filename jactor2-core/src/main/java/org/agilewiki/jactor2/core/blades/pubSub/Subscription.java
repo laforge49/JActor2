@@ -34,20 +34,22 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
 
     /**
      * Returns a request to stop receiving the published content.
-     * The request returns true if the subscription was not previously unsubscribed.
      *
      * @return The request.
      */
-    public SyncRequest<Boolean> unsubscribeSReq() {
-        return new SyncBladeRequest<Boolean>() {
+    public SyncRequest<Void> unsubscribeSReq() {
+        return new SyncRequest<Void>(subscriberReactor) {
             @Override
-            protected Boolean processSyncRequest() throws Exception {
-                if (!requestBus.subscriptions.remove(Subscription.this)) {
-                    return false;
-                }
-                subscriberReactor.getFacility()
-                        .removeCloseableSReq(Subscription.this).signal();
-                return true;
+            protected Void processSyncRequest() throws Exception {
+                new SyncRequest<Void>(getReactor()) {
+                    @Override
+                    protected Void processSyncRequest() throws Exception {
+                        requestBus.subscriptions.remove(Subscription.this);
+                        return null;
+                    }
+                }.signal();
+                subscriberReactor.removeCloseableSReq(Subscription.this).signal();
+                return null;
             }
         };
     }

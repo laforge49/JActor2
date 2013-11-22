@@ -105,7 +105,7 @@ public class Facility extends CloserBase {
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         if (this != plant)
-            _plant.addCloseableSReq(this).signal();
+            _plant.addCloseable(this);
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
@@ -307,14 +307,6 @@ public class Facility extends CloserBase {
 
             String dependencyPropertyName;
 
-            AsyncResponseProcessor<Boolean> addCloseableResponseProcessor =
-                    new AsyncResponseProcessor<Boolean>() {
-                        @Override
-                        public void processAsyncResponse(Boolean _response) throws Exception {
-                            send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency), dis);
-                        }
-                    };
-
             @Override
             protected void processAsyncRequest() throws Exception {
                 final String myName = name;
@@ -337,8 +329,10 @@ public class Facility extends CloserBase {
                             "this would create a cyclic dependency");
                 if (PLANT_NAME.equals(_dependency.name)) {
                     send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency),dis);
-                } else
-                    send(_dependency.addCloseableSReq(Facility.this), addCloseableResponseProcessor);
+                } else {
+                    _dependency.addCloseable(Facility.this);
+                    send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency), dis);
+                }
             }
         };
     }

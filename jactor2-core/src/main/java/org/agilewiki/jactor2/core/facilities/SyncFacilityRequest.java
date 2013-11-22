@@ -29,7 +29,7 @@ abstract public class SyncFacilityRequest<RESPONSE_TYPE> extends
      */
     protected boolean addAutoClosable(final Closeable _closeable)
             throws Exception {
-        return local(facility.addCloseableSReq(_closeable));
+        return facility.addCloseable(_closeable);
     }
 
     /**

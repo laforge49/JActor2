@@ -137,7 +137,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
      * Add to the facility's AutoClose set.
      */
     protected void addClose() throws Exception {
-        facility.addCloseableSReq(this).signal();
+        facility.addCloseable(this);
     }
 
     /**

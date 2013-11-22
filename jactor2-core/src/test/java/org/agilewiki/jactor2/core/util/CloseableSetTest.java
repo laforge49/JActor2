@@ -93,11 +93,11 @@ public class CloseableSetTest extends TestCase {
             final MyCloseable mac3 = new MyCloseable(plant);
             final MyCloseable mac4 = new MyCloseable(plant);
             final MyFailedCloseable mfac = new MyFailedCloseable(plant);
-            plant.addCloseableSReq(mac1).signal();
-            plant.addCloseableSReq(mac2).signal();
-            plant.addCloseableSReq(mac3).signal();
-            plant.addCloseableSReq(mac4).signal();
-            plant.addCloseableSReq(mfac).signal();
+            plant.addCloseable(mac1);
+            plant.addCloseable(mac2);
+            plant.addCloseable(mac3);
+            plant.addCloseable(mac4);
+            plant.addCloseable(mfac);
             plant.removeCloseableSReq(mac4).call();
 
             System.out.println("first plant.close");
@@ -130,11 +130,11 @@ public class CloseableSetTest extends TestCase {
             final MyCloseable mac3 = new MyCloseable(plant);
             final MyCloseable mac4 = new MyCloseable(plant);
             final MyFailedCloseable mfac = new MyFailedCloseable(plant);
-            reactor.addCloseableSReq(mac1).signal();
-            reactor.addCloseableSReq(mac2).signal();
-            reactor.addCloseableSReq(mac3).signal();
-            reactor.addCloseableSReq(mac4).signal();
-            reactor.addCloseableSReq(mfac).signal();
+            reactor.addCloseable(mac1);
+            reactor.addCloseable(mac2);
+            reactor.addCloseable(mac3);
+            reactor.addCloseable(mac4);
+            reactor.addCloseable(mfac);
             reactor.removeCloseableSReq(mac4).call();
 
             reactor.closeAReq().call();

@@ -1,14 +1,12 @@
 package org.agilewiki.jactor2.core.util;
 
+import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.slf4j.Logger;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 
 abstract public class CloserBase extends CloseableBase implements Closer {
 
@@ -42,24 +40,20 @@ abstract public class CloserBase extends CloseableBase implements Closer {
      */
     protected final Set<Closeable> getCloseableSet() {
         if (closeables == null) {
-            closeables = Collections.newSetFromMap(new WeakHashMap<Closeable, Boolean>());
+            closeables = Collections.newSetFromMap((Map)
+                    new MapMaker().concurrencyLevel(1).weakKeys().makeMap());
         }
         return closeables;
     }
 
     @Override
-    public SyncRequest<Boolean> addCloseableSReq(final Closeable _closeable) {
-        return new SyncRequest<Boolean>(getReactor()) {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                if (startedClosing())
-                    throw new ServiceClosedException();
-                if (!getCloseableSet().add(_closeable))
-                    return false;
-                _closeable.addCloser(CloserBase.this);
-                return true;
-            }
-        };
+    public boolean addCloseable(final Closeable _closeable) throws ServiceClosedException {
+        if (startedClosing())
+            throw new ServiceClosedException();
+        if (!getCloseableSet().add(_closeable))
+            return false;
+        _closeable.addCloser(CloserBase.this);
+        return true;
     }
 
     @Override
@@ -87,7 +81,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
         }
         Iterator<Closeable> it = closeables.iterator();
         while (it.hasNext()) {
-            AutoCloseable closeable = it.next();
+            Closeable closeable = it.next();
             try {
                 closeable.close();
             } catch (final Throwable t) {
