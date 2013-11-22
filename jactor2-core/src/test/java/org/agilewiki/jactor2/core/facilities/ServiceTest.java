@@ -42,8 +42,8 @@ public class ServiceTest extends TestCase {
                             });
                 }
             }.signal();
-            serverReactor.closeAReq().call();     //this works
-            //serverFacility.closeAReq().call();  //this also works
+            serverReactor.close();     //this works
+            //serverFacility.close();  //this also works
         } finally {
             plant.close();
         }

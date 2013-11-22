@@ -6,5 +6,5 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 public interface Closer {
 
     boolean addCloseable(final Closeable _closeable) throws ServiceClosedException;
-    SyncRequest<Boolean> removeCloseableSReq(final Closeable _closeable);
+    boolean removeCloseable(final Closeable _closeable);
 }

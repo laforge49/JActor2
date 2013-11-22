@@ -37,7 +37,7 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
     public boolean unsubscribe() throws Exception {
         if (!requestBus.subscriptions.remove(Subscription.this))
             return false;
-        subscriberReactor.removeCloseableSReq(Subscription.this).signal();
+        subscriberReactor.removeCloseable(Subscription.this);
         return true;
     }
 

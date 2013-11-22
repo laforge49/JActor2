@@ -35,7 +35,7 @@ public class CloseableBase extends BladeBase implements Closeable {
         Iterator<Closer> it = closers.iterator();
         while (it.hasNext()) {
             Closer closer = it.next();
-            closer.removeCloseableSReq(this).signal();
+            closer.removeCloseable(this);
         }
     }
 }

@@ -212,32 +212,13 @@ public class Facility extends CloserBase {
     public void close() throws Exception {
         if (startClosing)
             return;
-        closeAReq().signal();
-    }
-
-    AsyncResponseProcessor<Void> startClosingResponseProcessor;
-
-    /**
-     * Returns a Request to perform a close().
-     */
-    public AsyncRequest<Void> closeAReq() {
-        return new AsyncBladeRequest<Void>() {
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                if (startClosing) {
-                    processAsyncResponse(null);
-                }
-                startClosing = true;
-                startClosingResponseProcessor = this;
-                final Plant plant = getPlant();
-                if ((plant != null) && (plant != Facility.this)) {
-                    plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
-                            null).signal();
-                }
-                closeAll();
-            }
-        };
+        startClosing = true;
+        final Plant plant = getPlant();
+        if ((plant != null) && (plant != Facility.this)) {
+            plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+                    null).signal();
+        }
+        closeAll();
     }
 
     protected void close2() throws Exception {
@@ -250,7 +231,6 @@ public class Facility extends CloserBase {
 
     protected void close3() throws Exception {
         super.close();
-        startClosingResponseProcessor.processAsyncResponse(null);
     }
 
     /**
@@ -306,6 +286,13 @@ public class Facility extends CloserBase {
             AsyncResponseProcessor<Void> dis = this;
 
             String dependencyPropertyName;
+
+            AsyncResponseProcessor<Boolean> addCloseableResponseProcessor =
+                    new AsyncResponseProcessor<Boolean>() {
+                        @Override
+                        public void processAsyncResponse(Boolean _response) throws Exception {
+                        }
+                    };
 
             @Override
             protected void processAsyncRequest() throws Exception {

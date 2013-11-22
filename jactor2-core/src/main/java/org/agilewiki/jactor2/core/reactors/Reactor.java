@@ -54,7 +54,4 @@ public interface Reactor extends Runnable, Closeable, Closer, Blade {
      * @return true if close() has already been called.
      */
     boolean isClosing();
-
-    /** Returns a Request to perform a close(). */
-    public AsyncRequest<Void> closeAReq();
 }

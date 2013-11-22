@@ -93,27 +93,8 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
     public void close() throws Exception {
         if (startClosing)
             return;
-        closeAReq().signal();
-    }
-
-    AsyncResponseProcessor<Void> startClosingResponseProcessor;
-
-    /**
-     * Returns a Request to perform a close().
-     */
-    @Override
-    public AsyncRequest<Void> closeAReq() {
-        return new AsyncRequest<Void>(this) {
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                if (startClosing) {
-                    processAsyncResponse(null);
-                }
-                startClosing = true;
-                startClosingResponseProcessor = this;
-                closeAll();
-            }
-        };
+        startClosing = true;
+        closeAll();
     }
 
     protected void close2() throws Exception {
@@ -130,7 +111,6 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         } catch (final Exception e) {
         }
         super.close();
-        startClosingResponseProcessor.processAsyncResponse(null);
     }
 
     /**

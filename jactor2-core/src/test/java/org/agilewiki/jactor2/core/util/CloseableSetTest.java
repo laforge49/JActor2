@@ -98,7 +98,7 @@ public class CloseableSetTest extends TestCase {
             plant.addCloseable(mac3);
             plant.addCloseable(mac4);
             plant.addCloseable(mfac);
-            plant.removeCloseableSReq(mac4).call();
+            plant.removeCloseable(mac4);
 
             System.out.println("first plant.close");
             plant.close();
@@ -135,9 +135,9 @@ public class CloseableSetTest extends TestCase {
             reactor.addCloseable(mac3);
             reactor.addCloseable(mac4);
             reactor.addCloseable(mfac);
-            reactor.removeCloseableSReq(mac4).call();
+            reactor.removeCloseable(mac4);
 
-            reactor.closeAReq().call();
+            reactor.close();
 
             assertEquals(mac1.closed, 1);
             assertEquals(mac2.closed, 1);

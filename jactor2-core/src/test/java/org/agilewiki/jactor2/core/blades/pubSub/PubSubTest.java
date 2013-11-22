@@ -61,7 +61,7 @@ public class PubSubTest extends TestCase {
             }.call();
             requestBus.sendsContentAReq(null).call();
             assertEquals(counter.get(), 1);
-            subscriberReactor.closeAReq().call();
+            subscriberReactor.close();
             try {
              requestBus.sendsContentAReq(null).call();
             } catch (ServiceClosedException e) {

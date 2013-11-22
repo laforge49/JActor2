@@ -57,21 +57,13 @@ abstract public class CloserBase extends CloseableBase implements Closer {
     }
 
     @Override
-    public SyncRequest<Boolean> removeCloseableSReq(final Closeable _closeable) {
-        return new SyncRequest<Boolean>(getReactor()) {
-            @Override
-            protected Boolean processSyncRequest() throws Exception {
-                if (closeables == null)
-                    return false;
-                if (!closeables.remove(_closeable))
-                    return false;
-                _closeable.removeCloser(CloserBase.this);
-                if (startedClosing() && closeables.isEmpty()) {
-                    close2();
-                }
-                return true;
-            }
-        };
+    public boolean removeCloseable(final Closeable _closeable) {
+        if (closeables == null)
+            return false;
+        if (!closeables.remove(_closeable))
+            return false;
+        _closeable.removeCloser(CloserBase.this);
+        return true;
     }
 
     protected void closeAll() throws Exception {
@@ -92,5 +84,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
         }
         if (closeables.isEmpty())
             close2();
+        else
+            throw new IllegalStateException();
     }
 }
