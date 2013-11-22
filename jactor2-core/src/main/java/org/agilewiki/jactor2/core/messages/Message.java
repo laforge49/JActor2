@@ -17,7 +17,7 @@ public interface Message extends AutoCloseable {
      *
      * @return True when a response is expected but has not yet been placed in the message.
      */
-    boolean isResponsePending();
+    boolean isClosed();
 
     /**
      * Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.

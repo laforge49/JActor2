@@ -63,7 +63,7 @@ public class IsolationInbox extends Inbox {
 
     @Override
     protected void offerLocal(final Message msg) {
-        if (msg.isResponsePending()) {
+        if (msg.isClosed()) {
             localResponsePendingQueue.offer(msg);
         } else {
             localNoResponsePendingQueue.offer(msg);

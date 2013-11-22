@@ -117,7 +117,7 @@ public abstract class Inbox implements AutoCloseable {
             if (message == null) {
                 return;
             }
-            if (message.isResponsePending()) {
+            if (message.isClosed()) {
                 try {
                     message.close();
                 } catch (final Throwable t) {

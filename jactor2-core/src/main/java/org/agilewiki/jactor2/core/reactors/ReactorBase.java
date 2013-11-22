@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.*;
-import org.agilewiki.jactor2.core.util.CloserBase;
 import org.agilewiki.jactor2.core.util.MessageCloser;
 import org.slf4j.Logger;
 
@@ -209,7 +208,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
     public void unbufferedAddMessage(final Message _message,
                                      final boolean _local) throws Exception {
         if (isClosing()) {
-            if (_message.isResponsePending()) {
+            if (_message.isClosed()) {
                 try {
                     _message.close();
                 } catch (final Throwable t) {
@@ -232,7 +231,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
             final Iterator<Message> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final Message message = itm.next();
-                if (message.isResponsePending()) {
+                if (message.isClosed()) {
                     try {
                         message.close();
                     } catch (final Throwable t) {
@@ -268,7 +267,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
      */
     protected void processMessage(final Message _message) {
         _message.eval();
-        if (_message.isResponsePending() && _message.isForeign() && !startClosing && !_message.isSignal()) {
+        if (_message.isClosed() && _message.isForeign() && !startClosing && !_message.isSignal()) {
             try {
                 addMessage(_message);
             } catch (ServiceClosedException e) {

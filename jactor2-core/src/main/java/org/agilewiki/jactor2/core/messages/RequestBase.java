@@ -83,7 +83,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * True when a response to this message has not yet been determined.
      */
-    protected boolean responsePending = true;
+    protected boolean closed = true;
 
     /**
      * True when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
@@ -264,7 +264,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected void setResponse(final Object _response,
             final Reactor _activeReactor) {
         ((ReactorBase) _activeReactor).requestEnd(this);
-        responsePending = false;
+        closed = false;
         response = _response;
         if (Plant.DEBUG) {
             final Facility targetFacility = targetReactor.getFacility();
@@ -313,7 +313,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 }
             }
         }
-        if (!responsePending) {
+        if (!closed) {
             return false;
         }
         setResponse(_response, targetReactor);
@@ -329,8 +329,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     @Override
-    public boolean isResponsePending() {
-        return responsePending;
+    public boolean isClosed() {
+        return closed;
     }
 
     @Override
@@ -340,10 +340,10 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     @Override
     public void close() {
-        if (!responsePending) {
+        if (!closed) {
             return;
         }
-        responsePending = false;
+        closed = false;
         response = new ServiceClosedException();
         messageSource.incomingResponse(this, null);
     }
@@ -353,7 +353,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     @Override
     public void eval() {
-        if (responsePending) {
+        if (closed) {
             targetReactor.setExceptionHandler(null);
             targetReactor.setCurrentMessage(this);
             targetReactor.requestBegin();
@@ -402,7 +402,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 processObjectResponse(exceptionHandler.processException(_e));
             } catch (final Throwable u) {
                 if (!(responseProcessor instanceof SignalResponseProcessor)) {
-                    if (!responsePending) {
+                    if (!closed) {
                         return;
                     }
                     setResponse(u, activeMessageProcessor);
@@ -416,7 +416,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 }
             }
         } else {
-            if (!responsePending) {
+            if (!closed) {
                 return;
             }
             setResponse(_e, activeMessageProcessor);
