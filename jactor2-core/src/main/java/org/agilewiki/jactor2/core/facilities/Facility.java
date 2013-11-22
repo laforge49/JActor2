@@ -225,6 +225,7 @@ public class Facility extends CloserBase {
         if (shuttingDown) {
             return;
         }
+        internalReactor.close();
         shuttingDown = true;
         close3();
     }
