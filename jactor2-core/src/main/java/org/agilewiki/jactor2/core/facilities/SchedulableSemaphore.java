@@ -21,4 +21,8 @@ public class SchedulableSemaphore {
         semaphore.acquire();
         return timeout;
     }
+
+    public void release() {
+        semaphore.release();
+    }
 }
