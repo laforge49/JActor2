@@ -212,7 +212,7 @@ public class Facility extends CloserBase {
             return;
         startClosing = true;
         final Plant plant = getPlant();
-        if ((plant != null) && (plant != Facility.this && !plant.isForcedExit())) {
+        if ((plant != null) && (plant != Facility.this && !plant.startedClosing())) {
             plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
