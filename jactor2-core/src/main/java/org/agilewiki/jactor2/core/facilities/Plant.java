@@ -195,7 +195,7 @@ public class Plant extends Facility {
 
     public SchedulableSemaphore schedulableSemaphore(final long _delay, final TimeUnit _timeUnit) {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
-        semaphoreScheduler.schedule(schedulableSemaphore, _delay, _timeUnit);
+        semaphoreScheduler.schedule(schedulableSemaphore.runnable, _delay, _timeUnit);
         return schedulableSemaphore;
     }
 }

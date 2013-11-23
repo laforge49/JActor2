@@ -2,20 +2,23 @@ package org.agilewiki.jactor2.core.facilities;
 
 import java.util.concurrent.Semaphore;
 
-public class SchedulableSemaphore extends Semaphore implements Runnable {
+public class SchedulableSemaphore {
+    private Semaphore semaphore = new Semaphore(0);
     private boolean timeout;
 
-    public SchedulableSemaphore() {
-        super(0);
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            timeout = true;
+            semaphore.release();
+        }
+    };
+
+    SchedulableSemaphore() {
     }
 
-    @Override
-    public void run() {
-        timeout = true;
-        release();
-    }
-
-    public boolean isTimeout() {
+    public boolean acquire() throws InterruptedException {
+        semaphore.acquire();
         return timeout;
     }
 }
