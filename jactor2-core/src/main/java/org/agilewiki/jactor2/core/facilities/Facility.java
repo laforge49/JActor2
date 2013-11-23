@@ -9,7 +9,6 @@ import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChanges
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -21,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ThreadFactory;
 
 /**
  * Provides a thread pool for
@@ -214,7 +212,7 @@ public class Facility extends CloserBase {
             return;
         startClosing = true;
         final Plant plant = getPlant();
-        if ((plant != null) && (plant != Facility.this)) {
+        if ((plant != null) && (plant != Facility.this && !plant.isForcedExit())) {
             plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }

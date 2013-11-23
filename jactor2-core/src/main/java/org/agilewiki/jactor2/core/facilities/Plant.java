@@ -184,7 +184,7 @@ public class Plant extends Facility {
         }
     }
 
-    public boolean isForceExit() {
+    public boolean isForcedExit() {
         return forceExit;
     }
 
@@ -193,9 +193,9 @@ public class Plant extends Facility {
         exit();
     }
 
-    public SchedulableSemaphore schedulableSemaphore(final long _delay, final TimeUnit _timeUnit) {
+    public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
-        semaphoreScheduler.schedule(schedulableSemaphore.runnable, _delay, _timeUnit);
+        semaphoreScheduler.schedule(schedulableSemaphore.runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
         return schedulableSemaphore;
     }
 }
