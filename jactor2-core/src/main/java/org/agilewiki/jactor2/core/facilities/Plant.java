@@ -6,7 +6,9 @@ import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 public class Plant extends Facility {
     public final static int DEFAULT_THREAD_COUNT = 20;
@@ -26,7 +28,11 @@ public class Plant extends Facility {
         return singleton;
     }
 
+    private ScheduledThreadPoolExecutor semaphoreScheduler = new ScheduledThreadPoolExecutor(1);
+
     private boolean exitOnClose;
+
+    private boolean forceExit;
 
     /**
      * The thread pool.
@@ -176,5 +182,20 @@ public class Plant extends Facility {
             getLog().error("exception on exit", t);
             System.exit(1);
         }
+    }
+
+    public boolean isForceExit() {
+        return forceExit;
+    }
+
+    public void forceExit() {
+        forceExit = true;
+        exit();
+    }
+
+    public SchedulableSemaphore schedulableSemaphore(final long _delay, final TimeUnit _timeUnit) {
+        SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
+        semaphoreScheduler.schedule(schedulableSemaphore, _delay, _timeUnit);
+        return schedulableSemaphore;
     }
 }
