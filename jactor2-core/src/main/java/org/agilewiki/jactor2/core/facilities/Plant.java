@@ -71,6 +71,9 @@ public class Plant extends Facility {
             final int _initialBufferSize, final int _threadCount,
             final ThreadFactory _threadFactory) throws Exception {
         super(PLANT_NAME, _initialLocalMessageQueueSize, _initialBufferSize);
+        String tim = System.getProperty("jactor.threadInterruptMilliseconds");
+        if (tim != null)
+            threadInterruptMilliseconds = Long.getLong(tim);
         threadManager = new ThreadManager(_threadCount, _threadFactory);
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
@@ -134,6 +137,7 @@ public class Plant extends Facility {
             protected void processAsyncRequest() throws Exception {
                 final Facility facility = new Facility(_name,
                         _initialLocalMessageQueueSize, _initialBufferSize);
+                facility.threadInterruptMilliseconds = threadInterruptMilliseconds;
                 facility.initialize(Plant.this);
                 send(getPropertiesProcessor().putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),

@@ -40,6 +40,8 @@ public class Facility extends CloserBase {
 
     public static final String FACILITY_PROPERTY_PREFIX = "core.facility_";
 
+    public long threadInterruptMilliseconds = 1000;
+
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
      */

@@ -17,6 +17,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 abstract public class ReactorBase extends MessageCloser implements Reactor, MessageSource {
 
+    public long threadInterruptMilliseconds = 1000;
+
     /**
      * Reactor logger.
      */
@@ -69,6 +71,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.getLog();
         outbox = new Outbox(this, _initialBufferSize);
+        threadInterruptMilliseconds = _facility.threadInterruptMilliseconds;
         initialize(this);
         addClose();
     }
