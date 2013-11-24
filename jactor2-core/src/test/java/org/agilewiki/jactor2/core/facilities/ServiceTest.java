@@ -42,11 +42,9 @@ public class ServiceTest extends TestCase {
                             });
                 }
             }.signal();
-            System.out.println("reactor close");
             serverReactor.close();     //this works
             //serverFacility.close();  //this also works
         } finally {
-            System.out.println("plant close");
             plant.close();
         }
     }
