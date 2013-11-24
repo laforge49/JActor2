@@ -122,6 +122,45 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         } catch (final Exception e) {
         }
         super.close();
+        Plant plant = getFacility().getPlant();
+        if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
+            return;
+        timeoutSemaphore = plant.schedulableSemaphore(threadInterruptMilliseconds);
+        if (currentMessage != null)
+            currentMessage.close();
+        boolean timeout = timeoutSemaphore.acquire();
+        if (!timeout)
+            return;
+        try{
+        if (currentMessage == null)
+            log.error("hung thread facility=%s", getFacility().getName());
+        else {
+            MessageSource messageSource = currentMessage.getMessageSource();
+            if (messageSource == null) {
+                String[] args = {
+                        getFacility().getName(),
+                        currentMessage.toString(),
+                        ""+currentMessage.isClosed(),
+                        ""+currentMessage.isSignal(),
+                        currentMessage.getTargetReactor().toString()
+                };
+                log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource=null\ntargetReactor={}",args);
+            } else {
+                String[] args = {
+                        getFacility().getName(),
+                        currentMessage.getClass().getName(),
+                        ""+currentMessage.isClosed(),
+                        ""+currentMessage.isSignal(),
+                        messageSource.getClass().getName(),
+                        currentMessage.getTargetReactor().getClass().getName()
+                };
+                log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource={}\ntargetReactor={}",args);
+            }
+        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        plant.forceExit();
     }
 
     /**
@@ -353,8 +392,9 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         running = true;
         try {
             while (true) {
-                if (Thread.interrupted())
+                if (Thread.interrupted()) {
                     throw new InterruptedException();
+                }
                 final Message message = inbox.poll();
                 if (message == null) {
                     try {
@@ -373,8 +413,10 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                 }
                 processMessage(message);
             }
-            if (timeoutSemaphore != null)
-                Thread.sleep(Long.MAX_VALUE); //wait for it
+            if (timeoutSemaphore != null) {
+                timeoutSemaphore.release();
+                return;
+            }
         } catch (final InterruptedException ie) {
             if (timeoutSemaphore != null) {
                 timeoutSemaphore.release();

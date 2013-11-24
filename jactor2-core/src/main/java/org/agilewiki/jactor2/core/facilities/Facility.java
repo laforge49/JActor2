@@ -40,7 +40,7 @@ public class Facility extends CloserBase {
 
     public static final String FACILITY_PROPERTY_PREFIX = "core.facility_";
 
-    public long threadInterruptMilliseconds = 1000;
+    public long threadInterruptMilliseconds;
 
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
@@ -167,6 +167,10 @@ public class Facility extends CloserBase {
     @Override
     protected final boolean startedClosing() {
         return startClosing;
+    }
+
+    public final boolean isShuttingDown() {
+        return shuttingDown;
     }
 
     protected void validateName(final String _name) throws Exception {

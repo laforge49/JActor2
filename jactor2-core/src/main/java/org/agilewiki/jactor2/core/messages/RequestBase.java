@@ -123,9 +123,16 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *
      * @return The target Reactor.
      */
+    @Override
     public Reactor getTargetReactor() {
         return targetReactor;
     }
+
+    @Override
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
 
     /**
      * Marks the request as having been used, or throws an

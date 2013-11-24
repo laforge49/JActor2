@@ -46,4 +46,8 @@ public interface Message extends AutoCloseable {
     boolean isForeign();
 
     boolean isSignal();
+
+    Reactor getTargetReactor();
+
+    MessageSource getMessageSource();
 }

@@ -71,6 +71,7 @@ public class Plant extends Facility {
             final int _initialBufferSize, final int _threadCount,
             final ThreadFactory _threadFactory) throws Exception {
         super(PLANT_NAME, _initialLocalMessageQueueSize, _initialBufferSize);
+        threadInterruptMilliseconds = 3000;
         String tim = System.getProperty("jactor.threadInterruptMilliseconds");
         if (tim != null)
             threadInterruptMilliseconds = Long.getLong(tim);
