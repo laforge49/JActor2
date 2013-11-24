@@ -93,6 +93,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
 
+    private boolean running;
+
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
      */
@@ -144,8 +146,6 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
     protected void notBusy() throws Exception {
         flush();
     }
-
-    private boolean running;
 
     @Override
     public final boolean isRunning() {
