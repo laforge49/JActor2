@@ -231,10 +231,6 @@ public class Facility extends CloserBase {
         }
         internalReactor.close();
         shuttingDown = true;
-        close3();
-    }
-
-    protected void close3() throws Exception {
         super.close();
     }
 

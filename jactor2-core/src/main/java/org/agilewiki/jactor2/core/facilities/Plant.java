@@ -168,15 +168,9 @@ public class Plant extends Facility {
             return;
         }
         shuttingDown = true;
-        threadManager.close();
-        close3();
-    }
-
-    @Override
-    protected void close3() throws Exception {
-        super.close();
         if (exitOnClose)
             System.exit(0);
+        threadManager.close();
     }
 
     public void exit() {
