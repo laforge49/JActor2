@@ -112,7 +112,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
      *                        are messages to be processed.
      */
     public ThreadBoundReactor(final Facility _facility,
-            final Runnable _boundProcessor) throws Exception {
+                              final Runnable _boundProcessor) throws Exception {
         super(_facility, _facility.getInitialBufferSize(), _facility
                 .getInitialLocalMessageQueueSize());
         boundProcessor = _boundProcessor;
@@ -134,8 +134,8 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
      *                               are messages to be processed.
      */
     public ThreadBoundReactor(final Facility _facility,
-            final int _initialOutboxSize, final int _initialLocalQueueSize,
-            final Runnable _boundProcessor) throws Exception {
+                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Runnable _boundProcessor) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }
@@ -145,9 +145,11 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
         flush();
     }
 
+    private boolean running;
+
     @Override
     public final boolean isRunning() {
-        return true;
+        return running;
     }
 
     @Override
@@ -200,20 +202,25 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
 
     @Override
     public void run() {
-        while (true) {
-            final Message message = inbox.poll();
-            if (message == null) {
-                try {
-                    notBusy();
-                } catch (final Exception e) {
-                    log.error("Exception thrown by onIdle", e);
+        running = true;
+        try {
+            while (true) {
+                final Message message = inbox.poll();
+                if (message == null) {
+                    try {
+                        notBusy();
+                    } catch (final Exception e) {
+                        log.error("Exception thrown by onIdle", e);
+                    }
+                    if (hasWork()) {
+                        continue;
+                    }
+                    break;
                 }
-                if (hasWork()) {
-                    continue;
-                }
-                return;
+                processMessage(message);
             }
-            processMessage(message);
+        } finally {
+            running = false;
         }
     }
 }

@@ -142,7 +142,7 @@ abstract public class UnboundReactor extends ReactorBase {
                 if (hasWork()) {
                     continue;
                 }
-                return;
+                break;
             }
             processMessage(message);
         }
