@@ -1,10 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.MigrationException;
-import org.agilewiki.jactor2.core.facilities.PoolThread;
-import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
+import org.agilewiki.jactor2.core.facilities.*;
 import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.util.MessageCloser;
 import org.slf4j.Logger;
@@ -19,6 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
 abstract public class ReactorBase extends MessageCloser implements Reactor, MessageSource {
 
     private boolean running;
+
+    private SchedulableSemaphore timeoutSemaphore;
 
     public long threadInterruptMilliseconds = 1000;
 
@@ -354,10 +353,14 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         running = true;
         try {
             while (true) {
+                if (Thread.interrupted())
+                    throw new InterruptedException();
                 final Message message = inbox.poll();
                 if (message == null) {
                     try {
                         notBusy();
+                    } catch (final InterruptedException ie) {
+                        throw ie;
                     } catch (final MigrationException me) {
                         throw me;
                     } catch (final Exception e) {
@@ -370,6 +373,13 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                 }
                 processMessage(message);
             }
+            if (timeoutSemaphore != null)
+                Thread.sleep(Long.MAX_VALUE); //wait for it
+        } catch (final InterruptedException ie) {
+            if (timeoutSemaphore != null) {
+                timeoutSemaphore.release();
+            } else
+                Thread.currentThread().interrupt();
         } finally {
             running = false;
         }
