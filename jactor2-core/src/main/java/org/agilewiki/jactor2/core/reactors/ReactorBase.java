@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.MigrationException;
 import org.agilewiki.jactor2.core.facilities.PoolThread;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.*;
@@ -16,6 +17,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * Base class for targetReactor.
  */
 abstract public class ReactorBase extends MessageCloser implements Reactor, MessageSource {
+
+    private boolean running;
 
     public long threadInterruptMilliseconds = 1000;
 
@@ -74,6 +77,13 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         threadInterruptMilliseconds = _facility.threadInterruptMilliseconds;
         initialize(this);
         addClose();
+    }
+
+    /**
+     * Returns true, if this targetReactor is actively processing messages.
+     */
+    public final boolean isRunning() {
+        return running;
     }
 
     @Override
@@ -333,14 +343,35 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
     abstract public AtomicReference<PoolThread> getThreadReference();
 
     /**
-     * Returns true, if this targetReactor is actively processing messages.
-     */
-    abstract public boolean isRunning();
-
-    /**
      * Returns true when there is code to be executed when the inbox is emptied.
      *
      * @return True when there is code to be executed when the inbox is emptied.
      */
     abstract public boolean isIdler();
+
+    @Override
+    public void run() {
+        running = true;
+        try {
+            while (true) {
+                final Message message = inbox.poll();
+                if (message == null) {
+                    try {
+                        notBusy();
+                    } catch (final MigrationException me) {
+                        throw me;
+                    } catch (final Exception e) {
+                        log.error("Exception thrown by onIdle", e);
+                    }
+                    if (hasWork()) {
+                        continue;
+                    }
+                    break;
+                }
+                processMessage(message);
+            }
+        } finally {
+            running = false;
+        }
+    }
 }

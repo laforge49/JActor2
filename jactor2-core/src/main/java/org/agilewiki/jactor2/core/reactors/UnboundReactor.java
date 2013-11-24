@@ -18,8 +18,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 abstract public class UnboundReactor extends ReactorBase {
 
-    private boolean running;
-
     /**
      * A reference to the thread that is executing this targetReactor.
      */
@@ -62,11 +60,6 @@ abstract public class UnboundReactor extends ReactorBase {
             onIdle.run();
         }
         flush(true);
-    }
-
-    @Override
-    public boolean isRunning() {
-        return running;
     }
 
     @Override
@@ -127,31 +120,5 @@ abstract public class UnboundReactor extends ReactorBase {
             }
         }
         return result;
-    }
-
-    @Override
-    public void run() {
-        running = true;
-        try {
-            while (true) {
-                final Message message = inbox.poll();
-                if (message == null) {
-                    try {
-                        notBusy();
-                    } catch (final MigrationException me) {
-                        throw me;
-                    } catch (final Exception e) {
-                        log.error("Exception thrown by onIdle", e);
-                    }
-                    if (hasWork()) {
-                        continue;
-                    }
-                    break;
-                }
-                processMessage(message);
-            }
-        } finally {
-            running = false;
-        }
     }
 }

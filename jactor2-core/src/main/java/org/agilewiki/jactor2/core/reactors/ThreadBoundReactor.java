@@ -93,8 +93,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
 
-    private boolean running;
-
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
      */
@@ -148,11 +146,6 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
     }
 
     @Override
-    public final boolean isRunning() {
-        return running;
-    }
-
-    @Override
     public AtomicReference<PoolThread> getThreadReference() {
         throw new UnsupportedOperationException();
     }
@@ -198,29 +191,5 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
             }
         }
         return result;
-    }
-
-    @Override
-    public void run() {
-        running = true;
-        try {
-            while (true) {
-                final Message message = inbox.poll();
-                if (message == null) {
-                    try {
-                        notBusy();
-                    } catch (final Exception e) {
-                        log.error("Exception thrown by onIdle", e);
-                    }
-                    if (hasWork()) {
-                        continue;
-                    }
-                    break;
-                }
-                processMessage(message);
-            }
-        } finally {
-            running = false;
-        }
     }
 }
