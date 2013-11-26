@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A blade that publishes content to interested subscribers, using either signals or sends.
@@ -15,7 +16,7 @@ import java.util.*;
  */
 public class RequestBus<CONTENT> extends BladeBase {
     final Set<Subscription<CONTENT>> subscriptions =
-            Collections.newSetFromMap(new HashMap<Subscription<CONTENT>, Boolean>());
+            Collections.newSetFromMap(new ConcurrentHashMap<Subscription<CONTENT>, Boolean>());
 
     /**
      * Create a RequestBus blade

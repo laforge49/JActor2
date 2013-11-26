@@ -39,7 +39,7 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
     public SubscribeAReq(final RequestBus<CONTENT> _requestBus,
                          final CommonReactor _subscriberReactor,
                          final Filter<CONTENT> _filter) {
-        super(_requestBus.getReactor());
+        super(_subscriberReactor);
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
         filter = _filter;
