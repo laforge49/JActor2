@@ -160,6 +160,10 @@ public class Facility extends CloserBase {
         }.signal();
     }
 
+    public InternalReactor getInternalReactor() {
+        return internalReactor;
+    }
+
     public PropertiesProcessor getPropertiesProcessor() {
         return propertiesProcessor;
     }
