@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
 import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
@@ -279,9 +280,9 @@ public class Facility extends CloserBase {
         while (it.hasNext()) {
             final Facility dependency = (Facility) it.next();
             if (dependency.hasDependency(_name))
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 
     public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
@@ -352,6 +353,24 @@ public class Facility extends CloserBase {
                         .newInstance();
                 initiator.initialize(getReactor());
                 send(initiator.startAReq(), this);
+            }
+        };
+    }
+
+    public AsyncRequest<Subscription<ImmutablePropertyChanges>> tracePropertyChangesAReq() {
+        return new SubscribeAReq<ImmutablePropertyChanges>(propertiesProcessor.changeBus, internalReactor){
+            @Override
+            protected void processContent(final ImmutablePropertyChanges _content)
+                    throws Exception {
+                SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
+                System.out.println("\n"+name+" changes: " + readOnlyChanges.size());
+                final Iterator<PropertyChange> it = readOnlyChanges.values().iterator();
+                while (it.hasNext()) {
+                    final PropertyChange propertyChange = it.next();
+                    System.out.println("key=" + propertyChange.name + "\n    old="
+                            + propertyChange.oldValue + "\n    new="
+                            + propertyChange.newValue);
+                }
             }
         };
     }

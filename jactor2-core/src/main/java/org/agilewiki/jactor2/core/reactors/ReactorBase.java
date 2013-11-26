@@ -426,4 +426,13 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
             running = false;
         }
     }
+
+    public SyncRequest<Void> nullSReq() {
+        return new SyncBladeRequest<Void>() {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                return null;
+            }
+        };
+    }
 }

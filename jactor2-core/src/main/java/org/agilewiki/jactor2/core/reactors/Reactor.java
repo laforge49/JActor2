@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Closer;
 
@@ -54,4 +55,6 @@ public interface Reactor extends Runnable, Closeable, Closer, Blade {
      * @return true if close() has already been called.
      */
     boolean isClosing();
+
+    SyncRequest<Void> nullSReq();
 }
