@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 public class DependencyTest extends TestCase {
@@ -15,11 +16,12 @@ public class DependencyTest extends TestCase {
                     .call();
             b.dependencyAReq(a).call();
             c.dependencyAReq(b).call();
-            ImmutableProperties<Object> properties = plant.getPropertiesProcessor().getImmutableState();
+            PropertiesProcessor propertiesProcessor = plant.getPropertiesProcessor();
+            ImmutableProperties<Object> properties = propertiesProcessor.getImmutableState();
             System.out.println("before: "+properties);
             a.close();
-            plant.getPropertiesProcessor().getReactor().nullSReq().call();
-            properties = plant.getPropertiesProcessor().getImmutableState();
+            plant.getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
+            properties = propertiesProcessor.getImmutableState();
             System.out.println("after: "+properties);
         } finally {
             plant.close();
