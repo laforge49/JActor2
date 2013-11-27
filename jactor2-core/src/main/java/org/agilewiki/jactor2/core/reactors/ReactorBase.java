@@ -420,6 +420,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         } catch (final InterruptedException ie) {
             if (timeoutSemaphore != null) {
                 timeoutSemaphore.release();
+                Thread.interrupted();
             } else
                 Thread.currentThread().interrupt();
         } finally {
