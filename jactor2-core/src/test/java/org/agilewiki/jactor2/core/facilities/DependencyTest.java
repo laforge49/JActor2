@@ -19,7 +19,7 @@ public class DependencyTest extends TestCase {
             PropertiesProcessor propertiesProcessor = plant.getPropertiesProcessor();
             ImmutableProperties<Object> properties = propertiesProcessor.getImmutableState();
             System.out.println("before: "+properties);
-            a.close();
+            plant.purgeFacilitySReq("A").call();
             plant.getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
             properties = propertiesProcessor.getImmutableState();
             System.out.println("after: "+properties);

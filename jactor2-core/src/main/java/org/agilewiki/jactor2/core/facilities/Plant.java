@@ -1,11 +1,16 @@
 package org.agilewiki.jactor2.core.facilities;
 
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChangeManager;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -68,8 +73,8 @@ public class Plant extends Facility {
      * @param _threadFactory                The factory used to create threads for the threadpool.
      */
     public Plant(final int _initialLocalMessageQueueSize,
-            final int _initialBufferSize, final int _threadCount,
-            final ThreadFactory _threadFactory) throws Exception {
+                 final int _initialBufferSize, final int _threadCount,
+                 final ThreadFactory _threadFactory) throws Exception {
         super(PLANT_NAME, _initialLocalMessageQueueSize, _initialBufferSize);
         threadInterruptMilliseconds = 3000;
         String tim = System.getProperty("jactor.threadInterruptMilliseconds");
@@ -118,8 +123,8 @@ public class Plant extends Facility {
     }
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name,
-            final int _initialLocalMessageQueueSize,
-            final int _initialBufferSize) throws Exception {
+                                                     final int _initialLocalMessageQueueSize,
+                                                     final int _initialBufferSize) throws Exception {
         return new AsyncBladeRequest<Facility>() {
             final AsyncResponseProcessor<Facility> dis = this;
 
@@ -206,13 +211,6 @@ public class Plant extends Facility {
 
             String dependencyPropertyName;
 
-            AsyncResponseProcessor<Boolean> addCloseableResponseProcessor =
-                    new AsyncResponseProcessor<Boolean>() {
-                        @Override
-                        public void processAsyncResponse(Boolean _response) throws Exception {
-                        }
-                    };
-
             @Override
             protected void processAsyncRequest() throws Exception {
                 final String dependentName = _dependent.name;
@@ -239,5 +237,35 @@ public class Plant extends Facility {
 
     public Facility getFacility(String name) {
         return (Facility) getProperty(FACILITY_PROPERTY_PREFIX + name);
+    }
+
+    public AsyncRequest<Void> purgeFacilitySReq(final String _facilityName) {
+        return new AsyncBladeRequest<Void>() {
+            AsyncResponseProcessor<Void> dis = this;
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                Facility facility = getFacility(_facilityName);
+                if (facility != null)
+                    facility.close();
+                send(new PropertiesTransactionAReq(propertiesProcessor.commonReactor,
+                        propertiesProcessor) {
+                    @Override
+                    protected void update(final PropertiesChangeManager _contentManager)
+                            throws Exception {
+                        ImmutableProperties<Object> immutableProperties =
+                                _contentManager.getImmutableProperties();
+                        String prefix = FACILITY_PREFIX+_facilityName+"."+DEPENDENCY_PROPERTY_PREFIX;
+                        final ImmutableProperties<Object> subMap = immutableProperties.subMap(prefix);
+                        final Collection<String> keys = subMap.keySet();
+                        final Iterator<String> it = keys.iterator();
+                        while (it.hasNext()) {
+                            final String key = it.next();
+                            _contentManager.put(key, null);
+                        }
+                    }
+                }, dis);
+            }
+        };
     }
 }
