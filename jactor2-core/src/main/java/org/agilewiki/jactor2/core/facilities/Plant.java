@@ -232,8 +232,12 @@ public class Plant extends Facility {
                     throw new IllegalArgumentException(
                             "this would create a cyclic dependency");
                 _dependency.addCloseable(_dependent);
-                send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency), dis);
+                send(propertiesProcessor.putAReq(dependencyPropertyName, true), dis);
             }
         };
+    }
+
+    public Facility getFacility(String name) {
+        return (Facility) getProperty(FACILITY_PROPERTY_PREFIX + name);
     }
 }

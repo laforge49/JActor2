@@ -151,16 +151,7 @@ public class Facility extends CloserBase {
                             name2 = name2.substring(DEPENDENCY_PROPERTY_PREFIX.length());
                             if (PLANT_NAME.equals(name1))
                                 throw new UnsupportedOperationException("a plant can not have a dependency");
-                            if (oldValue != null)
-                                throw new IllegalStateException(
-                                        "once set, this property can not be changed: "
-                                                + name);
-                            if (!(newValue instanceof Facility))
-                                throw new IllegalArgumentException(name
-                                        + " not set to a Facility " + newValue);
-                            Facility facility = (Facility) newValue;
-                            if (!name2.equals(facility.name))
-                                throw new IllegalArgumentException("dependency does not have matching name");
+                            Facility facility = plant.getFacility(name2);
                             if (facility.hasDependency(name))
                                 throw new IllegalArgumentException(
                                         "Would create a dependency cycle.");
@@ -279,16 +270,19 @@ public class Facility extends CloserBase {
     }
 
     public boolean hasDependency(final String _name) throws Exception {
-        if (getProperty(DEPENDENCY_PROPERTY_PREFIX + _name) != null)
+        String prefix = FACILITY_PREFIX+name+"."+DEPENDENCY_PROPERTY_PREFIX;
+        if (plant.getProperty(prefix + _name) != null)
             return true;
-        final ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
-        final ImmutableProperties<Object> subMap = immutableProperties.subMap(DEPENDENCY_PROPERTY_PREFIX);
-        final Collection<Object> values = subMap.values();
-        if (values.size() == 0)
+        final ImmutableProperties<Object> immutableProperties = plant.propertiesProcessor.getImmutableState();
+        final ImmutableProperties<Object> subMap = immutableProperties.subMap(prefix);
+        final Collection<String> keys = subMap.keySet();
+        if (keys.size() == 0)
             return false;
-        final Iterator<Object> it = values.iterator();
+        final Iterator<String> it = keys.iterator();
         while (it.hasNext()) {
-            final Facility dependency = (Facility) it.next();
+            final String key = it.next();
+            String name = key.substring(prefix.length());
+            Facility dependency = plant.getFacility(name);
             if (dependency.hasDependency(_name))
                 return true;
         }
