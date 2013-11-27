@@ -66,7 +66,7 @@ public class Facility extends CloserBase {
     /**
      * The logger used by targetReactor.
      */
-    private final Logger log = LoggerFactory
+    protected final Logger log = LoggerFactory
             .getLogger(Reactor.class);
 
     /**
@@ -111,6 +111,7 @@ public class Facility extends CloserBase {
         initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
         RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
+        tracePropertyChangesAReq().signal();
         new SubscribeAReq<ImmutablePropertyChanges>(
                 validationBus,
                 (NonBlockingReactor) getReactor(),
@@ -363,13 +364,16 @@ public class Facility extends CloserBase {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
-                System.out.println("\n"+name+" changes: " + readOnlyChanges.size());
                 final Iterator<PropertyChange> it = readOnlyChanges.values().iterator();
                 while (it.hasNext()) {
                     final PropertyChange propertyChange = it.next();
-                    System.out.println("key=" + propertyChange.name + "\n    old="
-                            + propertyChange.oldValue + "\n    new="
-                            + propertyChange.newValue);
+                    String[] args = {
+                            name,
+                            propertyChange.name,
+                            ""+propertyChange.oldValue,
+                            ""+propertyChange.newValue
+                    };
+                    log.info("\n    facility={}\n    key={}\n    old={}\n    new={}", args);
                 }
             }
         };
