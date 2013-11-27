@@ -14,6 +14,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.CloserBase;
+import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class Facility extends CloserBase {
 
     public static final String FACILITY_PROPERTY_PREFIX = "core.facility_";
 
-    public long threadInterruptMilliseconds;
+    public Recovery recovery;
 
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.

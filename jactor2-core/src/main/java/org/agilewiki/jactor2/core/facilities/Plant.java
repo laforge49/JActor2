@@ -7,6 +7,8 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.util.DefaultRecovery;
+import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 import java.util.Collection;
@@ -76,10 +78,13 @@ public class Plant extends Facility {
                  final int _initialBufferSize, final int _threadCount,
                  final ThreadFactory _threadFactory) throws Exception {
         super(PLANT_NAME, _initialLocalMessageQueueSize, _initialBufferSize);
-        threadInterruptMilliseconds = 3000;
-        String tim = System.getProperty("jactor.threadInterruptMilliseconds");
-        if (tim != null)
-            threadInterruptMilliseconds = Long.getLong(tim);
+        String recoveryClassName = System.getProperty("jactor.recoveryClass");
+        if (recoveryClassName != null) {
+            ClassLoader classLoader = getClass().getClassLoader();
+            Class recoveryClass = classLoader.loadClass(recoveryClassName);
+            recovery = (Recovery) recoveryClass.newInstance();
+        } else
+            recovery = new DefaultRecovery();
         threadManager = new ThreadManager(_threadCount, _threadFactory);
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
@@ -132,7 +137,7 @@ public class Plant extends Facility {
             protected void processAsyncRequest() throws Exception {
                 final Facility facility = new Facility(_name,
                         _initialLocalMessageQueueSize, _initialBufferSize);
-                facility.threadInterruptMilliseconds = threadInterruptMilliseconds;
+                facility.recovery = recovery;
                 facility.initialize(Plant.this);
                 send(getPropertiesProcessor().putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),

@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.*;
 import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.util.MessageCloser;
+import org.agilewiki.jactor2.core.util.Recovery;
 import org.slf4j.Logger;
 
 import java.util.Iterator;
@@ -19,7 +20,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
 
     private SchedulableSemaphore timeoutSemaphore;
 
-    public long threadInterruptMilliseconds = 1000;
+    public Recovery recovery;
 
     /**
      * Reactor logger.
@@ -73,7 +74,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.getLog();
         outbox = new Outbox(this, _initialBufferSize);
-        threadInterruptMilliseconds = _facility.threadInterruptMilliseconds;
+        recovery = _facility.recovery;
         initialize(this);
         addClose();
     }
@@ -125,7 +126,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         Plant plant = getFacility().getPlant();
         if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
             return;
-        timeoutSemaphore = plant.schedulableSemaphore(threadInterruptMilliseconds);
+        timeoutSemaphore = plant.schedulableSemaphore(recovery.getThreadInterruptMilliseconds());
         if (currentMessage != null)
             currentMessage.close();
         boolean timeout = timeoutSemaphore.acquire();
