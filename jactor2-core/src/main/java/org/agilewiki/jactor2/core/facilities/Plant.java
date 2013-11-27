@@ -260,7 +260,7 @@ public class Plant extends Facility {
                             throws Exception {
                         ImmutableProperties<Object> immutableProperties =
                                 _contentManager.getImmutableProperties();
-                        String prefix = FACILITY_PREFIX+_facilityName+"."+DEPENDENCY_PROPERTY_PREFIX;
+                        String prefix = FACILITY_PREFIX+_facilityName+".";
                         final ImmutableProperties<Object> subMap = immutableProperties.subMap(prefix);
                         final Collection<String> keys = subMap.keySet();
                         final Iterator<String> it = keys.iterator();
