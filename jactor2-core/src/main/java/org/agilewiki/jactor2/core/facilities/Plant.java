@@ -109,17 +109,6 @@ public class Plant extends Facility {
     protected void validateName(final String _name) throws Exception {
     }
 
-    @Override
-    public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
-        return new AsyncBladeRequest<Void>() {
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                throw new UnsupportedOperationException(
-                        "Plant can have no dependencies");
-            }
-        };
-    }
-
     public AsyncRequest<Facility> createFacilityAReq(final String _name)
             throws Exception {
         return createFacilityAReq(
@@ -196,5 +185,55 @@ public class Plant extends Facility {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
         semaphoreScheduler.schedule(schedulableSemaphore.runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
         return schedulableSemaphore;
+    }
+
+    @Override
+    public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
+        return new AsyncBladeRequest<Void>() {
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                throw new UnsupportedOperationException(
+                        "Plant can have no dependencies");
+            }
+        };
+    }
+
+    public AsyncRequest<Void> dependencyAReq(final Facility _dependent, final Facility _dependency) {
+
+        return new AsyncBladeRequest<Void>() {
+
+            AsyncResponseProcessor<Void> dis = this;
+
+            String dependencyPropertyName;
+
+            AsyncResponseProcessor<Boolean> addCloseableResponseProcessor =
+                    new AsyncResponseProcessor<Boolean>() {
+                        @Override
+                        public void processAsyncResponse(Boolean _response) throws Exception {
+                        }
+                    };
+
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                final String dependentName = _dependent.name;
+                final String name = _dependency.name;
+                if (name == null) {
+                    throw new IllegalArgumentException(
+                            "the dependency has no name");
+                }
+                if (PLANT_NAME.equals(name))
+                    dis.processAsyncResponse(null);
+                dependencyPropertyName = FACILITY_PREFIX + dependentName + "." + DEPENDENCY_PROPERTY_PREFIX + name;
+                if (getProperty(dependencyPropertyName) != null) {
+                    throw new IllegalStateException(
+                            "the dependency was already present");
+                }
+                if (_dependency.hasDependency(dependentName))
+                    throw new IllegalArgumentException(
+                            "this would create a cyclic dependency");
+                _dependency.addCloseable(_dependent);
+                send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency), dis);
+            }
+        };
     }
 }

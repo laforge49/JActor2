@@ -8,7 +8,6 @@ import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProce
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChangesFilter;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -36,6 +35,8 @@ public class Facility extends CloserBase {
     public static final String NAME_PROPERTY = "core.facilityName";
 
     public static final String PLANT_NAME = "Plant";
+
+    public static final String FACILITY_PREFIX = "facility_";
 
     public static final String DEPENDENCY_PROPERTY_PREFIX = "core.dependency_";
 
@@ -79,7 +80,7 @@ public class Facility extends CloserBase {
      */
     private final int initialBufferSize;
 
-    private PropertiesProcessor propertiesProcessor;
+    protected PropertiesProcessor propertiesProcessor;
 
     public final String name;
 
@@ -110,12 +111,11 @@ public class Facility extends CloserBase {
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
-        RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
         tracePropertyChangesAReq().signal();
+        RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 validationBus,
-                (NonBlockingReactor) getReactor(),
-                new PropertyChangesFilter("immutable.")) {
+                (NonBlockingReactor) internalReactor) {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
@@ -134,28 +134,37 @@ public class Facility extends CloserBase {
                     if (name.startsWith(FACILITY_PROPERTY_PREFIX)) {
                         if (!(Facility.this instanceof Plant))
                             throw new UnsupportedOperationException("only a plant can have a facility");
-                        if (oldValue != null)
-                            throw new IllegalStateException(
-                                    "once set, this property can not be changed: "
-                                            + name);
-                        if (!(newValue instanceof Facility))
+                        if (newValue != null && !(newValue instanceof Facility))
                             throw new IllegalArgumentException(name
                                     + " not set to a Facility " + newValue);
                     }
-                    if (name.startsWith(DEPENDENCY_PROPERTY_PREFIX)) {
-                        if (Facility.this instanceof Plant)
-                            throw new UnsupportedOperationException("a plant can not have a dependency");
-                        if (oldValue != null)
-                            throw new IllegalStateException(
-                                    "once set, this property can not be changed: "
-                                            + name);
-                        if (!(newValue instanceof Facility))
-                            throw new IllegalArgumentException(name
-                                    + " not set to a Facility " + newValue);
-                        Facility facility = (Facility) newValue;
-                        if (facility.hasDependency(name))
-                            throw new IllegalArgumentException(
-                                    "Would create a dependency cycle.");
+                    if (name.startsWith(FACILITY_PREFIX)) {
+                        if (!(Facility.this instanceof Plant))
+                            throw new UnsupportedOperationException("only a plant can have a facility");
+                        String name1 = name.substring(FACILITY_PREFIX.length());
+                        int i = name1.indexOf('.');
+                        if (i == -1)
+                            throw new UnsupportedOperationException("undeliminated facility");
+                        String name2 = name1.substring(i + 1);
+                        name1 = name1.substring(0, i);
+                        if (name2.startsWith(DEPENDENCY_PROPERTY_PREFIX)) {
+                            name2 = name2.substring(DEPENDENCY_PROPERTY_PREFIX.length());
+                            if (PLANT_NAME.equals(name1))
+                                throw new UnsupportedOperationException("a plant can not have a dependency");
+                            if (oldValue != null)
+                                throw new IllegalStateException(
+                                        "once set, this property can not be changed: "
+                                                + name);
+                            if (!(newValue instanceof Facility))
+                                throw new IllegalArgumentException(name
+                                        + " not set to a Facility " + newValue);
+                            Facility facility = (Facility) newValue;
+                            if (!name2.equals(facility.name))
+                                throw new IllegalArgumentException("dependency does not have matching name");
+                            if (facility.hasDependency(name))
+                                throw new IllegalArgumentException(
+                                        "Would create a dependency cycle.");
+                        }
                     }
                 }
             }
@@ -288,47 +297,7 @@ public class Facility extends CloserBase {
 
     public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
 
-        return new AsyncBladeRequest<Void>() {
-
-            AsyncResponseProcessor<Void> dis = this;
-
-            String dependencyPropertyName;
-
-            AsyncResponseProcessor<Boolean> addCloseableResponseProcessor =
-                    new AsyncResponseProcessor<Boolean>() {
-                        @Override
-                        public void processAsyncResponse(Boolean _response) throws Exception {
-                        }
-                    };
-
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                final String myName = name;
-                if (myName == null) {
-                    throw new IllegalStateException(
-                            "assign a name before adding a dependency");
-                }
-                final String name = _dependency.name;
-                if (name == null) {
-                    throw new IllegalArgumentException(
-                            "the dependency has no name");
-                }
-                dependencyPropertyName = DEPENDENCY_PROPERTY_PREFIX + name;
-                if (getProperty(dependencyPropertyName) != null) {
-                    throw new IllegalStateException(
-                            "the dependency was already present");
-                }
-                if (_dependency.hasDependency(myName))
-                    throw new IllegalArgumentException(
-                            "this would create a cyclic dependency");
-                if (PLANT_NAME.equals(_dependency.name)) {
-                    send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency),dis);
-                } else {
-                    _dependency.addCloseable(Facility.this);
-                    send(propertiesProcessor.putAReq(dependencyPropertyName, _dependency), dis);
-                }
-            }
-        };
+        return plant.dependencyAReq(this, _dependency);
     }
 
     protected ClassLoader getClassLoader() throws Exception {
@@ -359,7 +328,7 @@ public class Facility extends CloserBase {
     }
 
     public AsyncRequest<Subscription<ImmutablePropertyChanges>> tracePropertyChangesAReq() {
-        return new SubscribeAReq<ImmutablePropertyChanges>(propertiesProcessor.changeBus, internalReactor){
+        return new SubscribeAReq<ImmutablePropertyChanges>(propertiesProcessor.changeBus, internalReactor) {
             @Override
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
@@ -370,8 +339,8 @@ public class Facility extends CloserBase {
                     String[] args = {
                             name,
                             propertyChange.name,
-                            ""+propertyChange.oldValue,
-                            ""+propertyChange.newValue
+                            "" + propertyChange.oldValue,
+                            "" + propertyChange.newValue
                     };
                     log.info("\n    facility={}\n    key={}\n    old={}\n    new={}", args);
                 }
