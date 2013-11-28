@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
 public interface Recovery {
-    long getThreadInterruptMilliseconds();
+    long getThreadInterruptMilliseconds(Reactor _reactor);
 }
