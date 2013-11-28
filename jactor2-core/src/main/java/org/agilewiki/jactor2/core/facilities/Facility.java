@@ -74,12 +74,12 @@ public class Facility extends CloserBase {
     /**
      * How big should the initial inbox doLocal queue size be?
      */
-    private final int initialLocalMessageQueueSize;
+    private int initialLocalMessageQueueSize;
 
     /**
      * How big should the initial outbox (per target Reactor) buffer size be?
      */
-    private final int initialBufferSize;
+    private int initialBufferSize;
 
     protected PropertiesProcessor propertiesProcessor;
 
@@ -91,20 +91,17 @@ public class Facility extends CloserBase {
      * Create a Facility.
      *
      * @param _name                         The name of the facility.
-     * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
-     * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
      */
-    protected Facility(final String _name,
-                       final int _initialLocalMessageQueueSize,
-                       final int _initialBufferSize) throws Exception {
+    protected Facility(final String _name) throws Exception {
         validateName(_name);
         name = _name;
-        initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
-        initialBufferSize = _initialBufferSize;
     }
 
     public void initialize(final Plant _plant) throws Exception {
         plant = _plant;
+        PlantConfiguration plantConfiguration = plant.getPlantConfiguration();
+        initialLocalMessageQueueSize = plantConfiguration.getInitialLocalMessageQueueSize();
+        initialBufferSize = plantConfiguration.getInitialBufferSize();
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         if (this != plant)

@@ -18,7 +18,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 public class Plant extends Facility {
-    public final static int DEFAULT_THREAD_COUNT = 20;
 
     /**
      * System property flag, jactor.debug, to turn on debug;
@@ -35,6 +34,8 @@ public class Plant extends Facility {
         return singleton;
     }
 
+    private PlantConfiguration plantConfiguration;
+
     private ScheduledThreadPoolExecutor semaphoreScheduler = new ScheduledThreadPoolExecutor(1);
 
     private boolean exitOnClose;
@@ -50,9 +51,7 @@ public class Plant extends Facility {
      * Create a Plant.
      */
     public Plant() throws Exception {
-        this(Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                Outbox.DEFAULT_INITIAL_BUFFER_SIZE, DEFAULT_THREAD_COUNT,
-                new DefaultThreadFactory());
+        this(new PlantConfiguration());
     }
 
     /**
@@ -61,23 +60,18 @@ public class Plant extends Facility {
      * @param _threadCount The thread pool size.
      */
     public Plant(final int _threadCount) throws Exception {
-        this(Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                Outbox.DEFAULT_INITIAL_BUFFER_SIZE, _threadCount,
-                new DefaultThreadFactory());
+        this(new PlantConfiguration(_threadCount));
     }
 
-    /**
-     * Create a Plant.
-     *
-     * @param _initialLocalMessageQueueSize How big should the initial inbox doLocal queue size be?
-     * @param _initialBufferSize            How big should the initial outbox (per target Reactor) buffer size be?
-     * @param _threadCount                  The thread pool size.
-     * @param _threadFactory                The factory used to create threads for the threadpool.
-     */
-    public Plant(final int _initialLocalMessageQueueSize,
-                 final int _initialBufferSize, final int _threadCount,
-                 final ThreadFactory _threadFactory) throws Exception {
-        super(PLANT_NAME, _initialLocalMessageQueueSize, _initialBufferSize);
+    public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
+        super(PLANT_NAME);
+        String configurationClassName = System.getProperty("jactor.configurationClass");
+        if (configurationClassName != null) {
+            ClassLoader classLoader = getClass().getClassLoader();
+            Class configurationClass = classLoader.loadClass(configurationClassName);
+            plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
+        } else
+            plantConfiguration = _plantConfiguration;
         String recoveryClassName = System.getProperty("jactor.recoveryClass");
         if (recoveryClassName != null) {
             ClassLoader classLoader = getClass().getClassLoader();
@@ -85,7 +79,7 @@ public class Plant extends Facility {
             recovery = (Recovery) recoveryClass.newInstance();
         } else
             recovery = new DefaultRecovery();
-        threadManager = new ThreadManager(_threadCount, _threadFactory);
+        threadManager = plantConfiguration.getThreadManager();
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
@@ -94,6 +88,10 @@ public class Plant extends Facility {
             System.out.println("\n*** jactor.debug = true ***\n");
         }
         initialize(this);
+    }
+
+    public PlantConfiguration getPlantConfiguration() {
+        return plantConfiguration;
     }
 
     /**
@@ -135,8 +133,7 @@ public class Plant extends Facility {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                final Facility facility = new Facility(_name,
-                        _initialLocalMessageQueueSize, _initialBufferSize);
+                final Facility facility = new Facility(_name);
                 facility.recovery = recovery;
                 facility.initialize(Plant.this);
                 send(getPropertiesProcessor().putAReq(
