@@ -352,7 +352,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         }
         closed = false;
         response = new ServiceClosedException();
-        messageSource.incomingResponse(this, null);
+        if (messageSource != null)
+            messageSource.incomingResponse(this, null);
     }
 
     /**
