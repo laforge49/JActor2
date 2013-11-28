@@ -2,7 +2,10 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.*;
-import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.messages.Message;
+import org.agilewiki.jactor2.core.messages.MessageSource;
+import org.agilewiki.jactor2.core.messages.RequestBase;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.util.MessageCloser;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.slf4j.Logger;
@@ -132,36 +135,36 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         boolean timeout = timeoutSemaphore.acquire();
         if (!timeout)
             return;
-        try{
-        if (currentMessage == null)
-            log.error("hung thread facility=%s", getFacility().getName());
-        else {
-            MessageSource messageSource = currentMessage.getMessageSource();
-            if (messageSource == null) {
-                String[] args = {
-                        getFacility().getName(),
-                        currentMessage.toString(),
-                        ""+currentMessage.isClosed(),
-                        ""+currentMessage.isSignal(),
-                        currentMessage.getTargetReactor().toString()
-                };
-                log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource=null\ntargetReactor={}",args);
-            } else {
-                String[] args = {
-                        getFacility().getName(),
-                        currentMessage.getClass().getName(),
-                        ""+currentMessage.isClosed(),
-                        ""+currentMessage.isSignal(),
-                        messageSource.getClass().getName(),
-                        currentMessage.getTargetReactor().getClass().getName()
-                };
-                log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource={}\ntargetReactor={}",args);
+        try {
+            if (currentMessage == null)
+                log.error("hung thread facility=%s", getFacility().getName());
+            else {
+                MessageSource messageSource = currentMessage.getMessageSource();
+                if (messageSource == null) {
+                    String[] args = {
+                            getFacility().getName(),
+                            currentMessage.toString(),
+                            "" + currentMessage.isClosed(),
+                            "" + currentMessage.isSignal(),
+                            currentMessage.getTargetReactor().toString()
+                    };
+                    log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource=null\ntargetReactor={}", args);
+                } else {
+                    String[] args = {
+                            getFacility().getName(),
+                            currentMessage.getClass().getName(),
+                            "" + currentMessage.isClosed(),
+                            "" + currentMessage.isSignal(),
+                            messageSource.getClass().getName(),
+                            currentMessage.getTargetReactor().getClass().getName()
+                    };
+                    log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource={}\ntargetReactor={}", args);
+                }
             }
-        }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        plant.forceExit();
+        recovery.hungThread(this);
     }
 
     /**

@@ -7,4 +7,9 @@ public class DefaultRecovery implements Recovery {
     public long getThreadInterruptMilliseconds(final Reactor _reactor) {
         return 3000;
     }
+
+    @Override
+    public void hungThread(Reactor _reactor) {
+        _reactor.getFacility().getPlant().forceExit();
+    }
 }
