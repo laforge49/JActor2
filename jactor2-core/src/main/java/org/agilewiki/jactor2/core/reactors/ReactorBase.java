@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 abstract public class ReactorBase extends MessageCloser implements Reactor, MessageSource {
 
-    private boolean running;
+    private volatile boolean running;
 
     private SchedulableSemaphore timeoutSemaphore;
 
@@ -132,8 +132,10 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         timeoutSemaphore = plant.schedulableSemaphore(recovery.getThreadInterruptMilliseconds(this));
         if (currentMessage != null)
             currentMessage.close();
+        if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
+            return;
         boolean timeout = timeoutSemaphore.acquire();
-        if (!timeout)
+        if (!timeout || !isRunning() || plant.isForcedExit() || plant.isShuttingDown())
             return;
         try {
             if (currentMessage == null)
@@ -399,9 +401,15 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                 if (Thread.interrupted()) {
                     throw new InterruptedException();
                 }
+                if (timeoutSemaphore != null) {
+                    return;
+                }
                 final Message message = inbox.poll();
                 if (message == null) {
                     try {
+                        if (timeoutSemaphore != null) {
+                            return;
+                        }
                         notBusy();
                     } catch (final InterruptedException ie) {
                         throw ie;
@@ -415,20 +423,19 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                     }
                     break;
                 }
+                if (timeoutSemaphore != null) {
+                    return;
+                }
                 processMessage(message);
             }
-            if (timeoutSemaphore != null) {
-                timeoutSemaphore.release();
-                return;
-            }
         } catch (final InterruptedException ie) {
-            if (timeoutSemaphore != null) {
-                timeoutSemaphore.release();
-                Thread.interrupted();
-            } else
+            if (timeoutSemaphore == null)
                 Thread.currentThread().interrupt();
         } finally {
             running = false;
+            if (timeoutSemaphore != null) {
+                timeoutSemaphore.release();
+            }
         }
     }
 

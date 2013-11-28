@@ -19,8 +19,8 @@ public class ServiceTest extends TestCase {
         try {
             NonBlockingReactor serverReactor = new NonBlockingReactor(serverFacility);
             final Server server = new Server(serverReactor);
-            final Client client = new Client(new NonBlockingReactor(
-                    clientFacility), server);
+            NonBlockingReactor clientReactor = new NonBlockingReactor(clientFacility);
+            final Client client = new Client(clientReactor, server);
             NonBlockingReactor testReactor = new NonBlockingReactor(plant);
             new AsyncRequest<Void>(testReactor) {
                 AsyncRequest<Void> dis = this;
@@ -42,8 +42,8 @@ public class ServiceTest extends TestCase {
                             });
                 }
             }.signal();
-            serverReactor.close();     //this works
-            //serverFacility.close();  //this also works
+            //serverReactor.close();     //this works
+            serverFacility.close();  //this also works
         } finally {
             plant.close();
         }
