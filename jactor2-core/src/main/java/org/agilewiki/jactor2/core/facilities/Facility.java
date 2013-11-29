@@ -52,6 +52,18 @@ public class Facility extends CloserBase {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_RECOVERY_POSTFIX;
     }
 
+    public static String FACILITY_AUTO_START_POSTFIX = "core.autoStart";
+
+    public static String autoStartKey(final String _facilityName) {
+        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_AUTO_START_POSTFIX;
+    }
+
+    public static String FACILITY_FAILED_POSTFIX = "core.failed";
+
+    public static String failedKey(final String _facilityName) {
+        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_FAILED_POSTFIX;
+    }
+
     public Recovery recovery;
 
     /**
