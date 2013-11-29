@@ -206,6 +206,10 @@ public class Facility extends CloserBase {
             throw new IllegalArgumentException("name may not contain spaces: "
                     + _name);
         }
+        if (_name.contains("~")) {
+            throw new IllegalArgumentException("name may not contain ~: "
+                    + _name);
+        }
         if (_name.equals(PLANT_NAME)) {
             throw new IllegalArgumentException("name may be " + PLANT_NAME);
         }
