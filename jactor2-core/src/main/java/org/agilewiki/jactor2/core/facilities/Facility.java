@@ -187,12 +187,12 @@ public class Facility extends CloserBase {
                         String name2 = name1.substring(i + 1);
                         name1 = name1.substring(0, i);
                         Facility facility0 = plant.getFacility(name1);
-                        if (facility0 != null) {
-                            System.out.println(facility0.startedClosing()+" "+facility0.isShuttingDown());
-                            throw new IllegalStateException(
-                                    "configuration parameters can not change while a facility is running ");
-                        }
                         if (name2.startsWith(FACILITY_DEPENDENCY_INFIX)) {
+                            if (facility0 != null) {
+                                System.out.println(facility0.startedClosing()+" "+facility0.isShuttingDown());
+                                throw new IllegalStateException(
+                                        "the dependency properties can not change while a facility is running ");
+                            }
                             name2 = name2.substring(FACILITY_DEPENDENCY_INFIX.length());
                             if (PLANT_NAME.equals(name1))
                                 throw new UnsupportedOperationException("a plant can not have a dependency");
@@ -200,6 +200,11 @@ public class Facility extends CloserBase {
                                 throw new IllegalArgumentException(
                                         "Would create a dependency cycle.");
                         } else if (name2.equals(FACILITY_RECOVERY_POSTFIX)) {
+                            if (facility0 != null) {
+                                System.out.println(facility0.startedClosing()+" "+facility0.isShuttingDown());
+                                throw new IllegalStateException(
+                                        "the recovery property can not change while a facility is running ");
+                            }
                             if (PLANT_NAME.equals(name1))
                                 throw new UnsupportedOperationException("a plant can not have a recovery property");
                             if (newValue != null && !(newValue instanceof Recovery))

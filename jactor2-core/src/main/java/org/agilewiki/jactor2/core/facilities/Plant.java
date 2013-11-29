@@ -254,16 +254,16 @@ public class Plant extends Facility {
         return (Facility) getProperty(recoveryKey(name));
     }
 
-    public AsyncRequest<Void> autoStartPropertyAReq(final String _facilityName) {
-        return propertiesProcessor.putAReq(autoStartKey(_facilityName), true);
+    public AsyncRequest<Void> autoStartAReq(final String _facilityName, final boolean _newValue) {
+        return propertiesProcessor.putAReq(autoStartKey(_facilityName), _newValue ? true : null);
     }
 
     public boolean isAutoStart(String name) {
         return (Boolean) getProperty(autoStartKey(name)) != null;
     }
 
-    public AsyncRequest<Void> failedPropertyAReq(final String _facilityName) {
-        return propertiesProcessor.putAReq(failedKey(_facilityName), true);
+    public AsyncRequest<Void> failedAReq(final String _facilityName, final boolean _newValue) {
+        return propertiesProcessor.putAReq(failedKey(_facilityName), _newValue ? true : null);
     }
 
     public boolean isFailed(String name) {
