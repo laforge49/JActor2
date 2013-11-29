@@ -120,8 +120,8 @@ public class Plant extends Facility {
             throws Exception {
         return createFacilityAReq(
                 _name,
-                Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE,
-                Outbox.DEFAULT_INITIAL_BUFFER_SIZE);
+                plantConfiguration.getInitialLocalMessageQueueSize(),
+                plantConfiguration.getInitialBufferSize());
     }
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name,
@@ -133,10 +133,10 @@ public class Plant extends Facility {
             @Override
             protected void processAsyncRequest() throws Exception {
                 final Facility facility = new Facility(_name);
-                facility.recovery = (Recovery) getProperty(FACILITY_PREFIX+_name+"."+FACILITY_RECOVERY_POSTFIX);
+                facility.recovery = (Recovery) getProperty(recoveryKey(_name));
                 if (facility.recovery == null)
                     facility.recovery = recovery;
-                facility.initialize(Plant.this);
+                facility.initialize(Plant.this, _initialLocalMessageQueueSize, _initialBufferSize);
                 send(getPropertiesProcessor().putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),
                         new AsyncResponseProcessor<Void>() {
@@ -206,8 +206,7 @@ public class Plant extends Facility {
         };
     }
 
-    public AsyncRequest<Void> dependencyAReq(final Facility _dependent, final Facility _dependency) {
-
+    public AsyncRequest<Void> dependencyPropertyAReq(final Facility _dependent, final Facility _dependency) {
         return new AsyncBladeRequest<Void>() {
 
             AsyncResponseProcessor<Void> dis = this;
@@ -236,6 +235,10 @@ public class Plant extends Facility {
                 send(propertiesProcessor.putAReq(dependencyPropertyName, true), dis);
             }
         };
+    }
+
+    public AsyncRequest<Void> recoveryPropertyAReq(final String _facilityName, final Recovery _recovery) {
+        return propertiesProcessor.putAReq(recoveryKey(_facilityName), _recovery);
     }
 
     public Facility getFacility(String name) {

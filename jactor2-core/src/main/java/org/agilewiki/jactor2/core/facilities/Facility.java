@@ -44,6 +44,10 @@ public class Facility extends CloserBase {
 
     public static final String FACILITY_RECOVERY_POSTFIX = "core.recovery";
 
+    public static String recoveryKey(final String _facilityName) {
+        return FACILITY_PREFIX+_facilityName+"."+FACILITY_RECOVERY_POSTFIX;
+    }
+
     public Recovery recovery;
 
     /**
@@ -99,10 +103,18 @@ public class Facility extends CloserBase {
     }
 
     public void initialize(final Plant _plant) throws Exception {
+        PlantConfiguration plantConfiguration = _plant.getPlantConfiguration();
+        initialize(_plant,
+                plantConfiguration.getInitialLocalMessageQueueSize(),
+                plantConfiguration.getInitialBufferSize());
+    }
+
+    public void initialize(final Plant _plant,
+                           final int _initialLocalMessageQueueSize,
+                           final int _initialBufferSize) throws Exception {
         plant = _plant;
-        PlantConfiguration plantConfiguration = plant.getPlantConfiguration();
-        initialLocalMessageQueueSize = plantConfiguration.getInitialLocalMessageQueueSize();
-        initialBufferSize = plantConfiguration.getInitialBufferSize();
+        initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
+        initialBufferSize = _initialBufferSize;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         if (this != plant)
@@ -295,7 +307,7 @@ public class Facility extends CloserBase {
 
     public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
 
-        return plant.dependencyAReq(this, _dependency);
+        return plant.dependencyPropertyAReq(this, _dependency);
     }
 
     protected ClassLoader getClassLoader() throws Exception {
