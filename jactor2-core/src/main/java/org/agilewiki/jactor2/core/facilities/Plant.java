@@ -14,7 +14,6 @@ import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 public class Plant extends Facility {
@@ -134,7 +133,9 @@ public class Plant extends Facility {
             @Override
             protected void processAsyncRequest() throws Exception {
                 final Facility facility = new Facility(_name);
-                facility.recovery = recovery;
+                facility.recovery = (Recovery) getProperty(FACILITY_PREFIX+_name+"."+FACILITY_RECOVERY_POSTFIX);
+                if (facility.recovery == null)
+                    facility.recovery = recovery;
                 facility.initialize(Plant.this);
                 send(getPropertiesProcessor().putAReq(
                         FACILITY_PROPERTY_PREFIX + _name, facility),
@@ -223,7 +224,7 @@ public class Plant extends Facility {
                 }
                 if (PLANT_NAME.equals(name))
                     dis.processAsyncResponse(null);
-                dependencyPropertyName = FACILITY_PREFIX + dependentName + "." + DEPENDENCY_PROPERTY_PREFIX + name;
+                dependencyPropertyName = FACILITY_PREFIX + dependentName + "." + FACILITY_DEPENDENCY_INFIX + name;
                 if (getProperty(dependencyPropertyName) != null) {
                     throw new IllegalStateException(
                             "the dependency was already present");

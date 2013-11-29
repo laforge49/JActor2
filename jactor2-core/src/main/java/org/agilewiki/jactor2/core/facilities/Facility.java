@@ -6,7 +6,6 @@ import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
 import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChangesFilter;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -39,9 +38,11 @@ public class Facility extends CloserBase {
 
     public static final String FACILITY_PREFIX = "facility_";
 
-    public static final String DEPENDENCY_PROPERTY_PREFIX = "core.dependency_";
-
     public static final String FACILITY_PROPERTY_PREFIX = "core.facility_";
+
+    public static final String FACILITY_DEPENDENCY_INFIX = "core.dependency_";
+
+    public static final String FACILITY_RECOVERY_POSTFIX = "core.recovery";
 
     public Recovery recovery;
 
@@ -145,14 +146,19 @@ public class Facility extends CloserBase {
                             throw new UnsupportedOperationException("undeliminated facility");
                         String name2 = name1.substring(i + 1);
                         name1 = name1.substring(0, i);
-                        if (name2.startsWith(DEPENDENCY_PROPERTY_PREFIX)) {
-                            name2 = name2.substring(DEPENDENCY_PROPERTY_PREFIX.length());
+                        if (name2.startsWith(FACILITY_DEPENDENCY_INFIX)) {
+                            name2 = name2.substring(FACILITY_DEPENDENCY_INFIX.length());
                             if (PLANT_NAME.equals(name1))
                                 throw new UnsupportedOperationException("a plant can not have a dependency");
                             Facility facility = plant.getFacility(name2);
                             if (facility.hasDependency(name))
                                 throw new IllegalArgumentException(
                                         "Would create a dependency cycle.");
+                        } else if (name2.equals(FACILITY_RECOVERY_POSTFIX)) {
+                            if (PLANT_NAME.equals(name1))
+                                throw new UnsupportedOperationException("a plant can not have a recovery property");
+                            if (newValue != null && !(newValue instanceof Recovery))
+                                throw new IllegalArgumentException("recovery value must implement Recovery");
                         }
                     }
                 }
@@ -268,7 +274,7 @@ public class Facility extends CloserBase {
     }
 
     public boolean hasDependency(final String _name) throws Exception {
-        String prefix = FACILITY_PREFIX+name+"."+DEPENDENCY_PROPERTY_PREFIX;
+        String prefix = FACILITY_PREFIX+name+"."+ FACILITY_DEPENDENCY_INFIX;
         if (plant.getProperty(prefix + _name) != null)
             return true;
         final ImmutableProperties<Object> immutableProperties = plant.propertiesProcessor.getImmutableState();
