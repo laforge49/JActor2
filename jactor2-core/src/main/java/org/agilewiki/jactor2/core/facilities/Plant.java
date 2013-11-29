@@ -195,18 +195,7 @@ public class Plant extends Facility {
         return schedulableSemaphore;
     }
 
-    @Override
-    public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
-        return new AsyncBladeRequest<Void>() {
-            @Override
-            protected void processAsyncRequest() throws Exception {
-                throw new UnsupportedOperationException(
-                        "Plant can have no dependencies");
-            }
-        };
-    }
-
-    public AsyncRequest<Void> dependencyPropertyAReq(final Facility _dependent, final Facility _dependency) {
+    public AsyncRequest<Void> dependencyPropertyAReq(final String _dependentName, final String _dependencyName) {
         return new AsyncBladeRequest<Void>() {
 
             AsyncResponseProcessor<Void> dis = this;
@@ -215,26 +204,46 @@ public class Plant extends Facility {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                final String dependentName = _dependent.name;
-                final String name = _dependency.name;
-                if (name == null) {
+                final String name = _dependencyName;
+                if (_dependencyName == null) {
                     throw new IllegalArgumentException(
-                            "the dependency has no name");
+                            "the dependency name may not be null");
                 }
-                if (PLANT_NAME.equals(name))
+                if (PLANT_NAME.equals(_dependencyName))
                     dis.processAsyncResponse(null);
-                dependencyPropertyName = dependencyPrefix(dependentName)+name;
+                if (PLANT_NAME.equals(_dependentName))
+                    throw new IllegalArgumentException("Plant may not have a dependency");
+                dependencyPropertyName = dependencyPrefix(_dependentName)+name;
                 if (getProperty(dependencyPropertyName) != null) {
                     throw new IllegalStateException(
                             "the dependency was already present");
                 }
-                if (_dependency.hasDependency(dependentName))
+                if (hasDependency(_dependencyName, _dependentName))
                     throw new IllegalArgumentException(
                             "this would create a cyclic dependency");
-                _dependency.addCloseable(_dependent);
                 send(propertiesProcessor.putAReq(dependencyPropertyName, true), dis);
             }
         };
+    }
+
+    public boolean hasDependency(final String _dependentName, final String _dependencyName) throws Exception {
+        String prefix = FACILITY_PREFIX+_dependentName+"~"+ FACILITY_DEPENDENCY_INFIX;
+        if (plant.getProperty(prefix + _dependencyName) != null)
+            return true;
+        final ImmutableProperties<Object> immutableProperties = plant.propertiesProcessor.getImmutableState();
+        final ImmutableProperties<Object> subMap = immutableProperties.subMap(prefix);
+        final Collection<String> keys = subMap.keySet();
+        if (keys.size() == 0)
+            return false;
+        final Iterator<String> it = keys.iterator();
+        while (it.hasNext()) {
+            final String key = it.next();
+            String nm = key.substring(prefix.length());
+            Facility dependency = plant.getFacility(nm);
+            if (hasDependency(nm, _dependencyName))
+                return true;
+        }
+        return false;
     }
 
     public AsyncRequest<Void> recoveryPropertyAReq(final String _facilityName, final Recovery _recovery) {

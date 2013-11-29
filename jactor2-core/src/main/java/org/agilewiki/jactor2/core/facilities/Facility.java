@@ -126,6 +126,18 @@ public class Facility extends CloserBase {
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
+        String dependencyPrefix = dependencyPrefix(name);
+        ImmutableProperties<Object> dependencies =
+                plant.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
+        Iterator<String> dit = dependencies.keySet().iterator();
+        while (dit.hasNext()) {
+            String d = dit.next();
+            String dependencyName = d.substring(dependencyPrefix.length());
+            Facility dependency = plant.getFacility(dependencyName);
+            if (dependency == null)
+                throw new IllegalStateException("not all dependencies are present");
+            dependency.addCloseable(this);
+        }
         tracePropertyChangesAReq().signal();
         RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
@@ -162,12 +174,17 @@ public class Facility extends CloserBase {
                             throw new UnsupportedOperationException("undeliminated facility");
                         String name2 = name1.substring(i + 1);
                         name1 = name1.substring(0, i);
+                        Facility facility0 = plant.getFacility(name1);
+                        if (facility0 != null) {
+                            System.out.println(facility0.startedClosing()+" "+facility0.isShuttingDown());
+                            throw new IllegalStateException(
+                                    "configuration parameters can not change while a facility is running ");
+                        }
                         if (name2.startsWith(FACILITY_DEPENDENCY_INFIX)) {
                             name2 = name2.substring(FACILITY_DEPENDENCY_INFIX.length());
                             if (PLANT_NAME.equals(name1))
                                 throw new UnsupportedOperationException("a plant can not have a dependency");
-                            Facility facility = plant.getFacility(name2);
-                            if (facility.hasDependency(name))
+                            if (plant.hasDependency(name2, name))
                                 throw new IllegalArgumentException(
                                         "Would create a dependency cycle.");
                         } else if (name2.equals(FACILITY_RECOVERY_POSTFIX)) {
@@ -291,31 +308,6 @@ public class Facility extends CloserBase {
                                               final Object _expectedValue,
                                               final Object _propertyValue) {
         return propertiesProcessor.compareAndSetAReq(_propertyName, _expectedValue, _propertyValue);
-    }
-
-    public boolean hasDependency(final String _name) throws Exception {
-        String prefix = FACILITY_PREFIX+name+"~"+ FACILITY_DEPENDENCY_INFIX;
-        if (plant.getProperty(prefix + _name) != null)
-            return true;
-        final ImmutableProperties<Object> immutableProperties = plant.propertiesProcessor.getImmutableState();
-        final ImmutableProperties<Object> subMap = immutableProperties.subMap(prefix);
-        final Collection<String> keys = subMap.keySet();
-        if (keys.size() == 0)
-            return false;
-        final Iterator<String> it = keys.iterator();
-        while (it.hasNext()) {
-            final String key = it.next();
-            String name = key.substring(prefix.length());
-            Facility dependency = plant.getFacility(name);
-            if (dependency.hasDependency(_name))
-                return true;
-        }
-        return false;
-    }
-
-    public AsyncRequest<Void> dependencyAReq(final Facility _dependency) {
-
-        return plant.dependencyPropertyAReq(this, _dependency);
     }
 
     protected ClassLoader getClassLoader() throws Exception {
