@@ -36,16 +36,20 @@ public class Facility extends CloserBase {
 
     public static final String PLANT_NAME = "Plant";
 
-    public static final String FACILITY_PREFIX = "facility_";
-
     public static final String FACILITY_PROPERTY_PREFIX = "core.facility_";
 
+    public static final String FACILITY_PREFIX = "facility_";
+
     public static final String FACILITY_DEPENDENCY_INFIX = "core.dependency_";
+
+    public static String dependencyPrefix(final String _facilityName) {
+        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_DEPENDENCY_INFIX;
+    }
 
     public static final String FACILITY_RECOVERY_POSTFIX = "core.recovery";
 
     public static String recoveryKey(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"."+FACILITY_RECOVERY_POSTFIX;
+        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_RECOVERY_POSTFIX;
     }
 
     public Recovery recovery;
@@ -153,7 +157,7 @@ public class Facility extends CloserBase {
                         if (!(Facility.this instanceof Plant))
                             throw new UnsupportedOperationException("only a plant can have a facility");
                         String name1 = name.substring(FACILITY_PREFIX.length());
-                        int i = name1.indexOf('.');
+                        int i = name1.indexOf('~');
                         if (i == -1)
                             throw new UnsupportedOperationException("undeliminated facility");
                         String name2 = name1.substring(i + 1);
@@ -290,7 +294,7 @@ public class Facility extends CloserBase {
     }
 
     public boolean hasDependency(final String _name) throws Exception {
-        String prefix = FACILITY_PREFIX+name+"."+ FACILITY_DEPENDENCY_INFIX;
+        String prefix = FACILITY_PREFIX+name+"~"+ FACILITY_DEPENDENCY_INFIX;
         if (plant.getProperty(prefix + _name) != null)
             return true;
         final ImmutableProperties<Object> immutableProperties = plant.propertiesProcessor.getImmutableState();

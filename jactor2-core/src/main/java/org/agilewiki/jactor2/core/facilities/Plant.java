@@ -223,7 +223,7 @@ public class Plant extends Facility {
                 }
                 if (PLANT_NAME.equals(name))
                     dis.processAsyncResponse(null);
-                dependencyPropertyName = FACILITY_PREFIX + dependentName + "." + FACILITY_DEPENDENCY_INFIX + name;
+                dependencyPropertyName = dependencyPrefix(dependentName)+name;
                 if (getProperty(dependencyPropertyName) != null) {
                     throw new IllegalStateException(
                             "the dependency was already present");
