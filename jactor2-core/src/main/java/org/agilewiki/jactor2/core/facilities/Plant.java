@@ -251,7 +251,7 @@ public class Plant extends Facility {
     }
 
     public Facility getFacility(String name) {
-        return (Facility) getProperty(recoveryKey(name));
+        return (Facility) getProperty(FACILITY_PROPERTY_PREFIX+name);
     }
 
     public AsyncRequest<Void> autoStartAReq(final String _facilityName, final boolean _newValue) {
@@ -268,6 +268,14 @@ public class Plant extends Facility {
 
     public boolean isFailed(String name) {
         return (Boolean) getProperty(failedKey(name)) != null;
+    }
+
+    public AsyncRequest<Void> stoppedAReq(final String _facilityName, final boolean _newValue) {
+        return propertiesProcessor.putAReq(stoppedKey(_facilityName), _newValue ? true : null);
+    }
+
+    public boolean isStopped(String name) {
+        return (Boolean) getProperty(stoppedKey(name)) != null;
     }
 
     public AsyncRequest<Void> purgeFacilitySReq(final String _facilityName) {

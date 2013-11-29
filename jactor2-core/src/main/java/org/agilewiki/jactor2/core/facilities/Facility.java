@@ -64,6 +64,12 @@ public class Facility extends CloserBase {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_FAILED_POSTFIX;
     }
 
+    public static String FACILITY_STOPPED_POSTFIX = "core.stopped";
+
+    public static String stoppedKey(final String _facilityName) {
+        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_STOPPED_POSTFIX;
+    }
+
     public Recovery recovery;
 
     /**
@@ -147,7 +153,7 @@ public class Facility extends CloserBase {
             String dependencyName = d.substring(dependencyPrefix.length());
             Facility dependency = plant.getFacility(dependencyName);
             if (dependency == null)
-                throw new IllegalStateException("not all dependencies are present");
+                throw new IllegalStateException("dependency not present: "+dependencyName);
             dependency.addCloseable(this);
         }
         tracePropertyChangesAReq().signal();
