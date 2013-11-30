@@ -173,20 +173,25 @@ public class Facility extends CloserBase {
                 final Iterator<PropertyChange> it = readOnlyChanges.values().iterator();
                 while (it.hasNext()) {
                     pc = it.next();
-                    String name = pc.name;
+                    String key = pc.name;
                     Object oldValue = pc.oldValue;
                     Object newValue = pc.newValue;
-                    if (name.startsWith(FACILITY_PROPERTY_PREFIX)) {
+                    if (key.startsWith(FACILITY_PROPERTY_PREFIX)) {
                         if (!(Facility.this instanceof Plant))
                             throw new UnsupportedOperationException("only a plant can have a facility");
                         if (newValue != null && !(newValue instanceof Facility))
-                            throw new IllegalArgumentException(name
+                            throw new IllegalArgumentException(key
                                     + " not set to a Facility " + newValue);
+                        if (oldValue != null && newValue != null) {
+                            Facility facility = (Facility) oldValue;
+                            throw new IllegalStateException("Facility already exists: "+facility.name);
+                        }
                     }
-                    if (name.startsWith(FACILITY_PREFIX)) {
+                    if (key.startsWith(FACILITY_PREFIX)) {
                         if (!(Facility.this instanceof Plant))
-                            throw new UnsupportedOperationException("only a plant can have a facility");
-                        String name1 = name.substring(FACILITY_PREFIX.length());
+                            throw new UnsupportedOperationException(
+                                    "only a plant can have a facility configuration property: "+key);
+                        String name1 = key.substring(FACILITY_PREFIX.length());
                         int i = name1.indexOf('~');
                         if (i == -1)
                             throw new UnsupportedOperationException("undeliminated facility");
@@ -202,7 +207,7 @@ public class Facility extends CloserBase {
                             name2 = name2.substring(FACILITY_DEPENDENCY_INFIX.length());
                             if (PLANT_NAME.equals(name1))
                                 throw new UnsupportedOperationException("a plant can not have a dependency");
-                            if (plant.hasDependency(name2, name))
+                            if (plant.hasDependency(name2, key))
                                 throw new IllegalArgumentException(
                                         "Would create a dependency cycle.");
                         } else if (name2.equals(FACILITY_RECOVERY_POSTFIX)) {
