@@ -164,6 +164,20 @@ public class Plant extends Facility {
     }
 
     @Override
+    public void stop() {
+        throw new UnsupportedOperationException();
+    }
+
+    public void stopFacility(final String _facilityName) throws Exception {
+        Facility facility = getFacility(_facilityName);
+        if (facility == null) {
+            putPropertyAReq(FACILITY_PROPERTY_PREFIX + name, null).signal();
+            return;
+        }
+        facility.stop();
+    }
+
+    @Override
     protected void close2() throws Exception {
         if (shuttingDown) {
             return;

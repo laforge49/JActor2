@@ -3,9 +3,7 @@ package org.agilewiki.jactor2.core.facilities;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
-import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
+import org.agilewiki.jactor2.core.blades.transactions.properties.*;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -299,6 +297,27 @@ public class Facility extends CloserBase {
         }
         closeAll();
     }
+    public void stop() throws Exception {
+        if (startClosing) {
+            plant.putPropertyAReq(stoppedKey(name), true,
+                    null).signal();
+            return;
+        }
+        startClosing = true;
+        final Plant plant = getPlant();
+        if ((plant != null) && (plant != Facility.this && !plant.startedClosing())) {
+            new PropertiesTransactionAReq(plant.getPropertiesProcessor().commonReactor,
+                    plant.getPropertiesProcessor()){
+                protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+                    _changeManager.put(FACILITY_PROPERTY_PREFIX + name, null);
+                    _changeManager.put(stoppedKey(name), true);
+                }}.signal();
+            plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+                    null).signal();
+        }
+        closeAll();
+    }
+
 
     protected void close2() throws Exception {
         if (shuttingDown) {
