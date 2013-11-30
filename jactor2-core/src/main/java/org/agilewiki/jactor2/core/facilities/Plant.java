@@ -116,6 +116,32 @@ public class Plant extends Facility {
     protected void validateName(final String _name) throws Exception {
     }
 
+    public boolean autoStart(final String _facilityName) {
+        if (!isAutoStart(_facilityName))
+            return false;
+        if (isFailed(_facilityName))
+            return false;
+        if (isStopped(_facilityName))
+            return false;
+        String dependencyPrefix = dependencyPrefix(_facilityName);
+        ImmutableProperties<Object> dependencies =
+                plant.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
+        Iterator<String> dit = dependencies.keySet().iterator();
+        while (dit.hasNext()) {
+            String d = dit.next();
+            String dependencyName = d.substring(dependencyPrefix.length());
+            Facility dependency = plant.getFacility(dependencyName);
+            if (dependency == null)
+                return false;
+        }
+        try {
+            createFacilityAReq(_facilityName);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     public AsyncRequest<Facility> createFacilityAReq(final String _name)
             throws Exception {
         return createFacilityAReq(

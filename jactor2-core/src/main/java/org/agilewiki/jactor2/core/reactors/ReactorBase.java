@@ -139,12 +139,12 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
             return;
         try {
             if (currentMessage == null)
-                log.error("hung thread facility=%s", getFacility().getName());
+                log.error("hung thread facility=%s", getFacility().name);
             else {
                 MessageSource messageSource = currentMessage.getMessageSource();
                 if (messageSource == null) {
                     String[] args = {
-                            getFacility().getName(),
+                            getFacility().name,
                             currentMessage.toString(),
                             "" + currentMessage.isClosed(),
                             "" + currentMessage.isSignal(),
@@ -153,7 +153,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                     log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource=null\ntargetReactor={}", args);
                 } else {
                     String[] args = {
-                            getFacility().getName(),
+                            getFacility().name,
                             currentMessage.getClass().getName(),
                             "" + currentMessage.isClosed(),
                             "" + currentMessage.isSignal(),

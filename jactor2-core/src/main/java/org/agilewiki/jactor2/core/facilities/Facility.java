@@ -338,10 +338,6 @@ public class Facility extends CloserBase {
         return propertiesProcessor.getImmutableState().get(propertyName);
     }
 
-    public String getName() {
-        return (String) getProperty(NAME_PROPERTY);
-    }
-
     public Plant getPlant() {
         return plant;
     }
