@@ -137,8 +137,12 @@ public class Plant extends Facility {
                 if (facility.recovery == null)
                     facility.recovery = recovery;
                 facility.initialize(Plant.this, _initialLocalMessageQueueSize, _initialBufferSize);
-                send(getPropertiesProcessor().putAReq(
-                        FACILITY_PROPERTY_PREFIX + _name, facility),
+                send(new PropertiesTransactionAReq(getPropertiesProcessor().commonReactor,getPropertiesProcessor()) {
+                    protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+                        _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, facility);
+                        _changeManager.put(failedKey(_name), null);
+                        _changeManager.put(stoppedKey(_name), null);
+                    }},
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(
