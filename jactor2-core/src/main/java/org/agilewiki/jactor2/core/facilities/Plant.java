@@ -64,21 +64,6 @@ public class Plant extends Facility {
 
     public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
         super(PLANT_NAME);
-        String configurationClassName = System.getProperty("jactor.configurationClass");
-        if (configurationClassName != null) {
-            ClassLoader classLoader = getClass().getClassLoader();
-            Class configurationClass = classLoader.loadClass(configurationClassName);
-            plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
-        } else
-            plantConfiguration = _plantConfiguration;
-        String recoveryClassName = System.getProperty("jactor.recoveryClass");
-        if (recoveryClassName != null) {
-            ClassLoader classLoader = getClass().getClassLoader();
-            Class recoveryClass = classLoader.loadClass(recoveryClassName);
-            recovery = (Recovery) recoveryClass.newInstance();
-        } else
-            recovery = new DefaultRecovery();
-        threadManager = plantConfiguration.getThreadManager();
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
@@ -86,6 +71,17 @@ public class Plant extends Facility {
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
         }
+        String configurationClassName = System.getProperty("jactor.configurationClass");
+        if (configurationClassName != null) {
+            ClassLoader classLoader = getClass().getClassLoader();
+            Class configurationClass = classLoader.loadClass(configurationClassName);
+            plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
+        } else
+            plantConfiguration = _plantConfiguration;
+        recovery = plantConfiguration.getRecovery();
+        initialLocalMessageQueueSize = plantConfiguration.getInitialLocalMessageQueueSize();
+        initialBufferSize = plantConfiguration.getInitialBufferSize();
+        threadManager = plantConfiguration.getThreadManager();
         initialize(this);
     }
 
@@ -144,25 +140,30 @@ public class Plant extends Facility {
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name)
             throws Exception {
-        return createFacilityAReq(
-                _name,
-                plantConfiguration.getInitialLocalMessageQueueSize(),
-                plantConfiguration.getInitialBufferSize());
-    }
-
-    public AsyncRequest<Facility> createFacilityAReq(final String _name,
-                                                     final int _initialLocalMessageQueueSize,
-                                                     final int _initialBufferSize) throws Exception {
         return new AsyncBladeRequest<Facility>() {
             final AsyncResponseProcessor<Facility> dis = this;
 
             @Override
             protected void processAsyncRequest() throws Exception {
                 final Facility facility = new Facility(_name);
+
                 facility.recovery = (Recovery) getProperty(recoveryKey(_name));
                 if (facility.recovery == null)
                     facility.recovery = recovery;
-                facility.initialize(Plant.this, _initialLocalMessageQueueSize, _initialBufferSize);
+
+                Integer v = (Integer) getProperty(initialLocalMessageQueueSizeKey(_name));
+                if (v == null)
+                    facility.initialLocalMessageQueueSize = initialLocalMessageQueueSize;
+                else
+                    facility.initialLocalMessageQueueSize = v;
+
+                v = (Integer) getProperty(initialBufferSizeKey(_name));
+                if (v == null)
+                    facility.initialBufferSize = initialBufferSize;
+                else
+                    facility.initialBufferSize = v;
+
+                facility.initialize(Plant.this);
                 send(new PropertiesTransactionAReq(getPropertiesProcessor().commonReactor,getPropertiesProcessor()) {
                     protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                         _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, facility);
@@ -292,6 +293,14 @@ public class Plant extends Facility {
 
     public AsyncRequest<Void> recoveryPropertyAReq(final String _facilityName, final Recovery _recovery) {
         return propertiesProcessor.putAReq(recoveryKey(_facilityName), _recovery);
+    }
+
+    public AsyncRequest<Void> initialLocalMerssageQueueSizePropertyAReq(final String _facilityName, final Integer _value) {
+        return propertiesProcessor.putAReq(initialLocalMessageQueueSizeKey(_facilityName), _value);
+    }
+
+    public AsyncRequest<Void> initialBufferSizePropertyAReq(final String _facilityName, final Integer _value) {
+        return propertiesProcessor.putAReq(initialBufferSizeKey(_facilityName), _value);
     }
 
     public Facility getFacility(String name) {

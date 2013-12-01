@@ -2,6 +2,8 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.Outbox;
+import org.agilewiki.jactor2.core.util.DefaultRecovery;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -23,6 +25,10 @@ public class PlantConfiguration {
 
     public ThreadManager getThreadManager() {
         return new ThreadManager(threadPoolSize, getThreadFactory());
+    }
+
+    public Recovery getRecovery() {
+        return new DefaultRecovery();
     }
 
     public int getInitialLocalMessageQueueSize() {

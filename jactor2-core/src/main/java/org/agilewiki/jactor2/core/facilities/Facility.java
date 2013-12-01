@@ -50,6 +50,18 @@ public class Facility extends CloserBase {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_RECOVERY_POSTFIX;
     }
 
+    public static final String FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX = "core.initialLocalMessageQueueSize";
+
+    public static String initialLocalMessageQueueSizeKey(final String _facilityName) {
+        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX;
+    }
+
+    public static final String FACILITY_INITIAL_BUFFER_SIZE_POSTFIX = "core.initialBufferSize";
+
+    public static String initialBufferSizeKey(final String _facilityName) {
+        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_INITIAL_BUFFER_SIZE_POSTFIX;
+    }
+
     public static String FACILITY_AUTO_START_POSTFIX = "core.autoStart";
 
     public static String autoStartKey(final String _facilityName) {
@@ -99,12 +111,12 @@ public class Facility extends CloserBase {
     /**
      * How big should the initial inbox doLocal queue size be?
      */
-    private int initialLocalMessageQueueSize;
+    public int initialLocalMessageQueueSize;
 
     /**
      * How big should the initial outbox (per target Reactor) buffer size be?
      */
-    private int initialBufferSize;
+    public int initialBufferSize;
 
     protected PropertiesProcessor propertiesProcessor;
 
@@ -123,18 +135,7 @@ public class Facility extends CloserBase {
     }
 
     public void initialize(final Plant _plant) throws Exception {
-        PlantConfiguration plantConfiguration = _plant.getPlantConfiguration();
-        initialize(_plant,
-                plantConfiguration.getInitialLocalMessageQueueSize(),
-                plantConfiguration.getInitialBufferSize());
-    }
-
-    public void initialize(final Plant _plant,
-                           final int _initialLocalMessageQueueSize,
-                           final int _initialBufferSize) throws Exception {
         plant = _plant;
-        initialLocalMessageQueueSize = _initialLocalMessageQueueSize;
-        initialBufferSize = _initialBufferSize;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         if (this != plant)
@@ -198,7 +199,6 @@ public class Facility extends CloserBase {
                         Facility facility0 = plant.getFacility(name1);
                         if (name2.startsWith(FACILITY_DEPENDENCY_INFIX)) {
                             if (facility0 != null) {
-                                System.out.println(facility0.startedClosing()+" "+facility0.isShuttingDown());
                                 throw new IllegalStateException(
                                         "the dependency properties can not change while a facility is running ");
                             }
@@ -210,7 +210,6 @@ public class Facility extends CloserBase {
                                         "Would create a dependency cycle.");
                         } else if (name2.equals(FACILITY_RECOVERY_POSTFIX)) {
                             if (facility0 != null) {
-                                System.out.println(facility0.startedClosing()+" "+facility0.isShuttingDown());
                                 throw new IllegalStateException(
                                         "the recovery property can not change while a facility is running ");
                             }
@@ -218,6 +217,28 @@ public class Facility extends CloserBase {
                                 throw new UnsupportedOperationException("a plant can not have a recovery property");
                             if (newValue != null && !(newValue instanceof Recovery))
                                 throw new IllegalArgumentException("recovery value must implement Recovery");
+                        } else if (name2.equals(FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX)) {
+                            if (facility0 != null) {
+                                throw new IllegalStateException(
+                                        "the initial local message queue size property can not change while a facility is running ");
+                            }
+                            if (PLANT_NAME.equals(name1))
+                                throw new UnsupportedOperationException(
+                                        "a plant can not have an initial local message queue size property");
+                            if (newValue != null && !(newValue instanceof Integer))
+                                throw new IllegalArgumentException(
+                                        "the initial local message queue size property value must be an Integer");
+                        } else if (name2.equals(FACILITY_INITIAL_BUFFER_SIZE_POSTFIX)) {
+                            if (facility0 != null) {
+                                throw new IllegalStateException(
+                                        "the initial buffer size property can not change while a facility is running ");
+                            }
+                            if (PLANT_NAME.equals(name1))
+                                throw new UnsupportedOperationException(
+                                        "a plant can not have an initial buffer size property");
+                            if (newValue != null && !(newValue instanceof Integer))
+                                throw new IllegalArgumentException(
+                                        "the initial buffer size property value must be an Integer");
                         }
                     }
                 }
