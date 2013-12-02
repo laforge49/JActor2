@@ -1,13 +1,11 @@
 package org.agilewiki.jactor2.core.facilities;
 
+import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChangeManager;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.Inbox;
-import org.agilewiki.jactor2.core.reactors.Outbox;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.util.DefaultRecovery;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
@@ -116,7 +114,7 @@ public class Plant extends Facility {
         if (!isAutoStart(_facilityName))
             return "autoStart not set";
         if (getFailed(_facilityName) != null)
-            return "failed: "+getFailed(_facilityName);
+            return "failed: " + getFailed(_facilityName);
         if (isStopped(_facilityName))
             return "stopped";
         String dependencyPrefix = dependencyPrefix(_facilityName);
@@ -128,12 +126,12 @@ public class Plant extends Facility {
             String dependencyName = d.substring(dependencyPrefix.length());
             Facility dependency = plant.getFacility(dependencyName);
             if (dependency == null)
-                return "missing dependency: "+dependencyName;
+                return "missing dependency: " + dependencyName;
         }
         try {
             createFacilityAReq(_facilityName).signal();
         } catch (Exception e) {
-            return "create facility exception: "+e;
+            return "create facility exception: " + e;
         }
         return null;
     }
@@ -164,24 +162,43 @@ public class Plant extends Facility {
                     facility.initialBufferSize = v;
 
                 facility.initialize(Plant.this);
-                send(new PropertiesTransactionAReq(getPropertiesProcessor().commonReactor,getPropertiesProcessor()) {
-                    protected void update(final PropertiesChangeManager _changeManager) throws Exception {
-                        _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, facility);
-                        _changeManager.put(failedKey(_name), null);
-                        _changeManager.put(stoppedKey(_name), null);
-                    }},
-                        new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(
-                                    final Void _response) throws Exception {
-                                getCloseableSet().add(facility);
-                                String activatorClassName = getActivatorClassName(_name);
-                                if (activatorClassName == null)
-                                    dis.processAsyncResponse(facility);
-                                else
-                                    send(facility.activateAReq(activatorClassName), dis, facility);
-                            }
-                        });
+                send(new PropertiesTransactionAReq(getPropertiesProcessor().commonReactor, getPropertiesProcessor()) {
+                         @Override
+                         protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+                             _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, facility);
+                             _changeManager.put(failedKey(_name), null);
+                             _changeManager.put(stoppedKey(_name), null);
+                         }
+                     }, new AsyncResponseProcessor<Void>() {
+                         @Override
+                         public void processAsyncResponse(
+                                 final Void _response) throws Exception {
+                             getCloseableSet().add(facility);
+                             String activatorClassName = getActivatorClassName(_name);
+                             if (activatorClassName == null)
+                                 dis.processAsyncResponse(facility);
+                             else {
+                                 setExceptionHandler(new ExceptionHandler<Facility>() {
+                                     @Override
+                                     public Facility processException(final Exception e) throws Exception {
+                                         new PropertiesTransactionAReq(
+                                                 getPropertiesProcessor().commonReactor,
+                                                 getPropertiesProcessor()) {
+                                             @Override
+                                             protected void update(final PropertiesChangeManager _changeManager)
+                                                     throws Exception {
+                                                 _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, null);
+                                                 _changeManager.put(failedKey(_name), e);
+                                             }
+                                         }.signal();
+                                         throw e;
+                                     }
+                                 });
+                                 send(facility.activateAReq(activatorClassName), dis, facility);
+                             }
+                         }
+                     }
+                );
             }
         };
     }
@@ -262,7 +279,7 @@ public class Plant extends Facility {
                     dis.processAsyncResponse(null);
                 if (PLANT_NAME.equals(_dependentName))
                     throw new IllegalArgumentException("Plant may not have a dependency");
-                dependencyPropertyName = dependencyPrefix(_dependentName)+name;
+                dependencyPropertyName = dependencyPrefix(_dependentName) + name;
                 if (getProperty(dependencyPropertyName) != null) {
                     throw new IllegalStateException(
                             "the dependency was already present");
@@ -276,7 +293,7 @@ public class Plant extends Facility {
     }
 
     public boolean hasDependency(final String _dependentName, final String _dependencyName) throws Exception {
-        String prefix = FACILITY_PREFIX+_dependentName+"~"+ FACILITY_DEPENDENCY_INFIX;
+        String prefix = FACILITY_PREFIX + _dependentName + "~" + FACILITY_DEPENDENCY_INFIX;
         if (plant.getProperty(prefix + _dependencyName) != null)
             return true;
         final ImmutableProperties<Object> immutableProperties = plant.propertiesProcessor.getImmutableState();
@@ -316,7 +333,7 @@ public class Plant extends Facility {
     }
 
     public Facility getFacility(String name) {
-        return (Facility) getProperty(FACILITY_PROPERTY_PREFIX+name);
+        return (Facility) getProperty(FACILITY_PROPERTY_PREFIX + name);
     }
 
     public AsyncRequest<Void> autoStartAReq(final String _facilityName, final boolean _newValue) {
@@ -359,7 +376,7 @@ public class Plant extends Facility {
                             throws Exception {
                         ImmutableProperties<Object> immutableProperties =
                                 _contentManager.getImmutableProperties();
-                        String prefix = FACILITY_PREFIX+_facilityName+".";
+                        String prefix = FACILITY_PREFIX + _facilityName + ".";
                         final ImmutableProperties<Object> subMap = immutableProperties.subMap(prefix);
                         final Collection<String> keys = subMap.keySet();
                         final Iterator<String> it = keys.iterator();
