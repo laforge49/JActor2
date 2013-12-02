@@ -131,7 +131,7 @@ public class Plant extends Facility {
                 return "missing dependency: "+dependencyName;
         }
         try {
-            createFacilityAReq(_facilityName);
+            createFacilityAReq(_facilityName).signal();
         } catch (Exception e) {
             return "create facility exception: "+e;
         }
