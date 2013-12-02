@@ -112,13 +112,13 @@ public class Plant extends Facility {
     protected void validateName(final String _name) throws Exception {
     }
 
-    public boolean autoStart(final String _facilityName) {
+    public String autoStart(final String _facilityName) {
         if (!isAutoStart(_facilityName))
-            return false;
-        if (isFailed(_facilityName))
-            return false;
+            return "autoStart not set";
+        if (getFailed(_facilityName) != null)
+            return "failed: "+getFailed(_facilityName);
         if (isStopped(_facilityName))
-            return false;
+            return "stopped";
         String dependencyPrefix = dependencyPrefix(_facilityName);
         ImmutableProperties<Object> dependencies =
                 plant.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
@@ -128,14 +128,14 @@ public class Plant extends Facility {
             String dependencyName = d.substring(dependencyPrefix.length());
             Facility dependency = plant.getFacility(dependencyName);
             if (dependency == null)
-                return false;
+                return "missing dependency: "+dependencyName;
         }
         try {
             createFacilityAReq(_facilityName);
         } catch (Exception e) {
-            return false;
+            return "create facility exception: "+e;
         }
-        return true;
+        return null;
     }
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name)
@@ -327,12 +327,12 @@ public class Plant extends Facility {
         return (Boolean) getProperty(autoStartKey(name)) != null;
     }
 
-    public AsyncRequest<Void> failedAReq(final String _facilityName, final boolean _newValue) {
-        return propertiesProcessor.putAReq(failedKey(_facilityName), _newValue ? true : null);
+    public AsyncRequest<Void> failedAReq(final String _facilityName, final Object _newValue) {
+        return propertiesProcessor.putAReq(failedKey(_facilityName), _newValue);
     }
 
-    public boolean isFailed(String name) {
-        return (Boolean) getProperty(failedKey(name)) != null;
+    public Object getFailed(String name) {
+        return getProperty(failedKey(name));
     }
 
     public AsyncRequest<Void> stoppedAReq(final String _facilityName, final boolean _newValue) {
