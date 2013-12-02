@@ -303,6 +303,10 @@ public class Plant extends Facility {
         return propertiesProcessor.putAReq(initialBufferSizeKey(_facilityName), _value);
     }
 
+    public AsyncRequest<Void> activatorPropertyAReq(final String _facilityName, final String _className) {
+        return propertiesProcessor.putAReq(activatorKey(_facilityName), _className);
+    }
+
     public Facility getFacility(String name) {
         return (Facility) getProperty(FACILITY_PROPERTY_PREFIX+name);
     }

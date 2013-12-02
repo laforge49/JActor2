@@ -63,6 +63,12 @@ public class Facility extends CloserBase {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_INITIAL_BUFFER_SIZE_POSTFIX;
     }
 
+    public static final String FACILITY_ACTIVATOR_POSTFIX = "core.activator";
+
+    public static String activatorKey(final String _facilityName) {
+        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_ACTIVATOR_POSTFIX;
+    }
+
     public static String FACILITY_AUTO_START_POSTFIX = "core.autoStart";
 
     public static String autoStartKey(final String _facilityName) {
@@ -240,6 +246,17 @@ public class Facility extends CloserBase {
                             if (newValue != null && !(newValue instanceof Integer))
                                 throw new IllegalArgumentException(
                                         "the initial buffer size property value must be an Integer");
+                        } else if (name2.equals(FACILITY_ACTIVATOR_POSTFIX)) {
+                            if (facility0 != null) {
+                                throw new IllegalStateException(
+                                        "the activator property can not change while a facility is running ");
+                            }
+                            if (PLANT_NAME.equals(name1))
+                                throw new UnsupportedOperationException(
+                                        "a plant can not have an activator property");
+                            if (newValue != null && !(newValue instanceof String))
+                                throw new IllegalArgumentException(
+                                        "the activator property value must be a String");
                         }
                     }
                 }
