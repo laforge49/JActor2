@@ -175,7 +175,11 @@ public class Plant extends Facility {
                             public void processAsyncResponse(
                                     final Void _response) throws Exception {
                                 getCloseableSet().add(facility);
-                                dis.processAsyncResponse(facility);
+                                String activatorClassName = getActivatorClassName(_name);
+                                if (activatorClassName == null)
+                                    dis.processAsyncResponse(facility);
+                                else
+                                    send(facility.activateAReq(activatorClassName), dis, facility);
                             }
                         });
             }
@@ -305,6 +309,10 @@ public class Plant extends Facility {
 
     public AsyncRequest<Void> activatorPropertyAReq(final String _facilityName, final String _className) {
         return propertiesProcessor.putAReq(activatorKey(_facilityName), _className);
+    }
+
+    public String getActivatorClassName(final String _facilityName) {
+        return (String) getProperty(activatorKey(_facilityName));
     }
 
     public Facility getFacility(String name) {

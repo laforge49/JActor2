@@ -405,12 +405,12 @@ public class Facility extends CloserBase {
         };
     }
 
-    public AsyncRequest<Void> activateAReq(final String _initiatorClassName) {
+    public AsyncRequest<Void> activateAReq(final String _activatorClassName) {
         return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
                 final Class<?> initiatorClass = getClassLoader().loadClass(
-                        _initiatorClassName);
+                        _activatorClassName);
                 final Activator activator = (Activator) initiatorClass
                         .newInstance();
                 activator.initialize(getReactor());
