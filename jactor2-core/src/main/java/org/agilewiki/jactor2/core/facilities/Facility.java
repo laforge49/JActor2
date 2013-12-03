@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.Activator;
+import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
@@ -405,16 +406,22 @@ public class Facility extends CloserBase {
         };
     }
 
-    public AsyncRequest<Void> activateAReq(final String _activatorClassName) {
-        return new AsyncBladeRequest<Void>() {
+    public AsyncRequest<String> activateAReq(final String _activatorClassName) {
+        return new AsyncBladeRequest<String>() {
             @Override
             protected void processAsyncRequest() throws Exception {
+                setExceptionHandler(new ExceptionHandler<String>() {
+                    @Override
+                    public String processException(Exception e) throws Exception {
+                        return "activation exception: "+e;
+                    }
+                });
                 final Class<?> initiatorClass = getClassLoader().loadClass(
                         _activatorClassName);
                 final Activator activator = (Activator) initiatorClass
                         .newInstance();
                 activator.initialize(getReactor());
-                send(activator.startAReq(), this);
+                send(activator.startAReq(), this, null);
             }
         };
     }

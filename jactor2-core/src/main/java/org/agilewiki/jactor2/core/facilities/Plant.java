@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.facilities;
 
-import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChangeManager;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
@@ -178,23 +177,31 @@ public class Plant extends Facility {
                              if (activatorClassName == null)
                                  dis.processAsyncResponse(facility);
                              else {
-                                 setExceptionHandler(new ExceptionHandler<Facility>() {
+                                 send(facility.activateAReq(activatorClassName), new AsyncResponseProcessor<String>() {
                                      @Override
-                                     public Facility processException(final Exception e) throws Exception {
-                                         new PropertiesTransactionAReq(
-                                                 getPropertiesProcessor().commonReactor,
-                                                 getPropertiesProcessor()) {
-                                             @Override
-                                             protected void update(final PropertiesChangeManager _changeManager)
-                                                     throws Exception {
-                                                 _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, null);
-                                                 _changeManager.put(failedKey(_name), e);
-                                             }
-                                         }.signal();
-                                         throw e;
+                                     public void processAsyncResponse(final String _failure) throws Exception {
+                                         if (_failure == null) {
+                                             dis.processAsyncResponse(facility);
+                                             return;
+                                         }
+                                         send(new PropertiesTransactionAReq(
+                                                      getPropertiesProcessor().commonReactor,
+                                                      getPropertiesProcessor()) {
+                                                  @Override
+                                                  protected void update(final PropertiesChangeManager _changeManager)
+                                                          throws Exception {
+                                                      _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, null);
+                                                      _changeManager.put(failedKey(_name), _failure);
+                                                  }
+                                              }, new AsyncResponseProcessor<Void>() {
+                                                  @Override
+                                                  public void processAsyncResponse(Void _response) throws Exception {
+                                                      throw new ServiceClosedException();
+                                                  }
+                                              }
+                                         );
                                      }
                                  });
-                                 send(facility.activateAReq(activatorClassName), dis, facility);
                              }
                          }
                      }
