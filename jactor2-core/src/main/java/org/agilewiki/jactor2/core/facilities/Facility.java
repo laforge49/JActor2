@@ -413,8 +413,8 @@ public class Facility extends CloserBase {
                 setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(Exception e) throws Exception {
-                        getLog().error("activation exception", e);
-                        return "activation exception: "+e;
+                        getLog().error("activation exception, facility "+name, e);
+                        return "activation exception, "+e;
                     }
                 });
                 final Class<?> initiatorClass = getClassLoader().loadClass(
