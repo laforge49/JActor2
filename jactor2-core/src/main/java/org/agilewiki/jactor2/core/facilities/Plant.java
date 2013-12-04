@@ -1,9 +1,13 @@
 package org.agilewiki.jactor2.core.facilities;
 
+import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
+import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChangeManager;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -80,6 +84,13 @@ public class Plant extends Facility {
         initialBufferSize = plantConfiguration.getInitialBufferSize();
         threadManager = plantConfiguration.getThreadManager();
         initialize(this);
+        /*
+        RequestBus<ImmutablePropertyChanges> changeBus = propertiesProcessor.changeBus;
+        new SubscribeAReq<ImmutablePropertyChanges>(
+                changeBus,
+                (NonBlockingReactor) internalReactor) {
+        }.signal();
+        */
     }
 
     public PlantConfiguration getPlantConfiguration() {

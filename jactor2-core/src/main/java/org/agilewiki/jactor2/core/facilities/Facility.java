@@ -32,57 +32,59 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Facility extends CloserBase {
 
-    public static final String NAME_PROPERTY = "core.facilityName";
+    public static final String CORE_PREFIX = "core.";
+
+    public static final String NAME_PROPERTY = CORE_PREFIX+"facilityName";
 
     public static final String PLANT_NAME = "Plant";
 
-    public static final String FACILITY_PROPERTY_PREFIX = "core.facility_";
+    public static final String FACILITY_PROPERTY_PREFIX = CORE_PREFIX+"facility_";
 
     public static final String FACILITY_PREFIX = "facility_";
 
-    public static final String FACILITY_DEPENDENCY_INFIX = "core.dependency_";
+    public static final String FACILITY_DEPENDENCY_INFIX = CORE_PREFIX+"dependency_";
 
     public static String dependencyPrefix(final String _facilityName) {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_DEPENDENCY_INFIX;
     }
 
-    public static final String FACILITY_RECOVERY_POSTFIX = "core.recovery";
+    public static final String FACILITY_RECOVERY_POSTFIX = CORE_PREFIX+"recovery";
 
     public static String recoveryKey(final String _facilityName) {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_RECOVERY_POSTFIX;
     }
 
-    public static final String FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX = "core.initialLocalMessageQueueSize";
+    public static final String FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX = CORE_PREFIX+"initialLocalMessageQueueSize";
 
     public static String initialLocalMessageQueueSizeKey(final String _facilityName) {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX;
     }
 
-    public static final String FACILITY_INITIAL_BUFFER_SIZE_POSTFIX = "core.initialBufferSize";
+    public static final String FACILITY_INITIAL_BUFFER_SIZE_POSTFIX = CORE_PREFIX+"initialBufferSize";
 
     public static String initialBufferSizeKey(final String _facilityName) {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_INITIAL_BUFFER_SIZE_POSTFIX;
     }
 
-    public static final String FACILITY_ACTIVATOR_POSTFIX = "core.activator";
+    public static final String FACILITY_ACTIVATOR_POSTFIX = CORE_PREFIX+"activator";
 
     public static String activatorKey(final String _facilityName) {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_ACTIVATOR_POSTFIX;
     }
 
-    public static String FACILITY_AUTO_START_POSTFIX = "core.autoStart";
+    public static String FACILITY_AUTO_START_POSTFIX = CORE_PREFIX+"autoStart";
 
     public static String autoStartKey(final String _facilityName) {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_AUTO_START_POSTFIX;
     }
 
-    public static String FACILITY_FAILED_POSTFIX = "core.failed";
+    public static String FACILITY_FAILED_POSTFIX = CORE_PREFIX+"failed";
 
     public static String failedKey(final String _facilityName) {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_FAILED_POSTFIX;
     }
 
-    public static String FACILITY_STOPPED_POSTFIX = "core.stopped";
+    public static String FACILITY_STOPPED_POSTFIX = CORE_PREFIX+"stopped";
 
     public static String stoppedKey(final String _facilityName) {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_STOPPED_POSTFIX;
@@ -93,7 +95,7 @@ public class Facility extends CloserBase {
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
      */
-    private InternalReactor internalReactor;
+    protected InternalReactor internalReactor;
 
     /**
      * Set when the facility reaches end-of-life.
@@ -167,7 +169,8 @@ public class Facility extends CloserBase {
         RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 validationBus,
-                (NonBlockingReactor) internalReactor) {
+                (NonBlockingReactor) internalReactor,
+                new PropertyChangesFilter(CORE_PREFIX)) {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
