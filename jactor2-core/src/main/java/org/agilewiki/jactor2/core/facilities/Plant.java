@@ -105,7 +105,8 @@ public class Plant extends Facility {
                         name1 = name1.substring(0, i);
                         Facility facility0 = plant.getFacility(name1);
                         if (name2.startsWith(FACILITY_AUTO_START_POSTFIX)) {
-                            autoStart(name1);
+                            if (newValue != null)
+                                autoStart(name1);
                         }
                     }
                 }
