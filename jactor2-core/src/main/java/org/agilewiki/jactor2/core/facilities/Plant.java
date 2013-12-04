@@ -97,6 +97,18 @@ public class Plant extends Facility {
                     String key = pc.name;
                     Object oldValue = pc.oldValue;
                     Object newValue = pc.newValue;
+                    if (key.startsWith(FACILITY_PREFIX)) {
+                        String name1 = key.substring(FACILITY_PREFIX.length());
+                        int i = name1.indexOf('~');
+                        if (i == -1)
+                            throw new UnsupportedOperationException("undeliminated facility");
+                        String name2 = name1.substring(i + 1);
+                        name1 = name1.substring(0, i);
+                        Facility facility0 = plant.getFacility(name1);
+                        if (name2.startsWith(FACILITY_AUTO_START_POSTFIX)) {
+                            System.out.println("autoStart set for "+name1);
+                        }
+                    }
                 }
             }
         }.signal();
