@@ -2,9 +2,7 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChangeManager;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
+import org.agilewiki.jactor2.core.blades.transactions.properties.*;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -14,6 +12,7 @@ import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.SortedMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -84,13 +83,23 @@ public class Plant extends Facility {
         initialBufferSize = plantConfiguration.getInitialBufferSize();
         threadManager = plantConfiguration.getThreadManager();
         initialize(this);
-        /*
         RequestBus<ImmutablePropertyChanges> changeBus = propertiesProcessor.changeBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 changeBus,
-                (NonBlockingReactor) internalReactor) {
+                (NonBlockingReactor) internalReactor,
+                new PropertyChangesFilter(CORE_PREFIX)) {
+            protected void processContent(final ImmutablePropertyChanges _content)
+                    throws Exception {
+                SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
+                final Iterator<PropertyChange> it = readOnlyChanges.values().iterator();
+                while (it.hasNext()) {
+                    PropertyChange pc = it.next();
+                    String key = pc.name;
+                    Object oldValue = pc.oldValue;
+                    Object newValue = pc.newValue;
+                }
+            }
         }.signal();
-        */
     }
 
     public PlantConfiguration getPlantConfiguration() {
