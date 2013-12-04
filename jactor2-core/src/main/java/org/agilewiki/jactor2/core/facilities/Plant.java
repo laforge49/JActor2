@@ -86,8 +86,7 @@ public class Plant extends Facility {
         RequestBus<ImmutablePropertyChanges> changeBus = propertiesProcessor.changeBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 changeBus,
-                (NonBlockingReactor) internalReactor,
-                new PropertyChangesFilter(CORE_PREFIX)) {
+                (NonBlockingReactor) internalReactor) {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
@@ -106,7 +105,7 @@ public class Plant extends Facility {
                         name1 = name1.substring(0, i);
                         Facility facility0 = plant.getFacility(name1);
                         if (name2.startsWith(FACILITY_AUTO_START_POSTFIX)) {
-                            System.out.println("autoStart set for "+name1);
+                            autoStart(name1);
                         }
                     }
                 }
@@ -142,6 +141,8 @@ public class Plant extends Facility {
     }
 
     public String autoStart(final String _facilityName) {
+        if (getFacility(_facilityName) != null)
+            return null;
         if (!isAutoStart(_facilityName))
             return "autoStart not set";
         if (getFailed(_facilityName) != null)
@@ -192,7 +193,11 @@ public class Plant extends Facility {
                 else
                     facility.initialBufferSize = v;
 
-                facility.initialize(Plant.this);
+                try {
+                    facility.initialize(Plant.this);
+                } catch (ServiceClosedException ex) {
+                    return;
+                }
                 send(new PropertiesTransactionAReq(getPropertiesProcessor().commonReactor, getPropertiesProcessor()) {
                          @Override
                          protected void update(final PropertiesChangeManager _changeManager) throws Exception {

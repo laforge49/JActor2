@@ -169,8 +169,7 @@ public class Facility extends CloserBase {
         RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 validationBus,
-                (NonBlockingReactor) internalReactor,
-                new PropertyChangesFilter(CORE_PREFIX)) {
+                (NonBlockingReactor) internalReactor) {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
@@ -340,6 +339,7 @@ public class Facility extends CloserBase {
         }
         closeAll();
     }
+
     public void stop() throws Exception {
         if (startClosing) {
             plant.putPropertyAReq(stoppedKey(name), true,
