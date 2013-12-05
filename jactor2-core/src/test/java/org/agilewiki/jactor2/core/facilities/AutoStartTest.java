@@ -8,7 +8,9 @@ public class AutoStartTest extends TestCase {
     public void test() throws Exception {
         final Plant plant = new Plant();
         try {
-            plant.activatorPropertyAReq("A", "org.agilewiki.jactor2.core.facilities.SampleActivator").call();
+            plant.activatorPropertyAReq("B", "org.agilewiki.jactor2.core.facilities.SampleActivator").call();
+            plant.dependencyPropertyAReq("B", "A").call();
+            plant.autoStartAReq("B", true).call();
             plant.autoStartAReq("A", true).call();
             PropertiesProcessor propertiesProcessor = plant.getPropertiesProcessor();
             propertiesProcessor.getReactor().nullSReq().call(); //synchronize for the properties update

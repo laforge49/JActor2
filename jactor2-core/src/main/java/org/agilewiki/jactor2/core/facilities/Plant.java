@@ -16,6 +16,7 @@ import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -98,9 +99,21 @@ public class Plant extends Facility {
                 while (it.hasNext()) {
                     PropertyChange pc = it.next();
                     String key = pc.name;
-                    Object oldValue = pc.oldValue;
                     Object newValue = pc.newValue;
-                    if (key.startsWith(FACILITY_PREFIX)) {
+                    if (key.startsWith(FACILITY_PROPERTY_PREFIX) && newValue != null) {
+                        String facilityName = ((Facility) newValue).name;
+                        ImmutableProperties<Object> immutableProperties = _content.immutableProperties;
+                        ImmutableProperties<Object> facilityProperties = immutableProperties.subMap(FACILITY_PREFIX);
+                        Iterator<String> kit = facilityProperties.keySet().iterator();
+                        String postfix = "~"+FACILITY_DEPENDENCY_INFIX+facilityName;
+                        while (kit.hasNext()) {
+                            String pk = kit.next();
+                            if (!pk.endsWith(postfix))
+                                continue;
+                            String dependentName = pk.substring(FACILITY_PREFIX.length(), pk.length()-postfix.length());
+                            autoStartAReq(dependentName).signal();
+                        }
+                    } else if (key.startsWith(FACILITY_PREFIX)) {
                         String name1 = key.substring(FACILITY_PREFIX.length());
                         int i = name1.indexOf('~');
                         if (i == -1)
@@ -155,14 +168,22 @@ public class Plant extends Facility {
         return new AsyncBladeRequest<String>() {
             @Override
             protected void processAsyncRequest() throws Exception {
-                if (getFacility(_facilityName) != null)
+                if (getFacility(_facilityName) != null) {
                     processAsyncResponse(null);
-                if (!isAutoStart(_facilityName))
-                    processAsyncResponse("autoStart not set");
-                if (getFailed(_facilityName) != null)
-                    processAsyncResponse("failed: " + getFailed(_facilityName));
-                if (isStopped(_facilityName))
-                    processAsyncResponse("stopped");
+                    return;
+                }
+                if (!isAutoStart(_facilityName)) {
+                    processAsyncResponse(null);
+                    return;
+                }
+                if (getFailed(_facilityName) != null) {
+                    processAsyncResponse(null);
+                    return;
+                }
+                if (isStopped(_facilityName)) {
+                    processAsyncResponse(null);
+                    return;
+                }
                 String dependencyPrefix = dependencyPrefix(_facilityName);
                 ImmutableProperties<Object> dependencies =
                         plant.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
@@ -172,7 +193,7 @@ public class Plant extends Facility {
                     String dependencyName = d.substring(dependencyPrefix.length());
                     Facility dependency = plant.getFacility(dependencyName);
                     if (dependency == null)
-                        processAsyncResponse("missing dependency: " + dependencyName);
+                        processAsyncResponse(null);
                 }
                 setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
@@ -195,6 +216,8 @@ public class Plant extends Facility {
 
             @Override
             protected void processAsyncRequest() throws Exception {
+                if (getFacility(_name) != null)
+                    processAsyncResponse(getFacility(_name));
                 final Facility facility = new Facility(_name);
 
                 facility.recovery = (Recovery) getProperty(recoveryKey(_name));

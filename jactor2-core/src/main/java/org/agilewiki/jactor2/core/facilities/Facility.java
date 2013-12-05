@@ -195,8 +195,7 @@ public class Facility extends CloserBase {
                             Facility facility = (Facility) oldValue;
                             throw new IllegalStateException("Facility already exists: "+facility.name);
                         }
-                    }
-                    if (key.startsWith(FACILITY_PREFIX)) {
+                    } else if (key.startsWith(FACILITY_PREFIX)) {
                         if (!(Facility.this instanceof Plant))
                             throw new UnsupportedOperationException(
                                     "only a plant can have a facility configuration property: "+key);
