@@ -1,8 +1,12 @@
 package org.agilewiki.jactor2.core.facilities;
 
+import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.transactions.properties.*;
+import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChangeManager;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
+import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -106,7 +110,7 @@ public class Plant extends Facility {
                         Facility facility0 = plant.getFacility(name1);
                         if (name2.startsWith(FACILITY_AUTO_START_POSTFIX)) {
                             if (newValue != null)
-                                autoStart(name1);
+                                autoStartAReq(name1).signal();
                         }
                     }
                 }
@@ -141,32 +145,41 @@ public class Plant extends Facility {
     protected void validateName(final String _name) throws Exception {
     }
 
-    public String autoStart(final String _facilityName) {
-        if (getFacility(_facilityName) != null)
-            return null;
-        if (!isAutoStart(_facilityName))
-            return "autoStart not set";
-        if (getFailed(_facilityName) != null)
-            return "failed: " + getFailed(_facilityName);
-        if (isStopped(_facilityName))
-            return "stopped";
-        String dependencyPrefix = dependencyPrefix(_facilityName);
-        ImmutableProperties<Object> dependencies =
-                plant.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
-        Iterator<String> dit = dependencies.keySet().iterator();
-        while (dit.hasNext()) {
-            String d = dit.next();
-            String dependencyName = d.substring(dependencyPrefix.length());
-            Facility dependency = plant.getFacility(dependencyName);
-            if (dependency == null)
-                return "missing dependency: " + dependencyName;
-        }
-        try {
-            createFacilityAReq(_facilityName).signal();
-        } catch (Exception e) {
-            return "create facility exception: " + e;
-        }
-        return null;
+    public AsyncRequest<String> autoStartAReq(final String _facilityName) {
+        return new AsyncBladeRequest<String>() {
+            @Override
+            protected void processAsyncRequest() throws Exception {
+                if (getFacility(_facilityName) != null)
+                    processAsyncResponse(null);
+                if (!isAutoStart(_facilityName))
+                    processAsyncResponse("autoStart not set");
+                if (getFailed(_facilityName) != null)
+                    processAsyncResponse("failed: " + getFailed(_facilityName));
+                if (isStopped(_facilityName))
+                    processAsyncResponse("stopped");
+                String dependencyPrefix = dependencyPrefix(_facilityName);
+                ImmutableProperties<Object> dependencies =
+                        plant.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
+                Iterator<String> dit = dependencies.keySet().iterator();
+                while (dit.hasNext()) {
+                    String d = dit.next();
+                    String dependencyName = d.substring(dependencyPrefix.length());
+                    Facility dependency = plant.getFacility(dependencyName);
+                    if (dependency == null)
+                        processAsyncResponse("missing dependency: " + dependencyName);
+                }
+                setExceptionHandler(new ExceptionHandler<String>() {
+                    @Override
+                    public String processException(Exception e) throws Exception {
+                        if (e instanceof ServiceClosedException)
+                            return null;
+                        else
+                            return "create facility exception: " + e;
+                    }
+                });
+                send(createFacilityAReq(_facilityName), this, null);
+            }
+        };
     }
 
     public AsyncRequest<Facility> createFacilityAReq(final String _name)
@@ -194,11 +207,7 @@ public class Plant extends Facility {
                 else
                     facility.initialBufferSize = v;
 
-                try {
-                    facility.initialize(Plant.this);
-                } catch (ServiceClosedException ex) {
-                    return;
-                }
+                facility.initialize(Plant.this);
                 send(new PropertiesTransactionAReq(getPropertiesProcessor().commonReactor, getPropertiesProcessor()) {
                          @Override
                          protected void update(final PropertiesChangeManager _changeManager) throws Exception {
