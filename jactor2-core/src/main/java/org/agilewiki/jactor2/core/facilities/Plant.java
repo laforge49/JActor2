@@ -111,6 +111,12 @@ public class Plant extends Facility {
                         if (name2.startsWith(FACILITY_AUTO_START_POSTFIX)) {
                             if (newValue != null)
                                 autoStartAReq(name1).signal();
+                        } else if (name2.startsWith(FACILITY_FAILED_POSTFIX)) {
+                            if (newValue == null)
+                                autoStartAReq(name1).signal();
+                        } else if (name2.startsWith(FACILITY_STOPPED_POSTFIX)) {
+                            if (newValue == null)
+                                autoStartAReq(name1).signal();
                         }
                     }
                 }
