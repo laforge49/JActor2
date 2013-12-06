@@ -38,7 +38,7 @@ public class PlantConfiguration {
         threadPoolSize = _threadPoolSize;
     }
 
-    public void initializeSchedular() {
+    public void initializeScheduler() {
         if (scheduler == null) {
             scheduler = new ScheduledThreadPoolExecutor(getSchedulerPoolSize());
             currentTimeMillis = System.currentTimeMillis();

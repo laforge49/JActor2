@@ -17,8 +17,6 @@ import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.SortedMap;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class Plant extends Facility {
 
@@ -66,7 +64,7 @@ public class Plant extends Facility {
 
     public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
         super(PLANT_NAME);
-        _plantConfiguration.initializeSchedular();
+        _plantConfiguration.initializeScheduler();
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
