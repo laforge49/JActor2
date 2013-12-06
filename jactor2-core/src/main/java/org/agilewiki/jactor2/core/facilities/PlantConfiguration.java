@@ -28,7 +28,7 @@ public class PlantConfiguration {
 
     private ScheduledThreadPoolExecutor scheduler;
 
-    private long currentTimeMillis;
+    private volatile long currentTimeMillis;
 
     public PlantConfiguration() {
         threadPoolSize = DEFAULT_THREAD_COUNT;
