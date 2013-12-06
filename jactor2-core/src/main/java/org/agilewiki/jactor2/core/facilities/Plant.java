@@ -71,11 +71,11 @@ public class Plant extends Facility {
     public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
         super(PLANT_NAME);
         scheduler = new ScheduledThreadPoolExecutor(_plantConfiguration.getSchedulerPoolSize());
-        currentTimeMillis = System.currentTimeMillis();
+        currentTimeMillis = _plantConfiguration.getSystemTimeMillis();
         scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                currentTimeMillis = System.currentTimeMillis();
+                currentTimeMillis = _plantConfiguration.getSystemTimeMillis();
             }
         }, _plantConfiguration.getHeartbeatMillis(), _plantConfiguration.getHeartbeatMillis(), TimeUnit.MILLISECONDS);
         if (singleton != null) {

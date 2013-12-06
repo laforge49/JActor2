@@ -55,4 +55,6 @@ public class PlantConfiguration {
     public long getHeartbeatMillis() { return HEARTBEAT_MILLIS; }
 
     public int getSchedulerPoolSize() { return SCHEDULER_POOL_SIZE; }
+
+    public long getSystemTimeMillis() { return System.currentTimeMillis(); }
 }
