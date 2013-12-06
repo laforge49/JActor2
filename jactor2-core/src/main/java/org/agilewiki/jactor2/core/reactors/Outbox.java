@@ -15,11 +15,6 @@ import java.util.Map;
 public class Outbox implements AutoCloseable {
 
     /**
-     * Default initial (per target Reactor) buffer.
-     */
-    public static final int DEFAULT_INITIAL_BUFFER_SIZE = 16;
-
-    /**
      * Initial size of the outbox for each unique message destination.
      */
     private final int initialBufferSize;

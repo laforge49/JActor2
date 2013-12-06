@@ -1,14 +1,27 @@
 package org.agilewiki.jactor2.core.facilities;
 
-import org.agilewiki.jactor2.core.reactors.Inbox;
-import org.agilewiki.jactor2.core.reactors.Outbox;
 import org.agilewiki.jactor2.core.util.DefaultRecovery;
 import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.concurrent.ThreadFactory;
 
 public class PlantConfiguration {
-    public final static int DEFAULT_THREAD_COUNT = 20;
+    /**
+     * Default initial local queue size.
+     */
+    private static final int DEFAULT_INITIAL_LOCAL_QUEUE_SIZE = 16;
+
+    /**
+     * Default initial (per target Reactor) buffer.
+     */
+    private static final int DEFAULT_INITIAL_BUFFER_SIZE = 16;
+
+    private static final int DEFAULT_THREAD_COUNT = 20;
+
+    private static final long HEARTBEAT_MILLIS = 1000;
+
+    private static final int SCHEDULER_POOL_SIZE = 1;
+
     public final int threadPoolSize;
 
     public PlantConfiguration() {
@@ -32,10 +45,14 @@ public class PlantConfiguration {
     }
 
     public int getInitialLocalMessageQueueSize() {
-        return Inbox.DEFAULT_INITIAL_LOCAL_QUEUE_SIZE;
+        return DEFAULT_INITIAL_LOCAL_QUEUE_SIZE;
     }
 
     public int getInitialBufferSize() {
-        return Outbox.DEFAULT_INITIAL_BUFFER_SIZE;
+        return DEFAULT_INITIAL_BUFFER_SIZE;
     }
+
+    public long getHeartbeatMillis() { return HEARTBEAT_MILLIS; }
+
+    public int getSchedulerPoolSize() { return SCHEDULER_POOL_SIZE; }
 }

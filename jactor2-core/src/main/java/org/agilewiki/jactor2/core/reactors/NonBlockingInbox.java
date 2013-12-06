@@ -26,12 +26,7 @@ public class NonBlockingInbox extends Inbox {
      */
     public NonBlockingInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
-        if (initialLocalQueueSize > DEFAULT_INITIAL_LOCAL_QUEUE_SIZE) {
-            localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
-        } else {
-            localQueue = new ArrayDeque<Object>(
-                    DEFAULT_INITIAL_LOCAL_QUEUE_SIZE);
-        }
+        localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
     }
 
     @Override

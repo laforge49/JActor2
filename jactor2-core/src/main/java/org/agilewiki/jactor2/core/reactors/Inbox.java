@@ -13,10 +13,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author monster
  */
 public abstract class Inbox implements AutoCloseable {
-    /**
-     * Default initial doLocal queue size.
-     */
-    public static int DEFAULT_INITIAL_LOCAL_QUEUE_SIZE = 16;
 
     /**
      * Concurrent queue for cross-thread exchanges.
