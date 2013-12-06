@@ -39,10 +39,6 @@ public class Plant extends Facility {
 
     private PlantConfiguration plantConfiguration;
 
-    private ScheduledThreadPoolExecutor scheduler;
-
-    private long currentTimeMillis;
-
     private boolean exitOnClose;
 
     private boolean forceExit;
@@ -70,14 +66,7 @@ public class Plant extends Facility {
 
     public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
         super(PLANT_NAME);
-        scheduler = new ScheduledThreadPoolExecutor(_plantConfiguration.getSchedulerPoolSize());
-        currentTimeMillis = _plantConfiguration.getSystemTimeMillis();
-        scheduler.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                currentTimeMillis = _plantConfiguration.getSystemTimeMillis();
-            }
-        }, _plantConfiguration.getHeartbeatMillis(), _plantConfiguration.getHeartbeatMillis(), TimeUnit.MILLISECONDS);
+        _plantConfiguration.initializeSchedular();
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
@@ -149,10 +138,6 @@ public class Plant extends Facility {
     public PlantConfiguration getPlantConfiguration() {
         return plantConfiguration;
     }
-
-    public ScheduledThreadPoolExecutor getScheduler() { return scheduler; }
-
-    public long getCurrentTimeMillis() { return currentTimeMillis; }
 
     /**
      * Submit a Reactor for subsequent execution.
@@ -305,7 +290,7 @@ public class Plant extends Facility {
             return;
         singleton = null;
         super.close();
-        scheduler.shutdown();
+        plantConfiguration.close();
     }
 
     @Override
@@ -354,7 +339,7 @@ public class Plant extends Facility {
 
     public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
-        scheduler.schedule(schedulableSemaphore.runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
+        plantConfiguration.schedule(schedulableSemaphore.runnable, _millisecondDelay);
         return schedulableSemaphore;
     }
 

@@ -3,7 +3,9 @@ package org.agilewiki.jactor2.core.facilities;
 import org.agilewiki.jactor2.core.util.DefaultRecovery;
 import org.agilewiki.jactor2.core.util.Recovery;
 
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 public class PlantConfiguration {
     /**
@@ -24,12 +26,40 @@ public class PlantConfiguration {
 
     public final int threadPoolSize;
 
+    private ScheduledThreadPoolExecutor scheduler;
+
+    private long currentTimeMillis;
+
     public PlantConfiguration() {
         threadPoolSize = DEFAULT_THREAD_COUNT;
     }
 
     public PlantConfiguration(final int _threadPoolSize) {
         threadPoolSize = _threadPoolSize;
+    }
+
+    public void initializeSchedular() {
+        if (scheduler == null) {
+            scheduler = new ScheduledThreadPoolExecutor(getSchedulerPoolSize());
+            currentTimeMillis = System.currentTimeMillis();
+            scheduler.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    currentTimeMillis = System.currentTimeMillis();
+                }
+            }, getHeartbeatMillis(), getHeartbeatMillis(), TimeUnit.MILLISECONDS);
+        }
+    }
+
+    public void schedule(Runnable runnable, long _millisecondDelay) {
+        scheduler.schedule(runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
+    }
+
+    public long currentTimeMillis() { return currentTimeMillis; }
+
+    public void close() {
+        if (scheduler != null)
+            scheduler.shutdown();
     }
 
     public ThreadFactory getThreadFactory() {
@@ -52,9 +82,9 @@ public class PlantConfiguration {
         return DEFAULT_INITIAL_BUFFER_SIZE;
     }
 
-    public long getHeartbeatMillis() { return HEARTBEAT_MILLIS; }
+    protected long getHeartbeatMillis() { return HEARTBEAT_MILLIS; }
 
-    public int getSchedulerPoolSize() { return SCHEDULER_POOL_SIZE; }
+    protected int getSchedulerPoolSize() { return SCHEDULER_POOL_SIZE; }
 
     public long getSystemTimeMillis() { return System.currentTimeMillis(); }
 }
