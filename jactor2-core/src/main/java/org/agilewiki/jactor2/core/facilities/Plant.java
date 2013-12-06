@@ -16,7 +16,6 @@ import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +39,7 @@ public class Plant extends Facility {
 
     private PlantConfiguration plantConfiguration;
 
-    private ScheduledThreadPoolExecutor semaphoreScheduler = new ScheduledThreadPoolExecutor(1);
+    private ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1);
 
     private boolean exitOnClose;
 
@@ -292,6 +291,7 @@ public class Plant extends Facility {
             return;
         singleton = null;
         super.close();
+        scheduler.shutdown();
     }
 
     @Override
@@ -340,7 +340,7 @@ public class Plant extends Facility {
 
     public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
-        semaphoreScheduler.schedule(schedulableSemaphore.runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
+        scheduler.schedule(schedulableSemaphore.runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
         return schedulableSemaphore;
     }
 
