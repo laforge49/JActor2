@@ -96,6 +96,7 @@ public class Facility extends CloserBase {
     }
 
     public Recovery recovery;
+    public Scheduler scheduler;
 
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.

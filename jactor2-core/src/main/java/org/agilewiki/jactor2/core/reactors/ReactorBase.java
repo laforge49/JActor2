@@ -25,6 +25,8 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
 
     public Recovery recovery;
 
+    public Scheduler scheduler;
+
     /**
      * Reactor logger.
      */
@@ -78,6 +80,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         log = _facility.getLog();
         outbox = new Outbox(this, _initialBufferSize);
         recovery = _facility.recovery;
+        scheduler = _facility.scheduler;
         initialize(this);
         addClose();
     }

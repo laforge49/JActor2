@@ -81,6 +81,7 @@ public class Plant extends Facility {
         } else
             plantConfiguration = _plantConfiguration;
         recovery = plantConfiguration.getRecovery();
+        scheduler = plantConfiguration.getScheduler();
         initialLocalMessageQueueSize = plantConfiguration.getInitialLocalMessageQueueSize();
         initialBufferSize = plantConfiguration.getInitialBufferSize();
         threadManager = plantConfiguration.getThreadManager();
@@ -238,6 +239,7 @@ public class Plant extends Facility {
                 facility.recovery = (Recovery) getProperty(recoveryKey(_name));
                 if (facility.recovery == null)
                     facility.recovery = recovery;
+                facility.scheduler = scheduler;
 
                 Integer v = (Integer) getProperty(initialLocalMessageQueueSizeKey(_name));
                 if (v == null)
