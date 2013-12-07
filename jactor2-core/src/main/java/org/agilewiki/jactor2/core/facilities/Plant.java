@@ -64,7 +64,7 @@ public class Plant extends Facility {
 
     public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
         super(PLANT_NAME);
-        _plantConfiguration.initializeScheduler();
+        _plantConfiguration.initialize();
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }

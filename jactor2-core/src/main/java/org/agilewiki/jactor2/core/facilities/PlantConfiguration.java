@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.facilities;
 
-import org.agilewiki.jactor2.core.util.DefaultRecovery;
 import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -26,9 +25,9 @@ public class PlantConfiguration {
 
     public final int threadPoolSize;
 
-    private ScheduledThreadPoolExecutor scheduler;
+    private Recovery recovery;
 
-    private volatile long currentTimeMillis;
+    private Scheduler scheduler;
 
     public PlantConfiguration() {
         threadPoolSize = DEFAULT_THREAD_COUNT;
@@ -38,28 +37,30 @@ public class PlantConfiguration {
         threadPoolSize = _threadPoolSize;
     }
 
-    public void initializeScheduler() {
-        if (scheduler == null) {
-            scheduler = new ScheduledThreadPoolExecutor(getSchedulerPoolSize());
-            currentTimeMillis = System.currentTimeMillis();
-            scheduler.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    currentTimeMillis = System.currentTimeMillis();
-                }
-            }, getHeartbeatMillis(), getHeartbeatMillis(), TimeUnit.MILLISECONDS);
-        }
+    public void initialize() {
+        recovery = createRecovery();
+        scheduler = createScheduler();
+    }
+
+    protected Recovery createRecovery() {
+        return new Recovery();
+    }
+
+    public Recovery getRecovery() {
+        return recovery;
+    }
+
+    protected Scheduler createScheduler() {
+        return new DefaultScheduler(this);
     }
 
     public void schedule(Runnable runnable, long _millisecondDelay) {
-        scheduler.schedule(runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
+        scheduler.schedule(runnable, _millisecondDelay);
     }
-
-    public long currentTimeMillis() { return currentTimeMillis; }
 
     public void close() {
         if (scheduler != null)
-            scheduler.shutdown();
+            scheduler.close();
     }
 
     public ThreadFactory getThreadFactory() {
@@ -68,10 +69,6 @@ public class PlantConfiguration {
 
     public ThreadManager getThreadManager() {
         return new ThreadManager(threadPoolSize, getThreadFactory());
-    }
-
-    public Recovery getRecovery() {
-        return new DefaultRecovery();
     }
 
     public int getInitialLocalMessageQueueSize() {
@@ -86,5 +83,5 @@ public class PlantConfiguration {
 
     protected int getSchedulerPoolSize() { return SCHEDULER_POOL_SIZE; }
 
-    public long getSystemTimeMillis() { return System.currentTimeMillis(); }
+    public long getSystemTimeMillis() { return scheduler.currentTimeMillis(); }
 }
