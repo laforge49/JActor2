@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 

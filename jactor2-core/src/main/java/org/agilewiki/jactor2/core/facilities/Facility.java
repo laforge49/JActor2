@@ -11,6 +11,8 @@ import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.CloserBase;
 import org.agilewiki.jactor2.core.util.Recovery;
@@ -18,7 +20,10 @@ import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
@@ -448,6 +453,18 @@ public class Facility extends CloserBase {
                 }
             }
         };
+    }
+
+    public void facilityPoll() {
+                Iterator<Closeable> it = getCloseableSet().iterator();
+                while (it.hasNext()) {
+                    Closeable closeable = it.next();
+                    if (!(closeable instanceof ReactorBase))
+                        continue;
+                    ReactorBase reactor = (ReactorBase) closeable;
+                    reactor.reactorPoll();
+                }
+                internalReactor.reactorPoll();
     }
 
     /**

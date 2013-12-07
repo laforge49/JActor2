@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.util;
 
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 public interface Closer {
 

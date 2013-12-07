@@ -11,6 +11,7 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
@@ -116,7 +117,6 @@ public class Plant extends Facility {
                             throw new UnsupportedOperationException("undeliminated facility");
                         String name2 = name1.substring(i + 1);
                         name1 = name1.substring(0, i);
-                        Facility facility0 = plant.getFacility(name1);
                         if (name2.startsWith(FACILITY_AUTO_START_POSTFIX)) {
                             if (newValue != null)
                                 autoStartAReq(name1).signal();
@@ -132,13 +132,22 @@ public class Plant extends Facility {
             }
         }.signal();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
-        _plantConfiguration.getScheduler().scheduleAtFixedRate(reactorPoll(),
+        _plantConfiguration.getScheduler().scheduleAtFixedRate(plantPoll(),
                 reactorPollMillis);
     }
 
-    private Runnable reactorPoll() {
+    private Runnable plantPoll() {
         return new Runnable() {
             public void run() {
+                Iterator<Closeable> it = getCloseableSet().iterator();
+                while (it.hasNext()) {
+                    Closeable closeable = it.next();
+                    if (!(closeable instanceof Facility))
+                        continue;
+                    Facility facility = (Facility) closeable;
+                    facility.facilityPoll();
+                }
+                facilityPoll();
             }
         };
     }

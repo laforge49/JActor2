@@ -447,4 +447,8 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
             }
         };
     }
+
+    public void reactorPoll() {
+        System.out.println("@");
+    }
 }

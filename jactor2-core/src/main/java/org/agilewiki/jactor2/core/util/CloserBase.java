@@ -3,10 +3,12 @@ package org.agilewiki.jactor2.core.util;
 import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.slf4j.Logger;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 abstract public class CloserBase extends CloseableBase implements Closer {
 

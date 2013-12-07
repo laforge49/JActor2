@@ -1,8 +1,5 @@
 package org.agilewiki.jactor2.core.blades.transactions.properties;
 
-import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
 import org.agilewiki.jactor2.core.blades.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
@@ -11,9 +8,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.util.immutable.HashTreePProperties;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.SortedMap;
 
 /**
  * Transaction-based updates to an immutable properties map.

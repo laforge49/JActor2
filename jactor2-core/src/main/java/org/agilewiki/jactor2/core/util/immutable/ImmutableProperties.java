@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.util.immutable;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 
 /**
