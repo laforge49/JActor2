@@ -131,6 +131,16 @@ public class Plant extends Facility {
                 }
             }
         }.signal();
+        long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
+        _plantConfiguration.getScheduler().scheduleAtFixedRate(reactorPoll(),
+                reactorPollMillis);
+    }
+
+    private Runnable reactorPoll() {
+        return new Runnable() {
+            public void run() {
+            }
+        };
     }
 
     public PlantConfiguration getPlantConfiguration() {

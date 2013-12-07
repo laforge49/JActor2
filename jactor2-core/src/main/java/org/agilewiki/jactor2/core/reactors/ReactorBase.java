@@ -129,7 +129,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         Plant plant = getFacility().getPlant();
         if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
             return;
-        timeoutSemaphore = plant.schedulableSemaphore(recovery.getThreadInterruptMilliseconds(this));
+        timeoutSemaphore = plant.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
         if (currentMessage != null)
             currentMessage.close();
         if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
