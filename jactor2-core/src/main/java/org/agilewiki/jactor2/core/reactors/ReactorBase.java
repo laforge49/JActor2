@@ -27,6 +27,8 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
 
     public Scheduler scheduler;
 
+    public long messageStartTimeMillis;
+
     /**
      * Reactor logger.
      */
@@ -429,12 +431,15 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                 if (timeoutSemaphore != null) {
                     return;
                 }
+                messageStartTimeMillis = scheduler.currentTimeMillis();
                 processMessage(message);
+                messageStartTimeMillis = 0;
             }
         } catch (final InterruptedException ie) {
             if (timeoutSemaphore == null)
                 Thread.currentThread().interrupt();
         } finally {
+            messageStartTimeMillis = 0;
             running = false;
             if (timeoutSemaphore != null) {
                 timeoutSemaphore.release();
