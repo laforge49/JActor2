@@ -7,7 +7,7 @@ public class DefaultScheduler implements Scheduler {
 
     private static final long HEARTBEAT_MILLIS = 1000;
 
-    private static final int SCHEDULER_POOL_SIZE = 1;
+    private static final int SCHEDULER_POOL_SIZE = 2;
 
     private volatile long currentTimeMillis;
 
@@ -36,6 +36,12 @@ public class DefaultScheduler implements Scheduler {
     @Override
     public void schedule(Runnable runnable, long _millisecondDelay) {
         scheduledThreadPoolExecutor.schedule(runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void scheduleAtFixedRate(Runnable runnable, long _millisecondDelay) {
+        scheduledThreadPoolExecutor.scheduleAtFixedRate(runnable, _millisecondDelay,
+                _millisecondDelay, TimeUnit.MILLISECONDS);
     }
 
     @Override

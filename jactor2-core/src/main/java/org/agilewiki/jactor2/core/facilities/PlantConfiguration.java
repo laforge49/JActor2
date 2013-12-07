@@ -51,10 +51,6 @@ public class PlantConfiguration {
 
     public Scheduler getScheduler() { return scheduler; }
 
-    public void schedule(Runnable runnable, long _millisecondDelay) {
-        scheduler.schedule(runnable, _millisecondDelay);
-    }
-
     public void close() {
         if (scheduler != null)
             scheduler.close();

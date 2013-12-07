@@ -337,7 +337,7 @@ public class Plant extends Facility {
 
     public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
-        plantConfiguration.schedule(schedulableSemaphore.runnable, _millisecondDelay);
+        plantConfiguration.getScheduler().schedule(schedulableSemaphore.runnable, _millisecondDelay);
         return schedulableSemaphore;
     }
 
