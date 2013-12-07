@@ -5,34 +5,41 @@ import java.util.concurrent.TimeUnit;
 
 public class DefaultScheduler implements Scheduler {
 
+    private static final long HEARTBEAT_MILLIS = 1000;
+
+    private static final int SCHEDULER_POOL_SIZE = 1;
+
     private volatile long currentTimeMillis;
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
-    public DefaultScheduler(final PlantConfiguration _plantConfiguration) {
+    @Override
+    public void initialize() {
         scheduledThreadPoolExecutor =
-                new ScheduledThreadPoolExecutor(_plantConfiguration.getSchedulerPoolSize());
+                new ScheduledThreadPoolExecutor(getSchedulerPoolSize());
         currentTimeMillis = System.currentTimeMillis();
         scheduledThreadPoolExecutor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 currentTimeMillis = System.currentTimeMillis();
             }
-        }, _plantConfiguration.getHeartbeatMillis(), _plantConfiguration.getHeartbeatMillis(), TimeUnit.MILLISECONDS);
+        }, getHeartbeatMillis(), getHeartbeatMillis(), TimeUnit.MILLISECONDS);
     }
+
+    protected long getHeartbeatMillis() { return HEARTBEAT_MILLIS; }
+
+    protected int getSchedulerPoolSize() { return SCHEDULER_POOL_SIZE; }
 
     @Override
     public long currentTimeMillis() { return currentTimeMillis; }
-
-    @Override
-    public void close() {
-        scheduledThreadPoolExecutor.shutdown();
-    }
 
     @Override
     public void schedule(Runnable runnable, long _millisecondDelay) {
         scheduledThreadPoolExecutor.schedule(runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
     }
 
-
+    @Override
+    public void close() {
+        scheduledThreadPoolExecutor.shutdown();
+    }
 }

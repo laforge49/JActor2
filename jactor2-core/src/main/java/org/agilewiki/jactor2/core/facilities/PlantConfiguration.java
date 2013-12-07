@@ -2,9 +2,7 @@ package org.agilewiki.jactor2.core.facilities;
 
 import org.agilewiki.jactor2.core.util.Recovery;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 
 public class PlantConfiguration {
     /**
@@ -18,10 +16,6 @@ public class PlantConfiguration {
     private static final int DEFAULT_INITIAL_BUFFER_SIZE = 16;
 
     private static final int DEFAULT_THREAD_COUNT = 20;
-
-    private static final long HEARTBEAT_MILLIS = 1000;
-
-    private static final int SCHEDULER_POOL_SIZE = 1;
 
     public final int threadPoolSize;
 
@@ -40,6 +34,7 @@ public class PlantConfiguration {
     public void initialize() {
         recovery = createRecovery();
         scheduler = createScheduler();
+        scheduler.initialize();
     }
 
     protected Recovery createRecovery() {
@@ -51,8 +46,10 @@ public class PlantConfiguration {
     }
 
     protected Scheduler createScheduler() {
-        return new DefaultScheduler(this);
+        return new DefaultScheduler();
     }
+
+    public Scheduler getScheduler() { return scheduler; }
 
     public void schedule(Runnable runnable, long _millisecondDelay) {
         scheduler.schedule(runnable, _millisecondDelay);
@@ -79,9 +76,5 @@ public class PlantConfiguration {
         return DEFAULT_INITIAL_BUFFER_SIZE;
     }
 
-    protected long getHeartbeatMillis() { return HEARTBEAT_MILLIS; }
-
-    protected int getSchedulerPoolSize() { return SCHEDULER_POOL_SIZE; }
-
-    public long getSystemTimeMillis() { return scheduler.currentTimeMillis(); }
+    public long currentTimeMillis() { return scheduler.currentTimeMillis(); }
 }
