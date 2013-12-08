@@ -460,7 +460,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         long currentTimeMillis = scheduler.currentTimeMillis();
         if (messageStartTimeMillis > 0) {
             if (messageStartTimeMillis + recovery.messageTimeoutMillis() < currentTimeMillis) {
-
+                recovery.messageTimeout(this);
             }
         }
     }
