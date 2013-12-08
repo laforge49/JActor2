@@ -13,8 +13,8 @@ public class Recovery {
         return 3000;
     }
 
-    public void messageTimeout(ReactorBase _reactor) {
-        _reactor.getFacility().getPlant().forceExit();
+    public void messageTimeout(ReactorBase _reactor) throws Exception {
+        _reactor.getFacility().close();
     }
 
     public long getThreadInterruptMillis(final Reactor _reactor) {

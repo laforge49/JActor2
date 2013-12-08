@@ -456,7 +456,7 @@ public class Facility extends CloserBase {
         };
     }
 
-    public void facilityPoll() {
+    public void facilityPoll() throws Exception {
                 Iterator<Closeable> it = getCloseableSet().iterator();
                 while (it.hasNext()) {
                     Closeable closeable = it.next();

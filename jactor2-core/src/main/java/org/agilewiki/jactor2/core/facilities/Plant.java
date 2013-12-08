@@ -140,6 +140,7 @@ public class Plant extends Facility {
     private Runnable plantPoll() {
         return new Runnable() {
             public void run() {
+                try {
                 Iterator<Closeable> it = getCloseableSet().iterator();
                 while (it.hasNext()) {
                     Closeable closeable = it.next();
@@ -149,6 +150,9 @@ public class Plant extends Facility {
                     facility.facilityPoll();
                 }
                 facilityPoll();
+                } catch (Exception x) {
+                    x.printStackTrace();
+                }
             }
         };
     }
