@@ -6,11 +6,11 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
 public class Recovery {
 
     public long getReactorPollMillis() {
-        return 5000;
+        return 1000;
     }
 
     public long messageTimeoutMillis() {
-        return 60000;
+        return 3000;
     }
 
     public void messageTimeout(ReactorBase _reactor) {
