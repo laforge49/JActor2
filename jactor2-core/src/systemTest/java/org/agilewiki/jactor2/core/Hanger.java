@@ -9,11 +9,21 @@ class Hanger extends BladeBase {
         initialize(_reactor);
     }
 
-    SyncRequest<Void> hangSReq() {
+    SyncRequest<Void> looperSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
                 while (true) {}
+            }
+        };
+    }
+
+    SyncRequest<Void> sleeperSReq() {
+        return new SyncBladeRequest<Void>() {
+            @Override
+            protected Void processSyncRequest() throws Exception {
+                Thread.sleep(Long.MAX_VALUE);
+                return null;
             }
         };
     }
