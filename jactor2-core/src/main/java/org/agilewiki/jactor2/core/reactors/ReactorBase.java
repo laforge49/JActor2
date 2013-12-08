@@ -457,6 +457,11 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
     }
 
     public void reactorPoll() {
-        System.out.println("@");
+        long currentTimeMillis = scheduler.currentTimeMillis();
+        if (messageStartTimeMillis > 0) {
+            if (messageStartTimeMillis + recovery.messageTimeoutMillis() < currentTimeMillis) {
+
+            }
+        }
     }
 }

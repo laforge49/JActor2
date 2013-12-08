@@ -1,18 +1,27 @@
 package org.agilewiki.jactor2.core.util;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorBase;
 
 public class Recovery {
 
     public long getReactorPollMillis() {
-        return 15000;
+        return 5000;
+    }
+
+    public long messageTimeoutMillis() {
+        return 60000;
+    }
+
+    public void messageTimeout(ReactorBase _reactor) {
+        _reactor.getFacility().getPlant().forceExit();
     }
 
     public long getThreadInterruptMillis(final Reactor _reactor) {
         return 3000;
     }
 
-    public void hungThread(Reactor _reactor) {
+    public void hungThread(ReactorBase _reactor) {
         _reactor.getFacility().getPlant().forceExit();
     }
 }
