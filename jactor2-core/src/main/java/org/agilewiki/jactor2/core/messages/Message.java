@@ -43,6 +43,11 @@ public interface Message extends AutoCloseable {
 
     void close();
 
+    /**
+     * Returns true when the target reactor is not also the message source.
+     *
+     * @return True when the target reactor is not also the message source.
+     */
     boolean isForeign();
 
     boolean isSignal();

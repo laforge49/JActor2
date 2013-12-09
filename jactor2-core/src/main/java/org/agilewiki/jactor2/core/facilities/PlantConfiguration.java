@@ -52,8 +52,7 @@ public class PlantConfiguration {
     public Scheduler getScheduler() { return scheduler; }
 
     public void close() {
-        if (scheduler != null)
-            scheduler.close();
+        scheduler.close();
     }
 
     public ThreadFactory getThreadFactory() {
@@ -71,6 +70,4 @@ public class PlantConfiguration {
     public int getInitialBufferSize() {
         return DEFAULT_INITIAL_BUFFER_SIZE;
     }
-
-    public long currentTimeMillis() { return scheduler.currentTimeMillis(); }
 }

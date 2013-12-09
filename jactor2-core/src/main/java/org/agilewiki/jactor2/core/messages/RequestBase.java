@@ -53,12 +53,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected final ReactorBase targetReactor;
 
     /**
-     * True when the result is to be returned via a targetReactor with a facility
-     * that differs from the facility of the target targetReactor.
-     */
-    protected boolean foreign;
-
-    /**
      * The source reactor or pender that will receive the results.
      */
     protected MessageSource messageSource;
@@ -110,7 +104,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     @Override
     public boolean isForeign() {
-        return foreign;
+        return targetReactor != messageSource;
     }
 
     @Override
@@ -210,7 +204,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         } else {
             addDebugPending();
         }
-        foreign = source.getFacility() != targetReactor.getFacility();
         messageSource = source;
         oldMessage = source.getCurrentMessage();
         sourceExceptionHandler = source.getExceptionHandler();
@@ -239,7 +232,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (Plant.DEBUG) {
             addDebugPending();
         }
-        foreign = true;
         messageSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
         targetReactor.unbufferedAddMessage(this, false);
