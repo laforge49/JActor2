@@ -44,7 +44,7 @@
  *                  final Iterator&lt;PropertyChange&gt; it = readOnlyChanges.values().iterator();
  *                  while (it.hasNext()) {
  *                      final PropertyChange propertyChange = it.next();
- *                      if (propertyChange.name.startsWith("immutable.") && propertyChange.oldValue != null) {
+ *                      if (propertyChange.name.startsWith("immutable.") &amp;&amp; propertyChange.oldValue != null) {
  *                          throw new IllegalArgumentException("Immutable property can not be changed: " +
  *                              propertyChange.name);
  *                      }

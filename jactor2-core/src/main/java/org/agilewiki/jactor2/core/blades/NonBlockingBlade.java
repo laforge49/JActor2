@@ -3,8 +3,10 @@ package org.agilewiki.jactor2.core.blades;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**
+ * <p>
  * A blades which does not perform long computations nor otherwise block the thread.
  * </p>
+ * <p>
  * This is just a convenience class, as any blades which uses a non-blocking targetReactor
  * is a non-blocking blades.
  * </p>

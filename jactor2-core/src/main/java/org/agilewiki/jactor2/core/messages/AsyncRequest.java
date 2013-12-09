@@ -104,7 +104,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *     //Return a request to update the other blades and return its new state.
  *     AsyncRequest&lt;Integer&gt; indirectAReq(final int _newState) {
  *         return new AsyncBladeRequest&lt;Integer&gt;() {
- *             AsyncRequest<Integer> dis = this;
+ *             AsyncRequest&lt;Integer&gt; dis = this;
  *
  *             {@literal @}Override
  *             protected void processAsyncRequest() throws Exception {
@@ -193,10 +193,6 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         processAsyncRequest();
     }
 
-    /**
-     * @param _request The request to be processed.
-     * @param <RT>     The type of value returned.
-     */
     protected <RT> void send(final RequestBase<RT> _request,
             final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {

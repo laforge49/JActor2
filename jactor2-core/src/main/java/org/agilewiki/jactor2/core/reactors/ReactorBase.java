@@ -89,6 +89,8 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
 
     /**
      * Returns true, if this targetReactor is actively processing messages.
+     *
+     * @return True, if this targetReactor is actively processing messages.
      */
     public final boolean isRunning() {
         return running;
@@ -376,6 +378,8 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
 
     /**
      * Signals that a request has completed.
+     *
+     * @param _message    The request that has completed
      */
     public void requestEnd(final RequestBase _message) {
         if (_message.isForeign()) {

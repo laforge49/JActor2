@@ -20,6 +20,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 /**
+ * <p>
  * A blocking blade is used for printing.
  * </p>
  * <h3>Sample Usage:</h3>
@@ -166,12 +167,6 @@ public class Printer extends BlockingBlade {
         this(_reactor, _printStream, null);
     }
 
-    /**
-     * Create a Printer blades.
-     *
-     * @param _reactor     The reactor used by the blocking blade.
-     * @param _printStream Where to print the string.
-     */
     public Printer(final BlockingReactor _reactor,
             final PrintStream _printStream, final Locale _locale)
             throws Exception {

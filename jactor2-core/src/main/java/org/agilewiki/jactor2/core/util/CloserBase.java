@@ -39,6 +39,8 @@ abstract public class CloserBase extends CloseableBase implements Closer {
 
     /**
      * Returns the CloseableSet. Creates it if needed.
+     *
+     * @return The CloseableSet.
      */
     protected final Set<Closeable> getCloseableSet() {
         if (closeables == null) {

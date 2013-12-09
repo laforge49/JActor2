@@ -255,11 +255,6 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         }
     }
 
-    /**
-     * Assigns a response to the request.
-     *
-     * @param _response the response being returned
-     */
     protected void setResponse(final Object _response,
             final Reactor _activeReactor) {
         ((ReactorBase) _activeReactor).requestEnd(this);

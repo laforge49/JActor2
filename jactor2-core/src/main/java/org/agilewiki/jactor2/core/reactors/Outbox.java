@@ -31,11 +31,6 @@ public class Outbox implements AutoCloseable {
 
     protected final Reactor reactor;
 
-    /**
-     * Create an outbox.
-     *
-     * @param _initialBufferSize Initial size of each outbox per target Reactor.
-     */
     public Outbox(final Reactor _reactor, final int _initialBufferSize) {
         reactor = _reactor;
         facility = _reactor.getFacility();
