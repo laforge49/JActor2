@@ -21,21 +21,21 @@ You will need a few things to work with JActor2 core:
 <a href="https://code.google.com/p/guava-libraries/">Google guava</a>.
 </li>
 <li>
-The <a href="jactor2-core-0.5.0.jar">JActor2 core jar file</a>. And
+The <a href="jactor2-core-0.7.0.jar">JActor2 core jar file</a>. And
 </li>
 <li>
 A test script.
 For windows, you can use <a href="test.bat">test.bat</a>:
 <pre>
 del *.class
-javac -classpath jactor2-core-0.6.0.jar;slf4j-api-1.7.5.jar *.java
-java -classpath jactor2-core-0.6.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;pcollections-2.1.2.jar;guava-15.0.jar;. %1
+javac -classpath jactor2-core-0.7.0.jar;slf4j-api-1.7.5.jar *.java
+java -classpath jactor2-core-0.7.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;pcollections-2.1.2.jar;guava-15.0.jar;. %1
 </pre>
 Othrwise, you can likely use <a href="test.sh">test.sh</a>:
 <pre>
 rm -fr *.class
-javac -cp jactor2-core-0.6.0.jar:slf4j-api-1.7.5.jar *.java
-java -cp jactor2-core-0.6.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:pcollections-2.1.2.jar:guava-15.0.jar:. $1
+javac -cp jactor2-core-0.7.0.jar:slf4j-api-1.7.5.jar *.java
+java -cp jactor2-core-0.7.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:pcollections-2.1.2.jar:guava-15.0.jar:. $1
 </pre>
 </li>
 </ull>
@@ -65,13 +65,12 @@ One fairly common bug is when no response is passed back for a request. This can
 application to hang unexpectedly. Difficult to debug without some means of finding the pending requests.
 Fortunately, the presence of this type of bug is quickly discovered in unit testing.
 </p>
-<h2>Thread Interrupt Timer</h2>
+<h2>Configuration</h2>
 <p>
-When closing JActor or a part of JActor, the messages being processed are closed, 
-the threads processing those messages are interrupted and a timer is set.
-And if the timer expires before the thread either completes the processing of the current message or responds
-to the interrupt, then the thread is considered hung and JActor is forced to exit--though only after everything 
-else has been properly closed.
+When no other configuration is specified, the 
+PlantConfiguration
+<a href="../../api/org/agilewiki/jactor2/core/facilities/PlantConfiguration.html">PlantConfiguration</a>
+class is used.
 </p>
 <p>
 This timer is set to a default value of 1 second, though it is easily customized for any part of JActor.
