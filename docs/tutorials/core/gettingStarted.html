@@ -73,19 +73,13 @@ PlantConfiguration
 class is used.
 </p>
 <p>
-This timer is set to a default value of 1 second, though it is easily customized for any part of JActor.
-The default can also be changed by assigning a value, in milliseconds, to the system property 
-jactor.threadInterruptMilliseconds.
-For example, you can set the timer to 1 minute by adding this parameter when running JActor:
+To change the configuration, you first subclass PlantConfiguration.
+You can then create an instance of the subclass and pass it as a parameter to the
+<a href="../../api/org/agilewiki/jactor2/core/facilities/Plant.html">Plant</a>
+constructor. Or you can set a system property to the name of the subclass when running JActor:
 </p>
 <pre>
--Djactor.threadInterruptMilliseconds=60000
+-Djactor.configurationClass=SubclassOfPlantConfiguration
 </pre>
-<p>
-If, for example, you have a tight loop that runs for a second or more and 
-which does not perform any messaging nor check to see if the current message is closed,
-then you should either change the timer for the part of JActor that is executing the message or
-change the default.
-</p>
 </body>
 </html>
