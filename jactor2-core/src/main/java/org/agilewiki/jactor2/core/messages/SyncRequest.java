@@ -81,6 +81,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
         sourceExceptionHandler = messageProcessor.getExceptionHandler();
         messageProcessor.setCurrentMessage(this);
         messageProcessor.setExceptionHandler(null);
+        messageProcessor.messageStartTimeMillis = messageProcessor.scheduler.currentTimeMillis();
         try {
             return processSyncRequest();
         } catch (final Exception e) {
@@ -91,6 +92,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
             }
             return currentExceptionHandler.processException(e);
         } finally {
+            messageProcessor.messageStartTimeMillis = messageProcessor.scheduler.currentTimeMillis();
             messageProcessor.setCurrentMessage(oldMessage);
             messageProcessor.setExceptionHandler(sourceExceptionHandler);
         }

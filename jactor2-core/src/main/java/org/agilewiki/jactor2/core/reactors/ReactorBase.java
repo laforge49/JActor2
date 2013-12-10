@@ -40,7 +40,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
     protected final Facility facility;
 
     /**
-     * The inbox, implemented as a doLocal queue and a concurrent queue.
+     * The inbox, implemented as a local queue and a concurrent queue.
      */
     protected final Inbox inbox;
 
@@ -73,7 +73,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
      *
      * @param _facility              The facility of this targetReactor.
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
-     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
+     * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
     public ReactorBase(final Facility _facility, final int _initialBufferSize,
                        final int _initialLocalQueueSize) throws Exception {
@@ -186,7 +186,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
     /**
      * Create the appropriate type of inbox.
      *
-     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
+     * @param _initialLocalQueueSize The initial number of slots in the local queue.
      * @return An inbox.
      */
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
