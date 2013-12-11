@@ -1,10 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.facilities.PoolThread;
-import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
+import org.agilewiki.jactor2.core.facilities.*;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
@@ -354,8 +351,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             targetReactor.requestBegin();
             try {
                 processRequestMessage();
+            } catch (MigrationException _me) {
+                throw _me;
             } catch (InterruptedException ex) {
-                System.out.println("got interrupt");
                 Thread.currentThread().interrupt();
             } catch (final Exception e) {
                 processException(targetReactor, e);
