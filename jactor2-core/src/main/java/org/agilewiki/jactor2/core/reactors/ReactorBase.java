@@ -148,27 +148,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
             if (currentMessage == null)
                 log.error("hung thread facility=%s", getFacility().name);
             else {
-                MessageSource messageSource = currentMessage.getMessageSource();
-                if (messageSource == null) {
-                    String[] args = {
-                            getFacility().name,
-                            currentMessage.toString(),
-                            "" + currentMessage.isClosed(),
-                            "" + currentMessage.isSignal(),
-                            currentMessage.getTargetReactor().toString()
-                    };
-                    log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource=null\ntargetReactor={}", args);
-                } else {
-                    String[] args = {
-                            getFacility().name,
-                            currentMessage.getClass().getName(),
-                            "" + currentMessage.isClosed(),
-                            "" + currentMessage.isSignal(),
-                            messageSource.getClass().getName(),
-                            currentMessage.getTargetReactor().getClass().getName()
-                    };
-                    log.error("hung thread\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource={}\ntargetReactor={}", args);
-                }
+                currentMessage.logMessage("hung thread");
             }
         } catch (Exception ex) {
             ex.printStackTrace();

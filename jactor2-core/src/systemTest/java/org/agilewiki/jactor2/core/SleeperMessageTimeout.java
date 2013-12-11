@@ -9,8 +9,7 @@ public class SleeperMessageTimeout {
         try {
             NonBlockingReactor reactor = new NonBlockingReactor(plant);
             Hanger hanger = new Hanger(reactor);
-            hanger.sleeperSReq().signal();
-            Thread.sleep(Long.MAX_VALUE);
+            hanger.sleeperSReq().call();
         } finally {
             System.out.println("closing");
             plant.close();

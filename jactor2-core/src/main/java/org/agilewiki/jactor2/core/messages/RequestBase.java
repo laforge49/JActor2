@@ -9,6 +9,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
+import org.slf4j.Logger;
 
 import java.util.Collections;
 import java.util.Map;
@@ -456,6 +457,31 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected <RT> RT local(final SyncRequest<RT> _syncRequest)
             throws Exception {
         return SyncRequest.doLocal(targetReactor, _syncRequest);
+    }
+
+    @Override
+    public void logMessage(String _reason) {
+        Logger log = targetReactor.getLogger();
+        if (messageSource == null) {
+            String[] args = {
+                    targetReactor.getFacility().name,
+                    toString(),
+                    "" + isClosed(),
+                    "" + isSignal(),
+                    getTargetReactor().toString()
+            };
+            log.error(_reason+"\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource=null\ntargetReactor={}", args);
+        } else {
+            String[] args = {
+                    targetReactor.getFacility().name,
+                    getClass().getName(),
+                    "" + isClosed(),
+                    "" + isSignal(),
+                    messageSource.getClass().getName(),
+                    getTargetReactor().getClass().getName()
+            };
+            log.error(_reason+"\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource={}\ntargetReactor={}", args);
+        }
     }
 
     /**

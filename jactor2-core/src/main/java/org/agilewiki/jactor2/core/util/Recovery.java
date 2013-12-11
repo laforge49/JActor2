@@ -14,7 +14,7 @@ public class Recovery {
     }
 
     public void messageTimeout(ReactorBase _reactor) throws Exception {
-        _reactor.getFacility().close();
+        _reactor.close();
     }
 
     public long getThreadInterruptMillis(final Reactor _reactor) {
