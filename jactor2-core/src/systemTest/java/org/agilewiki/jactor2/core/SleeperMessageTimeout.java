@@ -11,6 +11,7 @@ public class SleeperMessageTimeout {
             Hanger hanger = new Hanger(reactor);
             hanger.sleeperSReq().call();
         } finally {
+            Thread.sleep(100);
             System.out.println("closing");
             plant.close();
             System.out.println("closed");

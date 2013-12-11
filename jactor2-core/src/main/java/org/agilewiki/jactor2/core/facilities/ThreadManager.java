@@ -76,6 +76,7 @@ public final class ThreadManager {
                                     try {
                                         reactor.run();
                                     } catch (final MigrationException me) {
+                                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                         final boolean hasWork = reactor
                                                 .hasWork();
                                         threadReference.set(null);

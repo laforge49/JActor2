@@ -324,7 +324,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     @Override
     public boolean isClosed() {
-        return !unClosed; //todo fix this
+        return !unClosed;
     }
 
     @Override
@@ -354,6 +354,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             targetReactor.requestBegin();
             try {
                 processRequestMessage();
+            } catch (InterruptedException ex) {
+                System.out.println("got interrupt");
+                Thread.currentThread().interrupt();
             } catch (final Exception e) {
                 processException(targetReactor, e);
             }

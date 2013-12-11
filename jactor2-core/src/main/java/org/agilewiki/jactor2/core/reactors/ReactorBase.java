@@ -27,7 +27,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
 
     public Scheduler scheduler;
 
-    public long messageStartTimeMillis;
+    public volatile long messageStartTimeMillis;
 
     /**
      * Reactor logger.
@@ -447,8 +447,9 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
 
     public void reactorPoll() throws Exception {
         long currentTimeMillis = scheduler.currentTimeMillis();
-        if (messageStartTimeMillis > 0) {
-            if (messageStartTimeMillis + recovery.messageTimeoutMillis() < currentTimeMillis) {
+        long mst = messageStartTimeMillis;
+        if (mst > 0) {
+            if (mst + recovery.messageTimeoutMillis() < currentTimeMillis) {
                 recovery.messageTimeout(this);
             }
         }
