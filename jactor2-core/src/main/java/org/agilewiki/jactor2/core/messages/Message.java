@@ -55,6 +55,4 @@ public interface Message extends AutoCloseable {
     Reactor getTargetReactor();
 
     MessageSource getMessageSource();
-
-    void logMessage(String _reason);
 }

@@ -148,7 +148,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
             if (currentMessage == null)
                 log.error("hung thread facility=%s", getFacility().name);
             else {
-                currentMessage.logMessage("hung thread");
+                log.error("hung thread\n" + currentMessage.toString());
             }
         } catch (Exception ex) {
             ex.printStackTrace();

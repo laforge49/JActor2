@@ -460,28 +460,15 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     @Override
-    public void logMessage(String _reason) {
-        Logger log = targetReactor.getLogger();
-        if (messageSource == null) {
-            String[] args = {
-                    targetReactor.getFacility().name,
-                    toString(),
-                    "" + isClosed(),
-                    "" + isSignal(),
-                    getTargetReactor().toString()
-            };
-            log.error(_reason+"\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource=null\ntargetReactor={}", args);
-        } else {
-            String[] args = {
-                    targetReactor.getFacility().name,
-                    getClass().getName(),
-                    "" + isClosed(),
-                    "" + isSignal(),
-                    messageSource.getClass().getName(),
-                    getTargetReactor().getClass().getName()
-            };
-            log.error(_reason+"\nfacility={}\nmessage={}\nisClosed={}\nisSignal={}\nsource={}\ntargetReactor={}", args);
-        }
+    public String toString() {
+        String old = oldMessage == null ? "" : ("\n" + oldMessage.toString());
+            return "facility=" +targetReactor.getFacility().name +
+                    " message =" + getClass().getName() +
+                    " isClosed=" + isClosed() +
+                    " isSignal=" + isSignal() +
+                    " source=" + (messageSource == null ? "null" : messageSource.getClass().getName()) +
+                    " target=" + getTargetReactor().getClass().getName() +
+                    old;
     }
 
     /**
