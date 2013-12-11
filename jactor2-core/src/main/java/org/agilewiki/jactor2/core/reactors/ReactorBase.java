@@ -252,7 +252,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
     public void unbufferedAddMessage(final Message _message,
                                      final boolean _local) throws Exception {
         if (isClosing()) {
-            if (_message.isClosed()) {
+            if (!_message.isClosed()) {
                 try {
                     _message.close();
                 } catch (final Throwable t) {
@@ -275,7 +275,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
             final Iterator<Message> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final Message message = itm.next();
-                if (message.isClosed()) {
+                if (!message.isClosed()) {
                     try {
                         message.close();
                     } catch (final Throwable t) {
@@ -311,7 +311,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
      */
     protected void processMessage(final Message _message) {
         _message.eval();
-        if (_message.isClosed() && _message.isForeign() && !startClosing && !_message.isSignal()) {
+        if (!_message.isClosed() && _message.isForeign() && !startClosing && !_message.isSignal()) {
             try {
                 addMessage(_message);
             } catch (ServiceClosedException e) {
@@ -388,6 +388,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         try {
             while (true) {
                 if (Thread.interrupted()) {
+                    System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     throw new InterruptedException();
                 }
                 if (timeoutSemaphore != null) {
@@ -401,6 +402,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                         }
                         notBusy();
                     } catch (final InterruptedException ie) {
+                        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                         throw ie;
                     } catch (final MigrationException me) {
                         throw me;
@@ -420,8 +422,11 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                 messageStartTimeMillis = 0;
             }
         } catch (final InterruptedException ie) {
+            System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
             if (timeoutSemaphore == null)
                 Thread.currentThread().interrupt();
+            else
+                log.warn("message running too long" + currentMessage.toString());
         } finally {
             messageStartTimeMillis = 0;
             running = false;
