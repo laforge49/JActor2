@@ -9,7 +9,6 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
-import org.slf4j.Logger;
 
 import java.util.Collections;
 import java.util.Map;
@@ -31,8 +30,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * @param <RESPONSE_TYPE>    The type of value returned.
      */
     public static <RESPONSE_TYPE> void doSend(final Reactor _source,
-            final RequestBase<RESPONSE_TYPE> _request,
-            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+                                              final RequestBase<RESPONSE_TYPE> _request,
+                                              final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         _request.doSend(_source, _responseProcessor);
     }
@@ -167,7 +166,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *                           that originally invoked this method. If null, then no response is returned.
      */
     private void doSend(final Reactor _source,
-            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         final ReactorBase source = (ReactorBase) _source;
         if (Plant.DEBUG) {
@@ -257,7 +256,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     protected void setResponse(final Object _response,
-            final Reactor _activeReactor) {
+                               final Reactor _activeReactor) {
         ((ReactorBase) _activeReactor).requestEnd(this);
         closed = false;
         response = _response;
@@ -389,7 +388,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     @Override
     public void processException(final Reactor _activeReactor,
-            final Exception _e) {
+                                 final Exception _e) {
         final ReactorBase activeMessageProcessor = (ReactorBase) _activeReactor;
         final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
                 .getExceptionHandler();
@@ -437,7 +436,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * @param _exceptionHandler The exception handler to be used now.
      *                          May be null if the default exception handler is to be used.
      * @return The exception handler that was previously in effect, or null if the
-     *         default exception handler was in effect.
+     * default exception handler was in effect.
      */
     public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(
             final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
@@ -461,14 +460,13 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     @Override
     public String toString() {
-        String old = oldMessage == null ? "" : ("\n" + oldMessage.toString());
-            return "facility=" +targetReactor.getFacility().name +
-                    " message =" + getClass().getName() +
-                    " isClosed=" + isClosed() +
-                    " isSignal=" + isSignal() +
-                    " source=" + (messageSource == null ? "null" : messageSource.getClass().getName()) +
-                    " target=" + getTargetReactor().getClass().getName() +
-                    old;
+        return "facility=" + targetReactor.getFacility().name +
+                ", message=" + getClass().getName() +
+                ", isClosed=" + isClosed() +
+                ", isSignal=" + isSignal() +
+                ", source=" + (messageSource == null ? "null" : messageSource.getClass().getName()) +
+                ", target=" + getTargetReactor().getClass().getName() +
+                (oldMessage == null ? "" : "\n" + oldMessage.toString());
     }
 
     /**
@@ -507,7 +505,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
         @Override
         public void incomingResponse(final Message _message,
-                final Reactor _responseSource) {
+                                     final Reactor _responseSource) {
             result = ((RequestBase) _message).response;
             done.release();
         }
