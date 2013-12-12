@@ -137,13 +137,17 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
             return;
         timeoutSemaphore = plant.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
-        if (currentMessage != null)
-            currentMessage.close();
         if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
             return;
-        boolean timeout = timeoutSemaphore.acquire();
-        if (!timeout || !isRunning() || plant.isForcedExit() || plant.isShuttingDown())
+        Thread thread = (Thread) getThreadReference().get();
+        if (thread == null)
             return;
+        thread.interrupt();
+        boolean timeout = timeoutSemaphore.acquire();
+        currentMessage.close();
+        if (!timeout || !isRunning() || plant.isForcedExit() || plant.isShuttingDown()) {
+            return;
+        }
         try {
             if (currentMessage == null)
                 log.error("hung thread facility=%s", getFacility().name);
@@ -388,7 +392,6 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         try {
             while (true) {
                 if (Thread.interrupted()) {
-                    System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     throw new InterruptedException();
                 }
                 if (timeoutSemaphore != null) {
@@ -402,7 +405,6 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                         }
                         notBusy();
                     } catch (final InterruptedException ie) {
-                        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                         throw ie;
                     } catch (final MigrationException me) {
                         throw me;
@@ -422,11 +424,14 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                 messageStartTimeMillis = 0;
             }
         } catch (final InterruptedException ie) {
-            System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
             if (timeoutSemaphore == null)
                 Thread.currentThread().interrupt();
+            else if (!isClosing())
+                log.warn("message running too long " + currentMessage.toString());
             else
-                log.warn("message running too long" + currentMessage.toString());
+                log.warn("message interrupted on close " + currentMessage.toString());
+        } catch (Exception ex) {
+            throw ex;
         } finally {
             messageStartTimeMillis = 0;
             running = false;

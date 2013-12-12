@@ -57,6 +57,8 @@ public class Outbox implements AutoCloseable {
      * @return True if the message was successfully buffered.
      */
     public boolean buffer(final Message _message, final Reactor _target) {
+        if (_target.isClosing())
+            return false;
         ArrayDeque<Message> buffer = null;
         if (sendBuffer == null) {
             sendBuffer = new IdentityHashMap<ReactorBase, ArrayDeque<Message>>();

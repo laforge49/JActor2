@@ -10,11 +10,9 @@ public class SleeperMessageTimeout {
             NonBlockingReactor reactor = new NonBlockingReactor(plant);
             Hanger hanger = new Hanger(reactor);
             hanger.sleeperSReq().call();
+            System.out.println("never gets here");
         } finally {
-            Thread.sleep(100);
-            System.out.println("closing");
             plant.close();
-            System.out.println("closed");
         }
     }
 }

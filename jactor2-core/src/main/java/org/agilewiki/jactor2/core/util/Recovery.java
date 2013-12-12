@@ -10,15 +10,16 @@ public class Recovery {
     }
 
     public long messageTimeoutMillis() {
-        return 30000;
+        return 3000;
     }
 
     public void messageTimeout(ReactorBase _reactor) throws Exception {
+        _reactor.getLog().error("message timeout -> reactor close");
         _reactor.close();
     }
 
     public long getThreadInterruptMillis(final Reactor _reactor) {
-        return 3000;
+        return 1000;
     }
 
     public void hungThread(ReactorBase _reactor) {

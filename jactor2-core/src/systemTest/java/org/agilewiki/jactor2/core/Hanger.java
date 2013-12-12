@@ -22,7 +22,11 @@ class Hanger extends BladeBase {
         return new SyncBladeRequest<Void>() {
             @Override
             protected Void processSyncRequest() throws Exception {
-                Thread.sleep(Long.MAX_VALUE);
+                try {
+                    Thread.sleep(Long.MAX_VALUE);
+                } catch (InterruptedException ie) {
+                    throw ie;
+                }
                 return null;
             }
         };

@@ -12,9 +12,7 @@ public class LooperMessageTimeout {
             hanger.looperSReq().signal();
             Thread.sleep(Long.MAX_VALUE);
         } finally {
-            System.out.println("closing");
             plant.close();
-            System.out.println("closed");
         }
     }
 }
