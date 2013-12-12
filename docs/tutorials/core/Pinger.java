@@ -22,6 +22,7 @@ public class Pinger extends BladeBase {
 
                 @Override
                 public void processAsyncResponse(final Long _response) throws Exception {
+                    i++;
                     iterate();
                 }
             };
@@ -36,7 +37,6 @@ public class Pinger extends BladeBase {
                     dis.processAsyncResponse(null);
                     return;
                 }
-                i++;
                 SyncRequest<Long> ping = ponger.pingSReq();
                 send(ping, pingResponseProcessor);
             }

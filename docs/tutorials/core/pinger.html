@@ -33,6 +33,7 @@ public class Pinger extends BladeBase {
 
                 @Override
                 public void processAsyncResponse(final Long _response) throws Exception {
+                    i++;
                     iterate();
                 }
             };
@@ -47,7 +48,6 @@ public class Pinger extends BladeBase {
                     dis.processAsyncResponse(null);
                     return;
                 }
-                i++;
                 SyncRequest&lt;Long&gt; ping = ponger.pingSReq();
                 send(ping, pingResponseProcessor);
             }
@@ -142,9 +142,9 @@ In this case the send is, as you would expect, much slower than when the two bla
 </p>
 <pre>
 Facility Send Timings
-Test duration in nanoseconds: 7,850,680,573
+Test duration in nanoseconds: 5,132,493,388
 Number of exchanges: 10,000,000
-Exchanges per second: 1,273,774
+Exchanges per second: 1,948,370
 </pre>
 <p>
 Even slow, a send between two blades with different reactors but part of the same facility is
@@ -195,9 +195,9 @@ In this case the send is about the same as a send between reactors under the sam
 </p>
 <pre>
 JVM Send Timings
-Test duration in nanoseconds: 935,386,723
+Test duration in nanoseconds: 612,907,701
 Number of exchanges: 1,000,000
-Exchanges per second: 1,069,076
+Exchanges per second: 1,631,567
 </pre>
 </body>
 </html>
