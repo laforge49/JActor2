@@ -209,7 +209,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
     protected <RT> void send(final RequestBase<RT> _request,
                              final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
-        pendingResponseCount += 1;
+        if (_responseProcessor != SignalResponseProcessor.SINGLETON)
+            pendingResponseCount += 1;
         RequestBase.doSend(targetReactor, _request, _responseProcessor);
     }
 
