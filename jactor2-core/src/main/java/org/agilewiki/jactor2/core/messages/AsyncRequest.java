@@ -184,8 +184,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
     private void pendingCheck() throws Exception {
         if (unClosed && pendingResponseCount == 0 && !noHungRequestCheck) {
             targetReactor.getLog().error("hung request:\n" + toString());
-            targetReactor.recovery.hungResponse(this);
             close();
+            targetReactor.recovery.hungResponse(this);
         }
     }
 
