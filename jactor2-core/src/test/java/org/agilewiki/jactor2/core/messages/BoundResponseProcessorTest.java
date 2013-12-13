@@ -35,6 +35,7 @@ class Driver extends BladeBase {
 
             @Override
             protected void processAsyncRequest() throws Exception {
+                setNoHungRequestCheck();
                 final BoundResponseProcessor<String> boundResponseProcessor = new BoundResponseProcessor<String>(
                         Driver.this, dis);
                 final Application application = new Application(

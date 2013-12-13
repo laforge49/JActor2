@@ -27,8 +27,6 @@ public class BladeB {
 
     public AsyncRequest<Void> throwRequest(final BladeA bladeA) {
         return new AsyncRequest<Void>(reactor) {
-            AsyncRequest<Void> dis = this;
-
             @Override
             protected void processAsyncRequest() throws Exception {
                 send(bladeA.throwRequest, this);

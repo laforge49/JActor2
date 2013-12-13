@@ -80,6 +80,7 @@ public class RequestBus<CONTENT> extends BladeBase {
 
             @Override
             protected void processAsyncRequest() throws Exception {
+                setNoHungRequestCheck();
                 count = subscriptions.size();
                 final Iterator<Subscription<CONTENT>> it = subscriptions
                         .iterator();

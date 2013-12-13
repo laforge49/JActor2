@@ -371,7 +371,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     /**
      * Process a response.
      */
-    private void processResponseMessage() {
+    protected void processResponseMessage() {
         final ReactorBase sourceMessageProcessor = (ReactorBase) messageSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);

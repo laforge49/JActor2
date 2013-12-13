@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorBase;
 
 /**
  * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between blades.
@@ -138,6 +139,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         RequestBase<RESPONSE_TYPE> implements
         AsyncResponseProcessor<RESPONSE_TYPE> {
 
+    private int pendingResponseCount;
+
+    private boolean noHungRequestCheck;
+
     /**
      * Create an AsyncRequest and bind it to its target targetReactor.
      *
@@ -146,6 +151,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
      */
     public AsyncRequest(final Reactor _targetReactor) {
         super(_targetReactor);
+    }
+
+    protected void setNoHungRequestCheck() {
+        noHungRequestCheck = true;
     }
 
     /**
@@ -161,22 +170,6 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
     }
 
     /**
-     * The processAsyncResponse method accepts the response of a request.
-     * <p>
-     * This method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (targetReactor) that passed the
-     * AsyncRequest and AsyncResponseProcessor objects.
-     * </p>
-     *
-     * @param _response The response to a request.
-     * @return True when this is the first response.
-     */
-    public boolean processCheckAsyncResponse(final RESPONSE_TYPE _response)
-            throws Exception {
-        return processObjectResponse(_response);
-    }
-
-    /**
      * Returns an exception as a response instead of throwing it.
      * But regardless of how a response is returned, if the response is an exception it
      * is passed to the exception handler of the blades that did the call or doSend on the request.
@@ -188,20 +181,42 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         processObjectResponse(_response);
     }
 
+    private void pendingCheck() throws Exception {
+        if (unClosed && pendingResponseCount == 0 && !noHungRequestCheck) {
+            targetReactor.getLog().error("hung request:\n" + toString());
+            targetReactor.recovery.hungResponse(this);
+            close();
+        }
+    }
+
     @Override
     protected void processRequestMessage() throws Exception {
         processAsyncRequest();
+        pendingCheck();
+    }
+
+    @Override
+    protected void processResponseMessage() {
+        ((AsyncRequest) oldMessage).pendingResponseCount -= 1;
+        super.processResponseMessage();
+        try {
+            ((AsyncRequest) oldMessage).pendingCheck();
+        } catch (Exception e) {
+            oldMessage.processException((ReactorBase) messageSource, e);
+        }
     }
 
     protected <RT> void send(final RequestBase<RT> _request,
-            final AsyncResponseProcessor<RT> _responseProcessor)
+                             final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
+        pendingResponseCount += 1;
         RequestBase.doSend(targetReactor, _request, _responseProcessor);
     }
 
     protected <RT, RT2> void send(final RequestBase<RT> _request,
-            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
+                                  final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
             throws Exception {
+        pendingResponseCount += 1;
         RequestBase.doSend(targetReactor, _request,
                 new AsyncResponseProcessor<RT>() {
                     @Override
