@@ -85,7 +85,6 @@ public class BytesImpl extends VLenScalar<byte[], byte[]> implements Bytes {
      *
      * @param v The MakeValue request.
      * @return True if a new value is created.
-     * @throws Exception Any uncaught exception raised.
      */
     @Override
     public Boolean makeValue(final byte[] v) {

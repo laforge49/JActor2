@@ -126,7 +126,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     /**
-     * Locate the entry with the first element >= a key, or the last entry.
+     * Locate the entry with the first element &gt;= a key, or the last entry.
      *
      * @param key The key which matches to the entry's first element, or size.
      * @return The index, or size.
@@ -141,7 +141,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     /**
-     * Locate the entry with the first element >= a key.
+     * Locate the entry with the first element &gt;= a key.
      *
      * @param key The key which matches to the entry's first element.
      * @return The index or -1.
@@ -284,7 +284,7 @@ abstract public class SMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     /**
-     * Returns the JID value with the smallest key >= the given key.
+     * Returns the JID value with the smallest key &gt;= the given key.
      *
      * @param key The key.
      * @return The matching jid, or null.

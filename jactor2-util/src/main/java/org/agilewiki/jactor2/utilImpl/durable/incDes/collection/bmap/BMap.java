@@ -671,7 +671,7 @@ abstract public class BMap<KEY_TYPE extends Comparable<KEY_TYPE>, VALUE_TYPE ext
     }
 
     /**
-     * Returns the JID value with the smallest key >= the given key.
+     * Returns the JID value with the smallest key &gt;= the given key.
      *
      * @param key The key.
      * @return The matching jid, or null.

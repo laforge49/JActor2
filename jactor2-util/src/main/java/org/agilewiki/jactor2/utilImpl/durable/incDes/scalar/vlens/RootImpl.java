@@ -15,10 +15,12 @@ import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
 import org.agilewiki.jactor2.utilImpl.durable.incDes.IncDesImpl;
 
 /**
+ * <p>
  * The root IncDesImpl actor of a tree of IncDesImpl actors.
- * <p/>
+ * </p><p>
  * The serialized form of RootImpl does NOT contain its length.
  * The load method simply grabs all the remaining data.
+ * </p>
  */
 public class RootImpl extends BoxImpl implements Root {
 
