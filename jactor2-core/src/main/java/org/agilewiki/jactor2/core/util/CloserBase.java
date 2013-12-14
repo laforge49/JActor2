@@ -86,9 +86,11 @@ abstract public class CloserBase extends CloseableBase implements Closer {
                 }
             }
         }
-        if (closeables.isEmpty())
-            close2();
-        else
-            throw new IllegalStateException();
+        it = closeables.iterator();
+        while (it.hasNext()) {
+            Closeable closeable = it.next();
+            getLog().warn("still has closable: "+this+"\n"+closeable);
+        }
+        close2();
     }
 }
