@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
 import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -20,9 +21,9 @@ public class PubSubSample {
             }.call();
             new SubscribeAReq<String>(requestBus, reactor, new EqualsFilter<String>("ribit")) {
                 @Override
-                protected void processContent(String _content, AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+                protected void processContent(String _content, AsyncRequest<Void> _asyncRequest) throws Exception {
                     System.out.println("*** Ribit! ***");
-                    _asyncResponseProcessor.processAsyncResponse(null);
+                    _asyncRequest.processAsyncResponse(null);
                 }
             }.call();
             System.out.println("\nPublishing null.");

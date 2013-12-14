@@ -51,10 +51,10 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
                 requestBus, (CommonReactor) subscriberReactor, filter) {
             @Override
             protected void processContent(final CONTENT _content,
-                                          final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                                          final AsyncRequest<Void> _asyncRequest)
                     throws Exception {
                 SubscribeAReq.this.processContent(_content,
-                        _asyncResponseProcessor);
+                        _asyncRequest);
             }
         };
         requestBus.subscriptions.add(subscription);
@@ -76,12 +76,12 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
      * Process the content of interest using the reactor of the subscriber.
      *
      * @param _content                The received content.
-     * @param _asyncResponseProcessor Used to indicate when processing is complete.
+     * @param _asyncRequest Used to indicate when processing is complete.
      */
     protected void processContent(final CONTENT _content,
-                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                                  final AsyncRequest<Void> _asyncRequest)
             throws Exception {
         processContent(_content);
-        _asyncResponseProcessor.processAsyncResponse(null);
+        _asyncRequest.processAsyncResponse(null);
     }
 }

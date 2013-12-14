@@ -62,9 +62,9 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
      * Process the content of interest using the reactor of the subscriber.
      *
      * @param _content                The received content.
-     * @param _asyncResponseProcessor Used to indicate when processing is complete.
+     * @param _asyncRequest     The request context.
      */
     abstract protected void processContent(CONTENT _content,
-                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                                           AsyncRequest<Void> _asyncRequest)
             throws Exception;
 }

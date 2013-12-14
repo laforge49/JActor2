@@ -157,6 +157,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         noHungRequestCheck = true;
     }
 
+    public int getPendingResponseCount() {
+        return pendingResponseCount;
+    }
+
     /**
      * The processAsyncRequest method will be invoked by the target Reactor on its own thread
      * when the AsyncRequest is dequeued from the target inbox for processing.
@@ -206,7 +210,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         }
     }
 
-    protected <RT> void send(final RequestBase<RT> _request,
+    public <RT> void send(final RequestBase<RT> _request,
                              final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
         if (_responseProcessor != SignalResponseProcessor.SINGLETON)
@@ -214,7 +218,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         RequestBase.doSend(targetReactor, _request, _responseProcessor);
     }
 
-    protected <RT, RT2> void send(final RequestBase<RT> _request,
+    public <RT, RT2> void send(final RequestBase<RT> _request,
                                   final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
             throws Exception {
         pendingResponseCount += 1;

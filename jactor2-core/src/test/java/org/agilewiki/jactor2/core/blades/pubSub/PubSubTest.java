@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.blades.pubSub;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -22,10 +23,10 @@ public class PubSubTest extends TestCase {
                 @Override
                 protected void processContent(
                         final Void _content,
-                        final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        final AsyncRequest<Void> _asyncRequest)
                         throws Exception {
                     System.out.println("ping");
-                    _asyncResponseProcessor.processAsyncResponse(null);
+                    _asyncRequest.processAsyncResponse(null);
                 }
             }.call();
             requestBus.signalsContentSReq(null).call();
@@ -52,11 +53,11 @@ public class PubSubTest extends TestCase {
                 @Override
                 protected void processContent(
                         final Void _content,
-                        final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        final AsyncRequest<Void> _asyncRequest)
                         throws Exception {
                     System.out.println("ping");
                     counter.incrementAndGet();
-                    _asyncResponseProcessor.processAsyncResponse(null);
+                    _asyncRequest.processAsyncResponse(null);
                 }
             }.call();
             requestBus.sendsContentAReq(null).call();

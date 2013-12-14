@@ -467,6 +467,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 ", isSignal=" + isSignal() +
                 ", source=" + (messageSource == null ? "null" : messageSource.getClass().getName()) +
                 ", target=" + getTargetReactor().getClass().getName() +
+                ", this=" + super.toString() +
                 (oldMessage == null ? "" : "\n" + oldMessage.toString());
     }
 
