@@ -67,28 +67,36 @@ class Subscriber extends BladeBase {
             AsyncResponseProcessor dis = this;
 
             protected void processAsyncRequest() throws Exception {
+            
                 new SubscribeAReq<Object>(requestBus,
                         (NonBlockingReactor) getReactor(),
                         new IsInstanceFilter<Object>(Integer.class)) {
                     @Override
-                    protected void processContent(Object _content, AsyncResponseProcessor<Void> arp)
+                    protected void processContent(Object _content, AsyncRequest<Void> arp)
                             throws Exception {
                         int oldState = state;
                         int inc = (Integer) _content;
                         state = state + inc;
-                        send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp);
+                        arp.send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), 
+                            new AsyncResponseProcessor<Void>() {
+                                @Override
+                                public void processAsyncResponse(Void rsp) throws Exception {
+                                    arp.processAsyncResponse(null);
+                                }
+                            });
                     }
                 }.signal();
-
+                
                 send(new SubscribeAReq<Object>(requestBus,
                              (NonBlockingReactor) getReactor(),
                              new IsInstanceFilter<Object>(String.class)) {
                          @Override
-                         protected void processContent(Object _content, AsyncResponseProcessor<Void> arp)
+                         protected void processContent(Object _content, AsyncRequest<Void> arp)
                                  throws Exception {
-                             send(printer.printlnSReq((String) _content), arp);
+                            arp.send(printer.printlnSReq((String) _content), arp);
                          }
                 }, dis, null);
+
             }
         };
     }

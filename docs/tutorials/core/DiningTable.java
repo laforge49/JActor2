@@ -55,6 +55,8 @@ public class DiningTable extends BladeBase {
             
             @Override
             protected void processAsyncRequest() throws Exception {
+                setNoHungRequestCheck(); //inhibit the test for hung request
+                
                 if (mealsEaten == meals) {
                     dis.processAsyncResponse(false);
                     return;

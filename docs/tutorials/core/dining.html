@@ -167,6 +167,8 @@ public class DiningTable extends BladeBase {
             
             @Override
             protected void processAsyncRequest() throws Exception {
+                setNoHungRequestCheck(); //inhibit the test for hung request
+                
                 if (mealsEaten == meals) {  //There is no more food to be eaten.
                     dis.processAsyncResponse(false); //The feast is finished.
                     return;
@@ -385,14 +387,14 @@ Seats: 5
 Meals: 1,000,000
 
 Meals eaten by each philosopher:
-    168,389
-    161,357
-    169,880
-    310,949
-    189,425
+    197,498
+    172,025
+    293,909
+    171,582
+    164,986
 
-Test duration in nanoseconds: 1,511,560,523
-Total meals eaten per second: 661,567
+Test duration in nanoseconds: 2,020,604,926
+Total meals eaten per second: 494,901
 </pre>
 </body>
 </html>
