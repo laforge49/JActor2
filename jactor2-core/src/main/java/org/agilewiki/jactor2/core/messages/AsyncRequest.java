@@ -213,6 +213,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
     public <RT> void send(final RequestBase<RT> _request,
                              final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
+        if (targetReactor.getCurrentMessage() != this)
+            throw new UnsupportedOperationException("send called on inactive request");
         if (_responseProcessor != SignalResponseProcessor.SINGLETON)
             pendingResponseCount += 1;
         RequestBase.doSend(targetReactor, _request, _responseProcessor);
@@ -221,6 +223,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
     public <RT, RT2> void send(final RequestBase<RT> _request,
                                   final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
             throws Exception {
+        if (targetReactor.getCurrentMessage() != this)
+            throw new UnsupportedOperationException("send called on inactive request");
         pendingResponseCount += 1;
         RequestBase.doSend(targetReactor, _request,
                 new AsyncResponseProcessor<RT>() {
