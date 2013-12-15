@@ -1,4 +1,6 @@
-package org.agilewiki.jactor2.core.facilities;
+package org.agilewiki.jactor2.core.plant;
+
+import org.agilewiki.jactor2.core.facilities.Scheduler;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

@@ -11,7 +11,7 @@ public class Recovery {
     }
 
     public long messageTimeoutMillis() {
-        return 5000;
+        return 3000;
     }
 
     public void messageTimeout(ReactorBase _reactor) throws Exception {

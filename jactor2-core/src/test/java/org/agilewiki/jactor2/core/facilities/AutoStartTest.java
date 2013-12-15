@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.facilities;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 public class AutoStartTest extends TestCase {

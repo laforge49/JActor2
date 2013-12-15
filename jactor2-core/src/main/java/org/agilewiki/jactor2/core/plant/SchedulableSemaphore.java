@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.facilities;
+package org.agilewiki.jactor2.core.plant;
 
 import java.util.concurrent.Semaphore;
 
@@ -17,7 +17,7 @@ public class SchedulableSemaphore {
         }
     };
 
-    SchedulableSemaphore() {
+    public SchedulableSemaphore() {
     }
 
     /**

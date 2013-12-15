@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class HungClose {

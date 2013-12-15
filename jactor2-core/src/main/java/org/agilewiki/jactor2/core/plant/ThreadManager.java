@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.facilities;
+package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.UnboundReactor;

@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
 import org.agilewiki.jactor2.core.blades.transactions.properties.*;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.RequestBase;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -145,7 +146,7 @@ public class Facility extends CloserBase {
      *
      * @param _name                         The name of the facility.
      */
-    protected Facility(final String _name) throws Exception {
+    public Facility(final String _name) throws Exception {
         validateName(_name);
         name = _name;
     }

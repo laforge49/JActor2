@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.PoolThread;
+import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.messages.Message;
 
 import java.util.ArrayDeque;

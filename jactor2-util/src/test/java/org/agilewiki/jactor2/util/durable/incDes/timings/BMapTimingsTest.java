@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
