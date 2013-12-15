@@ -14,7 +14,7 @@ public class StoppedTest extends TestCase {
             PropertiesProcessor propertiesProcessor = plant.facility().getPropertiesProcessor();
             propertiesProcessor.getReactor().nullSReq().call(); //synchronize for the properties update
             System.out.println("before"+propertiesProcessor.getImmutableState());
-            plant.stoppedAReq("A", false).call();
+            plant.clearStoppedAReq("A").call();
             propertiesProcessor.getReactor().nullSReq().call(); //synchronize for the properties update
             System.out.println("after"+propertiesProcessor.getImmutableState());
             Thread.sleep(100); //give the activator a chance to run

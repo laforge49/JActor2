@@ -93,8 +93,8 @@ public class Plant {
         plantImpl.stopFacility(_facilityName);
     }
 
-    public AsyncRequest<Void> stoppedAReq(final String _facilityName, final boolean _newValue) {
-        return plantImpl.stoppedAReq(_facilityName, _newValue);
+    public AsyncRequest<Void> clearStoppedAReq(final String _facilityName) {
+        return plantImpl.stoppedAReq(_facilityName, false);
     }
 
     public AsyncRequest<Void> recoveryPropertyAReq(final String _facilityName, final Recovery _recovery) {
