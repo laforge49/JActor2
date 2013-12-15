@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core;
 
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
+import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 
 public class ActivatorFailure {
     static public void main(final String[] _args) throws Exception {

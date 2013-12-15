@@ -2,7 +2,8 @@ package org.agilewiki.jactor2.core.util;
 
 import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.slf4j.Logger;
 
 import java.util.Collections;
@@ -81,7 +82,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
             try {
                 closeable.close();
             } catch (final Throwable t) {
-                if (closeable != null && Plant.DEBUG) {
+                if (closeable != null && PlantImpl.DEBUG) {
                     getLog().warn("Error closing a " + closeable.getClass().getName(), t);
                 }
             }

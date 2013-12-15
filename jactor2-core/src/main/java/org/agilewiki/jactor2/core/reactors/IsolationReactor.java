@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.messages.Message;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
  * A targetReactor which processes each request to completion. And unlike other types of
@@ -33,39 +34,35 @@ import org.agilewiki.jactor2.core.messages.Message;
  */
 public class IsolationReactor extends UnboundReactor {
 
-    /**
-     * Create an isolation targetReactor.
-     *
-     * @param _facility The facility of the targetReactor.
-     */
+    public IsolationReactor(final Plant _plant) throws Exception {
+        this(_plant.facility());
+    }
+
     public IsolationReactor(final Facility _facility) throws Exception {
         super(_facility, _facility.getInitialBufferSize(), _facility
                 .getInitialLocalMessageQueueSize(), null);
     }
 
-    /**
-     * Create an isolation targetReactor.
-     *
-     * @param _facility The facility of the targetReactor.
-     * @param _onIdle   Object to be run when the inbox is emptied, or null.
-     */
+    public IsolationReactor(final Plant _plant, final Runnable _onIdle)
+            throws Exception {
+        this(_plant.facility(), _onIdle);
+    }
+
     public IsolationReactor(final Facility _facility, final Runnable _onIdle)
             throws Exception {
         super(_facility, _facility.getInitialBufferSize(), _facility
                 .getInitialLocalMessageQueueSize(), _onIdle);
     }
 
-    /**
-     * Create an isolation targetReactor.
-     *
-     * @param _facility              The facility of the targetReactor.
-     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
-     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
-     * @param _onIdle                Object to be run when the inbox is emptied, or null.
-     */
+    public IsolationReactor(final Plant _plant,
+                            final int _initialOutboxSize, final int _initialLocalQueueSize,
+                            final Runnable _onIdle) throws Exception {
+        this(_plant.facility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+    }
+
     public IsolationReactor(final Facility _facility,
-            final int _initialOutboxSize, final int _initialLocalQueueSize,
-            final Runnable _onIdle) throws Exception {
+                            final int _initialOutboxSize, final int _initialLocalQueueSize,
+                            final Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 

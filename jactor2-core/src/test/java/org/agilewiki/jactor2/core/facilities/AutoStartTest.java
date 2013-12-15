@@ -13,7 +13,7 @@ public class AutoStartTest extends TestCase {
             plant.dependencyPropertyAReq("B", "A").call();
             plant.autoStartAReq("B", true).call();
             plant.autoStartAReq("A", true).call();
-            PropertiesProcessor propertiesProcessor = plant.getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = plant.facility().getPropertiesProcessor();
             propertiesProcessor.getReactor().nullSReq().call(); //synchronize for the properties update
             ImmutableProperties<Object> properties = propertiesProcessor.getImmutableState();
             System.out.println(properties);

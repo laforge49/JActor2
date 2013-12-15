@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -92,12 +93,13 @@ public class CloseableSetTest extends TestCase {
             final MyCloseable mac3 = new MyCloseable(plant);
             final MyCloseable mac4 = new MyCloseable(plant);
             final MyFailedCloseable mfac = new MyFailedCloseable(plant);
-            plant.addCloseable(mac1);
-            plant.addCloseable(mac2);
-            plant.addCloseable(mac3);
-            plant.addCloseable(mac4);
-            plant.addCloseable(mfac);
-            plant.removeCloseable(mac4);
+            Facility facility = plant.facility();
+            facility.addCloseable(mac1);
+            facility.addCloseable(mac2);
+            facility.addCloseable(mac3);
+            facility.addCloseable(mac4);
+            facility.addCloseable(mfac);
+            facility.removeCloseable(mac4);
 
             System.out.println("first plant.close");
             plant.close();

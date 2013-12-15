@@ -9,6 +9,8 @@ import org.agilewiki.jactor2.core.blades.transactions.properties.*;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -116,7 +118,7 @@ public class Facility extends CloserBase {
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
      */
     @SuppressWarnings("rawtypes")
-    public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests = Plant.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>()
+    public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests = PlantImpl.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>()
             : null;
 
     /**
@@ -141,6 +143,8 @@ public class Facility extends CloserBase {
 
     protected Plant plant;
 
+    private PlantImpl plantImpl;
+
     /**
      * Create a Facility.
      *
@@ -151,23 +155,24 @@ public class Facility extends CloserBase {
         name = _name;
     }
 
-    public void initialize(final Plant _plant) throws Exception {
+    public void initialize(final Plant _plant, final PlantImpl _plantImpl) throws Exception {
         plant = _plant;
+        plantImpl = _plantImpl;
         internalReactor = new InternalReactor();
         initialize(internalReactor);
-        if (this != plant)
-            _plant.addCloseable(this);
+        if (this != plantImpl)
+            plantImpl.addCloseable(this);
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
         String dependencyPrefix = dependencyPrefix(name);
         ImmutableProperties<Object> dependencies =
-                plant.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
+                plantImpl.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
         Iterator<String> dit = dependencies.keySet().iterator();
         while (dit.hasNext()) {
             String d = dit.next();
             String dependencyName = d.substring(dependencyPrefix.length());
-            Facility dependency = plant.getFacility(dependencyName);
+            Facility dependency = plantImpl.getFacility(dependencyName);
             if (dependency == null)
                 throw new IllegalStateException("dependency not present: "+dependencyName);
             dependency.addCloseable(this);
@@ -193,7 +198,7 @@ public class Facility extends CloserBase {
                     Object oldValue = pc.oldValue;
                     Object newValue = pc.newValue;
                     if (key.startsWith(FACILITY_PROPERTY_PREFIX)) {
-                        if (!(Facility.this instanceof Plant))
+                        if (!(Facility.this instanceof PlantImpl))
                             throw new UnsupportedOperationException("only a plant can have a facility");
                         if (newValue != null && !(newValue instanceof Facility))
                             throw new IllegalArgumentException(key
@@ -203,7 +208,7 @@ public class Facility extends CloserBase {
                             throw new IllegalStateException("Facility already exists: "+facility.name);
                         }
                     } else if (key.startsWith(FACILITY_PREFIX)) {
-                        if (!(Facility.this instanceof Plant))
+                        if (!(Facility.this instanceof PlantImpl))
                             throw new UnsupportedOperationException(
                                     "only a plant can have a facility configuration property: "+key);
                         String name1 = key.substring(FACILITY_PREFIX.length());
@@ -212,7 +217,7 @@ public class Facility extends CloserBase {
                             throw new UnsupportedOperationException("undeliminated facility");
                         String name2 = name1.substring(i + 1);
                         name1 = name1.substring(0, i);
-                        Facility facility0 = plant.getFacility(name1);
+                        Facility facility0 = plantImpl.getFacility(name1);
                         if (name2.startsWith(FACILITY_DEPENDENCY_INFIX)) {
                             if (facility0 != null) {
                                 throw new IllegalStateException(
@@ -221,7 +226,7 @@ public class Facility extends CloserBase {
                             name2 = name2.substring(FACILITY_DEPENDENCY_INFIX.length());
                             if (PLANT_NAME.equals(name1))
                                 throw new UnsupportedOperationException("a plant can not have a dependency");
-                            if (plant.hasDependency(name2, key))
+                            if (plantImpl.hasDependency(name2, key))
                                 throw new IllegalArgumentException(
                                         "Would create a dependency cycle.");
                         } else if (name2.equals(FACILITY_RECOVERY_POSTFIX)) {
@@ -339,8 +344,8 @@ public class Facility extends CloserBase {
             return;
         startClosing = true;
         final Plant plant = getPlant();
-        if ((plant != null) && (plant != Facility.this && !plant.startedClosing())) {
-            plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+        if ((plant != null) && (plantImpl != Facility.this && !plantImpl.startedClosing())) {
+            plantImpl.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
         closeAll();
@@ -348,20 +353,20 @@ public class Facility extends CloserBase {
 
     public void stop() throws Exception {
         if (startClosing) {
-            plant.putPropertyAReq(stoppedKey(name), true,
+            plantImpl.putPropertyAReq(stoppedKey(name), true,
                     null).signal();
             return;
         }
         startClosing = true;
         final Plant plant = getPlant();
-        if ((plant != null) && (plant != Facility.this && !plant.startedClosing())) {
-            new PropertiesTransactionAReq(plant.getPropertiesProcessor().commonReactor,
-                    plant.getPropertiesProcessor()){
+        if ((plant != null) && (plantImpl != Facility.this && !plantImpl.startedClosing())) {
+            new PropertiesTransactionAReq(plantImpl.getPropertiesProcessor().commonReactor,
+                    plantImpl.getPropertiesProcessor()){
                 protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                     _changeManager.put(FACILITY_PROPERTY_PREFIX + name, null);
                     _changeManager.put(stoppedKey(name), true);
                 }}.signal();
-            plant.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+            plantImpl.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
         closeAll();
@@ -389,6 +394,10 @@ public class Facility extends CloserBase {
 
     public Plant getPlant() {
         return plant;
+    }
+
+    public PlantImpl getPlantImpl() {
+        return plantImpl;
     }
 
     public AsyncRequest<Void> putPropertyAReq(final String _propertyName,

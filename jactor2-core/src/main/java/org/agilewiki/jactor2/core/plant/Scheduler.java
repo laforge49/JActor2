@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.facilities;
+package org.agilewiki.jactor2.core.plant;
 
 public interface Scheduler {
     void initialize();

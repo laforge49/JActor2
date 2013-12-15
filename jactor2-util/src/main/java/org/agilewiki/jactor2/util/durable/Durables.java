@@ -50,7 +50,7 @@ public final class Durables {
      */
     public static Plant createPlant() throws Exception {
         final Plant plant = new Plant();
-        final FactoryLocator factoryLocator = createFactoryLocatorAReq(plant,
+        final FactoryLocator factoryLocator = createFactoryLocatorAReq(plant.facility(),
                 "org.agilewiki.jactor2.util.durable", "", "").call();
         registerFactories(factoryLocator);
         return plant;
@@ -98,12 +98,10 @@ public final class Durables {
         return getFactoryLocator(_reactor.getFacility());
     }
 
-    /**
-     * Returns the factoryLocator from the facility's factoryLocator property.
-     *
-     * @param _facility A facility.
-     * @return The factoryLocator for that facility.
-     */
+    public static FactoryLocator getFactoryLocator(final Plant _plant) {
+        return getFactoryLocator(_plant.facility());
+    }
+
     public static FactoryLocator getFactoryLocator(final Facility _facility) {
         return (FactoryLocator) _facility.getProperty("factoryLocator");
     }
@@ -389,31 +387,24 @@ public final class Durables {
                 _factoryName, new NonBlockingReactor(_facility), _parent);
     }
 
-    /**
-     * Create a new serializable object and a new processing to be used by that serializable object.
-     *
-     * @param _factoryName The type of object to be created.
-     * @param _facility    The facility to be used to create the new processing
-     *                     and which has a factoryLocator property.
-     * @return A new serializable object.
-     */
+    public static JASerializable newSerializable(final Plant _plant,
+                                                 final String _factoryName) throws Exception {
+        return newSerializable(_plant.facility(), _factoryName);
+    }
+
     public static JASerializable newSerializable(final Facility _facility,
-            final String _factoryName) throws Exception {
+                                                 final String _factoryName) throws Exception {
         return newSerializable(getFactoryLocator(_facility), _factoryName,
                 _facility, null);
     }
 
-    /**
-     * Create a new serializable object and a new processing to be used by that serializable object.
-     *
-     * @param _factoryName The type of object to be created.
-     * @param _facility    The facility to be used to create the new processing
-     *                     and which has a factoryLocator property.
-     * @param _parent      The dependency to be injected, or null.
-     * @return A new serializable object.
-     */
+    public static JASerializable newSerializable(final Plant _plant,
+                                                 final String _factoryName, final Ancestor _parent) throws Exception {
+        return newSerializable(_plant.facility(), _factoryName, _parent);
+    }
+
     public static JASerializable newSerializable(final Facility _facility,
-            final String _factoryName, final Ancestor _parent) throws Exception {
+                                                 final String _factoryName, final Ancestor _parent) throws Exception {
         return newSerializable(getFactoryLocator(_facility), _factoryName,
                 _facility, _parent);
     }

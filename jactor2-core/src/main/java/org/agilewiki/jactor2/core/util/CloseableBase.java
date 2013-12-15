@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.ServiceClosedException;
+import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 
 import java.util.Collections;
 import java.util.Iterator;

@@ -12,6 +12,7 @@ import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -48,19 +49,14 @@ import java.util.Locale;
  */
 public class Printer extends BlockingBlade {
 
-    public static AsyncRequest<Void> printlnAReq(final Facility _facility,
+    public static AsyncRequest<Void> printlnAReq(final Plant _plant,
             final String _string) throws Exception {
-        return new AsyncRequest<Void>(_facility.getReactor()) {
+        return new AsyncRequest<Void>(_plant.impl().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
             public void processAsyncRequest() throws Exception {
-                Facility facility = _facility;
-                final Plant plant = facility.getPlant();
-                if (plant != null) {
-                    facility = plant;
-                }
-                send(stdoutAReq((Plant) facility),
+                send(stdoutAReq(_plant),
                         new AsyncResponseProcessor<Printer>() {
                             @Override
                             public void processAsyncResponse(
@@ -72,19 +68,14 @@ public class Printer extends BlockingBlade {
         };
     }
 
-    public static AsyncRequest<Void> printfAReq(final Facility _facility,
+    public static AsyncRequest<Void> printfAReq(final Plant _plant,
             final String _format, final Object... _args) throws Exception {
-        return new AsyncRequest<Void>(_facility.getReactor()) {
+        return new AsyncRequest<Void>(_plant.impl().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
             public void processAsyncRequest() throws Exception {
-                Facility facility = _facility;
-                final Plant plant = facility.getPlant();
-                if (plant != null) {
-                    facility = plant;
-                }
-                send(stdoutAReq((Plant) facility),
+                send(stdoutAReq(_plant),
                         new AsyncResponseProcessor<Printer>() {
                             @Override
                             public void processAsyncResponse(
@@ -96,12 +87,11 @@ public class Printer extends BlockingBlade {
         };
     }
 
-    static public AsyncRequest<Printer> stdoutAReq(final Facility _facility)
+    static public AsyncRequest<Printer> stdoutAReq(final Plant _plant)
             throws Exception {
-        final Plant plant = _facility.getPlant();
-        return new AsyncRequest<Printer>(plant.getReactor()) {
+        return new AsyncRequest<Printer>(_plant.impl().getReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
-            PropertiesProcessor propertiesProcessor = plant.getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = _plant.impl().getPropertiesProcessor();
             ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
             Printer printer = (Printer) immutableProperties.get("stdout");
 
@@ -137,7 +127,7 @@ public class Printer extends BlockingBlade {
                     dis.processAsyncResponse(printer);
                     return;
                 }
-                printer = new Printer(new BlockingReactor(plant));
+                printer = new Printer(new BlockingReactor(_plant.impl()));
                 send(propertiesProcessor.compareAndSetAReq("stdout", null, printer), cnsResponseProcessor);
             }
         };

@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 /**
@@ -9,8 +10,8 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
  */
 public class Blade3 extends BladeBase {
 
-    public Blade3(final Facility _facility) throws Exception {
-        initialize(new IsolationReactor(_facility));
+    public Blade3(final Plant _plant) throws Exception {
+        initialize(new IsolationReactor(_plant));
     }
 
     public SyncRequest<Void> hi3SReq() {

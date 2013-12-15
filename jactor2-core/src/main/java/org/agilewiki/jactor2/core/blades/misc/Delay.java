@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.blades.misc;
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 
 /**
@@ -10,11 +11,10 @@ import org.agilewiki.jactor2.core.reactors.BlockingReactor;
  */
 public class Delay extends BladeBase {
 
-    /**
-     * Create a Delay blades.
-     *
-     * @param _facility The blades's facility.
-     */
+    public Delay(final Plant _plant) throws Exception {
+        initialize(new BlockingReactor(_plant));
+    }
+
     public Delay(final Facility _facility) throws Exception {
         initialize(new BlockingReactor(_facility));
     }

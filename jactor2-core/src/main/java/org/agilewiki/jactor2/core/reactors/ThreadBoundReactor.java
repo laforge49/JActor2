@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.messages.Message;
 
@@ -98,19 +99,11 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
      */
     private final Runnable boundProcessor;
 
-    /**
-     * Create a thread-bound targetReactor.
-     * <p>
-     * The _boundProcessor.run method is called when a thread-bound targetReactor has messages
-     * that need processing. As a result of invoking the run method, the
-     * ThreadBoundReactor.run method must subsequently to be invoked by the thread that
-     * the targetReactor is bound to.
-     * </p>
-     *
-     * @param _facility       The facility of the targetReactor.
-     * @param _boundProcessor The _messageProcessor.run method is called when there
-     *                        are messages to be processed.
-     */
+    public ThreadBoundReactor(final Plant _plant,
+                              final Runnable _boundProcessor) throws Exception {
+        this(_plant.facility(), _boundProcessor);
+    }
+
     public ThreadBoundReactor(final Facility _facility,
                               final Runnable _boundProcessor) throws Exception {
         super(_facility, _facility.getInitialBufferSize(), _facility
@@ -118,21 +111,12 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
         boundProcessor = _boundProcessor;
     }
 
-    /**
-     * Create a thread-bound targetReactor.
-     * <p>
-     * The boundProcessor.run method is called when a thread-bound targetReactor has messages
-     * that need processing. As a result of invoking the run method, the
-     * ThreadBoundReactor.run method must subsequently to be invoked by the thread that
-     * the targetReactor is bound to.
-     * </p>
-     *
-     * @param _facility              The facility of the targetReactor.
-     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
-     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
-     * @param _boundProcessor        The _messageProcessor.run method is called when there
-     *                               are messages to be processed.
-     */
+    public ThreadBoundReactor(final Plant _plant,
+                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Runnable _boundProcessor) throws Exception {
+        this(_plant.facility(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+    }
+
     public ThreadBoundReactor(final Facility _facility,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _boundProcessor) throws Exception {

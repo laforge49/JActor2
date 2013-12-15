@@ -11,7 +11,7 @@ public class StoppedTest extends TestCase {
             plant.activatorPropertyAReq("A", "org.agilewiki.jactor2.core.facilities.SampleActivator").call();
             plant.stopFacility("A");
             plant.autoStartAReq("A", true).call();
-            PropertiesProcessor propertiesProcessor = plant.getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = plant.facility().getPropertiesProcessor();
             propertiesProcessor.getReactor().nullSReq().call(); //synchronize for the properties update
             System.out.println("before"+propertiesProcessor.getImmutableState());
             plant.stoppedAReq("A", false).call();

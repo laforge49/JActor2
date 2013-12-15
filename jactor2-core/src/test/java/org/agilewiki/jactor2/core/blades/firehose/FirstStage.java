@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 import java.util.ArrayList;
@@ -32,13 +33,13 @@ public class FirstStage extends BladeBase implements Runnable {
 
     long t0;
 
-    public FirstStage(final Facility _facility, final DataProcessor _next,
+    public FirstStage(final Plant _plant, final DataProcessor _next,
             final long _count, final int _maxWindowSize) throws Exception {
         mainThread = Thread.currentThread();
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(new IsolationReactor(_facility, this));
+        initialize(new IsolationReactor(_plant, this));
         ack = new BoundResponseProcessor<Void>(this,
                 new AsyncResponseProcessor<Void>() {
                     @Override

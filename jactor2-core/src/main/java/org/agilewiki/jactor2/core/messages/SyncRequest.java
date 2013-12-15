@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
@@ -57,7 +58,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
     private RESPONSE_TYPE doLocal(final Reactor _source) throws Exception {
         use();
         final ReactorBase messageProcessor = (ReactorBase) _source;
-        if (Plant.DEBUG) {
+        if (PlantImpl.DEBUG) {
             if (messageProcessor instanceof ThreadBoundReactor) {
                 if (Thread.currentThread() instanceof PoolThread) {
                     throw new IllegalStateException("send from wrong thread");

@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.facilities;
+package org.agilewiki.jactor2.core.plant;
 
 /**
  * This exception is thrown when sending a AsyncRequest to a different facility and that facility is closed.

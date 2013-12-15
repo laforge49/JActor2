@@ -75,7 +75,7 @@ abstract public class UnboundReactor extends ReactorBase {
             throw new NullPointerException();
         }
         if (threadReference.get() == null) {
-            facility.getPlant().submit(this);
+            facility.getPlantImpl().submit(this);
         }
     }
 

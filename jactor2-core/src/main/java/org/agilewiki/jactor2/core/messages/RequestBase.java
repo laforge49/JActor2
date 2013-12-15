@@ -2,9 +2,7 @@ package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.*;
-import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.PoolThread;
+import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
@@ -169,7 +167,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                         final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         final ReactorBase source = (ReactorBase) _source;
-        if (Plant.DEBUG) {
+        if (PlantImpl.DEBUG) {
             if (source instanceof ThreadBoundReactor) {
                 if (Thread.currentThread() instanceof PoolThread) {
                     throw new IllegalStateException("send from wrong thread");
@@ -229,7 +227,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             throw new UnsupportedOperationException(
                     "Use of call on a PoolThread can result in a deadlock");
         }
-        if (Plant.DEBUG) {
+        if (PlantImpl.DEBUG) {
             addDebugPending();
         }
         messageSource = new Pender();
@@ -242,7 +240,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * track pending requests.
      */
     private void addDebugPending() {
-        if (Plant.DEBUG) {
+        if (PlantImpl.DEBUG) {
             debugTimestamp = System.nanoTime();
             final Facility targetFacility = targetReactor.getFacility();
             final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
@@ -260,7 +258,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         ((ReactorBase) _activeReactor).requestEnd(this);
         unClosed = false;
         response = _response;
-        if (Plant.DEBUG) {
+        if (PlantImpl.DEBUG) {
             final Facility targetFacility = targetReactor.getFacility();
             final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
             final Set<RequestBase> nanoSet = pendingRequests
@@ -287,7 +285,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     protected boolean processObjectResponse(final Object _response)
             throws Exception {
-        if (Plant.DEBUG) {
+        if (PlantImpl.DEBUG) {
             if (targetReactor instanceof ThreadBoundReactor) {
                 if (Thread.currentThread() instanceof PoolThread) {
                     final Exception ex = new IllegalStateException(

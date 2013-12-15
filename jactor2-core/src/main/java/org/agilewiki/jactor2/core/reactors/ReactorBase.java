@@ -6,10 +6,7 @@ import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.messages.MessageSource;
 import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.PoolThread;
-import org.agilewiki.jactor2.core.plant.SchedulableSemaphore;
+import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.util.MessageCloser;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.slf4j.Logger;
@@ -138,12 +135,13 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         }
         super.close();
         Plant plant = getFacility().getPlant();
-        if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
+        PlantImpl plantImpl = plant.impl();
+        if (!isRunning() || plantImpl.isForcedExit() || plantImpl.isShuttingDown())
             return;
         if (currentMessage != null && currentMessage.isClosed())
             return;
-        timeoutSemaphore = plant.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
-        if (!isRunning() || plant.isForcedExit() || plant.isShuttingDown())
+        timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
+        if (!isRunning() || plantImpl.isForcedExit() || plantImpl.isShuttingDown())
             return;
         Thread thread = (Thread) getThreadReference().get();
         if (thread == null)
@@ -151,7 +149,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         thread.interrupt();
         boolean timeout = timeoutSemaphore.acquire();
         currentMessage.close();
-        if (!timeout || !isRunning() || plant.isForcedExit() || plant.isShuttingDown()) {
+        if (!timeout || !isRunning() || plantImpl.isForcedExit() || plantImpl.isShuttingDown()) {
             return;
         }
         try {

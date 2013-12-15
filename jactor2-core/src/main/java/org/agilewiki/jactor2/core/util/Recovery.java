@@ -24,7 +24,7 @@ public class Recovery {
     }
 
     public void hungThread(ReactorBase _reactor) {
-        _reactor.getFacility().getPlant().forceExit();
+        _reactor.getFacility().getPlantImpl().forceExit();
     }
 
     public void hungResponse(final Message _message) throws Exception {
