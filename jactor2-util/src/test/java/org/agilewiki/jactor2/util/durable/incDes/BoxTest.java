@@ -77,7 +77,7 @@ public class BoxTest extends TestCase {
             assertEquals(0, sl);
 
             final Box box3 = (Box) Durables.newSerializable(factoryLocator,
-                    Box.FACTORY_NAME, plant.facility());
+                    Box.FACTORY_NAME, plant);
             sl = box3.getSerializedLength();
             assertEquals(4, sl);
             made = box3.makeValueReq(Box.FACTORY_NAME).call();

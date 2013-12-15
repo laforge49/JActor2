@@ -37,6 +37,7 @@ import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.BytesImpl;
 import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.JAStringImpl;
 import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.RootImpl;
 import org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens.UnionImpl;
+import sun.net.www.content.text.plain;
 
 /**
  * Static methods for accessing durable capabilities.
@@ -356,14 +357,13 @@ public final class Durables {
                 _factoryName, _reactor, _parent);
     }
 
-    /**
-     * Create a new serializable object and a new processing to be used by that serializable object.
-     *
-     * @param _factoryLocator The factoryLocator.
-     * @param _factoryName    The type of object to be created.
-     * @param _facility       The facility to be used to create the new processing.
-     * @return A new serializable object.
-     */
+    public static JASerializable newSerializable(
+            final FactoryLocator _factoryLocator, final String _factoryName,
+            final Plant _plant) throws Exception {
+        return ((FactoryLocatorImpl) _factoryLocator).newSerializable(
+                _factoryName, new NonBlockingReactor(_plant.facility()), null);
+    }
+
     public static JASerializable newSerializable(
             final FactoryLocator _factoryLocator, final String _factoryName,
             final Facility _facility) throws Exception {

@@ -135,7 +135,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         }
         super.close();
         Plant plant = getFacility().getPlant();
-        PlantImpl plantImpl = plant.impl();
+        PlantImpl plantImpl = plant.getPlantImpl();
         if (!isRunning() || plantImpl.isForcedExit() || plantImpl.isShuttingDown())
             return;
         if (currentMessage != null && currentMessage.isClosed())
