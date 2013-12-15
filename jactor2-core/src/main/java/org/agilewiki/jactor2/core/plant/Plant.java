@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 public class Plant {
 
@@ -35,13 +36,33 @@ public class Plant {
         plantImpl.close();
     }
 
+    public void exit() {
+        plantImpl.exit();
+    }
+
+    public boolean isForcedExit() {
+        return plantImpl.isForcedExit();
+    }
+
+    public void forceExit() {
+        plantImpl.forceExit();
+    }
+
     public AsyncRequest<Facility> createFacilityAReq(final String _name)
             throws Exception {
         return plantImpl.createFacilityAReq(_name);
     }
 
+    public String getActivatorClassName(final String _facilityName) {
+        return plantImpl.getActivatorClassName(_facilityName);
+    }
+
     public AsyncRequest<Void> activatorPropertyAReq(final String _facilityName, final String _className) {
         return plantImpl.activatorPropertyAReq(_facilityName, _className);
+    }
+
+    public boolean isAutoStart(String name) {
+        return plantImpl.isAutoStart(name);
     }
 
     public AsyncRequest<Void> autoStartAReq(final String _facilityName, final boolean _newValue) {
@@ -56,8 +77,16 @@ public class Plant {
         return plantImpl.purgeFacilitySReq(_facilityName);
     }
 
+    public Object getFailed(String name) {
+        return plantImpl.getFailed(name);
+    }
+
     public AsyncRequest<Void> failedAReq(final String _facilityName, final Object _newValue) {
         return plantImpl.failedAReq(_facilityName, _newValue);
+    }
+
+    public boolean isStopped(String name) {
+        return plantImpl.isStopped(name);
     }
 
     public void stopFacility(final String _facilityName) throws Exception {
@@ -66,5 +95,21 @@ public class Plant {
 
     public AsyncRequest<Void> stoppedAReq(final String _facilityName, final boolean _newValue) {
         return plantImpl.stoppedAReq(_facilityName, _newValue);
+    }
+
+    public AsyncRequest<Void> recoveryPropertyAReq(final String _facilityName, final Recovery _recovery) {
+        return plantImpl.recoveryPropertyAReq(_facilityName, _recovery);
+    }
+
+    public AsyncRequest<Void> initialLocalMerssageQueueSizePropertyAReq(final String _facilityName, final Integer _value) {
+        return plantImpl.initialLocalMerssageQueueSizePropertyAReq(_facilityName, _value);
+    }
+
+    public AsyncRequest<Void> initialBufferSizePropertyAReq(final String _facilityName, final Integer _value) {
+        return plantImpl.initialBufferSizePropertyAReq(_facilityName, _value);
+    }
+
+    public Facility getFacility(String name) {
+        return plantImpl.getFacility(name);
     }
 }
