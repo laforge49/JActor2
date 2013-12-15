@@ -11,7 +11,7 @@ public class FailedTest extends TestCase {
             plant.activatorPropertyAReq("A", "org.agilewiki.jactor2.core.facilities.SampleActivator").call();
             plant.failFacility("A", "inhibit");
             plant.autoStartAReq("A", true).call();
-            PropertiesProcessor propertiesProcessor = plant.facility().getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = plant.asFacility().getPropertiesProcessor();
             propertiesProcessor.getReactor().nullSReq().call(); //synchronize for the properties update
             System.out.println("before"+propertiesProcessor.getImmutableState());
             plant.clearFailedAReq("A").call();

@@ -351,6 +351,10 @@ public class PlantImpl extends Facility {
         threadManager.close();
     }
 
+    public boolean isExitOnClose() {
+        return exitOnClose;
+    }
+
     public void exit() {
         exitOnClose = true;
         try {

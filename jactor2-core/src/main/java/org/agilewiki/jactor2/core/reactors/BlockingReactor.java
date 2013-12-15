@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -28,8 +29,8 @@ import org.agilewiki.jactor2.core.plant.Plant;
  */
 public class BlockingReactor extends UnboundReactor implements CommonReactor {
 
-    public BlockingReactor(final Plant _plant) throws Exception {
-        this(_plant.facility());
+    public BlockingReactor(final BasicPlant _plant) throws Exception {
+        this(_plant.asFacility());
     }
 
     public BlockingReactor(final Facility _facility) throws Exception {
@@ -37,9 +38,9 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
                 .getInitialLocalMessageQueueSize(), null);
     }
 
-    public BlockingReactor(final Plant _plant, final Runnable _onIdle)
+    public BlockingReactor(final BasicPlant _plant, final Runnable _onIdle)
             throws Exception {
-        this(_plant.facility(), _onIdle);
+        this(_plant.asFacility(), _onIdle);
     }
 
     public BlockingReactor(final Facility _facility, final Runnable _onIdle)
@@ -48,10 +49,10 @@ public class BlockingReactor extends UnboundReactor implements CommonReactor {
                 .getInitialLocalMessageQueueSize(), _onIdle);
     }
 
-    public BlockingReactor(final Plant _plant,
+    public BlockingReactor(final BasicPlant _plant,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _onIdle) throws Exception {
-        this(_plant.facility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     public BlockingReactor(final Facility _facility,

@@ -49,7 +49,7 @@ public class Printer extends BlockingBlade {
 
     public static AsyncRequest<Void> printlnAReq(final Plant _plant,
             final String _string) throws Exception {
-        return new AsyncRequest<Void>(_plant.getPlantImpl().getReactor()) {
+        return new AsyncRequest<Void>(_plant.asPlantImpl().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
@@ -68,7 +68,7 @@ public class Printer extends BlockingBlade {
 
     public static AsyncRequest<Void> printfAReq(final Plant _plant,
             final String _format, final Object... _args) throws Exception {
-        return new AsyncRequest<Void>(_plant.getPlantImpl().getReactor()) {
+        return new AsyncRequest<Void>(_plant.asPlantImpl().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
@@ -87,9 +87,9 @@ public class Printer extends BlockingBlade {
 
     static public AsyncRequest<Printer> stdoutAReq(final Plant _plant)
             throws Exception {
-        return new AsyncRequest<Printer>(_plant.getPlantImpl().getReactor()) {
+        return new AsyncRequest<Printer>(_plant.asPlantImpl().getReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
-            PropertiesProcessor propertiesProcessor = _plant.getPlantImpl().getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = _plant.asPlantImpl().getPropertiesProcessor();
             ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
             Printer printer = (Printer) immutableProperties.get("stdout");
 
@@ -125,7 +125,7 @@ public class Printer extends BlockingBlade {
                     dis.processAsyncResponse(printer);
                     return;
                 }
-                printer = new Printer(new BlockingReactor(_plant.getPlantImpl()));
+                printer = new Printer(new BlockingReactor(_plant.asPlantImpl()));
                 send(propertiesProcessor.compareAndSetAReq("stdout", null, printer), cnsResponseProcessor);
             }
         };

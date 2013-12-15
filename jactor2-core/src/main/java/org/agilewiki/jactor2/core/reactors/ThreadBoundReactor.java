@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.messages.Message;
@@ -99,9 +100,9 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
      */
     private final Runnable boundProcessor;
 
-    public ThreadBoundReactor(final Plant _plant,
+    public ThreadBoundReactor(final BasicPlant _plant,
                               final Runnable _boundProcessor) throws Exception {
-        this(_plant.facility(), _boundProcessor);
+        this(_plant.asFacility(), _boundProcessor);
     }
 
     public ThreadBoundReactor(final Facility _facility,
@@ -111,10 +112,10 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
         boundProcessor = _boundProcessor;
     }
 
-    public ThreadBoundReactor(final Plant _plant,
+    public ThreadBoundReactor(final BasicPlant _plant,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _boundProcessor) throws Exception {
-        this(_plant.facility(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     public ThreadBoundReactor(final Facility _facility,

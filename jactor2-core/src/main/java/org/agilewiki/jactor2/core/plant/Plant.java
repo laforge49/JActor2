@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.util.Recovery;
 
-public class Plant {
+public class Plant implements BasicPlant {
 
     public static Plant getSingleton() {
         return PlantImpl.getSingleton();
@@ -24,26 +24,51 @@ public class Plant {
         plantImpl = new PlantImpl(this, _plantConfiguration);
     }
 
-    public PlantImpl getPlantImpl() {
+    public BasicPlant asBasicPlant() {
+        return this;
+    }
+
+    @Override
+    public Plant asPlant() {
+        return this;
+    }
+
+    @Override
+    public Facility asFacility() {
         return plantImpl;
     }
 
-    public Facility facility() {
+    @Override
+    public PlantImpl asPlantImpl() {
         return plantImpl;
     }
 
+    @Override
+    public boolean startedClosing() {
+        return plantImpl.startedClosing();
+    }
+
+    @Override
     public void close() throws Exception {
         plantImpl.close();
     }
 
+    @Override
+    public boolean isExitOnClose() {
+        return plantImpl.isExitOnClose();
+    }
+
+    @Override
     public void exit() {
         plantImpl.exit();
     }
 
+    @Override
     public boolean isForcedExit() {
         return plantImpl.isForcedExit();
     }
 
+    @Override
     public void forceExit() {
         plantImpl.forceExit();
     }

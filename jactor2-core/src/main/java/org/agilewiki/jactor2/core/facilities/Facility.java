@@ -287,7 +287,7 @@ public class Facility extends CloserBase {
     }
 
     @Override
-    protected final boolean startedClosing() {
+    public final boolean startedClosing() {
         return startClosing;
     }
 

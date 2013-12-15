@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.util;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -86,14 +87,14 @@ public class CloseableSetTest extends TestCase {
     public void testFacility() throws Exception {
         System.out.println("F");
         // a Plant is also a Facility, so I only need to test the Plant ...
-        final Plant plant = new Plant();
+        final BasicPlant plant = new Plant();
         try {
             final MyCloseable mac1 = new MyCloseable(plant);
             final MyCloseable mac2 = new MyCloseable(plant);
             final MyCloseable mac3 = new MyCloseable(plant);
             final MyCloseable mac4 = new MyCloseable(plant);
             final MyFailedCloseable mfac = new MyFailedCloseable(plant);
-            Facility facility = plant.facility();
+            Facility facility = plant.asFacility();
             facility.addCloseable(mac1);
             facility.addCloseable(mac2);
             facility.addCloseable(mac3);
@@ -158,7 +159,7 @@ public class CloseableSetTest extends TestCase {
 class MyCloseable extends CloseableBase {
     public volatile int closed;
 
-    MyCloseable(Plant plant) throws Exception {
+    MyCloseable(BasicPlant plant) throws Exception {
         initialize(new NonBlockingReactor(plant));
     }
 
@@ -171,7 +172,7 @@ class MyCloseable extends CloseableBase {
 
 class MyFailedCloseable extends MyCloseable {
 
-    MyFailedCloseable(Plant plant) throws Exception {
+    MyFailedCloseable(BasicPlant plant) throws Exception {
         super(plant);
     }
 

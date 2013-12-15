@@ -17,11 +17,11 @@ public class DependencyTest extends TestCase {
                     .call();
             final Facility c = plant.createFacilityAReq("C")
                     .call();
-            PropertiesProcessor propertiesProcessor = plant.facility().getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = plant.asFacility().getPropertiesProcessor();
             ImmutableProperties<Object> properties = propertiesProcessor.getImmutableState();
             System.out.println("before: "+properties);
             plant.purgeFacilitySReq("A").call();
-            plant.facility().getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
+            plant.asFacility().getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
             properties = propertiesProcessor.getImmutableState();
             System.out.println("after: "+properties);
         } finally {

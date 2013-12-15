@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -34,8 +35,8 @@ import org.agilewiki.jactor2.core.plant.Plant;
  */
 public class IsolationReactor extends UnboundReactor {
 
-    public IsolationReactor(final Plant _plant) throws Exception {
-        this(_plant.facility());
+    public IsolationReactor(final BasicPlant _plant) throws Exception {
+        this(_plant.asFacility());
     }
 
     public IsolationReactor(final Facility _facility) throws Exception {
@@ -43,9 +44,9 @@ public class IsolationReactor extends UnboundReactor {
                 .getInitialLocalMessageQueueSize(), null);
     }
 
-    public IsolationReactor(final Plant _plant, final Runnable _onIdle)
+    public IsolationReactor(final BasicPlant _plant, final Runnable _onIdle)
             throws Exception {
-        this(_plant.facility(), _onIdle);
+        this(_plant.asFacility(), _onIdle);
     }
 
     public IsolationReactor(final Facility _facility, final Runnable _onIdle)
@@ -54,10 +55,10 @@ public class IsolationReactor extends UnboundReactor {
                 .getInitialLocalMessageQueueSize(), _onIdle);
     }
 
-    public IsolationReactor(final Plant _plant,
+    public IsolationReactor(final BasicPlant _plant,
                             final int _initialOutboxSize, final int _initialLocalQueueSize,
                             final Runnable _onIdle) throws Exception {
-        this(_plant.facility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     public IsolationReactor(final Facility _facility,
