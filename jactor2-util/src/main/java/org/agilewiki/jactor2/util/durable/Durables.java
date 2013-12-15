@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.util.durable;
 
-import org.agilewiki.jactor2.core.facilities.AsyncFacilityRequest;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
@@ -69,7 +68,7 @@ public final class Durables {
     public static AsyncRequest<FactoryLocator> createFactoryLocatorAReq(
             final Facility _facility, final String _bundleName,
             final String _version, final String _location) throws Exception {
-        return new AsyncFacilityRequest<FactoryLocator>(_facility) {
+        return new AsyncRequest<FactoryLocator>(_facility.getInternalReactor()) {
             AsyncResponseProcessor<FactoryLocator> dis = this;
 
             @Override
