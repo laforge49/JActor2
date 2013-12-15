@@ -81,8 +81,12 @@ public class Plant {
         return plantImpl.getFailed(name);
     }
 
-    public AsyncRequest<Void> failedAReq(final String _facilityName, final Object _newValue) {
-        return plantImpl.failedAReq(_facilityName, _newValue);
+    public void failFacility(final String _facilityName, final Object reason) throws Exception {
+        plantImpl.failFacility(_facilityName, reason);
+    }
+
+    public AsyncRequest<Void> clearFailedAReq(final String _facilityName) {
+        return plantImpl.failedAReq(_facilityName, null);
     }
 
     public boolean isStopped(String name) {

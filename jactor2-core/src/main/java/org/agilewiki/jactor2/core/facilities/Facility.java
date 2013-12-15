@@ -372,6 +372,27 @@ public class Facility extends CloserBase {
         closeAll();
     }
 
+    public void fail(final Object reason) throws Exception {
+        if (startClosing) {
+            plantImpl.putPropertyAReq(failedKey(name), reason,
+                    null).signal();
+            return;
+        }
+        startClosing = true;
+        final Plant plant = getPlant();
+        if ((plant != null) && (plantImpl != Facility.this && !plantImpl.startedClosing())) {
+            new PropertiesTransactionAReq(plantImpl.getPropertiesProcessor().commonReactor,
+                    plantImpl.getPropertiesProcessor()){
+                protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+                    _changeManager.put(FACILITY_PROPERTY_PREFIX + name, null);
+                    _changeManager.put(failedKey(name), reason);
+                }}.signal();
+            plantImpl.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+                    null).signal();
+        }
+        closeAll();
+    }
+
 
     protected void close2() throws Exception {
         if (shuttingDown) {

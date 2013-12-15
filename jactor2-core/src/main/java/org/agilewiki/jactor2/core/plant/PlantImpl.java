@@ -325,10 +325,19 @@ public class PlantImpl extends Facility {
     public void stopFacility(final String _facilityName) throws Exception {
         Facility facility = getFacility(_facilityName);
         if (facility == null) {
-            putPropertyAReq(FACILITY_PROPERTY_PREFIX + name, null).signal();
+            putPropertyAReq(stoppedKey(name), true).signal();
             return;
         }
         facility.stop();
+    }
+
+    public void failFacility(final String _facilityName, final Object reason) throws Exception {
+        Facility facility = getFacility(_facilityName);
+        if (facility == null) {
+            putPropertyAReq(failedKey(name), reason).signal();
+            return;
+        }
+        facility.fail(reason);
     }
 
     @Override
