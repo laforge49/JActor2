@@ -69,7 +69,7 @@ public final class Durables {
     public static AsyncRequest<FactoryLocator> createFactoryLocatorAReq(
             final Facility _facility, final String _bundleName,
             final String _version, final String _location) throws Exception {
-        return new AsyncRequest<FactoryLocator>(_facility.getInternalReactor()) {
+        return new AsyncRequest<FactoryLocator>(_facility.getReactor()) {
             AsyncResponseProcessor<FactoryLocator> dis = this;
 
             @Override

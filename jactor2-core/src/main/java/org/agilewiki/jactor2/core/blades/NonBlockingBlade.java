@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * <p>
@@ -30,5 +31,10 @@ public class NonBlockingBlade extends BladeBase {
     public NonBlockingBlade(final NonBlockingReactor _nonBlockingReactor)
             throws Exception {
         initialize(_nonBlockingReactor);
+    }
+
+    @Override
+    public NonBlockingReactor getReactor() {
+        return (NonBlockingReactor) super.getReactor();
     }
 }

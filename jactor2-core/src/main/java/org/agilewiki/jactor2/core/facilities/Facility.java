@@ -104,7 +104,7 @@ public class Facility extends CloserBase {
     /**
      * The facility's internal reactor for managing the auto closeable set and for closing itself.
      */
-    protected InternalReactor internalReactor;
+    protected NonBlockingReactor internalReactor;
 
     /**
      * Set when the facility reaches end-of-life.
@@ -278,8 +278,9 @@ public class Facility extends CloserBase {
         }.signal();
     }
 
-    public InternalReactor getInternalReactor() {
-        return internalReactor;
+    @Override
+    public NonBlockingReactor getReactor() {
+        return (NonBlockingReactor) super.getReactor();
     }
 
     public PropertiesProcessor getPropertiesProcessor() {

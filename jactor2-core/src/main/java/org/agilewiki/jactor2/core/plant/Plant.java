@@ -1,7 +1,10 @@
 package org.agilewiki.jactor2.core.plant;
 
+import org.agilewiki.jactor2.core.blades.Blade;
+import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.util.Recovery;
 
 public class Plant implements BasicPlant {
@@ -41,6 +44,11 @@ public class Plant implements BasicPlant {
     @Override
     public PlantImpl asPlantImpl() {
         return plantImpl;
+    }
+
+    @Override
+    public NonBlockingReactor getReactor() {
+        return plantImpl.getReactor();
     }
 
     @Override
