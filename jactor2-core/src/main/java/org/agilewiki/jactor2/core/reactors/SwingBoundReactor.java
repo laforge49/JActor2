@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 import javax.swing.*;
@@ -77,7 +78,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
 
     }
 
-    public SwingBoundReactor(final Plant _plant) throws Exception {
+    public SwingBoundReactor(final BasicPlant _plant) throws Exception {
         this(_plant.asFacility());
     }
 
@@ -94,7 +95,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 
-    public SwingBoundReactor(final Plant _plant,
+    public SwingBoundReactor(final BasicPlant _plant,
                              final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize);

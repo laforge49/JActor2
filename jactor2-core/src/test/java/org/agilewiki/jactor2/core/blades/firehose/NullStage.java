@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades.firehose;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -8,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 import java.util.List;
 
-public class NullStage extends BladeBase implements DataProcessor {
+public class NullStage extends IsolationBladeBase implements DataProcessor {
 
     private final DataProcessor next;
 
@@ -16,8 +17,8 @@ public class NullStage extends BladeBase implements DataProcessor {
 
     public NullStage(final Plant _plant, final DataProcessor _next)
             throws Exception {
+        super(new IsolationReactor(_plant));
         next = _next;
-        initialize(new IsolationReactor(_plant));
     }
 
     @Override

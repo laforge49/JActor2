@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -16,7 +17,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
  *                           change RequestBus instances.
  */
 abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable, IMMUTABLE_STATE, IMMUTABLE_CHANGES>
-        extends BladeBase {
+        extends IsolationBladeBase {
 
     /**
      * The state as of the completion of the last successful transaction.
@@ -62,7 +63,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
     protected TransactionProcessor(final IsolationReactor _isolationReactor,
                                 final CommonReactor _commonReactor,
                                 final IMMUTABLE_STATE _initialState) throws Exception {
-        initialize(_isolationReactor);
+        super(_isolationReactor);
         commonReactor = _commonReactor;
         immutableState = _initialState;
         validationBus = new RequestBus<IMMUTABLE_CHANGES>(_commonReactor);
