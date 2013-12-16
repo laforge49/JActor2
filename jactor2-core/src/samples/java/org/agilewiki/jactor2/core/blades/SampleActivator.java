@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
-public class SampleActivator extends BladeBase implements Activator {
+public class SampleActivator extends NonBlockingBladeBase implements Activator {
 
     @Override
     public AsyncRequest<Void> startAReq() {

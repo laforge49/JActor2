@@ -1,9 +1,8 @@
 package org.agilewiki.jactor2.core.messages;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class RequestSample {
 
@@ -39,13 +38,13 @@ public class RequestSample {
 }
 
 //A simple blades with state.
-class SampleBlade2 extends BladeBase {
+class SampleBlade2 extends NonBlockingBladeBase {
 
     //Initial state is 0.
     private int state = 0;
 
     //Create a SimpleBlade2.
-    SampleBlade2(final Reactor _reactor) throws Exception {
+    SampleBlade2(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -65,13 +64,13 @@ class SampleBlade2 extends BladeBase {
 }
 
 //A blades which operates on another blades.
-class IndirectBlade extends BladeBase {
+class IndirectBlade extends NonBlockingBladeBase {
 
     //The other blades.
     private final SampleBlade2 blade;
 
     //Create an IndirectBlade with a reference to another blades.
-    IndirectBlade(final SampleBlade2 _bladeA, final Reactor _reactor) throws Exception {
+    IndirectBlade(final SampleBlade2 _bladeA, final NonBlockingReactor _reactor) throws Exception {
         blade = _bladeA;
         initialize(_reactor);
     }

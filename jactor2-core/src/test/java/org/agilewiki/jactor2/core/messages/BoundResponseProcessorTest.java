@@ -1,10 +1,9 @@
 package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
@@ -19,7 +18,7 @@ public class BoundResponseProcessorTest extends TestCase {
     }
 }
 
-class Driver extends BladeBase {
+class Driver extends NonBlockingBladeBase {
     private AsyncRequest<String> doitReq;
 
     public AsyncRequest<String> doitAReq() {
@@ -27,7 +26,7 @@ class Driver extends BladeBase {
     }
 
     @Override
-    public void initialize(final Reactor _reactor) throws Exception {
+    public void initialize(final NonBlockingReactor _reactor) throws Exception {
         super.initialize(_reactor);
 
         doitReq = new AsyncRequest<String>(_reactor) {

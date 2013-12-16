@@ -1,17 +1,17 @@
 package org.agilewiki.jactor2.core.messages;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * Test code.
  */
-public class Blade1 extends NonBlockingBladeBase {
+public class Blade11 extends IsolationBladeBase {
 
-    public Blade1(final NonBlockingReactor mbox) throws Exception {
-        initialize(mbox);
+    public Blade11(final IsolationReactor mbox) throws Exception {
+        super(mbox);
     }
 
     public SyncRequest<String> hiSReq() {

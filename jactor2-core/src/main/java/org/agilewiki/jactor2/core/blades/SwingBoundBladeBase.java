@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 
 public class SwingBoundBladeBase extends BladeBase implements SwingBoundBlade {
     public SwingBoundBladeBase(final SwingBoundReactor _reactor) throws Exception {
-        initialize(_reactor);
+        _initialize(_reactor);
     }
 
     @Override

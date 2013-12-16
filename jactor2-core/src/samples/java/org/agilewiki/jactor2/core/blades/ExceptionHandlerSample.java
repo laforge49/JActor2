@@ -39,10 +39,10 @@ public class ExceptionHandlerSample {
 }
 
 //A blades with a request that throws an exception.
-class ExceptionBlade extends BladeBase {
+class ExceptionBlade extends NonBlockingBladeBase {
 
     //Create an ExceptionBlade.
-    ExceptionBlade(final Reactor _reactor) throws Exception {
+    ExceptionBlade(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -58,13 +58,13 @@ class ExceptionBlade extends BladeBase {
 }
 
 //A blades with an exception handler.
-class ExceptionHandlerBlade extends BladeBase {
+class ExceptionHandlerBlade extends NonBlockingBladeBase {
 
     //A blades with a request that throws an exception.
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blades with a reference to an exception blades.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final Reactor _reactor) throws Exception {
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final NonBlockingReactor _reactor) throws Exception {
         exceptionBlade = _exceptionBlade;
         initialize(_reactor);
     }

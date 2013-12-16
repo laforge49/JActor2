@@ -59,7 +59,7 @@ public class PropertiesProcessor extends TransactionProcessor
      * @param _initialState     The initial state of the property map.
      */
     public PropertiesProcessor(final IsolationReactor _isolationReactor,
-                               final CommonReactor _commonReactor,
+                               final NonBlockingReactor _commonReactor,
                                final Map<String, Object> _initialState) throws Exception {
         super(_isolationReactor, _commonReactor, from(_initialState));
     }

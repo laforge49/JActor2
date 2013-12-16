@@ -23,7 +23,7 @@ public class ThreadBoundTest extends TestCase {
                     }
                 }
             });
-            final Blade1 blade1 = new Blade1(reactor);
+            final Blade11 blade1 = new Blade11(reactor);
             String response = blade1.hiSReq().call();
             System.out.println(response);
             assertEquals("Hello world!", response);

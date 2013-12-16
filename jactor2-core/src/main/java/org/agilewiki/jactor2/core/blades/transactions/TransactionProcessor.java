@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
@@ -61,7 +60,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
      * @param _initialState        The initial state to be used.
      */
     protected TransactionProcessor(final IsolationReactor _isolationReactor,
-                                final CommonReactor _commonReactor,
+                                final NonBlockingReactor _commonReactor,
                                 final IMMUTABLE_STATE _initialState) throws Exception {
         super(_isolationReactor);
         commonReactor = _commonReactor;

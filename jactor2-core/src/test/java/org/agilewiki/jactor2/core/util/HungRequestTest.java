@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
@@ -28,9 +28,9 @@ public class HungRequestTest extends TestCase {
     }
 }
 
-class Hanger extends BladeBase {
+class Hanger extends NonBlockingBladeBase {
 
-    public Hanger(final Reactor mbox) throws Exception {
+    public Hanger(final NonBlockingReactor mbox) throws Exception {
         initialize(mbox);
     }
 
@@ -44,11 +44,11 @@ class Hanger extends BladeBase {
     }
 }
 
-class Hung extends BladeBase {
+class Hung extends NonBlockingBladeBase {
 
     private Hanger hanger;
 
-    public Hung(final Reactor mbox, Hanger _hanger) throws Exception {
+    public Hung(final NonBlockingReactor mbox, Hanger _hanger) throws Exception {
         initialize(mbox);
         hanger = _hanger;
     }

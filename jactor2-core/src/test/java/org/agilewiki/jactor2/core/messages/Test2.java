@@ -12,7 +12,7 @@ public class Test2 extends TestCase {
     public void testa() throws Exception {
         System.out.println("testa");
         final Plant plant = new Plant();
-        final Reactor reactor = new NonBlockingReactor(plant);
+        final NonBlockingReactor reactor = new NonBlockingReactor(plant);
         final Blade1 blade1 = new Blade1(reactor);
         final Blade2 blade2 = new Blade2(reactor);
         final String result = blade2.hi2AReq(blade1).call();

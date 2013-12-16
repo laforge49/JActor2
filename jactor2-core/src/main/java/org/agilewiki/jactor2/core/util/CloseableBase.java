@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.util;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -12,6 +13,10 @@ public class CloseableBase extends BladeBase implements Closeable {
     private Set<Closer> closers = Collections.newSetFromMap(new ConcurrentHashMap<Closer, Boolean>(8, 0.9f, 1));
 
     private volatile boolean closing;
+
+    public void initialize(final Reactor _reactor) throws Exception {
+        _initialize(_reactor);
+    }
 
     @Override
     public void addCloser(final Closer _closer) throws ServiceClosedException {

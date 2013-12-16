@@ -18,7 +18,7 @@ public class BlockingBladeBase extends BladeBase implements BlockingBlade {
      * @param _reactor The reactor used by the blocking blade.
      */
     public BlockingBladeBase(final BlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        _initialize(_reactor);
     }
 
     @Override

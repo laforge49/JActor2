@@ -5,6 +5,6 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class NonBlockingBladeSample extends NonBlockingBladeBase {
     public NonBlockingBladeSample(final Facility _facility) throws Exception {
-        super(new NonBlockingReactor(_facility));
+        initialize(new NonBlockingReactor(_facility));
     }
 }

@@ -1,10 +1,11 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <CONTENT> The type of content.
  */
-public class RequestBus<CONTENT> extends BladeBase {
+public class RequestBus<CONTENT> extends NonBlockingBladeBase {
     final Set<Subscription<CONTENT>> subscriptions =
             Collections.newSetFromMap(new ConcurrentHashMap<Subscription<CONTENT>, Boolean>());
 
@@ -25,7 +26,7 @@ public class RequestBus<CONTENT> extends BladeBase {
      *
      * @param _reactor The blade's reactor.
      */
-    public RequestBus(final CommonReactor _reactor) throws Exception {
+    public RequestBus(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 

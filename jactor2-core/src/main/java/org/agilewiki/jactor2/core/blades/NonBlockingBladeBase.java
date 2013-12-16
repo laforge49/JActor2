@@ -28,9 +28,9 @@ public class NonBlockingBladeBase extends BladeBase implements NonBlockingBlade 
      * @param _nonBlockingReactor A targetReactor for blades which process messages
      *                            quickly and without blocking the thread.
      */
-    public NonBlockingBladeBase(final NonBlockingReactor _nonBlockingReactor)
+    public void initialize(final NonBlockingReactor _nonBlockingReactor)
             throws Exception {
-        initialize(_nonBlockingReactor);
+        _initialize(_nonBlockingReactor);
     }
 
     @Override

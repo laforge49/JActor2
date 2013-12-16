@@ -6,21 +6,7 @@ import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-/**
- * <p>
- * BladeBase is a convenience class that implements an Blade. Initialization is not
- * thread-safe, so it should be done before a reference to the blades is shared.
- * </p>
- * <h3>Sample Usage:</h3>
- * <pre>
- * public class BladeBaseSample extends BladeBase {
- *     public BladeBaseSample(final Reactor _messageProcessor) throws Exception {
- *         initialize(_messageProcessor);
- *     }
- * }
- * </pre>
- */
-public class BladeBase implements Blade {
+public abstract class BladeBase implements Blade {
     /**
      * The blades's targetReactor.
      */
@@ -47,7 +33,7 @@ public class BladeBase implements Blade {
      *
      * @param _reactor The blades's targetReactor.
      */
-    public void initialize(final Reactor _reactor) throws Exception {
+    protected void _initialize(final Reactor _reactor) throws Exception {
         if (initialized) {
             throw new IllegalStateException("Already initialized " + this);
         }

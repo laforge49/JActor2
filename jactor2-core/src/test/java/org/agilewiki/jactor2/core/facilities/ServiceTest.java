@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.facilities;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
@@ -52,11 +52,11 @@ public class ServiceTest extends TestCase {
     }
 }
 
-class Client extends BladeBase {
+class Client extends NonBlockingBladeBase {
 
     Server server;
 
-    Client(final Reactor reactor, final Server _server) throws Exception {
+    Client(final NonBlockingReactor reactor, final Server _server) throws Exception {
         initialize(reactor);
         server = _server;
     }
@@ -88,8 +88,8 @@ class Client extends BladeBase {
     }
 }
 
-class Server extends BladeBase {
-    Server(final Reactor reactor) throws Exception {
+class Server extends NonBlockingBladeBase {
+    Server(final NonBlockingReactor reactor) throws Exception {
         initialize(reactor);
     }
 

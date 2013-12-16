@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 public class ThreadBoundBladeBase extends BladeBase implements ThreadBoundBlade {
     public ThreadBoundBladeBase(final ThreadBoundReactor _reactor) throws Exception {
-        initialize(_reactor);
+        _initialize(_reactor);
     }
 
     @Override

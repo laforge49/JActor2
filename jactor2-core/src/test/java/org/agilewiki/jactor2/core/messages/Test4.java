@@ -12,14 +12,8 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class Test4 extends TestCase {
     public void testb() throws Exception {
         final Plant plant = new Plant();
-        final Reactor reactor = new NonBlockingReactor(plant);
+        final NonBlockingReactor reactor = new NonBlockingReactor(plant);
         new Blade4(reactor).hi4SReq().call();
-        plant.close();
-    }
-
-    public void testd() throws Exception {
-        final Plant plant = new Plant();
-        new Blade4(new IsolationReactor(plant)).hi4SReq().call();
         plant.close();
     }
 }
