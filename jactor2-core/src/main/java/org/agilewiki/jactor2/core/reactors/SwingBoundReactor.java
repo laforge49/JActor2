@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
@@ -76,6 +77,10 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
 
     }
 
+    public SwingBoundReactor(final Plant _plant) throws Exception {
+        this(_plant.asFacility());
+    }
+
     /**
      * Create a targetReactor bound to the Swing event-dispatch thread.
      *
@@ -84,9 +89,15 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      */
     public SwingBoundReactor(final Facility _facility,
-            final int _initialOutboxSize, final int _initialLocalQueueSize)
+                             final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, null);
+    }
+
+    public SwingBoundReactor(final Plant _plant,
+                             final int _initialOutboxSize, final int _initialLocalQueueSize)
+            throws Exception {
+        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override

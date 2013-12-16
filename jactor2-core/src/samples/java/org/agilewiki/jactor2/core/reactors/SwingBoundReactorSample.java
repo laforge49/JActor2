@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 
@@ -8,18 +8,16 @@ import javax.swing.*;
 
 public class SwingBoundReactorSample {
     public static void main(final String[] _args) throws Exception {
-
-        new HelloWorld().createAndShowAReq().signal();
-    }
-}
-
-class HelloWorld extends BladeBase {
-    HelloWorld() throws Exception {
-
         //Create a plant with 5 threads.
         Plant plant = new Plant(5);
 
-        initialize(new SwingBoundReactor(plant.asFacility()));
+        new HelloWorld(new SwingBoundReactor(plant)).createAndShowAReq().signal();
+    }
+}
+
+class HelloWorld extends SwingBoundBladeBase {
+    HelloWorld(final SwingBoundReactor _reactor) throws Exception {
+        super(_reactor);
     }
 
     AsyncRequest<Void> createAndShowAReq() {
