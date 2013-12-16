@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
@@ -15,7 +16,7 @@ public class ThreadBoundReactorSample {
         final Thread mainThread = Thread.currentThread();
 
         //Create a thread-bound processing.
-        final ThreadBoundReactor boundMessageProcessor =
+        final ThreadBoundReactor reactor =
                 new ThreadBoundReactor(plant, new Runnable() {
                     @Override
                     public void run() {
@@ -25,7 +26,7 @@ public class ThreadBoundReactorSample {
                 });
 
         //Create an blades that uses the thread-bound processing.
-        final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
+        final SampleThreadBoundBlade threadBoundBlade = new SampleThreadBoundBlade(reactor);
 
         //Terminate the blades.
         new SyncRequest<Void>(threadBoundBlade.getReactor()) {
@@ -44,16 +45,16 @@ public class ThreadBoundReactorSample {
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 //Process messages when the main thread is interrupted.
-                boundMessageProcessor.run();
+                reactor.run();
             }
         }
     }
 }
 
-class ThreadBoundBlade extends BladeBase {
+class SampleThreadBoundBlade extends ThreadBoundBladeBase {
 
-    ThreadBoundBlade(final Reactor _reactor) throws Exception {
-        initialize(_reactor);
+    SampleThreadBoundBlade(final ThreadBoundReactor _reactor) throws Exception {
+        super(_reactor);
     }
 
     //Print "finished" and exit when fin is called.

@@ -11,8 +11,8 @@ public class ActivatorFailure {
             try {
                 plant.createFacilityAReq("a").call();
             } catch (ServiceClosedException e) {
-                plant.getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
-                System.out.println(plant.getPropertiesProcessor().getImmutableState());
+                plant.asFacility().getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
+                System.out.println(plant.asFacility().getPropertiesProcessor().getImmutableState());
             }
         } finally {
             plant.close();

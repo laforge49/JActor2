@@ -19,7 +19,7 @@ class HelloWorld extends BladeBase {
         //Create a plant with 5 threads.
         Plant plant = new Plant(5);
 
-        initialize(new SwingBoundReactor(plant));
+        initialize(new SwingBoundReactor(plant.asFacility()));
     }
 
     AsyncRequest<Void> createAndShowAReq() {
