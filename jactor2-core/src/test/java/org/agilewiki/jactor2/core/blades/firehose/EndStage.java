@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 public class EndStage extends IsolationBladeBase implements DataProcessor {
 
     public EndStage(final Plant _plant) throws Exception {
-        super(new IsolationReactor(_plant));
+        initialize(new IsolationReactor(_plant));
     }
 
     @Override

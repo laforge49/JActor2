@@ -12,11 +12,11 @@ import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 public class Delay extends BlockingBladeBase {
 
     public Delay(final Plant _plant) throws Exception {
-        super(new BlockingReactor(_plant));
+        initialize(new BlockingReactor(_plant));
     }
 
     public Delay(final Facility _facility) throws Exception {
-        super(new BlockingReactor(_facility));
+        initialize(new BlockingReactor(_facility));
     }
 
     /**
@@ -25,7 +25,7 @@ public class Delay extends BlockingBladeBase {
      * @param _reactor The blades's facility.
      */
     public Delay(final BlockingReactor _reactor) throws Exception {
-        super(_reactor);
+        initialize(_reactor);
     }
 
     /**

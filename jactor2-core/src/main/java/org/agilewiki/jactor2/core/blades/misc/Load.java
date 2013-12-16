@@ -18,7 +18,7 @@ public class Load extends BlockingBladeBase {
      * @param _facility The blades's facility.
      */
     public Load(final Facility _facility) throws Exception {
-        super(new BlockingReactor(_facility));
+        initialize(new BlockingReactor(_facility));
     }
 
     /**
@@ -27,7 +27,7 @@ public class Load extends BlockingBladeBase {
      * @param _reactor The blades's facility.
      */
     public Load(final BlockingReactor _reactor) throws Exception {
-        super(_reactor);
+        initialize(_reactor);
     }
 
     /**

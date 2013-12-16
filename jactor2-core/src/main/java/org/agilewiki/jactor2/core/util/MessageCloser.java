@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
-import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.messages.Message;
+import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 
 import java.util.HashSet;
 import java.util.Iterator;

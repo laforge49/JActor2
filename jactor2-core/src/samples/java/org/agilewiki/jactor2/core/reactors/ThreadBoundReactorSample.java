@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 public class ThreadBoundReactorSample {
 
@@ -53,7 +53,7 @@ public class ThreadBoundReactorSample {
 class SampleThreadBoundBlade extends ThreadBoundBladeBase {
 
     SampleThreadBoundBlade(final ThreadBoundReactor _reactor) throws Exception {
-        super(_reactor);
+        initialize(_reactor);
     }
 
     //Print "finished" and exit when fin is called.

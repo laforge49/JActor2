@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 import javax.swing.*;
 
@@ -17,7 +17,7 @@ public class SwingBoundReactorSample {
 
 class HelloWorld extends SwingBoundBladeBase {
     HelloWorld(final SwingBoundReactor _reactor) throws Exception {
-        super(_reactor);
+        initialize(_reactor);
     }
 
     AsyncRequest<Void> createAndShowAReq() {

@@ -1,9 +1,5 @@
 package org.agilewiki.jactor2.utilImpl.durable;
 
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.AncestorBase;
@@ -11,6 +7,10 @@ import org.agilewiki.jactor2.util.durable.Factory;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;
 import org.agilewiki.jactor2.util.durable.FactoryLocatorClosedException;
 import org.agilewiki.jactor2.util.durable.JASerializable;
+
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * An actor for defining jid types and creating instances.

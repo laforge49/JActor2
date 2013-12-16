@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.blades.firehose;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -11,7 +10,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstStage extends BladeBase implements Runnable {
+public class FirstStage extends IsolationBladeBase implements Runnable {
 
     private DataProcessor next;
 
@@ -39,7 +38,7 @@ public class FirstStage extends BladeBase implements Runnable {
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        _initialize(new IsolationReactor(_plant, this));
+        initialize(new IsolationReactor(_plant, this));
         ack = new BoundResponseProcessor<Void>(this,
                 new AsyncResponseProcessor<Void>() {
                     @Override

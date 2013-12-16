@@ -9,7 +9,6 @@ import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class ServiceTest extends TestCase {
     public void test() throws Exception {

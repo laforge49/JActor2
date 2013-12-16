@@ -7,10 +7,10 @@ import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutableProper
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChangesFilter;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -158,7 +158,7 @@ public class Printer extends BlockingBladeBase {
     public Printer(final BlockingReactor _reactor,
             final PrintStream _printStream, final Locale _locale)
             throws Exception {
-        super(_reactor);
+        initialize(_reactor);
         printStream = _printStream;
         locale = _locale;
     }

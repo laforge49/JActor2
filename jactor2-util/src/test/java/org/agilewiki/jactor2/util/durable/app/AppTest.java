@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.util.durable.app;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.util.durable.Durables;
 import org.agilewiki.jactor2.util.durable.FactoryLocator;

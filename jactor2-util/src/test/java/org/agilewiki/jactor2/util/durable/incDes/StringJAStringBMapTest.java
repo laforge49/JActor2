@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.util.durable.Durables;
 

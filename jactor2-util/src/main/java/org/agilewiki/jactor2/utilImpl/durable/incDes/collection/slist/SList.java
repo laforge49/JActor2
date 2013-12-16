@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.collection.slist;
 
-import java.util.ArrayList;
-
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -14,6 +12,8 @@ import org.agilewiki.jactor2.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
 import org.agilewiki.jactor2.utilImpl.durable.incDes.IncDesImpl;
 import org.agilewiki.jactor2.utilImpl.durable.incDes.collection.CollectionImpl;
+
+import java.util.ArrayList;
 
 /**
  * Holds an ArrayList of JID actors, all of the same type.

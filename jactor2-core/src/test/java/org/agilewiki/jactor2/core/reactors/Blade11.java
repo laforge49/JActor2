@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
@@ -10,7 +9,7 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 public class Blade11 extends ThreadBoundBladeBase {
 
     public Blade11(final ThreadBoundReactor mbox) throws Exception {
-        super(mbox);
+        initialize(mbox);
     }
 
     public SyncRequest<String> hiSReq() {

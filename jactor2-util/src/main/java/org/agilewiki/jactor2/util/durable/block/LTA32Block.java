@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.util.durable.block;
 
-import java.util.zip.Adler32;
-
 import org.agilewiki.jactor2.util.durable.incDes.JALong;
 import org.agilewiki.jactor2.utilImpl.durable.AppendableBytes;
+
+import java.util.zip.Adler32;
 
 /**
  * A block with a length, timestamp and Adler32 checksum in the header.

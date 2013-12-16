@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
-import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
  * A targetReactor for blades which process messages quickly and without blocking the thread.

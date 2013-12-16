@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
-import java.util.Arrays;
-
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.RequestBase;
@@ -16,6 +14,8 @@ import org.agilewiki.jactor2.util.durable.incDes.IncDes;
 import org.agilewiki.jactor2.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
+
+import java.util.Arrays;
 
 /**
  * Base class for Incremental Deserialization Actors.

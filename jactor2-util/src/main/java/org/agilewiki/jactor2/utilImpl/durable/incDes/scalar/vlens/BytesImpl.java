@@ -1,10 +1,5 @@
 package org.agilewiki.jactor2.utilImpl.durable.incDes.scalar.vlens;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -15,6 +10,11 @@ import org.agilewiki.jactor2.utilImpl.durable.AppendableBytes;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryImpl;
 import org.agilewiki.jactor2.utilImpl.durable.FactoryLocatorImpl;
 import org.agilewiki.jactor2.utilImpl.durable.ReadableBytes;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * A JID component that holds a byte array.

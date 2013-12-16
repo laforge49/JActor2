@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.blades.transactions.properties;
 
 import org.agilewiki.jactor2.core.blades.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.util.immutable.HashTreePProperties;

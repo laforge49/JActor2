@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.util.durable.block;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.util.durable.Durables;
