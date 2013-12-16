@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
-import org.agilewiki.jactor2.core.blades.BlockingBlade;
+import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
@@ -45,7 +45,7 @@ import java.util.Locale;
  * }
  * </pre>
  */
-public class Printer extends BlockingBlade {
+public class Printer extends BlockingBladeBase {
 
     public static AsyncRequest<Void> printlnAReq(final Plant _plant,
             final String _string) throws Exception {
