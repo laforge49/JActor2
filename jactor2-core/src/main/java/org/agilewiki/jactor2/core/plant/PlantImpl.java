@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChang
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.FacilityImpl;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -20,7 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.SortedMap;
 
-public class PlantImpl extends Facility {
+public class PlantImpl extends FacilityImpl {
 
     /**
      * System property flag, jactor.debug, to turn on debug;
@@ -46,26 +47,21 @@ public class PlantImpl extends Facility {
     /**
      * The thread pool.
      */
-    private final ThreadManager threadManager;
+    private ThreadManager threadManager;
 
-    /**
-     * Create a Plant.
-     */
-    public PlantImpl(final Plant _plant) throws Exception {
-        this(_plant, new PlantConfiguration());
-    }
-
-    /**
-     * Create a Plant.
-     *
-     * @param _threadCount The thread pool size.
-     */
-    public PlantImpl(final Plant _plant, final int _threadCount) throws Exception {
-        this(_plant, new PlantConfiguration(_threadCount));
-    }
-
-    public PlantImpl(final Plant _plant, final PlantConfiguration _plantConfiguration) throws Exception {
+    public PlantImpl() throws Exception {
         super(PLANT_NAME);
+    }
+
+    public void initialize(final Plant _plant) throws Exception {
+        initialize(_plant, new PlantConfiguration());
+    }
+
+    public void initialize(final Plant _plant, final int _threadCount) throws Exception {
+        initialize(_plant, new PlantConfiguration(_threadCount));
+    }
+
+    public void initialize(final Plant _plant, final PlantConfiguration _plantConfiguration) throws Exception {
         _plantConfiguration.initialize();
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
@@ -100,7 +96,7 @@ public class PlantImpl extends Facility {
                     String key = pc.name;
                     Object newValue = pc.newValue;
                     if (key.startsWith(FACILITY_PROPERTY_PREFIX) && newValue != null) {
-                        String facilityName = ((Facility) newValue).name;
+                        String facilityName = ((FacilityImpl) newValue).name;
                         ImmutableProperties<Object> immutableProperties = _content.immutableProperties;
                         ImmutableProperties<Object> facilityProperties = immutableProperties.subMap(FACILITY_PREFIX);
                         Iterator<String> kit = facilityProperties.keySet().iterator();
@@ -147,7 +143,7 @@ public class PlantImpl extends Facility {
                         Closeable closeable = it.next();
                         if (!(closeable instanceof Facility))
                             continue;
-                        Facility facility = (Facility) closeable;
+                        FacilityImpl facility = (FacilityImpl) closeable;
                         facility.facilityPoll();
                     }
                     facilityPoll();
@@ -239,7 +235,7 @@ public class PlantImpl extends Facility {
             protected void processAsyncRequest() throws Exception {
                 if (getFacility(_name) != null)
                     processAsyncResponse(getFacility(_name));
-                final Facility facility = new Facility(_name);
+                final FacilityImpl facility = new FacilityImpl(_name);
 
                 facility.recovery = (Recovery) getProperty(recoveryKey(_name));
                 if (facility.recovery == null)
@@ -323,7 +319,7 @@ public class PlantImpl extends Facility {
     }
 
     public void stopFacility(final String _facilityName) throws Exception {
-        Facility facility = getFacility(_facilityName);
+        FacilityImpl facility = getFacility(_facilityName);
         if (facility == null) {
             putPropertyAReq(stoppedKey(name), true).signal();
             return;
@@ -332,7 +328,7 @@ public class PlantImpl extends Facility {
     }
 
     public void failFacility(final String _facilityName, final Object reason) throws Exception {
-        Facility facility = getFacility(_facilityName);
+        FacilityImpl facility = getFacility(_facilityName);
         if (facility == null) {
             putPropertyAReq(failedKey(name), reason).signal();
             return;
@@ -451,8 +447,8 @@ public class PlantImpl extends Facility {
         return (String) getProperty(activatorKey(_facilityName));
     }
 
-    public Facility getFacility(String name) {
-        return (Facility) getProperty(FACILITY_PROPERTY_PREFIX + name);
+    public FacilityImpl getFacility(String name) {
+        return (FacilityImpl) getProperty(FACILITY_PROPERTY_PREFIX + name);
     }
 
     public AsyncRequest<Void> autoStartAReq(final String _facilityName, final boolean _newValue) {
@@ -485,7 +481,7 @@ public class PlantImpl extends Facility {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                Facility facility = getFacility(_facilityName);
+                FacilityImpl facility = getFacility(_facilityName);
                 if (facility != null)
                     facility.close();
                 send(new PropertiesTransactionAReq(propertiesProcessor.commonReactor,

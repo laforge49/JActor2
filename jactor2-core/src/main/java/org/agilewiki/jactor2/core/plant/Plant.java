@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.util.Recovery;
+import org.slf4j.Logger;
 
 public class Plant implements BasicPlant {
 
@@ -14,15 +15,18 @@ public class Plant implements BasicPlant {
     private final PlantImpl plantImpl;
 
     public Plant() throws Exception {
-        plantImpl = new PlantImpl(this);
+        plantImpl = new PlantImpl();
+        plantImpl.initialize(this);
     }
 
     public Plant(final int _threadCount) throws Exception {
-        plantImpl = new PlantImpl(this, _threadCount);
+        plantImpl = new PlantImpl();
+        plantImpl.initialize(this, _threadCount);
     }
 
     public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
-        plantImpl = new PlantImpl(this, _plantConfiguration);
+        plantImpl = new PlantImpl();
+        plantImpl.initialize(this, _plantConfiguration);
     }
 
     public BasicPlant asBasicPlant() {
@@ -146,5 +150,10 @@ public class Plant implements BasicPlant {
 
     public Facility getFacility(String name) {
         return plantImpl.getFacility(name);
+    }
+
+    @Override
+    public Logger getLog() {
+        return plantImpl.getLog();
     }
 }

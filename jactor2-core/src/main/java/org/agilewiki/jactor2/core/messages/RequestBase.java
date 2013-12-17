@@ -246,7 +246,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (PlantImpl.DEBUG) {
             debugTimestamp = System.nanoTime();
             final Facility targetFacility = targetReactor.getFacility();
-            final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
+            final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
             Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet == null) {
                 nanoSet = Collections
@@ -263,7 +263,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         response = _response;
         if (PlantImpl.DEBUG) {
             final Facility targetFacility = targetReactor.getFacility();
-            final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.pendingRequests;
+            final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
             final Set<RequestBase> nanoSet = pendingRequests
                     .get(debugTimestamp);
             if (nanoSet != null) {
@@ -465,7 +465,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     @Override
     public String toString() {
-        return "facility=" + targetReactor.getFacility().name +
+        return "facility=" + targetReactor.getFacility().asFacilityImpl().name +
                 ", message=" + getClass().getName() +
                 ", isClosed=" + isClosed() +
                 ", isSignal=" + isSignal() +

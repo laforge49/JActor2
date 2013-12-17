@@ -106,7 +106,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
 
     public ThreadBoundReactor(final Facility _facility,
                               final Runnable _boundProcessor) throws Exception {
-        super(_facility, _facility.getInitialBufferSize(), _facility
+        super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize());
         boundProcessor = _boundProcessor;
     }

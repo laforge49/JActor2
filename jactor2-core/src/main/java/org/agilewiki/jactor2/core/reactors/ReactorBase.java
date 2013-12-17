@@ -80,10 +80,10 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
                        final int _initialLocalQueueSize) throws Exception {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
-        log = _facility.getLog();
+        log = _facility.asFacilityImpl().getLog();
         outbox = new Outbox(this, _initialBufferSize);
-        recovery = _facility.recovery;
-        scheduler = _facility.scheduler;
+        recovery = _facility.asFacilityImpl().recovery;
+        scheduler = _facility.asFacilityImpl().scheduler;
         initialize(this);
         addClose();
     }
@@ -154,7 +154,7 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         }
         try {
             if (currentMessage == null)
-                log.error("hung thread facility=%s", getFacility().name);
+                log.error("hung thread facility=%s", getFacility().asFacilityImpl().name);
             else {
                 log.error("hung thread\n" + currentMessage.toString());
             }

@@ -12,7 +12,7 @@ public class SampleActivator extends NonBlockingBladeBase implements Activator {
         return new AsyncBladeRequest<Void>() {
             @Override
             protected void processAsyncRequest() throws Exception {
-                System.out.println("activated: "+getReactor().getFacility().name);
+                System.out.println("activated: "+getReactor().getFacility().getName());
                 this.processAsyncResponse(null);
             }
         };

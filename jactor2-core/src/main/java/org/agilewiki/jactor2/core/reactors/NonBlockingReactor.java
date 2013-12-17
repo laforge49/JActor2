@@ -34,7 +34,7 @@ public class NonBlockingReactor extends UnboundReactor implements CommonReactor 
     }
 
     public NonBlockingReactor(final Facility _facility) throws Exception {
-        super(_facility, _facility.getInitialBufferSize(), _facility
+        super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize(), null);
     }
 
@@ -45,7 +45,7 @@ public class NonBlockingReactor extends UnboundReactor implements CommonReactor 
 
     public NonBlockingReactor(final Facility _facility, final Runnable _onIdle)
             throws Exception {
-        super(_facility, _facility.getInitialBufferSize(), _facility
+        super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize(), _onIdle);
     }
 

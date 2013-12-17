@@ -2,6 +2,8 @@ package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
 import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.slf4j.Logger;
 
 public interface BasicPlant extends NonBlockingBlade {
     Plant asPlant();
@@ -13,4 +15,5 @@ public interface BasicPlant extends NonBlockingBlade {
     void exit();
     boolean isForcedExit();
     void forceExit();
+    Logger getLog();
 }
