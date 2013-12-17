@@ -29,9 +29,9 @@ public class PlantImpl extends FacilityImpl {
     public static final boolean DEBUG = "true".equals(System
             .getProperty("jactor.debug"));
 
-    private static volatile Plant singleton;
+    private static volatile PlantImpl singleton;
 
-    public static Plant getSingleton() {
+    public static PlantImpl getSingleton() {
         if (singleton == null) {
             throw new IllegalStateException("there is no singleton");
         }
@@ -66,7 +66,7 @@ public class PlantImpl extends FacilityImpl {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
-        singleton = _plant;
+        singleton = this;
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
         }
@@ -132,6 +132,10 @@ public class PlantImpl extends FacilityImpl {
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
         _plantConfiguration.getScheduler().scheduleAtFixedRate(plantPoll(),
                 reactorPollMillis);
+    }
+
+    public Plant asPlant() {
+        return plant;
     }
 
     private Runnable plantPoll() {
