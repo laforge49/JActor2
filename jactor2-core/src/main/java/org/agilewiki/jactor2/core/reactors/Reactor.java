@@ -4,13 +4,16 @@ import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Closer;
 
 /**
  * The Reactor interface identifies the processing methods that can be used by applications.
  */
-public interface Reactor extends Runnable, Closeable, Closer, Blade {
+public interface Reactor extends AutoCloseable, Closer, Blade {
+
+    Plant getPlant();
 
     /**
      * Returns the facility.
@@ -43,9 +46,6 @@ public interface Reactor extends Runnable, Closeable, Closer, Blade {
      * @return True when the inbox is empty.
      */
     boolean isInboxEmpty();
-
-    @Override
-    void run();
 
     /**
      * Returns true if close() has been called already.

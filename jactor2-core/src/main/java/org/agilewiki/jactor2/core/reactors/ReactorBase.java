@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorBase extends MessageCloser implements Reactor, MessageSource {
+abstract public class ReactorBase extends MessageCloser implements Runnable, Reactor, MessageSource {
 
     private volatile boolean running;
 
@@ -345,6 +345,11 @@ abstract public class ReactorBase extends MessageCloser implements Reactor, Mess
         } catch (final Throwable t) {
             log.error("unable to add response message", t);
         }
+    }
+
+    @Override
+    public Plant getPlant() {
+        return facility.getPlant();
     }
 
     @Override
