@@ -13,7 +13,7 @@ import org.agilewiki.jactor2.core.util.Closer;
  */
 public interface Reactor extends AutoCloseable, Closer, Blade {
 
-    ReactorImpl getReactorImpl();
+    ReactorImpl asReactorImpl();
 
     Plant getPlant();
 

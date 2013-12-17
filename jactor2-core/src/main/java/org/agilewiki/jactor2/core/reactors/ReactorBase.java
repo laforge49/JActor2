@@ -16,7 +16,7 @@ abstract public class ReactorBase implements Reactor {
     }
 
     @Override
-    public ReactorImpl getReactorImpl() {
+    public ReactorImpl asReactorImpl() {
         return reactorImpl;
     }
 

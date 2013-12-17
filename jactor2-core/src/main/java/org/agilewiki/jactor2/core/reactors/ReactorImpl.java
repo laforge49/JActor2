@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorImpl extends MessageCloser implements Runnable, Reactor, MessageSource {
+abstract public class ReactorImpl extends MessageCloser implements Reactor, Runnable, MessageSource {
 
     private volatile boolean running;
 
@@ -86,6 +86,11 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Rea
         scheduler = _facility.asFacilityImpl().scheduler;
         initialize(this);
         addClose();
+    }
+
+    @Override
+    public ReactorImpl asReactorImpl() {
+        return this;
     }
 
     /**
