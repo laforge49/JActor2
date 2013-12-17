@@ -100,7 +100,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (_targetReactor == null) {
             throw new NullPointerException("targetMessageProcessor");
         }
-        targetReactor = (ReactorImpl) _targetReactor;
+        targetReactor = _targetReactor.asReactorImpl();
     }
 
     @Override
@@ -169,7 +169,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     private void doSend(final Reactor _source,
                         final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
-        final ReactorImpl source = (ReactorImpl) _source;
+        final ReactorImpl source = ((Reactor) _source).asReactorImpl();
         if (PlantImpl.DEBUG) {
             if (source instanceof ThreadBoundReactor) {
                 if (Thread.currentThread() instanceof PoolThread) {
@@ -258,7 +258,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     protected void setResponse(final Object _response,
                                final Reactor _activeReactor) {
-        ((ReactorImpl) _activeReactor).requestEnd(this);
+        ((Reactor) _activeReactor).asReactorImpl().requestEnd(this);
         unClosed = false;
         response = _response;
         if (PlantImpl.DEBUG) {
@@ -376,7 +376,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * Process a response.
      */
     protected void processResponseMessage() {
-        final ReactorImpl sourceMessageProcessor = (ReactorImpl) messageSource;
+        final ReactorImpl sourceMessageProcessor = ((Reactor) messageSource).asReactorImpl();
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);
         if (response instanceof Exception) {
@@ -394,7 +394,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     @Override
     public void processException(final Reactor _activeReactor,
                                  final Exception _e) {
-        final ReactorImpl activeMessageProcessor = (ReactorImpl) _activeReactor;
+        final ReactorImpl activeMessageProcessor = _activeReactor.asReactorImpl();
         final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
                 .getExceptionHandler();
         if (exceptionHandler != null) {

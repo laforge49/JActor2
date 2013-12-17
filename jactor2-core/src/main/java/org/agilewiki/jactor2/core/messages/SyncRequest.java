@@ -56,7 +56,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
      */
     private RESPONSE_TYPE doLocal(final Reactor _source) throws Exception {
         use();
-        final ReactorImpl messageProcessor = (ReactorImpl) _source;
+        final ReactorImpl messageProcessor = ((Reactor) _source).asReactorImpl();
         if (PlantImpl.DEBUG) {
             if (messageProcessor instanceof ThreadBoundReactor) {
                 if (Thread.currentThread() instanceof PoolThread) {

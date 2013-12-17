@@ -67,7 +67,7 @@ public class Outbox implements AutoCloseable {
         }
         if (buffer == null) {
             buffer = new ArrayDeque<Message>(initialBufferSize);
-            sendBuffer.put((ReactorImpl) _target, buffer);
+            sendBuffer.put(_target.asReactorImpl(), buffer);
         }
         buffer.add(_message);
         return true;

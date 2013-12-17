@@ -206,7 +206,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         try {
             ((AsyncRequest) oldMessage).pendingCheck();
         } catch (Exception e) {
-            oldMessage.processException((ReactorImpl) messageSource, e);
+            oldMessage.processException((Reactor) messageSource, e);
         }
     }
 

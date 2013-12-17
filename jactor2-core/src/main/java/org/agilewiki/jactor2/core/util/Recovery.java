@@ -28,7 +28,7 @@ public class Recovery {
     }
 
     public void hungResponse(final Message _message) throws Exception {
-        ReactorImpl reactor = (ReactorImpl) _message.getTargetReactor();
+        ReactorImpl reactor = _message.getTargetReactor().asReactorImpl();
         reactor.getLog().error("request hung -> reactor close");
         reactor.close();
     }

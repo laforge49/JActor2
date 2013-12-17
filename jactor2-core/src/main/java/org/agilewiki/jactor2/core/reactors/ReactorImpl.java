@@ -341,7 +341,7 @@ abstract public class ReactorImpl extends MessageCloser implements Reactor, Runn
     public final void incomingResponse(final Message _message,
                                        final Reactor _responseSource) {
         try {
-            final ReactorImpl responseSource = (ReactorImpl) _responseSource;
+            final ReactorImpl responseSource = _responseSource==null ? null : _responseSource.asReactorImpl();
             final boolean local = this == _responseSource;
             if (local || (_responseSource == null)
                     || !responseSource.buffer(_message, this)) {
