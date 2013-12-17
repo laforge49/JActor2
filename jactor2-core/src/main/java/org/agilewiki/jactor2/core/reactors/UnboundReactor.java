@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * UnboundReactor supports thread migration only between instances of this class.
  * </p>
  */
-abstract public class UnboundReactor extends ReactorImpl {
+abstract public class UnboundReactor extends ReactorImpl implements Reactor {
 
     /**
      * A reference to the thread that is executing this targetReactor.
@@ -40,6 +40,7 @@ abstract public class UnboundReactor extends ReactorImpl {
                           final int _initialOutboxSize, final int _initialLocalQueueSize,
                           final Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
+        initialize(this);
         onIdle = _onIdle;
     }
 

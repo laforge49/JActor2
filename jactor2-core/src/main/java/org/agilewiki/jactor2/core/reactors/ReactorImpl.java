@@ -69,28 +69,32 @@ abstract public class ReactorImpl extends MessageCloser implements Reactor, Runn
 
     private boolean startClosing;
 
-    /**
-     * Create a targetReactor.
-     *
-     * @param _facility              The facility of this targetReactor.
-     * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
-     * @param _initialLocalQueueSize The initial number of slots in the local queue.
-     */
+    private Reactor me;
+
     public ReactorImpl(final Facility _facility, final int _initialBufferSize,
-                       final int _initialLocalQueueSize) throws Exception {
+                       final int _initialLocalQueueSize) {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
         log = _facility.asFacilityImpl().getLog();
         outbox = new Outbox(this, _initialBufferSize);
         recovery = _facility.asFacilityImpl().recovery;
         scheduler = _facility.asFacilityImpl().scheduler;
-        initialize(this);
+    }
+
+    @Override
+    public void initialize(final Reactor _reactor) throws Exception {
+        me = _reactor;
+        super.initialize(this);
         addClose();
     }
 
     @Override
     public ReactorImpl asReactorImpl() {
         return this;
+    }
+
+    public Reactor asReactor() {
+        return me;
     }
 
     /**

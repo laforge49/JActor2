@@ -92,7 +92,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * finished
  * </pre>
  */
-public class ThreadBoundReactor extends ReactorImpl implements CommonReactor {
+public class ThreadBoundReactor extends ReactorImpl implements CommonReactor, Reactor {
 
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
@@ -108,6 +108,7 @@ public class ThreadBoundReactor extends ReactorImpl implements CommonReactor {
                               final Runnable _boundProcessor) throws Exception {
         super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize());
+        initialize(this);
         boundProcessor = _boundProcessor;
     }
 
@@ -121,6 +122,7 @@ public class ThreadBoundReactor extends ReactorImpl implements CommonReactor {
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _boundProcessor) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
+        initialize(this);
         boundProcessor = _boundProcessor;
     }
 
