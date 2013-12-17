@@ -19,7 +19,7 @@ public class Recovery {
         _reactor.close();
     }
 
-    public long getThreadInterruptMillis(final Reactor _reactor) {
+    public long getThreadInterruptMillis(final ReactorImpl _reactor) {
         return 1000;
     }
 

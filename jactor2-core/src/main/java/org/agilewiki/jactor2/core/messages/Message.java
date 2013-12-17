@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
 /**
  * Message wraps the user/application AsyncRequest/Event which are queued in the
@@ -39,7 +40,7 @@ public interface Message extends AutoCloseable {
      * @param _activeReactor The targetReactor providing the facility for processing the throwable.
      * @param _e             The exception to be processed.
      */
-    void processException(final Reactor _activeReactor, final Exception _e);
+    void processException(final ReactorImpl _activeReactor, final Exception _e);
 
     void close();
 
@@ -52,7 +53,7 @@ public interface Message extends AutoCloseable {
 
     boolean isSignal();
 
-    Reactor getTargetReactor();
+    ReactorImpl getTargetReactor();
 
     MessageSource getMessageSource();
 }

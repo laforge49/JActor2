@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorImpl extends MessageCloser implements Reactor, Runnable, MessageSource {
+abstract public class ReactorImpl extends MessageCloser implements Runnable, MessageSource {
 
     private volatile boolean running;
 
@@ -84,17 +84,16 @@ abstract public class ReactorImpl extends MessageCloser implements Reactor, Runn
     @Override
     public void initialize(final Reactor _reactor) throws Exception {
         me = _reactor;
-        super.initialize(this);
+        super.initialize(asReactor());
         addClose();
-    }
-
-    @Override
-    public ReactorImpl asReactorImpl() {
-        return this;
     }
 
     public Reactor asReactor() {
         return me;
+    }
+
+    public ReactorImpl asReactorImpl() {
+        return this;
     }
 
     /**
@@ -116,7 +115,6 @@ abstract public class ReactorImpl extends MessageCloser implements Reactor, Runn
         return startClosing;
     }
 
-    @Override
     public final boolean isClosing() {
         return shuttingDown;
     }
@@ -234,12 +232,10 @@ abstract public class ReactorImpl extends MessageCloser implements Reactor, Runn
         return inbox.hasConcurrent();
     }
 
-    @Override
     public final boolean isInboxEmpty() {
         return inbox.isEmpty();
     }
 
-    @Override
     public final ExceptionHandler setExceptionHandler(
             final ExceptionHandler _handler) {
         if (!isRunning()) {
@@ -317,7 +313,7 @@ abstract public class ReactorImpl extends MessageCloser implements Reactor, Runn
      * @param _target  The targetReactor that should eventually receive this message
      * @return True if the message was buffered.
      */
-    public boolean buffer(final Message _message, final Reactor _target) {
+    public boolean buffer(final Message _message, final ReactorImpl _target) {
         return outbox.buffer(_message, _target);
     }
 
@@ -343,9 +339,9 @@ abstract public class ReactorImpl extends MessageCloser implements Reactor, Runn
 
     @Override
     public final void incomingResponse(final Message _message,
-                                       final Reactor _responseSource) {
+                                       final ReactorImpl _responseSource) {
         try {
-            final ReactorImpl responseSource = _responseSource==null ? null : _responseSource.asReactorImpl();
+            final ReactorImpl responseSource = _responseSource==null ? null : _responseSource;
             final boolean local = this == _responseSource;
             if (local || (_responseSource == null)
                     || !responseSource.buffer(_message, this)) {
@@ -356,19 +352,12 @@ abstract public class ReactorImpl extends MessageCloser implements Reactor, Runn
         }
     }
 
-    @Override
     public Plant getPlant() {
         return facility.getPlant();
     }
 
-    @Override
     public Facility getFacility() {
         return facility;
-    }
-
-    @Override
-    public Reactor getReactor() {
-        return this;
     }
 
     /**

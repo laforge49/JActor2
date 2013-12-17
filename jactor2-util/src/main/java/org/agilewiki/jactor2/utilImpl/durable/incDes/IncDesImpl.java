@@ -491,7 +491,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
      */
     protected <RESPONSE_TYPE> RESPONSE_TYPE local(
             final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
-        return SyncRequest.doLocal(reactor, _syncRequest);
+        return SyncRequest.doLocal(reactor.asReactorImpl(), _syncRequest);
     }
 
     /**
@@ -504,6 +504,6 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             final RequestBase<RESPONSE_TYPE> _request,
             final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
-        RequestBase.doSend(reactor, _request, _responseProcessor);
+        RequestBase.doSend(reactor.asReactorImpl(), _request, _responseProcessor);
     }
 }

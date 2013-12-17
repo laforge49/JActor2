@@ -29,9 +29,9 @@ public class Outbox implements AutoCloseable {
      */
     protected final Facility facility;
 
-    protected final Reactor reactor;
+    protected final ReactorImpl reactor;
 
-    public Outbox(final Reactor _reactor, final int _initialBufferSize) {
+    public Outbox(final ReactorImpl _reactor, final int _initialBufferSize) {
         reactor = _reactor;
         facility = _reactor.getFacility();
         initialBufferSize = _initialBufferSize;
@@ -56,7 +56,7 @@ public class Outbox implements AutoCloseable {
      * @param _target  The targetReactor that should eventually receive this message.
      * @return True if the message was successfully buffered.
      */
-    public boolean buffer(final Message _message, final Reactor _target) {
+    public boolean buffer(final Message _message, final ReactorImpl _target) {
         if (_target.isClosing())
             return false;
         ArrayDeque<Message> buffer = null;
@@ -67,7 +67,7 @@ public class Outbox implements AutoCloseable {
         }
         if (buffer == null) {
             buffer = new ArrayDeque<Message>(initialBufferSize);
-            sendBuffer.put(_target.asReactorImpl(), buffer);
+            sendBuffer.put(_target, buffer);
         }
         buffer.add(_message);
         return true;
