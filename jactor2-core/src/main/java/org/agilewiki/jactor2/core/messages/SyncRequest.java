@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 abstract public class SyncRequest<RESPONSE_TYPE> extends
@@ -56,7 +56,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
      */
     private RESPONSE_TYPE doLocal(final Reactor _source) throws Exception {
         use();
-        final ReactorBase messageProcessor = (ReactorBase) _source;
+        final ReactorImpl messageProcessor = (ReactorImpl) _source;
         if (PlantImpl.DEBUG) {
             if (messageProcessor instanceof ThreadBoundReactor) {
                 if (Thread.currentThread() instanceof PoolThread) {

@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 import java.util.Collections;
@@ -51,7 +51,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * The targetReactor where this Request Object is passed for processing. The thread
      * owned by this targetReactor will process the Request.
      */
-    protected final ReactorBase targetReactor;
+    protected final ReactorImpl targetReactor;
 
     /**
      * The source reactor or pender that will receive the results.
@@ -100,7 +100,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (_targetReactor == null) {
             throw new NullPointerException("targetMessageProcessor");
         }
-        targetReactor = (ReactorBase) _targetReactor;
+        targetReactor = (ReactorImpl) _targetReactor;
     }
 
     @Override
@@ -169,7 +169,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     private void doSend(final Reactor _source,
                         final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
-        final ReactorBase source = (ReactorBase) _source;
+        final ReactorImpl source = (ReactorImpl) _source;
         if (PlantImpl.DEBUG) {
             if (source instanceof ThreadBoundReactor) {
                 if (Thread.currentThread() instanceof PoolThread) {
@@ -258,7 +258,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     protected void setResponse(final Object _response,
                                final Reactor _activeReactor) {
-        ((ReactorBase) _activeReactor).requestEnd(this);
+        ((ReactorImpl) _activeReactor).requestEnd(this);
         unClosed = false;
         response = _response;
         if (PlantImpl.DEBUG) {
@@ -376,7 +376,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * Process a response.
      */
     protected void processResponseMessage() {
-        final ReactorBase sourceMessageProcessor = (ReactorBase) messageSource;
+        final ReactorImpl sourceMessageProcessor = (ReactorImpl) messageSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);
         if (response instanceof Exception) {
@@ -394,7 +394,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     @Override
     public void processException(final Reactor _activeReactor,
                                  final Exception _e) {
-        final ReactorBase activeMessageProcessor = (ReactorBase) _activeReactor;
+        final ReactorImpl activeMessageProcessor = (ReactorImpl) _activeReactor;
         final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
                 .getExceptionHandler();
         if (exceptionHandler != null) {

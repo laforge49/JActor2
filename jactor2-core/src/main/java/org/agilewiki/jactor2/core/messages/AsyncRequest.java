@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
 /**
  * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between blades.
@@ -206,7 +206,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         try {
             ((AsyncRequest) oldMessage).pendingCheck();
         } catch (Exception e) {
-            oldMessage.processException((ReactorBase) messageSource, e);
+            oldMessage.processException((ReactorImpl) messageSource, e);
         }
     }
 

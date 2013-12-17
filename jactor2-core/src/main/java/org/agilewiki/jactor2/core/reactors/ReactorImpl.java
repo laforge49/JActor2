@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorBase extends MessageCloser implements Runnable, Reactor, MessageSource {
+abstract public class ReactorImpl extends MessageCloser implements Runnable, Reactor, MessageSource {
 
     private volatile boolean running;
 
@@ -76,7 +76,7 @@ abstract public class ReactorBase extends MessageCloser implements Runnable, Rea
      * @param _initialBufferSize     Initial size of the outbox for each unique message destination.
      * @param _initialLocalQueueSize The initial number of slots in the local queue.
      */
-    public ReactorBase(final Facility _facility, final int _initialBufferSize,
+    public ReactorImpl(final Facility _facility, final int _initialBufferSize,
                        final int _initialLocalQueueSize) throws Exception {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
@@ -336,7 +336,7 @@ abstract public class ReactorBase extends MessageCloser implements Runnable, Rea
     public final void incomingResponse(final Message _message,
                                        final Reactor _responseSource) {
         try {
-            final ReactorBase responseSource = (ReactorBase) _responseSource;
+            final ReactorImpl responseSource = (ReactorImpl) _responseSource;
             final boolean local = this == _responseSource;
             if (local || (_responseSource == null)
                     || !responseSource.buffer(_message, this)) {

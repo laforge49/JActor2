@@ -22,7 +22,7 @@ public class Outbox implements AutoCloseable {
     /**
      * A table of outboxes, one for each unique message destination.
      */
-    private Map<ReactorBase, ArrayDeque<Message>> sendBuffer;
+    private Map<ReactorImpl, ArrayDeque<Message>> sendBuffer;
 
     /**
      * The facility of this outbox.
@@ -42,7 +42,7 @@ public class Outbox implements AutoCloseable {
      *
      * @return An iterator of the doSend buffers held by the outbox.
      */
-    public Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> getIterator() {
+    public Iterator<Map.Entry<ReactorImpl, ArrayDeque<Message>>> getIterator() {
         if (sendBuffer == null) {
             return null;
         }
@@ -61,13 +61,13 @@ public class Outbox implements AutoCloseable {
             return false;
         ArrayDeque<Message> buffer = null;
         if (sendBuffer == null) {
-            sendBuffer = new IdentityHashMap<ReactorBase, ArrayDeque<Message>>();
+            sendBuffer = new IdentityHashMap<ReactorImpl, ArrayDeque<Message>>();
         } else {
             buffer = sendBuffer.get(_target);
         }
         if (buffer == null) {
             buffer = new ArrayDeque<Message>(initialBufferSize);
-            sendBuffer.put((ReactorBase) _target, buffer);
+            sendBuffer.put((ReactorImpl) _target, buffer);
         }
         buffer.add(_message);
         return true;
@@ -75,12 +75,12 @@ public class Outbox implements AutoCloseable {
 
     @Override
     public void close() {
-        final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = getIterator();
+        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<Message>>> iter = getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
-                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter
+                final Map.Entry<ReactorImpl, ArrayDeque<Message>> entry = iter
                         .next();
-                final ReactorBase target = entry.getKey();
+                final ReactorImpl target = entry.getKey();
                     final ArrayDeque<Message> messages = entry.getValue();
                     iter.remove();
                     try {

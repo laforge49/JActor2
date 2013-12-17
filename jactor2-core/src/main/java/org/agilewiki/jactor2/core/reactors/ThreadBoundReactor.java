@@ -92,7 +92,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * finished
  * </pre>
  */
-public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
+public class ThreadBoundReactor extends ReactorImpl implements CommonReactor {
 
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
@@ -161,14 +161,14 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor {
      */
     public final boolean flush() throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = outbox
+        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<Message>>> iter = outbox
                 .getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter
+                final Map.Entry<ReactorImpl, ArrayDeque<Message>> entry = iter
                         .next();
-                final ReactorBase target = entry.getKey();
+                final ReactorImpl target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 target.unbufferedAddMessages(messages);

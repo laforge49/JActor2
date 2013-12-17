@@ -14,7 +14,7 @@ import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.CloserBase;
@@ -508,9 +508,9 @@ public class FacilityImpl extends CloserBase implements Facility {
         Iterator<Closeable> it = getCloseableSet().iterator();
         while (it.hasNext()) {
             Closeable closeable = it.next();
-            if (!(closeable instanceof ReactorBase))
+            if (!(closeable instanceof ReactorImpl))
                 continue;
-            ReactorBase reactor = (ReactorBase) closeable;
+            ReactorImpl reactor = (ReactorImpl) closeable;
             reactor.reactorPoll();
         }
         internalReactor.reactorPoll();

@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * UnboundReactor supports thread migration only between instances of this class.
  * </p>
  */
-abstract public class UnboundReactor extends ReactorBase {
+abstract public class UnboundReactor extends ReactorImpl {
 
     /**
      * A reference to the thread that is executing this targetReactor.
@@ -88,14 +88,14 @@ abstract public class UnboundReactor extends ReactorBase {
      */
     public boolean flush(final boolean _mayMigrate) throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<ReactorBase, ArrayDeque<Message>>> iter = outbox
+        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<Message>>> iter = outbox
                 .getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<ReactorBase, ArrayDeque<Message>> entry = iter
+                final Map.Entry<ReactorImpl, ArrayDeque<Message>> entry = iter
                         .next();
-                final ReactorBase target = entry.getKey();
+                final ReactorImpl target = entry.getKey();
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
