@@ -27,7 +27,7 @@ import org.agilewiki.jactor2.core.plant.BasicPlant;
  * The Inbox used by NonBlockingReactor is NonBlockingInbox.
  * </p>
  */
-public class NonBlockingReactor extends UnboundReactor implements CommonReactor {
+public class NonBlockingReactor extends UnboundReactorImpl implements CommonReactor {
 
     public NonBlockingReactor(final BasicPlant _plant) throws Exception {
         this(_plant.asFacility());
@@ -36,6 +36,7 @@ public class NonBlockingReactor extends UnboundReactor implements CommonReactor 
     public NonBlockingReactor(final Facility _facility) throws Exception {
         super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize(), null);
+        initialize(this);
     }
 
     public NonBlockingReactor(final BasicPlant _plant, final Runnable _onIdle)
@@ -47,6 +48,7 @@ public class NonBlockingReactor extends UnboundReactor implements CommonReactor 
             throws Exception {
         super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize(), _onIdle);
+        initialize(this);
     }
 
     public NonBlockingReactor(final BasicPlant _plant,
@@ -59,6 +61,7 @@ public class NonBlockingReactor extends UnboundReactor implements CommonReactor 
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        initialize(this);
     }
 
     @Override

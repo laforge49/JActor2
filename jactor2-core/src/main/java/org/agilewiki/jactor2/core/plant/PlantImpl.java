@@ -12,7 +12,7 @@ import org.agilewiki.jactor2.core.facilities.FacilityImpl;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -167,7 +167,7 @@ public class PlantImpl extends FacilityImpl {
      *
      * @param _reactor The targetReactor to be run.
      */
-    public final void submit(final Reactor _reactor) throws Exception {
+    public final void submit(final UnboundReactorImpl _reactor) throws Exception {
         try {
             threadManager.execute(_reactor);
         } catch (final Exception e) {

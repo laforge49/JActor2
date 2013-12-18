@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.UnboundReactor;
+import org.agilewiki.jactor2.core.reactors.UnboundReactorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,7 @@ public final class ThreadManager {
     /**
      * The reactors queue holds the reactors which have messages to be processed.
      */
-    final private ConcurrentLinkedQueue<UnboundReactor> reactors = new ConcurrentLinkedQueue<UnboundReactor>();
+    final private ConcurrentLinkedQueue<UnboundReactorImpl> reactors = new ConcurrentLinkedQueue<UnboundReactorImpl>();
 
     /**
      * When closing is true, the threads exit as they finish their current activity.
@@ -64,7 +63,7 @@ public final class ThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        UnboundReactor reactor = reactors.poll();
+                        UnboundReactorImpl reactor = reactors.poll();
                         if (reactor != null) {
                             AtomicReference<PoolThread> threadReference = reactor
                                     .getThreadReference();
@@ -126,11 +125,11 @@ public final class ThreadManager {
      *
      * @param _reactor The run method is to be called by the selected thread.
      */
-    public final void execute(final Reactor _reactor) {
+    public final void execute(final UnboundReactorImpl _reactor) {
         if (closing) {
             return;
         }
-        reactors.add((UnboundReactor) _reactor);
+        reactors.add((UnboundReactorImpl) _reactor);
         taskRequest.release();
     }
 

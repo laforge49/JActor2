@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.reactors.UnboundReactor;
+import org.agilewiki.jactor2.core.reactors.UnboundReactorImpl;
 
 /**
  * Interface for all threads in a facility thread pool.
@@ -13,12 +13,12 @@ public interface PoolThread {
      *
      * @return The current reactor, or null.
      */
-    UnboundReactor getCurrentReactor();
+    UnboundReactorImpl getCurrentReactor();
 
     /**
      * Assigns the current reactor.
      *
      * @param _reactor The current reactor.
      */
-    void setCurrentReactor(final UnboundReactor _reactor);
+    void setCurrentReactor(final UnboundReactorImpl _reactor);
 }

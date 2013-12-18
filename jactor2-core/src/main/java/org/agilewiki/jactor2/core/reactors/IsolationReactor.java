@@ -32,7 +32,7 @@ import org.agilewiki.jactor2.core.plant.MigrationException;
  * The Inbox used by IsolationReactor is IsolationInbox.
  * </p>
  */
-public class IsolationReactor extends UnboundReactor {
+public class IsolationReactor extends UnboundReactorImpl implements Reactor {
 
     public IsolationReactor(final BasicPlant _plant) throws Exception {
         this(_plant.asFacility());
@@ -41,6 +41,7 @@ public class IsolationReactor extends UnboundReactor {
     public IsolationReactor(final Facility _facility) throws Exception {
         super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize(), null);
+        initialize(this);
     }
 
     public IsolationReactor(final BasicPlant _plant, final Runnable _onIdle)
@@ -52,6 +53,7 @@ public class IsolationReactor extends UnboundReactor {
             throws Exception {
         super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize(), _onIdle);
+        initialize(this);
     }
 
     public IsolationReactor(final BasicPlant _plant,
@@ -64,6 +66,7 @@ public class IsolationReactor extends UnboundReactor {
                             final int _initialOutboxSize, final int _initialLocalQueueSize,
                             final Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        initialize(this);
     }
 
     @Override

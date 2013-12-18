@@ -13,10 +13,10 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Common code for NonBlockingReactor and IsolationReactor, which are not bound to a thread.
  * <p>
- * UnboundReactor supports thread migration only between instances of this class.
+ * UnboundReactorImpl supports thread migration only between instances of this class.
  * </p>
  */
-abstract public class UnboundReactor extends ReactorImpl implements Reactor {
+abstract public class UnboundReactorImpl extends ReactorImpl {
 
     /**
      * A reference to the thread that is executing this targetReactor.
@@ -36,11 +36,10 @@ abstract public class UnboundReactor extends ReactorImpl implements Reactor {
      * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
      * @param _onIdle                Object to be run when the inbox is emptied, or null.
      */
-    public UnboundReactor(final Facility _facility,
-                          final int _initialOutboxSize, final int _initialLocalQueueSize,
-                          final Runnable _onIdle) throws Exception {
+    public UnboundReactorImpl(final Facility _facility,
+                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Runnable _onIdle) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize);
-        initialize(this);
         onIdle = _onIdle;
     }
 
@@ -100,10 +99,10 @@ abstract public class UnboundReactor extends ReactorImpl implements Reactor {
                 final ArrayDeque<Message> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
-                        && (target instanceof UnboundReactor)) {
+                        && (target instanceof UnboundReactorImpl)) {
                     if (!target.isRunning()) {
                         final PoolThread currentThread = threadReference.get();
-                        final UnboundReactor targ = (UnboundReactor) target;
+                        final UnboundReactorImpl targ = (UnboundReactorImpl) target;
                         final AtomicReference<PoolThread> targetThreadReference = targ
                                 .getThreadReference();
                         if ((targetThreadReference.get() == null)

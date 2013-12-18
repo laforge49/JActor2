@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.reactors.UnboundReactor;
+import org.agilewiki.jactor2.core.reactors.UnboundReactorImpl;
 
 /**
  * Signals a migration of the current thread to another targetReactor.
@@ -14,14 +14,14 @@ public class MigrationException extends RuntimeException {
     /**
      * The newly active targetReactor.
      */
-    public final UnboundReactor reactor;
+    public final UnboundReactorImpl reactor;
 
     /**
      * Create a new MigrationException.
      *
      * @param _reactor The newly active processing.
      */
-    public MigrationException(final UnboundReactor _reactor) {
+    public MigrationException(final UnboundReactorImpl _reactor) {
         reactor = _reactor;
     }
 
