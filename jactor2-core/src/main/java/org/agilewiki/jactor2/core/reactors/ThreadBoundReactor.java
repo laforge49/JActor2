@@ -94,11 +94,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ThreadBoundReactor extends ReactorBase implements Runnable {
 
-    /**
-     * The boundProcessor.run method is called when there are messages to be processed.
-     */
-    private final Runnable boundProcessor;
-
     public ThreadBoundReactor(final BasicPlant _plant,
                               final Runnable _boundProcessor) throws Exception {
         this(_plant.asFacility(), _boundProcessor);
@@ -120,7 +115,6 @@ public class ThreadBoundReactor extends ReactorBase implements Runnable {
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _boundProcessor) throws Exception {
         super(new ThreadBoundReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor));
-        boundProcessor = _boundProcessor;
     }
 
     @Override
