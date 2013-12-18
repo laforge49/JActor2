@@ -11,8 +11,9 @@ abstract public class ReactorBase implements Reactor {
 
     private final ReactorImpl reactorImpl;
 
-    public ReactorBase(final ReactorImpl _reactorImpl) {
+    public ReactorBase(final ReactorImpl _reactorImpl) throws Exception {
         reactorImpl = _reactorImpl;
+        reactorImpl.initialize(this);
     }
 
     @Override

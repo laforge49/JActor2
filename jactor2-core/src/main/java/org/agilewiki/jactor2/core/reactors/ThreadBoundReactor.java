@@ -92,7 +92,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * finished
  * </pre>
  */
-public class ThreadBoundReactor extends ReactorImpl implements CommonReactor, Reactor {
+public class ThreadBoundReactor extends ReactorBase implements Runnable {
 
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
@@ -106,10 +106,8 @@ public class ThreadBoundReactor extends ReactorImpl implements CommonReactor, Re
 
     public ThreadBoundReactor(final Facility _facility,
                               final Runnable _boundProcessor) throws Exception {
-        super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize());
-        initialize(this);
-        boundProcessor = _boundProcessor;
+        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
+                .getInitialLocalMessageQueueSize(), _boundProcessor);
     }
 
     public ThreadBoundReactor(final BasicPlant _plant,
@@ -121,61 +119,12 @@ public class ThreadBoundReactor extends ReactorImpl implements CommonReactor, Re
     public ThreadBoundReactor(final Facility _facility,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _boundProcessor) throws Exception {
-        super(_facility, _initialOutboxSize, _initialLocalQueueSize);
-        initialize(this);
+        super(new ThreadBoundReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor));
         boundProcessor = _boundProcessor;
     }
 
     @Override
-    protected void notBusy() throws Exception {
-        flush();
-    }
-
-    @Override
-    public AtomicReference<PoolThread> getThreadReference() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean isIdler() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    protected Inbox createInbox(final int _initialLocalQueueSize) {
-        return new NonBlockingInbox(_initialLocalQueueSize);
-    }
-
-    @Override
-    protected void afterAdd() throws Exception {
-        boundProcessor.run();
-    }
-
-    /**
-     * The flush method disburses all buffered message to their target targetReactor for
-     * processing.
-     * <p>
-     * The flush method is automatically called when there are
-     * no more messages to be processed.
-     * </p>
-     *
-     * @return True when one or more buffered messages were delivered.
-     */
-    public final boolean flush() throws Exception {
-        boolean result = false;
-        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<Message>>> iter = outbox
-                .getIterator();
-        if (iter != null) {
-            while (iter.hasNext()) {
-                result = true;
-                final Map.Entry<ReactorImpl, ArrayDeque<Message>> entry = iter
-                        .next();
-                final ReactorImpl target = entry.getKey();
-                final ArrayDeque<Message> messages = entry.getValue();
-                iter.remove();
-                target.unbufferedAddMessages(messages);
-            }
-        }
-        return result;
+    public void run() {
+        asReactorImpl().run();
     }
 }

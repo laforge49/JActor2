@@ -6,10 +6,7 @@ import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
+import org.agilewiki.jactor2.core.reactors.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -171,7 +168,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             throws Exception {
         final ReactorImpl source = ((Reactor) _source).asReactorImpl();
         if (PlantImpl.DEBUG) {
-            if (source instanceof ThreadBoundReactor) {
+            if (source instanceof ThreadBoundReactorImpl) {
                 if (Thread.currentThread() instanceof PoolThread) {
                     throw new IllegalStateException("send from wrong thread");
                 }
@@ -289,7 +286,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected boolean processObjectResponse(final Object _response)
             throws Exception {
         if (PlantImpl.DEBUG) {
-            if (targetReactor instanceof ThreadBoundReactor) {
+            if (targetReactor instanceof ThreadBoundReactorImpl) {
                 if (Thread.currentThread() instanceof PoolThread) {
                     final Exception ex = new IllegalStateException(
                             "response from wrong thread");

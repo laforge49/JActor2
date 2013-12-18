@@ -64,8 +64,12 @@ import java.awt.event.WindowListener;
  * }
  * </pre>
  */
-public class SwingBoundReactor extends ThreadBoundReactor implements
+public class SwingBoundReactor extends ThreadBoundReactorImpl implements Reactor,
         WindowListener {
+
+    public SwingBoundReactor(final BasicPlant _plant) throws Exception {
+        this(_plant.asFacility());
+    }
 
     /**
      * Create a targetReactor bound to the Swing event-dispatch thread.
@@ -73,12 +77,15 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      * @param _facility The facility of the targetReactor.
      */
     public SwingBoundReactor(final Facility _facility) throws Exception {
-        super(_facility, null);
+        super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
+                .getInitialLocalMessageQueueSize(), null);
 
     }
 
-    public SwingBoundReactor(final BasicPlant _plant) throws Exception {
-        this(_plant.asFacility());
+    public SwingBoundReactor(final BasicPlant _plant,
+                             final int _initialOutboxSize, final int _initialLocalQueueSize)
+            throws Exception {
+        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**
@@ -92,12 +99,6 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
                              final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, null);
-    }
-
-    public SwingBoundReactor(final BasicPlant _plant,
-                             final int _initialOutboxSize, final int _initialLocalQueueSize)
-            throws Exception {
-        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override

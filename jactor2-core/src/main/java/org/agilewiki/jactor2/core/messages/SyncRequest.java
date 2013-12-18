@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
+import org.agilewiki.jactor2.core.reactors.ThreadBoundReactorImpl;
 
 abstract public class SyncRequest<RESPONSE_TYPE> extends
         RequestBase<RESPONSE_TYPE> {
@@ -58,7 +59,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
         use();
         final ReactorImpl messageProcessor = ((Reactor) _source).asReactorImpl();
         if (PlantImpl.DEBUG) {
-            if (messageProcessor instanceof ThreadBoundReactor) {
+            if (messageProcessor instanceof ThreadBoundReactorImpl) {
                 if (Thread.currentThread() instanceof PoolThread) {
                     throw new IllegalStateException("send from wrong thread");
                 }
