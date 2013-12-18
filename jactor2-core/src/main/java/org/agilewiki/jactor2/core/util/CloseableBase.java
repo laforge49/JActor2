@@ -19,7 +19,7 @@ public class CloseableBase extends BladeBase implements Closeable {
     }
 
     @Override
-    public void addCloser(final Closer _closer) throws ServiceClosedException {
+    public void addCloser(final Closer _closer) throws Exception {
         if (closing)
             throw new ServiceClosedException();
         closers.add(_closer);

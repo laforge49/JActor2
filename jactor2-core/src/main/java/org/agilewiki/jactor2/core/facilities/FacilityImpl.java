@@ -513,7 +513,7 @@ public class FacilityImpl extends CloserBase implements Facility {
             ReactorImpl reactor = (ReactorImpl) closeable;
             reactor.reactorPoll();
         }
-        internalReactor.reactorPoll();
+        internalReactor.asReactorImpl().reactorPoll();
     }
 
     /**
@@ -525,23 +525,7 @@ public class FacilityImpl extends CloserBase implements Facility {
          * Create an internal reactor.
          */
         public InternalReactor() throws Exception {
-            super(FacilityImpl.this);
-        }
-
-        /**
-         * No autoclose.
-         */
-        @Override
-        protected void addClose() throws Exception {
-        }
-
-        @Override
-        public void addCloser(Closer _closer) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void removeCloser(Closer _closer) {
+            super(FacilityImpl.this, true);
         }
     }
 }

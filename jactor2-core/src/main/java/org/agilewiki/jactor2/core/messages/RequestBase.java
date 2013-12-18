@@ -169,7 +169,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     private void doSend(final ReactorImpl _source,
                         final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
-        final ReactorImpl source = ((Reactor) _source).asReactorImpl();
+        final ReactorImpl source = (ReactorImpl) _source;
         if (PlantImpl.DEBUG) {
             if (source instanceof ThreadBoundReactorImpl) {
                 if (Thread.currentThread() instanceof PoolThread) {
@@ -376,7 +376,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * Process a response.
      */
     protected void processResponseMessage() {
-        final ReactorImpl sourceMessageProcessor = ((Reactor) messageSource).asReactorImpl();
+        final ReactorImpl sourceMessageProcessor = (ReactorImpl) messageSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);
         if (response instanceof Exception) {

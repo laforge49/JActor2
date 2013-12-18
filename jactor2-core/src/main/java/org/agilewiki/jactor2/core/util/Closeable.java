@@ -4,6 +4,6 @@ import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 
 public interface Closeable extends AutoCloseable, Blade {
-    void addCloser(final Closer _closer) throws ServiceClosedException;
+    void addCloser(final Closer _closer) throws Exception;
     void removeCloser(final Closer _closer);
 }

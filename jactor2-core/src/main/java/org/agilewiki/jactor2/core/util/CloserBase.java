@@ -51,7 +51,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
     }
 
     @Override
-    public boolean addCloseable(final Closeable _closeable) throws ServiceClosedException {
+    public boolean addCloseable(final Closeable _closeable) throws Exception {
         if (startedClosing())
             throw new ServiceClosedException();
         if (!getCloseableSet().add(_closeable))
