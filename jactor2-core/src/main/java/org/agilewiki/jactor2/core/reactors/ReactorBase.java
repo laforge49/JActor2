@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.util.Closeable;
+import org.slf4j.Logger;
 
 abstract public class ReactorBase implements Reactor {
 
@@ -29,6 +30,10 @@ abstract public class ReactorBase implements Reactor {
     @Override
     public Facility getFacility() {
         return reactorImpl.getFacility();
+    }
+
+    public Logger getLog() {
+        return reactorImpl.getLog();
     }
 
     @Override

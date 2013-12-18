@@ -187,15 +187,6 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     abstract protected Inbox createInbox(int _initialLocalQueueSize);
 
     /**
-     * Returns the targetReactor logger.
-     *
-     * @return The targetReactor logger.
-     */
-    public final Logger getLogger() {
-        return log;
-    }
-
-    /**
      * Returns the message currently being processed.
      *
      * @return The message currently being processed.

@@ -48,7 +48,9 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * The targetReactor where this Request Object is passed for processing. The thread
      * owned by this targetReactor will process the Request.
      */
-    protected final ReactorImpl targetReactor;
+    protected final Reactor targetReactor;
+
+    protected final ReactorImpl targetReactorImpl;
 
     /**
      * The source reactor or pender that will receive the results.
@@ -97,7 +99,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (_targetReactor == null) {
             throw new NullPointerException("targetMessageProcessor");
         }
-        targetReactor = _targetReactor.asReactorImpl();
+        targetReactor = _targetReactor;
+        targetReactorImpl = targetReactor.asReactorImpl();
     }
 
     @Override
@@ -117,7 +120,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     @Override
     public ReactorImpl getTargetReactor() {
-        return targetReactor;
+        return targetReactorImpl;
     }
 
     @Override
@@ -146,7 +149,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     public void signal() throws Exception {
         use();
         responseProcessor = SignalResponseProcessor.SINGLETON;
-        targetReactor.unbufferedAddMessage(this, false);
+        targetReactorImpl.unbufferedAddMessage(this, false);
     }
 
     /**
@@ -207,8 +210,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
         final boolean local = targetReactor == source;
-        if (local || !source.buffer(this, targetReactor)) {
-            targetReactor.unbufferedAddMessage(this, local);
+        if (local || !source.buffer(this, targetReactorImpl)) {
+            targetReactorImpl.unbufferedAddMessage(this, local);
         }
     }
 
@@ -232,7 +235,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         }
         messageSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
-        targetReactor.unbufferedAddMessage(this, false);
+        targetReactorImpl.unbufferedAddMessage(this, false);
         return (RESPONSE_TYPE) ((Pender) messageSource).pend();
     }
 
@@ -290,16 +293,16 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                 if (Thread.currentThread() instanceof PoolThread) {
                     final Exception ex = new IllegalStateException(
                             "response from wrong thread");
-                    targetReactor.getLogger().error(
+                    targetReactor.getLog().error(
                             "response from wrong thread", ex);
                     throw ex;
                 }
             } else {
-                if (targetReactor.getThreadReference().get() != Thread
+                if (targetReactorImpl.getThreadReference().get() != Thread
                         .currentThread()) {
                     final Exception ex = new IllegalStateException(
                             "response from wrong thread");
-                    targetReactor.getLogger().error(
+                    targetReactor.getLog().error(
                             "response from wrong thread", ex);
                     throw ex;
                 }
@@ -308,12 +311,12 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (!unClosed) {
             return false;
         }
-        setResponse(_response, targetReactor);
+        setResponse(_response, targetReactorImpl);
         if (responseProcessor != SignalResponseProcessor.SINGLETON) {
-            messageSource.incomingResponse(RequestBase.this, targetReactor);
+            messageSource.incomingResponse(RequestBase.this, targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
-                targetReactor.getLogger().warn("Uncaught throwable",
+                targetReactor.getLog().warn("Uncaught throwable",
                         (Throwable) _response);
             }
         }
@@ -348,8 +351,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     public void eval() {
         if (unClosed) {
             targetReactor.setExceptionHandler(null);
-            targetReactor.setCurrentMessage(this);
-            targetReactor.requestBegin();
+            targetReactorImpl.setCurrentMessage(this);
+            targetReactorImpl.requestBegin();
             try {
                 processRequestMessage();
             } catch (MigrationException _me) {
@@ -357,7 +360,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             } catch (final Exception e) {
-                processException(targetReactor, e);
+                processException(targetReactorImpl, e);
             }
         } else {
             processResponseMessage();
@@ -407,7 +410,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
                             .incomingResponse(this, activeMessageProcessor);
                 } else {
                     activeMessageProcessor
-                            .getLogger()
+                            .getLog()
                             .error("Thrown by exception handler and uncaught "
                                     + exceptionHandler.getClass().getName(), _e);
                 }
@@ -420,7 +423,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
             if (!(responseProcessor instanceof SignalResponseProcessor)) {
                 messageSource.incomingResponse(this, activeMessageProcessor);
             } else {
-                activeMessageProcessor.getLogger().warn("Uncaught throwable",
+                activeMessageProcessor.getLog().warn("Uncaught throwable",
                         _e);
             }
         }
@@ -442,7 +445,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(
             final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
-        final ExceptionHandler<RESPONSE_TYPE> old = targetReactor
+        final ExceptionHandler<RESPONSE_TYPE> old = targetReactorImpl
                 .getExceptionHandler();
         targetReactor.setExceptionHandler(_exceptionHandler);
         return old;
@@ -457,7 +460,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      */
     protected <RT> RT local(final SyncRequest<RT> _syncRequest)
             throws Exception {
-        return SyncRequest.doLocal(targetReactor, _syncRequest);
+        return SyncRequest.doLocal(targetReactorImpl, _syncRequest);
     }
 
     @Override

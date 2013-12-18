@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Closer;
+import org.slf4j.Logger;
 
 /**
  * The Reactor interface identifies the processing methods that can be used by applications.
@@ -23,6 +24,8 @@ public interface Reactor extends AutoCloseable, Closer, Blade {
      * @return The facility.
      */
     Facility getFacility();
+
+    Logger getLog();
 
     /**
      * Replace the current ExceptionHandler with another.

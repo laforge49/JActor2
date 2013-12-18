@@ -64,8 +64,7 @@ import java.awt.event.WindowListener;
  * }
  * </pre>
  */
-public class SwingBoundReactor extends ThreadBoundReactorImpl implements Reactor,
-        WindowListener {
+public class SwingBoundReactor extends ReactorBase implements WindowListener {
 
     public SwingBoundReactor(final BasicPlant _plant) throws Exception {
         this(_plant.asFacility());
@@ -77,8 +76,8 @@ public class SwingBoundReactor extends ThreadBoundReactorImpl implements Reactor
      * @param _facility The facility of the targetReactor.
      */
     public SwingBoundReactor(final Facility _facility) throws Exception {
-        super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), null);
+        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
+                .getInitialLocalMessageQueueSize());
 
     }
 
@@ -98,12 +97,7 @@ public class SwingBoundReactor extends ThreadBoundReactorImpl implements Reactor
     public SwingBoundReactor(final Facility _facility,
                              final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        super(_facility, _initialOutboxSize, _initialLocalQueueSize, null);
-    }
-
-    @Override
-    protected void afterAdd() {
-        SwingUtilities.invokeLater(this);
+        super(new SwingBoundReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     @Override
@@ -119,7 +113,7 @@ public class SwingBoundReactor extends ThreadBoundReactorImpl implements Reactor
         try {
             getFacility().close();
         } catch (final Exception ex) {
-            getLogger().warn("Exception when closing Facility", ex);
+            getLog().warn("Exception when closing Facility", ex);
         }
     }
 

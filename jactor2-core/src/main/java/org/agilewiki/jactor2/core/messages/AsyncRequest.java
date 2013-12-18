@@ -189,7 +189,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
         if (unClosed && pendingResponseCount == 0 && !noHungRequestCheck) {
             targetReactor.getLog().error("hung request:\n" + toString());
             close();
-            targetReactor.recovery.hungResponse(this);
+            targetReactorImpl.recovery.hungResponse(this);
         }
     }
 
@@ -213,20 +213,20 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
     public <RT> void send(final RequestBase<RT> _request,
                              final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
-        if (targetReactor.getCurrentMessage() != this)
+        if (targetReactorImpl.getCurrentMessage() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         if (_responseProcessor != SignalResponseProcessor.SINGLETON)
             pendingResponseCount += 1;
-        RequestBase.doSend(targetReactor, _request, _responseProcessor);
+        RequestBase.doSend(targetReactorImpl, _request, _responseProcessor);
     }
 
     public <RT, RT2> void send(final RequestBase<RT> _request,
                                   final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
             throws Exception {
-        if (targetReactor.getCurrentMessage() != this)
+        if (targetReactorImpl.getCurrentMessage() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         pendingResponseCount += 1;
-        RequestBase.doSend(targetReactor, _request,
+        RequestBase.doSend(targetReactorImpl, _request,
                 new AsyncResponseProcessor<RT>() {
                     @Override
                     public void processAsyncResponse(final RT _response)
