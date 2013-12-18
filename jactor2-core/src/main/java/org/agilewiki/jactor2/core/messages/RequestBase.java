@@ -258,7 +258,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
 
     protected void setResponse(final Object _response,
                                final ReactorImpl _activeReactor) {
-        ((Reactor) _activeReactor).asReactorImpl().requestEnd(this);
+        _activeReactor.requestEnd(this);
         unClosed = false;
         response = _response;
         if (PlantImpl.DEBUG) {

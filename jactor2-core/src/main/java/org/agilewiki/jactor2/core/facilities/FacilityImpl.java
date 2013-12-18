@@ -510,7 +510,7 @@ public class FacilityImpl extends CloserBase implements Facility {
             Closeable closeable = it.next();
             if (!(closeable instanceof ReactorImpl))
                 continue;
-            ReactorImpl reactor = ((Reactor) closeable).asReactorImpl();
+            ReactorImpl reactor = (ReactorImpl) closeable;
             reactor.reactorPoll();
         }
         internalReactor.reactorPoll();

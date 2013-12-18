@@ -64,7 +64,7 @@ import java.awt.event.WindowListener;
  * }
  * </pre>
  */
-public class SwingBoundReactor extends ReactorBase implements WindowListener {
+public class SwingBoundReactor extends ReactorBase implements CommonReactor, WindowListener {
 
     public SwingBoundReactor(final BasicPlant _plant) throws Exception {
         this(_plant.asFacility());

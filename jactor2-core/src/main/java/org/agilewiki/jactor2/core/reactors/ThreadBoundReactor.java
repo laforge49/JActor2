@@ -92,7 +92,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * finished
  * </pre>
  */
-public class ThreadBoundReactor extends ReactorBase implements Runnable {
+public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Runnable {
 
     public ThreadBoundReactor(final BasicPlant _plant,
                               final Runnable _boundProcessor) throws Exception {

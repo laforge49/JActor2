@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ThreadBoundReactorImpl extends ReactorImpl implements CommonReactor {
+public class ThreadBoundReactorImpl extends ReactorImpl {
 
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
