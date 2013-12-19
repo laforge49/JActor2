@@ -14,4 +14,14 @@ public interface Request<RESPONSE_TYPE> {
      * that exception is simply logged as a warning.
      */
     public void signal() throws Exception;
+
+    /**
+     * Process the request immediately.
+     *
+     * @param _syncRequest The request to be processed.
+     * @param <RT>         The type of value returned.
+     * @return The response from the request.
+     */
+    public <RT> RT local(final SyncRequest<RT> _syncRequest)
+            throws Exception;
 }

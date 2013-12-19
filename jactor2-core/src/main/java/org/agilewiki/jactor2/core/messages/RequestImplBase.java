@@ -442,7 +442,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * @param <RT>         The type of value returned.
      * @return The response from the request.
      */
-    protected <RT> RT local(final SyncRequest<RT> _syncRequest)
+    public <RT> RT local(final SyncRequest<RT> _syncRequest)
             throws Exception {
         return SyncRequest.doLocal(targetReactorImpl, _syncRequest);
     }

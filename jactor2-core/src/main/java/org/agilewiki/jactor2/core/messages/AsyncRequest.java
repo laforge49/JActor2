@@ -150,6 +150,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
         asyncRequestImpl = new AsyncRequestImpl<RESPONSE_TYPE>(this, _targetReactor);
     }
 
+    @Override
     public RequestImpl<RESPONSE_TYPE> asRequestImpl() {
         return asyncRequestImpl;
     }
@@ -208,12 +209,20 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
         asyncRequestImpl.send(_request, _dis, _fixedResponse);
     }
 
+    @Override
     public void signal() throws Exception {
         asyncRequestImpl.signal();
     }
 
+    @Override
     public RESPONSE_TYPE call() throws Exception {
         return asyncRequestImpl.call();
+    }
+
+    @Override
+    public <RT> RT local(final SyncRequest<RT> _syncRequest)
+            throws Exception {
+        return asyncRequestImpl.local(_syncRequest);
     }
 
     /**

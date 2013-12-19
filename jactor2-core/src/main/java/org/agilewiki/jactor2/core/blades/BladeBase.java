@@ -48,17 +48,6 @@ public abstract class BladeBase implements Blade {
         return reactor;
     }
 
-    protected abstract class SyncBladeRequest<RESPONSE_TYPE> extends
-            SyncRequest<RESPONSE_TYPE> {
-
-        /**
-         * Create a SyncRequest.
-         */
-        public SyncBladeRequest() {
-            super(BladeBase.this.reactor);
-        }
-    }
-
     protected abstract class AsyncBladeRequest<RESPONSE_TYPE> extends
             AsyncRequest<RESPONSE_TYPE> {
 
@@ -73,23 +62,22 @@ public abstract class BladeBase implements Blade {
     /**
      * Process the request immediately.
      *
-     * @param _syncRequest    The request to be processed.
-     * @param <RESPONSE_TYPE> The type of value returned.
-     * @return The response from the request.
-     */
-    protected <RESPONSE_TYPE> RESPONSE_TYPE local(
-            final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
-        return SyncRequest.doLocal(reactor.asReactorImpl(), _syncRequest);
-    }
-
-    /**
-     * Process the request immediately.
-     *
      * @param _request        The request to be processed.
      */
     protected <RESPONSE_TYPE> void send(
             final Request<RESPONSE_TYPE> _request)
             throws Exception {
         _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
+    }
+
+    protected abstract class SyncBladeRequest<RESPONSE_TYPE> extends
+            SyncRequest<RESPONSE_TYPE> {
+
+        /**
+         * Create a SyncRequest.
+         */
+        public SyncBladeRequest() {
+            super(BladeBase.this.reactor);
+        }
     }
 }
