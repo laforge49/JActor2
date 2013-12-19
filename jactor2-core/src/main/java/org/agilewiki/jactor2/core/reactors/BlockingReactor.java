@@ -26,16 +26,15 @@ import org.agilewiki.jactor2.core.plant.MigrationException;
  * The Inbox used by BlockingReactor is NonBlockingInbox.
  * </p>
  */
-public class BlockingReactor extends UnboundReactorImpl implements CommonReactor {
+public class BlockingReactor extends ReactorBase implements CommonReactor {
 
     public BlockingReactor(final BasicPlant _plant) throws Exception {
         this(_plant.asFacility());
     }
 
     public BlockingReactor(final Facility _facility) throws Exception {
-        super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
+        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize(), null);
-        initialize(this);
     }
 
     public BlockingReactor(final BasicPlant _plant, final Runnable _onIdle)
@@ -45,9 +44,8 @@ public class BlockingReactor extends UnboundReactorImpl implements CommonReactor
 
     public BlockingReactor(final Facility _facility, final Runnable _onIdle)
             throws Exception {
-        super(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
+        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
                 .getInitialLocalMessageQueueSize(), _onIdle);
-        initialize(this);
     }
 
     public BlockingReactor(final BasicPlant _plant,
@@ -59,24 +57,6 @@ public class BlockingReactor extends UnboundReactorImpl implements CommonReactor
     public BlockingReactor(final Facility _facility,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _onIdle) throws Exception {
-        super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
-        initialize(this);
-    }
-
-    @Override
-    protected Inbox createInbox(final int _initialLocalQueueSize) {
-        return new NonBlockingInbox(_initialLocalQueueSize);
-    }
-
-    @Override
-    protected void processMessage(final Message message) {
-        super.processMessage(message);
-        try {
-            flush(true);
-        } catch (final MigrationException me) {
-            throw me;
-        } catch (final Exception e) {
-            log.error("Exception thrown by flush", e);
-        }
+        super(new NonBlockingReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle));
     }
 }
