@@ -29,7 +29,7 @@ class HelloWorld extends SwingBoundBladeBase {
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
 
                 //Close plant when window is closed.
-                frame.addWindowListener((SwingBoundReactor) getTargetReactor());
+                frame.addWindowListener((SwingBoundReactor) getReactor());
 
                 //Add the "Hello World!" label.
                 JLabel label = new JLabel("Hello World!");
