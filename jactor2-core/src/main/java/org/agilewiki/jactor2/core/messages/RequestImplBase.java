@@ -14,25 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
-public abstract class RequestBase<RESPONSE_TYPE> implements Message {
-
-    /**
-     * Process the request immediately.
-     *
-     * @param _source            The targetReactor on whose thread this method was invoked and which
-     *                           must be the same as the targetReactor of the target.
-     * @param _request           The request to be processed.
-     * @param _responseProcessor Passed with this request and then returned with the result, the
-     *                           AsyncResponseProcessor is used to process the result on the same thread
-     *                           that originally invoked this method. If null, then no response is returned.
-     * @param <RESPONSE_TYPE>    The type of value returned.
-     */
-    public static <RESPONSE_TYPE> void doSend(final ReactorImpl _source,
-                                              final RequestBase<RESPONSE_TYPE> _request,
-                                              final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
-            throws Exception {
-        _request.doSend(_source, _responseProcessor);
-    }
+public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESPONSE_TYPE>, Message {
 
     /**
      * Assigned to current time when Facility.DEBUG.
@@ -90,12 +72,12 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     protected Object response;
 
     /**
-     * Create a RequestBase.
+     * Create a RequestImplBase.
      *
      * @param _targetReactor The targetReactor where this Request Objects is passed for processing.
      *                       The thread owned by this targetReactor will process this Request.
      */
-    public RequestBase(final Reactor _targetReactor) {
+    public RequestImplBase(final Reactor _targetReactor) {
         if (_targetReactor == null) {
             throw new NullPointerException("targetMessageProcessor");
         }
@@ -119,9 +101,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      * @return The target Reactor.
      */
     @Override
-    public ReactorImpl getTargetReactor() {
+    public ReactorImpl getTargetReactorImpl() {
         return targetReactorImpl;
     }
+
+    public Reactor getTargetReactor() { return targetReactor; }
 
     @Override
     public MessageSource getMessageSource() {
@@ -166,7 +150,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
      *                           AsyncResponseProcessor is used to process the result on the same thread
      *                           that originally invoked this method. If null, then no response is returned.
      */
-    private void doSend(final ReactorImpl _source,
+    public void doSend(final ReactorImpl _source,
                         final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception {
         final ReactorImpl source = (ReactorImpl) _source;
@@ -246,11 +230,11 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if (PlantImpl.DEBUG) {
             debugTimestamp = System.nanoTime();
             final Facility targetFacility = targetReactor.getFacility();
-            final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
-            Set<RequestBase> nanoSet = pendingRequests.get(debugTimestamp);
+            final Map<Long, Set<RequestImplBase>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
+            Set<RequestImplBase> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet == null) {
                 nanoSet = Collections
-                        .newSetFromMap(new ConcurrentHashMap<RequestBase, Boolean>(8, 0.9f, 1));
+                        .newSetFromMap(new ConcurrentHashMap<RequestImplBase, Boolean>(8, 0.9f, 1));
             }
             pendingRequests.put(debugTimestamp, nanoSet);
         }
@@ -263,8 +247,8 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         response = _response;
         if (PlantImpl.DEBUG) {
             final Facility targetFacility = targetReactor.getFacility();
-            final Map<Long, Set<RequestBase>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
-            final Set<RequestBase> nanoSet = pendingRequests
+            final Map<Long, Set<RequestImplBase>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
+            final Set<RequestImplBase> nanoSet = pendingRequests
                     .get(debugTimestamp);
             if (nanoSet != null) {
                 nanoSet.remove(this);
@@ -313,7 +297,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         }
         setResponse(_response, targetReactorImpl);
         if (responseProcessor != SignalResponseProcessor.SINGLETON) {
-            messageSource.incomingResponse(RequestBase.this, targetReactorImpl);
+            messageSource.incomingResponse(RequestImplBase.this, targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
                 targetReactor.getLog().warn("Uncaught throwable",
@@ -476,7 +460,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
     }
 
     /**
-     * Pender is used by the RequestBase.call method to block the current thread until a
+     * Pender is used by the RequestImplBase.call method to block the current thread until a
      * result is available and then either return the result or rethrow it if the result
      * is an exception.
      */
@@ -512,13 +496,13 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         @Override
         public void incomingResponse(final Message _message,
                                      final ReactorImpl _responseSource) {
-            result = ((RequestBase) _message).response;
+            result = ((RequestImplBase) _message).response;
             done.release();
         }
     }
 
     /**
-     * A subclass of AsyncResponseProcessor that is used as a place holder when the RequestBase.call
+     * A subclass of AsyncResponseProcessor that is used as a place holder when the RequestImplBase.call
      * method is used.
      */
     final private static class CallResponseProcessor implements

@@ -52,7 +52,7 @@ public interface Message extends AutoCloseable {
 
     boolean isSignal();
 
-    ReactorImpl getTargetReactor();
+    ReactorImpl getTargetReactorImpl();
 
     MessageSource getMessageSource();
 }

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
+import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
 /**
  * AsyncRequest instances are used for passing both 1-way and 2-way buffered messages between blades.
@@ -135,13 +135,10 @@ import org.agilewiki.jactor2.core.reactors.ReactorImpl;
  *
  * @param <RESPONSE_TYPE> The class of the result returned after the AsyncRequest operates on the target blades.
  */
-public abstract class AsyncRequest<RESPONSE_TYPE> extends
-        RequestBase<RESPONSE_TYPE> implements
+public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE>,
         AsyncResponseProcessor<RESPONSE_TYPE> {
 
-    private int pendingResponseCount;
-
-    private boolean noHungRequestCheck;
+    private final AsyncRequestImpl<RESPONSE_TYPE> asyncRequestImpl;
 
     /**
      * Create an AsyncRequest and bind it to its target targetReactor.
@@ -150,15 +147,29 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
      *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
     public AsyncRequest(final Reactor _targetReactor) {
-        super(_targetReactor);
+        asyncRequestImpl = new AsyncRequestImpl<RESPONSE_TYPE>(this, _targetReactor);
+    }
+
+    public RequestImpl<RESPONSE_TYPE> asRequestImpl() {
+        return asyncRequestImpl;
+    }
+
+    /**
+     * Returns the Reactor to which this Request is bound and to which this Request is to be passed.
+     *
+     * @return The target Reactor.
+     */
+    @Override
+    public Reactor getTargetReactor() {
+        return asyncRequestImpl.getTargetReactor();
     }
 
     protected void setNoHungRequestCheck() {
-        noHungRequestCheck = true;
+        asyncRequestImpl.setNoHungRequestCheck();
     }
 
     public int getPendingResponseCount() {
-        return pendingResponseCount;
+        return asyncRequestImpl.getPendingResponseCount();
     }
 
     /**
@@ -170,7 +181,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE _response)
             throws Exception {
-        processObjectResponse(_response);
+        asyncRequestImpl.processAsyncResponse(_response);
     }
 
     /**
@@ -182,57 +193,45 @@ public abstract class AsyncRequest<RESPONSE_TYPE> extends
      */
     public void processAsyncException(final Exception _response)
             throws Exception {
-        processObjectResponse(_response);
+        asyncRequestImpl.processAsyncException(_response);
     }
 
-    private void pendingCheck() throws Exception {
-        if (unClosed && pendingResponseCount == 0 && !noHungRequestCheck) {
-            targetReactor.getLog().error("hung request:\n" + toString());
-            close();
-            targetReactorImpl.recovery.hungResponse(this);
-        }
-    }
-
-    @Override
-    protected void processRequestMessage() throws Exception {
-        processAsyncRequest();
-        pendingCheck();
-    }
-
-    @Override
-    protected void processResponseMessage() {
-        ((AsyncRequest) oldMessage).pendingResponseCount -= 1;
-        super.processResponseMessage();
-        try {
-            ((AsyncRequest) oldMessage).pendingCheck();
-        } catch (Exception e) {
-            oldMessage.processException((ReactorImpl) messageSource, e);
-        }
-    }
-
-    public <RT> void send(final RequestBase<RT> _request,
+    public <RT> void send(final Request<RT> _request,
                              final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
-        if (targetReactorImpl.getCurrentMessage() != this)
-            throw new UnsupportedOperationException("send called on inactive request");
-        if (_responseProcessor != SignalResponseProcessor.SINGLETON)
-            pendingResponseCount += 1;
-        RequestBase.doSend(targetReactorImpl, _request, _responseProcessor);
+        asyncRequestImpl.send(_request, _responseProcessor);
     }
 
-    public <RT, RT2> void send(final RequestBase<RT> _request,
+    public <RT, RT2> void send(final Request<RT> _request,
                                   final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
             throws Exception {
-        if (targetReactorImpl.getCurrentMessage() != this)
-            throw new UnsupportedOperationException("send called on inactive request");
-        pendingResponseCount += 1;
-        RequestBase.doSend(targetReactorImpl, _request,
-                new AsyncResponseProcessor<RT>() {
-                    @Override
-                    public void processAsyncResponse(final RT _response)
-                            throws Exception {
-                        _dis.processAsyncResponse(_fixedResponse);
-                    }
-                });
+        asyncRequestImpl.send(_request, _dis, _fixedResponse);
+    }
+
+    public void signal() throws Exception {
+        asyncRequestImpl.signal();
+    }
+
+    public RESPONSE_TYPE call() throws Exception {
+        return asyncRequestImpl.call();
+    }
+
+    /**
+     * Replace the current ExceptionHandler with another.
+     * <p>
+     * When an event or request message is processed by a targetReactor, the current
+     * exception handler is set to null. When a request is sent by a targetReactor, the
+     * current exception handler is saved in the outgoing message and restored when
+     * the response message is processed.
+     * </p>
+     *
+     * @param _exceptionHandler The exception handler to be used now.
+     *                          May be null if the default exception handler is to be used.
+     * @return The exception handler that was previously in effect, or null if the
+     * default exception handler was in effect.
+     */
+    public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(
+            final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
+        return asyncRequestImpl.setExceptionHandler(_exceptionHandler);
     }
 }

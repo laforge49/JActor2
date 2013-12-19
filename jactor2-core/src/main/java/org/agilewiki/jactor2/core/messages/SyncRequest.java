@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactorImpl;
 
 abstract public class SyncRequest<RESPONSE_TYPE> extends
-        RequestBase<RESPONSE_TYPE> {
+        RequestImplBase<RESPONSE_TYPE> implements Request<RESPONSE_TYPE> {
 
     /**
      * Process the request immediately.
@@ -32,6 +32,10 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
      */
     public SyncRequest(final Reactor _targetReactor) {
         super(_targetReactor);
+    }
+
+    public RequestImpl<RESPONSE_TYPE> asRequestImpl() {
+        return this;
     }
 
     /**

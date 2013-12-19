@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.utilImpl.durable.incDes;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.RequestBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -492,18 +491,5 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     protected <RESPONSE_TYPE> RESPONSE_TYPE local(
             final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
         return SyncRequest.doLocal(reactor.asReactorImpl(), _syncRequest);
-    }
-
-    /**
-     * Process the request immediately.
-     *
-     * @param _request        The request to be processed.
-     * @param <RESPONSE_TYPE> The type of value returned.
-     */
-    protected <RESPONSE_TYPE> void send(
-            final RequestBase<RESPONSE_TYPE> _request,
-            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
-            throws Exception {
-        RequestBase.doSend(reactor.asReactorImpl(), _request, _responseProcessor);
     }
 }

@@ -1,8 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.RequestBase;
+import org.agilewiki.jactor2.core.messages.Request;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -87,12 +86,10 @@ public abstract class BladeBase implements Blade {
      * Process the request immediately.
      *
      * @param _request        The request to be processed.
-     * @param <RESPONSE_TYPE> The type of value returned.
      */
     protected <RESPONSE_TYPE> void send(
-            final RequestBase<RESPONSE_TYPE> _request,
-            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
+            final Request<RESPONSE_TYPE> _request)
             throws Exception {
-        RequestBase.doSend(reactor.asReactorImpl(), _request, _responseProcessor);
+        _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
     }
 }

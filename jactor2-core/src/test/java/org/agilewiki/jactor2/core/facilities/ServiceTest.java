@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.RequestBase;
+import org.agilewiki.jactor2.core.messages.Request;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -78,7 +78,7 @@ class Client extends NonBlockingBladeBase {
                     }
                 });
                 Thread.sleep(10);
-                RequestBase rb = server.hangAReq();
+                Request rb = server.hangAReq();
                 System.out.println("client send hang "+rb);
                 Thread.sleep(10);
                 send(rb, dis, true);

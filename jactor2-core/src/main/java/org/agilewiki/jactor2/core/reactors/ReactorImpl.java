@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.messages.MessageSource;
-import org.agilewiki.jactor2.core.messages.RequestBase;
+import org.agilewiki.jactor2.core.messages.RequestImplBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.util.MessageCloser;
@@ -363,7 +363,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      *
      * @param _message    The request that has completed
      */
-    public void requestEnd(final RequestBase _message) {
+    public void requestEnd(final RequestImplBase _message) {
         if (_message.isForeign()) {
             boolean b = removeMessage(_message);
         }

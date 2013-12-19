@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.reactors.UnboundReactorImpl;
 
 /**
  * Base class for all threads in a facility thread pool.
- * The RequestBase.call method should not be invoked from a PoolThreadImpl.
+ * The RequestImplBase.call method should not be invoked from a PoolThreadImpl.
  */
 public class PoolThreadImpl extends Thread implements PoolThread {
 
