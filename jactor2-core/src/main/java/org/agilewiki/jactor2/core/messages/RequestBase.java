@@ -188,7 +188,7 @@ public abstract class RequestBase<RESPONSE_TYPE> implements Message {
         if ((oldMessage != null) && oldMessage.isIsolated()) {
             isolated = true;
         }
-        if (source instanceof IsolationReactor) {
+        if (source instanceof IsolationReactorImpl) {
             isolated = true;
         }
         if (targetReactor instanceof IsolationReactor) {
