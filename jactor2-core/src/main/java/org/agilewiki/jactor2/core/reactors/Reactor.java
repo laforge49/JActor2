@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Closer;
 import org.slf4j.Logger;
 

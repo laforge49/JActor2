@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactorImpl;
 
 abstract public class SyncRequest<RESPONSE_TYPE> extends

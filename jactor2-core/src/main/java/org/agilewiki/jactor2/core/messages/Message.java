@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.messages;
 
-import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
 /**

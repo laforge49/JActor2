@@ -1,14 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
-import org.agilewiki.jactor2.core.plant.PoolThread;
-
-import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A targetReactor bound to a pre-existing thread, a thread-bound targetReactor can use

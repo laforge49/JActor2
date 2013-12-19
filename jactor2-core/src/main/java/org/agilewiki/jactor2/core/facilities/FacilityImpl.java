@@ -16,7 +16,6 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.Closer;
 import org.agilewiki.jactor2.core.util.CloserBase;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
