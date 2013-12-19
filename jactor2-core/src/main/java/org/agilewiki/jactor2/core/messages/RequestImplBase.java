@@ -414,28 +414,6 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     }
 
     /**
-     * Replace the current ExceptionHandler with another.
-     * <p>
-     * When an event or request message is processed by a targetReactor, the current
-     * exception handler is set to null. When a request is sent by a targetReactor, the
-     * current exception handler is saved in the outgoing message and restored when
-     * the response message is processed.
-     * </p>
-     *
-     * @param _exceptionHandler The exception handler to be used now.
-     *                          May be null if the default exception handler is to be used.
-     * @return The exception handler that was previously in effect, or null if the
-     * default exception handler was in effect.
-     */
-    public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(
-            final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
-        final ExceptionHandler<RESPONSE_TYPE> old = targetReactorImpl
-                .getExceptionHandler();
-        targetReactor.setExceptionHandler(_exceptionHandler);
-        return old;
-    }
-
-    /**
      * Process the request immediately.
      *
      * @param _syncRequest The request to be processed.
