@@ -1,10 +1,10 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.pubSub.IsInstanceFilter;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
@@ -28,7 +28,7 @@ public class PubSub {
     }
 }
 
-class Publisher extends BladeBase {
+class Publisher extends NonBlockingBladeBase {
     final RequestBus<Object> requestBus;
 
     Publisher(final NonBlockingReactor _reactor, final RequestBus<Object> _requestBus) 
@@ -50,7 +50,7 @@ class Publisher extends BladeBase {
     }
 }
 
-class Subscriber extends BladeBase {
+class Subscriber extends NonBlockingBladeBase {
     final RequestBus<Object> requestBus;
     final Printer printer;
     int state;

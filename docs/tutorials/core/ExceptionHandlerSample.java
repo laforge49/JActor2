@@ -1,6 +1,6 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -40,10 +40,10 @@ public class ExceptionHandlerSample {
 }
 
 //A blade with a request that throws an exception.
-class ExceptionBlade extends BladeBase {
+class ExceptionBlade extends NonBlockingBladeBase {
 
     //Create an ExceptionBlade.
-    ExceptionBlade(final Reactor _reactor) throws Exception {
+    ExceptionBlade(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -59,13 +59,13 @@ class ExceptionBlade extends BladeBase {
 }
 
 //A blade with an exception handler.
-class ExceptionHandlerBlade extends BladeBase {
+class ExceptionHandlerBlade extends NonBlockingBladeBase {
 
     //A blade with a request that throws an exception.
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blade with a reference to an exception blade.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final Reactor _reactor) throws Exception {
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final NonBlockingReactor _reactor) throws Exception {
         exceptionBlade = _exceptionBlade;
         initialize(_reactor);
     }

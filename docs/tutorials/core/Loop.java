@@ -1,16 +1,16 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Loop extends BladeBase {
+public class Loop extends NonBlockingBladeBase {
 
-    public Loop(final Reactor _reactor) throws Exception {
+    public Loop(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -39,8 +39,8 @@ public class Loop extends BladeBase {
                     return;
                 }
                 i++;
-                Facility myFacility = getReactor().getFacility();
-                AsyncRequest<Void> printCount = Printer.printlnAReq(myFacility, String.valueOf(i));
+                Plant myPlant = getReactor().getPlant();
+                AsyncRequest<Void> printCount = Printer.printlnAReq(myPlant, String.valueOf(i));
                 send(printCount, printCountResponseProcessor);
             }
         };

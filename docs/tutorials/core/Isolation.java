@@ -1,6 +1,6 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -34,7 +34,7 @@ public class Isolation extends BladeBase {
     int state;
     
     public Isolation(final Reactor _reactor, final Printer _printer) throws Exception {
-        initialize(_reactor);
+        _initialize(_reactor);
         printer = _printer;
     }
     

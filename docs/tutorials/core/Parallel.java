@@ -1,15 +1,13 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Parallel extends BladeBase {
+public class Parallel extends NonBlockingBladeBase {
     private final long count;
     
     public Parallel(final NonBlockingReactor _reactor, final long _count)
@@ -36,12 +34,12 @@ public class Parallel extends BladeBase {
             };
             
             protected void processAsyncRequest() throws Exception {
-                Reactor reactor = getReactor();
-                Facility facility = reactor.getFacility();
+                NonBlockingReactor reactor = getReactor();
+                Plant plant = reactor.getPlant();
                 long j = 0;
                 while(j < count) {
                     j++;
-                    Delay delay = new Delay(new BlockingReactor(facility));
+                    Delay delay = new Delay(new BlockingReactor(plant));
                     send(delay.sleepSReq(100), sleepResponseProcessor);
                 }
             }

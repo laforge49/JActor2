@@ -1,15 +1,14 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class UltimateAnswer extends BladeBase {
+public class UltimateAnswer extends NonBlockingBladeBase {
 
-    public UltimateAnswer(final Reactor _reactor) throws Exception {
+    public UltimateAnswer(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
     
@@ -19,8 +18,8 @@ public class UltimateAnswer extends BladeBase {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                Facility myFacility = getReactor().getFacility();
-                AsyncRequest<Void> printRequest = Printer.printlnAReq(myFacility, "*** 42 ***");
+                Plant myPlant = getReactor().getPlant();
+                AsyncRequest<Void> printRequest = Printer.printlnAReq(myPlant, "*** 42 ***");
                 send(printRequest, dis);
             }
         };

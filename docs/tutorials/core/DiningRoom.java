@@ -1,8 +1,8 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -14,8 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
-public class DiningRoom extends BladeBase {
-    public DiningRoom(final Reactor _reactor)
+public class DiningRoom extends NonBlockingBladeBase {
+    public DiningRoom(final NonBlockingReactor _reactor)
             throws Exception {
         initialize(_reactor);
     }
@@ -41,7 +41,7 @@ public class DiningRoom extends BladeBase {
             @Override
             protected void processAsyncRequest() throws Exception {
                 int i = 0;
-                Reactor myReactor = getReactor();
+                NonBlockingReactor myReactor = getReactor();
                 Facility facility = myReactor.getFacility();
                 DiningTable diningTable = new DiningTable(
                     new NonBlockingReactor(facility),

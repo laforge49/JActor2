@@ -1,11 +1,11 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Greeter extends BladeBase {
-    public Greeter(final Reactor _reactor) throws Exception {
+public class Greeter extends NonBlockingBladeBase {
+    public Greeter(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
     

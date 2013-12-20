@@ -1,7 +1,7 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -9,8 +9,8 @@ import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Echo extends BladeBase {
-    public Echo(final Reactor _reactor) throws Exception {
+public class Echo extends NonBlockingBladeBase {
+    public Echo(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
     
@@ -28,7 +28,7 @@ public class Echo extends BladeBase {
 
             @Override
             protected void processAsyncRequest() throws Exception {
-                Reactor myReactor = getReactor();
+                NonBlockingReactor myReactor = getReactor();
                 Facility myFacility = myReactor.getFacility();
                 Delay delay = new Delay(new BlockingReactor(myFacility));
                 SyncRequest<Void> sleepSReq = delay.sleepSReq(2000);

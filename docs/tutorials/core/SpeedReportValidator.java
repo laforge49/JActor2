@@ -1,5 +1,5 @@
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 public class SpeedReportValidator {
     public static void main(final String[] _args) throws Exception {

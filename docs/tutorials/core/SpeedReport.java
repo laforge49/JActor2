@@ -1,24 +1,23 @@
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
-import org.agilewiki.jactor2.core.facilities.AsyncFacilityRequest;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 public class SpeedReport extends SyncPrinterRequest {
     
     public static AsyncRequest<Void> startAReq(
-            final Facility _facility,
+            final Plant _plant,
             final String _heading, 
             final long _ns, 
             final long _count) {
-        return new AsyncFacilityRequest<Void>(_facility) {
+        return new AsyncRequest<Void>(_plant.getReactor()) {
             AsyncResponseProcessor dis = this;
             
             @Override
             public void processAsyncRequest() throws Exception {
-                send(Printer.stdoutAReq((Plant) _facility), new AsyncResponseProcessor<Printer>() {
+                send(Printer.stdoutAReq(_plant), new AsyncResponseProcessor<Printer>() {
                     public void processAsyncResponse(final Printer _printer) throws Exception {
                         SpeedReport sr = new SpeedReport(_printer, _heading, _ns, _count);
                         send(sr, dis);

@@ -1,16 +1,17 @@
 import org.agilewiki.jactor2.core.blades.*;
 import org.agilewiki.jactor2.core.facilities.*;
+import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.reactors.*;
 
-public class ThreadMigration extends BladeBase {
+public class ThreadMigration extends NonBlockingBladeBase {
     public static void main(final String[] _args) 
             throws Exception {
         Plant plant = new Plant();
         try {
             System.out.println("\n           main thread: " + 
                 Thread.currentThread());
-            Reactor reactor = 
+            NonBlockingReactor reactor = 
                 new NonBlockingReactor(plant);
             ThreadMigration threadMigration = 
                 new ThreadMigration(reactor);
@@ -20,7 +21,7 @@ public class ThreadMigration extends BladeBase {
         }
     }
     
-    public ThreadMigration(final Reactor _reactor) 
+    public ThreadMigration(final NonBlockingReactor _reactor) 
             throws Exception {
         initialize(_reactor);
     }
@@ -31,9 +32,9 @@ public class ThreadMigration extends BladeBase {
             protected void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
-                Reactor myReactor = getReactor();
+                NonBlockingReactor myReactor = getReactor();
                 Facility myModuleContext = myReactor.getFacility();
-                Reactor subReactor = 
+                NonBlockingReactor subReactor = 
                     new NonBlockingReactor(myModuleContext);
                 SubActor subActor = new SubActor(subReactor);
                 subActor.doAReq("         signal").signal();
@@ -43,8 +44,8 @@ public class ThreadMigration extends BladeBase {
     }
 }
 
-class SubActor extends BladeBase {
-    public SubActor(final Reactor _reactor) 
+class SubActor extends NonBlockingBladeBase {
+    public SubActor(final NonBlockingReactor _reactor) 
             throws Exception {
         initialize(_reactor);
     }

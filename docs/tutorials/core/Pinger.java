@@ -8,7 +8,7 @@ public class Pinger extends BladeBase {
     private final Ponger ponger;
 
     public Pinger(final Reactor _reactor, final Ponger _ponger) throws Exception {
-        initialize(_reactor);
+        _initialize(_reactor);
         ponger = _ponger;
     }
 

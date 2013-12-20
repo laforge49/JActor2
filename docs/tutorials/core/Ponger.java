@@ -6,7 +6,7 @@ public class Ponger extends BladeBase {
     private long count = 0;
     
     public Ponger(final Reactor _reactor) throws Exception {
-        initialize(_reactor);
+        _initialize(_reactor);
     }
 
     public SyncRequest<Long> pingSReq() {

@@ -1,11 +1,11 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class DiningPhilosopher extends BladeBase {
-    public DiningPhilosopher(final Reactor _reactor) throws Exception {
+public class DiningPhilosopher extends NonBlockingBladeBase {
+    public DiningPhilosopher(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
     

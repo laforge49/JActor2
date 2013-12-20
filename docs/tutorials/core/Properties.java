@@ -1,7 +1,7 @@
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChangeManager;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
