@@ -46,6 +46,10 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
      */
     abstract protected RESPONSE_TYPE processSyncRequest() throws Exception;
 
+    public Request asRequest() {
+        return this;
+    }
+
     @Override
     protected void processRequestMessage() throws Exception {
         processObjectResponse(processSyncRequest());

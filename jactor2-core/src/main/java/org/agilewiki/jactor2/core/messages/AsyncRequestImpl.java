@@ -24,6 +24,10 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         asyncRequest = _asyncRequest;
     }
 
+    public Request asRequest() {
+        return asyncRequest;
+    }
+
     protected void setNoHungRequestCheck() {
         noHungRequestCheck = true;
     }

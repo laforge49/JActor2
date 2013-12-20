@@ -3,6 +3,9 @@ package org.agilewiki.jactor2.core.messages;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
 public interface RequestImpl<RESPONSE_TYPE> {
+
+    Request asRequest();
+
     /**
      * Passes this Request together with the AsyncResponseProcessor to the target Reactor.
      * Responses are passed back via the targetReactor of the source blades and processed by the

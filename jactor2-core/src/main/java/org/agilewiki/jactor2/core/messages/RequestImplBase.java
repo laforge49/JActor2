@@ -428,7 +428,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     @Override
     public String toString() {
         return "facility=" + targetReactor.getFacility().asFacilityImpl().name +
-                ", message=" + getClass().getName() +
+                ", message=" + asRequest().getClass().getName() +
                 ", isClosed=" + isClosed() +
                 ", isSignal=" + isSignal() +
                 ", source=" + (messageSource == null ? "null" : messageSource.getClass().getName()) +
