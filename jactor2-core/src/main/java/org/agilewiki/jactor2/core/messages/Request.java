@@ -4,7 +4,14 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public interface Request<RESPONSE_TYPE> {
     RequestImpl<RESPONSE_TYPE> asRequestImpl();
+
+    /**
+     * Returns the Reactor to which this Request is bound and to which this Request is to be passed.
+     *
+     * @return The target Reactor.
+     */
     Reactor getTargetReactor();
+
     RESPONSE_TYPE call() throws Exception;
 
     /**

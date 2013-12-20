@@ -7,8 +7,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactorImpl;
 
-abstract public class SyncRequest<RESPONSE_TYPE> extends
-        RequestImplBase<RESPONSE_TYPE> implements Request<RESPONSE_TYPE> {
+abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE> {
 
     /**
      * Process the request immediately.
@@ -21,8 +20,10 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
      */
     public static <RESPONSE_TYPE> RESPONSE_TYPE doLocal(final ReactorImpl _source,
             final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
-        return _syncRequest.doLocal(_source);
+        return _syncRequest.asRequestImpl().doLocal(_source);
     }
+
+    private final SyncRequestImpl<RESPONSE_TYPE> syncRequestImpl;
 
     /**
      * Create a SyncRequest.
@@ -31,11 +32,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
      *                       The thread owned by this targetReactor will process this SyncRequest.
      */
     public SyncRequest(final Reactor _targetReactor) {
-        super(_targetReactor);
-    }
-
-    public RequestImpl<RESPONSE_TYPE> asRequestImpl() {
-        return this;
+        syncRequestImpl = new SyncRequestImpl<RESPONSE_TYPE> (this, _targetReactor);
     }
 
     /**
@@ -46,63 +43,28 @@ abstract public class SyncRequest<RESPONSE_TYPE> extends
      */
     abstract protected RESPONSE_TYPE processSyncRequest() throws Exception;
 
-    public Request asRequest() {
-        return this;
+    public SyncRequestImpl<RESPONSE_TYPE> asRequestImpl() {
+        return syncRequestImpl;
     }
 
     @Override
-    protected void processRequestMessage() throws Exception {
-        processObjectResponse(processSyncRequest());
+    public Reactor getTargetReactor() {
+        return syncRequestImpl.getTargetReactor();
     }
 
-    /**
-     * Process the request immediately.
-     *
-     * @param _source The targetReactor on whose thread this method was invoked and which
-     *                must be the same as the targetReactor of the target.
-     * @return The value returned by the target blades.
-     */
-    private RESPONSE_TYPE doLocal(final ReactorImpl _source) throws Exception {
-        use();
-        final ReactorImpl messageProcessor = ((Reactor) _source).asReactorImpl();
-        if (PlantImpl.DEBUG) {
-            if (messageProcessor instanceof ThreadBoundReactorImpl) {
-                if (Thread.currentThread() instanceof PoolThread) {
-                    throw new IllegalStateException("send from wrong thread");
-                }
-            } else {
-                if (messageProcessor.getThreadReference().get() != Thread
-                        .currentThread()) {
-                    throw new IllegalStateException("send from wrong thread");
-                }
-            }
-        }
-        if (!messageProcessor.isRunning()) {
-            throw new IllegalStateException(
-                    "A valid source targetReactor can not be idle");
-        }
-        if (messageProcessor != getTargetReactor()) {
-            throw new IllegalArgumentException("Reactor is not shared");
-        }
-        messageSource = messageProcessor;
-        oldMessage = messageProcessor.getCurrentMessage();
-        sourceExceptionHandler = messageProcessor.getExceptionHandler();
-        messageProcessor.setCurrentMessage(this);
-        messageProcessor.setExceptionHandler(null);
-        messageProcessor.messageStartTimeMillis = messageProcessor.scheduler.currentTimeMillis();
-        try {
-            return processSyncRequest();
-        } catch (final Exception e) {
-            final ExceptionHandler<RESPONSE_TYPE> currentExceptionHandler = messageProcessor
-                    .getExceptionHandler();
-            if (currentExceptionHandler == null) {
-                throw e;
-            }
-            return currentExceptionHandler.processException(e);
-        } finally {
-            messageProcessor.messageStartTimeMillis = messageProcessor.scheduler.currentTimeMillis();
-            messageProcessor.setCurrentMessage(oldMessage);
-            messageProcessor.setExceptionHandler(sourceExceptionHandler);
-        }
+    @Override
+    public void signal() throws Exception {
+        syncRequestImpl.signal();
+    }
+
+    @Override
+    public RESPONSE_TYPE call() throws Exception {
+        return syncRequestImpl.call();
+    }
+
+    @Override
+    public <RT> RT local(final SyncRequest<RT> _syncRequest)
+            throws Exception {
+        return syncRequestImpl.local(_syncRequest);
     }
 }

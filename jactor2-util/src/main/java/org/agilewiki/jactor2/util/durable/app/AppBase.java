@@ -69,6 +69,6 @@ public class AppBase implements App {
      */
     protected <RESPONSE_TYPE> RESPONSE_TYPE local(
             final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
-        return SyncRequest.doLocal(getReactor().asReactorImpl(), _syncRequest);
+        return _syncRequest.asRequestImpl().doLocal(getReactor().asReactorImpl());
     }
 }

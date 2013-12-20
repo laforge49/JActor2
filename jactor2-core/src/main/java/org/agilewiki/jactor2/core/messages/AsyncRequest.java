@@ -150,16 +150,17 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
         asyncRequestImpl = new AsyncRequestImpl<RESPONSE_TYPE>(this, _targetReactor);
     }
 
+    /**
+     * The processAsyncRequest method will be invoked by the target Reactor on its own thread
+     * when the AsyncRequest is dequeued from the target inbox for processing.
+     */
+    abstract protected void processAsyncRequest() throws Exception;
+
     @Override
-    public RequestImpl<RESPONSE_TYPE> asRequestImpl() {
+    public AsyncRequestImpl<RESPONSE_TYPE> asRequestImpl() {
         return asyncRequestImpl;
     }
 
-    /**
-     * Returns the Reactor to which this Request is bound and to which this Request is to be passed.
-     *
-     * @return The target Reactor.
-     */
     @Override
     public Reactor getTargetReactor() {
         return asyncRequestImpl.getTargetReactor();
@@ -172,12 +173,6 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     public int getPendingResponseCount() {
         return asyncRequestImpl.getPendingResponseCount();
     }
-
-    /**
-     * The processAsyncRequest method will be invoked by the target Reactor on its own thread
-     * when the AsyncRequest is dequeued from the target inbox for processing.
-     */
-    abstract protected void processAsyncRequest() throws Exception;
 
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE _response)

@@ -422,7 +422,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     public <RT> RT local(final SyncRequest<RT> _syncRequest)
             throws Exception {
-        return SyncRequest.doLocal(targetReactorImpl, _syncRequest);
+        return  _syncRequest.asRequestImpl().doLocal(targetReactorImpl);
     }
 
     @Override
