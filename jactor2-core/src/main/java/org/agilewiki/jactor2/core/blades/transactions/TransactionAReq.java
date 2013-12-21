@@ -65,7 +65,7 @@ abstract public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMU
     }
 
     @Override
-    final protected void processAsyncRequest() throws Exception {
+    final public void processAsyncRequest() throws Exception {
 
         final CHANGE_MANAGER changeManager = transactionProcessor.newChangeManager();
 
@@ -89,7 +89,7 @@ abstract public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMU
 
         final AsyncRequest<Void> updateAReq = new AsyncRequest<Void>(updateReactor) {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 update(changeManager, this);
             }
         };

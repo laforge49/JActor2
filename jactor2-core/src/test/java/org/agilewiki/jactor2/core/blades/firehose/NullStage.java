@@ -23,7 +23,7 @@ public class NullStage extends IsolationBladeBase implements DataProcessor {
     public AsyncRequest<Void> processDataAReq(final FirehoseData _firehoseData) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 //Thread.sleep(1);
                 final List<Long> list = _firehoseData.getContent();
                 final int s = list.size();

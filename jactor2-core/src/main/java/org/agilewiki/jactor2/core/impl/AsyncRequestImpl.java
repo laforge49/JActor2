@@ -1,6 +1,10 @@
-package org.agilewiki.jactor2.core.messages;
+package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.Request;
+import org.agilewiki.jactor2.core.messages.SignalResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
@@ -28,7 +32,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         return asyncRequest;
     }
 
-    protected void setNoHungRequestCheck() {
+    public void setNoHungRequestCheck() {
         noHungRequestCheck = true;
     }
 

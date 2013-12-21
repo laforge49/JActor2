@@ -16,7 +16,7 @@ public class Blade3 extends IsolationBladeBase {
     public SyncRequest<Void> hi3SReq() {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 System.out.println("Hello world!");
                 return null;
             }

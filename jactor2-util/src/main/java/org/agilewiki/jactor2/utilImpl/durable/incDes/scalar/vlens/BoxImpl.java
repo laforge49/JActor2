@@ -63,7 +63,7 @@ public class BoxImpl extends VLenScalar<String, JASerializable> implements Box {
     public AsyncRequest<Void> clearReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
             }
@@ -74,7 +74,7 @@ public class BoxImpl extends VLenScalar<String, JASerializable> implements Box {
     public AsyncRequest<JASerializable> getValueReq() {
         return new AsyncBladeRequest<JASerializable>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -118,7 +118,7 @@ public class BoxImpl extends VLenScalar<String, JASerializable> implements Box {
     public AsyncRequest<Boolean> makeValueReq(final String jidType) {
         return new AsyncBladeRequest<Boolean>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(jidType));
             }
         };
@@ -144,7 +144,7 @@ public class BoxImpl extends VLenScalar<String, JASerializable> implements Box {
     public AsyncRequest<Void> setValueReq(final String actorType) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(actorType);
                 processAsyncResponse(null);
             }
@@ -171,7 +171,7 @@ public class BoxImpl extends VLenScalar<String, JASerializable> implements Box {
             final byte[] bytes) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(jidType, bytes);
                 processAsyncResponse(null);
             }
@@ -200,7 +200,7 @@ public class BoxImpl extends VLenScalar<String, JASerializable> implements Box {
             final byte[] bytes) {
         return new AsyncBladeRequest<Boolean>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(jidType, bytes));
             }
         };

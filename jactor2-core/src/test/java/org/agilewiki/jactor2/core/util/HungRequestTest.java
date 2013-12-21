@@ -36,7 +36,7 @@ class Hanger extends NonBlockingBladeBase {
     public AsyncRequest<String> hiAReq() {
         return new AsyncBladeRequest<String>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 System.out.println("hang");
             }
         };
@@ -55,7 +55,7 @@ class Hung extends NonBlockingBladeBase {
     public AsyncRequest<String> hoAReq() {
         return new AsyncBladeRequest<String>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 send(hanger.hiAReq(), this);
             }
         };

@@ -29,7 +29,7 @@ public class JAStringImpl extends VLenScalar<String, String> implements
     public AsyncRequest<String> getValueReq() {
         return new AsyncBladeRequest<String>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -59,7 +59,7 @@ public class JAStringImpl extends VLenScalar<String, String> implements
         }
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }
@@ -95,7 +95,7 @@ public class JAStringImpl extends VLenScalar<String, String> implements
         }
         return new AsyncBladeRequest<Boolean>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(v));
             }
         };

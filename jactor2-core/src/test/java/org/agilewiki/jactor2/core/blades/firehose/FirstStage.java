@@ -70,7 +70,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
 
         new SyncRequest<Void>(this.getReactor()) {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 return null;
             }
         }.signal();

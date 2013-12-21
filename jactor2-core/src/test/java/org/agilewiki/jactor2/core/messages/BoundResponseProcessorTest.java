@@ -33,7 +33,7 @@ class Driver extends NonBlockingBladeBase {
             AsyncRequest<String> dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setNoHungRequestCheck();
                 final BoundResponseProcessor<String> boundResponseProcessor = new BoundResponseProcessor<String>(
                         Driver.this, dis);

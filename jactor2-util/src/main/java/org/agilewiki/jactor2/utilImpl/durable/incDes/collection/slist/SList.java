@@ -37,7 +37,7 @@ public class SList<ENTRY_TYPE extends JASerializable> extends
     public AsyncRequest<Void> emptyReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 empty();
                 processAsyncResponse(null);
             }
@@ -193,7 +193,7 @@ public class SList<ENTRY_TYPE extends JASerializable> extends
     public AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iAdd(_i, _bytes);
                 processAsyncResponse(null);
             }
@@ -216,7 +216,7 @@ public class SList<ENTRY_TYPE extends JASerializable> extends
     public AsyncRequest<Void> iAddReq(final int _i) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iAdd(_i);
                 processAsyncResponse(null);
             }
@@ -254,7 +254,7 @@ public class SList<ENTRY_TYPE extends JASerializable> extends
     public AsyncRequest<Void> iRemoveReq(final int _i) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iRemove(_i);
                 processAsyncResponse(null);
             }

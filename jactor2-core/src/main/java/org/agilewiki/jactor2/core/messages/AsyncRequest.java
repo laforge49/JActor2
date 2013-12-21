@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
@@ -154,7 +155,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * The processAsyncRequest method will be invoked by the target Reactor on its own thread
      * when the AsyncRequest is dequeued from the target inbox for processing.
      */
-    abstract protected void processAsyncRequest() throws Exception;
+    abstract public void processAsyncRequest() throws Exception;
 
     @Override
     public AsyncRequestImpl<RESPONSE_TYPE> asRequestImpl() {

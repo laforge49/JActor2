@@ -39,7 +39,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
     public SyncRequest<Void> signalsContentSReq(final CONTENT _content) {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 final Iterator<Subscription<CONTENT>> it = subscriptions
                         .iterator();
                 while (it.hasNext()) {
@@ -79,7 +79,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
             };
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setNoHungRequestCheck();
                 count = subscriptions.size();
                 final Iterator<Subscription<CONTENT>> it = subscriptions

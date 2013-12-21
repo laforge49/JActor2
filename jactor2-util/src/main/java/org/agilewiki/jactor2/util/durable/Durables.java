@@ -55,7 +55,7 @@ public final class Durables {
             AsyncResponseProcessor<FactoryLocator> dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 final FactoryLocatorImpl factoryLocator = new FactoryLocatorImpl();
                 factoryLocator.configure(_bundleName, _version, _location);
                 send(_facility.getPropertiesProcessor()

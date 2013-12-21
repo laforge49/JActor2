@@ -121,7 +121,7 @@ public class Printer extends BlockingBladeBase {
             };
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 if (printer != null) {
                     dis.processAsyncResponse(printer);
                     return;
@@ -173,7 +173,7 @@ public class Printer extends BlockingBladeBase {
     public SyncRequest<Void> printlnSReq(final String _string) {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 System.out.println(_string);
                 return null;
             }
@@ -191,7 +191,7 @@ public class Printer extends BlockingBladeBase {
             final Object... _args) {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 printStream.print(String.format(locale, _format, _args));
                 return null;
             }

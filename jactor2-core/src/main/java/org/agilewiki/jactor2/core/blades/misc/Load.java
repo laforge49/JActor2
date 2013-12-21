@@ -35,7 +35,7 @@ public class Load extends BlockingBladeBase {
     public SyncRequest<Void> loadSReq(final long _load) {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 i = 0;
                 while (i < _load) {
                     i++;

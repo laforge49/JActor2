@@ -31,7 +31,7 @@ public class JAIntegerImpl extends FLenScalar<Integer> implements JAInteger {
     public AsyncRequest<Integer> getValueReq() {
         return new AsyncBladeRequest<Integer>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -86,7 +86,7 @@ public class JAIntegerImpl extends FLenScalar<Integer> implements JAInteger {
     public AsyncRequest<Void> setValueReq(final Integer v) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }

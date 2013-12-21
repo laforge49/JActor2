@@ -1,11 +1,8 @@
 package org.agilewiki.jactor2.core.messages;
 
-import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.plant.PlantImpl;
-import org.agilewiki.jactor2.core.plant.PoolThread;
+import org.agilewiki.jactor2.core.impl.SyncRequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.reactors.ThreadBoundReactorImpl;
 
 abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE> {
 
@@ -41,7 +38,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
      *
      * @return The value returned by the target blades.
      */
-    abstract protected RESPONSE_TYPE processSyncRequest() throws Exception;
+    abstract public RESPONSE_TYPE processSyncRequest() throws Exception;
 
     public SyncRequestImpl<RESPONSE_TYPE> asRequestImpl() {
         return syncRequestImpl;

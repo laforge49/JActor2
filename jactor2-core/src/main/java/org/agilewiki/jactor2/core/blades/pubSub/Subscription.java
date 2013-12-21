@@ -51,7 +51,7 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
     AsyncRequest<Void> publicationAReq(final CONTENT _content) {
         return new AsyncRequest<Void>(subscriberReactor) {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processContent(_content, this);
             }
         };

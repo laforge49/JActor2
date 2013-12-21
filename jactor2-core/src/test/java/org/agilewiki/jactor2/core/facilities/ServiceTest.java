@@ -27,7 +27,7 @@ public class ServiceTest extends TestCase {
                 AsyncRequest<Void> dis = this;
 
                 @Override
-                protected void processAsyncRequest() throws Exception {
+                public void processAsyncRequest() throws Exception {
                     send(client.crossAReq(),
                             new AsyncResponseProcessor<Boolean>() {
                                 @Override
@@ -65,7 +65,7 @@ class Client extends NonBlockingBladeBase {
             AsyncRequest<Boolean> dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setExceptionHandler(new ExceptionHandler<Boolean>() {
                     @Override
                     public Boolean processException(final Exception exception)
@@ -95,7 +95,7 @@ class Server extends NonBlockingBladeBase {
     AsyncRequest<Void> hangAReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
             }
         };
     }

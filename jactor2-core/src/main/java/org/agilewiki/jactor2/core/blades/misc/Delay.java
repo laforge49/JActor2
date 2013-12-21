@@ -38,7 +38,7 @@ public class Delay extends BlockingBladeBase {
     public SyncRequest<Void> sleepSReq(final long _delay) {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 Thread.sleep(_delay);
                 return null;
             }

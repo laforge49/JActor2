@@ -46,7 +46,7 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
     }
 
     @Override
-    protected void processAsyncRequest() throws Exception {
+    public void processAsyncRequest() throws Exception {
         final Subscription<CONTENT> subscription = new Subscription<CONTENT>(
                 requestBus, (CommonReactor) subscriberReactor, filter) {
             @Override

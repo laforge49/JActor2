@@ -36,7 +36,7 @@ public class BytesImpl extends VLenScalar<byte[], byte[]> implements Bytes {
     public AsyncRequest<byte[]> getValueReq() {
         return new AsyncBladeRequest<byte[]>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -63,7 +63,7 @@ public class BytesImpl extends VLenScalar<byte[], byte[]> implements Bytes {
     public AsyncRequest<Void> setValueReq(final byte[] v) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }
@@ -106,7 +106,7 @@ public class BytesImpl extends VLenScalar<byte[], byte[]> implements Bytes {
     public AsyncRequest<Boolean> makeValueReq(final byte[] v) {
         return new AsyncBladeRequest<Boolean>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(makeValue(v));
             }
         };

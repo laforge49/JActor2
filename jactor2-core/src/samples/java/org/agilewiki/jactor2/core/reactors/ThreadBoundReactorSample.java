@@ -31,7 +31,7 @@ public class ThreadBoundReactorSample {
         new SyncRequest<Void>(threadBoundBlade.getReactor()) {
 
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 threadBoundBlade.fin();
                 return null;
             }

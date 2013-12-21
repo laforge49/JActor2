@@ -15,7 +15,7 @@ public class EndStage extends IsolationBladeBase implements DataProcessor {
     public AsyncRequest<Void> processDataAReq(final FirehoseData _firehoseData) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 Thread.sleep(1);
                 _firehoseData.getAck().processAsyncResponse(null);
                 processAsyncResponse(null);

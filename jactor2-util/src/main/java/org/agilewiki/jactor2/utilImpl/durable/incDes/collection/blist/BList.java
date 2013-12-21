@@ -32,7 +32,7 @@ public class BList<ENTRY_TYPE extends JASerializable> extends DurableImpl
     public AsyncRequest<Integer> sizeReq() {
         return new AsyncBladeRequest<Integer>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(size());
             }
         };
@@ -42,7 +42,7 @@ public class BList<ENTRY_TYPE extends JASerializable> extends DurableImpl
     public AsyncRequest<Void> emptyReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 empty();
                 processAsyncResponse(null);
             }
@@ -130,7 +130,7 @@ public class BList<ENTRY_TYPE extends JASerializable> extends DurableImpl
     public AsyncRequest<ENTRY_TYPE> iGetReq(final int _i) {
         return new AsyncBladeRequest<ENTRY_TYPE>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(iGet(_i));
             }
         };
@@ -171,7 +171,7 @@ public class BList<ENTRY_TYPE extends JASerializable> extends DurableImpl
     public AsyncRequest<Void> iSetReq(final int _i, final byte[] _bytes) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iSet(_i, _bytes);
                 processAsyncResponse(null);
             }
@@ -251,7 +251,7 @@ public class BList<ENTRY_TYPE extends JASerializable> extends DurableImpl
     public AsyncRequest<Void> iAddReq(final int _i) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iAdd(_i);
                 processAsyncResponse(null);
             }
@@ -267,7 +267,7 @@ public class BList<ENTRY_TYPE extends JASerializable> extends DurableImpl
     public AsyncRequest<Void> iAddReq(final int _i, final byte[] _bytes) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iAdd(_i, _bytes);
                 processAsyncResponse(null);
             }
@@ -408,7 +408,7 @@ public class BList<ENTRY_TYPE extends JASerializable> extends DurableImpl
     public AsyncRequest<Void> iRemoveReq(final int _i) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iRemove(_i);
                 processAsyncResponse(null);
             }

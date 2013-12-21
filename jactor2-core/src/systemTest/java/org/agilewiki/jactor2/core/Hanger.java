@@ -12,7 +12,7 @@ class Hanger extends NonBlockingBladeBase {
     SyncRequest<Void> looperSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 while (true) {}
             }
         };
@@ -21,7 +21,7 @@ class Hanger extends NonBlockingBladeBase {
     SyncRequest<Void> sleeperSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 try {
                     Thread.sleep(Long.MAX_VALUE);
                 } catch (InterruptedException ie) {

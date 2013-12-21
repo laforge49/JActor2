@@ -44,7 +44,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
     public void processAsyncResponse(final RESPONSE_TYPE rsp) throws Exception {
         new SyncRequest<Void>(targetBlade.getReactor()) {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 rp.processAsyncResponse(rsp);
                 return null;
             }

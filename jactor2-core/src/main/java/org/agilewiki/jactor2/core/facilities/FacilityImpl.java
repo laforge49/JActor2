@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
 import org.agilewiki.jactor2.core.blades.transactions.properties.*;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.RequestImplBase;
+import org.agilewiki.jactor2.core.impl.RequestImplBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.Scheduler;
@@ -455,7 +455,7 @@ public class FacilityImpl extends CloserBase implements Facility {
     public AsyncRequest<ClassLoader> getClassLoaderAReq() {
         return new AsyncBladeRequest<ClassLoader>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getClassLoader());
             }
         };
@@ -464,7 +464,7 @@ public class FacilityImpl extends CloserBase implements Facility {
     public AsyncRequest<String> activateAReq(final String _activatorClassName) {
         return new AsyncBladeRequest<String>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(Exception e) throws Exception {

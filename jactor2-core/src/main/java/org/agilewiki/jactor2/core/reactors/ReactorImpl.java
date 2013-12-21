@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.messages.MessageSource;
-import org.agilewiki.jactor2.core.messages.RequestImplBase;
+import org.agilewiki.jactor2.core.impl.RequestImplBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.util.MessageCloser;
@@ -442,7 +442,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     public SyncRequest<Void> nullSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 return null;
             }
         };

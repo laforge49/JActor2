@@ -1,6 +1,8 @@
-package org.agilewiki.jactor2.core.messages;
+package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.messages.Request;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.reactors.Reactor;

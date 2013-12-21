@@ -54,7 +54,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     public AsyncRequest<byte[]> getSerializedBytesReq() {
         return new AsyncBladeRequest<byte[]>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getSerializedBytes());
             }
         };
@@ -64,7 +64,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     public AsyncRequest<Integer> getSerializedLengthReq() {
         return new AsyncBladeRequest<Integer>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getSerializedLength());
             }
         };
@@ -268,7 +268,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             final AppendableBytes appendableBytes) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 save(appendableBytes);
                 processAsyncResponse(null);
             }
@@ -293,7 +293,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             final byte[] bytes, final int offset) {
         return new AsyncBladeRequest<Integer>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(save(bytes, offset));
             }
         };
@@ -348,7 +348,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     public AsyncRequest<JASerializable> resolvePathnameReq(final String pathname) {
         return new AsyncBladeRequest<JASerializable>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(resolvePathname(pathname));
             }
         };
@@ -377,7 +377,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
     public final AsyncRequest<JASerializable> copyReq(final Reactor m) {
         return new AsyncBladeRequest<JASerializable>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(copy(m));
             }
         };
@@ -389,7 +389,7 @@ public class IncDesImpl extends AncestorBase implements IncDes {
             AsyncRequest<Boolean> dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 send(getSerializedLengthReq(),
                         new AsyncResponseProcessor<Integer>() {
                             @Override

@@ -31,7 +31,7 @@ public class JAFloatImpl extends FLenScalar<Float> implements JAFloat {
     public AsyncRequest<Float> getValueReq() {
         return new AsyncBladeRequest<Float>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -66,7 +66,7 @@ public class JAFloatImpl extends FLenScalar<Float> implements JAFloat {
     public AsyncRequest<Void> setValueReq(final Float v) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }

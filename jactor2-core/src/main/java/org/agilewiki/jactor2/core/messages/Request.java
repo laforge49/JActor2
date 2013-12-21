@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.messages;
 
+import org.agilewiki.jactor2.core.impl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public interface Request<RESPONSE_TYPE> {

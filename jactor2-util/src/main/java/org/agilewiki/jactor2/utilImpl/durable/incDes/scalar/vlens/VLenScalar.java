@@ -28,7 +28,7 @@ abstract public class VLenScalar<SET_TYPE, RESPONSE_TYPE> extends
     public AsyncRequest<Void> clearReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 clear();
                 processAsyncResponse(null);
             }

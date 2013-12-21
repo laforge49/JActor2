@@ -15,7 +15,7 @@ public class Blade11 extends ThreadBoundBladeBase {
     public SyncRequest<String> hiSReq() {
         return new SyncBladeRequest<String>() {
             @Override
-            protected String processSyncRequest() throws Exception {
+            public String processSyncRequest() throws Exception {
                 return "Hello world!";
             }
         };

@@ -31,7 +31,7 @@ public class JADoubleImpl extends FLenScalar<Double> implements JADouble {
     public AsyncRequest<Double> getValueReq() {
         return new AsyncBladeRequest<Double>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -66,7 +66,7 @@ public class JADoubleImpl extends FLenScalar<Double> implements JADouble {
     public AsyncRequest<Void> setValueReq(final Double v) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }

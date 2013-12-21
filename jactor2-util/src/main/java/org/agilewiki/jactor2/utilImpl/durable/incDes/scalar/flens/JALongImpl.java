@@ -31,7 +31,7 @@ public class JALongImpl extends FLenScalar<Long> implements JALong {
     public AsyncRequest<Long> getValueReq() {
         return new AsyncBladeRequest<Long>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -66,7 +66,7 @@ public class JALongImpl extends FLenScalar<Long> implements JALong {
     public AsyncRequest<Void> setValueReq(final Long _v) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(_v);
                 processAsyncResponse(null);
             }

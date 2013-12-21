@@ -31,7 +31,7 @@ public class JABooleanImpl extends FLenScalar<Boolean> implements JABoolean {
     public AsyncRequest<Boolean> getValueReq() {
         return new AsyncBladeRequest<Boolean>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse(getValue());
             }
         };
@@ -66,7 +66,7 @@ public class JABooleanImpl extends FLenScalar<Boolean> implements JABoolean {
     public AsyncRequest<Void> setValueReq(final Boolean v) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setValue(v);
                 processAsyncResponse(null);
             }

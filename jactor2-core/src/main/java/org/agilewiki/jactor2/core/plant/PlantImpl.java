@@ -188,7 +188,7 @@ public class PlantImpl extends FacilityImpl {
     private AsyncRequest<String> autoStartAReq(final String _facilityName) {
         return new AsyncBladeRequest<String>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 if (getFacility(_facilityName) != null) {
                     processAsyncResponse(null);
                     return;
@@ -236,7 +236,7 @@ public class PlantImpl extends FacilityImpl {
             final AsyncResponseProcessor<Facility> dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 if (getFacility(_name) != null)
                     processAsyncResponse(getFacility(_name));
                 final FacilityImpl facility = new FacilityImpl(_name);
@@ -388,7 +388,7 @@ public class PlantImpl extends FacilityImpl {
             String dependencyPropertyName;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 final String name = _dependencyName;
                 if (_dependencyName == null) {
                     throw new IllegalArgumentException(
@@ -484,7 +484,7 @@ public class PlantImpl extends FacilityImpl {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 FacilityImpl facility = getFacility(_facilityName);
                 if (facility != null)
                     facility.close();

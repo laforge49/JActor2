@@ -49,7 +49,7 @@ class ExceptionBlade extends NonBlockingBladeBase {
     AsyncRequest<Void> exceptionAReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 throw new IllegalStateException(); //Throw an exception when the request is processed.
             }
         };
@@ -74,7 +74,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
             AsyncRequest<String> dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
 
                 //Create and assign an exception handler.
                 setExceptionHandler(new ExceptionHandler<String>() {
