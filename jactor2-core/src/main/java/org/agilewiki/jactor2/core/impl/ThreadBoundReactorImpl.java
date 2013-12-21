@@ -1,8 +1,10 @@
-package org.agilewiki.jactor2.core.reactors;
+package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.plant.PoolThread;
+import org.agilewiki.jactor2.core.reactors.Inbox;
+import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messages;
 
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 
 /**
  * A source of messages, and which must be able to handle a response.

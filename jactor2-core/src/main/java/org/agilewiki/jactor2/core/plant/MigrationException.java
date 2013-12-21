@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.reactors.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
 
 /**
  * Signals a migration of the current thread to another targetReactor.

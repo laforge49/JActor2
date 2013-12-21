@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Request;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
 public interface RequestImpl<RESPONSE_TYPE> {
 

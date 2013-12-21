@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.messages;
 
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 
 /**
  * Message wraps the user/application AsyncRequest/Event which are queued in the

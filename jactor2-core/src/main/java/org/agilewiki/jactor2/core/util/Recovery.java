@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
 import org.agilewiki.jactor2.core.messages.Message;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 
 public class Recovery {
 

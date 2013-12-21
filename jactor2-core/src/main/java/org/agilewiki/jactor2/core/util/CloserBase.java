@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
 import com.google.common.collect.MapMaker;
-import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.slf4j.Logger;
 

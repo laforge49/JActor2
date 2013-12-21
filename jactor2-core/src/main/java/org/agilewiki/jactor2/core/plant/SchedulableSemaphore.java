@@ -9,7 +9,7 @@ public class SchedulableSemaphore {
     private Semaphore semaphore = new Semaphore(0);
     private boolean timeout;
 
-    Runnable runnable = new Runnable() {
+    public Runnable runnable = new Runnable() {
         @Override
         public void run() {
             timeout = true;

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.reactors.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
 
 /**
  * Interface for all threads in a facility thread pool.
