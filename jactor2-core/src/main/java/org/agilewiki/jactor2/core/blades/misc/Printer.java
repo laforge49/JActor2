@@ -10,6 +10,7 @@ import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChanges
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
@@ -47,7 +48,7 @@ import java.util.Locale;
  */
 public class Printer extends BlockingBladeBase {
 
-    public static AsyncRequest<Void> printlnAReq(final Plant _plant,
+    public static AsyncRequest<Void> printlnAReq(final BasicPlant _plant,
             final String _string) throws Exception {
         return new AsyncRequest<Void>(_plant.asPlantImpl().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
@@ -66,7 +67,7 @@ public class Printer extends BlockingBladeBase {
         };
     }
 
-    public static AsyncRequest<Void> printfAReq(final Plant _plant,
+    public static AsyncRequest<Void> printfAReq(final BasicPlant _plant,
             final String _format, final Object... _args) throws Exception {
         return new AsyncRequest<Void>(_plant.asPlantImpl().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
@@ -85,7 +86,7 @@ public class Printer extends BlockingBladeBase {
         };
     }
 
-    static public AsyncRequest<Printer> stdoutAReq(final Plant _plant)
+    static public AsyncRequest<Printer> stdoutAReq(final BasicPlant _plant)
             throws Exception {
         return new AsyncRequest<Printer>(_plant.asPlantImpl().getReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
