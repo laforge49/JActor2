@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.reactors.Inbox;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
 import org.agilewiki.jactor2.core.util.Closer;
 

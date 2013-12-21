@@ -3,8 +3,6 @@ package org.agilewiki.jactor2.core.impl;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.reactors.Inbox;
-import org.agilewiki.jactor2.core.reactors.IsolationInbox;
 
 public class IsolationReactorImpl extends UnboundReactorImpl {
 

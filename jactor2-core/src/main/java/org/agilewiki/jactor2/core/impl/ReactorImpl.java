@@ -6,8 +6,6 @@ import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.messages.MessageSource;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.*;
-import org.agilewiki.jactor2.core.reactors.Inbox;
-import org.agilewiki.jactor2.core.reactors.Outbox;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.MessageCloser;
 import org.agilewiki.jactor2.core.util.Recovery;
