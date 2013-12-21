@@ -11,12 +11,13 @@ In the process, we will encounter a number of classes which play a major role wh
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 
 public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Printer.printlnAReq(plant, "Hello World!").call();
         } finally {
@@ -34,7 +35,7 @@ Main Thread
 &nbsp;
 </th>
 <th style="padding: 5px;" bgcolor="lightyellow">
-Isolation Reactor
+Blocking Reactor
 </th>
 </tr>
 <tr>
@@ -105,10 +106,10 @@ close
 </tr>
 </table>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/facilities/Plant.html">Plant</a>
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html">Plant</a>
 </h3>
 <pre>
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             ...
         } finally {
@@ -116,15 +117,14 @@ close
         }
 </pre>
 <p>
-A Plant is a subclass of
-<a href="../../api/org/agilewiki/jactor2/core/facilities/Facility.html">Facility</a>
-with a name of Plant. Every program must have one Plant.
-A program does not exit normally until its Plant is closed.
+Every program must have one Plant
+and a program will not normally exit until its Plant is closed.
 </p>
 <p>
-A facility provides a thread pool and other resources, with a default thread pool size of 20.
-Facilities are used by reactors, with every reactor having a reference to one facility.
-A program can have any number of facilities.
+<a href="../../api/org/agilewiki/jactor2/core/plant/BasicPlant.html">BasicPlant</a>
+is an interface implemented by Plant and defines its API, excluding only the methods
+to support
+<a href="http://en.wikipedia.org/wiki/Modular_programming" target= "_BLANK">Modular Programming</a>.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html">Printer</a>
@@ -141,7 +141,7 @@ It prints to a PrintStream, System.out being the default.
 </p>
 <p>
 The static method Printer.printlnAReq returns an AsyncRequest which, when called, prints the string. 
-And if the facility has no printer, one is safely created.
+And if there is no printer, one is safely created.
 </p>
 <p>
 The 
@@ -151,9 +151,10 @@ But it is printed from the printer's own thread, not from the main thread.
 </p>
 <p>
 The call method of a request provides one way of invoking a request.
-The printRequest.call method sends the request to the blade's thread and blocks the main thread until a result is received.
+The printRequest.call method sends the request to the printer's thread and blocks the main thread 
+until a result is received.
 The call method is the only method in JActor which blocks a thread.
-(The call method can not be used by a blade, as it must be invoked from a non-facility thread.)
+(The call method can not be used by a blade, as it must not be invoked from a thread in the plant's thread pool.)
 </p>
 </body>
 </html>
