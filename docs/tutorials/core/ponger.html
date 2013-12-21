@@ -8,14 +8,14 @@
 is a very simple blade. It has a synchronous request, pingSReq.
 This request returns the number of times it has been called:
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class Ponger extends BladeBase {
+public class Ponger extends NonBlockingBladeBase {
     private long count = 0;
     
-    public Ponger(final Reactor _reactor) throws Exception {
+    public Ponger(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -31,16 +31,20 @@ public class Ponger extends BladeBase {
 }
 </pre>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html">BladeBase</a>
+<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html">NonBlockingBladeBase</a>
 </h3>
 <pre>
-public class Ponger extends BladeBase {
+public class Ponger extends NonBlockingBladeBase {
     ...
 }
 </pre>
 <p>
-BladeBase implements the Blade interface and provides a number of methods and nested
-classes for use when implementing a Blade.
+NonBlockingBladeBase implements the 
+<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBlade.html">NonBlockingBlade</a>
+interface and provides a number of methods and nested
+classes for use when implementing a 
+<a href="../../api/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>
+which does not block its thread.
 </p>
 <h3>
 Thread Safety
@@ -53,16 +57,20 @@ The member variable count is private and the only means of updating it is throug
 request. Which makes it thread-safe.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#initialize(org.agilewiki.jactor2.core.reactors.Reactor)">BladeBase.initialize</a>
+<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html#initialize-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">NonBlockingBladeBase.initialize</a>
 </h3>
 <pre>
-    public Ponger(final Reactor _reactor) throws Exception {
+    public Ponger(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 </pre>
 <p>
 Every blade needs a reactor before it can send or receive messages.
 And once set, a blade can not be assigned a different reactor.
+Reactors serve both as message queues and as light-weight threads.
+And 
+<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
+is optimized for blades which do not block their thread.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest&lt;RESPONSE_TYPE&gt;</a>
@@ -80,7 +88,7 @@ SyncBladeRequest is a BladeBase nested class that extends
 The pingSReq method returns a non-reusable instance of SyncRequest for accessing the state of the blade.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest()">SyncRequest.processSyncRequest</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest--">SyncRequest.processSyncRequest</a>
 </h3>
 <pre>
             @Override
@@ -102,12 +110,13 @@ This method is used to access and/or update the state of the blade and to return
 PongerValidator is a simple program that exercises Ponger:
 </p>
 <pre>
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PongerValidator {
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor(plant));
             long i = 0;
@@ -123,21 +132,6 @@ public class PongerValidator {
     }
 }
 </pre>
-<h3>
-<a href="../../api/org/agilewiki/jactor2/core/facilities/Facility.html">Facility</a>
-</h3>
-<pre>
-        Plant plant = new Plant();
-        try {
-            ...
-        } finally {
-            plant.close();
-        }
-</pre>
-<p>
-One or more facilities are always needed when using JActor.
-And they must be closed for the program to exit normally.
-</p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
 </h3>
