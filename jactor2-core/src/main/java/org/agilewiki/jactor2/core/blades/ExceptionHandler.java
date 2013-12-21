@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+
 /**
  * Exception handlers are used to alter how exceptions are processed.
  * <p>
@@ -129,12 +131,17 @@ package org.agilewiki.jactor2.core.blades;
  * got IllegalStateException, as expected
  * </pre>
  */
-public interface ExceptionHandler<RESPONSE_TYPE> {
+abstract public class ExceptionHandler<RESPONSE_TYPE> {
     /**
      * Process an exception or rethrow it.
      *
      * @param e The exception to be processed.
      */
-    public abstract RESPONSE_TYPE processException(final Exception e)
+    abstract public RESPONSE_TYPE processException(final Exception e)
             throws Exception;
+
+    public void processException(final Exception e, final AsyncResponseProcessor _asyncResponseProcessor)
+            throws Exception {
+        _asyncResponseProcessor.processAsyncResponse(processException(e));
+    }
 }

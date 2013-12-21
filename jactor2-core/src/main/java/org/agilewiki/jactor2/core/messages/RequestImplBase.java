@@ -383,7 +383,12 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 .getExceptionHandler();
         if (exceptionHandler != null) {
             try {
-                processObjectResponse(exceptionHandler.processException(_e));
+                exceptionHandler.processException(_e, new AsyncResponseProcessor() {
+                    @Override
+                    public void processAsyncResponse(Object _response) throws Exception {
+                        processObjectResponse(_response);
+                    }
+                });
             } catch (final Throwable u) {
                 if (!(responseProcessor instanceof SignalResponseProcessor)) {
                     if (!unClosed) {
