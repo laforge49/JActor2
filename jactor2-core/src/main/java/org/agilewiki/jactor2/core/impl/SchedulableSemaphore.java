@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.plant;
+package org.agilewiki.jactor2.core.impl;
 
 import java.util.concurrent.Semaphore;
 
