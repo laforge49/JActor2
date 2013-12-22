@@ -10,28 +10,28 @@ we get our first look at
 <a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html">AsyncRequest</a>.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Greeter extends BladeBase {
-    public Greeter(final Reactor _reactor) throws Exception {
+public class Greeter extends NonBlockingBladeBase {
+    public Greeter(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
     
     public AsyncRequest&lt;String&gt; greetingAReq(final String _name) {
         return new AsyncBladeRequest&lt;String&gt;() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse("Hi " + _name);
             }
         };
     }
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Greeter greeter = new Greeter(new NonBlockingReactor(plant));
             AsyncRequest&lt;String&gt; greetingAReq = greeter.greetingAReq("Joe");
@@ -45,13 +45,13 @@ public class Greeter extends BladeBase {
 }
 </pre>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncResponse(RESPONSE_TYPE)">processAsyncResponse</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncResponse-RESPONSE_TYPE-">processAsyncResponse</a>
 </h3>
 <pre>
     public AsyncRequest&lt;String&gt; greetingAReq(final String _name) {
         return new AsyncBladeRequest&lt;String&gt;() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse("Hi " + _name);
             }
         };
@@ -61,7 +61,7 @@ public class Greeter extends BladeBase {
 Asynchronous requests have one key feature--their results are returned by calling the processAsyncResponse method,
 and not via a return statement.
 This separates data flow from control flow, as the results often do not become available until long after the
-<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncRequest()">processAsyncRequest</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncRequest--">processAsyncRequest</a>
 method returns.
 </p>
 </body>
