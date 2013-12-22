@@ -34,7 +34,7 @@ public class SyncRequestImpl<RESPONSE_TYPE> extends
      */
     public RESPONSE_TYPE doLocal(final ReactorImpl _source) throws Exception {
         use();
-        final ReactorImpl messageProcessor = ((Reactor) _source).asReactorImpl();
+        final ReactorImpl messageProcessor = (ReactorImpl) _source;
         if (PlantImpl.DEBUG) {
             if (messageProcessor instanceof ThreadBoundReactorImpl) {
                 if (Thread.currentThread() instanceof PoolThread) {
@@ -51,7 +51,7 @@ public class SyncRequestImpl<RESPONSE_TYPE> extends
             throw new IllegalStateException(
                     "A valid source targetReactor can not be idle");
         }
-        if (messageProcessor != getTargetReactor()) {
+        if (messageProcessor != getTargetReactorImpl()) {
             throw new IllegalArgumentException("Reactor is not shared");
         }
         messageSource = messageProcessor;
