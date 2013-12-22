@@ -6,6 +6,7 @@ org.agilewiki.jactor2.core.blades.pubSub
 org.agilewiki.jactor2.core.blades.transactions
 org.agilewiki.jactor2.core.blades.transactions.properties
 org.agilewiki.jactor2.core.facilities
+org.agilewiki.jactor2.core.impl
 org.agilewiki.jactor2.core.messages
 org.agilewiki.jactor2.core.plant
 org.agilewiki.jactor2.core.reactors
