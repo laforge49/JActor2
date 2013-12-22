@@ -1,13 +1,12 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Echo extends NonBlockingBladeBase {
     public Echo(final NonBlockingReactor _reactor) throws Exception {
@@ -29,8 +28,8 @@ public class Echo extends NonBlockingBladeBase {
             @Override
             public void processAsyncRequest() throws Exception {
                 NonBlockingReactor myReactor = getReactor();
-                Facility myFacility = myReactor.getFacility();
-                Delay delay = new Delay(new BlockingReactor(myFacility));
+                BasicPlant plant = myReactor.getPlant();
+                Delay delay = new Delay(new BlockingReactor(plant));
                 SyncRequest<Void> sleepSReq = delay.sleepSReq(2000);
                 send(sleepSReq, sleepResponseProcessor);
             }
@@ -38,7 +37,7 @@ public class Echo extends NonBlockingBladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Echo echo = new Echo(new NonBlockingReactor(plant));
             AsyncRequest<String> echoAReq = echo.echoAReq("Hello...");
