@@ -6,7 +6,7 @@
 <h1>CallSpeedReport - Call Methods per Second</h1>
 <p>
 The 
-<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/Request.html#call--">call</a>
 method is quite slow as it typically blocks the originating thread, 
 allocates a thread to the target reactor,
 creates a message and adds it to the concurrent linked queue of that reactor.
@@ -20,13 +20,14 @@ is a small program that will tell us just how fast the call method is.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class CallSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 1000000L;
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor(plant));
             final long before = System.nanoTime();
