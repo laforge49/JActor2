@@ -1,14 +1,13 @@
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 public class SpeedReport extends SyncPrinterRequest {
     
     public static AsyncRequest<Void> startAReq(
-            final Plant _plant,
+            final BasicPlant _plant,
             final String _heading, 
             final long _ns, 
             final long _count) {

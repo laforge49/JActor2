@@ -12,24 +12,23 @@ The report is generated entirely on the same thread used by Printer.
 <pre>
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
-import org.agilewiki.jactor2.core.facilities.AsyncFacilityRequest;
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 public class SpeedReport extends SyncPrinterRequest {
     
     public static AsyncRequest&lt;Void&gt; startAReq(
-            final Facility _facility,
+            final BasicPlant _plant,
             final String _heading, 
             final long _ns, 
             final long _count) {
-        return new AsyncFacilityRequest&lt;Void&gt;(_facility) {
+        return new AsyncRequest&lt;Void&gt;(_plant.getReactor()) {
             AsyncResponseProcessor dis = this;
 
             @Override
             public void processAsyncRequest() throws Exception {
-                send(Printer.stdoutAReq((Plant) _facility), new AsyncResponseProcessor&lt;Printer&gt;() {
+                send(Printer.stdoutAReq((Plant) _plant), new AsyncResponseProcessor&lt;Printer&gt;() {
                     public void processAsyncResponse(final Printer _printer) throws Exception {
                         SpeedReport sr = new SpeedReport(_printer, _heading, _ns, _count);
                         send(sr, dis);
@@ -54,7 +53,7 @@ public class SpeedReport extends SyncPrinterRequest {
     }
 
     @Override
-    protected Void processSyncRequest() throws Exception {
+    public Void processSyncRequest() throws Exception {
         println("");
         println(heading);
         printf("Test duration in nanoseconds: %,d%n", ns);
@@ -86,7 +85,7 @@ Processing a SpeedReport Request
 </h3>
 <pre>
     @Override
-    protected Void processSyncRequest() throws Exception {
+    public Void processSyncRequest() throws Exception {
         println("");
         println(heading);
         printf("Test duration in nanoseconds: %,d%n", ns);
@@ -100,30 +99,29 @@ Processing a SpeedReport Request
 When processing a SpeedReport request, the println and printf methods inherited from SyncPrinterRequest can be used directly.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/facilities/AsyncFacilityRequest.html">AsyncFacilityRequest</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html">AsyncRequest</a>
 </h3>
 <pre>
     public static AsyncRequest&lt;Void&gt; startAReq(
-            final Facility _facility,
+            final BasicPlant _plant,
             final String _heading, 
             final long _ns, 
             final long _count) {
-        return new AsyncFacilityRequest&lt;Void&gt;(_facility) {
+        return new AsyncRequest&lt;Void&gt;(_plant.getReactor()) {
             ...
         };
     }
 </pre>
 <p>
-AsyncFacilityRequest&lt;RESPONSE_TYPE&gt; extends
-<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html">AsyncRequest&lt;RESPONSE_TYPE&gt;</a>.
 Async requests are similar to sync requests, only the response must be passed back via the processAsyncMethod 
 rather than with a return statement. And the local method does not apply to AsyncRequest.
 Also you can send requests that are tied to other reactors in an AsyncRequest but you can not do that within
 a SyncRequest.
 </p>
 <p>
-AsyncFacilityRequest accesses the public resources of a facility locally, without recourse to messages,
-as it operates as an extension of the facility's internal reactor.
+Creating an AsyncRequest with the reactor of the plant means that it can access
+the public methods of Printer directly, without recourse to messages,
+as it uses the same reactor as Printer and consequently operates on the same thread.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/messages/AsyncResponseProcessor.html">AsyncResponseProcessor</a>
@@ -134,7 +132,7 @@ as it operates as an extension of the facility's internal reactor.
 <p>
 Subclasses of AsyncResponseProcessor are used to implement the logic that will be used to process a response.
 So when you use a send, you typically instantiate an anonymous subclass with a processAsyncResponse method.
-But AsyncRequest also implements the AsyncResponseProcessor to provide an easy means of passing back a result.
+AsyncRequest also implements the AsyncResponseProcessor to provide an easy means of passing back a result.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#processAsyncRequest()">processAsyncRequest</a>
@@ -150,10 +148,10 @@ The processAsyncRequest method is called when the request is to be processed.
 It is similar to SyncRequest.processSyncRequest, except that processAsyncRequest has no return value.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html#stdoutSReq(org.agilewiki.jactor2.core.facilities.Facility)">stdoutAReq</a>
+<a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html#stdoutAReq-org.agilewiki.jactor2.core.plant.BasicPlant-">stdoutAReq</a>
 </h3>
 <pre>
-                send(Printer.stdoutAReq(_facility), new AsyncResponseProcessor&lt;Printer&gt;() {
+                send(Printer.stdoutAReq(_plant), new AsyncResponseProcessor&lt;Printer&gt;() {
                     public void processAsyncResponse(final Printer _printer) throws Exception {
                         ...
                     }
@@ -164,7 +162,7 @@ The stdoutAReq method is an asynchronous request to return the facility's  print
 if there was none.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#send(org.agilewiki.jactor2.core.messages.RequestBase, org.agilewiki.jactor2.core.messages.AsyncResponseProcessor)">send</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#send-org.agilewiki.jactor2.core.messages.Request-org.agilewiki.jactor2.core.messages.AsyncResponseProcessor-">send</a>
 </h3>
 <pre>
                 SpeedReport sr = new SpeedReport(_printer, _heading, _ns, _count);
@@ -172,7 +170,7 @@ if there was none.
 </pre>
 <p>
 The send method invokes a request and provides a callback for processing the response.
-In this case, the response is sent back to the invoker of startAReq.
+In this case, the response is sent back to the invoker of request returned by startAReq.
 The alternative is usually to create a subclass of AsyncResponseProcessor, but that would be
 pretty redundant in this case:
 </p>
@@ -192,11 +190,12 @@ We will use the <a href="SpeedReportValidator.java">SpeedReportValidator</a> pro
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 
 public class SpeedReportValidator {
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             SpeedReport.startAReq(plant, "Speed Report Validation", 1000L, 1L).call();
         } finally {
@@ -221,13 +220,13 @@ Main Thread
 &nbsp;
 </th>
 <th style="padding: 5px;" bgcolor="lightyellow" colspan="2">
-Facility.InternalReactor
+NonBlockingReactor
 </th>
 <th>
 &nbsp;
 </th>
 <th style="padding: 5px;" bgcolor="lightyellow" colspan="2">
-IsolationReactor
+BlockingReactor
 </th>
 </tr>
 <tr>
