@@ -12,7 +12,7 @@ public class Greeter extends NonBlockingBladeBase {
     public AsyncRequest<String> greetingAReq(final String _name) {
         return new AsyncBladeRequest<String>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 processAsyncResponse("Hi " + _name);
             }
         };

@@ -42,7 +42,7 @@ public class SpeedReport extends SyncPrinterRequest {
     }
 
     @Override
-    protected Void processSyncRequest() throws Exception {
+    public Void processSyncRequest() throws Exception {
         println("");
         println(heading);
         printf("Test duration in nanoseconds: %,d%n", ns);

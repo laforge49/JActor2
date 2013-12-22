@@ -12,7 +12,7 @@ public class Ponger extends NonBlockingBladeBase {
     public SyncRequest<Long> pingSReq() {
         return new SyncBladeRequest<Long>() {
             @Override
-            protected Long processSyncRequest() throws Exception {
+            public Long processSyncRequest() throws Exception {
                 count += 1;
                 return count;
             }

@@ -39,7 +39,7 @@ class Publisher extends NonBlockingBladeBase {
     
     AsyncRequest<Void> goAReq() {
         return new AsyncBladeRequest<Void>() {
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 requestBus.signalsContentSReq("start").signal();
                 requestBus.signalsContentSReq(1).signal();
                 requestBus.signalsContentSReq(2).signal();
@@ -66,7 +66,7 @@ class Subscriber extends NonBlockingBladeBase {
         return new AsyncBladeRequest<Void>() {
             AsyncResponseProcessor dis = this;
 
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
             
                 new SubscribeAReq<Object>(requestBus,
                         (NonBlockingReactor) getReactor(),

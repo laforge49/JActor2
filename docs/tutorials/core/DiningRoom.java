@@ -39,7 +39,7 @@ public class DiningRoom extends NonBlockingBladeBase {
             };
             
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 int i = 0;
                 NonBlockingReactor myReactor = getReactor();
                 Facility facility = myReactor.getFacility();
@@ -66,7 +66,7 @@ public class DiningRoom extends NonBlockingBladeBase {
             final long _duration) {
         return new SyncPrinterRequest(_printer) {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 printf("Seats: %,d%n", _seats);
                 printf("Meals: %,d%n", _meals);
                 println("\nMeals eaten by each philosopher:");

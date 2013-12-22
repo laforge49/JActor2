@@ -23,7 +23,7 @@ public class Signals extends NonBlockingBladeBase {
         
     SyncRequest<Void> countSReq() {
         return new SyncBladeRequest<Void>() {
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 int i = 0;
                 while (i < 10) {
                     i++;

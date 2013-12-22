@@ -17,7 +17,7 @@ public class UltimateAnswer extends NonBlockingBladeBase {
             final AsyncResponseProcessor<Void> dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 Plant myPlant = getReactor().getPlant();
                 AsyncRequest<Void> printRequest = Printer.printlnAReq(myPlant, "*** 42 ***");
                 send(printRequest, dis);

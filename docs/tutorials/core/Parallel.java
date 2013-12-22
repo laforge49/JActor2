@@ -33,7 +33,7 @@ public class Parallel extends NonBlockingBladeBase {
                 }
             };
             
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 NonBlockingReactor reactor = getReactor();
                 Plant plant = reactor.getPlant();
                 long j = 0;

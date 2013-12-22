@@ -54,7 +54,7 @@ public class DiningTable extends NonBlockingBladeBase {
             final AsyncResponseProcessor<Boolean> dis = this;
             
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setNoHungRequestCheck(); //inhibit the test for hung request
                 
                 if (mealsEaten == meals) {
@@ -111,7 +111,7 @@ public class DiningTable extends NonBlockingBladeBase {
     public SyncRequest<Void> ateSReq(final int _seat) {
         return new SyncBladeRequest<Void>() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 int leftFork = leftFork(_seat);
                 int rightFork = rightFork(_seat);
                 forkUsage[leftFork] = -1;

@@ -13,7 +13,7 @@ public class PongerLoop extends SyncRequest<Void> {
     }
     
     @Override
-    protected Void processSyncRequest() throws Exception {
+    public Void processSyncRequest() throws Exception {
         long i = 0;
         while (i < count) {
             i++;

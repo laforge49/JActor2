@@ -42,7 +42,7 @@ public class Isolation extends BladeBase {
         return new AsyncBladeRequest<Void>() {
             AsyncResponseProcessor dis = this;
 
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 int oldState = state;
                 int newState = state + 1;
                 send(printer.printfSReq("was %d, now %d\n", oldState, newState), 

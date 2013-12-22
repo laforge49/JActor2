@@ -28,7 +28,7 @@ public class Pinger extends BladeBase {
             };
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iterate();
             }
             

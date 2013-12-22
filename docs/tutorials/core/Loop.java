@@ -29,7 +29,7 @@ public class Loop extends NonBlockingBladeBase {
             };
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iterate();
             }
             

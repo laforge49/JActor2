@@ -27,7 +27,7 @@ public class Echo extends NonBlockingBladeBase {
             };
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 NonBlockingReactor myReactor = getReactor();
                 Facility myFacility = myReactor.getFacility();
                 Delay delay = new Delay(new BlockingReactor(myFacility));

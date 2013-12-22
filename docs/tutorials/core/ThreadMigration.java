@@ -29,7 +29,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
     public AsyncRequest<Void> startAReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
                 NonBlockingReactor myReactor = getReactor();
@@ -53,7 +53,7 @@ class SubActor extends NonBlockingBladeBase {
     public AsyncRequest<Void> doAReq(final String _label) {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() 
+            public void processAsyncRequest() 
                     throws Exception {
                 System.out.println(_label + " thread: " + 
                     Thread.currentThread());

@@ -33,7 +33,7 @@ public class Batcher extends NonBlockingBladeBase {
                 }
             };
             
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 long j = 0;
                 while(j < count) {
                     j++;
