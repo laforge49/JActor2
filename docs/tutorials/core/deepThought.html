@@ -10,21 +10,19 @@ The <a href="DeepThought.java">DeepThought</a> blade does just that. First it us
 Then it fetches the facility printer blade before printing a message.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class DeepThought extends BladeBase {
-
-    public DeepThought(final Reactor _reactor) throws Exception {
+public class DeepThought extends NonBlockingBladeBase {
+    public DeepThought(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
     
@@ -45,16 +43,16 @@ public class DeepThought extends BladeBase {
                     new AsyncResponseProcessor&lt;Void&gt;() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    AsyncRequest&lt;Printer&gt; stdoutRequest = Printer.stdoutAReq((Plant) getReactor().getFacility());
+                    AsyncRequest&lt;Printer&gt; stdoutRequest = Printer.stdoutAReq(getReactor().getPlant());
                     send(stdoutRequest, stdoutResponseProcessor);
                 }
             };
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 Reactor myReactor = getReactor();
-                Facility myFacility = myReactor.getFacility();
-                Delay delay = new Delay(new BlockingReactor(myFacility));
+                BasicPlant plant = myReactor.getPlant();
+                Delay delay = new Delay(new BlockingReactor(plant));
                 SyncRequest&lt;Void&gt; sleepSReq = delay.sleepSReq(4000);
                 send(sleepSReq, sleepResponseProcessor);
             }
@@ -62,7 +60,7 @@ public class DeepThought extends BladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             DeepThought deepThought = new DeepThought(new NonBlockingReactor(plant));
             AsyncRequest&lt;Void&gt; printAnswerAReq = deepThought.printAnswerAReq();
@@ -81,10 +79,10 @@ This is how multiple exchanges can be chained together.
 </p>
 <pre>
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 Reactor myReactor = getReactor();
-                Facility myFacility = myReactor.getFacility();
-                Delay delay = new Delay(new BlockingReactor(myFacility));
+                BasicPlant plant = myReactor.getPlant();
+                Delay delay = new Delay(new BlockingReactor(plant));
                 SyncRequest&lt;Void&gt; sleepSReq = delay.sleepSReq(4000);
                 send(sleepSReq, sleepResponseProcessor);
             }
@@ -98,7 +96,7 @@ the stdout request is sent to fetch the facility printer.
                     new AsyncResponseProcessor&lt;Void&gt;() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    SyncRequest&lt;Printer&gt; stdoutRequest = Printer.stdoutSReq(getReactor().getFacility());
+                    SyncRequest&lt;Printer&gt; stdoutRequest = Printer.stdoutSReq(getReactor().getPlant());
                     send(stdoutRequest, stdoutResponseProcessor);
                 }
             };
