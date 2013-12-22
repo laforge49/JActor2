@@ -47,7 +47,7 @@ public class PongerLoop extends SyncRequest&lt;Void&gt; {
 PongerLoop extends SyncRequest. The response is Void.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#local(org.agilewiki.jactor2.core.messages.SyncRequest)">local</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/Request.html#local-org.agilewiki.jactor2.core.messages.SyncRequest-">local</a>
 </h3>
 <pre>
         long i = 0;
@@ -69,6 +69,7 @@ LocalSpeedReport
 is a small program that times the Ponger agent and creates the speed report.
 </p>
 <pre>
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -76,7 +77,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class LocalSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 500000000L;
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor(plant));
             SyncRequest<Void> startSReq = new PongerLoop(ponger, count);
@@ -96,12 +97,12 @@ And here is the report:
 </p>
 <pre>
 Local Timings
-Test duration in nanoseconds: 11,148,478,766
+Test duration in nanoseconds: 15,204,566,434
 Number of exchanges: 500,000,000
-Exchanges per second: 44,849,168
+Exchanges per second: 32,884,857
 </pre>
 <p>
-The local method is almost 450 times faster than the call method.
+The local method is much faster than the call method.
 (Timings vary with each run.)
 </p>
 </body>
