@@ -10,19 +10,18 @@ But it is all about the callback or, in the case of JActor2, the anonymous Async
 The <a href="Loop.java">Loop</a> class is a good example. It prints the numbers from 1 to 10.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Loop extends BladeBase {
+public class Loop extends NonBlockingBladeBase {
 
-    public Loop(final Reactor _reactor) throws Exception {
+    public Loop(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -41,7 +40,7 @@ public class Loop extends BladeBase {
             };
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iterate();
             }
             
@@ -51,15 +50,15 @@ public class Loop extends BladeBase {
                     return;
                 }
                 i++;
-                Facility myFacility = getReactor().getFacility();
-                AsyncRequest<Void> printCount = Printer.printlnAReq(myFacility, String.valueOf(i));
+                BasicPlant plant = getReactor().getPlant();
+                AsyncRequest<Void> printCount = Printer.printlnAReq(plant, String.valueOf(i));
                 send(printCount, printCountResponseProcessor);
             }
         };
     }
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Loop loop = new Loop(new NonBlockingReactor(plant));
             AsyncRequest&lt;Void&gt; loopAReq = loop.loopAReq(10L);
@@ -83,7 +82,7 @@ all other requests. Intermediate state should be kept as part of the request sta
 </p>
 <p>
 One exception to this rule is when performing I/O, where intermediate state can not be isolated from different
-requests. This is why blades which perform I/O must use an IsolationReactor, which only allows one request to
+requests. This is why blades which perform I/O may sometimes need to use an IsolationReactor, which only allows one request to
 be processed at a time.
 </p>
 <h3>
@@ -91,7 +90,7 @@ processAsyncRequest
 </h3>
 <pre>
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iterate();
             }
 </pre>
@@ -109,8 +108,8 @@ iterate
                     return;
                 }
                 i++;
-                Facility myFacility = getReactor().getFacility();
-                AsyncRequest<Void> printCount = Printer.printlnAReq(myFacility, String.valueOf(i));
+                BasicPlant plant = getReactor().getPlant();
+                AsyncRequest<Void> printCount = Printer.printlnAReq(plant, String.valueOf(i));
                 send(printCount, printCountResponseProcessor);
             }
 </pre>

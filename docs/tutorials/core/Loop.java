@@ -1,12 +1,11 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Loop extends NonBlockingBladeBase {
 
@@ -39,15 +38,15 @@ public class Loop extends NonBlockingBladeBase {
                     return;
                 }
                 i++;
-                Plant myPlant = getReactor().getPlant();
-                AsyncRequest<Void> printCount = Printer.printlnAReq(myPlant, String.valueOf(i));
+                BasicPlant plant = getReactor().getPlant();
+                AsyncRequest<Void> printCount = Printer.printlnAReq(plant, String.valueOf(i));
                 send(printCount, printCountResponseProcessor);
             }
         };
     }
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Loop loop = new Loop(new NonBlockingReactor(plant));
             AsyncRequest<Void> loopAReq = loop.loopAReq(10L);
