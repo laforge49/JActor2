@@ -1,13 +1,13 @@
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class Pinger extends BladeBase {
+public class Pinger extends NonBlockingBladeBase {
     private final Ponger ponger;
 
-    public Pinger(final Reactor _reactor, final Ponger _ponger) throws Exception {
+    public Pinger(final NonBlockingReactor _reactor, final Ponger _ponger) throws Exception {
         _initialize(_reactor);
         ponger = _ponger;
     }

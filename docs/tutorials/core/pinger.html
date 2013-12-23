@@ -9,16 +9,16 @@ The <a href="Pinger.java">Pinger</a> blade is a minor variation on
 the <a href="loop.html">Loop</a> blade that uses <a href="ponger.html">Ponger</a> instead of Printer.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class Pinger extends BladeBase {
+public class Pinger extends NonBlockingBladeBase {
     private final Ponger ponger;
 
-    public Pinger(final Reactor _reactor, final Ponger _ponger) throws Exception {
+    public Pinger(final NonBlockingReactor _reactor, final Ponger _ponger) throws Exception {
         initialize(_reactor);
         ponger = _ponger;
     }
@@ -39,7 +39,7 @@ public class Pinger extends BladeBase {
             };
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 iterate();
             }
             
@@ -65,7 +65,7 @@ In this case, the local method should be used if the request being sent is a Syn
 it is known that the blades share a reactor. But this is not always the case.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -73,7 +73,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class NativeSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 100000000L;
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             NonBlockingReactor sharedReactor = new NonBlockingReactor(plant);
             Ponger ponger = new Ponger(sharedReactor);
@@ -93,18 +93,18 @@ public class NativeSendSpeedReport {
 Output:
 
 Native Send Timings
-Test duration in nanoseconds: 6,627,834,502
+Test duration in nanoseconds: 23,721,347,417
 Number of exchanges: 100,000,000
-Exchanges per second: 15,087,884
+Exchanges per second: 4,215,612
 </pre>
 <p>
-This is a bit slower than when using the local method, but then asynchronous processing has a bit more overhead:
+This is slower than when using the local method, but then asynchronous processing has more overhead:
 </p>
 <pre>
 Local Timings
-Test duration in nanoseconds: 11,148,478,766
+Test duration in nanoseconds: 15,204,566,434
 Number of exchanges: 500,000,000
-Exchanges per second: 44,849,168
+Exchanges per second: 32,884,857
 </pre>
 <h3>
 <a href="ForeignSendSpeedReport.java">ForeignSendSpeedReport</a>
@@ -113,7 +113,7 @@ Exchanges per second: 44,849,168
 A very common case is sending a request between two blades which have different reactors:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -121,7 +121,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class ForeignSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 10000000L;
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor(plant));
             Pinger pinger = new Pinger(new NonBlockingReactor(plant), ponger);
