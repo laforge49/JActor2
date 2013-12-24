@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 
@@ -88,15 +87,15 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
      */
     public boolean flush(final boolean _mayMigrate) throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<Message>>> iter = outbox
+        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>>> iter = outbox
                 .getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<ReactorImpl, ArrayDeque<Message>> entry = iter
+                final Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>> entry = iter
                         .next();
                 final ReactorImpl target = entry.getKey();
-                final ArrayDeque<Message> messages = entry.getValue();
+                final ArrayDeque<RequestImpl> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
                         && (target instanceof UnboundReactorImpl)) {
@@ -109,7 +108,7 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
                                 && targetThreadReference.compareAndSet(null,
                                 currentThread)) {
                             while (!messages.isEmpty()) {
-                                final Message m = messages.poll();
+                                final RequestImpl m = messages.poll();
                                 targ.unbufferedAddMessage(m, true);
                             }
                             throw new MigrationException(targ);

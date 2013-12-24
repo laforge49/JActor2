@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Request;
-import org.agilewiki.jactor2.core.messages.SignalResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class AsyncRequestImpl<RESPONSE_TYPE> extends

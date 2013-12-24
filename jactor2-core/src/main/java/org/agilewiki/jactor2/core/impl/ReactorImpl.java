@@ -2,8 +2,6 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.Message;
-import org.agilewiki.jactor2.core.messages.MessageSource;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -59,7 +57,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     /**
      * The request or signal message being processed.
      */
-    private Message currentMessage;
+    private RequestImpl currentMessage;
 
     /**
      * Set when the reactor reaches end-of-life.
@@ -191,7 +189,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      *
      * @return The message currently being processed.
      */
-    public final Message getCurrentMessage() {
+    public final RequestImpl getCurrentMessage() {
         return currentMessage;
     }
 
@@ -200,7 +198,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      *
      * @param _message The message currently being processed.
      */
-    public final void setCurrentMessage(final Message _message) {
+    public final void setCurrentMessage(final RequestImpl _message) {
         currentMessage = _message;
     }
 
@@ -253,7 +251,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      * @param _message A message.
      * @param _local   True when the current thread is bound to the targetReactor.
      */
-    public void unbufferedAddMessage(final Message _message,
+    public void unbufferedAddMessage(final RequestImpl _message,
                                      final boolean _local) throws Exception {
         if (isClosing()) {
             if (!_message.isClosed()) {
@@ -273,12 +271,12 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      *
      * @param _messages Previously buffered messages.
      */
-    public void unbufferedAddMessages(final Queue<Message> _messages)
+    public void unbufferedAddMessages(final Queue<RequestImpl> _messages)
             throws Exception {
         if (isClosing()) {
-            final Iterator<Message> itm = _messages.iterator();
+            final Iterator<RequestImpl> itm = _messages.iterator();
             while (itm.hasNext()) {
-                final Message message = itm.next();
+                final RequestImpl message = itm.next();
                 if (!message.isClosed()) {
                     try {
                         message.close();
@@ -304,7 +302,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      * @param _target  The targetReactor that should eventually receive this message
      * @return True if the message was buffered.
      */
-    public boolean buffer(final Message _message, final ReactorImpl _target) {
+    public boolean buffer(final RequestImpl _message, final ReactorImpl _target) {
         return outbox.buffer(_message, _target);
     }
 
@@ -313,7 +311,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      *
      * @param _message The message to be processed.
      */
-    protected void processMessage(final Message _message) {
+    protected void processMessage(final RequestImpl _message) {
         _message.eval();
         if (!_message.isClosed() && _message.isForeign() && !startClosing && !_message.isSignal()) {
             try {
@@ -329,7 +327,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     abstract protected void notBusy() throws Exception;
 
     @Override
-    public final void incomingResponse(final Message _message,
+    public final void incomingResponse(final RequestImpl _message,
                                        final ReactorImpl _responseSource) {
         try {
             final ReactorImpl responseSource = _responseSource==null ? null : _responseSource;
@@ -395,7 +393,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
                 if (timeoutSemaphore != null) {
                     return;
                 }
-                final Message message = inbox.poll();
+                final RequestImpl message = inbox.poll();
                 if (message == null) {
                     try {
                         if (timeoutSemaphore != null) {

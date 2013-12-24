@@ -2,11 +2,13 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.reactors.*;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 import java.util.Collections;
 import java.util.Map;
@@ -14,7 +16,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
-public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESPONSE_TYPE>, Message {
+public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESPONSE_TYPE> {
 
     /**
      * Assigned to current time when Facility.DEBUG.
@@ -43,7 +45,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * The message targeted to the source reactor which, when processed,
      * resulted in this message.
      */
-    protected Message oldMessage;
+    protected RequestImpl oldMessage;
 
     /**
      * The exception handler that was active in the source targetReactor at the time
@@ -486,7 +488,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         }
 
         @Override
-        public void incomingResponse(final Message _message,
+        public void incomingResponse(final RequestImpl _message,
                                      final ReactorImpl _responseSource) {
             result = ((RequestImplBase) _message).response;
             done.release();

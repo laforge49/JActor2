@@ -1,4 +1,6 @@
-package org.agilewiki.jactor2.core.messages;
+package org.agilewiki.jactor2.core.impl;
+
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 /**
  * Used to flag a message as a 1-way message. The singleton serves as a flag,

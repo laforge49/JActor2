@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.impl.Inbox;
-import org.agilewiki.jactor2.core.messages.Message;
+import org.agilewiki.jactor2.core.impl.RequestImpl;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -49,24 +49,24 @@ public class NonBlockingInbox extends Inbox {
     }
 
     @Override
-    protected void offerLocal(final Message msg) {
+    protected void offerLocal(final RequestImpl msg) {
         localQueue.offer(msg);
     }
 
     @Override
-    public Message poll() {
+    public RequestImpl poll() {
         Object obj = localQueue.peek();
         if (obj == null) {
             obj = concurrentQueue.poll();
             if (obj == null) {
                 return null;
             } else {
-                if (obj instanceof Message) {
-                    return (Message) obj;
+                if (obj instanceof RequestImpl) {
+                    return (RequestImpl) obj;
                 } else {
                     @SuppressWarnings("unchecked")
-                    final Queue<Message> msgs = (Queue<Message>) obj;
-                    final Message result = msgs.poll();
+                    final Queue<RequestImpl> msgs = (Queue<RequestImpl>) obj;
+                    final RequestImpl result = msgs.poll();
                     if (!msgs.isEmpty()) {
                         // msgs is not empty so save it in localQueue
                         localQueue.offer(msgs);
@@ -75,12 +75,12 @@ public class NonBlockingInbox extends Inbox {
                 }
             }
         } else {
-            if (obj instanceof Message) {
-                return (Message) localQueue.poll();
+            if (obj instanceof RequestImpl) {
+                return (RequestImpl) localQueue.poll();
             } else {
                 @SuppressWarnings("unchecked")
-                final Queue<Message> msgs = (Queue<Message>) obj;
-                final Message result = msgs.poll();
+                final Queue<RequestImpl> msgs = (Queue<RequestImpl>) obj;
+                final RequestImpl result = msgs.poll();
                 if (msgs.isEmpty()) {
                     // msgs is empty, so remove msgs from localQueue
                     localQueue.poll();

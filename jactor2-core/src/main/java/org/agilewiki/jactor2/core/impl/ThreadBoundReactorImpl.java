@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
 
@@ -61,15 +60,15 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
      */
     public final boolean flush() throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<Message>>> iter = outbox
+        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>>> iter = outbox
                 .getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<ReactorImpl, ArrayDeque<Message>> entry = iter
+                final Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>> entry = iter
                         .next();
                 final ReactorImpl target = entry.getKey();
-                final ArrayDeque<Message> messages = entry.getValue();
+                final ArrayDeque<RequestImpl> messages = entry.getValue();
                 iter.remove();
                 target.unbufferedAddMessages(messages);
             }

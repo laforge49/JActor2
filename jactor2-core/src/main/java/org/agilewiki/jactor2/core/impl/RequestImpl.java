@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.impl;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Request;
 
-public interface RequestImpl<RESPONSE_TYPE> {
+public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
 
     Request asRequest();
 
@@ -24,4 +24,52 @@ public interface RequestImpl<RESPONSE_TYPE> {
     void doSend(final ReactorImpl _source,
                           final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
             throws Exception;
+
+    /**
+     * Returns true when a response is expected but has not yet been placed in the message.
+     *
+     * @return True when a response is expected but has not yet been placed in the message.
+     */
+    boolean isClosed();
+
+    /**
+     * Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
+     *
+     * @return True whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.
+     */
+    boolean isIsolated();
+
+    /**
+     * Execute the Event.processEvent or AsyncRequest.processAsyncRequest method
+     * of the event/request held by the message. This method is always called on the
+     * target targetReactor's own thread.
+     */
+    void eval();
+
+    /**
+     * Process the throwable on the current thread in the facility of the active targetReactor.
+     *
+     * @param _activeReactor The targetReactor providing the facility for processing the throwable.
+     * @param _e             The exception to be processed.
+     */
+    void processException(final ReactorImpl _activeReactor, final Exception _e);
+
+    void close();
+
+    /**
+     * Returns true when the target reactor is not also the message source.
+     *
+     * @return True when the target reactor is not also the message source.
+     */
+    boolean isForeign();
+
+    boolean isSignal();
+
+    ReactorImpl getTargetReactorImpl();
+
+    MessageSource getMessageSource();
+
+    void responseReceived();
+
+    void responseProcessed();
 }

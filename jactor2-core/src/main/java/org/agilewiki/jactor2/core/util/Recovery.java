@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
-import org.agilewiki.jactor2.core.messages.Message;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.RequestImpl;
 
 public class Recovery {
 
@@ -26,7 +26,7 @@ public class Recovery {
         _reactor.getFacility().getPlant().forceExit();
     }
 
-    public void hungResponse(final Message _message) throws Exception {
+    public void hungResponse(final RequestImpl _message) throws Exception {
         ReactorImpl reactor = _message.getTargetReactorImpl().asReactorImpl();
         reactor.getLog().error("request hung -> reactor close");
         reactor.close();

@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.messages.Message;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -22,12 +20,12 @@ public class IsolationInbox extends Inbox {
     /**
      * Local response-pending (requests) queue for same-thread exchanges.
      */
-    private final ArrayDeque<Message> localResponsePendingQueue;
+    private final ArrayDeque<RequestImpl> localResponsePendingQueue;
 
     /**
      * Local no-response-pending (events and responses) queue for same-thread exchanges.
      */
-    private final ArrayDeque<Message> localNoResponsePendingQueue;
+    private final ArrayDeque<RequestImpl> localNoResponsePendingQueue;
 
     /**
      * Creates an IsolationInbox.
@@ -36,9 +34,9 @@ public class IsolationInbox extends Inbox {
      */
     public IsolationInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
-        localResponsePendingQueue = new ArrayDeque<Message>(
+        localResponsePendingQueue = new ArrayDeque<RequestImpl>(
                 initialLocalQueueSize);
-        localNoResponsePendingQueue = new ArrayDeque<Message>(
+        localNoResponsePendingQueue = new ArrayDeque<RequestImpl>(
                 initialLocalQueueSize);
     }
 
@@ -47,15 +45,15 @@ public class IsolationInbox extends Inbox {
      *
      * @param _msgs The message to be added.
      */
-    private void offerLocal(final Queue<Message> _msgs) {
+    private void offerLocal(final Queue<RequestImpl> _msgs) {
         while (!_msgs.isEmpty()) {
-            final Message msg = _msgs.poll();
+            final RequestImpl msg = _msgs.poll();
             offerLocal(msg);
         }
     }
 
     @Override
-    protected void offerLocal(final Message msg) {
+    protected void offerLocal(final RequestImpl msg) {
         if (!msg.isClosed()) {
             localResponsePendingQueue.offer(msg);
         } else {
@@ -83,11 +81,11 @@ public class IsolationInbox extends Inbox {
             if (obj == null) {
                 return false;
             }
-            if (obj instanceof Message) {
-                final Message msg = (Message) obj;
+            if (obj instanceof RequestImpl) {
+                final RequestImpl msg = (RequestImpl) obj;
                 offerLocal(msg);
             } else {
-                final Queue<Message> msgs = (Queue<Message>) obj;
+                final Queue<RequestImpl> msgs = (Queue<RequestImpl>) obj;
                 offerLocal(msgs);
             }
         }
@@ -95,11 +93,11 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public Message poll() {
+    public RequestImpl poll() {
         if (!hasWork()) {
             return null;
         }
-        final Message msg = localNoResponsePendingQueue.poll();
+        final RequestImpl msg = localNoResponsePendingQueue.poll();
         if (msg != null) {
             return msg;
         } else {
