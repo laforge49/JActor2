@@ -1,14 +1,13 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 import java.util.Iterator;
 import java.util.List;
@@ -42,14 +41,14 @@ public class DiningRoom extends NonBlockingBladeBase {
             public void processAsyncRequest() throws Exception {
                 int i = 0;
                 NonBlockingReactor myReactor = getReactor();
-                Facility facility = myReactor.getFacility();
+                BasicPlant plant = myReactor.getPlant();
                 DiningTable diningTable = new DiningTable(
-                    new NonBlockingReactor(facility),
+                    new NonBlockingReactor(plant),
                     _seats,
                     _meals);
                 while (i < _seats) {
                     DiningPhilosopher diningPhilosopher =
-                        new DiningPhilosopher(new NonBlockingReactor(facility));
+                        new DiningPhilosopher(new NonBlockingReactor(plant));
                     AsyncRequest<Integer> feastAReq = diningPhilosopher.feastAReq(diningTable, i);
                     send(feastAReq, feastResponseProcessor);
                     ++i;
@@ -92,7 +91,7 @@ public class DiningRoom extends NonBlockingBladeBase {
     public static void main(String[] args) throws Exception {
         int seats = 5;
         int meals = 1000000;
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             NonBlockingReactor diningRoomReactor = new NonBlockingReactor(plant);
             DiningRoom diningRoom = new DiningRoom(diningRoomReactor);

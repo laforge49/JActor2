@@ -16,17 +16,17 @@ Our objective here is to see how fast our philosophers can eat.
 <h2>DiningPhilosopher</h2>
 <p>
 As we are implementing our solution to this problem without built-in delays or locks, we will use 
-hungry philosophers who will eat as soon as they get both a left and right fork, put the forks back on the
+dining philosophers who will eat as soon as they get both a left and right fork, put the forks back on the
 table and then immediately try to pick up their forks and eat again. This differs a bit from other solutions where the philosophers
 take time out to think when they can not immediately get a fork. 
-<a href="DiningPhilosopher.java">Here</a> is the code used to model a hungry philosopher:
+<a href="DiningPhilosopher.java">Here</a> is the code used to model a dining philosopher:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /*
 Each philosopher has a seat at the table, and the seats are numbered from 0 through 4.
@@ -36,8 +36,8 @@ which returns the number of meals the philosopher ate once all the spaghetti was
 The feast request executes a simple loop, calling eatAReq and ateSReq until eatAReq returns a result
 of false--which indicates that there is no more food to eat.
 */
-public class DiningPhilosopher extends BladeBase {
-    public DiningPhilosopher(final Reactor _reactor) throws Exception {
+public class DiningPhilosopher extends NonBlockingBladeBase {
+    public DiningPhilosopher(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
     
@@ -51,7 +51,7 @@ public class DiningPhilosopher extends BladeBase {
             private AsyncResponseProcessor&lt;Boolean&gt; eatResponseProcessor;
             
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
             
                 //The logic to process a response from a DiningTable.ateSReq.
                 ateResponseProcessor = new AsyncResponseProcessor&lt;Void&gt;() {
@@ -92,13 +92,13 @@ But it also does not respond to an eat request until either both forks are avail
 there is no more spaghetti, whichever comes first.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class DiningTable extends BladeBase {
+public class DiningTable extends NonBlockingBladeBase {
     public final int seats; //The number of seats around the table == the number of philosophers.
     public final int meals; //The number of plates of spaghetti to be eaten.
     
@@ -106,7 +106,7 @@ public class DiningTable extends BladeBase {
     private int[] forkUsage;    //seat number which is using the fork, or -1 if available.
     private AsyncResponseProcessor&lt;Boolean&gt;[] pendingResponses; //Pending eat requests, or null.
 
-    public DiningTable(final Reactor _reactor, final int _seats, final int _meals) 
+    public DiningTable(final NonBlockingReactor _reactor, final int _seats, final int _meals) 
             throws Exception {
         initialize(_reactor);
         seats = _seats;
@@ -166,7 +166,7 @@ public class DiningTable extends BladeBase {
             final AsyncResponseProcessor&lt;Boolean&gt; dis = this;
             
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 setNoHungRequestCheck(); //inhibit the test for hung request
                 
                 if (mealsEaten == meals) {  //There is no more food to be eaten.
@@ -235,7 +235,7 @@ public class DiningTable extends BladeBase {
     public SyncRequest&lt;Void&gt; ateSReq(final int _seat) {
         return new SyncBladeRequest&lt;Void&gt;() {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 int leftFork = leftFork(_seat);
                 int rightFork = rightFork(_seat);
                 forkUsage[leftFork] = -1;   //Done with the left fork for now.
@@ -254,24 +254,23 @@ The <a href="DiningRoom.java">DiningRoom</a> class creates the dining table and 
 to the feast. When all the meals have been eaten, the dining room validates and reports the result.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
-public class DiningRoom extends BladeBase {
-    public DiningRoom(final Reactor _reactor)
+public class DiningRoom extends NonBlockingBladeBase {
+    public DiningRoom(final NonBlockingReactor _reactor)
             throws Exception {
         initialize(_reactor);
     }
@@ -306,17 +305,17 @@ public class DiningRoom extends BladeBase {
                 Start the feast.
             */
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 int i = 0;
                 Reactor myReactor = getReactor();
-                Facility facility = myReactor.getFacility();
+                BasicPlant plant = myReactor.getPlant();
                 DiningTable diningTable = new DiningTable(
-                    new NonBlockingReactor(facility),
+                    new NonBlockingReactor(plant),
                     _seats,
                     _meals);
                 while (i < _seats) {
                     DiningPhilosopher diningPhilosopher =
-                        new DiningPhilosopher(new NonBlockingReactor(facility));
+                        new DiningPhilosopher(new NonBlockingReactor(plant));
                     AsyncRequest&lt;Integer&gt; feastAReq = diningPhilosopher.feastAReq(diningTable, i);
                     send(feastAReq, feastResponseProcessor);
                     ++i;
@@ -336,7 +335,7 @@ public class DiningRoom extends BladeBase {
             final long _duration) {
         return new SyncPrinterRequest(_printer) {
             @Override
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 printf("Seats: %,d%n", _seats);
                 printf("Meals: %,d%n", _meals);
                 println("\nMeals eaten by each philosopher:");
@@ -362,7 +361,7 @@ public class DiningRoom extends BladeBase {
     public static void main(String[] args) throws Exception {
         int seats = 5;
         int meals = 1000000;
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             NonBlockingReactor diningRoomReactor = new NonBlockingReactor(plant);
             DiningRoom diningRoom = new DiningRoom(diningRoomReactor);
@@ -387,14 +386,14 @@ Seats: 5
 Meals: 1,000,000
 
 Meals eaten by each philosopher:
-    197,498
-    172,025
-    293,909
-    171,582
-    164,986
+    158,202
+    316,084
+    178,295
+    189,123
+    158,296
 
-Test duration in nanoseconds: 2,020,604,926
-Total meals eaten per second: 494,901
+Test duration in nanoseconds: 1,926,880,463
+Total meals eaten per second: 518,973
 </pre>
 </body>
 </html>
