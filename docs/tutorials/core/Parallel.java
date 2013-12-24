@@ -1,6 +1,7 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
@@ -18,25 +19,21 @@ public class Parallel extends NonBlockingBladeBase {
     
     public AsyncRequest<Void> runAReq() {
         return new AsyncBladeRequest<Void>() {
-            final AsyncResponseProcessor<Void> dis = this;
+            final AsyncRequest<Void> dis = this;
             
             final AsyncResponseProcessor<Void> sleepResponseProcessor = 
-                new AsyncResponseProcessor<Void>() {
-                
-                long i = 0;
-                
+                    new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    i++;
-                    if (i == count)
+                    if (dis.getPendingResponseCount() == 0)
                         dis.processAsyncResponse(null);
                 }
             };
             
             public void processAsyncRequest() throws Exception {
-                NonBlockingReactor reactor = getReactor();
-                Plant plant = reactor.getPlant();
                 long j = 0;
+                NonBlockingReactor reactor = getReactor();
+                BasicPlant plant = reactor.getPlant();
                 while(j < count) {
                     j++;
                     Delay delay = new Delay(new BlockingReactor(plant));

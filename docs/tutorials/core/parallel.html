@@ -11,21 +11,20 @@ a facility is created with 10 threads and
 10 sleep requests of 100 milliseconds each are sent to 10 different 
 <a href="../../api/org/agilewiki/jactor2/core/blades/misc/Delay.html">Delay</a>
 blades,
-each running in a different reactor. Total processing time is just over 100 milliseconds.
+each running in a different reactor. And the total processing time is just over 100 milliseconds.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Parallel extends BladeBase {
+public class Parallel extends NonBlockingBladeBase {
     private final long count;
     
     public Parallel(final NonBlockingReactor _reactor, final long _count)
@@ -41,19 +40,16 @@ public class Parallel extends BladeBase {
             final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor = 
                 new AsyncResponseProcessor&lt;Void&gt;() {
                 
-                long i = 0;
-                
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    i++;
-                    if (i == count)
+                    if (dis.getPendingResponseCount() == 0)
                         dis.processAsyncResponse(null);
                 }
             };
             
-            protected void processAsyncRequest() throws Exception {
-                Reactor reactor = getReactor();
-                Facility facility = reactor.getFacility();
+            public void processAsyncRequest() throws Exception {
+                NonBlockingReactor reactor = getReactor();
+                BasicPlant plant = reactor.getPlant();
                 long j = 0;
                 while(j < count) {
                     j++;
@@ -66,7 +62,7 @@ public class Parallel extends BladeBase {
     
     public static void main(final String[] _args) throws Exception {
         final long count = 10L;
-        Plant plant = new Plant(10);
+        BasicPlant plant = new Plant(10);
         try {
             Parallel parallel = new Parallel(new NonBlockingReactor(plant), count);
             AsyncRequest&lt;Void&gt; runAReq = parallel.runAReq();
