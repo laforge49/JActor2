@@ -15,25 +15,25 @@ instance.
 </p>
 <p>
 An ExceptionHandler can be assigned while processing a request by calling the
-<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#setExceptionHandler(org.agilewiki.jactor2.core.blades.ExceptionHandler)">setExceptionHandler</a> 
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#setExceptionHandler-org.agilewiki.jactor2.core.blades.ExceptionHandler-">setExceptionHandler</a> 
 method.
 This is illustrated by the <a href="ExceptionHandlerSample.java">ExceptionHandlerSample</a> program.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class ExceptionHandlerSample {
 
     public static void main(final String[] _args) throws Exception {
 
         //A facility with two threads.
-        final Plant plant = new Plant(2);
+        final BasicPlant plant = new Plant(2);
 
         try {
 
@@ -62,10 +62,10 @@ public class ExceptionHandlerSample {
 }
 
 //A blade with a request that throws an exception.
-class ExceptionBlade extends BladeBase {
+class ExceptionBlade extends NonBlockingBladeBase {
 
     //Create an ExceptionBlade.
-    ExceptionBlade(final Reactor _reactor) throws Exception {
+    ExceptionBlade(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
 
@@ -87,7 +87,7 @@ class ExceptionHandlerBlade extends BladeBase {
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blade with a reference to an exception blade.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final Reactor _reactor) throws Exception {
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final NonBlockingReactor _reactor) throws Exception {
         exceptionBlade = _exceptionBlade;
         initialize(_reactor);
     }
@@ -98,7 +98,7 @@ class ExceptionHandlerBlade extends BladeBase {
             AsyncRequest&lt;String&gt; dis = this;
 
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
 
                 //Create and assign an exception handler.
                 setExceptionHandler(new ExceptionHandler&lt;String&gt;() {
