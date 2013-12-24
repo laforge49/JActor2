@@ -356,6 +356,9 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     abstract protected void processRequestMessage() throws Exception;
 
+    @Override
+    public void responseProcessed() {}
+
     /**
      * Process a response.
      */
@@ -366,6 +369,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         if (response instanceof Exception) {
             oldMessage.processException(sourceMessageProcessor,
                     (Exception) response);
+            oldMessage.responseProcessed();
             return;
         }
         try {
@@ -373,6 +377,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         } catch (final Exception e) {
             oldMessage.processException(sourceMessageProcessor, e);
         }
+        oldMessage.responseProcessed();
     }
 
     @Override

@@ -72,13 +72,12 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     @Override
-    protected void processResponseMessage() {
-        ((AsyncRequestImpl) oldMessage).pendingResponseCount -= 1;
-        super.processResponseMessage();
+    public void responseProcessed() {
+        pendingResponseCount -= 1;
         try {
-            ((AsyncRequestImpl) oldMessage).pendingCheck();
+            pendingCheck();
         } catch (Exception e) {
-            oldMessage.processException((ReactorImpl) messageSource, e);
+            processException((ReactorImpl) messageSource, e);
         }
     }
 

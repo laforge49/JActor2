@@ -55,4 +55,6 @@ public interface Message extends AutoCloseable {
     ReactorImpl getTargetReactorImpl();
 
     MessageSource getMessageSource();
+
+    void responseProcessed();
 }
