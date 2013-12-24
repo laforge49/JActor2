@@ -357,12 +357,16 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     abstract protected void processRequestMessage() throws Exception;
 
     @Override
+    public void responseReceived() {}
+
+    @Override
     public void responseProcessed() {}
 
     /**
      * Process a response.
      */
     protected void processResponseMessage() {
+        oldMessage.responseReceived();
         final ReactorImpl sourceMessageProcessor = (ReactorImpl) messageSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);

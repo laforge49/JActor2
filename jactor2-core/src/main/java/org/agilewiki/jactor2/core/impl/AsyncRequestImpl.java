@@ -72,8 +72,12 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     @Override
-    public void responseProcessed() {
+    public void responseReceived() {
         pendingResponseCount -= 1;
+    }
+
+    @Override
+    public void responseProcessed() {
         try {
             pendingCheck();
         } catch (Exception e) {

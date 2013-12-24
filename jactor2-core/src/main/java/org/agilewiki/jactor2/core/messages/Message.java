@@ -56,5 +56,7 @@ public interface Message extends AutoCloseable {
 
     MessageSource getMessageSource();
 
+    void responseReceived();
+
     void responseProcessed();
 }
