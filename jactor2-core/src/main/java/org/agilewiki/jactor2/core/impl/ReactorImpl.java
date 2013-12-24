@@ -361,7 +361,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      *
      * @param _message    The request that has completed
      */
-    public void requestEnd(final RequestImplBase _message) {
+    public void requestEnd(final RequestImpl _message) {
         if (_message.isForeign()) {
             boolean b = removeMessage(_message);
         }

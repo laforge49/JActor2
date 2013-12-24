@@ -232,11 +232,11 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         if (PlantImpl.DEBUG) {
             debugTimestamp = System.nanoTime();
             final Facility targetFacility = targetReactor.getFacility();
-            final Map<Long, Set<RequestImplBase>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
-            Set<RequestImplBase> nanoSet = pendingRequests.get(debugTimestamp);
+            final Map<Long, Set<RequestImpl>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
+            Set<RequestImpl> nanoSet = pendingRequests.get(debugTimestamp);
             if (nanoSet == null) {
                 nanoSet = Collections
-                        .newSetFromMap(new ConcurrentHashMap<RequestImplBase, Boolean>(8, 0.9f, 1));
+                        .newSetFromMap(new ConcurrentHashMap<RequestImpl, Boolean>(8, 0.9f, 1));
             }
             pendingRequests.put(debugTimestamp, nanoSet);
         }
@@ -249,8 +249,8 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         response = _response;
         if (PlantImpl.DEBUG) {
             final Facility targetFacility = targetReactor.getFacility();
-            final Map<Long, Set<RequestImplBase>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
-            final Set<RequestImplBase> nanoSet = pendingRequests
+            final Map<Long, Set<RequestImpl>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
+            final Set<RequestImpl> nanoSet = pendingRequests
                     .get(debugTimestamp);
             if (nanoSet != null) {
                 nanoSet.remove(this);

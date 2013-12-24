@@ -115,7 +115,7 @@ public class FacilityImpl extends CloserBase implements Facility {
      * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
      */
     @SuppressWarnings("rawtypes")
-    public final ConcurrentSkipListMap<Long, Set<RequestImplBase>> pendingRequests = PlantImpl.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestImplBase>>()
+    public final ConcurrentSkipListMap<Long, Set<RequestImpl>> pendingRequests = PlantImpl.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestImpl>>()
             : null;
 
     /**
