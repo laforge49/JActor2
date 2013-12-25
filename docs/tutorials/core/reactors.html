@@ -118,6 +118,7 @@ This is illustrated by the <a href="Isolation.java">Isolation</a> program:
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -128,7 +129,7 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 public class Isolation extends BladeBase {
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Printer printer = Printer.stdoutAReq(plant).call();
             
@@ -152,7 +153,7 @@ public class Isolation extends BladeBase {
     int state;
     
     public Isolation(final Reactor _reactor, final Printer _printer) throws Exception {
-        initialize(_reactor);
+        _initialize(_reactor);
         printer = _printer;
     }
     
@@ -160,7 +161,7 @@ public class Isolation extends BladeBase {
         return new AsyncBladeRequest&lt;Void&gt;() {
             AsyncResponseProcessor dis = this;
 
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 int oldState = state;
                 int newState = state + 1;
                 send(printer.printfSReq("was %d, now %d\n", oldState, newState), 
