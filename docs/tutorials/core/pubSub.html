@@ -118,7 +118,7 @@ class Subscriber extends NonBlockingBladeBase {
                         int inc = (Integer) _content;
                         state = state + inc;
                         //After printing, a null is passed back to the transaction processor.
-                        arp.send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp, null);
+                        arp.send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp);
                     }
                 }.signal();
 
