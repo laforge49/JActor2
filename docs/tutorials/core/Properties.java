@@ -1,6 +1,7 @@
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesChangeManager;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesTransactionAReq;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -9,7 +10,7 @@ import java.util.*;
 
 public class Properties {
     public static void main(final String[] _args) throws Exception {
-        final Plant plant = new Plant();
+        final BasicPlant plant = new Plant();
         try {
             PropertiesProcessor propertiesProcessor = 
                 new PropertiesProcessor(new IsolationReactor(plant));
