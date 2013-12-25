@@ -1,5 +1,6 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -7,7 +8,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class Signals extends NonBlockingBladeBase {
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Printer.printlnAReq(plant, "\nCount to 10\n").signal();
             new Signals(new NonBlockingReactor(plant)).countSReq().call();

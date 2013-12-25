@@ -50,17 +50,17 @@ Signals are supported because there are situations when they are invaluable. But
 not entirely risk free.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Signals extends BladeBase {
+public class Signals extends NonBlockingBladeBase {
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Printer.printlnAReq(plant, "\nCount to 10\n").signal();
             new Signals(new NonBlockingReactor(plant)).countSReq().call();
@@ -70,13 +70,13 @@ public class Signals extends BladeBase {
         }
     }
     
-    public Signals(final Reactor _reactor) throws Exception {
+    public Signals(final NonBlockingReactor _reactor) throws Exception {
         initialize(_reactor);
     }
         
     SyncRequest&lt;Void&gt; countSReq() {
         return new SyncBladeRequest&lt;Void&gt;() {
-            protected Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() throws Exception {
                 int i = 0;
                 while (i < 10) {
                     i++;
