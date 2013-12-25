@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.pubSub.IsInstanceFilter;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -11,7 +12,7 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 public class PubSub {
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Printer printer = Printer.stdoutAReq(plant).call();
             RequestBus<Object> requestBus =
@@ -77,13 +78,7 @@ class Subscriber extends NonBlockingBladeBase {
                         int oldState = state;
                         int inc = (Integer) _content;
                         state = state + inc;
-                        arp.send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), 
-                            new AsyncResponseProcessor<Void>() {
-                                @Override
-                                public void processAsyncResponse(Void rsp) throws Exception {
-                                    arp.processAsyncResponse(null);
-                                }
-                            });
+                        arp.send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp);
                     }
                 }.signal();
                 

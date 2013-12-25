@@ -10,12 +10,13 @@ provides a means of publishing some content to a set of subscribers.
 The <a href="PubSub.java">PubSub</a> program demonstrates this capability.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.pubSub.IsInstanceFilter;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
+import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -23,7 +24,7 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 public class PubSub {
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        BasicPlant plant = new Plant();
         try {
             Printer printer = Printer.stdoutAReq(plant).call();
             RequestBus&lt;Object&gt; requestBus =
@@ -52,7 +53,7 @@ The Publisher blade uses the RequestBus.signalsContentSReq and sendsContentAReq 
 of strings and integers.
 </p>
 <pre>
-class Publisher extends BladeBase {
+class Publisher extends NonBlockingBladeBase {
     final RequestBus&lt;Object&gt; requestBus;
 
     Publisher(final NonBlockingReactor _reactor, final RequestBus&lt;Object&gt; _requestBus) 
@@ -63,7 +64,7 @@ class Publisher extends BladeBase {
     
     AsyncRequest&lt;Void&gt; goAReq() {
         return new AsyncBladeRequest&lt;Void&gt;() {
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 requestBus.signalsContentSReq("start").signal();
                 requestBus.signalsContentSReq(1).signal();
                 requestBus.signalsContentSReq(2).signal();
@@ -88,7 +89,7 @@ and
 <a href="../../api/org/agilewiki/jactor2/core/blades/pubSub/IsInstanceFilter.html">IsInstanceFilter</a>&lt;CONTENT&gt;.
 </p>
 <pre>
-class Subscriber extends BladeBase {
+class Subscriber extends NonBlockingBladeBase {
     final RequestBus&lt;Object&gt; requestBus;
     final Printer printer;
     int state;
@@ -104,7 +105,7 @@ class Subscriber extends BladeBase {
         return new AsyncBladeRequest&lt;Void&gt;() {
             AsyncResponseProcessor dis = this;
 
-            protected void processAsyncRequest() throws Exception {
+            p void processAsyncRequest() throws Exception {
                 //Creates a subscription that updates the state when an int is passed as content.
                 new SubscribeAReq&lt;Object&gt;(requestBus,
                         (NonBlockingReactor) getReactor(),
@@ -117,7 +118,7 @@ class Subscriber extends BladeBase {
                         int inc = (Integer) _content;
                         state = state + inc;
                         //After printing, a null is passed back to the transaction processor.
-                        arp.send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp);
+                        arp.send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp, null);
                     }
                 }.signal();
 
