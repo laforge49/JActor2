@@ -11,7 +11,7 @@ public class SwingBoundReactorSample {
         //Create a plant with 5 threads.
         Plant plant = new Plant(5);
 
-        new HelloWorld(new SwingBoundReactor(plant)).createAndShowAReq().signal();
+        new HelloWorld(new SwingBoundReactor()).createAndShowAReq().signal();
     }
 }
 

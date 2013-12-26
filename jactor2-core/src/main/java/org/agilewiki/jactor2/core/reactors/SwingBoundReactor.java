@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -66,8 +67,8 @@ import java.awt.event.WindowListener;
  */
 public class SwingBoundReactor extends ReactorBase implements CommonReactor, WindowListener {
 
-    public SwingBoundReactor(final BasicPlant _plant) throws Exception {
-        this(_plant.asFacility());
+    public SwingBoundReactor() throws Exception {
+        this(Plant.getSingleton().asFacility());
     }
 
     /**
