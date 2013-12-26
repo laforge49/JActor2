@@ -16,7 +16,7 @@ public class ThreadBoundReactorSample {
 
         //Create a thread-bound processing.
         final ThreadBoundReactor reactor =
-                new ThreadBoundReactor(plant, new Runnable() {
+                new ThreadBoundReactor(new Runnable() {
                     @Override
                     public void run() {
                         //Interrupt the main thread when there are messages to process

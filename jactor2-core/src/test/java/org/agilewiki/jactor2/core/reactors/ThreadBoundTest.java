@@ -12,7 +12,7 @@ public class ThreadBoundTest extends TestCase {
     public void testa() throws Exception {
         final Plant plant = new Plant();
         try {
-            reactor = new ThreadBoundReactor(plant, new Runnable() {
+            reactor = new ThreadBoundReactor(new Runnable() {
                 @Override
                 public void run() {
                     reactor.run();

@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
  * A targetReactor bound to a pre-existing thread, a thread-bound targetReactor can use
@@ -88,9 +89,8 @@ import org.agilewiki.jactor2.core.plant.BasicPlant;
  */
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Runnable {
 
-    public ThreadBoundReactor(final BasicPlant _plant,
-                              final Runnable _boundProcessor) throws Exception {
-        this(_plant.asFacility(), _boundProcessor);
+    public ThreadBoundReactor(final Runnable _boundProcessor) throws Exception {
+        this(Plant.getSingleton().asFacility(), _boundProcessor);
     }
 
     public ThreadBoundReactor(final Facility _facility,
