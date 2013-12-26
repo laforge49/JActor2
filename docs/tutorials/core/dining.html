@@ -370,7 +370,7 @@ public class DiningRoom extends NonBlockingBladeBase {
             List&lt;Integer&gt; mealsEaten = feastAReq.call(); //Run the feast.
             long after = System.nanoTime();
             long duration = after - before;
-            Printer printer = new Printer(new BlockingReactor(plant));
+            Printer printer = new Printer(new BlockingReactor());
             report(printer, seats, meals, mealsEaten, duration).call(); //Print the report.
         } finally {
             plant.close();

@@ -38,9 +38,7 @@ public class DeepThought extends NonBlockingBladeBase {
 
             @Override
             public void processAsyncRequest() throws Exception {
-                NonBlockingReactor myReactor = getReactor();
-                BasicPlant plant = myReactor.getPlant();
-                Delay delay = new Delay(new BlockingReactor(plant));
+                Delay delay = new Delay();
                 SyncRequest<Void> sleepSReq = delay.sleepSReq(4000);
                 send(sleepSReq, sleepResponseProcessor);
             }
