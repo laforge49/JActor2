@@ -141,12 +141,12 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         super.close();
         Plant plant = getFacility().getPlant();
         PlantImpl plantImpl = plant.asPlantImpl();
-        if (!isRunning() || plantImpl.isForcedExit() || plantImpl.isShuttingDown())
+        if (!isRunning() || plantImpl.isShuttingDown())
             return;
         if (currentMessage != null && currentMessage.isClosed())
             return;
         timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
-        if (!isRunning() || plantImpl.isForcedExit() || plantImpl.isShuttingDown())
+        if (!isRunning() || plantImpl.isShuttingDown())
             return;
         Thread thread = (Thread) getThreadReference().get();
         if (thread == null)
@@ -154,7 +154,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         thread.interrupt();
         boolean timeout = timeoutSemaphore.acquire();
         currentMessage.close();
-        if (!timeout || !isRunning() || plantImpl.isForcedExit() || plantImpl.isShuttingDown()) {
+        if (!timeout || !isRunning() || plantImpl.isShuttingDown()) {
             return;
         }
         try {

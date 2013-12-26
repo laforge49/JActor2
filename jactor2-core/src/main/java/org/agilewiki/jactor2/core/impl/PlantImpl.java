@@ -44,8 +44,6 @@ public class PlantImpl extends FacilityImpl {
 
     private boolean exitOnClose;
 
-    private boolean forceExit;
-
     /**
      * The thread pool.
      */
@@ -365,15 +363,6 @@ public class PlantImpl extends FacilityImpl {
             getLog().error("exception on exit", t);
             System.exit(1);
         }
-    }
-
-    public boolean isForcedExit() {
-        return forceExit;
-    }
-
-    public void forceExit() {
-        forceExit = true;
-        exit();
     }
 
     public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {

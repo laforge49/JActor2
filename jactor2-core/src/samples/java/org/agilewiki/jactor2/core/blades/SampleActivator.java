@@ -9,7 +9,7 @@ public class SampleActivator extends NonBlockingBladeBase implements Activator {
     public AsyncRequest<Void> startAReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 System.out.println("activated!");
                 this.processAsyncResponse(null);
             }

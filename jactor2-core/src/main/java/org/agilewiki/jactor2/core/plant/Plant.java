@@ -74,16 +74,6 @@ public class Plant implements BasicPlant {
         plantImpl.exit();
     }
 
-    @Override
-    public boolean isForcedExit() {
-        return plantImpl.isForcedExit();
-    }
-
-    @Override
-    public void forceExit() {
-        plantImpl.forceExit();
-    }
-
     public AsyncRequest<Facility> createFacilityAReq(final String _name)
             throws Exception {
         return plantImpl.createFacilityAReq(_name);
