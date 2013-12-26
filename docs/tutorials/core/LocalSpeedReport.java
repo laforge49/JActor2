@@ -8,7 +8,7 @@ public class LocalSpeedReport {
         final long count = 500000000L;
         BasicPlant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
+            Ponger ponger = new Ponger(new NonBlockingReactor());
             SyncRequest<Void> loopSReq = new PongerLoop(ponger, count);
             final long before = System.nanoTime();
             loopSReq.call();

@@ -48,7 +48,7 @@ public class Loop extends NonBlockingBladeBase {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Loop loop = new Loop(new NonBlockingReactor(plant));
+            Loop loop = new Loop(new NonBlockingReactor());
             AsyncRequest<Void> loopAReq = loop.loopAReq(10L);
             loopAReq.call();
         } finally {

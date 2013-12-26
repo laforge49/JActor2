@@ -47,8 +47,8 @@ public class Batcher extends NonBlockingBladeBase {
         final long count = 1000000L;
         BasicPlant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
-            Batcher batcher = new Batcher(new NonBlockingReactor(plant), count, ponger);
+            Ponger ponger = new Ponger(new NonBlockingReactor());
+            Batcher batcher = new Batcher(new NonBlockingReactor(), count, ponger);
             AsyncRequest<Void> runAReq = batcher.runAReq();
             final long before = System.nanoTime();
             runAReq.call();

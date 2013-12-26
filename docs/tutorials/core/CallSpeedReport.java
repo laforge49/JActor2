@@ -8,7 +8,7 @@ public class CallSpeedReport {
         final long count = 1000000L;
         BasicPlant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
+            Ponger ponger = new Ponger(new NonBlockingReactor());
             final long before = System.nanoTime();
             long i = 0L;
             while (i < count) {

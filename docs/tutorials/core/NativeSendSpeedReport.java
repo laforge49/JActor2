@@ -8,7 +8,7 @@ public class NativeSendSpeedReport {
         final long count = 100000000L;
         BasicPlant plant = new Plant();
         try {
-            NonBlockingReactor sharedReactor = new NonBlockingReactor(plant);
+            NonBlockingReactor sharedReactor = new NonBlockingReactor();
             Ponger ponger = new Ponger(sharedReactor);
             Pinger pinger = new Pinger(sharedReactor, ponger);
             AsyncRequest<Void> loopAReq = pinger.loopAReq(count);

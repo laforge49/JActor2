@@ -63,7 +63,7 @@ public class Signals extends NonBlockingBladeBase {
         BasicPlant plant = new Plant();
         try {
             Printer.printlnAReq("\nCount to 10\n").signal();
-            new Signals(new NonBlockingReactor(plant)).countSReq().call();
+            new Signals(new NonBlockingReactor()).countSReq().call();
             Printer.printlnAReq("").call();
         } finally {
             plant.close();

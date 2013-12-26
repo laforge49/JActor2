@@ -40,15 +40,13 @@ public class DiningRoom extends NonBlockingBladeBase {
             @Override
             public void processAsyncRequest() throws Exception {
                 int i = 0;
-                NonBlockingReactor myReactor = getReactor();
-                BasicPlant plant = myReactor.getPlant();
                 DiningTable diningTable = new DiningTable(
-                    new NonBlockingReactor(plant),
+                    new NonBlockingReactor(),
                     _seats,
                     _meals);
                 while (i < _seats) {
                     DiningPhilosopher diningPhilosopher =
-                        new DiningPhilosopher(new NonBlockingReactor(plant));
+                        new DiningPhilosopher(new NonBlockingReactor());
                     AsyncRequest<Integer> feastAReq = diningPhilosopher.feastAReq(diningTable, i);
                     send(feastAReq, feastResponseProcessor);
                     ++i;
@@ -93,7 +91,7 @@ public class DiningRoom extends NonBlockingBladeBase {
         int meals = 1000000;
         BasicPlant plant = new Plant();
         try {
-            NonBlockingReactor diningRoomReactor = new NonBlockingReactor(plant);
+            NonBlockingReactor diningRoomReactor = new NonBlockingReactor();
             DiningRoom diningRoom = new DiningRoom(diningRoomReactor);
             AsyncRequest<List<Integer>> feastAReq = diningRoom.feastAReq(seats, meals);
             long before = System.nanoTime();

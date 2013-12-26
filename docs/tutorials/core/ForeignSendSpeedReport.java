@@ -9,8 +9,8 @@ public class ForeignSendSpeedReport {
         final long count = 10000000L;
         BasicPlant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
-            Pinger pinger = new Pinger(new NonBlockingReactor(plant), ponger);
+            Ponger ponger = new Ponger(new NonBlockingReactor());
+            Pinger pinger = new Pinger(new NonBlockingReactor(), ponger);
             AsyncRequest<Void> loopAReq = pinger.loopAReq(count);
             final long before = System.nanoTime();
             loopAReq.call();

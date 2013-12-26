@@ -21,7 +21,7 @@ public class Greeter extends NonBlockingBladeBase {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Greeter greeter = new Greeter(new NonBlockingReactor(plant));
+            Greeter greeter = new Greeter(new NonBlockingReactor());
             AsyncRequest<String> greetingAReq = greeter.greetingAReq("Joe");
             String greeting = greetingAReq.call();
             if (!"Hi Joe".equals(greeting))

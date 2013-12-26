@@ -38,7 +38,7 @@ public class ExceptionHandlerSample {
         try {
 
             //Create an ExceptionBlade.
-            ExceptionBlade exceptionBlade = new ExceptionBlade(new NonBlockingReactor(plant));
+            ExceptionBlade exceptionBlade = new ExceptionBlade(new NonBlockingReactor());
 
             try {
                 //Create and call an exception request.
@@ -50,7 +50,7 @@ public class ExceptionHandlerSample {
 
             //Create an ExceptionHandlerBlade.
             ExceptionHandlerBlade exceptionHandlerBlade =
-                    new ExceptionHandlerBlade(exceptionBlade, new NonBlockingReactor(plant));
+                    new ExceptionHandlerBlade(exceptionBlade, new NonBlockingReactor());
             //Create a test request, call it and print the results.
             System.out.println(exceptionHandlerBlade.testAReq().call());
 

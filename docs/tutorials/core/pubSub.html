@@ -28,12 +28,12 @@ public class PubSub {
         try {
             Printer printer = Printer.stdoutAReq().call();
             RequestBus&lt;Object&gt; requestBus =
-                    new RequestBus&lt;Object&gt;(new NonBlockingReactor(plant));
+                    new RequestBus&lt;Object&gt;(new NonBlockingReactor());
             Subscriber subscriber =
-                    new Subscriber(new NonBlockingReactor(plant), requestBus, printer);
+                    new Subscriber(new NonBlockingReactor(), requestBus, printer);
             subscriber.listenAReq().call();
             Publisher publisher =
-                    new Publisher(new NonBlockingReactor(plant), requestBus);
+                    new Publisher(new NonBlockingReactor(), requestBus);
             publisher.goAReq().call();
         } finally {
             plant.close();

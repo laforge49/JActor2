@@ -27,15 +27,15 @@ import org.agilewiki.jactor2.core.facilities.*;
 import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.reactors.*;
 
-public class ThreadMigration extends BladeBase {
+public class ThreadMigration extends NonBlockingBladeBase {
     public static void main(final String[] _args) 
             throws Exception {
         Plant plant = new Plant();
         try {
             System.out.println("\n           main thread: " + 
                 Thread.currentThread());
-            Reactor reactor = 
-                new NonBlockingReactor(plant);
+            NonBlockingReactor reactor = 
+                new NonBlockingReactor();
             ThreadMigration threadMigration = 
                 new ThreadMigration(reactor);
             threadMigration.startAReq().call();
@@ -44,7 +44,7 @@ public class ThreadMigration extends BladeBase {
         }
     }
     
-    public ThreadMigration(final Reactor _reactor) 
+    public ThreadMigration(final NonBlockingReactor _reactor) 
             throws Exception {
         initialize(_reactor);
     }
@@ -55,10 +55,7 @@ public class ThreadMigration extends BladeBase {
             protected void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
-                Reactor myReactor = getReactor();
-                Facility myModuleContext = myReactor.getFacility();
-                Reactor subReactor = 
-                    new NonBlockingReactor(myModuleContext);
+                Reactor subReactor = new NonBlockingReactor();
                 SubActor subActor = new SubActor(subReactor);
                 subActor.doAReq("         signal").signal();
                 send(subActor.doAReq("           send"), this);
@@ -101,11 +98,11 @@ core>
 </pre>
 <p>
 What this shows is that when 
-<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#signal()">signal</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/Request.html#signal--">signal</a>
 or
-<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/Request.html#call--">call</a>
 methods are used, the request is passed to a new thread. But when the
-<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#send(org.agilewiki.jactor2.core.reactors.Reactor, org.agilewiki.jactor2.core.messages.AsyncResponseProcessor)">send</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/AsyncRequest.html#send-org.agilewiki.jactor2.core.messages.Request-org.agilewiki.jactor2.core.messages.AsyncResponseProcessor-">send</a>
 method is used, the thread migrates with the message.
 </p>
 </body>

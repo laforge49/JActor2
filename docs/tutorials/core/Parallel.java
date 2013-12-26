@@ -44,7 +44,7 @@ public class Parallel extends NonBlockingBladeBase {
         final long count = 10L;
         Plant plant = new Plant(10);
         try {
-            Parallel parallel = new Parallel(new NonBlockingReactor(plant), count);
+            Parallel parallel = new Parallel(new NonBlockingReactor(), count);
             AsyncRequest<Void> runAReq = parallel.runAReq();
             final long before = System.currentTimeMillis();
             runAReq.call();

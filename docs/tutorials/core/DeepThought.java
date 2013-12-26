@@ -48,7 +48,7 @@ public class DeepThought extends NonBlockingBladeBase {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            DeepThought deepThought = new DeepThought(new NonBlockingReactor(plant));
+            DeepThought deepThought = new DeepThought(new NonBlockingReactor());
             AsyncRequest<Void> printAnswerAReq = deepThought.printAnswerAReq();
             printAnswerAReq.call();
         } finally {

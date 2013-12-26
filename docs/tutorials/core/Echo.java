@@ -36,7 +36,7 @@ public class Echo extends NonBlockingBladeBase {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Echo echo = new Echo(new NonBlockingReactor(plant));
+            Echo echo = new Echo(new NonBlockingReactor());
             AsyncRequest<String> echoAReq = echo.echoAReq("Hello...");
             String response = echoAReq.call();
             if (!"Hello...".equals(response))

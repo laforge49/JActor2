@@ -118,7 +118,7 @@ public class PongerValidator {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
+            Ponger ponger = new Ponger(new NonBlockingReactor());
             long i = 0;
             while (i < 10) {
                 i++;
@@ -136,7 +136,7 @@ public class PongerValidator {
 <a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
 </h3>
 <pre>
-            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
+            Ponger ponger = new Ponger(new NonBlockingReactor());
 </pre>
 <p>
 Blades generally use non-blocking reactors, but only if they do not block the thread for I/O, intense computation 

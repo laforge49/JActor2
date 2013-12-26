@@ -47,7 +47,7 @@ public class UltimateAnswer extends NonBlockingBladeBase {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            UltimateAnswer ultimateAnswer = new UltimateAnswer(new NonBlockingReactor(plant));
+            UltimateAnswer ultimateAnswer = new UltimateAnswer(new NonBlockingReactor());
             AsyncRequest&lt;Void&gt; printAnswerAReq = ultimateAnswer.printAnswerAReq();
             printAnswerAReq.call();
         } finally {
@@ -204,8 +204,7 @@ close
 
             @Override
             public void processAsyncRequest() throws Exception {
-                BasicPlant plant = getReactor().getPlant();
-                AsyncRequest<Void> printRequest = Printer.printlnAReq(plant, "*** 42 ***");
+                AsyncRequest<Void> printRequest = Printer.printlnAReq("*** 42 ***");
                 send(printRequest, dis);
             }
         };

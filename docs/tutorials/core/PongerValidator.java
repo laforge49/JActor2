@@ -6,7 +6,7 @@ public class PongerValidator {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(plant));
+            Ponger ponger = new Ponger(new NonBlockingReactor());
             long i = 0;
             while (i < 10) {
                 i++;

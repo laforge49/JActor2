@@ -12,7 +12,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
             System.out.println("\n           main thread: " + 
                 Thread.currentThread());
             NonBlockingReactor reactor = 
-                new NonBlockingReactor(plant);
+                new NonBlockingReactor();
             ThreadMigration threadMigration = 
                 new ThreadMigration(reactor);
             threadMigration.startAReq().call();
@@ -32,10 +32,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
             public void processAsyncRequest() 
                     throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
-                NonBlockingReactor myReactor = getReactor();
-                Facility myModuleContext = myReactor.getFacility();
-                NonBlockingReactor subReactor = 
-                    new NonBlockingReactor(myModuleContext);
+                NonBlockingReactor subReactor = new NonBlockingReactor();
                 SubActor subActor = new SubActor(subReactor);
                 subActor.doAReq("         signal").signal();
                 send(subActor.doAReq("           send"), this);

@@ -16,7 +16,7 @@ public class Isolation extends BladeBase {
             Printer printer = Printer.stdoutAReq().call();
             
             printer.printlnSReq("\nBump with NonBlockingReactor\n").call();
-            Isolation isolation = new Isolation(new NonBlockingReactor(plant), printer);
+            Isolation isolation = new Isolation(new NonBlockingReactor(), printer);
             isolation.bumpAReq().signal();
             isolation.bumpAReq().signal();
             isolation.bumpAReq().call(); //call forces all pending bump requests to complete
