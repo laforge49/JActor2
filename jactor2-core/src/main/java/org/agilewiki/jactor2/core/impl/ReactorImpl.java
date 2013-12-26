@@ -73,7 +73,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
                        final int _initialLocalQueueSize) {
         facility = _facility;
         inbox = createInbox(_initialLocalQueueSize);
-        log = _facility.asFacilityImpl().getLog();
+        log = _facility.asFacilityImpl().getLogger();
         outbox = new Outbox(this, _initialBufferSize);
         recovery = _facility.asFacilityImpl().recovery;
         scheduler = _facility.asFacilityImpl().scheduler;
@@ -104,7 +104,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     }
 
     @Override
-    public Logger getLog() {
+    public Logger getLogger() {
         return log;
     }
 

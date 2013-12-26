@@ -13,5 +13,5 @@ public interface BasicPlant extends NonBlockingBlade {
     void close() throws Exception;
     boolean isExitOnClose();
     void exit();
-    Logger getLog();
+    Logger getLogger();
 }

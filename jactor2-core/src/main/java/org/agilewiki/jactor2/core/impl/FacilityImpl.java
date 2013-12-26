@@ -329,7 +329,7 @@ public class FacilityImpl extends CloserBase implements Facility {
     }
 
     @Override
-    public Logger getLog() {
+    public Logger getLogger() {
         return log;
     }
 
@@ -466,7 +466,7 @@ public class FacilityImpl extends CloserBase implements Facility {
                 setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(Exception e) throws Exception {
-                        getLog().error("activation exception, facility "+name, e);
+                        getLogger().error("activation exception, facility "+name, e);
                         return "activation exception, "+e;
                     }
                 });

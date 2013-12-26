@@ -35,7 +35,7 @@ abstract public class CloserBase extends CloseableBase implements Closer {
      *
      * @return A logger.
      */
-    abstract public Logger getLog();
+    abstract public Logger getLogger();
 
     /**
      * Returns the CloseableSet. Creates it if needed.
@@ -82,14 +82,14 @@ abstract public class CloserBase extends CloseableBase implements Closer {
                 closeable.close();
             } catch (final Throwable t) {
                 if (closeable != null && PlantImpl.DEBUG) {
-                    getLog().warn("Error closing a " + closeable.getClass().getName(), t);
+                    getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
                 }
             }
         }
         it = closeables.iterator();
         while (it.hasNext()) {
             Closeable closeable = it.next();
-            getLog().warn("still has closable: "+this+"\n"+closeable);
+            getLogger().warn("still has closable: " + this + "\n" + closeable);
         }
         close2();
     }

@@ -360,7 +360,7 @@ public class PlantImpl extends FacilityImpl {
         try {
             close();
         } catch (Throwable t) {
-            getLog().error("exception on exit", t);
+            getLogger().error("exception on exit", t);
             System.exit(1);
         }
     }

@@ -144,7 +144,7 @@ public class Plant implements BasicPlant {
     }
 
     @Override
-    public Logger getLog() {
-        return plantImpl.getLog();
+    public Logger getLogger() {
+        return plantImpl.getLogger();
     }
 }

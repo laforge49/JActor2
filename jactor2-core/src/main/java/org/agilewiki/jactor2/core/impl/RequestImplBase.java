@@ -410,7 +410,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                             .incomingResponse(this, activeMessageProcessor);
                 } else {
                     activeMessageProcessor
-                            .getLog()
+                            .getLogger()
                             .error("Thrown by exception handler and uncaught "
                                     + exceptionHandler.getClass().getName(), _e);
                 }
@@ -423,7 +423,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             if (!(responseProcessor instanceof SignalResponseProcessor)) {
                 messageSource.incomingResponse(this, activeMessageProcessor);
             } else {
-                activeMessageProcessor.getLog().warn("Uncaught throwable",
+                activeMessageProcessor.getLogger().warn("Uncaught throwable",
                         _e);
             }
         }

@@ -27,7 +27,7 @@ public interface Facility extends Closer, NonBlockingBlade {
 
     String getName();
 
-    Logger getLog();
+    Logger getLogger();
 
     PropertiesProcessor getPropertiesProcessor();
 }

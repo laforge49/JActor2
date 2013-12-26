@@ -32,8 +32,9 @@ abstract public class ReactorBase implements Reactor {
         return reactorImpl.getFacility();
     }
 
+    @Override
     public Logger getLog() {
-        return reactorImpl.getLog();
+        return reactorImpl.getLogger();
     }
 
     @Override
