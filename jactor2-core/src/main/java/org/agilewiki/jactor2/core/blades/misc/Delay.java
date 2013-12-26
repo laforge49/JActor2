@@ -11,8 +11,8 @@ import org.agilewiki.jactor2.core.reactors.BlockingReactor;
  */
 public class Delay extends BlockingBladeBase {
 
-    public Delay(final BasicPlant _plant) throws Exception {
-        initialize(new BlockingReactor(_plant));
+    public Delay() throws Exception {
+        initialize(new BlockingReactor());
     }
 
     public Delay(final Facility _facility) throws Exception {

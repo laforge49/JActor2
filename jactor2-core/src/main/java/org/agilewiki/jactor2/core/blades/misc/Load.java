@@ -13,8 +13,8 @@ public class Load extends BlockingBladeBase {
     private volatile long i;
     private volatile long j;
 
-    public Load(final BasicPlant _plant) throws Exception {
-        initialize(new BlockingReactor(_plant));
+    public Load() throws Exception {
+        initialize(new BlockingReactor());
     }
 
     /**

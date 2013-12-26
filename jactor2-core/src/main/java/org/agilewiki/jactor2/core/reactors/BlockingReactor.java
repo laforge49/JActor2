@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
  * A targetReactor which should be used by blades
@@ -27,8 +28,8 @@ import org.agilewiki.jactor2.core.plant.BasicPlant;
  */
 public class BlockingReactor extends ReactorBase implements CommonReactor {
 
-    public BlockingReactor(final BasicPlant _plant) throws Exception {
-        this(_plant.asFacility());
+    public BlockingReactor() throws Exception {
+        this(Plant.getSingleton().asFacility());
     }
 
     public BlockingReactor(final Facility _facility) throws Exception {
