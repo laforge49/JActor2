@@ -17,7 +17,7 @@ public class CallSpeedReport {
             }
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq(plant, "Call Timings", duration, count).call();
+            SpeedReport.startAReq("Call Timings", duration, count).call();
         } finally {
             plant.close();
         }

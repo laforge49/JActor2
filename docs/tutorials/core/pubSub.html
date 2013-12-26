@@ -26,7 +26,7 @@ public class PubSub {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Printer printer = Printer.stdoutAReq(plant).call();
+            Printer printer = Printer.stdoutAReq().call();
             RequestBus&lt;Object&gt; requestBus =
                     new RequestBus&lt;Object&gt;(new NonBlockingReactor(plant));
             Subscriber subscriber =

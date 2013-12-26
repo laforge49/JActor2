@@ -31,7 +31,7 @@ public class DeepThought extends NonBlockingBladeBase {
                     new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    AsyncRequest<Printer> stdoutRequest = Printer.stdoutAReq(getReactor().getPlant());
+                    AsyncRequest<Printer> stdoutRequest = Printer.stdoutAReq();
                     send(stdoutRequest, stdoutResponseProcessor);
                 }
             };

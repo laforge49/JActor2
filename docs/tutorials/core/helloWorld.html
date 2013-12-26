@@ -19,7 +19,7 @@ public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Printer.printlnAReq(plant, "Hello World!").call();
+            Printer.printlnAReq("Hello World!").call();
         } finally {
             plant.close();
         }
@@ -130,7 +130,7 @@ to support
 <a href="../../api/org/agilewiki/jactor2/core/blades/misc/Printer.html">Printer</a>
 </h3>
 <pre>
-            Printer.printlnAReq(plant, "Hello World!").call();
+            Printer.printlnAReq("Hello World!").call();
 </pre>
 <p>
 A printer is a 

@@ -7,7 +7,7 @@ public class HelloWorld {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Printer.printlnAReq(plant, "Hello World!").call();
+            Printer.printlnAReq("Hello World!").call();
         } finally {
             plant.close();
         }

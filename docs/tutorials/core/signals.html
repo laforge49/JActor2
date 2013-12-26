@@ -62,9 +62,9 @@ public class Signals extends NonBlockingBladeBase {
     public static void main(final String[] _args) throws Exception {
         BasicPlant plant = new Plant();
         try {
-            Printer.printlnAReq(plant, "\nCount to 10\n").signal();
+            Printer.printlnAReq("\nCount to 10\n").signal();
             new Signals(new NonBlockingReactor(plant)).countSReq().call();
-            Printer.printlnAReq(plant, "").call();
+            Printer.printlnAReq("").call();
         } finally {
             plant.close();
         }
@@ -80,7 +80,7 @@ public class Signals extends NonBlockingBladeBase {
                 int i = 0;
                 while (i < 10) {
                     i++;
-                    Printer.printfAReq(getReactor().getFacility(), "%d\n", i).signal();
+                    Printer.printfAReq("%d\n", i).signal();
                 }
                 return null;
             }

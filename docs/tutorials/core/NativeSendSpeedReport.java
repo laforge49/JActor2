@@ -16,7 +16,7 @@ public class NativeSendSpeedReport {
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq(plant, "Native Send Timings", duration, count).call();
+            SpeedReport.startAReq("Native Send Timings", duration, count).call();
         } finally {
             plant.close();
         }

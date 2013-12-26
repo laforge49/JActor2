@@ -67,7 +67,7 @@ public class Batcher extends NonBlockingBladeBase {
             runAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq(plant, "Batch Timings", duration, count).call();
+            SpeedReport.startAReq("Batch Timings", duration, count).call();
         } finally {
             plant.close();
         }

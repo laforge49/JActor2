@@ -14,7 +14,7 @@ public class LocalSpeedReport {
             loopSReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq(plant, "Local Timings", duration, count).call();
+            SpeedReport.startAReq("Local Timings", duration, count).call();
         } finally {
             plant.close();
         }

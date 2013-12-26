@@ -39,7 +39,7 @@ public class Loop extends NonBlockingBladeBase {
                 }
                 i++;
                 BasicPlant plant = getReactor().getPlant();
-                AsyncRequest<Void> printCount = Printer.printlnAReq(plant, String.valueOf(i));
+                AsyncRequest<Void> printCount = Printer.printlnAReq(String.valueOf(i));
                 send(printCount, printCountResponseProcessor);
             }
         };

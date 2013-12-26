@@ -1,22 +1,21 @@
 import org.agilewiki.jactor2.core.blades.misc.Printer;
 import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 public class SpeedReport extends SyncPrinterRequest {
     
     public static AsyncRequest<Void> startAReq(
-            final BasicPlant _plant,
             final String _heading, 
             final long _ns, 
             final long _count) {
-        return new AsyncRequest<Void>(_plant.getReactor()) {
+        return new AsyncRequest<Void>(Plant.getSingleton().getReactor()) {
             AsyncResponseProcessor dis = this;
             
             @Override
             public void processAsyncRequest() throws Exception {
-                send(Printer.stdoutAReq(_plant), new AsyncResponseProcessor<Printer>() {
+                send(Printer.stdoutAReq(), new AsyncResponseProcessor<Printer>() {
                     public void processAsyncResponse(final Printer _printer) throws Exception {
                         SpeedReport sr = new SpeedReport(_printer, _heading, _ns, _count);
                         send(sr, dis);
