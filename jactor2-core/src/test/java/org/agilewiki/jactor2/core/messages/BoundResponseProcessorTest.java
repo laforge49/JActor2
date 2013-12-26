@@ -10,7 +10,7 @@ public class BoundResponseProcessorTest extends TestCase {
         final Plant plant = new Plant();
         try {
             final Driver driver = new Driver();
-            driver.initialize(new NonBlockingReactor(plant));
+            driver.initialize(new NonBlockingReactor());
             assertEquals("Hello world!", driver.doitAReq().call());
         } finally {
             plant.close();

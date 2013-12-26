@@ -58,7 +58,7 @@ public class IncDesTest extends TestCase {
             final IncDes jid1 = (IncDes) Durables.newSerializable(plant,
                     IncDes.FACTORY_NAME);
             jid1.load(new byte[0]);
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             final IncDes jid2 = (IncDes) jid1.copyReq(reactor).call();
             final int l = jid2.getDurable().getSerializedLengthReq().call();
             System.err.println(l);

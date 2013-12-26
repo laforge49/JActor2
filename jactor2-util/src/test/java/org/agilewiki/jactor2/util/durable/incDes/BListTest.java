@@ -22,7 +22,7 @@ public class BListTest extends TestCase {
             sj0.setValue("a");
             sj1.setValue("b");
             sj2.setValue("c");
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             final JAList<JAString> stringList2 = (JAList) stringList1
                     .copy(reactor);
             final JAString s0 = stringList2.iGet(0);

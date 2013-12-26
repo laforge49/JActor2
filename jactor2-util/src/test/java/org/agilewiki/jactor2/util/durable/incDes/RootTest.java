@@ -16,7 +16,7 @@ public class RootTest extends TestCase {
                     .getFactoryLocator(plant);
             final Factory rootFactory = factoryLocator
                     .getFactory(Root.FACTORY_NAME);
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             final Root root1 = (Root) rootFactory.newSerializable(reactor,
                     factoryLocator);
             int sl = root1.getSerializedLength();

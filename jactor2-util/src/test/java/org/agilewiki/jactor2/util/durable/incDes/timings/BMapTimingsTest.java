@@ -48,7 +48,7 @@ public class BMapTimingsTest extends TestCase {
             m1.getSerializedBytes();
             int j = 0;
             i = s / 2;
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             final long t0 = System.currentTimeMillis();
             while (j < r) {
                 final JAMap<Integer, JAInteger> m2 = (JAMap) m1.copy(reactor);

@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
  * A targetReactor for blades which process messages quickly and without blocking the thread.
@@ -30,8 +31,8 @@ import org.agilewiki.jactor2.core.plant.BasicPlant;
  */
 public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
-    public NonBlockingReactor(final BasicPlant _plant) throws Exception {
-        this(_plant.asFacility());
+    public NonBlockingReactor() throws Exception {
+        this(Plant.getSingleton().asFacility());
     }
 
     public NonBlockingReactor(final Facility _facility) throws Exception {
@@ -39,9 +40,9 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
                 .getInitialLocalMessageQueueSize(), null);
     }
 
-    public NonBlockingReactor(final BasicPlant _plant, final Runnable _onIdle)
+    public NonBlockingReactor(final Runnable _onIdle)
             throws Exception {
-        this(_plant.asFacility(), _onIdle);
+        this(Plant.getSingleton().asFacility(), _onIdle);
     }
 
     public NonBlockingReactor(final Facility _facility, final Runnable _onIdle)
@@ -50,10 +51,9 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
                 .getInitialLocalMessageQueueSize(), _onIdle);
     }
 
-    public NonBlockingReactor(final BasicPlant _plant,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+    public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _onIdle) throws Exception {
-        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        this(Plant.getSingleton().asFacility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     public NonBlockingReactor(final Facility _facility,

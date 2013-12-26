@@ -22,7 +22,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
             sj0.setValue(0);
             sj1.setValue(1);
             sj2.setValue(2);
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             final JAMap<Integer, JAInteger> n = (JAMap) m.copy(reactor);
             final JAInteger s0 = n.kGet(0);
             final JAInteger s1 = n.kGet(1);

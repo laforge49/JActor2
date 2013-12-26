@@ -18,7 +18,7 @@ public class UnionTest extends TestCase {
             final Union siu1 = (Union) Durables.newSerializable(plant,
                     "siUnion");
             assertNull(siu1.getValue());
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             final Union siu2 = (Union) siu1.copy(reactor);
             assertNull(siu2.getValue());
             siu2.setValue(JAString.FACTORY_NAME);

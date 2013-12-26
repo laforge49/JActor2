@@ -15,7 +15,7 @@ public class PropertiesSample {
         final Plant plant = new Plant();
         try {
             PropertiesProcessor propertiesProcessor = new PropertiesProcessor(new IsolationReactor());
-            final CommonReactor reactor = new NonBlockingReactor(plant);
+            final CommonReactor reactor = new NonBlockingReactor();
             RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
 
             new SubscribeAReq<ImmutablePropertyChanges>(

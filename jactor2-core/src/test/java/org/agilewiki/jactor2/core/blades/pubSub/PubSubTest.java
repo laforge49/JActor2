@@ -14,7 +14,7 @@ public class PubSubTest extends TestCase {
         System.out.println("I");
         final Plant plant = new Plant();
         try {
-            final NonBlockingReactor reactor = new NonBlockingReactor(plant);
+            final NonBlockingReactor reactor = new NonBlockingReactor();
             final RequestBus<Void> requestBus = new RequestBus<Void>(reactor);
             requestBus.signalsContentSReq(null).call();
             final Subscription<Void> s1 = new SubscribeAReq<Void>(requestBus,
@@ -41,9 +41,8 @@ public class PubSubTest extends TestCase {
         final Plant plant = new Plant();
         try {
             final AtomicInteger counter = new AtomicInteger();
-            final NonBlockingReactor busReactor = new NonBlockingReactor(plant);
-            final CommonReactor subscriberReactor = new NonBlockingReactor(
-                    plant);
+            final NonBlockingReactor busReactor = new NonBlockingReactor();
+            final CommonReactor subscriberReactor = new NonBlockingReactor();
             final RequestBus<Void> requestBus = new RequestBus<Void>(busReactor);
             requestBus.sendsContentAReq(null).call();
             assertEquals(counter.get(), 0);

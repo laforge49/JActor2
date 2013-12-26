@@ -14,7 +14,7 @@ public class LBlockTest extends TestCase {
             final FactoryLocator factoryLocator = Durables
                     .getFactoryLocator(plant);
             final Root rj = (Root) Durables.newSerializable(factoryLocator,
-                    Root.FACTORY_NAME, new NonBlockingReactor(plant));
+                    Root.FACTORY_NAME, new NonBlockingReactor());
             final LBlock lb1 = new LBlock();
             lb1.setRootJid(rj);
             final byte[] bs = lb1.serialize();
@@ -32,7 +32,7 @@ public class LBlockTest extends TestCase {
             final int rjl2 = lb2.setHeaderBytes(h);
             lb2.setRootBytes(sd);
             final Root rj2 = lb2.getRoot(factoryLocator,
-                    new NonBlockingReactor(plant), null);
+                    new NonBlockingReactor(), null);
         } finally {
             plant.close();
         }

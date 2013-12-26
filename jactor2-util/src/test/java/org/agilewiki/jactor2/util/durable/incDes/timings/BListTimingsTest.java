@@ -38,7 +38,7 @@ public class BListTimingsTest extends TestCase {
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
                     .newSerializable(plant, JAList.JAINTEGER_LIST);
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             int i = 0;
             while (i < s) {
                 intList1.iAdd(-1);

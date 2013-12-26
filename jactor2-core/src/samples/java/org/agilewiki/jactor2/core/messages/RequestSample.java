@@ -14,7 +14,7 @@ public class RequestSample {
         try {
 
             //Create blades.
-            SampleBlade2 bladeA = new SampleBlade2(new NonBlockingReactor(plant));
+            SampleBlade2 bladeA = new SampleBlade2(new NonBlockingReactor());
 
             //Initialize blades to 1.
             bladeA.updateAReq(1).signal();
@@ -23,7 +23,7 @@ public class RequestSample {
             System.out.println("was " + bladeA.updateAReq(2).call() + " but is now 2");
 
             //Create bladeB with a reference to blades.
-            IndirectBlade bladeB = new IndirectBlade(bladeA, new NonBlockingReactor(plant));
+            IndirectBlade bladeB = new IndirectBlade(bladeA, new NonBlockingReactor());
 
             //Indirectly change blades to 42.
             System.out.println("was " + bladeB.indirectAReq(42).call() + " but is now 42");

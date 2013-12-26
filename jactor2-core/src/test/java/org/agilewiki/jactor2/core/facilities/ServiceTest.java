@@ -22,7 +22,7 @@ public class ServiceTest extends TestCase {
             final Server server = new Server(serverReactor);
             NonBlockingReactor clientReactor = new NonBlockingReactor(clientFacility);
             final Client client = new Client(clientReactor, server);
-            NonBlockingReactor testReactor = new NonBlockingReactor(plant);
+            NonBlockingReactor testReactor = new NonBlockingReactor();
             new AsyncRequest<Void>(testReactor) {
                 AsyncRequest<Void> dis = this;
 

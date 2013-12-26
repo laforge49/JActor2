@@ -17,7 +17,7 @@ public class TupleTest extends TestCase {
             Durables.registerTupleFactory(factoryLocator, "sst",
                     JAString.FACTORY_NAME, JAString.FACTORY_NAME);
             final Factory tjf = factoryLocator.getFactory("sst");
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             final Tuple t0 = (Tuple) tjf.newSerializable(reactor,
                     factoryLocator);
             final JAString e0 = (JAString) t0.iGetReq(0).call();

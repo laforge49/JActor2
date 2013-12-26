@@ -16,7 +16,7 @@ public class BoxTest extends TestCase {
                     .getFactoryLocator(plant);
             final Factory boxAFactory = factoryLocator
                     .getFactory(Box.FACTORY_NAME);
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
             final Box box1 = (Box) boxAFactory.newSerializable(reactor);
             int sl = box1.getSerializedLength();
             assertEquals(4, sl);

@@ -20,11 +20,11 @@ public class CloseableSetTest extends TestCase {
         final Plant plant = new Plant();
         try {
             final Set<Closeable> set = Collections.newSetFromMap(new WeakHashMap<Closeable, Boolean>());
-            final MyCloseable mac1 = new MyCloseable(plant);
-            final MyCloseable mac2 = new MyCloseable(plant);
-            final MyCloseable mac3 = new MyCloseable(plant);
-            final MyCloseable mac4 = new MyCloseable(plant);
-            final MyFailedCloseable mfac = new MyFailedCloseable(plant);
+            final MyCloseable mac1 = new MyCloseable();
+            final MyCloseable mac2 = new MyCloseable();
+            final MyCloseable mac3 = new MyCloseable();
+            final MyCloseable mac4 = new MyCloseable();
+            final MyFailedCloseable mfac = new MyFailedCloseable();
             set.add(mac1);
             set.add(mac2);
             set.add(mac3);
@@ -89,11 +89,11 @@ public class CloseableSetTest extends TestCase {
         // a Plant is also a Facility, so I only need to test the Plant ...
         final BasicPlant plant = new Plant();
         try {
-            final MyCloseable mac1 = new MyCloseable(plant);
-            final MyCloseable mac2 = new MyCloseable(plant);
-            final MyCloseable mac3 = new MyCloseable(plant);
-            final MyCloseable mac4 = new MyCloseable(plant);
-            final MyFailedCloseable mfac = new MyFailedCloseable(plant);
+            final MyCloseable mac1 = new MyCloseable();
+            final MyCloseable mac2 = new MyCloseable();
+            final MyCloseable mac3 = new MyCloseable();
+            final MyCloseable mac4 = new MyCloseable();
+            final MyFailedCloseable mfac = new MyFailedCloseable();
             Facility facility = plant.asFacility();
             facility.addCloseable(mac1);
             facility.addCloseable(mac2);
@@ -125,13 +125,13 @@ public class CloseableSetTest extends TestCase {
         System.out.println("R");
         final Plant plant = new Plant();
         try {
-            final Reactor reactor = new NonBlockingReactor(plant);
+            final Reactor reactor = new NonBlockingReactor();
 
-            final MyCloseable mac1 = new MyCloseable(plant);
-            final MyCloseable mac2 = new MyCloseable(plant);
-            final MyCloseable mac3 = new MyCloseable(plant);
-            final MyCloseable mac4 = new MyCloseable(plant);
-            final MyFailedCloseable mfac = new MyFailedCloseable(plant);
+            final MyCloseable mac1 = new MyCloseable();
+            final MyCloseable mac2 = new MyCloseable();
+            final MyCloseable mac3 = new MyCloseable();
+            final MyCloseable mac4 = new MyCloseable();
+            final MyFailedCloseable mfac = new MyFailedCloseable();
             reactor.addCloseable(mac1);
             reactor.addCloseable(mac2);
             reactor.addCloseable(mac3);
@@ -159,8 +159,8 @@ public class CloseableSetTest extends TestCase {
 class MyCloseable extends CloseableBase {
     public volatile int closed;
 
-    MyCloseable(BasicPlant plant) throws Exception {
-        initialize(new NonBlockingReactor(plant));
+    MyCloseable() throws Exception {
+        initialize(new NonBlockingReactor());
     }
 
     @Override
@@ -172,8 +172,8 @@ class MyCloseable extends CloseableBase {
 
 class MyFailedCloseable extends MyCloseable {
 
-    MyFailedCloseable(BasicPlant plant) throws Exception {
-        super(plant);
+    MyFailedCloseable() throws Exception {
+        super();
     }
 
     @Override

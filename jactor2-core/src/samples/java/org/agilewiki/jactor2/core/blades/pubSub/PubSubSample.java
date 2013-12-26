@@ -8,7 +8,7 @@ public class PubSubSample {
     public static void main(final String[] args) throws Exception {
         final Plant plant = new Plant();
         try {
-            NonBlockingReactor reactor = new NonBlockingReactor(plant);
+            NonBlockingReactor reactor = new NonBlockingReactor();
             RequestBus<String> requestBus =
                     new RequestBus<String>(reactor);
             new SubscribeAReq<String>(requestBus, reactor) {

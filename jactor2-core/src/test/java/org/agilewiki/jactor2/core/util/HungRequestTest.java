@@ -11,12 +11,12 @@ public class HungRequestTest extends TestCase {
     public void testa() throws Exception {
         final Plant plant = new Plant();
         try {
-            final Hanger blade1 = new Hanger(new NonBlockingReactor(plant));
+            final Hanger blade1 = new Hanger(new NonBlockingReactor());
             try {
                 blade1.hiAReq().call();
             } catch (ServiceClosedException sce) {
             }
-            final Hung blade2 = new Hung(new NonBlockingReactor(plant), new Hanger(new NonBlockingReactor(plant)));
+            final Hung blade2 = new Hung(new NonBlockingReactor(), new Hanger(new NonBlockingReactor()));
             try {
                 blade2.hoAReq().call();
             } catch (ServiceClosedException sce) {

@@ -7,7 +7,7 @@ public class HungClose {
     static public void main(final String[] _args) throws Exception {
         final Plant plant = new Plant();
         try {
-            NonBlockingReactor reactor = new NonBlockingReactor(plant);
+            NonBlockingReactor reactor = new NonBlockingReactor();
             Hanger hanger = new Hanger(reactor);
             hanger.looperSReq().signal();
         } finally {
