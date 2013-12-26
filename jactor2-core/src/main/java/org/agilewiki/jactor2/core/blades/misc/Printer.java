@@ -11,6 +11,7 @@ import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -47,14 +48,13 @@ import java.util.Locale;
  */
 public class Printer extends BlockingBladeBase {
 
-    public static AsyncRequest<Void> printlnAReq(final BasicPlant _plant,
-            final String _string) throws Exception {
-        return new AsyncRequest<Void>(_plant.asPlantImpl().getReactor()) {
+    public static AsyncRequest<Void> printlnAReq(final String _string) throws Exception {
+        return new AsyncRequest<Void>(Plant.getSingleton().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
             public void processAsyncRequest() throws Exception {
-                send(stdoutAReq(_plant),
+                send(stdoutAReq(),
                         new AsyncResponseProcessor<Printer>() {
                             @Override
                             public void processAsyncResponse(
@@ -66,14 +66,13 @@ public class Printer extends BlockingBladeBase {
         };
     }
 
-    public static AsyncRequest<Void> printfAReq(final BasicPlant _plant,
-            final String _format, final Object... _args) throws Exception {
-        return new AsyncRequest<Void>(_plant.asPlantImpl().getReactor()) {
+    public static AsyncRequest<Void> printfAReq(final String _format, final Object... _args) throws Exception {
+        return new AsyncRequest<Void>(Plant.getSingleton().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
             public void processAsyncRequest() throws Exception {
-                send(stdoutAReq(_plant),
+                send(stdoutAReq(),
                         new AsyncResponseProcessor<Printer>() {
                             @Override
                             public void processAsyncResponse(
@@ -85,11 +84,11 @@ public class Printer extends BlockingBladeBase {
         };
     }
 
-    static public AsyncRequest<Printer> stdoutAReq(final BasicPlant _plant)
+    static public AsyncRequest<Printer> stdoutAReq()
             throws Exception {
-        return new AsyncRequest<Printer>(_plant.asPlantImpl().getReactor()) {
+        return new AsyncRequest<Printer>(Plant.getSingleton().getReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
-            PropertiesProcessor propertiesProcessor = _plant.asPlantImpl().getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = Plant.getSingleton().asFacility().getPropertiesProcessor();
             ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
             Printer printer = (Printer) immutableProperties.get("stdout");
 
@@ -125,7 +124,7 @@ public class Printer extends BlockingBladeBase {
                     dis.processAsyncResponse(printer);
                     return;
                 }
-                printer = new Printer(new BlockingReactor(_plant.asPlantImpl()));
+                printer = new Printer(new BlockingReactor());
                 send(propertiesProcessor.compareAndSetAReq("stdout", null, printer), cnsResponseProcessor);
             }
         };
