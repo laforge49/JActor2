@@ -13,7 +13,7 @@ public class Properties {
         final BasicPlant plant = new Plant();
         try {
             PropertiesProcessor propertiesProcessor = 
-                new PropertiesProcessor(new IsolationReactor(plant));
+                new PropertiesProcessor(new IsolationReactor());
             propertiesProcessor.putAReq("a", 1).call();
             System.out.println(propertiesProcessor.getImmutableState());
             new IncAReq(propertiesProcessor, "a", 41).call();

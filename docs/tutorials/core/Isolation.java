@@ -22,7 +22,7 @@ public class Isolation extends BladeBase {
             isolation.bumpAReq().call(); //call forces all pending bump requests to complete
             
             printer.printlnSReq("\nBump with IsolationReactor\n").call();
-            isolation = new Isolation(new IsolationReactor(plant), printer);
+            isolation = new Isolation(new IsolationReactor(), printer);
             isolation.bumpAReq().signal();
             isolation.bumpAReq().signal();
             isolation.bumpAReq().call(); //call forces all pending bump requests to complete
