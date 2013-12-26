@@ -55,18 +55,8 @@ public class Plant implements BasicPlant {
     }
 
     @Override
-    public boolean startedClosing() {
-        return plantImpl.startedClosing();
-    }
-
-    @Override
     public void close() throws Exception {
         plantImpl.close();
-    }
-
-    @Override
-    public boolean isExitOnClose() {
-        return plantImpl.isExitOnClose();
     }
 
     @Override

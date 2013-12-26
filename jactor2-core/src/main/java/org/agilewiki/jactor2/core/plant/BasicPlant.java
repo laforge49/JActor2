@@ -9,9 +9,7 @@ public interface BasicPlant extends NonBlockingBlade {
     Plant asPlant();
     Facility asFacility();
     PlantImpl asPlantImpl();
-    boolean startedClosing();
     void close() throws Exception;
-    boolean isExitOnClose();
     void exit();
     Logger getLogger();
 }
