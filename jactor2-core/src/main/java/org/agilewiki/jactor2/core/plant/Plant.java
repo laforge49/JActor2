@@ -132,9 +132,4 @@ public class Plant implements BasicPlant {
     public Facility getFacility(String name) {
         return plantImpl.getFacility(name);
     }
-
-    @Override
-    public Logger getLogger() {
-        return plantImpl.getLogger();
-    }
 }
