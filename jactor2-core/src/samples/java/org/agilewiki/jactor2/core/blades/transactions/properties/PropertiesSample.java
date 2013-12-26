@@ -14,7 +14,7 @@ public class PropertiesSample {
     public static void main(final String[] _args) throws Exception {
         final Plant plant = new Plant();
         try {
-            PropertiesProcessor propertiesProcessor = new PropertiesProcessor(new IsolationReactor(plant));
+            PropertiesProcessor propertiesProcessor = new PropertiesProcessor(new IsolationReactor());
             final CommonReactor reactor = new NonBlockingReactor(plant);
             RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
 

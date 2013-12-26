@@ -82,10 +82,9 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
 
     }
 
-    public SwingBoundReactor(final BasicPlant _plant,
-                             final int _initialOutboxSize, final int _initialLocalQueueSize)
+    public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize);
+        this(Plant.getSingleton().asFacility(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

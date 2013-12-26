@@ -99,10 +99,9 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
                 .getInitialLocalMessageQueueSize(), _boundProcessor);
     }
 
-    public ThreadBoundReactor(final BasicPlant _plant,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+    public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _boundProcessor) throws Exception {
-        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        this(Plant.getSingleton().asFacility(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     public ThreadBoundReactor(final Facility _facility,

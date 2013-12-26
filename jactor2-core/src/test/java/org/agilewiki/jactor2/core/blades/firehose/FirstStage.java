@@ -38,7 +38,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(new IsolationReactor(_plant, this));
+        initialize(new IsolationReactor(this));
         ack = new BoundResponseProcessor<Void>(this,
                 new AsyncResponseProcessor<Void>() {
                     @Override

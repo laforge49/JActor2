@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.IsolationReactorImpl;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
  * A targetReactor which processes each request to completion. And unlike other types of
@@ -33,8 +34,8 @@ import org.agilewiki.jactor2.core.plant.BasicPlant;
  */
 public class IsolationReactor extends ReactorBase {
 
-    public IsolationReactor(final BasicPlant _plant) throws Exception {
-        this(_plant.asFacility());
+    public IsolationReactor() throws Exception {
+        this(Plant.getSingleton().asFacility());
     }
 
     public IsolationReactor(final Facility _facility) throws Exception {
@@ -42,9 +43,9 @@ public class IsolationReactor extends ReactorBase {
                 .getInitialLocalMessageQueueSize(), null);
     }
 
-    public IsolationReactor(final BasicPlant _plant, final Runnable _onIdle)
+    public IsolationReactor(final Runnable _onIdle)
             throws Exception {
-        this(_plant.asFacility(), _onIdle);
+        this(Plant.getSingleton().asFacility(), _onIdle);
     }
 
     public IsolationReactor(final Facility _facility, final Runnable _onIdle)

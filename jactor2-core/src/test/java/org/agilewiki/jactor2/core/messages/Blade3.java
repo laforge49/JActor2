@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 public class Blade3 extends IsolationBladeBase {
 
     public Blade3(final Plant _plant) throws Exception {
-        initialize(new IsolationReactor(_plant));
+        initialize(new IsolationReactor());
     }
 
     public SyncRequest<Void> hi3SReq() {

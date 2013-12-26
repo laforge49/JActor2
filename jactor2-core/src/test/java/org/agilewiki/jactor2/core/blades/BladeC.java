@@ -9,7 +9,7 @@ public class BladeC {
     private final Reactor reactor;
 
     public BladeC(final Plant _plant) throws Exception {
-        this.reactor = new IsolationReactor(_plant);
+        this.reactor = new IsolationReactor();
     }
 
     public AsyncRequest<String> throwAReq() {

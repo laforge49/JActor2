@@ -15,7 +15,7 @@ public class NullStage extends IsolationBladeBase implements DataProcessor {
 
     public NullStage(final Plant _plant, final DataProcessor _next)
             throws Exception {
-        initialize(new IsolationReactor(_plant));
+        initialize(new IsolationReactor());
         next = _next;
     }
 

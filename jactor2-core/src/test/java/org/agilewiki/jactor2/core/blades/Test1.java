@@ -11,7 +11,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class Test1 extends TestCase {
     public void testI() throws Exception {
         final Plant plant = new Plant();
-        final Reactor reactor = new IsolationReactor(plant);
+        final Reactor reactor = new IsolationReactor();
         final BladeA bladeA = new BladeA(reactor);
         try {
             bladeA.throwRequest.call();
