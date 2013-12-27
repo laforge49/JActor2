@@ -156,7 +156,7 @@ public class CloseableSetTest extends TestCase {
     }
 }
 
-class MyCloseable extends CloseableBase {
+class MyCloseable extends Closeable {
     public volatile int closed;
 
     MyCloseable() throws Exception {

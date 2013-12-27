@@ -2,14 +2,14 @@ package org.agilewiki.jactor2.core.blades.pubSub;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.util.CloseableBase;
+import org.agilewiki.jactor2.core.util.Closeable;
 
 /**
  * A subscription allows a subscriber to receive content of interest from a RequestBus.
  *
  * @param <CONTENT> The type of content.
  */
-abstract public class Subscription<CONTENT> extends CloseableBase implements
+abstract public class Subscription<CONTENT> extends Closeable implements
         AutoCloseable {
     private final RequestBus<CONTENT> requestBus;
     private final CommonReactor subscriberReactor;

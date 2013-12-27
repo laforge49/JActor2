@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-abstract public class CloserBase extends CloseableBase implements Closer {
+abstract public class CloserBase extends Closeable implements Closer {
 
     /**
      * A set of Closeable objects.

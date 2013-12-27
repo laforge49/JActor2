@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 
 import java.util.ArrayDeque;

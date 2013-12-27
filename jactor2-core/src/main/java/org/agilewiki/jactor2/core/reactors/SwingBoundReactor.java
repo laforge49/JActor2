@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 import java.awt.event.WindowEvent;

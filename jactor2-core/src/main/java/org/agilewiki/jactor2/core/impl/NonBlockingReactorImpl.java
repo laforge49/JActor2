@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
-import org.agilewiki.jactor2.core.util.Closer;
 
 public class NonBlockingReactorImpl extends UnboundReactorImpl {
 
@@ -20,6 +19,7 @@ public class NonBlockingReactorImpl extends UnboundReactorImpl {
                                   final Runnable _onIdle, final boolean _internalReactor) throws Exception {
         super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
         internalReactor = true;
+        nonfunctional = true;
     }
 
     @Override
@@ -34,13 +34,5 @@ public class NonBlockingReactorImpl extends UnboundReactorImpl {
     protected void addClose() throws Exception {
         if (!internalReactor)
             super.addClose();
-    }
-
-    @Override
-    public void addCloser(Closer _closer) throws Exception {
-        if (!internalReactor)
-            super.addCloser(_closer);
-        else
-            throw new UnsupportedOperationException();
     }
 }

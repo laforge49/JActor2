@@ -3,9 +3,7 @@ package org.agilewiki.jactor2.core.facilities;
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
 import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.impl.FacilityImpl;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.util.Closer;
-import org.slf4j.Logger;
 
 /**
  * Provides a thread pool for
