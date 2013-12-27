@@ -4,29 +4,16 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * <p>
- * Blades must implement the Blade interface to provide access to their targetReactor.
+ * A blade is an object with persistent state and a Reactor and, typically, requests.
+ * Thread safety is achieved by restricting its access to the requests of the blade
+ * and to the requests of other blades which share the same reactor.
  * </p>
- * <h3>Sample Usage:</h3>
- * <pre>
- * public class BladeSample implements Blade {
- *     private final Reactor processor;
- *
- *     BladeSample(final Reactor _processor) {
- *         processor = _processor;
- *     }
- *
- *     {@literal @}Override
- *     public final Reactor getTargetReactor() {
- *         return processor;
- *     }
- * }
- * </pre>
  */
 public interface Blade {
     /**
-     * Returns the targetReactor associated with this blades.
+     * Returns the reactor used by this blade.
      *
-     * @return The blades's targetReactor.
+     * @return The Reactor.
      */
     Reactor getReactor();
 }
