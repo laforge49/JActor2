@@ -27,7 +27,6 @@ abstract public class ReactorBase implements Reactor {
         return reactorImpl.getFacility();
     }
 
-    @Override
     public Logger getLog() {
         return reactorImpl.getLogger();
     }
@@ -42,7 +41,6 @@ abstract public class ReactorBase implements Reactor {
         return reactorImpl.isInboxEmpty();
     }
 
-    @Override
     public boolean isClosing() {
         return reactorImpl.isClosing();
     }

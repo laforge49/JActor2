@@ -279,7 +279,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 if (Thread.currentThread() instanceof PoolThread) {
                     final Exception ex = new IllegalStateException(
                             "response from wrong thread");
-                    targetReactor.getLog().error(
+                    targetReactor.asReactorImpl().getLogger().error(
                             "response from wrong thread", ex);
                     throw ex;
                 }
@@ -288,7 +288,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                         .currentThread()) {
                     final Exception ex = new IllegalStateException(
                             "response from wrong thread");
-                    targetReactor.getLog().error(
+                    targetReactor.asReactorImpl().getLogger().error(
                             "response from wrong thread", ex);
                     throw ex;
                 }
@@ -302,7 +302,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             messageSource.incomingResponse(RequestImplBase.this, targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
-                targetReactor.getLog().warn("Uncaught throwable",
+                targetReactor.asReactorImpl().getLogger().warn("Uncaught throwable",
                         (Throwable) _response);
             }
         }

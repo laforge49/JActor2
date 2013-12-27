@@ -23,8 +23,6 @@ public interface Reactor extends AutoCloseable, Closer, Blade {
      */
     Facility getFacility();
 
-    Logger getLog();
-
     /**
      * Replace the current ExceptionHandler with another.
      * <p>
@@ -49,14 +47,6 @@ public interface Reactor extends AutoCloseable, Closer, Blade {
      * @return True when the inbox is empty.
      */
     boolean isInboxEmpty();
-
-    /**
-     * Returns true if close() has been called already.
-     * Can be called from anywhere.
-     *
-     * @return true if close() has already been called.
-     */
-    boolean isClosing();
 
     SyncRequest<Void> nullSReq();
 }
