@@ -139,8 +139,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         } catch (final Exception e) {
         }
         super.close();
-        Plant plant = getFacility().getPlant();
-        PlantImpl plantImpl = plant.asPlantImpl();
+        PlantImpl plantImpl = PlantImpl.getSingleton().asPlantImpl();
         if (!isRunning() || plantImpl.isShuttingDown())
             return;
         if (currentMessage != null && currentMessage.isClosed())
@@ -339,10 +338,6 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         } catch (final Throwable t) {
             log.error("unable to add response message", t);
         }
-    }
-
-    public Plant getPlant() {
-        return facility.getPlant();
     }
 
     public Facility getFacility() {

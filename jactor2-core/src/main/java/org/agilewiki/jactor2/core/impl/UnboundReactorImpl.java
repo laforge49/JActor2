@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.MigrationException;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 
 import java.util.ArrayDeque;
@@ -74,7 +75,7 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
             throw new NullPointerException();
         }
         if (threadReference.get() == null) {
-            facility.getPlant().asPlantImpl().submit(this);
+            PlantImpl.getSingleton().asPlantImpl().submit(this);
         }
     }
 

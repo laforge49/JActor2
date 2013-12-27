@@ -31,12 +31,9 @@ public class PlantImpl extends FacilityImpl {
     public static final boolean DEBUG = "true".equals(System
             .getProperty("jactor.debug"));
 
-    private static volatile PlantImpl singleton;
+    private static volatile Plant singleton;
 
-    public static PlantImpl getSingleton() {
-        if (singleton == null) {
-            throw new IllegalStateException("there is no singleton");
-        }
+    public static Plant getSingleton() {
         return singleton;
     }
 
@@ -66,7 +63,7 @@ public class PlantImpl extends FacilityImpl {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
-        singleton = this;
+        singleton = _plant;
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
         }
@@ -82,7 +79,7 @@ public class PlantImpl extends FacilityImpl {
         initialLocalMessageQueueSize = plantConfiguration.getInitialLocalMessageQueueSize();
         initialBufferSize = plantConfiguration.getInitialBufferSize();
         threadManager = plantConfiguration.getThreadManager();
-        initialize(_plant, this);
+        initialize();
         RequestBus<ImmutablePropertyChanges> changeBus = propertiesProcessor.changeBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 changeBus,
@@ -258,7 +255,7 @@ public class PlantImpl extends FacilityImpl {
                 else
                     facility.initialBufferSize = v;
 
-                facility.initialize(plant, PlantImpl.this);
+                facility.initialize();
                 send(new PropertiesTransactionAReq(getPropertiesProcessor().commonReactor, getPropertiesProcessor()) {
                          @Override
                          protected void update(final PropertiesChangeManager _changeManager) throws Exception {

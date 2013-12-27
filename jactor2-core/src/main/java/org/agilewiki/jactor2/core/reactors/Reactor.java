@@ -16,8 +16,6 @@ public interface Reactor extends AutoCloseable, Closer, Blade {
 
     ReactorImpl asReactorImpl();
 
-    Plant getPlant();
-
     /**
      * Returns the facility.
      *

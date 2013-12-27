@@ -152,9 +152,9 @@ public class FacilityImpl extends CloserBase implements Facility {
         name = _name;
     }
 
-    public void initialize(final Plant _plant, final PlantImpl _plantImpl) throws Exception {
-        plant = _plant;
-        plantImpl = _plantImpl;
+    public void initialize() throws Exception {
+        plant = PlantImpl.getSingleton();
+        plantImpl = plant.asPlantImpl();
         internalReactor = new InternalReactor();
         initialize(internalReactor);
         if (this != plantImpl)
@@ -356,7 +356,7 @@ public class FacilityImpl extends CloserBase implements Facility {
         if (startClosing)
             return;
         startClosing = true;
-        final Plant plant = getPlant();
+        final Plant plant = PlantImpl.getSingleton();
         if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
             plantImpl.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
@@ -371,7 +371,7 @@ public class FacilityImpl extends CloserBase implements Facility {
             return;
         }
         startClosing = true;
-        final Plant plant = getPlant();
+        final Plant plant = PlantImpl.getSingleton();
         if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
             new PropertiesTransactionAReq(plantImpl.getPropertiesProcessor().commonReactor,
                     plantImpl.getPropertiesProcessor()){
@@ -392,7 +392,7 @@ public class FacilityImpl extends CloserBase implements Facility {
             return;
         }
         startClosing = true;
-        final Plant plant = getPlant();
+        final Plant plant = PlantImpl.getSingleton();
         if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
             new PropertiesTransactionAReq(plantImpl.getPropertiesProcessor().commonReactor,
                     plantImpl.getPropertiesProcessor()){
@@ -426,7 +426,6 @@ public class FacilityImpl extends CloserBase implements Facility {
         return propertiesProcessor.getImmutableState().get(propertyName);
     }
 
-    @Override
     public Plant getPlant() {
         return plant;
     }

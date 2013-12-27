@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 public class Plant implements BasicPlant {
 
     public static Plant getSingleton() {
-        return PlantImpl.getSingleton().asPlant();
+        return PlantImpl.getSingleton();
     }
 
     private final PlantImpl plantImpl;
