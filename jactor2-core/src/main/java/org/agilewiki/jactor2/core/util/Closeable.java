@@ -19,7 +19,7 @@ public class Closeable extends BladeBase implements AutoCloseable {
         _initialize(_reactor);
     }
 
-    void addCloser(final Closer _closer) throws Exception {
+    protected void addCloser(final Closer _closer) throws Exception {
         if (closing)
             throw new ServiceClosedException();
         if (nonfunctional)
@@ -27,7 +27,7 @@ public class Closeable extends BladeBase implements AutoCloseable {
         closers.add(_closer);
     }
 
-    void removeCloser(final Closer _closer) {
+    protected void removeCloser(final Closer _closer) {
         if (closing)
             return;
         closers.remove(_closer);
