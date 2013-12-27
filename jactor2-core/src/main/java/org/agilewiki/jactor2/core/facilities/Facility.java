@@ -19,13 +19,9 @@ import org.slf4j.Logger;
 public interface Facility extends Closer, NonBlockingBlade {
     FacilityImpl asFacilityImpl();
 
-    boolean startedClosing();
-
     void close() throws Exception;
 
     String getName();
-
-    Logger getLogger();
 
     PropertiesProcessor getPropertiesProcessor();
 }

@@ -299,7 +299,6 @@ public class FacilityImpl extends CloserBase implements Facility {
         return propertiesProcessor;
     }
 
-    @Override
     public final boolean startedClosing() {
         return startClosing;
     }
@@ -328,7 +327,6 @@ public class FacilityImpl extends CloserBase implements Facility {
         }
     }
 
-    @Override
     public Logger getLogger() {
         return log;
     }
