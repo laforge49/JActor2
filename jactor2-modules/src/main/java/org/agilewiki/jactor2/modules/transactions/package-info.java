@@ -25,4 +25,4 @@
  *     the immutable state is replaced by the updated version.
  * </p>
  */
-package org.agilewiki.jactor2.core.blades.transactions;
+package org.agilewiki.jactor2.modules.transactions;

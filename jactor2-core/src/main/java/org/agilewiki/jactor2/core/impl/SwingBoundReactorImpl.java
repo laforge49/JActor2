@@ -1,14 +1,16 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 import javax.swing.*;
 
 public class SwingBoundReactorImpl extends ThreadBoundReactorImpl {
 
-    public SwingBoundReactorImpl(final Facility _facility,
-                                  final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        super(_facility, _initialOutboxSize, _initialLocalQueueSize, null);
+    public SwingBoundReactorImpl(final ReactorImpl _parentReactorImpl,
+                                 final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                 final Recovery _recovery, final Scheduler _scheduler) throws Exception {
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler, null);
     }
 
     @Override

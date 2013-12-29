@@ -1,8 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 /**
  * A targetReactor bound to a pre-existing thread, a thread-bound targetReactor can use
@@ -88,25 +90,44 @@ import org.agilewiki.jactor2.core.plant.Plant;
  */
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Runnable {
 
-    public ThreadBoundReactor(final Runnable _boundProcessor) throws Exception {
-        this(Plant.getSingleton().asFacility(), _boundProcessor);
+    public ThreadBoundReactor() throws Exception {
+        this(Plant.getSingleton().getReactor());
     }
 
-    public ThreadBoundReactor(final Facility _facility,
-                              final Runnable _boundProcessor) throws Exception {
-        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), _boundProcessor);
+    public ThreadBoundReactor(final Reactor _parentReactor) throws Exception {
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize, null);
+    }
+
+    public ThreadBoundReactor(final Runnable _boundProcessor)
+            throws Exception {
+        this(Plant.getSingleton().getReactor(), _boundProcessor);
+    }
+
+    public ThreadBoundReactor(final Reactor _parentReactor, final Runnable _boundProcessor)
+            throws Exception {
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize, _boundProcessor);
     }
 
     public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Runnable _boundProcessor) throws Exception {
-        this(Plant.getSingleton().asFacility(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+                           final Runnable _boundProcessor) throws Exception {
+        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
-    public ThreadBoundReactor(final Facility _facility,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Runnable _boundProcessor) throws Exception {
-        super(new ThreadBoundReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor));
+    public ThreadBoundReactor(final Reactor _parentReactor,
+                           final int _initialOutboxSize, final int _initialLocalQueueSize,
+                           final Runnable _boundProcessor) throws Exception {
+        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
+                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler, _boundProcessor);
+    }
+
+    public ThreadBoundReactor(final ReactorImpl _parentReactorImpl,
+                           final int _initialOutboxSize, final int _initialLocalQueueSize,
+                           final Recovery _recovery, final Scheduler _scheduler,
+                           final Runnable _boundProcessor) throws Exception {
+        super(new ThreadBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler, _boundProcessor));
     }
 
     @Override

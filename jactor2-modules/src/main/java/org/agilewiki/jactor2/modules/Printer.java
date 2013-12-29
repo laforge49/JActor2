@@ -1,12 +1,6 @@
-package org.agilewiki.jactor2.core.blades.misc;
+package org.agilewiki.jactor2.modules;
 
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
-import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChangesFilter;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -14,6 +8,12 @@ import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.pubSub.RequestBus;
+import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.modules.transactions.properties.ImmutablePropertyChanges;
+import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
+import org.agilewiki.jactor2.modules.transactions.properties.PropertyChange;
+import org.agilewiki.jactor2.modules.transactions.properties.PropertyChangesFilter;
 
 import java.io.PrintStream;
 import java.util.Locale;

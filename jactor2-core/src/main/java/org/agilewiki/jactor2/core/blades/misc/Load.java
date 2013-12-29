@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 
@@ -16,13 +15,8 @@ public class Load extends BlockingBladeBase {
         initialize(new BlockingReactor());
     }
 
-    /**
-     * Create a Load blades.
-     *
-     * @param _facility The blades's facility.
-     */
-    public Load(final Facility _facility) throws Exception {
-        initialize(new BlockingReactor(_facility));
+    public Load(final BlockingReactor _reactor) throws Exception {
+        initialize(_reactor);
     }
 
     /**

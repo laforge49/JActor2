@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.blades.misc;
 
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 
@@ -12,10 +11,6 @@ public class Delay extends BlockingBladeBase {
 
     public Delay() throws Exception {
         initialize(new BlockingReactor());
-    }
-
-    public Delay(final Facility _facility) throws Exception {
-        initialize(new BlockingReactor(_facility));
     }
 
     /**

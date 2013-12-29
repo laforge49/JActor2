@@ -1,12 +1,15 @@
-package org.agilewiki.jactor2.core.impl;
+package org.agilewiki.jactor2.modules.impl;
 
-import org.agilewiki.jactor2.core.blades.Activator;
+import org.agilewiki.jactor2.core.impl.CloserImpl;
+import org.agilewiki.jactor2.modules.Activator;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
-import org.agilewiki.jactor2.core.blades.transactions.properties.*;
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.modules.Facility;
+import org.agilewiki.jactor2.modules.pubSub.RequestBus;
+import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.modules.pubSub.Subscription;
+import org.agilewiki.jactor2.core.impl.PlantImpl;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.RequestImpl;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
@@ -14,9 +17,9 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.CloserBase;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.transactions.properties.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +38,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * when the facility is closed, as well as a table of properties.
  */
 
-public class FacilityImpl extends CloserBase implements Facility {
+public class FacilityImpl extends CloserImpl implements Facility {
 
     public static final String CORE_PREFIX = "core.";
 

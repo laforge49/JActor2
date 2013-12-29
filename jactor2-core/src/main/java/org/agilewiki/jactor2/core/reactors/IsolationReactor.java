@@ -1,9 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.IsolationReactorImpl;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 /**
  * A targetReactor which processes each request to completion. And unlike other types of
@@ -35,34 +36,42 @@ import org.agilewiki.jactor2.core.plant.Plant;
 public class IsolationReactor extends ReactorBase {
 
     public IsolationReactor() throws Exception {
-        this(Plant.getSingleton().asFacility());
+        this(Plant.getSingleton().getReactor());
     }
 
-    public IsolationReactor(final Facility _facility) throws Exception {
-        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), null);
+    public IsolationReactor(final Reactor _parentReactor) throws Exception {
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize, null);
     }
 
     public IsolationReactor(final Runnable _onIdle)
             throws Exception {
-        this(Plant.getSingleton().asFacility(), _onIdle);
+        this(Plant.getSingleton().getReactor(), _onIdle);
     }
 
-    public IsolationReactor(final Facility _facility, final Runnable _onIdle)
+    public IsolationReactor(final Reactor _parentReactor, final Runnable _onIdle)
             throws Exception {
-        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), _onIdle);
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize, _onIdle);
     }
 
-    public IsolationReactor(final BasicPlant _plant,
-                            final int _initialOutboxSize, final int _initialLocalQueueSize,
-                            final Runnable _onIdle) throws Exception {
-        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+    public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
+                           final Runnable _onIdle) throws Exception {
+        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
-    public IsolationReactor(final Facility _facility,
-                            final int _initialOutboxSize, final int _initialLocalQueueSize,
-                            final Runnable _onIdle) throws Exception {
-        super(new IsolationReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle));
+    public IsolationReactor(final Reactor _parentReactor,
+                           final int _initialOutboxSize, final int _initialLocalQueueSize,
+                           final Runnable _onIdle) throws Exception {
+        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
+                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler, _onIdle);
+    }
+
+    public IsolationReactor(final ReactorImpl _parentReactorImpl,
+                           final int _initialOutboxSize, final int _initialLocalQueueSize,
+                           final Recovery _recovery, final Scheduler _scheduler,
+                           final Runnable _onIdle) throws Exception {
+        super(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler, _onIdle));
     }
 }

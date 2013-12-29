@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.modules.transactions.properties;
 
 /**
  * Represents a change made to a property in the immutable properties map.

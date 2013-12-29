@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.modules.facilities;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
+import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 public class FailedTest extends TestCase {

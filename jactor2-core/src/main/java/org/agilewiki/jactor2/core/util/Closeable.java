@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Closeable extends BladeBase implements AutoCloseable {
     private Set<Closer> closers = Collections.newSetFromMap(new ConcurrentHashMap<Closer, Boolean>(8, 0.9f, 1));
-    protected boolean nonfunctional;
 
     private volatile boolean closing;
 
@@ -19,15 +18,13 @@ public class Closeable extends BladeBase implements AutoCloseable {
         _initialize(_reactor);
     }
 
-    protected void addCloser(final Closer _closer) throws Exception {
+    public void addCloser(final Closer _closer) throws Exception {
         if (closing)
             throw new ServiceClosedException();
-        if (nonfunctional)
-            throw new UnsupportedOperationException();
         closers.add(_closer);
     }
 
-    protected void removeCloser(final Closer _closer) {
+    public void removeCloser(final Closer _closer) {
         if (closing)
             return;
         closers.remove(_closer);

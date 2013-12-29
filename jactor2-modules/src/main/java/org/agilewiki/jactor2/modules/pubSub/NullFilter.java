@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.pubSub;
+package org.agilewiki.jactor2.modules.pubSub;
 
 /**
  * Used when all content is of interest.

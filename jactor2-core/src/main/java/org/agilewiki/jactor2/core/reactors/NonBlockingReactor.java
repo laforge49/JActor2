@@ -1,8 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 /**
  * A targetReactor for blades which process messages quickly and without blocking the thread.
@@ -31,38 +33,42 @@ import org.agilewiki.jactor2.core.plant.Plant;
 public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     public NonBlockingReactor() throws Exception {
-        this(Plant.getSingleton().asFacility());
+        this(Plant.getSingleton().getReactor());
     }
 
-    public NonBlockingReactor(final Facility _facility) throws Exception {
-        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), null);
+    public NonBlockingReactor(final Reactor _parentReactor) throws Exception {
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize, null);
     }
 
     public NonBlockingReactor(final Runnable _onIdle)
             throws Exception {
-        this(Plant.getSingleton().asFacility(), _onIdle);
+        this(Plant.getSingleton().getReactor(), _onIdle);
     }
 
-    public NonBlockingReactor(final Facility _facility, final Runnable _onIdle)
+    public NonBlockingReactor(final Reactor _parentReactor, final Runnable _onIdle)
             throws Exception {
-        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), _onIdle);
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize, _onIdle);
     }
 
     public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _onIdle) throws Exception {
-        this(Plant.getSingleton().asFacility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
-    public NonBlockingReactor(final Facility _facility,
+    public NonBlockingReactor(final Reactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _onIdle) throws Exception {
-        super(new NonBlockingReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle));
+        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
+                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler, _onIdle);
     }
 
-    public NonBlockingReactor(final Facility _facility, final boolean _internalReactor) throws Exception {
-        super(new NonBlockingReactorImpl(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), null, _internalReactor));
+    public NonBlockingReactor(final ReactorImpl _parentReactorImpl,
+                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Recovery _recovery, final Scheduler _scheduler,
+                              final Runnable _onIdle) throws Exception {
+        super(new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler, _onIdle));
     }
 }

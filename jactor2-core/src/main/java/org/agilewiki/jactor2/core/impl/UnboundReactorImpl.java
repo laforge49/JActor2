@@ -1,8 +1,9 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.PoolThread;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -27,18 +28,12 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
      */
     private final Runnable onIdle;
 
-    /**
-     * Create an unbound targetReactor.
-     *
-     * @param _facility              The facility of this targetReactor.
-     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
-     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
-     * @param _onIdle                Object to be run when the inbox is emptied, or null.
-     */
-    public UnboundReactorImpl(final Facility _facility,
+    public UnboundReactorImpl(final ReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Runnable _onIdle) throws Exception {
-        super(_facility, _initialOutboxSize, _initialLocalQueueSize);
+                              final Recovery _recovery, final Scheduler _scheduler,
+                              final Runnable _onIdle)
+            throws Exception {
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
         onIdle = _onIdle;
     }
 

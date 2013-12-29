@@ -15,8 +15,8 @@
  *
  * package org.agilewiki.jactor2.core.blades.transactions.properties;
  *
- * import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
- * import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
+ * import RequestBus;
+ * import SubscribeAReq;
  * import org.agilewiki.jactor2.core.facilities.Plant;
  * import org.agilewiki.jactor2.core.reactors.CommonReactor;
  * import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -76,4 +76,4 @@
  * [fruit, immutable.fudge]
  * </pre>
  */
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.modules.transactions.properties;

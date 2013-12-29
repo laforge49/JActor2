@@ -1,8 +1,8 @@
-package org.agilewiki.jactor2.core.facilities;
+package org.agilewiki.jactor2.modules;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
-import org.agilewiki.jactor2.core.impl.FacilityImpl;
+import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
+import org.agilewiki.jactor2.modules.impl.FacilityImpl;
 import org.agilewiki.jactor2.core.util.Closer;
 
 /**

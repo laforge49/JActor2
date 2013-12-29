@@ -1,8 +1,11 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
+import org.agilewiki.jactor2.core.impl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -67,36 +70,33 @@ import java.awt.event.WindowListener;
 public class SwingBoundReactor extends ReactorBase implements CommonReactor, WindowListener {
 
     public SwingBoundReactor() throws Exception {
-        this(Plant.getSingleton().asFacility());
+        this(Plant.getSingleton().getReactor());
     }
 
-    /**
-     * Create a targetReactor bound to the Swing event-dispatch thread.
-     *
-     * @param _facility The facility of the targetReactor.
-     */
-    public SwingBoundReactor(final Facility _facility) throws Exception {
-        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize());
-
+    public SwingBoundReactor(final Reactor _parentReactor)
+            throws Exception {
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize);
     }
 
     public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        this(Plant.getSingleton().asFacility(), _initialOutboxSize, _initialLocalQueueSize);
+        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    /**
-     * Create a targetReactor bound to the Swing event-dispatch thread.
-     *
-     * @param _facility              The facility of the targetReactor.
-     * @param _initialOutboxSize     Initial size of the outbox for each unique message destination.
-     * @param _initialLocalQueueSize The initial number of slots in the doLocal queue.
-     */
-    public SwingBoundReactor(final Facility _facility,
-                             final int _initialOutboxSize, final int _initialLocalQueueSize)
+    public SwingBoundReactor(final Reactor _parentReactor,
+                              final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        super(new SwingBoundReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize));
+        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
+                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
+    }
+
+    public SwingBoundReactor(final ReactorImpl _parentReactorImpl,
+                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Recovery _recovery, final Scheduler _scheduler)
+            throws Exception {
+        super(new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler));
     }
 
     @Override
@@ -110,7 +110,7 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
     @Override
     public void windowClosed(final WindowEvent e) {
         try {
-            getFacility().close();
+            Plant.getSingleton().close();
         } catch (final Exception ex) {
             getLog().warn("Exception when closing Facility", ex);
         }

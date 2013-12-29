@@ -1,14 +1,19 @@
-package org.agilewiki.jactor2.core.util;
+package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.impl.RequestImpl;
+import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-abstract public class MessageCloser extends CloserBase {
+abstract public class MessageCloser extends CloserImpl {
     private Set<RequestImpl> messages = new HashSet<RequestImpl>();
+
+    public MessageCloser(Recovery _recovery, Scheduler _scheduler) {
+        super(_recovery, _scheduler);
+    }
 
     protected boolean addMessage(final RequestImpl _message) throws ServiceClosedException {
         return messages.add(_message);

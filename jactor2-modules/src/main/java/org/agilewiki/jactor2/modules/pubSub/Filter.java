@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.pubSub;
+package org.agilewiki.jactor2.modules.pubSub;
 
 /**
  * Identifies content of interest.

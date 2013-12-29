@@ -1,9 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
-import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.impl.BlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 /**
  * A targetReactor which should be used by blades
@@ -29,34 +30,42 @@ import org.agilewiki.jactor2.core.plant.Plant;
 public class BlockingReactor extends ReactorBase implements CommonReactor {
 
     public BlockingReactor() throws Exception {
-        this(Plant.getSingleton().asFacility());
+        this(Plant.getSingleton().getReactor());
     }
 
-    public BlockingReactor(final Facility _facility) throws Exception {
-        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), null);
+    public BlockingReactor(final Reactor _parentReactor) throws Exception {
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize, null);
     }
 
-    public BlockingReactor(final BasicPlant _plant, final Runnable _onIdle)
+    public BlockingReactor(final Runnable _onIdle)
             throws Exception {
-        this(_plant.asFacility(), _onIdle);
+        this(Plant.getSingleton().getReactor(), _onIdle);
     }
 
-    public BlockingReactor(final Facility _facility, final Runnable _onIdle)
+    public BlockingReactor(final Reactor _parentReactor, final Runnable _onIdle)
             throws Exception {
-        this(_facility, _facility.asFacilityImpl().getInitialBufferSize(), _facility.asFacilityImpl()
-                .getInitialLocalMessageQueueSize(), _onIdle);
+        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
+                _parentReactor.asReactorImpl().initialLocalQueueSize, _onIdle);
     }
 
-    public BlockingReactor(final BasicPlant _plant,
-                           final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Runnable _onIdle) throws Exception {
-        this(_plant.asFacility(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+    public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Runnable _onIdle) throws Exception {
+        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
-    public BlockingReactor(final Facility _facility,
-                           final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Runnable _onIdle) throws Exception {
-        super(new NonBlockingReactorImpl(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle));
+    public BlockingReactor(final Reactor _parentReactor,
+                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Runnable _onIdle) throws Exception {
+        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
+                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler, _onIdle);
+    }
+
+    public BlockingReactor(final ReactorImpl _parentReactorImpl,
+                              final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Recovery _recovery, final Scheduler _scheduler,
+                              final Runnable _onIdle) throws Exception {
+        super(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler, _onIdle));
     }
 }

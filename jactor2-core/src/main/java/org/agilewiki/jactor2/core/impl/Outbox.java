@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
-
 import java.util.ArrayDeque;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -23,16 +21,7 @@ public class Outbox implements AutoCloseable {
      */
     private Map<ReactorImpl, ArrayDeque<RequestImpl>> sendBuffer;
 
-    /**
-     * The facility of this outbox.
-     */
-    protected final Facility facility;
-
-    protected final ReactorImpl reactor;
-
-    public Outbox(final ReactorImpl _reactor, final int _initialBufferSize) {
-        reactor = _reactor;
-        facility = _reactor.getFacility();
+    public Outbox(final int _initialBufferSize) {
         initialBufferSize = _initialBufferSize;
     }
 

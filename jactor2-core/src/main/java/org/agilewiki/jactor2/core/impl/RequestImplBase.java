@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.MigrationException;
@@ -10,10 +9,6 @@ import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
 public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESPONSE_TYPE> {
@@ -188,8 +183,6 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
         if (rp == null) {
             rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
-        } else {
-            addDebugPending();
         }
         messageSource = source;
         oldMessage = source.getCurrentMessage();
@@ -216,30 +209,10 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             throw new UnsupportedOperationException(
                     "Use of call on a PoolThread can result in a deadlock");
         }
-        if (PlantImpl.DEBUG) {
-            addDebugPending();
-        }
         messageSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
         return (RESPONSE_TYPE) ((Pender) messageSource).pend();
-    }
-
-    /**
-     * track pending requests.
-     */
-    private void addDebugPending() {
-        if (PlantImpl.DEBUG) {
-            debugTimestamp = System.nanoTime();
-            final Facility targetFacility = targetReactor.getFacility();
-            final Map<Long, Set<RequestImpl>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
-            Set<RequestImpl> nanoSet = pendingRequests.get(debugTimestamp);
-            if (nanoSet == null) {
-                nanoSet = Collections
-                        .newSetFromMap(new ConcurrentHashMap<RequestImpl, Boolean>(8, 0.9f, 1));
-            }
-            pendingRequests.put(debugTimestamp, nanoSet);
-        }
     }
 
     protected void setResponse(final Object _response,
@@ -247,18 +220,6 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         _activeReactor.requestEnd(this);
         unClosed = false;
         response = _response;
-        if (PlantImpl.DEBUG) {
-            final Facility targetFacility = targetReactor.getFacility();
-            final Map<Long, Set<RequestImpl>> pendingRequests = targetFacility.asFacilityImpl().pendingRequests;
-            final Set<RequestImpl> nanoSet = pendingRequests
-                    .get(debugTimestamp);
-            if (nanoSet != null) {
-                nanoSet.remove(this);
-                if (nanoSet.isEmpty()) {
-                    pendingRequests.remove(debugTimestamp);
-                }
-            }
-        }
     }
 
     /**
@@ -443,8 +404,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
 
     @Override
     public String toString() {
-        return "facility=" + targetReactor.getFacility().asFacilityImpl().name +
-                ", message=" + asRequest().getClass().getName() +
+        return "message=" + asRequest().getClass().getName() +
                 ", isClosed=" + isClosed() +
                 ", isSignal=" + isSignal() +
                 ", source=" + (messageSource == null ? "null" : messageSource.getClass().getName()) +

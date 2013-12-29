@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.misc;
+package org.agilewiki.jactor2.modules;
 
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 

@@ -1,11 +1,7 @@
 package org.agilewiki.jactor2.modules.transactions.properties;
 
-import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.transactions.properties.ImmutablePropertyChanges;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertiesProcessor;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChange;
-import org.agilewiki.jactor2.core.blades.transactions.properties.PropertyChangesFilter;
+import org.agilewiki.jactor2.modules.pubSub.RequestBus;
+import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;

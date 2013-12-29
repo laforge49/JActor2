@@ -78,7 +78,7 @@ public final class Durables {
      * @return The factoryLocator for that processing.
      */
     public static FactoryLocator getFactoryLocator(final Reactor _reactor) {
-        return getFactoryLocator(_reactor.getFacility());
+        return getFactoryLocator(_reactor.getStructure());
     }
 
     public static FactoryLocator getFactoryLocator(final BasicPlant _plant) {
@@ -401,7 +401,7 @@ public final class Durables {
      */
     public static JASerializable newSerializable(final String _factoryName,
             final Reactor _reactor) throws Exception {
-        return newSerializable(getFactoryLocator(_reactor.getFacility()),
+        return newSerializable(getFactoryLocator(_reactor.getStructure()),
                 _factoryName, _reactor, null);
     }
 
@@ -416,7 +416,7 @@ public final class Durables {
      */
     public static JASerializable newSerializable(final String _factoryName,
             final Reactor _reactor, final Ancestor _parent) throws Exception {
-        return newSerializable(getFactoryLocator(_reactor.getFacility()),
+        return newSerializable(getFactoryLocator(_reactor.getStructure()),
                 _factoryName, _reactor, _parent);
     }
 }

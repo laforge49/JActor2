@@ -1,14 +1,16 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.MigrationException;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 public class IsolationReactorImpl extends UnboundReactorImpl {
 
-    public IsolationReactorImpl(final Facility _facility,
-                               final int _initialOutboxSize, final int _initialLocalQueueSize,
-                               final Runnable _onIdle) throws Exception {
-        super(_facility, _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+    public IsolationReactorImpl(final ReactorImpl _parentReactorImpl,
+                                final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                final Recovery _recovery, final Scheduler _scheduler,
+                                final Runnable _onIdle) throws Exception {
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler, _onIdle);
     }
 
     @Override
@@ -24,7 +26,7 @@ public class IsolationReactorImpl extends UnboundReactorImpl {
         } catch (final MigrationException me) {
             throw me;
         } catch (final Exception e) {
-            log.error("Exception thrown by flush", e);
+            logger.error("Exception thrown by flush", e);
         }
     }
 }

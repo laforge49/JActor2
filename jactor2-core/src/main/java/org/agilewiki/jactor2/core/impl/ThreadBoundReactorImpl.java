@@ -1,8 +1,9 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.PoolThread;
+import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
+import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -16,10 +17,11 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
      */
     private final Runnable boundProcessor;
 
-    public ThreadBoundReactorImpl(final Facility _facility,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Runnable _boundProcessor) throws Exception {
-        super(_facility, _initialOutboxSize, _initialLocalQueueSize);
+    public ThreadBoundReactorImpl(final ReactorImpl _parentReactorImpl,
+                                  final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                  final Recovery _recovery, final Scheduler _scheduler,
+                                  final Runnable _boundProcessor) throws Exception {
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
         boundProcessor = _boundProcessor;
     }
 

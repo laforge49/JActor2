@@ -1,16 +1,13 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.plant.PoolThread;
-import org.agilewiki.jactor2.core.plant.Scheduler;
-import org.agilewiki.jactor2.core.plant.ServiceClosedException;
+import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.util.MessageCloser;
+import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.Queue;
@@ -25,21 +22,12 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
 
     private SchedulableSemaphore timeoutSemaphore;
 
-    public Recovery recovery;
-
-    public Scheduler scheduler;
-
     public volatile long messageStartTimeMillis;
 
     /**
      * Reactor logger.
      */
-    protected final Logger log;
-
-    /**
-     * The facility of this targetReactor.
-     */
-    protected final Facility facility;
+    protected final Logger logger;
 
     /**
      * The inbox, implemented as a local queue and a concurrent queue.
@@ -70,27 +58,32 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
 
     private boolean startClosing;
 
-    private Reactor me;
+    public final int initialBufferSize;
 
-    public ReactorImpl(final Facility _facility, final int _initialBufferSize,
-                       final int _initialLocalQueueSize) {
-        facility = _facility;
+    public final int initialLocalQueueSize;
+
+    public ReactorImpl(final ReactorImpl _parentReactorImpl, final int _initialBufferSize,
+                       final int _initialLocalQueueSize, final Recovery _recovery, final Scheduler _scheduler)
+            throws Exception {
+        super(_recovery, _scheduler);
+        initialBufferSize = _initialBufferSize;
+        initialLocalQueueSize = _initialLocalQueueSize;
         inbox = createInbox(_initialLocalQueueSize);
-        log = _facility.asFacilityImpl().getLogger();
-        outbox = new Outbox(this, _initialBufferSize);
-        recovery = _facility.asFacilityImpl().recovery;
-        scheduler = _facility.asFacilityImpl().scheduler;
+        logger = LoggerFactory.getLogger(Reactor.class);
+        outbox = new Outbox(_initialBufferSize);
+        recovery = _recovery;
+        scheduler = _scheduler;
+        if (_parentReactorImpl != null)
+            _parentReactorImpl.addCloseable(this);
     }
 
     @Override
     public void initialize(final Reactor _reactor) throws Exception {
-        me = _reactor;
-        super.initialize(asReactor());
-        addClose();
+        super.initialize(_reactor);
     }
 
     public Reactor asReactor() {
-        return me;
+        return getReactor();
     }
 
     public ReactorImpl asReactorImpl() {
@@ -108,7 +101,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
 
     @Override
     public Logger getLogger() {
-        return log;
+        return logger;
     }
 
     @Override
@@ -142,13 +135,17 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         } catch (final Exception e) {
         }
         super.close();
-        PlantImpl plantImpl = PlantImpl.getSingleton().asPlantImpl();
-        if (!isRunning() || plantImpl.isShuttingDown())
+        Plant plant = PlantImpl.getSingleton();
+        if (plant == null)
+            return;
+        PlantImpl plantImpl = plant.asPlantImpl();
+
+        if (!isRunning())
             return;
         if (currentMessage != null && currentMessage.isClosed())
             return;
         timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
-        if (!isRunning() || plantImpl.isShuttingDown())
+        if (!isRunning() || PlantImpl.getSingleton() == null)
             return;
         Thread thread = (Thread) getThreadReference().get();
         if (thread == null)
@@ -156,26 +153,19 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         thread.interrupt();
         boolean timeout = timeoutSemaphore.acquire();
         currentMessage.close();
-        if (!timeout || !isRunning() || plantImpl.isShuttingDown()) {
+        if (!timeout || !isRunning() || PlantImpl.getSingleton() == null) {
             return;
         }
         try {
             if (currentMessage == null)
-                log.error("hung thread facility=%s", getFacility().asFacilityImpl().name);
+                logger.error("hung thread");
             else {
-                log.error("hung thread\n" + currentMessage.toString());
+                logger.error("hung thread\n" + currentMessage.toString());
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         recovery.hungThread(this);
-    }
-
-    /**
-     * Add to the facility's AutoClose set.
-     */
-    protected void addClose() throws Exception {
-        facility.addCloseable(this);
     }
 
     /**
@@ -339,12 +329,8 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
                 unbufferedAddMessage(_message, local);
             }
         } catch (final Throwable t) {
-            log.error("unable to add response message", t);
+            logger.error("unable to add response message", t);
         }
-    }
-
-    public Facility getFacility() {
-        return facility;
     }
 
     /**
@@ -403,7 +389,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
                     } catch (final MigrationException me) {
                         throw me;
                     } catch (final Exception e) {
-                        log.error("Exception thrown by onIdle", e);
+                        logger.error("Exception thrown by onIdle", e);
                     }
                     if (hasWork()) {
                         continue;
@@ -421,9 +407,9 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
             if (timeoutSemaphore == null)
                 Thread.currentThread().interrupt();
             else if (!isClosing())
-                log.warn("message running too long " + currentMessage.toString());
+                logger.warn("message running too long " + currentMessage.toString());
             else
-                log.warn("message interrupted on close " + currentMessage.toString());
+                logger.warn("message interrupted on close " + currentMessage.toString());
         } catch (Exception ex) {
             throw ex;
         } finally {
@@ -451,6 +437,14 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
             if (mst + recovery.messageTimeoutMillis() < currentTimeMillis) {
                 recovery.messageTimeout(this);
             }
+        }
+        Iterator<Closeable> it = getCloseableSet().iterator();
+        while (it.hasNext()) {
+            Closeable closeable = it.next();
+            if (!(closeable instanceof ReactorImpl))
+                continue;
+            ReactorImpl reactor = (ReactorImpl) closeable;
+            reactor.reactorPoll();
         }
     }
 }

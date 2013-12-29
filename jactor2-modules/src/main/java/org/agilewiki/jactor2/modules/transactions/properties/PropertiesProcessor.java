@@ -1,6 +1,6 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.modules.transactions.properties;
 
-import org.agilewiki.jactor2.core.blades.transactions.TransactionProcessor;
+import org.agilewiki.jactor2.modules.transactions.TransactionProcessor;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -12,8 +12,7 @@ import java.util.Map;
 /**
  * Transaction-based updates to an immutable properties map.
  */
-public class PropertiesProcessor extends TransactionProcessor
-        <PropertiesChangeManager, ImmutableProperties<Object>, ImmutablePropertyChanges> {
+public class PropertiesProcessor extends TransactionProcessor<PropertiesChangeManager, ImmutableProperties<Object>, ImmutablePropertyChanges> {
 
     static <V> ImmutableProperties<V> empty() {
         return HashTreePProperties.empty();
@@ -47,7 +46,7 @@ public class PropertiesProcessor extends TransactionProcessor
     public PropertiesProcessor(IsolationReactor _isolationReactor,
                                Map<String, Object> _initialState) throws Exception {
         super(_isolationReactor, new NonBlockingReactor(
-                _isolationReactor.getFacility()), from(_initialState));
+                _isolationReactor.getStructure()), from(_initialState));
     }
 
     /**

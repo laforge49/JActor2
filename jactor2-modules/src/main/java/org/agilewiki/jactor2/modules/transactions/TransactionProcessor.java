@@ -1,7 +1,7 @@
-package org.agilewiki.jactor2.core.blades.transactions;
+package org.agilewiki.jactor2.modules.transactions;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
+import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -49,7 +49,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
     protected TransactionProcessor(final IsolationReactor _isolationReactor,
                                 final IMMUTABLE_STATE _initialState) throws Exception {
         this(_isolationReactor, new NonBlockingReactor(
-                _isolationReactor.getFacility()), _initialState);
+                _isolationReactor.getStructure()), _initialState);
     }
 
     /**

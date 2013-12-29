@@ -1,96 +1,38 @@
 package org.agilewiki.jactor2.core.util;
 
-import com.google.common.collect.MapMaker;
-import org.agilewiki.jactor2.core.impl.PlantImpl;
-import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.slf4j.Logger;
+import org.agilewiki.jactor2.core.impl.CloserImpl;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+public class CloserBase implements Closer {
+    private CloserImpl closerImpl;
 
-abstract public class CloserBase extends Closeable implements Closer {
+    @Override
+    public CloserImpl asCloserImpl() {
+        return closerImpl;
+    }
 
-    /**
-     * A set of Closeable objects.
-     * Can only be accessed via a request to the facility.
-     */
-    private Set<Closeable> closeables;
-
-    /**
-     * Returns true when the first phase of closing has begun.
-     *
-     * @return True when the first phase of closing has begun.
-     */
-    abstract protected boolean startedClosing();
-
-    /**
-     * Performs the second phase of closing.
-     */
-    abstract protected void close2() throws Exception;
-
-    /**
-     * Returns the logger.
-     *
-     * @return A logger.
-     */
-    abstract public Logger getLogger();
-
-    /**
-     * Returns the CloseableSet. Creates it if needed.
-     *
-     * @return The CloseableSet.
-     */
-    protected final Set<Closeable> getCloseableSet() {
-        if (closeables == null) {
-            closeables = Collections.newSetFromMap((Map)
-                    new MapMaker().concurrencyLevel(1).weakKeys().makeMap());
-        }
-        return closeables;
+    protected void initialize(final CloserImpl _closerImpl) throws Exception {
+        if (_closerImpl != null)
+            closerImpl = _closerImpl;
     }
 
     @Override
-    public boolean addCloseable(final Closeable _closeable) throws Exception {
-        if (startedClosing())
-            throw new ServiceClosedException();
-        if (!getCloseableSet().add(_closeable))
-            return false;
-        _closeable.addCloser(CloserBase.this);
-        return true;
+    public boolean addCloseable(Closeable _closeable) throws Exception {
+        return closerImpl.addCloseable(_closeable);
     }
 
     @Override
-    public boolean removeCloseable(final Closeable _closeable) {
-        if (closeables == null)
-            return false;
-        if (!closeables.remove(_closeable))
-            return false;
-        _closeable.removeCloser(CloserBase.this);
-        return true;
+    public boolean removeCloseable(Closeable _closeable) {
+        return closerImpl.removeCloseable(_closeable);
     }
 
-    protected void closeAll() throws Exception {
-        if (closeables == null) {
-            close2();
-            return;
-        }
-        Iterator<Closeable> it = closeables.iterator();
-        while (it.hasNext()) {
-            Closeable closeable = it.next();
-            try {
-                closeable.close();
-            } catch (final Throwable t) {
-                if (closeable != null && PlantImpl.DEBUG) {
-                    getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
-                }
-            }
-        }
-        it = closeables.iterator();
-        while (it.hasNext()) {
-            Closeable closeable = it.next();
-            getLogger().warn("still has closable: " + this + "\n" + closeable);
-        }
-        close2();
+    @Override
+    public void close() throws Exception {
+        closerImpl.close();
+    }
+
+    @Override
+    public Reactor getReactor() {
+        return closerImpl.getReactor();
     }
 }

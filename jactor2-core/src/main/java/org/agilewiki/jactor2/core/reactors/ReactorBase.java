@@ -1,71 +1,43 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.util.Closeable;
+import org.agilewiki.jactor2.core.util.CloserBase;
 import org.slf4j.Logger;
 
-abstract public class ReactorBase implements Reactor {
-
-    private final ReactorImpl reactorImpl;
+abstract public class ReactorBase extends CloserBase implements Reactor {
 
     public ReactorBase(final ReactorImpl _reactorImpl) throws Exception {
-        reactorImpl = _reactorImpl;
-        reactorImpl.initialize(this);
+        initialize(_reactorImpl);
+        _reactorImpl.initialize(this);
     }
 
     @Override
     public ReactorImpl asReactorImpl() {
-        return reactorImpl;
-    }
-
-    @Override
-    public Facility getFacility() {
-        return reactorImpl.getFacility();
+        return (ReactorImpl) asCloserImpl();
     }
 
     public Logger getLog() {
-        return reactorImpl.getLogger();
+        return asReactorImpl().getLogger();
     }
 
     @Override
     public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler) {
-        return reactorImpl.setExceptionHandler(exceptionHandler);
+        return asReactorImpl().setExceptionHandler(exceptionHandler);
     }
 
     @Override
     public boolean isInboxEmpty() {
-        return reactorImpl.isInboxEmpty();
+        return asReactorImpl().isInboxEmpty();
     }
 
     public boolean isClosing() {
-        return reactorImpl.isClosing();
+        return asReactorImpl().isClosing();
     }
 
     @Override
     public SyncRequest<Void> nullSReq() {
-        return reactorImpl.nullSReq();
-    }
-
-    @Override
-    public void close() throws Exception {
-        reactorImpl.close();
-    }
-
-    @Override
-    public Reactor getReactor() {
-        return reactorImpl.getReactor();
-    }
-
-    @Override
-    public boolean addCloseable(Closeable _closeable) throws Exception {
-        return reactorImpl.addCloseable(_closeable);
-    }
-
-    @Override
-    public boolean removeCloseable(Closeable _closeable) {
-        return reactorImpl.removeCloseable(_closeable);
+        return asReactorImpl().nullSReq();
     }
 }

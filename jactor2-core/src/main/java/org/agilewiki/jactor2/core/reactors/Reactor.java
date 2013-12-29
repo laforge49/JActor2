@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.util.Closer;
@@ -13,13 +12,6 @@ import org.agilewiki.jactor2.core.util.Closer;
 public interface Reactor extends AutoCloseable, Closer, Blade {
 
     ReactorImpl asReactorImpl();
-
-    /**
-     * Returns the facility.
-     *
-     * @return The facility.
-     */
-    Facility getFacility();
 
     /**
      * Replace the current ExceptionHandler with another.

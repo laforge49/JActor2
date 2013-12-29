@@ -1,6 +1,6 @@
-package org.agilewiki.jactor2.core.blades.transactions.properties;
+package org.agilewiki.jactor2.modules.transactions.properties;
 
-import org.agilewiki.jactor2.core.blades.pubSub.Filter;
+import org.agilewiki.jactor2.modules.pubSub.Filter;
 
 import java.util.Iterator;
 import java.util.SortedMap;

@@ -95,7 +95,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
     private void exception(final Exception e) {
         e.printStackTrace();
         try {
-            getReactor().getFacility().close();
+            Plant.getSingleton().close();
         } catch (final Exception e1) {
             e1.printStackTrace();
             return;
