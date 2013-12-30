@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.impl;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.*;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Recovery;
@@ -139,21 +140,20 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         if (plant == null)
             return;
         PlantImpl plantImpl = plant.asPlantImpl();
+        ReactorImpl plantReactorImpl = plantImpl.getReactor().asReactorImpl();
 
         if (!isRunning())
             return;
         if (currentMessage != null && currentMessage.isClosed())
             return;
         timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
-        if (!isRunning() || PlantImpl.getSingleton() == null)
-            return;
         Thread thread = (Thread) getThreadReference().get();
         if (thread == null)
             return;
         thread.interrupt();
         boolean timeout = timeoutSemaphore.acquire();
         currentMessage.close();
-        if (!timeout || !isRunning() || PlantImpl.getSingleton() == null) {
+        if (!timeout || !isRunning() || PlantImpl.getSingleton() == null || plantReactorImpl.startedClosing()) {
             return;
         }
         try {

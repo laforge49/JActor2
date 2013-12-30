@@ -105,7 +105,6 @@ public class PlantImpl {
     public void close() throws Exception {
         if (singleton == null)
             return;
-        singleton = null;
         try {
             reactor.close();
         } finally {
@@ -113,6 +112,7 @@ public class PlantImpl {
             if (exitOnClose)
                 System.exit(0);
             threadManager.close();
+            singleton = null;
         }
     }
 
@@ -122,6 +122,7 @@ public class PlantImpl {
             close();
         } catch (Throwable t) {
             reactor.asReactorImpl().getLogger().error("exception on exit", t);
+        } finally {
             System.exit(1);
         }
     }
