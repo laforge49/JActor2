@@ -63,12 +63,15 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
 
     public final int initialLocalQueueSize;
 
+    public final Reactor parentReactor;
+
     public ReactorImpl(final ReactorImpl _parentReactorImpl, final int _initialBufferSize,
                        final int _initialLocalQueueSize, final Recovery _recovery, final Scheduler _scheduler)
             throws Exception {
         super(_recovery, _scheduler);
         initialBufferSize = _initialBufferSize;
         initialLocalQueueSize = _initialLocalQueueSize;
+        parentReactor = _parentReactorImpl == null ? null : _parentReactorImpl.asReactor();
         inbox = createInbox(_initialLocalQueueSize);
         logger = LoggerFactory.getLogger(Reactor.class);
         outbox = new Outbox(_initialBufferSize);
@@ -89,6 +92,10 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
 
     public ReactorImpl asReactorImpl() {
         return this;
+    }
+
+    public Reactor getParentReactor() {
+        return parentReactor;
     }
 
     /**

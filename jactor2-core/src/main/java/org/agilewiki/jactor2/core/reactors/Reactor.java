@@ -39,4 +39,6 @@ public interface Reactor extends AutoCloseable, Closer, Blade {
     boolean isInboxEmpty();
 
     SyncRequest<Void> nullSReq();
+
+    Reactor getParentReactor();
 }

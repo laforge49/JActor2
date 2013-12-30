@@ -40,4 +40,9 @@ abstract public class ReactorBase extends CloserBase implements Reactor {
     public SyncRequest<Void> nullSReq() {
         return asReactorImpl().nullSReq();
     }
+
+    @Override
+    public Reactor getParentReactor() {
+        return asReactorImpl().getParentReactor();
+    }
 }
