@@ -1,6 +1,5 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -11,18 +10,16 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 public class Isolation extends BladeBase {
     
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
-            Printer printer = Printer.stdoutAReq().call();
-            
-            printer.printlnSReq("\nBump with NonBlockingReactor\n").call();
-            Isolation isolation = new Isolation(new NonBlockingReactor(), printer);
+            System.out.println("\nBump with NonBlockingReactor\n");
+            Isolation isolation = new Isolation(new NonBlockingReactor());
             isolation.bumpAReq().signal();
             isolation.bumpAReq().signal();
             isolation.bumpAReq().call(); //call forces all pending bump requests to complete
             
-            printer.printlnSReq("\nBump with IsolationReactor\n").call();
-            isolation = new Isolation(new IsolationReactor(), printer);
+            System.out.println("\nBump with IsolationReactor\n");
+            isolation = new Isolation(new IsolationReactor());
             isolation.bumpAReq().signal();
             isolation.bumpAReq().signal();
             isolation.bumpAReq().call(); //call forces all pending bump requests to complete
@@ -31,12 +28,10 @@ public class Isolation extends BladeBase {
         }
     }
     
-    final Printer printer;
     int state;
     
-    public Isolation(final Reactor _reactor, final Printer _printer) throws Exception {
+    public Isolation(final Reactor _reactor) throws Exception {
         _initialize(_reactor);
-        printer = _printer;
     }
     
     AsyncRequest<Void> bumpAReq() {
@@ -46,9 +41,10 @@ public class Isolation extends BladeBase {
             public void processAsyncRequest() throws Exception {
                 int oldState = state;
                 int newState = state + 1;
-                send(printer.printfSReq("was %d, now %d\n", oldState, newState), 
-                        new AsyncResponseProcessor<Void>() {
-                    public void processAsyncResponse(final Void _response) throws Exception {
+                System.out.println("was " + oldState + ", now " + newState); 
+                Delay delay = new Delay();
+                send(delay.sleepSReq(1), new AsyncResponseProcessor<Void>() {
+                    public void processAsyncResponse(Void response) throws Exception {
                         state = newState; //belated update
                         dis.processAsyncResponse(null);
                     }

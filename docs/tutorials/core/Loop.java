@@ -1,6 +1,5 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
@@ -13,10 +12,11 @@ public class Loop extends NonBlockingBladeBase {
         initialize(_reactor);
     }
 
-    public AsyncRequest<Void> loopAReq(final long _count) {
+    public AsyncRequest<Void> loopAReq(final long _count) throws Exception {
         return new AsyncBladeRequest<Void>() {
             final AsyncResponseProcessor<Void> dis = this;
             long i = 0;
+            final Delay delay = new Delay();
 
             final AsyncResponseProcessor<Void> printCountResponseProcessor = 
                     new AsyncResponseProcessor<Void>() {
@@ -38,15 +38,14 @@ public class Loop extends NonBlockingBladeBase {
                     return;
                 }
                 i++;
-                BasicPlant plant = getReactor().getPlant();
-                AsyncRequest<Void> printCount = Printer.printlnAReq(String.valueOf(i));
-                send(printCount, printCountResponseProcessor);
+                System.out.println(String.valueOf(i));
+                send(delay.sleepSReq(1), printCountResponseProcessor);
             }
         };
     }
     
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             Loop loop = new Loop(new NonBlockingReactor());
             AsyncRequest<Void> loopAReq = loop.loopAReq(10L);

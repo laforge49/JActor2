@@ -1,5 +1,4 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -19,7 +18,7 @@ public class Greeter extends NonBlockingBladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             Greeter greeter = new Greeter(new NonBlockingReactor());
             AsyncRequest<String> greetingAReq = greeter.greetingAReq("Joe");

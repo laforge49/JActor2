@@ -1,6 +1,5 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
@@ -34,7 +33,7 @@ public class Echo extends NonBlockingBladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             Echo echo = new Echo(new NonBlockingReactor());
             AsyncRequest<String> echoAReq = echo.echoAReq("Hello...");

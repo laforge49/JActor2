@@ -1,7 +1,5 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
@@ -50,11 +48,10 @@ public class Parallel extends NonBlockingBladeBase {
             runAReq.call();
             final long after = System.currentTimeMillis();
             final long duration = after - before;
-            Printer printer = Printer.stdoutAReq().call();
-            printer.printlnSReq("Parallel Test with 10 Threads").call();
-            printer.printlnSReq("count: " + count).call();
-            printer.printlnSReq("sleep duration: 100 milliseconds").call();
-            printer.printlnSReq("total time: " + duration + " milliseconds").call();
+            System.out.println("Parallel Test with 10 Threads");
+            System.out.println("count: " + count);
+            System.out.println("sleep duration: 100 milliseconds");
+            System.out.println("total time: " + duration + " milliseconds");
         } finally {
             plant.close();
         }

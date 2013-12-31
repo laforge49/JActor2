@@ -1,10 +1,9 @@
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PongerValidator {
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor());
             long i = 0;

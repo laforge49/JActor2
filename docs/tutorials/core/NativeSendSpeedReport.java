@@ -1,4 +1,3 @@
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -6,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class NativeSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 100000000L;
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             NonBlockingReactor sharedReactor = new NonBlockingReactor();
             Ponger ponger = new Ponger(sharedReactor);
@@ -16,7 +15,7 @@ public class NativeSendSpeedReport {
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq("Native Send Timings", duration, count).call();
+            SpeedReport.print("Native Send Timings", duration, count);
         } finally {
             plant.close();
         }

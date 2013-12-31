@@ -1,7 +1,5 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
@@ -18,21 +16,12 @@ public class DeepThought extends NonBlockingBladeBase {
         return new AsyncBladeRequest<Void>() {
             final AsyncResponseProcessor<Void> dis = this;
 
-            final AsyncResponseProcessor<Printer> stdoutResponseProcessor =
-                    new AsyncResponseProcessor<Printer>() {
-                @Override
-                public void processAsyncResponse(final Printer _printer) throws Exception {
-                    SyncRequest<Void> printRequest = _printer.printlnSReq("I am sorry, but did you say something?");
-                    send(printRequest, dis);
-                }
-            };
-
             final AsyncResponseProcessor<Void> sleepResponseProcessor =
                     new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
-                    AsyncRequest<Printer> stdoutRequest = Printer.stdoutAReq();
-                    send(stdoutRequest, stdoutResponseProcessor);
+                    System.out.println("I am sorry, but did you say something?");
+                    dis.processAsyncResponse(null);
                 }
             };
 
@@ -46,7 +35,7 @@ public class DeepThought extends NonBlockingBladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             DeepThought deepThought = new DeepThought(new NonBlockingReactor());
             AsyncRequest<Void> printAnswerAReq = deepThought.printAnswerAReq();

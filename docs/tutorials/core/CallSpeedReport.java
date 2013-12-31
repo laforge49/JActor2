@@ -1,12 +1,10 @@
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class CallSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 1000000L;
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor());
             final long before = System.nanoTime();
@@ -17,7 +15,7 @@ public class CallSpeedReport {
             }
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq("Call Timings", duration, count).call();
+            SpeedReport.print("Call Timings", duration, count);
         } finally {
             plant.close();
         }

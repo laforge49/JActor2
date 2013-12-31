@@ -1,5 +1,4 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
@@ -45,7 +44,7 @@ public class Batcher extends NonBlockingBladeBase {
     
     public static void main(final String[] _args) throws Exception {
         final long count = 1000000L;
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor());
             Batcher batcher = new Batcher(new NonBlockingReactor(), count, ponger);
@@ -54,7 +53,7 @@ public class Batcher extends NonBlockingBladeBase {
             runAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq("Batch Timings", duration, count).call();
+            SpeedReport.print("Batch Timings", duration, count);
         } finally {
             plant.close();
         }

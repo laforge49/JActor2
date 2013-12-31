@@ -1,5 +1,3 @@
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -7,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class ForeignSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 10000000L;
-        BasicPlant plant = new Plant();
+        Plant plant = new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor());
             Pinger pinger = new Pinger(new NonBlockingReactor(), ponger);
@@ -16,7 +14,7 @@ public class ForeignSendSpeedReport {
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq("Foreign Send Timings", duration, count).call();
+            SpeedReport.print("Foreign Send Timings", duration, count);
         } finally {
             plant.close();
         }

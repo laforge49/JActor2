@@ -1,5 +1,4 @@
 import org.agilewiki.jactor2.core.blades.*;
-import org.agilewiki.jactor2.core.facilities.*;
 import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.reactors.*;
