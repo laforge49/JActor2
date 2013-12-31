@@ -1,13 +1,13 @@
 package org.agilewiki.jactor2.modules.facilities;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 public class AutoStartTest extends TestCase {
     public void test() throws Exception {
-        final BasicPlant plant = new BasicPlant();
+        final Plant plant = new Plant();
         try {
             plant.activatorPropertyAReq("B", "org.agilewiki.jactor2.modules.facilities.SampleActivator").call();
             plant.dependencyPropertyAReq("B", "A").call();

@@ -2,14 +2,14 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 import javax.swing.*;
 
 public class SwingBoundReactorSample {
     public static void main(final String[] _args) throws Exception {
         //Create a plant with 5 threads.
-        BasicPlant plant = new BasicPlant(5);
+        Plant plant = new Plant(5);
 
         new HelloWorld(new SwingBoundReactor()).createAndShowAReq().signal();
     }

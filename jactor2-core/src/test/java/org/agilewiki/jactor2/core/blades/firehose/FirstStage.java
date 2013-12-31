@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
 
     long t0;
 
-    public FirstStage(final BasicPlant _plant, final DataProcessor _next,
+    public FirstStage(final Plant _plant, final DataProcessor _next,
             final long _count, final int _maxWindowSize) throws Exception {
         mainThread = Thread.currentThread();
         next = _next;
@@ -95,7 +95,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
     private void exception(final Exception e) {
         e.printStackTrace();
         try {
-            BasicPlant.getSingleton().close();
+            Plant.getSingleton().close();
         } catch (final Exception e1) {
             e1.printStackTrace();
             return;

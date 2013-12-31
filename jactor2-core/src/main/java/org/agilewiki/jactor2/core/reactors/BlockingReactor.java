@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.impl.BlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.util.Recovery;
 
@@ -30,7 +30,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
 public class BlockingReactor extends ReactorBase implements CommonReactor {
 
     public BlockingReactor() throws Exception {
-        this(BasicPlant.getSingleton().getReactor());
+        this(Plant.getSingleton().getReactor());
     }
 
     public BlockingReactor(final Reactor _parentReactor) throws Exception {
@@ -40,7 +40,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
 
     public BlockingReactor(final Runnable _onIdle)
             throws Exception {
-        this(BasicPlant.getSingleton().getReactor(), _onIdle);
+        this(Plant.getSingleton().getReactor(), _onIdle);
     }
 
     public BlockingReactor(final Reactor _parentReactor, final Runnable _onIdle)
@@ -51,7 +51,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
 
     public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _onIdle) throws Exception {
-        this(BasicPlant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     public BlockingReactor(final Reactor _parentReactor,

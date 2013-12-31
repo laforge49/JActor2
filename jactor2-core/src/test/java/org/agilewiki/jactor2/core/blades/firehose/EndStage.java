@@ -2,12 +2,12 @@ package org.agilewiki.jactor2.core.blades.firehose;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 public class EndStage extends IsolationBladeBase implements DataProcessor {
 
-    public EndStage(final BasicPlant _plant) throws Exception {
+    public EndStage(final Plant _plant) throws Exception {
         initialize(new IsolationReactor());
     }
 

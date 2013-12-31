@@ -4,13 +4,13 @@
  * Subscriptions are used to select the content of interest and to process that content.
  * </p>
  * <pre>
- * import org.agilewiki.jactor2.core.facilities.BasicPlant;
+ * import org.agilewiki.jactor2.core.facilities.Plant;
  * import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
  * import org.agilewiki.jactor2.core.reactors.CommonReactor;
  *
  * public class PubSubSample {
  *     public static void main(final String[] args) throws Exception {
- *         final BasicPlant plant = new BasicPlant();
+ *         final Plant plant = new Plant();
  *         try {
  *             CommonReactor reactor = new NonBlockingReactor(plant);
  *             RequestBus&lt;String&gt; requestBus =

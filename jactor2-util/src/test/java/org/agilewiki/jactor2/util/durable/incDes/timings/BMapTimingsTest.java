@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes.timings;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -34,7 +34,7 @@ public class BMapTimingsTest extends TestCase {
         //total run time (milliseconds) =  9871
         //time per update (microseconds) = 9871
 
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m1 = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);

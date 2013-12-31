@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 public class BListTest extends TestCase {
     public void test1() throws Exception {
         System.out.println("1");
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAList<JAString> stringList1 = (JAList) Durables
                     .newSerializable(plant, JAList.JASTRING_LIST);
@@ -38,7 +38,7 @@ public class BListTest extends TestCase {
 
     public void test2() throws Exception {
         System.out.println("2");
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
                     .newSerializable(plant, JAList.JAINTEGER_LIST);
@@ -62,7 +62,7 @@ public class BListTest extends TestCase {
 
     public void test3() throws Exception {
         System.out.println("3");
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
                     .newSerializable(plant, JAList.JAINTEGER_LIST);
@@ -86,7 +86,7 @@ public class BListTest extends TestCase {
 
     public void test4() throws Exception {
         System.out.println("4");
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
                     .newSerializable(plant, JAList.JAINTEGER_LIST);
@@ -110,7 +110,7 @@ public class BListTest extends TestCase {
 
     public void test5() throws Exception {
         System.out.println("5");
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
                     .newSerializable(plant, JAList.JAINTEGER_LIST);
@@ -134,7 +134,7 @@ public class BListTest extends TestCase {
 
     public void test6() throws Exception {
         System.out.println("6");
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
                     .newSerializable(plant, JAList.JAINTEGER_LIST);

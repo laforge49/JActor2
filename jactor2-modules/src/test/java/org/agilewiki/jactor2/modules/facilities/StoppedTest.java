@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.modules.facilities;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 
 public class StoppedTest extends TestCase {
     public void test() throws Exception {
-        final BasicPlant plant = new BasicPlant();
+        final Plant plant = new Plant();
         try {
             plant.activatorPropertyAReq("A", "org.agilewiki.jactor2.modules.facilities.SampleActivator").call();
             plant.stopFacility("A");

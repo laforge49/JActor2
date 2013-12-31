@@ -142,7 +142,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         } catch (final Exception e) {
         }
         super.close();
-        BasicPlant plant = PlantImpl.getSingleton();
+        Plant plant = PlantImpl.getSingleton();
         if (plant == null)
             return;
         PlantImpl plantImpl = plant.asPlantImpl();

@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.util.durable;
 import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -30,8 +30,8 @@ public final class Durables {
      *
      * @return A facility whose properties include the factoryLocator.
      */
-    public static BasicPlant createPlant() throws Exception {
-        final BasicPlant plant = new BasicPlant();
+    public static Plant createPlant() throws Exception {
+        final Plant plant = new Plant();
         final FactoryLocator factoryLocator = createFactoryLocatorAReq(plant.asFacility(),
                 "org.agilewiki.jactor2.util.durable", "", "").call();
         registerFactories(factoryLocator);
@@ -80,7 +80,7 @@ public final class Durables {
         return getFactoryLocator(_reactor.getStructure());
     }
 
-    public static FactoryLocator getFactoryLocator(final BasicPlant _plant) {
+    public static FactoryLocator getFactoryLocator(final Plant _plant) {
         return getFactoryLocator(_plant.asFacility());
     }
 
@@ -340,7 +340,7 @@ public final class Durables {
 
     public static JASerializable newSerializable(
             final FactoryLocator _factoryLocator, final String _factoryName,
-            final BasicPlant _plant) throws Exception {
+            final Plant _plant) throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).newSerializable(
                 _factoryName, new NonBlockingReactor(_plant.asFacility()), null);
     }
@@ -368,7 +368,7 @@ public final class Durables {
                 _factoryName, new NonBlockingReactor(_facility), _parent);
     }
 
-    public static JASerializable newSerializable(final BasicPlant _plant,
+    public static JASerializable newSerializable(final Plant _plant,
                                                  final String _factoryName) throws Exception {
         return newSerializable(_plant.asFacility(), _factoryName);
     }
@@ -379,7 +379,7 @@ public final class Durables {
                 _facility, null);
     }
 
-    public static JASerializable newSerializable(final BasicPlant _plant,
+    public static JASerializable newSerializable(final Plant _plant,
                                                  final String _factoryName, final Ancestor _parent) throws Exception {
         return newSerializable(_plant.asFacility(), _factoryName, _parent);
     }

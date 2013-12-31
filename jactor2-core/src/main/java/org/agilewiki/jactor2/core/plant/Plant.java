@@ -3,25 +3,25 @@ package org.agilewiki.jactor2.core.plant;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class BasicPlant {
+public class Plant {
 
-    public static BasicPlant getSingleton() {
+    public static Plant getSingleton() {
         return PlantImpl.getSingleton();
     }
 
     private final PlantImpl plantImpl;
 
-    public BasicPlant() throws Exception {
+    public Plant() throws Exception {
         plantImpl = new PlantImpl();
         plantImpl.initialize(this);
     }
 
-    public BasicPlant(final int _threadCount) throws Exception {
+    public Plant(final int _threadCount) throws Exception {
         plantImpl = new PlantImpl();
         plantImpl.initialize(this, _threadCount);
     }
 
-    public BasicPlant(final PlantConfiguration _plantConfiguration) throws Exception {
+    public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
         plantImpl = new PlantImpl();
         plantImpl.initialize(this, _plantConfiguration);
     }

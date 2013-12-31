@@ -17,7 +17,7 @@
  *
  * import RequestBus;
  * import SubscribeAReq;
- * import org.agilewiki.jactor2.core.facilities.BasicPlant;
+ * import org.agilewiki.jactor2.core.facilities.Plant;
  * import org.agilewiki.jactor2.core.reactors.CommonReactor;
  * import org.agilewiki.jactor2.core.reactors.IsolationReactor;
  * import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -27,7 +27,7 @@
  *
  * public class PropertiesSample {
  * public static void main(final String[] _args) throws Exception {
- *     final BasicPlant plant = new BasicPlant();
+ *     final Plant plant = new Plant();
  *     try {
  *         PropertiesProcessor propertiesProcessor = new PropertiesProcessor(new IsolationReactor(plant));
  *         final CommonReactor reactor = new NonBlockingReactor(plant);

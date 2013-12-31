@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.modules.transactions.properties;
 
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
@@ -12,7 +12,7 @@ import java.util.SortedMap;
 
 public class PropertiesSample {
     public static void main(final String[] _args) throws Exception {
-        final BasicPlant plant = new BasicPlant();
+        final Plant plant = new Plant();
         try {
             PropertiesProcessor propertiesProcessor = new PropertiesProcessor(new IsolationReactor());
             final CommonReactor reactor = new NonBlockingReactor();

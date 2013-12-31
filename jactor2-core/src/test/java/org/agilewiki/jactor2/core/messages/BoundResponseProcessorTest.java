@@ -2,12 +2,12 @@ package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
-        final BasicPlant plant = new BasicPlant();
+        final Plant plant = new Plant();
         try {
             final Driver driver = new Driver();
             driver.initialize(new NonBlockingReactor());

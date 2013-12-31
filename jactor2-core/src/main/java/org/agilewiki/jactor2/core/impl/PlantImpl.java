@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -13,9 +13,9 @@ public class PlantImpl {
     public static final boolean DEBUG = "true".equals(System
             .getProperty("jactor.debug"));
 
-    private static volatile BasicPlant singleton;
+    private static volatile Plant singleton;
 
-    public static BasicPlant getSingleton() {
+    public static Plant getSingleton() {
         return singleton;
     }
 
@@ -30,15 +30,15 @@ public class PlantImpl {
 
     private NonBlockingReactor reactor;
 
-    public void initialize(final BasicPlant _plant) throws Exception {
+    public void initialize(final Plant _plant) throws Exception {
         initialize(_plant, new PlantConfiguration());
     }
 
-    public void initialize(final BasicPlant _plant, final int _threadCount) throws Exception {
+    public void initialize(final Plant _plant, final int _threadCount) throws Exception {
         initialize(_plant, new PlantConfiguration(_threadCount));
     }
 
-    public void initialize(final BasicPlant _plant, final PlantConfiguration _plantConfiguration) throws Exception {
+    public void initialize(final Plant _plant, final PlantConfiguration _plantConfiguration) throws Exception {
         _plantConfiguration.initialize();
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");

@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BooleanTest extends TestCase {
     public void test() throws Exception {
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JABoolean boolean1 = (JABoolean) Durables.newSerializable(
                     plant, JABoolean.FACTORY_NAME);

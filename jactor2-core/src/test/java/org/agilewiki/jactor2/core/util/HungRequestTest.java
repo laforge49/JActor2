@@ -3,13 +3,13 @@ package org.agilewiki.jactor2.core.util;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class HungRequestTest extends TestCase {
     public void testa() throws Exception {
-        final BasicPlant plant = new BasicPlant();
+        final Plant plant = new Plant();
         try {
             final Hanger blade1 = new Hanger(new NonBlockingReactor());
             try {

@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.util.Recovery;
 
@@ -17,7 +17,7 @@ import java.awt.event.WindowListener;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.BasicPlant;
+ * import org.agilewiki.jactor2.core.threading.Plant;
  * import org.agilewiki.jactor2.core.messaging.AsyncRequest;
  *
  * import javax.swing.*;
@@ -33,7 +33,7 @@ import java.awt.event.WindowListener;
  *     HelloWorld() throws Exception {
  *
  *         //Create a facility with 5 threads.
- *         BasicPlant plant = new BasicPlant(5);
+ *         Plant plant = new Plant(5);
  *
  *         initialize(new SwingBoundReactor(facility));
  *     }
@@ -69,7 +69,7 @@ import java.awt.event.WindowListener;
 public class SwingBoundReactor extends ReactorBase implements CommonReactor, WindowListener {
 
     public SwingBoundReactor() throws Exception {
-        this(BasicPlant.getSingleton().getReactor());
+        this(Plant.getSingleton().getReactor());
     }
 
     public SwingBoundReactor(final Reactor _parentReactor)
@@ -80,7 +80,7 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
 
     public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        this(BasicPlant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public SwingBoundReactor(final Reactor _parentReactor,
@@ -109,7 +109,7 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
     @Override
     public void windowClosed(final WindowEvent e) {
         try {
-            BasicPlant.getSingleton().close();
+            Plant.getSingleton().close();
         } catch (final Exception ex) {
             getLog().warn("Exception when closing Facility", ex);
         }

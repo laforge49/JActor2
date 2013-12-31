@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.modules;
 
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 
 public class ActivatorSample {
     public static void main(String[] args) throws Exception {
-        final BasicPlant plant = new BasicPlant();
+        final Plant plant = new Plant();
         try {
             plant.activatorPropertyAReq("a", "org.agilewiki.jactor2.core.blades.SampleActivator").call();
             plant.createFacilityAReq("a").call();

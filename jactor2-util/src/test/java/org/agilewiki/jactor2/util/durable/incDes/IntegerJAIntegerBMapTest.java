@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.util.durable.Durables;
 public class IntegerJAIntegerBMapTest extends TestCase {
     public void test1() throws Exception {
         System.out.println(1);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
@@ -37,7 +37,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
 
     public void test2() throws Exception {
         System.out.println(2);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
@@ -62,7 +62,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
 
     public void test3() throws Exception {
         System.out.println(3);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
@@ -87,7 +87,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
 
     public void test4() throws Exception {
         System.out.println(4);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
@@ -112,7 +112,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
 
     public void test5() throws Exception {
         System.out.println(5);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
@@ -137,7 +137,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
 
     public void test6() throws Exception {
         System.out.println(6);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
@@ -161,7 +161,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
 
     public void test7() throws Exception {
         System.out.println(7);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
@@ -185,7 +185,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
 
     public void test8() throws Exception {
         System.out.println(8);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
@@ -209,7 +209,7 @@ public class IntegerJAIntegerBMapTest extends TestCase {
 
     public void test9() throws Exception {
         System.out.println(9);
-        final BasicPlant plant = Durables.createPlant();
+        final Plant plant = Durables.createPlant();
         try {
             final JAMap<Integer, JAInteger> m = (JAMap) Durables
                     .newSerializable(plant, JAMap.INTEGER_JAINTEGER_MAP);
