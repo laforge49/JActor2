@@ -160,7 +160,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         thread.interrupt();
         boolean timeout = timeoutSemaphore.acquire();
         currentMessage.close();
-        if (!timeout || !isRunning() || PlantImpl.getSingleton() == null || plantReactorImpl.startedClosing()) {
+        if (!timeout || !isRunning() || PlantImpl.getSingleton() == null) {
             return;
         }
         try {

@@ -103,16 +103,17 @@ public class PlantImpl {
     }
 
     public void close() throws Exception {
-        if (singleton == null)
+        if (singleton == null) {
             return;
+        }
         try {
             reactor.close();
         } finally {
+            singleton = null;
             plantConfiguration.close();
             if (exitOnClose)
                 System.exit(0);
             threadManager.close();
-            singleton = null;
         }
     }
 
