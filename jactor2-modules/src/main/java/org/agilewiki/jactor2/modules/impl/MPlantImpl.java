@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.modules.impl;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.modules.transactions.properties.ImmutablePropertyChanges;
@@ -13,7 +14,6 @@ import org.agilewiki.jactor2.core.impl.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.plant.ThreadManager;
@@ -33,9 +33,9 @@ public class MPlantImpl extends FacilityImpl {
     public static final boolean DEBUG = "true".equals(System
             .getProperty("jactor.debug"));
 
-    private static volatile Plant singleton;
+    private static volatile BasicPlant singleton;
 
-    public static Plant getSingleton() {
+    public static BasicPlant getSingleton() {
         return singleton;
     }
 
@@ -52,15 +52,15 @@ public class MPlantImpl extends FacilityImpl {
         super(PLANT_NAME);
     }
 
-    public void initialize(final Plant _plant) throws Exception {
+    public void initialize(final BasicPlant _plant) throws Exception {
         initialize(_plant, new PlantConfiguration());
     }
 
-    public void initialize(final Plant _plant, final int _threadCount) throws Exception {
+    public void initialize(final BasicPlant _plant, final int _threadCount) throws Exception {
         initialize(_plant, new PlantConfiguration(_threadCount));
     }
 
-    public void initialize(final Plant _plant, final PlantConfiguration _plantConfiguration) throws Exception {
+    public void initialize(final BasicPlant _plant, final PlantConfiguration _plantConfiguration) throws Exception {
         _plantConfiguration.initialize();
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
@@ -133,7 +133,7 @@ public class MPlantImpl extends FacilityImpl {
                 reactorPollMillis);
     }
 
-    public Plant asPlant() {
+    public BasicPlant asPlant() {
         return plant;
     }
 
@@ -383,7 +383,7 @@ public class MPlantImpl extends FacilityImpl {
                 if (PLANT_NAME.equals(_dependencyName))
                     dis.processAsyncResponse(null);
                 if (PLANT_NAME.equals(_dependentName))
-                    throw new IllegalArgumentException("Plant may not have a dependency");
+                    throw new IllegalArgumentException("BasicPlant may not have a dependency");
                 dependencyPropertyName = dependencyPrefix(_dependentName) + name;
                 if (getProperty(dependencyPropertyName) != null) {
                     throw new IllegalStateException(

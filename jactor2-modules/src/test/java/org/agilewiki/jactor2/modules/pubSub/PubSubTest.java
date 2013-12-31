@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.modules.pubSub;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PubSubTest extends TestCase {
     public void testI() throws Exception {
         System.out.println("I");
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         try {
             final NonBlockingReactor reactor = new NonBlockingReactor();
             final RequestBus<Void> requestBus = new RequestBus<Void>(reactor);
@@ -38,7 +38,7 @@ public class PubSubTest extends TestCase {
 
     public void testJ() throws Exception {
         System.out.println("J");
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         try {
             final AtomicInteger counter = new AtomicInteger();
             final NonBlockingReactor busReactor = new NonBlockingReactor();

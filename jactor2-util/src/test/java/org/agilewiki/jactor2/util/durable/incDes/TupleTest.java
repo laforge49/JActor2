@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.durable.Durables;
@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class TupleTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        final BasicPlant plant = Durables.createPlant();
         try {
             final FactoryLocator factoryLocator = Durables
                     .getFactoryLocator(plant);

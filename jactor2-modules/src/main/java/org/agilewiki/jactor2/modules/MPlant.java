@@ -3,14 +3,13 @@ package org.agilewiki.jactor2.modules;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.util.Recovery;
 
 public class MPlant implements BasicPlant {
 
-    public static Plant getSingleton() {
+    public static BasicPlant getSingleton() {
         return PlantImpl.getSingleton();
     }
 
@@ -36,7 +35,7 @@ public class MPlant implements BasicPlant {
     }
 
     @Override
-    public Plant asPlant() {
+    public BasicPlant asPlant() {
         return null; //this;
     }
 

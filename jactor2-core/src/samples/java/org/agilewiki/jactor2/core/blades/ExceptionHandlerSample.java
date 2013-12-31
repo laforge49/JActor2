@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class ExceptionHandlerSample {
@@ -9,7 +9,7 @@ public class ExceptionHandlerSample {
     public static void main(final String[] _args) throws Exception {
 
         //A facility with two threads.
-        final Plant plant = new Plant(2);
+        final BasicPlant plant = new BasicPlant(2);
 
         try {
 

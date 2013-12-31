@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.util;
 
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.RequestImpl;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 
 public class Recovery {
 
@@ -24,7 +24,7 @@ public class Recovery {
     }
 
     public void hungThread(ReactorImpl _reactor) {
-        Plant.getSingleton().exit();
+        BasicPlant.getSingleton().exit();
     }
 
     public void hungResponse(final RequestImpl _message) throws Exception {

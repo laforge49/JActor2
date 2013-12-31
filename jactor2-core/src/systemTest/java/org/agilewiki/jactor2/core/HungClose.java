@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class HungClose {
     static public void main(final String[] _args) throws Exception {
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         try {
             NonBlockingReactor reactor = new NonBlockingReactor();
             Hanger hanger = new Hanger(reactor);

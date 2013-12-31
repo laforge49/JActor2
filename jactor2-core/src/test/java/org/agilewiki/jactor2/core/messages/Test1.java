@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.messages;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 /**
@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
  */
 public class Test1 extends TestCase {
     public void testa() throws Exception {
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         final IsolationReactor reactor = new IsolationReactor();
         final Blade11 blade1 = new Blade11(reactor);
         final String result = blade1.hiSReq().call();

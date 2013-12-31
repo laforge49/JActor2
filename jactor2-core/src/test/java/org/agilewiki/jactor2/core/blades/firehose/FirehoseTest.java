@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.blades.firehose;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 
 public class FirehoseTest extends TestCase {
     public void test() throws Exception {
         System.gc();
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         try {
             DataProcessor next = new EndStage(plant);
             next = new NullStage(plant, next);

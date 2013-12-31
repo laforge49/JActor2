@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.plant.BasicPlant;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.util.Ancestor;
@@ -31,8 +30,8 @@ public final class Durables {
      *
      * @return A facility whose properties include the factoryLocator.
      */
-    public static Plant createPlant() throws Exception {
-        final Plant plant = new Plant();
+    public static BasicPlant createPlant() throws Exception {
+        final BasicPlant plant = new BasicPlant();
         final FactoryLocator factoryLocator = createFactoryLocatorAReq(plant.asFacility(),
                 "org.agilewiki.jactor2.util.durable", "", "").call();
         registerFactories(factoryLocator);

@@ -28,7 +28,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  * <pre>
  *
  * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.Plant;
+ * import org.agilewiki.jactor2.core.threading.BasicPlant;
  * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
  *
@@ -37,7 +37,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  *     public static void main(String[] args) throws Exception {
  *
  *         //A facility with two threads.
- *         final Plant facility = new Plant(2);
+ *         final BasicPlant facility = new BasicPlant(2);
  *
  *         try {
  *

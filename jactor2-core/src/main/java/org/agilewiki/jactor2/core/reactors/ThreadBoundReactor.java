@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.ThreadBoundReactorImpl;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.util.Recovery;
 
@@ -22,7 +22,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.Plant;
+ * import org.agilewiki.jactor2.core.threading.BasicPlant;
  * import org.agilewiki.jactor2.core.messaging.Event;
  *
  * public class ThreadBoundMessageProcessorSample {
@@ -30,7 +30,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
  *     public static void main(String[] args) throws Exception {
  *
  *         //A facility with no threads
- *         final Plant plant = new Plant(0);
+ *         final BasicPlant plant = new BasicPlant(0);
  *
  *         //Get a reference to the main thread
  *         final Thread mainThread = Thread.currentThread();
@@ -91,7 +91,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Runnable {
 
     public ThreadBoundReactor() throws Exception {
-        this(Plant.getSingleton().getReactor());
+        this(BasicPlant.getSingleton().getReactor());
     }
 
     public ThreadBoundReactor(final Reactor _parentReactor) throws Exception {
@@ -101,7 +101,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
 
     public ThreadBoundReactor(final Runnable _boundProcessor)
             throws Exception {
-        this(Plant.getSingleton().getReactor(), _boundProcessor);
+        this(BasicPlant.getSingleton().getReactor(), _boundProcessor);
     }
 
     public ThreadBoundReactor(final Reactor _parentReactor, final Runnable _boundProcessor)
@@ -112,7 +112,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
 
     public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) throws Exception {
-        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        this(BasicPlant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     public ThreadBoundReactor(final Reactor _parentReactor,

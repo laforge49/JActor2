@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.util;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -12,7 +12,7 @@ public class CloseableSetTest extends TestCase {
 
     public void testReactor() throws Exception {
         System.out.println("R");
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         try {
             final Reactor reactor = new NonBlockingReactor();
 

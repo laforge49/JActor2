@@ -2,14 +2,14 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 
 public class ThreadBoundReactorSample {
 
     public static void main(String[] args) throws Exception {
 
         //A plant with no threads.
-        final Plant plant = new Plant(0);
+        final BasicPlant plant = new BasicPlant(0);
 
         //Get a reference to the main thread.
         final Thread mainThread = Thread.currentThread();

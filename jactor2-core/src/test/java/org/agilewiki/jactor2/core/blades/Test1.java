@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
  */
 public class Test1 extends TestCase {
     public void testI() throws Exception {
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         final Reactor reactor = new IsolationReactor();
         final BladeA bladeA = new BladeA(reactor);
         try {

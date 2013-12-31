@@ -28,7 +28,7 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
  * <h3>Sample Usage:</h3>
  * <pre>
  * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.Plant;
+ * import org.agilewiki.jactor2.core.threading.BasicPlant;
  * import org.agilewiki.jactor2.core.processing.Reactor;
  * import org.agilewiki.jactor2.core.processing.NonBlockingReactor;
  *
@@ -37,7 +37,7 @@ import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
  *     public static void main(final String[] _args) throws Exception {
  *
  *         //A facility with two threads.
- *         final Plant plant = new Plant(2);
+ *         final BasicPlant plant = new BasicPlant(2);
  *
  *         try {
  *

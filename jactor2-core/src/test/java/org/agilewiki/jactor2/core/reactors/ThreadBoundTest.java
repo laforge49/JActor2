@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 
 /**
  * Test code.
@@ -10,7 +10,7 @@ public class ThreadBoundTest extends TestCase {
     ThreadBoundReactor reactor;
 
     public void testa() throws Exception {
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         try {
             reactor = new ThreadBoundReactor(new Runnable() {
                 @Override

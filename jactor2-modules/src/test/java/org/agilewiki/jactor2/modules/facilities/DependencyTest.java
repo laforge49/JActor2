@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.modules.facilities;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.modules.Facility;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 
 public class DependencyTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         try {
             plant.dependencyPropertyAReq("B", "A").call();
             plant.dependencyPropertyAReq("C", "B").call();

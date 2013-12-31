@@ -1,13 +1,13 @@
 package org.agilewiki.jactor2.modules;
 
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 
 public class PrinterSample {
 
     public static void main(String[] args) throws Exception {
 
         //A facility with one thread.
-        final Plant plant = new Plant(1);
+        final BasicPlant plant = new BasicPlant(1);
 
         try {
 

@@ -3,17 +3,17 @@ package org.agilewiki.jactor2.modules.facilities;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.modules.Facility;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Request;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class ServiceTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         final Facility clientFacility = plant.createFacilityAReq("Client")
                 .call();
         final Facility serverFacility = plant.createFacilityAReq("Server")

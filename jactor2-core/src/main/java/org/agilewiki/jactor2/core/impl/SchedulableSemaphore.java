@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.impl;
 import java.util.concurrent.Semaphore;
 
 /**
- * A timeout timer built on a semaphore, created by calling Plant.schedulableSemaphore(_millisecondDelay).
+ * A timeout timer built on a semaphore, created by calling BasicPlant.schedulableSemaphore(_millisecondDelay).
  */
 public class SchedulableSemaphore {
     private Semaphore semaphore = new Semaphore(0);

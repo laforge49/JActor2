@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.util.durable.incDes;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.util.durable.Durables;
 
 public class FloatTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        final BasicPlant plant = Durables.createPlant();
         try {
             final JAFloat float1 = (JAFloat) Durables.newSerializable(plant,
                     JAFloat.FACTORY_NAME);

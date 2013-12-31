@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.modules.impl;
 
 import org.agilewiki.jactor2.core.impl.CloserImpl;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.modules.Activator;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.modules.Facility;
@@ -11,7 +12,6 @@ import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.RequestImpl;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -44,7 +44,7 @@ public class FacilityImpl extends CloserImpl implements Facility {
 
     public static final String NAME_PROPERTY = CORE_PREFIX+"facilityName";
 
-    public static final String PLANT_NAME = "Plant";
+    public static final String PLANT_NAME = "BasicPlant";
 
     public static final String FACILITY_PROPERTY_PREFIX = CORE_PREFIX+"facility_";
 
@@ -141,7 +141,7 @@ public class FacilityImpl extends CloserImpl implements Facility {
 
     public final String name;
 
-    protected Plant plant;
+    protected BasicPlant plant;
 
     private PlantImpl plantImpl;
 
@@ -357,7 +357,7 @@ public class FacilityImpl extends CloserImpl implements Facility {
         if (startClosing)
             return;
         startClosing = true;
-        final Plant plant = PlantImpl.getSingleton();
+        final BasicPlant plant = PlantImpl.getSingleton();
         if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
             plantImpl.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
@@ -372,7 +372,7 @@ public class FacilityImpl extends CloserImpl implements Facility {
             return;
         }
         startClosing = true;
-        final Plant plant = PlantImpl.getSingleton();
+        final BasicPlant plant = PlantImpl.getSingleton();
         if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
             new PropertiesTransactionAReq(plantImpl.getPropertiesProcessor().commonReactor,
                     plantImpl.getPropertiesProcessor()){
@@ -393,7 +393,7 @@ public class FacilityImpl extends CloserImpl implements Facility {
             return;
         }
         startClosing = true;
-        final Plant plant = PlantImpl.getSingleton();
+        final BasicPlant plant = PlantImpl.getSingleton();
         if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
             new PropertiesTransactionAReq(plantImpl.getPropertiesProcessor().commonReactor,
                     plantImpl.getPropertiesProcessor()){
@@ -427,7 +427,7 @@ public class FacilityImpl extends CloserImpl implements Facility {
         return propertiesProcessor.getImmutableState().get(propertyName);
     }
 
-    public Plant getPlant() {
+    public BasicPlant getPlant() {
         return plant;
     }
 

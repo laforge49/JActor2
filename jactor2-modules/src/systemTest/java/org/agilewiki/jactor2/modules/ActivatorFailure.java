@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.modules;
 
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 
 public class ActivatorFailure {
     static public void main(final String[] _args) throws Exception {
-        final Plant plant = new Plant();
+        final BasicPlant plant = new BasicPlant();
         try {
             plant.activatorPropertyAReq("a", "NoSuchActivator").call();
             try {

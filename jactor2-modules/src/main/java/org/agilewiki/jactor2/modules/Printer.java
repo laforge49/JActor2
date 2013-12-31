@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -29,7 +29,7 @@ import java.util.Locale;
  *     public static void main(String[] args) throws Exception {
  *
  *         //A facility with one thread.
- *         final Plant plant = new Plant(1);
+ *         final BasicPlant plant = new BasicPlant(1);
  *
  *         try {
  *
@@ -48,7 +48,7 @@ import java.util.Locale;
 public class Printer extends BlockingBladeBase {
 
     public static AsyncRequest<Void> printlnAReq(final String _string) throws Exception {
-        return new AsyncRequest<Void>(Plant.getSingleton().getReactor()) {
+        return new AsyncRequest<Void>(BasicPlant.getSingleton().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
@@ -66,7 +66,7 @@ public class Printer extends BlockingBladeBase {
     }
 
     public static AsyncRequest<Void> printfAReq(final String _format, final Object... _args) throws Exception {
-        return new AsyncRequest<Void>(Plant.getSingleton().getReactor()) {
+        return new AsyncRequest<Void>(BasicPlant.getSingleton().getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
@@ -85,9 +85,9 @@ public class Printer extends BlockingBladeBase {
 
     static public AsyncRequest<Printer> stdoutAReq()
             throws Exception {
-        return new AsyncRequest<Printer>(Plant.getSingleton().getReactor()) {
+        return new AsyncRequest<Printer>(BasicPlant.getSingleton().getReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
-            PropertiesProcessor propertiesProcessor = Plant.getSingleton().asFacility().getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = BasicPlant.getSingleton().asFacility().getPropertiesProcessor();
             ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
             Printer printer = (Printer) immutableProperties.get("stdout");
 
