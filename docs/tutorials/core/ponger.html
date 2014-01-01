@@ -4,6 +4,18 @@
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Ponger
 </p>
 <h1>Ponger - SyncRequest</h1>
+<p>
+JActor is a framework for ensuring thread safety without locks.
+JActor supports the use of multiple
+<a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html">Reactor</a>s
+which serve as light-weight threads.
+Each reactor, in turn, can have any number of
+<a href="../../api/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>s,
+with each blade having some state that is accessed in a thread-safe way via one or more
+<a href="../../api/org/agilewiki/jactor2/core/requests/Request.html">Request</a>s.
+
+</p>
+
 <a href="Ponger.java">Ponger</a>
 is a very simple blade. It has a synchronous request, pingSReq.
 This request returns the number of times it has been called:
