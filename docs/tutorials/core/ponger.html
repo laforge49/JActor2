@@ -8,7 +8,11 @@
 JActor is a framework for ensuring thread safety without locks.
 JActor supports the use of multiple
 <a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html">Reactor</a>s
-which serve as light-weight threads.
+which serve as light-weight threads, which are sometimes called 
+<a href="http://en.wikipedia.org/wiki/Fiber_(computer_science)">fibers</a> or 
+<a href="http://en.wikipedia.org/wiki/E_(programming_language)">vats</a>.
+(JActor actually uses a 
+<a href="http://en.wikipedia.org/wiki/Thread_(computer_science)#Models">M:N threading model</a>.)
 Each reactor, in turn, can have any number of
 <a href="../../api/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>s,
 with each blade having some state that is accessed in a thread-safe way via one or more
@@ -31,6 +35,8 @@ Most blades are specialized and will work with only one type of reactor.
 for example, is a type of blade that only works with a NonBlockingReactor. And
 <a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html">NonBlockingBladeBase</a>
 is a convenience class used to implement a non-blocking blade.
+Multiple blades can share the same reactor, which introduces an aspect of composition. Such blades
+can safely access each other's state either directly or via simple methods.
 </p>
 <p>
 There are two types of requests:
@@ -129,7 +135,7 @@ PongerTest is a simple program that exercises Ponger:
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class PongerValidator {
+public class PongerTest {
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
@@ -138,7 +144,7 @@ public class PongerValidator {
             if (1 != j)
                 throw new IllegalStateException("unexpected result");
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
@@ -269,10 +275,15 @@ close Plant
 </pre>
 <p>
 Every program must have a Plant, which provides a threadpool for the reactors to use.
-And a program will not normally exit until either
+Which means that a program will not normally exit until either
 <a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#close--">Plant.close</a> or
 <a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#exit--">Plant.exit</a>
 is called.
+</p>
+<p>
+Plant must be created explicitly, though many of its methods are static. 
+This allows you to change the size of the thread pool, the recovery logic, and many other aspects.
+An explicit constructor also allows the use of an alternative class with an extended API and feature set.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
@@ -283,7 +294,7 @@ is called.
                 throw new IllegalStateException("unexpected result");
 </pre>
 <p>
-The call method will return the result from invoking a request, but can not be used from within a blade.
+The call method will return the result from invoking a request, but <strong>call can not be used from within a blade.</strong>
 This method blocks the main thread until a result is received.
 </p>
 </body>
