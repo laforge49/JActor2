@@ -19,6 +19,12 @@ public class Plant {
         Plant plant = getSingleton();
         if (plant != null)
             plant.asPlantImpl().exit();
+        else
+            System.exit(10);
+    }
+
+    public static NonBlockingReactor getReactor() {
+        return getSingleton().asPlantImpl().getReactor();
     }
 
     private final PlantImpl plantImpl;
@@ -40,9 +46,5 @@ public class Plant {
 
     public PlantImpl asPlantImpl() {
         return plantImpl;
-    }
-
-    public NonBlockingReactor getReactor() {
-        return plantImpl.getReactor();
     }
 }
