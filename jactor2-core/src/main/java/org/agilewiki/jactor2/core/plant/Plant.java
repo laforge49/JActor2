@@ -9,6 +9,18 @@ public class Plant {
         return PlantImpl.getSingleton();
     }
 
+    public static void close() throws Exception {
+        Plant plant = getSingleton();
+        if (plant != null)
+            plant.asPlantImpl().close();
+    }
+
+    public static void exit() {
+        Plant plant = getSingleton();
+        if (plant != null)
+            plant.asPlantImpl().exit();
+    }
+
     private final PlantImpl plantImpl;
 
     public Plant() throws Exception {
@@ -32,13 +44,5 @@ public class Plant {
 
     public NonBlockingReactor getReactor() {
         return plantImpl.getReactor();
-    }
-
-    public void close() throws Exception {
-        plantImpl.close();
-    }
-
-    public void exit() {
-        plantImpl.exit();
     }
 }
