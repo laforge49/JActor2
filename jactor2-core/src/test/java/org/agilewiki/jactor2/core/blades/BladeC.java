@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.blades;
 
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
 public class BladeC {
     private final Reactor reactor;

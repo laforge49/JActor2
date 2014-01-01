@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.modules;
 
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
  * Base class for printer requests.

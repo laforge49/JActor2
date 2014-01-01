@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class ThreadBoundReactorSample {
 

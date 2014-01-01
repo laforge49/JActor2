@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.messages;
+package org.agilewiki.jactor2.core.requests;
 
 /**
  * A AsyncResponseProcessor is an application callback to handle the response from a request.

@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.messages;
+package org.agilewiki.jactor2.core.requests;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;

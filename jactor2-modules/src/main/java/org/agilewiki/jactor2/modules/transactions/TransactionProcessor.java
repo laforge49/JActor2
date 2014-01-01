@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.modules.transactions;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 
 /**
  * The TransactionProcessor blade uses 2 reactors, an IsolationReactor to ensure transaction isolation,

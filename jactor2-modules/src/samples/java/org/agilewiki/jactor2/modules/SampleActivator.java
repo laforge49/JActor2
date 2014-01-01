@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.modules;
 
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
 public class SampleActivator extends NonBlockingBladeBase implements Activator {
 

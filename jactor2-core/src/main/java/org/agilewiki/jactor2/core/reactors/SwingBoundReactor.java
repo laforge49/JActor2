@@ -5,8 +5,6 @@ import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.util.Recovery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

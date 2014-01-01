@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.blades;
 
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
 public class ExceptionHandlerSample {
 

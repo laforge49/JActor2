@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 class Hanger extends NonBlockingBladeBase {
     Hanger(final NonBlockingReactor _reactor) throws Exception {

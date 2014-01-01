@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.modules;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
-import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
-import org.agilewiki.jactor2.modules.impl.FacilityImpl;
 import org.agilewiki.jactor2.core.util.Closer;
+import org.agilewiki.jactor2.modules.impl.FacilityImpl;
+import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 
 /**
  * Provides a thread pool for

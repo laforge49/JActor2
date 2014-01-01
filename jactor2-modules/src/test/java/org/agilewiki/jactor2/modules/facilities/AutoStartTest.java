@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.modules.facilities;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 
 public class AutoStartTest extends TestCase {
     public void test() throws Exception {

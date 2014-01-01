@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.modules.pubSub;
 
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.util.Closeable;
 
 /**

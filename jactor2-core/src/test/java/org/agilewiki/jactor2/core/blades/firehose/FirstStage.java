@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.blades.firehose;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.BoundResponseProcessor;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 import java.util.ArrayList;
 import java.util.List;

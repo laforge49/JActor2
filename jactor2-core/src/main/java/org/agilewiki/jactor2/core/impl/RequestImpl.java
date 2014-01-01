@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.Request;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.Request;
 
 public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
 

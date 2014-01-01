@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.blades.firehose;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
 import java.util.List;
 
