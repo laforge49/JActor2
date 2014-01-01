@@ -13,12 +13,36 @@ Each reactor, in turn, can have any number of
 <a href="../../api/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>s,
 with each blade having some state that is accessed in a thread-safe way via one or more
 <a href="../../api/org/agilewiki/jactor2/core/requests/Request.html">Request</a>s.
-
 </p>
-
-<a href="Ponger.java">Ponger</a>
-is a very simple blade. It has a synchronous request, pingSReq.
-This request returns the number of times it has been called:
+<p>
+There are 5 types of reactors:
+<a href="../../api/org/agilewiki/jactor2/core/reactors/BlockingReactor.html">BlockingReactor</a>,
+<a href="../../api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>,
+<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>,
+<a href="../../api/org/agilewiki/jactor2/core/reactors/SwingBoundReactor.html">SwingBoundReactor</a> and
+<a href="../../api/org/agilewiki/jactor2/core/reactors/ThreadBoundReactor.html">ThreadBoundReactor</a>.
+The most common type of reactor is the NonBlockingReactor, which will be our starting point.
+Non-blocking reactors operate under the assumption that they will not block threads, through locking, I/O
+or long computations.
+</p>
+<p>
+Most blades are specialized and will work with only one type of reactor.
+<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBlade.html">NonBlockingBlade</a>,
+for example, is a type of blade that only works with a NonBlockingReactor. And
+<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html">NonBlockingBladeBase</a>
+is a convenience class used to implement a non-blocking blade.
+</p>
+<p>
+There are two types of requests:
+<a href="../../api/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>s and
+<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>s.
+But for now we will focus on syncronous requests, which are a lock-free alternative to Java's synchronized.
+</p>
+<p>
+Our first example is 
+<a href="java7/Ponger.java">Ponger</a>,
+a non-blocking blade with a synchronous request, pingSReq.
+This request returns the number of times it has been invoked:
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
@@ -43,22 +67,6 @@ public class Ponger extends NonBlockingBladeBase {
 }
 </pre>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html">NonBlockingBladeBase</a>
-</h3>
-<pre>
-public class Ponger extends NonBlockingBladeBase {
-    ...
-}
-</pre>
-<p>
-NonBlockingBladeBase implements the 
-<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBlade.html">NonBlockingBlade</a>
-interface and provides a number of methods and nested
-classes for use when implementing a 
-<a href="../../api/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>
-which does not block its thread.
-</p>
-<h3>
 Thread Safety
 </h3>
 <pre>
@@ -69,7 +77,7 @@ The member variable count is private and the only means of updating it is throug
 request. Which makes it thread-safe.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html#initialize-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">NonBlockingBladeBase.initialize</a>
+<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html#initialize-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">initialize</a>
 </h3>
 <pre>
     public Ponger(final NonBlockingReactor _reactor) throws Exception {
@@ -80,12 +88,9 @@ request. Which makes it thread-safe.
 Every blade needs a reactor before it can send or receive messages.
 And once set, a blade can not be assigned a different reactor.
 Reactors serve both as message queues and as light-weight threads.
-And 
-<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
-is optimized for blades which do not block their thread.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest&lt;RESPONSE_TYPE&gt;</a>
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest</a>
 </h3>
 <pre>
     public SyncRequest&lt;Long&gt; pingSReq() {
@@ -95,12 +100,11 @@ is optimized for blades which do not block their thread.
     }
 </pre>
 <p>
-SyncBladeRequest is a BladeBase nested class that extends
-<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;RESPONSE_TYPE&gt;</a>.
-The pingSReq method returns a non-reusable instance of SyncRequest for accessing the state of the blade.
+SyncBladeRequest is a BladeBase nested class that extends SyncRequest.
+The pingSReq method returns a non-reusable instance of a SyncRequest for accessing the state of the blade.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest--">SyncRequest.processSyncRequest</a>
+<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest--">processSyncRequest</a>
 </h3>
 <pre>
             @Override
