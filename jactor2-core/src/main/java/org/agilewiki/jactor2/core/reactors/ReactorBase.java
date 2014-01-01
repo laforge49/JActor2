@@ -18,10 +18,6 @@ abstract public class ReactorBase extends CloserBase implements Reactor {
         return (ReactorImpl) asCloserImpl();
     }
 
-    public Logger getLog() {
-        return asReactorImpl().getLogger();
-    }
-
     @Override
     public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler) {
         return asReactorImpl().setExceptionHandler(exceptionHandler);
@@ -30,10 +26,6 @@ abstract public class ReactorBase extends CloserBase implements Reactor {
     @Override
     public boolean isInboxEmpty() {
         return asReactorImpl().isInboxEmpty();
-    }
-
-    public boolean isClosing() {
-        return asReactorImpl().isClosing();
     }
 
     @Override

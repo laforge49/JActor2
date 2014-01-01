@@ -92,11 +92,11 @@ public class PlantImpl {
         try {
             threadManager.execute(_reactor);
         } catch (final Exception e) {
-            if (!reactor.isClosing()) {
+            if (!reactor.asReactorImpl().isClosing()) {
                 throw e;
             }
         } catch (final Error e) {
-            if (!reactor.isClosing()) {
+            if (!reactor.asReactorImpl().isClosing()) {
                 throw e;
             }
         }
