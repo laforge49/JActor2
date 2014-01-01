@@ -1,4 +1,4 @@
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class PongerLoop extends SyncRequest<Void> {
     private final Ponger ponger;

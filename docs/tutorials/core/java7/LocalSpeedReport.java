@@ -1,5 +1,5 @@
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class LocalSpeedReport {

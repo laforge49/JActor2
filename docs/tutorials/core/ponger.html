@@ -45,7 +45,7 @@ a non-blocking blade with a synchronous request, pingSReq.
 This request returns the number of times it has been invoked:
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class Ponger extends NonBlockingBladeBase {
@@ -120,55 +120,167 @@ regardless of which thread was used to invoke the SyncRequest.
 This method is used to access and/or update the state of the blade and to return a result.
 </p>
 <h2>
-<a href="PongerValidator.java">PongerValidator</a>
+<a href="java7/PongerTest.java">PongerTest</a>
 </h2>
 <p>
-PongerValidator is a simple program that exercises Ponger:
+PongerTest is a simple program that exercises Ponger:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PongerValidator {
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor());
-            long i = 0;
-            while (i < 10) {
-                i++;
-                long j = ponger.pingSReq().call();
-                if (i != j)
-                    throw new IllegalStateException("unexpected result");
-            }
+            long j = ponger.pingSReq().call();
+            if (1 != j)
+                throw new IllegalStateException("unexpected result");
         } finally {
             plant.close();
         }
     }
 }
 </pre>
+<table style="border: 2px solid;" bgcolor="lightgray">
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Main Thread
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Non-Blocking Reactor
+</th>
+</tr>
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+PongerTest
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Ponger
+</th>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+create Plant
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+create Ponger
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+call
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+wait
+</td>
+<td style="padding: 5px; text-align: center;">
+---ping-->
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+allocate thread
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+count += 1
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+wakeup
+</td>
+<td style="padding: 5px; text-align: center;">
+<--response: count---
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+release thread
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+validate response
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+close Plant
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+</table>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html">Plant</a>
 </h3>
 <pre>
-            Ponger ponger = new Ponger(new NonBlockingReactor());
+        new Plant();
+        try {
+            ...
+        } finally {
+            Plant.close();
+        }
 </pre>
 <p>
-Blades generally use non-blocking reactors, but only if they do not block the thread for I/O, intense computation 
-or any other reason.
+Every program must have a Plant, which provides a threadpool for the reactors to use.
+A program will not normally exit until either
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#close--">Plant.close</a> or
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#exit--">Plant.exit</a>
+is called.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/RequestBase.html#call()">call</a>
+<a href="../../api/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
 </h3>
 <pre>
-            long i = 0;
-            while (i < 10) {
-                i++;
-                long j = ponger.pingSReq().call();
-                if (i != j)
-                    throw new IllegalStateException("unexpected result");
-            }
+            long j = ponger.pingSReq().call();
+            if (1 != j)
+                throw new IllegalStateException("unexpected result");
 </pre>
 <p>
 The call method will return the result from invoking a request, but can not be used from within a blade.

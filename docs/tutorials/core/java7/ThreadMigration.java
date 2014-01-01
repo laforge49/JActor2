@@ -1,6 +1,6 @@
 import org.agilewiki.jactor2.core.blades.*;
 import org.agilewiki.jactor2.core.plant.*;
-import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.requests.*;
 import org.agilewiki.jactor2.core.reactors.*;
 
 public class ThreadMigration extends NonBlockingBladeBase {
