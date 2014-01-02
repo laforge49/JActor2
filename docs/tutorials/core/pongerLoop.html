@@ -63,6 +63,9 @@ The local method is used only to invoke requests on requests using the same reac
 Like call, local returns a result, Void in this case.
 Unlike call, no messages are passed between threads and no threads are blocked.
 </p>
+<h3>
+Directly Calling Methods on a Blade
+</h3>
 <p>
 Another, faster way to do the same thing would be to replace local with a direct method call.
 But then you may have no assurance that the method call is thread safe unless you check that
