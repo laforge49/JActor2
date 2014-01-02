@@ -131,6 +131,12 @@ blade being accessed:
     public long ping(final NonBlockingReactor _sourceReactor) {
         if (getReactor() != _sourceReactor)
             throw new UnsupportedOperationException("reactors are not the same");
+        return _ping();
+    }
+
+    private _long ping() {
+        if (getReactor() != _sourceReactor)
+            throw new UnsupportedOperationException("reactors are not the same");
         count += 1;
         return count;
     }
@@ -139,7 +145,7 @@ blade being accessed:
         return new SyncBladeRequest<Long>() {
             @Override
             public Long processSyncRequest() throws Exception {
-                return ping(getSourceReactor());
+                return _ping();
             }
         };
     }

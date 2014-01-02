@@ -13,6 +13,10 @@ public class Ponger2 extends NonBlockingBladeBase {
     public long ping(final Reactor _sourceReactor) {
         if (getReactor() != _sourceReactor)
             throw new UnsupportedOperationException("reactors are not the same");
+        return _ping();
+    }
+
+    private long _ping() {
         count += 1;
         return count;
     }
@@ -21,7 +25,7 @@ public class Ponger2 extends NonBlockingBladeBase {
         return new SyncBladeRequest() {
             @Override
             public Long processSyncRequest() throws Exception {
-                return ping(getSourceReactor());
+                return _ping();
             }
         };
     }
