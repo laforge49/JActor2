@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.plant;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class Plant {
+final public class Plant {
 
     public static void close() throws Exception {
         PlantImpl plantImpl = PlantImpl.getSingleton();
