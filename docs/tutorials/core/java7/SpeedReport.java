@@ -1,5 +1,4 @@
 public class SpeedReport {
-    
     public static void print(
             final String _heading, 
             final long _ns, 
