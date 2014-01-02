@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.impl.MessageSource;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.SyncRequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -42,6 +43,13 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
 
     public SyncRequestImpl<RESPONSE_TYPE> asRequestImpl() {
         return syncRequestImpl;
+    }
+
+    public Reactor getSourceReactor() {
+        MessageSource messageSource = asRequestImpl().getMessageSource();
+        if (messageSource instanceof Reactor)
+            return (Reactor) messageSource;
+        return null;
     }
 
     @Override
