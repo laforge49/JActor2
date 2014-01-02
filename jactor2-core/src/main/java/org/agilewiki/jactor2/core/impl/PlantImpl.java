@@ -13,9 +13,9 @@ public class PlantImpl {
     public static final boolean DEBUG = "true".equals(System
             .getProperty("jactor.debug"));
 
-    private static volatile Plant singleton;
+    private static volatile PlantImpl singleton;
 
-    public static Plant getSingleton() {
+    public static PlantImpl getSingleton() {
         return singleton;
     }
 
@@ -30,20 +30,20 @@ public class PlantImpl {
 
     private NonBlockingReactor reactor;
 
-    public void initialize(final Plant _plant) throws Exception {
-        initialize(_plant, new PlantConfiguration());
+    public PlantImpl() throws Exception {
+        this(new PlantConfiguration());
     }
 
-    public void initialize(final Plant _plant, final int _threadCount) throws Exception {
-        initialize(_plant, new PlantConfiguration(_threadCount));
+    public PlantImpl(final int _threadCount) throws Exception {
+        this(new PlantConfiguration(_threadCount));
     }
 
-    public void initialize(final Plant _plant, final PlantConfiguration _plantConfiguration) throws Exception {
-        _plantConfiguration.initialize();
+    public PlantImpl(final PlantConfiguration _plantConfiguration) throws Exception {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
-        singleton = _plant;
+        singleton = this;
+        _plantConfiguration.initialize();
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
         }

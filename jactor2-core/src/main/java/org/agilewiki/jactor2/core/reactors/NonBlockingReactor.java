@@ -33,7 +33,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
 public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     public NonBlockingReactor() throws Exception {
-        this(Plant.getSingleton().getReactor());
+        this(Plant.getReactor());
     }
 
     public NonBlockingReactor(final Reactor _parentReactor) throws Exception {
@@ -43,7 +43,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     public NonBlockingReactor(final Runnable _onIdle)
             throws Exception {
-        this(Plant.getSingleton().getReactor(), _onIdle);
+        this(Plant.getReactor(), _onIdle);
     }
 
     public NonBlockingReactor(final Reactor _parentReactor, final Runnable _onIdle)
@@ -54,7 +54,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Runnable _onIdle) throws Exception {
-        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     public NonBlockingReactor(final Reactor _parentReactor,

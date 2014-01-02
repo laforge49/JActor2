@@ -91,7 +91,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Runnable {
 
     public ThreadBoundReactor() throws Exception {
-        this(Plant.getSingleton().getReactor());
+        this(Plant.getReactor());
     }
 
     public ThreadBoundReactor(final Reactor _parentReactor) throws Exception {
@@ -101,7 +101,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
 
     public ThreadBoundReactor(final Runnable _boundProcessor)
             throws Exception {
-        this(Plant.getSingleton().getReactor(), _boundProcessor);
+        this(Plant.getReactor(), _boundProcessor);
     }
 
     public ThreadBoundReactor(final Reactor _parentReactor, final Runnable _boundProcessor)
@@ -112,7 +112,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
 
     public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) throws Exception {
-        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     public ThreadBoundReactor(final Reactor _parentReactor,

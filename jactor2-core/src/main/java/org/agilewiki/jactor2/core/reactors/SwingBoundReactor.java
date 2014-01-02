@@ -69,7 +69,7 @@ import java.awt.event.WindowListener;
 public class SwingBoundReactor extends ReactorBase implements CommonReactor, WindowListener {
 
     public SwingBoundReactor() throws Exception {
-        this(Plant.getSingleton().getReactor());
+        this(Plant.getReactor());
     }
 
     public SwingBoundReactor(final Reactor _parentReactor)
@@ -80,7 +80,7 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
 
     public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public SwingBoundReactor(final Reactor _parentReactor,
@@ -109,7 +109,7 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
     @Override
     public void windowClosed(final WindowEvent e) {
         try {
-            Plant.getSingleton().close();
+            Plant.close();
         } catch (final Exception ex) {
             asReactorImpl().getLogger().warn("Exception when closing Facility", ex);
         }

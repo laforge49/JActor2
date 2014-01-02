@@ -24,7 +24,7 @@ public class Recovery {
     }
 
     public void hungThread(ReactorImpl _reactor) {
-        Plant.getSingleton().exit();
+        Plant.exit();
     }
 
     public void hungResponse(final RequestImpl _message) throws Exception {

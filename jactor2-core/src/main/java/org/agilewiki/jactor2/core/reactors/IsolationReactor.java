@@ -36,7 +36,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
 public class IsolationReactor extends ReactorBase {
 
     public IsolationReactor() throws Exception {
-        this(Plant.getSingleton().getReactor());
+        this(Plant.getReactor());
     }
 
     public IsolationReactor(final Reactor _parentReactor) throws Exception {
@@ -46,7 +46,7 @@ public class IsolationReactor extends ReactorBase {
 
     public IsolationReactor(final Runnable _onIdle)
             throws Exception {
-        this(Plant.getSingleton().getReactor(), _onIdle);
+        this(Plant.getReactor(), _onIdle);
     }
 
     public IsolationReactor(final Reactor _parentReactor, final Runnable _onIdle)
@@ -57,7 +57,7 @@ public class IsolationReactor extends ReactorBase {
 
     public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _onIdle) throws Exception {
-        this(Plant.getSingleton().getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
     }
 
     public IsolationReactor(final Reactor _parentReactor,

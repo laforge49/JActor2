@@ -5,46 +5,33 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class Plant {
 
-    public static Plant getSingleton() {
-        return PlantImpl.getSingleton();
-    }
-
     public static void close() throws Exception {
-        Plant plant = getSingleton();
-        if (plant != null)
-            plant.asPlantImpl().close();
+        PlantImpl plantImpl = PlantImpl.getSingleton();
+        if (plantImpl != null)
+            plantImpl.close();
     }
 
     public static void exit() {
-        Plant plant = getSingleton();
-        if (plant != null)
-            plant.asPlantImpl().exit();
+        PlantImpl plantImpl = PlantImpl.getSingleton();
+        if (plantImpl != null)
+            plantImpl.exit();
         else
             System.exit(10);
     }
 
     public static NonBlockingReactor getReactor() {
-        return getSingleton().asPlantImpl().getReactor();
+        return PlantImpl.getSingleton().getReactor();
     }
 
-    private final PlantImpl plantImpl;
-
     public Plant() throws Exception {
-        plantImpl = new PlantImpl();
-        plantImpl.initialize(this);
+        new PlantImpl();
     }
 
     public Plant(final int _threadCount) throws Exception {
-        plantImpl = new PlantImpl();
-        plantImpl.initialize(this, _threadCount);
+        new PlantImpl(_threadCount);
     }
 
     public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
-        plantImpl = new PlantImpl();
-        plantImpl.initialize(this, _plantConfiguration);
-    }
-
-    public PlantImpl asPlantImpl() {
-        return plantImpl;
+        new PlantImpl(_plantConfiguration);
     }
 }

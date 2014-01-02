@@ -69,7 +69,7 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
             throw new NullPointerException();
         }
         if (threadReference.get() == null) {
-            PlantImpl.getSingleton().asPlantImpl().submit(this);
+            PlantImpl.getSingleton().submit(this);
         }
     }
 
