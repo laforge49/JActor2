@@ -63,48 +63,6 @@ The local method is used only to invoke requests on requests using the same reac
 Like call, local returns a result, Void in this case.
 Unlike call, no messages are passed between threads and no threads are blocked.
 </p>
-<h3>
-Directly Calling Methods on a Blade
-</h3>
-<p>
-Another, faster way to do the same thing would be to replace local with a direct method call.
-But then you may have no assurance that the method call is thread safe unless you check that
-the same reactor is being used:
-</p>
-<pre>
-        if (getTargetReactor() != ponger.getReactor())
-            throw new UnsupportedOperationException("reactors are not the same");
-        ponger.ping();
-</pre>
-<p>
-Of course, in this case you know the same reactor is being used.
-But there is another down-side to having a public method on a blade--that the caller
-may not be using the same reactor. So you probably want to have something like this on the
-blade being accessed:
-</p>
-<pre>
-    public ping(final NonBlockingReactor _sourceReactor) {
-        if (getReactor() != _sourceReactor)
-            throw new UnsupportedOperationException("reactors are not the same");
-        count += 1;
-        return count;
-    }
-
-    public SyncRequest<Long> pingSReq() {
-        return new SyncBladeRequest<Long>() {
-            @Override
-            public Long processSyncRequest() throws Exception {
-                return ping(getSourceReactor());
-            }
-        };
-    }
-</pre>
-<p>
-Now the invoking reactor can safely call the ping method, and it will be quite fast:
-</p>
-<pre>
-        ponger.ping(getReactor());
-</pre>
 <h2>
 LocalSpeedReport
 </h2>
@@ -150,5 +108,47 @@ The local method is much faster than the call method,
 though it is of course still much slower than a direct method call.
 (Timings vary with each run.)
 </p>
+<h3>
+Directly Calling Methods on a Blade
+</h3>
+<p>
+Another, faster way to do the same thing would be to replace local with a direct method call.
+But then you may have no assurance that the method call is thread safe unless you check that
+the same reactor is being used:
+</p>
+<pre>
+        if (getTargetReactor() != ponger.getReactor())
+            throw new UnsupportedOperationException("reactors are not the same");
+        ponger.ping();
+</pre>
+<p>
+Of course, in this case you know the same reactor is being used.
+But there is another down-side to having a public method on a blade--that the caller
+may not be using the same reactor. So you probably want to have something like this on the
+blade being accessed:
+</p>
+<pre>
+    public ping(final NonBlockingReactor _sourceReactor) {
+        if (getReactor() != _sourceReactor)
+            throw new UnsupportedOperationException("reactors are not the same");
+        count += 1;
+        return count;
+    }
+
+    public SyncRequest<Long> pingSReq() {
+        return new SyncBladeRequest<Long>() {
+            @Override
+            public Long processSyncRequest() throws Exception {
+                return ping(getSourceReactor());
+            }
+        };
+    }
+</pre>
+<p>
+Now the invoking reactor can safely call the ping method, and it will be quite fast:
+</p>
+<pre>
+        ponger.ping(getReactor());
+</pre>
 </body>
 </html>
