@@ -128,7 +128,7 @@ may not be using the same reactor. So you probably want to have something like t
 blade being accessed:
 </p>
 <pre>
-    public ping(final NonBlockingReactor _sourceReactor) {
+    public long ping(final NonBlockingReactor _sourceReactor) {
         if (getReactor() != _sourceReactor)
             throw new UnsupportedOperationException("reactors are not the same");
         count += 1;
@@ -149,6 +149,20 @@ Now the invoking reactor can safely call the ping method, and it will be quite f
 </p>
 <pre>
         ponger.ping(getReactor());
+</pre>
+<p>
+Using
+<a href="java7/DirectSpeedReport.java">DirectSpeedReport</a>,
+<a href="java7/PongerLoop2.java">PongerLoop2</a> and
+<a href="java7/Ponger2.java">Ponger2</a>
+we get a result which is about 20 times faster than when using the local method:
+</p>
+<pre>
+Direct Timings
+Test duration in nanoseconds: 800467671
+Number of exchanges: 500000000
+Exchanges per second: 624634845
+Latency in seconds: 1.600935342E-9
 </pre>
 </body>
 </html>
