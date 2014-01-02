@@ -6,7 +6,7 @@
 <h1>PongerLoop - Local Methods per Second</h1>
 <p>
 Local access of requests using the same reactor are quite fast. 
-We will use <a href="PongerLoop.java">PongerLoop</a>, an external sync request
+We will use <a href="java7/PongerLoop.java">PongerLoop</a>, an external sync request
 that logically extends Ponger, to see just how fast local access can be.
 </p>
 <pre>
@@ -36,7 +36,7 @@ public class PongerLoop extends SyncRequest&lt;Void&gt; {
 }
 </pre>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html">SyncRequest&lt;RESPONSE_TYPE&gt;</a>
+<a href="../../api/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>
 </h3>
 <pre>
 public class PongerLoop extends SyncRequest&lt;Void&gt; {
@@ -44,10 +44,12 @@ public class PongerLoop extends SyncRequest&lt;Void&gt; {
 }
 </pre>
 <p>
-PongerLoop extends SyncRequest. The response is Void.
+PongerLoop extends SyncRequest. The response type is Void.
+This is a form of composition that, in effect, dynamically adds a new type of request to 
+an existing blade.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/Request.html#local-org.agilewiki.jactor2.core.messages.SyncRequest-">local</a>
+<a href="../../api/org/agilewiki/jactor2/core/requests/Request.html#local-org.agilewiki.jactor2.core.requests.SyncRequest-">local</a>
 </h3>
 <pre>
         long i = 0;
@@ -61,15 +63,53 @@ The local method is used only to invoke requests on requests using the same reac
 Like call, local returns a result, Void in this case.
 Unlike call, no messages are passed between threads and no threads are blocked.
 </p>
+<p>
+Another, faster way to do the same thing would be to replace local with a direct method call.
+But then you may have no assurance that the method call is thread safe unless you check that
+the same reactor is being used:
+</p>
+<pre>
+        if (getTargetReactor() != ponger.getReactor())
+            throw new UnsupportedOperationException("reactors are not the same");
+        ponger.ping();
+</pre>
+<p>
+Of course, in this case you know the same reactor is being used.
+But there is another down-side to having a public method on a blade--that the caller
+may not be using the same reactor. So you probably want to have something like this on the
+blade being accessed:
+</p>
+<pre>
+    public ping(final NonBlockingReactor _sourceReactor) {
+        if (getReactor() != _sourceReactor)
+            throw new UnsupportedOperationException("reactors are not the same");
+        count += 1;
+        return count;
+    }
+
+    public SyncRequest<Long> pingSReq() {
+        return new SyncBladeRequest<Long>() {
+            @Override
+            public Long processSyncRequest() throws Exception {
+                return ping(getSourceReactor());
+            }
+        };
+    }
+</pre>
+<p>
+Now the invoking reactor can safely call the ping method, and it will be quite fast:
+</p>
+<pre>
+        ponger.ping(getReactor);
+</pre>
 <h2>
 LocalSpeedReport
 </h2>
 <p>
-<a href="LocalSpeedReport.java">LocalSpeedReport</a>
+<a href="java7/LocalSpeedReport.java">LocalSpeedReport</a>
 is a small program that times the Ponger agent and creates the speed report.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -77,7 +117,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class LocalSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 500000000L;
-        BasicPlant plant = new Plant();
+        new Plant();
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor());
             SyncRequest<Void> startSReq = new PongerLoop(ponger, count);
@@ -85,9 +125,9 @@ public class LocalSpeedReport {
             startSReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq("Local Timings", duration, count).call();
+            SpeedReport.print("Local Timings", duration, count);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
@@ -97,12 +137,14 @@ And here is the report:
 </p>
 <pre>
 Local Timings
-Test duration in nanoseconds: 15,204,566,434
-Number of exchanges: 500,000,000
-Exchanges per second: 32,884,857
+Test duration in nanoseconds: 15116479391
+Number of exchanges: 500000000
+Exchanges per second: 33076484
+Latency in seconds: 3.0232958782E-8
 </pre>
 <p>
-The local method is much faster than the call method.
+The local method is much faster than the call method,
+though it is of course still much slower than a direct method call.
 (Timings vary with each run.)
 </p>
 </body>
