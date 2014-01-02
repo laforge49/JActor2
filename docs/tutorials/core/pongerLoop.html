@@ -134,9 +134,7 @@ blade being accessed:
         return _ping();
     }
 
-    private _long ping() {
-        if (getReactor() != _sourceReactor)
-            throw new UnsupportedOperationException("reactors are not the same");
+    private long _ping() {
         count += 1;
         return count;
     }
