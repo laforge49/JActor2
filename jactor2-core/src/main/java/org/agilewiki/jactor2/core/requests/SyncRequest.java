@@ -45,13 +45,6 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
         return syncRequestImpl;
     }
 
-    public Reactor getSourceReactor() {
-        MessageSource messageSource = asRequestImpl().getMessageSource();
-        if (messageSource instanceof Reactor)
-            return (Reactor) messageSource;
-        return null;
-    }
-
     @Override
     public Reactor getTargetReactor() {
         return syncRequestImpl.getTargetReactor();
