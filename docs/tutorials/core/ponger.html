@@ -42,7 +42,8 @@ can safely access each other's state either directly or via simple methods.
 There are two types of requests:
 <a href="../../api/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>s and
 <a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>s.
-But for now we will focus on syncronous requests, which are a lock-free alternative to Java's synchronized.
+Direct calls from a request to a method on a blade are also supported.
+But for now we will focus mostly on synchronous requests, which are a lock-free alternative to Java's synchronized.
 </p>
 <p>
 Our first example is 
@@ -53,20 +54,29 @@ This request returns the number of times it has been invoked:
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Ponger extends NonBlockingBladeBase {
     private long count = 0;
     
-    public Ponger(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+    private long ping() {
+        count += 1;
+        return count;
     }
 
-    public SyncRequest&lt;Long&gt; pingSReq() {
-        return new SyncBladeRequest&lt;Long&gt;() {
+    //Directly callable
+    public long ping(final Reactor _sourceReactor) {
+        if (getReactor() != _sourceReactor)
+            throw new UnsupportedOperationException(
+                "for thread safety the caller must use the same reactor");
+        return ping();
+    }
+
+    public SyncRequest<Long> pingSReq() {
+        return new SyncBladeRequest() {
             @Override
             public Long processSyncRequest() throws Exception {
-                count += 1;
-                return count;
+                return ping();
             }
         };
     }
@@ -80,7 +90,7 @@ Thread Safety
 </pre>
 <p>
 The member variable count is private and the only means of updating it is through a
-request. Which makes it thread-safe.
+request or a directly callable method, which makes it thread-safe.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html#initialize-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">initialize</a>
@@ -93,7 +103,25 @@ request. Which makes it thread-safe.
 <p>
 Every blade needs a reactor before it can send or receive messages.
 And once set, a blade can not be assigned a different reactor.
-Reactors serve both as message queues and as light-weight threads.
+Reactors serve both as incoming queues, outgoing message buffers and as light-weight threads.
+</p>
+<h3>
+Directly Callable Methods
+</h3>
+<pre>
+    //Directly callable
+    public long ping(final Reactor _sourceReactor) {
+        if (getReactor() != _sourceReactor)
+            throw new UnsupportedOperationException(
+                "for thread safety the caller must use the same reactor");
+        return ping();
+    }
+</pre>
+<p>
+A blade's method is directly callable from another request if the calling request uses the same
+reactor. To be absolutely safe we should check to see if the current thread is the same as the thread
+used by the blade's reactor. But that is too slow, so we depend instead on the callin request being truthful about
+which reactor it uses.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest</a>
@@ -106,8 +134,13 @@ Reactors serve both as message queues and as light-weight threads.
     }
 </pre>
 <p>
-SyncBladeRequest is a BladeBase nested class that extends SyncRequest.
 The pingSReq method returns a non-reusable instance of a SyncRequest for accessing the state of the blade.
+Once the caller of the pingSReq method has a SyncRequest there are several different ways to invoke the request,
+as we will see later.
+</p>
+<p>
+SyncBladeRequest is a BladeBase nested class that extends SyncRequest.
+Alternatively, we could use "new SyncRequest&lt;Long&gt;(getReactor())".
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest--">processSyncRequest</a>
@@ -115,15 +148,13 @@ The pingSReq method returns a non-reusable instance of a SyncRequest for accessi
 <pre>
             @Override
             public Long processSyncRequest() throws Exception {
-                count += 1;
-                return count;
+                return ping();
             }
 </pre>
 <p>
 The processSyncRequest method is called when the SyncRequest is invoked.
-But it runs on the thread of the reactor assigned to the blade,
-regardless of which thread was used to invoke the SyncRequest.
-This method is used to access and/or update the state of the blade and to return a result.
+It always runs on the thread of the reactor assigned to the blade,
+regardless of which thread was used to invoke the SyncRequest, making it thread safe.
 </p>
 <h2>
 <a href="java7/PongerTest.java">PongerTest</a>
@@ -275,15 +306,15 @@ close Plant
 </pre>
 <p>
 Every program must have a Plant, which provides a threadpool for the reactors to use.
-Which means that a program will not normally exit until either
+But a program will not normally exit until the threadpool is closed. This is done when either
 <a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#close--">Plant.close</a> or
 <a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#exit--">Plant.exit</a>
 is called.
 </p>
 <p>
 Plant must be created explicitly, though many of its methods are static. 
-This allows you to change the size of the thread pool, the recovery logic, and many other aspects.
-An explicit constructor also allows the use of an alternative class with an extended API and feature set.
+This allows you to change the size of the thread pool, the recovery logic, and many other aspects
+by using an alternate constructor.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
@@ -294,8 +325,9 @@ An explicit constructor also allows the use of an alternative class with an exte
                 throw new IllegalStateException("unexpected result");
 </pre>
 <p>
-The call method will return the result from invoking a request, but <strong>call can not be used from within a blade.</strong>
-This method blocks the main thread until a result is received.
+The call method is one of two ways of invoking a synchronous request,
+but <strong>call can not be used from within a request.</strong>
+The call method blocks the main thread until it can return the result passed back from the invoked request.
 </p>
 </body>
 </html>

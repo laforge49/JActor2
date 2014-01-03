@@ -7,8 +7,8 @@ public class DirectSpeedReport {
         final long count = 500000000L;
         new Plant();
         try {
-            Ponger2 ponger = new Ponger2(new NonBlockingReactor());
-            SyncRequest<Void> loopSReq = new PongerLoop2(ponger, count);
+            Ponger ponger = new Ponger(new NonBlockingReactor());
+            SyncRequest<Void> loopSReq = new PongerLoop(ponger, count);
             final long before = System.nanoTime();
             loopSReq.call();
             final long after = System.nanoTime();

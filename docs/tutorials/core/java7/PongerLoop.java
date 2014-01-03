@@ -1,4 +1,5 @@
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class PongerLoop extends SyncRequest<Void> {
     private final Ponger ponger;
@@ -15,9 +16,10 @@ public class PongerLoop extends SyncRequest<Void> {
     @Override
     public Void processSyncRequest() throws Exception {
         long i = 0;
+        Reactor reactor = getTargetReactor();
         while (i < count) {
             i++;
-            local(ponger.pingSReq());
+            ponger.ping(reactor);
         }
         return null;
     }
