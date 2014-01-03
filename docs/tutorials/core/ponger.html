@@ -42,8 +42,9 @@ can safely access each other's state either directly or via simple methods.
 There are two types of requests:
 <a href="../../api/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>s and
 <a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>s.
-Direct calls from a request to a method on a blade are also supported.
-But for now we will focus mostly on synchronous requests, which are a lock-free alternative to Java's synchronized.
+Directly callable methods on a blade are also supported,
+but for now we will focus mostly on synchronous requests. 
+Synchronous requests are a lock-free alternative to Java's synchronized.
 </p>
 <p>
 Our first example is 
@@ -89,7 +90,7 @@ Thread Safety
     private long count = 0;
 </pre>
 <p>
-The member variable count is private and the only means of updating it is through a
+The member variable count is private and the only means of updating it are through a
 request or a directly callable method, which makes it thread-safe.
 </p>
 <h3>
