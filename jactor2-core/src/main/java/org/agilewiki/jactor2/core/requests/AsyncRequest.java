@@ -215,12 +215,6 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
         return asyncRequestImpl.call();
     }
 
-    @Override
-    public <RT> RT local(final SyncRequest<RT> _syncRequest)
-            throws Exception {
-        return asyncRequestImpl.local(_syncRequest);
-    }
-
     /**
      * Replace the current ExceptionHandler with another.
      * <p>

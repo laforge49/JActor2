@@ -7,20 +7,6 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 
 abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE> {
 
-    /**
-     * Process the request immediately.
-     *
-     * @param _source         The targetReactor on whose thread this method was invoked and which
-     *                        must be the same as the targetReactor of the target.
-     * @param _syncRequest    The request to be processed.
-     * @param <RESPONSE_TYPE> The type of value returned.
-     * @return The value returned by the target blades.
-     */
-    public static <RESPONSE_TYPE> RESPONSE_TYPE doLocal(final ReactorImpl _source,
-            final SyncRequest<RESPONSE_TYPE> _syncRequest) throws Exception {
-        return _syncRequest.asRequestImpl().doLocal(_source);
-    }
-
     private final SyncRequestImpl<RESPONSE_TYPE> syncRequestImpl;
 
     /**
@@ -58,11 +44,5 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     @Override
     public RESPONSE_TYPE call() throws Exception {
         return syncRequestImpl.call();
-    }
-
-    @Override
-    public <RT> RT local(final SyncRequest<RT> _syncRequest)
-            throws Exception {
-        return syncRequestImpl.local(_syncRequest);
     }
 }

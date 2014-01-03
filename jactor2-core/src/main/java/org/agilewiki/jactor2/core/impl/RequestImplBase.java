@@ -390,18 +390,6 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         }
     }
 
-    /**
-     * Process the request immediately.
-     *
-     * @param _syncRequest The request to be processed.
-     * @param <RT>         The type of value returned.
-     * @return The response from the request.
-     */
-    public <RT> RT local(final SyncRequest<RT> _syncRequest)
-            throws Exception {
-        return  _syncRequest.asRequestImpl().doLocal(targetReactorImpl);
-    }
-
     @Override
     public String toString() {
         return "message=" + asRequest().getClass().getName() +
