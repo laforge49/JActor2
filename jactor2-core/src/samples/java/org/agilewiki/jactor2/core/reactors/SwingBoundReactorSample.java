@@ -17,7 +17,7 @@ public class SwingBoundReactorSample {
 
 class HelloWorld extends SwingBoundBladeBase {
     HelloWorld(final SwingBoundReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     AsyncRequest<Void> createAndShowAReq() {

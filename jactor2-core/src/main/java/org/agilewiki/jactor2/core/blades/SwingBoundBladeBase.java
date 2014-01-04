@@ -3,7 +3,11 @@ package org.agilewiki.jactor2.core.blades;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 
 public class SwingBoundBladeBase extends BladeBase implements SwingBoundBlade {
-    public void initialize(final SwingBoundReactor _reactor) throws Exception {
+    public SwingBoundBladeBase() throws Exception {
+        _initialize(new SwingBoundReactor());
+    }
+
+    public SwingBoundBladeBase(final SwingBoundReactor _reactor) throws Exception {
         _initialize(_reactor);
     }
 

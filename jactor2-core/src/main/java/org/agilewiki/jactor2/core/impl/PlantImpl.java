@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;

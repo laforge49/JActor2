@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.requests;
 
-import org.agilewiki.jactor2.core.impl.MessageSource;
-import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.SyncRequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 

@@ -7,7 +7,6 @@ import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 import java.util.concurrent.Semaphore;
 

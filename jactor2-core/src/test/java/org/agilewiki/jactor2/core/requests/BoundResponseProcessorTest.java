@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.requests;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {

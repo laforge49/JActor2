@@ -12,8 +12,8 @@ public class NonBlockingBladeBase extends BladeBase implements NonBlockingBlade 
         _initialize(new NonBlockingReactor());
     }
 
-    public NonBlockingBladeBase(final NonBlockingReactor _nonBlockingReactor) throws Exception {
-        _initialize(_nonBlockingReactor);
+    public NonBlockingBladeBase(final NonBlockingReactor _reactor) throws Exception {
+        _initialize(_reactor);
     }
 
     @Override

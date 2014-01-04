@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.Request;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
