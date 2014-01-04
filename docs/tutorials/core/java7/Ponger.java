@@ -17,9 +17,7 @@ public class Ponger extends NonBlockingBladeBase {
 
     //Directly callable
     public long ping(final Reactor _sourceReactor) {
-        if (getReactor() != _sourceReactor)
-            throw new UnsupportedOperationException(
-                "for thread safety the caller must use the same reactor");
+        directCheck(_sourceReactor);
         return ping();
     }
 
