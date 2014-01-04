@@ -1,6 +1,5 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class Ponger extends NonBlockingBladeBase {
