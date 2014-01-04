@@ -3,14 +3,15 @@
 <p>
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; PongerLoop
 </p>
-<h1>PongerLoop - Local &amp; Direct Methods per Second</h1>
+<h1>PongerLoop - Direct Method calls per Second</h1>
 <p>
-Local access of requests using the same reactor are quite fast. 
+Direct method calls are quite fast, even with checks for thread safety. 
 We will use <a href="java7/PongerLoop.java">PongerLoop</a>, an external sync request
-that logically extends Ponger, to see just how fast local access can be.
+that logically extends Ponger, to see just how fast direct access can be.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class PongerLoop extends SyncRequest&lt;Void&gt; {
     private final Ponger ponger;
@@ -27,9 +28,10 @@ public class PongerLoop extends SyncRequest&lt;Void&gt; {
     @Override
     protected Void processSyncRequest() throws Exception {
         long i = 0;
+        Reactor reactor = getTargetReactor();
         while (i < count) {
             i++;
-            local(ponger.pingSReq());
+            ponger.ping(reactor);
         }
         return null;
     }
@@ -49,33 +51,32 @@ This is a form of composition that, in effect, dynamically adds a new type of re
 an existing blade.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/requests/Request.html#local-org.agilewiki.jactor2.core.requests.SyncRequest-">local</a>
+Directly calling a method on another Blade
 </h3>
 <pre>
         long i = 0;
+        Reactor reactor = getTargetReactor();
         while (i < count) {
             i++;
-            local(ponger.pingSReq());
+            ponger.ping(reactor);
         }
 </pre>
 <p>
-The local method is used only to invoke requests on requests using the same reactor.
-Like call, local returns a result, Void in this case.
+A direct method call requires the reactor of the request to ensure thread safety.
 Unlike call, no messages are passed between threads and no threads are blocked.
 </p>
-<h2>
-LocalSpeedReport
-</h2>
+<h3>
+<a href="java7/DirectSpeedReport.java">DirectSpeedReport</a>
+</h3>
 <p>
-<a href="java7/LocalSpeedReport.java">LocalSpeedReport</a>
-is a small program that times the Ponger agent and creates the speed report.
+DirectSpeedReport is a small program that times the Ponger request and creates a speed report:
 </p>
 <pre>
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class LocalSpeedReport {
+public class DirectSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 500000000L;
         new Plant();
@@ -86,7 +87,7 @@ public class LocalSpeedReport {
             startSReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.print("Local Timings", duration, count);
+            SpeedReport.print("Direct Timings", duration, count);
         } finally {
             Plant.close();
         }
@@ -94,79 +95,14 @@ public class LocalSpeedReport {
 }
 </pre>
 <p>
-And here is the report:
-</p>
-<pre>
-Local Timings
-Test duration in nanoseconds: 15116479391
-Number of exchanges: 500000000
-Exchanges per second: 33076484
-Latency in seconds: 3.0232958782E-8
-</pre>
-<p>
-The local method is much faster than the call method,
-though it is of course still much slower than a direct method call.
-(Timings vary with each run.)
-</p>
-<h3>
-Directly Calling Methods on a Blade
-</h3>
-<p>
-Another, faster way to do the same thing would be to replace local with a direct method call.
-But then you may have no assurance that the method call is thread safe unless you check that
-the same reactor is being used:
-</p>
-<pre>
-        if (getTargetReactor() != ponger.getReactor())
-            throw new UnsupportedOperationException("reactors are not the same");
-        ponger.ping();
-</pre>
-<p>
-Of course, in this case you know the same reactor is being used.
-But there is another down-side to having a public method on a blade--that the caller
-may not be using the same reactor. So you probably want to have something like this on the
-blade being accessed:
-</p>
-<pre>
-    public long ping(final NonBlockingReactor _sourceReactor) {
-        if (getReactor() != _sourceReactor)
-            throw new UnsupportedOperationException("reactors are not the same");
-        return _ping();
-    }
-
-    private long _ping() {
-        count += 1;
-        return count;
-    }
-
-    public SyncRequest<Long> pingSReq() {
-        return new SyncBladeRequest<Long>() {
-            @Override
-            public Long processSyncRequest() throws Exception {
-                return _ping();
-            }
-        };
-    }
-</pre>
-<p>
-Now the invoking reactor can safely call the ping method, and it will be quite fast:
-</p>
-<pre>
-        ponger.ping(getTargetReactor());
-</pre>
-<p>
-Using
-<a href="java7/DirectSpeedReport.java">DirectSpeedReport</a>,
-<a href="java7/PongerLoop2.java">PongerLoop2</a> and
-<a href="java7/Ponger2.java">Ponger2</a>
-we get a result which is about 20 times faster than when using the local method:
+And here are the results:
 </p>
 <pre>
 Direct Timings
-Test duration in nanoseconds: 800467671
+Test duration in nanoseconds: 846853843
 Number of exchanges: 500000000
-Exchanges per second: 624634845
-Latency in seconds: 1.600935342E-9
+Exchanges per second: 590420654
+Latency in seconds: 1.693707686E-9
 </pre>
 </body>
 </html>
