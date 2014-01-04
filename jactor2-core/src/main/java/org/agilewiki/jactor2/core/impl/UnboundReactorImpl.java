@@ -26,15 +26,13 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
     /**
      * The object to be run when the inbox is emptied and before the threadReference is cleared.
      */
-    private final Runnable onIdle;
+    public Runnable onIdle;
 
     public UnboundReactorImpl(final ReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Recovery _recovery, final Scheduler _scheduler,
-                              final Runnable _onIdle)
+                              final Recovery _recovery, final Scheduler _scheduler)
             throws Exception {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
-        onIdle = _onIdle;
     }
 
     @Override

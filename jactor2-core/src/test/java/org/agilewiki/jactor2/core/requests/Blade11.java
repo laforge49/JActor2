@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 public class Blade11 extends IsolationBladeBase {
 
     public Blade11(final IsolationReactor mbox) throws Exception {
-        initialize(mbox);
+        super(mbox);
     }
 
     public SyncRequest<String> hiSReq() {

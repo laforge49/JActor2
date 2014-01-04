@@ -34,11 +34,12 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
 
     public FirstStage(final Plant _plant, final DataProcessor _next,
             final long _count, final int _maxWindowSize) throws Exception {
+        super(new IsolationReactor());
+        getReactor().setIdle(this);
         mainThread = Thread.currentThread();
         next = _next;
         count = _count;
         maxWindowSize = _maxWindowSize;
-        initialize(new IsolationReactor(this));
         ack = new BoundResponseProcessor<Void>(this,
                 new AsyncResponseProcessor<Void>() {
                     @Override

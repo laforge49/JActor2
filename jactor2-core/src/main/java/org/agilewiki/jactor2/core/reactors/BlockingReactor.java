@@ -29,43 +29,35 @@ import org.agilewiki.jactor2.core.util.Recovery;
  */
 public class BlockingReactor extends ReactorBase implements CommonReactor {
 
-    public BlockingReactor() throws Exception {
+    public BlockingReactor()
+            throws Exception {
         this(Plant.getReactor());
     }
 
-    public BlockingReactor(final Reactor _parentReactor) throws Exception {
-        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
-                _parentReactor.asReactorImpl().initialLocalQueueSize, null);
-    }
-
-    public BlockingReactor(final Runnable _onIdle)
-            throws Exception {
-        this(Plant.getReactor(), _onIdle);
-    }
-
-    public BlockingReactor(final Reactor _parentReactor, final Runnable _onIdle)
+    public BlockingReactor(final Reactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
-                _parentReactor.asReactorImpl().initialLocalQueueSize, _onIdle);
+                _parentReactor.asReactorImpl().initialLocalQueueSize);
     }
 
-    public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Runnable _onIdle) throws Exception {
-        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+    public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public BlockingReactor(final Reactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Runnable _onIdle) throws Exception {
+                              final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
-                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler, _onIdle);
+                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
     }
 
     public BlockingReactor(final ReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Recovery _recovery, final Scheduler _scheduler,
-                              final Runnable _onIdle) throws Exception {
+                              final Recovery _recovery, final Scheduler _scheduler) throws Exception {
         super(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler, _onIdle));
+                _recovery, _scheduler));
+    }
+
+    public void setIdle(final Runnable _idle) {
+        ((BlockingReactorImpl) asReactorImpl()).onIdle = _idle;
     }
 }

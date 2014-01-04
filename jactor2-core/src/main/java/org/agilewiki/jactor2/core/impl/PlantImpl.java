@@ -55,7 +55,7 @@ public class PlantImpl {
             plantConfiguration = _plantConfiguration;
         reactor = new NonBlockingReactor((ReactorImpl) null, plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize(),
-                plantConfiguration.getRecovery(), plantConfiguration.getScheduler(), null);
+                plantConfiguration.getRecovery(), plantConfiguration.getScheduler());
         threadManager = plantConfiguration.getThreadManager();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
         _plantConfiguration.getScheduler().scheduleAtFixedRate(plantPoll(),

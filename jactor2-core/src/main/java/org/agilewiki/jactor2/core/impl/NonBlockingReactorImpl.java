@@ -8,9 +8,8 @@ public class NonBlockingReactorImpl extends UnboundReactorImpl {
 
     public NonBlockingReactorImpl(final ReactorImpl _parentReactorImpl,
                                   final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                  final Recovery _recovery, final Scheduler _scheduler,
-                                  final Runnable _onIdle) throws Exception {
-        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler, _onIdle);
+                                  final Recovery _recovery, final Scheduler _scheduler) throws Exception {
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
     }
 
     @Override

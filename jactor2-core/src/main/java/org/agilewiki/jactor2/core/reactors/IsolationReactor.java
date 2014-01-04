@@ -39,39 +39,30 @@ public class IsolationReactor extends ReactorBase {
         this(Plant.getReactor());
     }
 
-    public IsolationReactor(final Reactor _parentReactor) throws Exception {
-        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
-                _parentReactor.asReactorImpl().initialLocalQueueSize, null);
-    }
-
-    public IsolationReactor(final Runnable _onIdle)
-            throws Exception {
-        this(Plant.getReactor(), _onIdle);
-    }
-
-    public IsolationReactor(final Reactor _parentReactor, final Runnable _onIdle)
+    public IsolationReactor(final Reactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
-                _parentReactor.asReactorImpl().initialLocalQueueSize, _onIdle);
+                _parentReactor.asReactorImpl().initialLocalQueueSize);
     }
 
-    public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Runnable _onIdle) throws Exception {
-        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _onIdle);
+    public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public IsolationReactor(final Reactor _parentReactor,
-                           final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Runnable _onIdle) throws Exception {
+                           final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
-                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler, _onIdle);
+                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
     }
 
     public IsolationReactor(final ReactorImpl _parentReactorImpl,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Recovery _recovery, final Scheduler _scheduler,
-                           final Runnable _onIdle) throws Exception {
+                           final Recovery _recovery, final Scheduler _scheduler) throws Exception {
         super(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler, _onIdle));
+                _recovery, _scheduler));
+    }
+
+    public void setIdle(final Runnable _idle) {
+        ((IsolationReactorImpl) asReactorImpl()).onIdle = _idle;
     }
 }

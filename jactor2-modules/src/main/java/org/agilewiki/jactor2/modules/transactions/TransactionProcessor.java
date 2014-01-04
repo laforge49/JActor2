@@ -62,7 +62,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
     protected TransactionProcessor(final IsolationReactor _isolationReactor,
                                 final NonBlockingReactor _commonReactor,
                                 final IMMUTABLE_STATE _initialState) throws Exception {
-        initialize(_isolationReactor);
+        super(_isolationReactor);
         commonReactor = _commonReactor;
         immutableState = _initialState;
         validationBus = new RequestBus<IMMUTABLE_CHANGES>(_commonReactor);
