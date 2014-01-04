@@ -30,7 +30,7 @@ public class HungRequestTest extends TestCase {
 class Hanger extends NonBlockingBladeBase {
 
     public Hanger(final NonBlockingReactor mbox) throws Exception {
-        initialize(mbox);
+        super(mbox);
     }
 
     public AsyncRequest<String> hiAReq() {
@@ -48,7 +48,7 @@ class Hung extends NonBlockingBladeBase {
     private Hanger hanger;
 
     public Hung(final NonBlockingReactor mbox, Hanger _hanger) throws Exception {
-        initialize(mbox);
+        super(mbox);
         hanger = _hanger;
     }
 

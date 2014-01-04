@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class Blade1 extends NonBlockingBladeBase {
 
     public Blade1(final NonBlockingReactor mbox) throws Exception {
-        initialize(mbox);
+        super(mbox);
     }
 
     public SyncRequest<String> hiSReq() {

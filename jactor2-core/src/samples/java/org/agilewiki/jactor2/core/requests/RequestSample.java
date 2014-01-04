@@ -45,7 +45,7 @@ class SampleBlade2 extends NonBlockingBladeBase {
 
     //Create a SimpleBlade2.
     SampleBlade2(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     //Return an update request.
@@ -71,8 +71,8 @@ class IndirectBlade extends NonBlockingBladeBase {
 
     //Create an IndirectBlade with a reference to another blades.
     IndirectBlade(final SampleBlade2 _bladeA, final NonBlockingReactor _reactor) throws Exception {
+        super(_reactor);
         blade = _bladeA;
-        initialize(_reactor);
     }
 
     //Return a request to update the other blades and return its new state.

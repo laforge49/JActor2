@@ -10,7 +10,6 @@ public class BoundResponseProcessorTest extends TestCase {
         final Plant plant = new Plant();
         try {
             final Driver driver = new Driver();
-            driver.initialize(new NonBlockingReactor());
             assertEquals("Hello world!", driver.doitAReq().call());
         } finally {
             plant.close();
@@ -21,15 +20,8 @@ public class BoundResponseProcessorTest extends TestCase {
 class Driver extends NonBlockingBladeBase {
     private AsyncRequest<String> doitReq;
 
-    public AsyncRequest<String> doitAReq() {
-        return doitReq;
-    }
-
-    @Override
-    public void initialize(final NonBlockingReactor _reactor) throws Exception {
-        super.initialize(_reactor);
-
-        doitReq = new AsyncRequest<String>(_reactor) {
+    public Driver() throws Exception {
+        doitReq = new AsyncBladeRequest<String>() {
             AsyncRequest<String> dis = this;
 
             @Override
@@ -42,6 +34,10 @@ class Driver extends NonBlockingBladeBase {
                 application.start();
             }
         };
+    }
+
+    public AsyncRequest<String> doitAReq() {
+        return doitReq;
     }
 }
 
