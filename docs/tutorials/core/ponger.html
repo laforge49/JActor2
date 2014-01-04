@@ -117,10 +117,10 @@ Directly Callable Methods
     }
 </pre>
 <p>
-A blade's method is directly callable from another request if the calling request uses the same
-reactor. To be absolutely safe we should check to see if the current thread is the same as the thread
-used by the blade's reactor. But that is too slow, so we depend instead on the callin request being truthful about
-which reactor it uses.
+A request can safely call a method on another blade directly if the calling request and the blade being
+called use the same reactor. A call to the
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#directCheck-org.agilewiki.jactor2.core.reactors.Reactor-">directCheck</a>
+method by the method being directly called ensures that the reactor of the calling request is the same and that the reactor is active.
 </p>
 <h3>
 <a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest</a>
