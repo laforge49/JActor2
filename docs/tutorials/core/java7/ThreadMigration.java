@@ -43,7 +43,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
 class SubActor extends NonBlockingBladeBase {
     public SubActor(final NonBlockingReactor _reactor) 
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
     
     public AsyncRequest<Void> doAReq(final String _label) {

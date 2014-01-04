@@ -6,9 +6,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class Ponger extends NonBlockingBladeBase {
     private long count = 0;
     
-    public Ponger(final NonBlockingReactor _reactor) throws Exception {
-        super(_reactor);
-    }
+    public Ponger() throws Exception {}
 
     private long ping() {
         count += 1;
