@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 public class Blade11 extends ThreadBoundBladeBase {
 
     public Blade11(final ThreadBoundReactor mbox) throws Exception {
-        initialize(mbox);
+        super(mbox);
     }
 
     public SyncRequest<String> hiSReq() {

@@ -53,7 +53,7 @@ public class ThreadBoundReactorSample {
 class SampleThreadBoundBlade extends ThreadBoundBladeBase {
 
     SampleThreadBoundBlade(final ThreadBoundReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     //Print "finished" and exit when fin is called.
