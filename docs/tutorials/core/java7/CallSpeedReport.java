@@ -1,5 +1,4 @@
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class CallSpeedReport {
     public static void main(final String[] _args) throws Exception {

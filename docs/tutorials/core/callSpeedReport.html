@@ -20,14 +20,13 @@ is a small program that will tell us just how fast the call method is.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class CallSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 1000000L;
         new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor());
+            Ponger ponger = new Ponger();
             final long before = System.nanoTime();
             long i = 0L;
             while (i < count) {
