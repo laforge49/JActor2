@@ -74,14 +74,13 @@ DirectSpeedReport is a small program that times the Ponger request and creates a
 <pre>
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class DirectSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 500000000L;
         new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor());
+            Ponger ponger = new Ponger();
             SyncRequest<Void> startSReq = new PongerLoop(ponger, count);
             final long before = System.nanoTime();
             startSReq.call();

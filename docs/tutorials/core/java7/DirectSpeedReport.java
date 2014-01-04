@@ -1,6 +1,5 @@
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class DirectSpeedReport {
     public static void main(final String[] _args) throws Exception {
