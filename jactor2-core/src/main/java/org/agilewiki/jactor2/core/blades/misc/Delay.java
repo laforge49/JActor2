@@ -10,7 +10,6 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 public class Delay extends BlockingBladeBase {
 
     public Delay() throws Exception {
-        initialize(new BlockingReactor());
     }
 
     /**
@@ -19,7 +18,7 @@ public class Delay extends BlockingBladeBase {
      * @param _reactor The blades's facility.
      */
     public Delay(final BlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     /**

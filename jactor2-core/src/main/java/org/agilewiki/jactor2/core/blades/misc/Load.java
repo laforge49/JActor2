@@ -12,11 +12,10 @@ public class Load extends BlockingBladeBase {
     private volatile long j;
 
     public Load() throws Exception {
-        initialize(new BlockingReactor());
     }
 
     public Load(final BlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     /**

@@ -11,6 +11,13 @@ import org.agilewiki.jactor2.core.reactors.BlockingReactor;
  * </p>
  */
 public class BlockingBladeBase extends BladeBase implements BlockingBlade {
+    public BlockingBladeBase() throws Exception {
+        _initialize(new BlockingReactor());
+    }
+
+    public BlockingBladeBase(final BlockingReactor _reactor) throws Exception {
+        _initialize(_reactor);
+    }
 
     /**
      * Create a blocking blades.
