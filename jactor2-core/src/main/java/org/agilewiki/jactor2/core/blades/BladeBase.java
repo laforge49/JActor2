@@ -80,4 +80,11 @@ public abstract class BladeBase implements Blade {
             super(BladeBase.this.reactor);
         }
     }
+
+    protected void directCheck(final Reactor _sourceReactor) {
+        if (reactor != _sourceReactor)
+            throw new UnsupportedOperationException("Not thread safe: source reactor is not the same");
+        if (!reactor.asReactorImpl().isRunning())
+            throw new IllegalStateException("Not thread safe: not called from within an active request");
+    }
 }
