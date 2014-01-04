@@ -11,10 +11,6 @@ public class ThreadBoundBladeBase extends BladeBase implements ThreadBoundBlade 
         _initialize(_reactor);
     }
 
-    public void initialize(final ThreadBoundReactor _reactor) throws Exception {
-        _initialize(_reactor);
-    }
-
     @Override
     public ThreadBoundReactor getReactor() {
         return (ThreadBoundReactor) super.getReactor();
