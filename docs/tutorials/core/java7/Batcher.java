@@ -10,7 +10,7 @@ public class Batcher extends NonBlockingBladeBase {
     
     public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger)
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
         count = _count;
         ponger = _ponger;
     }

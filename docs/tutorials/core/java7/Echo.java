@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class Echo extends NonBlockingBladeBase {
     public Echo(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
     
     public AsyncRequest<String> echoAReq(final String text) {

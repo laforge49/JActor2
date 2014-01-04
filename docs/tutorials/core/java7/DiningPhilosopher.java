@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class DiningPhilosopher extends NonBlockingBladeBase {
     public DiningPhilosopher(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
     
     public AsyncRequest<Integer> feastAReq(final DiningTable _diningTable, final int _seat)

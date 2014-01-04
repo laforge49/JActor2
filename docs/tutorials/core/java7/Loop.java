@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class Loop extends NonBlockingBladeBase {
 
     public Loop(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     public AsyncRequest<Void> loopAReq(final long _count) throws Exception {

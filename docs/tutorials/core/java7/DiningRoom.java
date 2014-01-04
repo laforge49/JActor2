@@ -13,7 +13,7 @@ import java.util.LinkedList;
 public class DiningRoom extends NonBlockingBladeBase {
     public DiningRoom(final NonBlockingReactor _reactor)
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
     
     public AsyncRequest<List<Integer>> feastAReq(final int _seats, final int _meals)

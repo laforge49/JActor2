@@ -7,7 +7,7 @@ public class Ponger extends NonBlockingBladeBase {
     private long count = 0;
     
     public Ponger(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     private long ping() {

@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class Greeter extends NonBlockingBladeBase {
     public Greeter(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
     
     public AsyncRequest<String> greetingAReq(final String _name) {

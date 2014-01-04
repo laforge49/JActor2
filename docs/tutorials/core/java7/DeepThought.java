@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class DeepThought extends NonBlockingBladeBase {
     public DeepThought(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
     
     public AsyncRequest<Void> printAnswerAReq() {

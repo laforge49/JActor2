@@ -43,7 +43,7 @@ class ExceptionBlade extends NonBlockingBladeBase {
 
     //Create an ExceptionBlade.
     ExceptionBlade(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     //Returns an exception request.
@@ -65,8 +65,8 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
 
     //Create an exception handler blade with a reference to an exception blade.
     ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final NonBlockingReactor _reactor) throws Exception {
+        super(_reactor);
         exceptionBlade = _exceptionBlade;
-        initialize(_reactor);
     }
 
     //Returns a test request.

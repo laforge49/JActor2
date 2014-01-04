@@ -17,7 +17,7 @@ public class Signals extends NonBlockingBladeBase {
     }
     
     public Signals(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
         
     SyncRequest<Void> countSReq() {

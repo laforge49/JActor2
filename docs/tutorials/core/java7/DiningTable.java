@@ -14,7 +14,7 @@ public class DiningTable extends NonBlockingBladeBase {
 
     public DiningTable(final NonBlockingReactor _reactor, final int _seats, final int _meals) 
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
         seats = _seats;
         meals = _meals;
         forkUsage = new int[seats];

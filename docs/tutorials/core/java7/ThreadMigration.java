@@ -22,7 +22,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
     
     public ThreadMigration(final NonBlockingReactor _reactor) 
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
     
     public AsyncRequest<Void> startAReq() {

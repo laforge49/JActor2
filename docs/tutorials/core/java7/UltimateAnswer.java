@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class UltimateAnswer extends NonBlockingBladeBase {
 
     public UltimateAnswer(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
     
     public AsyncRequest<Void> printAnswerAReq() {

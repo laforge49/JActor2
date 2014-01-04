@@ -10,7 +10,7 @@ public class Parallel extends NonBlockingBladeBase {
     
     public Parallel(final NonBlockingReactor _reactor, final long _count)
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
         count = _count;
     }
     
