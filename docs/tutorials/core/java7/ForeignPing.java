@@ -12,7 +12,7 @@ public class ForeignPing extends NonBlockingBladeBase {
     }
     
     public AsyncRequest<Void> pingAReq() {
-        return new AsyncBladeRequest() {
+        return new AsyncBladeRequest<Void>() {
             AsyncResponseProcessor<Void> dis = this;
         
             AsyncResponseProcessor<Long> pongerResponseProcessor = 
