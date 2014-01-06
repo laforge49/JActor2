@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class ForeignSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 10000000L;
-        Plant plant = new Plant();
+        new Plant();
         try {
             Ponger ponger = new Ponger();
             Pinger pinger = new Pinger(new NonBlockingReactor(), ponger);
@@ -16,7 +16,7 @@ public class ForeignSendSpeedReport {
             final long duration = after - before;
             SpeedReport.print("Foreign Send Timings", duration, count);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

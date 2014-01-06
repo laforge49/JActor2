@@ -8,7 +8,7 @@ public class Pinger extends NonBlockingBladeBase {
     private final Ponger ponger;
 
     public Pinger(final NonBlockingReactor _reactor, final Ponger _ponger) throws Exception {
-        _initialize(_reactor);
+        super(_reactor);
         ponger = _ponger;
     }
 

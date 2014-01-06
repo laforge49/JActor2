@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class NativeSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 100000000L;
-        Plant plant = new Plant();
+        new Plant();
         try {
             Ponger ponger = new Ponger();
             NonBlockingReactor sharedReactor = ponger.getReactor();
@@ -17,7 +17,7 @@ public class NativeSendSpeedReport {
             final long duration = after - before;
             SpeedReport.print("Native Send Timings", duration, count);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

@@ -3,10 +3,11 @@
 <p>
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Pinger
 </p>
-<h1>Pinger - Send Methods per Second</h1>
+<h1>Pinger - Asynchronous Loops</h1>
 <p>
-The <a href="Pinger.java">Pinger</a> blade is a minor variation on 
-the <a href="loop.html">Loop</a> blade that uses <a href="ponger.html">Ponger</a> instead of Printer.
+Asynchronous loops have a unique form because a callback is needed to receive the results of each iteration.
+But it is all about the callback or, in the case of JActor2, the anonymous AsyncResponseProcessor.
+The <a href="java7/Pinger.java">Pinger</a> blade is a good example of such a loop:
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
@@ -19,7 +20,7 @@ public class Pinger extends NonBlockingBladeBase {
     private final Ponger ponger;
 
     public Pinger(final NonBlockingReactor _reactor, final Ponger _ponger) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
         ponger = _ponger;
     }
 
@@ -56,8 +57,75 @@ public class Pinger extends NonBlockingBladeBase {
 }
 </pre>
 <h3>
-<a href="NativeSendSpeedReport.java">NativeSendSpeedReport</a>
+Requests are Not Reusable
 </h3>
+<pre>
+            long i = 0;
+</pre>
+<p>
+The index variable i is a member of the anonymous AsyncBladeRequest, rather than being a member of the Loop blade.
+And because requests are not reusable, the state of each request is completely isolated from the state of
+all other requests. Intermediate state should be kept as part of the request state, not as part of the blade state.
+</p>
+<p>
+One exception to this rule is when performing I/O, where intermediate state can not be isolated from different
+requests. This is why blades which perform I/O may sometimes need to use an IsolationReactor, which 
+processes each request to completion before processing the next request.
+</p>
+<h3>
+processAsyncRequest
+</h3>
+<pre>
+            @Override
+            public void processAsyncRequest() throws Exception {
+                iterate();
+            }
+</pre>
+<p>
+The processAsyncRequest method is called to process the loop request sent to this blade.
+This method then begins invoking Ponger's pingSReq until the count is reached.
+</p>
+<h3>
+iterate
+</h3>
+<pre>
+            public void iterate() throws Exception {
+                if (i >= _count) {
+                    dis.processAsyncResponse(null);
+                    return;
+                }
+                SyncRequest&lt;Long&gt; ping = ponger.pingSReq();
+                send(ping, pingResponseProcessor);
+            }
+</pre>
+<p>
+The iterate method performs the actual loop.
+First the index variable, i, is compared with count.
+And if no further iterations are needed, the loop request completes by passing back a null result.
+Otherwise the ping request is sent to ponger
+and the pingResponseProcessor is used as a callback to process the response from the send.
+</p>
+<h3>
+pingResponseProcessor
+</h3>
+<pre>
+            final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
+                    new AsyncResponseProcessor&lt;Long&gt;() {
+
+                @Override
+                public void processAsyncResponse(final Long _response) throws Exception {
+                    i++;
+                    iterate();
+                }
+            };
+</pre>
+<p>
+The pingResponseProcessor is used to process the response from a ping request sent to the Ponger blade.
+Receipt of the response triggers the next iteration of the loop, as needed.
+</p>
+<h2>
+<a href="java7/NativeSendSpeedReport.java">NativeSendSpeedReport</a>
+</h2>
 <p>
 The speed of send depends largely on the relationship between the originating and target blades.
 We will first look at the case where the two blades share the same reactor.
@@ -65,7 +133,6 @@ In this case, the local method should be used if the request being sent is a Syn
 it is known that the blades share a reactor. But this is not always the case.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -73,19 +140,19 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class NativeSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 100000000L;
-        BasicPlant plant = new Plant();
+        new Plant();
         try {
-            NonBlockingReactor sharedReactor = new NonBlockingReactor();
-            Ponger ponger = new Ponger(sharedReactor);
+            Ponger ponger = new Ponger();
+            NonBlockingReactor sharedReactor = ponger.getReactor();
             Pinger pinger = new Pinger(sharedReactor, ponger);
             AsyncRequest&lt;Void&gt; loopAReq = pinger.loopAReq(count);
             final long before = System.nanoTime();
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq("Native Send Timings", duration, count).call();
+            SpeedReport.print("Native Send Timings", duration, count);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
@@ -93,27 +160,28 @@ public class NativeSendSpeedReport {
 Output:
 
 Native Send Timings
-Test duration in nanoseconds: 23,721,347,417
-Number of exchanges: 100,000,000
-Exchanges per second: 4,215,612
+Test duration in nanoseconds: 23366926657
+Number of exchanges: 100000000
+Exchanges per second: 4279552
+Latency in seconds: 2.3366926657E-7
 </pre>
 <p>
-This is slower than when using the local method, but then asynchronous processing has more overhead:
+This is about 200 times slower than when using direct method calls, but then requests have a lot more overhead:
 </p>
 <pre>
-Local Timings
-Test duration in nanoseconds: 15,204,566,434
-Number of exchanges: 500,000,000
-Exchanges per second: 32,884,857
+Direct Timings
+Test duration in nanoseconds: 846853843
+Number of exchanges: 500000000
+Exchanges per second: 590420654
+Latency in seconds: 1.693707686E-9
 </pre>
-<h3>
-<a href="ForeignSendSpeedReport.java">ForeignSendSpeedReport</a>
-</h3>
+<h2>
+<a href="java7/ForeignSendSpeedReport.java">ForeignSendSpeedReport</a>
+</h2>
 <p>
 A very common case is sending a request between two blades which have different reactors:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -121,40 +189,42 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class ForeignSendSpeedReport {
     public static void main(final String[] _args) throws Exception {
         final long count = 10000000L;
-        BasicPlant plant = new Plant();
+        new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor());
+            Ponger ponger = new Ponger();
             Pinger pinger = new Pinger(new NonBlockingReactor(), ponger);
             AsyncRequest&lt;Void&gt; loopAReq = pinger.loopAReq(count);
             final long before = System.nanoTime();
             loopAReq.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq("Foreign Send Timings", duration, count).call();
+            SpeedReport.print("Foreign Send Timings", duration, count);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
 </pre>
 <p>
-In this case the send is, as you would expect, much slower than when the two blades use a common reactor:
+In this case the send is roughly twice as slow as when the two blades use a common reactor:
 </p>
 <pre>
 Foreign Send Timings
-Test duration in nanoseconds: 5,132,493,388
-Number of exchanges: 10,000,000
-Exchanges per second: 1,948,370
+Test duration in nanoseconds: 5176340474
+Number of exchanges: 10000000
+Exchanges per second: 1931866
+Latency in seconds: 5.176340474E-7
 </pre>
 <p>
-Even slow, a send between two blades with different reactors but part of the same facility is
-much faster than when using a call method from a non-pool thread:
+Even so, a send between two blades with different reactors is
+still about 10 times faster than when using a call method:
 </p>
 <pre>
 Call Timings
-Test duration in nanoseconds: 5,970,590,691
-Number of exchanges: 1,000,000
-Exchanges per second: 167,487
+Test duration in nanoseconds: 5902333461
+Number of exchanges: 1000000
+Exchanges per second: 169424
+Latency in seconds: 5.902333461E-6
 </pre>
 </body>
 </html>
