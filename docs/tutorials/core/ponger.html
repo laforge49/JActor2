@@ -61,6 +61,10 @@ public class Ponger extends NonBlockingBladeBase {
     
     public Ponger() throws Exception {}
     
+    public Ponger(final NonBlockingReactor _reactor) throws Exception {
+        super(_reactor);
+    }
+    
     private long ping() {
         count += 1;
         return count;
@@ -95,17 +99,23 @@ The member variable count is private and the only means of updating it are throu
 request or a directly callable method, which makes it thread-safe.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html#initialize-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">initialize</a>
+The Reactor
 </h3>
 <pre>
+    public Ponger() throws Exception {}
+    
     public Ponger(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 </pre>
 <p>
 Every blade needs a reactor before it can send or receive messages.
-And once set, a blade can not be assigned a different reactor.
 Reactors serve both as incoming queues, outgoing message buffers and as light-weight threads.
+</p>
+<p>
+The default constructor of NonBlockingBladeBase creates a NonBlockingReactor. So you can either
+specify a particular reactor, which is useful when sharing reactors between blades, or have a new
+reactor created by default.
 </p>
 <h3>
 Directly Callable Methods

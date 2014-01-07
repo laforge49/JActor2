@@ -43,11 +43,11 @@ public class Batcher extends NonBlockingBladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        final long count = 1000000L;
+        final int count = 1000000;
         Plant plant = new Plant();
         try {
-            Ponger ponger = new Ponger();
-            Batcher batcher = new Batcher(new NonBlockingReactor(), count, ponger);
+            Ponger ponger = new Ponger(new NonBlockingReactor(1000, count));
+            Batcher batcher = new Batcher(new NonBlockingReactor(1000, count), count, ponger);
             AsyncRequest<Void> runAReq = batcher.runAReq();
             final long before = System.nanoTime();
             runAReq.call();
