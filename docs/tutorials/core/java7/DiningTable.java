@@ -2,7 +2,6 @@ import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class DiningTable extends NonBlockingBladeBase {
     public final int seats;
@@ -12,9 +11,8 @@ public class DiningTable extends NonBlockingBladeBase {
     private int[] forkUsage;
     private AsyncResponseProcessor<Boolean>[] pendingResponses;
 
-    public DiningTable(final NonBlockingReactor _reactor, final int _seats, final int _meals) 
+    public DiningTable(final int _seats, final int _meals) 
             throws Exception {
-        super(_reactor);
         seats = _seats;
         meals = _meals;
         forkUsage = new int[seats];

@@ -3,14 +3,12 @@ import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class Parallel extends NonBlockingBladeBase {
     private final long count;
     
-    public Parallel(final NonBlockingReactor _reactor, final long _count)
+    public Parallel(final long _count)
             throws Exception {
-        super(_reactor);
         count = _count;
     }
     
@@ -40,9 +38,9 @@ public class Parallel extends NonBlockingBladeBase {
     
     public static void main(final String[] _args) throws Exception {
         final long count = 10L;
-        Plant plant = new Plant(10);
+        new Plant(10);
         try {
-            Parallel parallel = new Parallel(new NonBlockingReactor(), count);
+            Parallel parallel = new Parallel(count);
             AsyncRequest<Void> runAReq = parallel.runAReq();
             final long before = System.currentTimeMillis();
             runAReq.call();
@@ -53,7 +51,7 @@ public class Parallel extends NonBlockingBladeBase {
             System.out.println("sleep duration: 100 milliseconds");
             System.out.println("total time: " + duration + " milliseconds");
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

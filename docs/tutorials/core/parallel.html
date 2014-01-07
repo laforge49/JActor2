@@ -6,7 +6,7 @@
 <h1>Parallel - Parallel Processing</h1>
 <p>
 Parallel processing can be as simple as sending multiple requests to multiple reactors.
-In the <a href="Parallel.java">Parallel</a> program,
+In the <a href="java7/Parallel.java">Parallel</a> program,
 a facility is created with 10 threads and
 10 sleep requests of 100 milliseconds each are sent to 10 different 
 <a href="../../api/org/agilewiki/jactor2/core/blades/misc/Delay.html">Delay</a>
@@ -16,19 +16,15 @@ each running in a different reactor. And the total processing time is just over 
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.misc.Delay;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class Parallel extends NonBlockingBladeBase {
     private final long count;
     
-    public Parallel(final NonBlockingReactor _reactor, final long _count)
+    public Parallel(final long _count)
             throws Exception {
-        initialize(_reactor);
         count = _count;
     }
     
@@ -37,8 +33,7 @@ public class Parallel extends NonBlockingBladeBase {
             final AsyncResponseProcessor&lt;Void&gt; dis = this;
             
             final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor = 
-                new AsyncResponseProcessor&lt;Void&gt;() {
-                
+                    new AsyncResponseProcessor&lt;Void&gt;() {
                 @Override
                 public void processAsyncResponse(final Void _response) throws Exception {
                     if (dis.getPendingResponseCount() == 0)
@@ -61,17 +56,16 @@ public class Parallel extends NonBlockingBladeBase {
         final long count = 10L;
         BasicPlant plant = new Plant(10);
         try {
-            Parallel parallel = new Parallel(new NonBlockingReactor(), count);
+            Parallel parallel = new Parallel(count);
             AsyncRequest&lt;Void&gt; runAReq = parallel.runAReq();
             final long before = System.currentTimeMillis();
             runAReq.call();
             final long after = System.currentTimeMillis();
             final long duration = after - before;
-            Printer printer = Printer.stdoutAReq().call();
-            printer.printlnSReq("Parallel Test with 10 Threads").call();
-            printer.printlnSReq("count: " + count).call();
-            printer.printlnSReq("sleep duration: 100 milliseconds").call();
-            printer.printlnSReq("total time: " + duration + " milliseconds").call();
+            System.out.println("Parallel Test with 10 Threads");
+            System.out.println("count: " + count);
+            System.out.println("sleep duration: 100 milliseconds");
+            System.out.println("total time: " + duration + " milliseconds");
         } finally {
             plant.close();
         }

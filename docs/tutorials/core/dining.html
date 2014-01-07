@@ -19,14 +19,13 @@ As we are implementing our solution to this problem without built-in delays or l
 dining philosophers who will eat as soon as they get both a left and right fork, put the forks back on the
 table and then immediately try to pick up their forks and eat again. This differs a bit from other solutions where the philosophers
 take time out to think when they can not immediately get a fork. 
-<a href="DiningPhilosopher.java">Here</a> is the code used to model a dining philosopher:
+<a href="java7/DiningPhilosopher.java">Here</a> is the code used to model a dining philosopher:
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /*
 Each philosopher has a seat at the table, and the seats are numbered from 0 through 4.
@@ -37,8 +36,7 @@ The feast request executes a simple loop, calling eatAReq and ateSReq until eatA
 of false--which indicates that there is no more food to eat.
 */
 public class DiningPhilosopher extends NonBlockingBladeBase {
-    public DiningPhilosopher(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+    public DiningPhilosopher() throws Exception {
     }
     
     public AsyncRequest&lt;Integer&gt; feastAReq(final DiningTable _diningTable, final int _seat)
@@ -87,7 +85,7 @@ public class DiningPhilosopher extends NonBlockingBladeBase {
 </pre>
 <h2>DiningTable</h2>
 <p>
-The <a href="DiningTable.java">DiningTable</a> is responsible for managing the forks and serving up the spaghetti.
+The <a href="java7/DiningTable.java">DiningTable</a> is responsible for managing the forks and serving up the spaghetti.
 But it also does not respond to an eat request until either both forks are available or
 there is no more spaghetti, whichever comes first.
 </p>
@@ -96,7 +94,6 @@ import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class DiningTable extends NonBlockingBladeBase {
     public final int seats; //The number of seats around the table == the number of philosophers.
@@ -106,9 +103,8 @@ public class DiningTable extends NonBlockingBladeBase {
     private int[] forkUsage;    //seat number which is using the fork, or -1 if available.
     private AsyncResponseProcessor&lt;Boolean&gt;[] pendingResponses; //Pending eat requests, or null.
 
-    public DiningTable(final NonBlockingReactor _reactor, final int _seats, final int _meals) 
+    public DiningTable(final int _seats, final int _meals) 
             throws Exception {
-        initialize(_reactor);
         seats = _seats;
         meals = _meals;
         forkUsage = new int[seats];
@@ -250,29 +246,24 @@ public class DiningTable extends NonBlockingBladeBase {
 </pre>
 <h2>DiningRoom</h2>
 <p>
-The <a href="DiningRoom.java">DiningRoom</a> class creates the dining table and the philosophers and invites the philosophers
+The <a href="java7/DiningRoom.java">DiningRoom</a> class creates the dining table and the philosophers and invites the philosophers
 to the feast. When all the meals have been eaten, the dining room validates and reports the result.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.blades.misc.SyncPrinterRequest;
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
 public class DiningRoom extends NonBlockingBladeBase {
-    public DiningRoom(final NonBlockingReactor _reactor)
+    public DiningRoom()
             throws Exception {
-        initialize(_reactor);
     }
     
     /*
@@ -322,56 +313,35 @@ public class DiningRoom extends NonBlockingBladeBase {
         };
     }
     
-    /*
-        Prints the report.
-    */
-    public static SyncRequest<Void> report(
-            final Printer _printer, 
-            final int _seats, 
-            final int _meals, 
-            final List&lt;Integer&gt; _mealsEaten, 
-            final long _duration) {
-        return new SyncPrinterRequest(_printer) {
-            @Override
-            public Void processSyncRequest() throws Exception {
-                printf("Seats: %,d%n", _seats);
-                printf("Meals: %,d%n", _meals);
-                println("\nMeals eaten by each philosopher:");
-                Iterator&lt;Integer&gt; it = _mealsEaten.iterator();
-                int totalEaten = 0;
-                while (it.hasNext()) {
-                    int me = it.next();
-                    totalEaten += me;
-                    if (_mealsEaten.size() < 11)
-                        printf("    %,d%n", me);
-                }
-                if (totalEaten != _meals)
-                    throw new IllegalStateException("total meals eaten does not match: " + totalEaten);
-                printf("\nTest duration in nanoseconds: %,d%n", _duration);
-                if (_duration > 0) {
-                    printf("Total meals eaten per second: %,d%n%n", 1000000000L * _meals / _duration);
-                }
-                return null;
-            }
-        };
-    }
-    
     public static void main(String[] args) throws Exception {
         int seats = 5;
         int meals = 1000000;
-        BasicPlant plant = new Plant();
+        new Plant();
         try {
-            NonBlockingReactor diningRoomReactor = new NonBlockingReactor();
-            DiningRoom diningRoom = new DiningRoom(diningRoomReactor);
+            DiningRoom diningRoom = new DiningRoom();
             AsyncRequest&lt;List&lt;Integer&gt;&gt; feastAReq = diningRoom.feastAReq(seats, meals);
             long before = System.nanoTime();
             List&lt;Integer&gt; mealsEaten = feastAReq.call(); //Run the feast.
             long after = System.nanoTime();
             long duration = after - before;
-            Printer printer = new Printer(new BlockingReactor());
-            report(printer, seats, meals, mealsEaten, duration).call(); //Print the report.
+            System.out.println("Seats: " + seats);
+            System.out.println("Meals: " + meals);
+            System.out.println("\nMeals eaten by each philosopher:");
+            Iterator<Integer> it = mealsEaten.iterator();
+            int totalEaten = 0;
+            while (it.hasNext()) {
+                int me = it.next();
+                totalEaten += me;
+                if (mealsEaten.size() < 11)
+                    System.out.println("    " + me);
+            }
+            if (totalEaten != meals)
+                throw new IllegalStateException("total meals eaten does not match: " + totalEaten);
+            System.out.println("\nTest duration in nanoseconds: " + duration);
+            if (duration > 0) {
+                System.out.println("Total meals eaten per second: " + (1000000000L * meals / duration));
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

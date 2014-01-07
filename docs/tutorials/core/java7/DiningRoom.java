@@ -4,16 +4,14 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
 public class DiningRoom extends NonBlockingBladeBase {
-    public DiningRoom(final NonBlockingReactor _reactor)
+    public DiningRoom()
             throws Exception {
-        super(_reactor);
     }
     
     public AsyncRequest<List<Integer>> feastAReq(final int _seats, final int _meals)
@@ -38,12 +36,11 @@ public class DiningRoom extends NonBlockingBladeBase {
             public void processAsyncRequest() throws Exception {
                 int i = 0;
                 DiningTable diningTable = new DiningTable(
-                    new NonBlockingReactor(),
                     _seats,
                     _meals);
                 while (i < _seats) {
                     DiningPhilosopher diningPhilosopher =
-                        new DiningPhilosopher(new NonBlockingReactor());
+                        new DiningPhilosopher();
                     AsyncRequest<Integer> feastAReq = diningPhilosopher.feastAReq(diningTable, i);
                     send(feastAReq, feastResponseProcessor);
                     ++i;
@@ -55,10 +52,9 @@ public class DiningRoom extends NonBlockingBladeBase {
     public static void main(String[] args) throws Exception {
         int seats = 5;
         int meals = 1000000;
-        Plant plant = new Plant();
+        new Plant();
         try {
-            NonBlockingReactor diningRoomReactor = new NonBlockingReactor();
-            DiningRoom diningRoom = new DiningRoom(diningRoomReactor);
+            DiningRoom diningRoom = new DiningRoom();
             AsyncRequest<List<Integer>> feastAReq = diningRoom.feastAReq(seats, meals);
             long before = System.nanoTime();
             List<Integer> mealsEaten = feastAReq.call();
@@ -82,7 +78,7 @@ public class DiningRoom extends NonBlockingBladeBase {
                 System.out.println("Total meals eaten per second: " + (1000000000L * meals / duration));
             }
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
