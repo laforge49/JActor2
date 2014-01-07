@@ -117,6 +117,7 @@ This is illustrated by the <a href="java7/Isolation.java">Isolation</a> program:
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.misc.Delay;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -160,9 +161,10 @@ public class Isolation extends BladeBase {
             public void processAsyncRequest() throws Exception {
                 int oldState = state;
                 int newState = state + 1;
-                send(printer.printfSReq("was %d, now %d\n", oldState, newState), 
-                        new AsyncResponseProcessor&lt;Void&gt;() {
-                    public void processAsyncResponse(final Void _response) throws Exception {
+                System.out.println("was " + oldState + ", now " + newState); 
+                Delay delay = new Delay();
+                send(delay.sleepSReq(1), new AsyncResponseProcessor<Void>() {
+                    public void processAsyncResponse(Void response) throws Exception {
                         state = newState; //belated update
                         dis.processAsyncResponse(null);
                     }
