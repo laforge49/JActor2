@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class Isolation extends BladeBase {
     
     public static void main(final String[] _args) throws Exception {
-        Plant plant = new Plant();
+        new Plant();
         try {
             System.out.println("\nBump with NonBlockingReactor\n");
             Isolation isolation = new Isolation(new NonBlockingReactor());
@@ -24,7 +24,7 @@ public class Isolation extends BladeBase {
             isolation.bumpAReq().signal();
             isolation.bumpAReq().call(); //call forces all pending bump requests to complete
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
     

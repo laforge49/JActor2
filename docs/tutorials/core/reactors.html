@@ -113,48 +113,44 @@ The use of an IsolationReactor is sometimes essential to properly process an asy
 This happens when a request accesses the state of the blade,
 sends a request to another reactor,
 and then updates the state of the blade based on its old value.
-This is illustrated by the <a href="Isolation.java">Isolation</a> program:
+This is illustrated by the <a href="java7/Isolation.java">Isolation</a> program:
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
-import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
 public class Isolation extends BladeBase {
     
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        new Plant();
         try {
             Printer printer = Printer.stdoutAReq().call();
             
             printer.printlnSReq("\nBump with NonBlockingReactor\n").call();
-            Isolation isolation = new Isolation(new NonBlockingReactor(), printer);
+            Isolation isolation = new Isolation(new NonBlockingReactor());
             isolation.bumpAReq().signal();
             isolation.bumpAReq().signal();
             isolation.bumpAReq().call(); //call forces all pending bump requests to complete
             
             printer.printlnSReq("\nBump with IsolationReactor\n").call();
-            isolation = new Isolation(new IsolationReactor(), printer);
+            isolation = new Isolation(new IsolationReactor());
             isolation.bumpAReq().signal();
             isolation.bumpAReq().signal();
             isolation.bumpAReq().call(); //call forces all pending bump requests to complete
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
     
-    final Printer printer;
     int state;
     
-    public Isolation(final Reactor _reactor, final Printer _printer) throws Exception {
+    public Isolation(final Reactor _reactor) throws Exception {
         _initialize(_reactor);
-        printer = _printer;
     }
     
     AsyncRequest&lt;Void&gt; bumpAReq() {
