@@ -21,23 +21,21 @@ This is illustrated by the <a href="java7/ExceptionHandlerSample.java">Exception
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class ExceptionHandlerSample {
 
     public static void main(final String[] _args) throws Exception {
 
         //A facility with two threads.
-        final BasicPlant plant = new Plant(2);
+        new Plant(2);
 
         try {
 
             //Create an ExceptionBlade.
-            ExceptionBlade exceptionBlade = new ExceptionBlade(new NonBlockingReactor());
+            ExceptionBlade exceptionBlade = new ExceptionBlade();
 
             try {
                 //Create and call an exception request.
@@ -49,13 +47,13 @@ public class ExceptionHandlerSample {
 
             //Create an ExceptionHandlerBlade.
             ExceptionHandlerBlade exceptionHandlerBlade =
-                    new ExceptionHandlerBlade(exceptionBlade, new NonBlockingReactor());
+                    new ExceptionHandlerBlade(exceptionBlade);
             //Create a test request, call it and print the results.
             System.out.println(exceptionHandlerBlade.testAReq().call());
 
         } finally {
             //shutdown the facility
-            plant.close();
+            Plant.close();
         }
     }
 }
@@ -64,15 +62,14 @@ public class ExceptionHandlerSample {
 class ExceptionBlade extends NonBlockingBladeBase {
 
     //Create an ExceptionBlade.
-    ExceptionBlade(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+    ExceptionBlade() throws Exception {
     }
 
     //Returns an exception request.
     AsyncRequest&lt;Void&gt; exceptionAReq() {
         return new AsyncBladeRequest&lt;Void&gt;() {
             @Override
-            protected void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 throw new IllegalStateException(); //Throw an exception when the request is processed.
             }
         };
@@ -86,7 +83,7 @@ class ExceptionHandlerBlade extends BladeBase {
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blade with a reference to an exception blade.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final NonBlockingReactor _reactor) throws Exception {
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) throws Exception {
         exceptionBlade = _exceptionBlade;
         initialize(_reactor);
     }
