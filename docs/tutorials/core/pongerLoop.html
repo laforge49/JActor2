@@ -10,7 +10,7 @@ We will use <a href="java7/PongerLoop.java">PongerLoop</a>, an external sync req
 that logically extends Ponger, to see just how fast direct access can be.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 public class PongerLoop extends SyncRequest&lt;Void&gt; {
@@ -73,7 +73,7 @@ DirectSpeedReport is a small program that times the Ponger request and creates a
 </p>
 <pre>
 import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class DirectSpeedReport {
     public static void main(final String[] _args) throws Exception {

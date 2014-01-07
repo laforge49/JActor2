@@ -23,9 +23,9 @@ take time out to think when they can not immediately get a fork.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /*
 Each philosopher has a seat at the table, and the seats are numbered from 0 through 4.
@@ -91,9 +91,9 @@ there is no more spaghetti, whichever comes first.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class DiningTable extends NonBlockingBladeBase {
     public final int seats; //The number of seats around the table == the number of philosophers.
@@ -252,9 +252,9 @@ to the feast. When all the meals have been eaten, the dining room validates and 
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 
 import java.util.Iterator;

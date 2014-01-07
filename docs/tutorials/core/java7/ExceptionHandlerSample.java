@@ -3,19 +3,18 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class ExceptionHandlerSample {
 
     public static void main(final String[] _args) throws Exception {
 
         //A facility with two threads.
-        final Plant plant = new Plant(2);
+        new Plant(2);
 
         try {
 
             //Create an ExceptionBlade.
-            ExceptionBlade exceptionBlade = new ExceptionBlade(new NonBlockingReactor());
+            ExceptionBlade exceptionBlade = new ExceptionBlade();
 
             try {
                 //Create and call an exception request.
@@ -27,13 +26,13 @@ public class ExceptionHandlerSample {
 
             //Create an ExceptionHandlerBlade.
             ExceptionHandlerBlade exceptionHandlerBlade =
-                    new ExceptionHandlerBlade(exceptionBlade, new NonBlockingReactor());
+                    new ExceptionHandlerBlade(exceptionBlade);
             //Create a test request, call it and print the results.
             System.out.println(exceptionHandlerBlade.testAReq().call());
 
         } finally {
             //shutdown the facility
-            plant.close();
+            Plant.close();
         }
     }
 }
@@ -42,8 +41,7 @@ public class ExceptionHandlerSample {
 class ExceptionBlade extends NonBlockingBladeBase {
 
     //Create an ExceptionBlade.
-    ExceptionBlade(final NonBlockingReactor _reactor) throws Exception {
-        super(_reactor);
+    ExceptionBlade() throws Exception {
     }
 
     //Returns an exception request.
@@ -64,8 +62,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blade with a reference to an exception blade.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade, final NonBlockingReactor _reactor) throws Exception {
-        super(_reactor);
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) throws Exception {
         exceptionBlade = _exceptionBlade;
     }
 

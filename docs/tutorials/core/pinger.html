@@ -11,9 +11,9 @@ The <a href="java7/Pinger.java">Pinger</a> blade is a good example of such a loo
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.messages.SyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class Pinger extends NonBlockingBladeBase {
@@ -134,7 +134,7 @@ it is known that the blades share a reactor. But this is not always the case.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class NativeSendSpeedReport {
@@ -183,7 +183,7 @@ A very common case is sending a request between two blades which have different 
 </p>
 <pre>
 import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class ForeignSendSpeedReport {
