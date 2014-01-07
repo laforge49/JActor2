@@ -5,83 +5,64 @@
 </p>
 <h1>Signals - One-way Messages</h1>
 <p>
-In addition to using call, local and send, 
+In addition to using call, directly callable methods and send, 
 the signal method can be used to pass a request to its target blade for processing.
 Using signals means:
 </p>
 <ul>
 <li>
-Like local and send, signal does not block any thread.
+Like directly callable methods and send, signal does not block any thread.
 </li>
 <li>
-Unlike call, local and send, signal can be used from any thread.
+Unlike call, directly callable methods and send, signal can be used from any thread.
 </li>
 <li>
-Like call, signal messages are unbuffered--they are sent immediately.
+Like call and directly callable methods, signal messages are unbuffered--they are sent immediately.
 </li>
 <li>
-Unlike call, local and send, there is no response passed back from the request passed as a signal.
+Unlike call and send, there is no response passed back from the request passed as a signal.
 And if an exception is thrown and uncaught while processing the request, it is logged rather than being
 passed back to the source of the request.
 </li>
 </ul>
 <p>
-The following program illustrates the use of signals. 
-But note in particular the use of call in the main method to print an empty line just before
-closing the plant.
-The call forces the program to wait until the last line is printed.
-Without this call, the program would likely terminate before everything had been printed.
-</p>
-<p>
-You should also note the first call in main, passing the countS request to the Signals blade.
-This can also not be a signal as it would allow the main thread to race ahead to completion
-before the Signals blade had finished passing all its print requests to the printer.
-Signals are processed in order, but just relative to the source of those signals. 
-Since we are passing signals here from 2 different threads, care needs to be taken to
-prevent the creation of race conditions.
-</p>
-<p>
-Strange things also tend to happen when you overuse signals. In this case the Signals blade is
-passing 10 requests to the printer. But if that number is increased to something like 100 million,
-memory fills with these requests, the program starts paging to disk and slows to a crawl.
-</p>
-<p>
+Strange things tend to happen when you overuse signals, as it is easy to fill memory with signals awaiting processing.
+This slows garbage collection and my start the program pagging to disk.
 Signals are supported because there are situations when they are invaluable. But their use is
 not entirely risk free.
 </p>
+<p>
+The <a href="java7/Signals.java">Signals</a> program illustrates the use of signals. 
+</p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
 import org.agilewiki.jactor2.core.facilities.Plant;
 import org.agilewiki.jactor2.core.messages.SyncRequest;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class Signals extends NonBlockingBladeBase {
     
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        new Plant();
         try {
-            Printer.printlnAReq("\nCount to 10\n").signal();
-            new Signals(new NonBlockingReactor()).countSReq().call();
-            Printer.printlnAReq("").call();
+            Signals signals = new Signals();
+            int i = 0;
+            while (i < 10) {
+                i++;
+                signals.printSReq(i).signal();
+            }
+            signals.getReactor().nullSReq().call(); //Force all signals to be processed.
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
     
-    public Signals(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+    public Signals() throws Exception {
     }
         
-    SyncRequest&lt;Void&gt; countSReq() {
-        return new SyncBladeRequest&lt;Void&gt;() {
+    SyncRequest<Void> printSReq(final Integer _i) {
+        return new SyncBladeRequest<Void>() {
             public Void processSyncRequest() throws Exception {
-                int i = 0;
-                while (i < 10) {
-                    i++;
-                    Printer.printfAReq("%d\n", i).signal();
-                }
+                System.out.println(_i);
                 return null;
             }
         };
