@@ -56,8 +56,15 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
     public NonBlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        initialize(new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler));
+        initialize(createReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,                _recovery, _scheduler));
+    }
+
+    protected NonBlockingReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                                       final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                                       final Recovery _recovery, final Scheduler _scheduler)
+            throws Exception {
+        return new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler);
     }
 
     @Override

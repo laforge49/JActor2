@@ -1,25 +1,45 @@
 package org.agilewiki.jactor2.modules;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
+import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.util.Closer;
+import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.modules.impl.FacilityImpl;
 import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 
-/**
- * Provides a thread pool for
- * non-blocking and isolation targetReactor. Multiple facilities with independent life cycles
- * are also supported.
- * (A ServiceClosedException may be thrown when messages cross facilities and the target facility is closed.)
- * In addition, the facility maintains a set of AutoClosable objects that are closed
- * when the facility is closed, as well as a table of properties.
- */
+public class Facility extends NonBlockingReactor {
+    public Facility() throws Exception {
+    }
 
-public interface Facility extends Closer, NonBlockingBlade {
-    FacilityImpl asFacilityImpl();
+    public Facility(int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
+        super(_initialOutboxSize, _initialLocalQueueSize);
+    }
 
-    void close() throws Exception;
+    public Facility(int _initialOutboxSize, int _initialLocalQueueSize, Recovery _recovery, Scheduler _scheduler)
+            throws Exception {
+        super(Plant.getReactor().asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
+    }
 
-    String getName();
+    protected NonBlockingReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                                       final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                                       final Recovery _recovery, final Scheduler _scheduler)
+            throws Exception {
+        return new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler);
+    }
 
-    PropertiesProcessor getPropertiesProcessor();
+    FacilityImpl asFacilityImpl() {
+        return (FacilityImpl) asReactorImpl();
+    };
+
+    String getName() {
+        return asFacilityImpl().getName();
+    };
+
+    PropertiesProcessor getPropertiesProcessor() {
+        return asFacilityImpl().getPropertiesProcessor();
+    }
 }
