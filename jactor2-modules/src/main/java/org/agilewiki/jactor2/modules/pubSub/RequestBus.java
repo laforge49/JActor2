@@ -20,13 +20,11 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
     final Set<Subscription<CONTENT>> subscriptions =
             Collections.newSetFromMap(new ConcurrentHashMap<Subscription<CONTENT>, Boolean>());
 
-    /**
-     * Create a RequestBus blade
-     *
-     * @param _reactor The blade's reactor.
-     */
+    public RequestBus() throws Exception {
+    }
+
     public RequestBus(final NonBlockingReactor _reactor) throws Exception {
-        initialize(_reactor);
+        super(_reactor);
     }
 
     /**
