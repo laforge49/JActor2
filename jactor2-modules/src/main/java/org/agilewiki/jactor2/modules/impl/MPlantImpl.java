@@ -258,7 +258,7 @@ public class MPlantImpl extends FacilityImpl {
                     facility.initialBufferSize = v;
 
                 facility.initialize();
-                send(new PropertiesTransactionAReq(getPropertiesProcessor().commonReactor, getPropertiesProcessor()) {
+                send(new PropertiesTransactionAReq(getPropertiesProcessor().parentReactor, getPropertiesProcessor()) {
                          @Override
                          protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                              _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, facility);
@@ -282,7 +282,7 @@ public class MPlantImpl extends FacilityImpl {
                                              return;
                                          }
                                          send(new PropertiesTransactionAReq(
-                                                      getPropertiesProcessor().commonReactor,
+                                                      getPropertiesProcessor().parentReactor,
                                                       getPropertiesProcessor()) {
                                                   @Override
                                                   protected void update(final PropertiesChangeManager _changeManager)
@@ -474,7 +474,7 @@ public class MPlantImpl extends FacilityImpl {
                 FacilityImpl facility = getFacility(_facilityName);
                 if (facility != null)
                     facility.close();
-                send(new PropertiesTransactionAReq(propertiesProcessor.commonReactor,
+                send(new PropertiesTransactionAReq(propertiesProcessor.parentReactor,
                         propertiesProcessor) {
                     @Override
                     protected void update(final PropertiesChangeManager _contentManager)

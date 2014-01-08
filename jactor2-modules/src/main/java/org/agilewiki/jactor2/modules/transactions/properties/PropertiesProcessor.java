@@ -28,38 +28,13 @@ public class PropertiesProcessor extends TransactionProcessor<PropertiesChangeMa
 
     PropertiesChangeManager propertiesChangeManager;
 
-    /**
-     * Create a PropertiesProcessor.
-     *
-     * @param _isolationReactor The isolation reactor used to isolate the transactions.
-     */
-    public PropertiesProcessor(IsolationReactor _isolationReactor) throws Exception {
-        super(_isolationReactor, empty());
+    public PropertiesProcessor(final NonBlockingReactor _parentReactor) throws Exception {
+        super(_parentReactor, empty());
     }
 
-    /**
-     * Create a PropertiesProcessor.
-     *
-     * @param _isolationReactor The isolation reactor used to isolate the transactions.
-     * @param _initialState     The initial state of the property map.
-     */
-    public PropertiesProcessor(IsolationReactor _isolationReactor,
+    public PropertiesProcessor(final NonBlockingReactor _parentReactor,
                                Map<String, Object> _initialState) throws Exception {
-        super(_isolationReactor, new NonBlockingReactor(
-                _isolationReactor.getStructure()), from(_initialState));
-    }
-
-    /**
-     * Create a PropertiesProcessor.
-     *
-     * @param _isolationReactor The isolation reactor used to isolate the transactions.
-     * @param _commonReactor    The reactor used for transaction processing and by the two ReactorBus instances.
-     * @param _initialState     The initial state of the property map.
-     */
-    public PropertiesProcessor(final IsolationReactor _isolationReactor,
-                               final NonBlockingReactor _commonReactor,
-                               final Map<String, Object> _initialState) throws Exception {
-        super(_isolationReactor, _commonReactor, from(_initialState));
+        super(_parentReactor, from(_initialState));
     }
 
     @Override
@@ -86,7 +61,7 @@ public class PropertiesProcessor extends TransactionProcessor<PropertiesChangeMa
      * @return The request.
      */
     public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
-        return new PropertiesTransactionAReq(commonReactor, this) {
+        return new PropertiesTransactionAReq(parentReactor, this) {
             protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                 _changeManager.put(_key, _newValue);
             }
@@ -103,7 +78,7 @@ public class PropertiesProcessor extends TransactionProcessor<PropertiesChangeMa
      * @return The request.
      */
     public AsyncRequest<Void> compareAndSetAReq(final String _key, final Object _expectedValue, final Object _newValue) {
-        return new PropertiesTransactionAReq(commonReactor, this) {
+        return new PropertiesTransactionAReq(parentReactor, this) {
             protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                 Object oldValue = _changeManager.getImmutableProperties().get("stdout");
                 if ((oldValue != null && oldValue.equals(_expectedValue) ||

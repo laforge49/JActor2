@@ -1,8 +1,6 @@
 package org.agilewiki.jactor2.modules.transactions;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 
@@ -10,10 +8,10 @@ import org.agilewiki.jactor2.modules.pubSub.RequestBus;
  * The TransactionProcessor blade uses 2 reactors, an IsolationReactor to ensure transaction isolation,
  * and a CommonReactor for transaction processing and for use by the validation and change RequesBus instances.
  *
- * @param <CHANGE_MANAGER>       Used when processing a transaction to update the state.
- * @param <IMMUTABLE_STATE>      The type of state.
- * @param <IMMUTABLE_CHANGES>    The transaction changes passed to the subscribers of the validation and
- *                           change RequestBus instances.
+ * @param <CHANGE_MANAGER>    Used when processing a transaction to update the state.
+ * @param <IMMUTABLE_STATE>   The type of state.
+ * @param <IMMUTABLE_CHANGES> The transaction changes passed to the subscribers of the validation and
+ *                            change RequestBus instances.
  */
 abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable, IMMUTABLE_STATE, IMMUTABLE_CHANGES>
         extends IsolationBladeBase {
@@ -26,7 +24,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
     /**
      * The reactor used for transaction processing and by the two RequestBus instances.
      */
-    public final CommonReactor commonReactor;
+    public final NonBlockingReactor parentReactor;
 
     /**
      * The RequestBus used to validate the changes made by a transaction.
@@ -40,33 +38,16 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
 
     /**
      * Create a transaction processor.
-     * The CommonReactor used by the transaction processor is created using the
-     * isolation reactor's facility.
      *
-     * @param _isolationReactor    The IsolationReactor used to isolate transactions.
-     * @param _initialState        The initial state to be used.
+     * @param _parentReactor The reactor used for transaction processing and by the two RequestBus instances.
+     * @param _initialState  The initial state to be used.
      */
-    protected TransactionProcessor(final IsolationReactor _isolationReactor,
-                                final IMMUTABLE_STATE _initialState) throws Exception {
-        this(_isolationReactor, new NonBlockingReactor(
-                _isolationReactor.getStructure()), _initialState);
-    }
-
-    /**
-     * Create a transaction processor.
-     *
-     * @param _isolationReactor    The IsolationReactor used to isolate transactions.
-     * @param _commonReactor       The reactor used for transaction processing and by the two RequestBus instances.
-     * @param _initialState        The initial state to be used.
-     */
-    protected TransactionProcessor(final IsolationReactor _isolationReactor,
-                                final NonBlockingReactor _commonReactor,
-                                final IMMUTABLE_STATE _initialState) throws Exception {
-        super(_isolationReactor);
-        commonReactor = _commonReactor;
+    protected TransactionProcessor(final NonBlockingReactor _parentReactor,
+                                   final IMMUTABLE_STATE _initialState) throws Exception {
+        parentReactor = _parentReactor;
         immutableState = _initialState;
-        validationBus = new RequestBus<IMMUTABLE_CHANGES>(_commonReactor);
-        changeBus = new RequestBus<IMMUTABLE_CHANGES>(_commonReactor);
+        validationBus = new RequestBus<IMMUTABLE_CHANGES>(_parentReactor);
+        changeBus = new RequestBus<IMMUTABLE_CHANGES>(_parentReactor);
     }
 
     /**
