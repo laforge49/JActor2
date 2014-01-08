@@ -114,6 +114,11 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
     }
 
     @Override
+    public void run() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void windowOpened(final WindowEvent e) {
     }
 
