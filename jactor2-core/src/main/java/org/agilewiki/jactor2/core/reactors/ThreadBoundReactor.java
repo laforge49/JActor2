@@ -94,7 +94,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
         this(Plant.getReactor());
     }
 
-    public ThreadBoundReactor(final Reactor _parentReactor) throws Exception {
+    public ThreadBoundReactor(final CommonReactor _parentReactor) throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize, null);
     }
@@ -104,7 +104,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
         this(Plant.getReactor(), _boundProcessor);
     }
 
-    public ThreadBoundReactor(final Reactor _parentReactor, final Runnable _boundProcessor)
+    public ThreadBoundReactor(final CommonReactor _parentReactor, final Runnable _boundProcessor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize, _boundProcessor);
@@ -115,7 +115,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
         this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
-    public ThreadBoundReactor(final Reactor _parentReactor,
+    public ThreadBoundReactor(final CommonReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,

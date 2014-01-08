@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.util.Closeable;
@@ -65,7 +66,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
 
     public final int initialLocalQueueSize;
 
-    public final Reactor parentReactor;
+    public final CommonReactor parentReactor;
 
     public ReactorImpl(final ReactorImpl _parentReactorImpl, final int _initialBufferSize,
                        final int _initialLocalQueueSize, final Recovery _recovery, final Scheduler _scheduler)
@@ -73,7 +74,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         super(_recovery, _scheduler);
         initialBufferSize = _initialBufferSize;
         initialLocalQueueSize = _initialLocalQueueSize;
-        parentReactor = _parentReactorImpl == null ? null : _parentReactorImpl.asReactor();
+        parentReactor = _parentReactorImpl == null ? null : (CommonReactor) _parentReactorImpl.asReactor();
         inbox = createInbox(_initialLocalQueueSize);
         logger = LoggerFactory.getLogger(Reactor.class);
         outbox = new Outbox(_initialBufferSize);

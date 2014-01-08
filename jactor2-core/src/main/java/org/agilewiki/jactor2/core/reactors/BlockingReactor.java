@@ -34,7 +34,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
         this(Plant.getReactor());
     }
 
-    public BlockingReactor(final Reactor _parentReactor)
+    public BlockingReactor(final CommonReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize);
@@ -44,7 +44,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
         this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public BlockingReactor(final Reactor _parentReactor,
+    public BlockingReactor(final CommonReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
                 _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);

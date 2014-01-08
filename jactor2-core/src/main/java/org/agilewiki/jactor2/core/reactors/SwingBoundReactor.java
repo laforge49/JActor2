@@ -72,7 +72,7 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
         this(Plant.getReactor());
     }
 
-    public SwingBoundReactor(final Reactor _parentReactor)
+    public SwingBoundReactor(final CommonReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize);
@@ -83,7 +83,7 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
         this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public SwingBoundReactor(final Reactor _parentReactor,
+    public SwingBoundReactor(final CommonReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
