@@ -7,8 +7,8 @@ import org.agilewiki.jactor2.core.util.CloserBase;
 
 abstract public class ReactorBase extends CloserBase implements Reactor {
 
-    public ReactorBase(final ReactorImpl _reactorImpl) throws Exception {
-        initialize(_reactorImpl);
+    public void initialize(final ReactorImpl _reactorImpl) throws Exception {
+        super.initialize(_reactorImpl);
         _reactorImpl.initialize(this);
     }
 

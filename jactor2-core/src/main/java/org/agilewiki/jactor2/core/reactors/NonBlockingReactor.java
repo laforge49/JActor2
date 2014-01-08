@@ -37,7 +37,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
         this(Plant.getReactor());
     }
 
-    public NonBlockingReactor(final CommonReactor _parentReactor)
+    public NonBlockingReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize);
@@ -47,17 +47,22 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
         this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public NonBlockingReactor(final CommonReactor _parentReactor,
+    public NonBlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
                 _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
     }
 
-    public NonBlockingReactor(final ReactorImpl _parentReactorImpl,
+    public NonBlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        super(new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+        initialize(new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
                 _recovery, _scheduler));
+    }
+
+    @Override
+    public NonBlockingReactorImpl asReactorImpl() {
+        return (NonBlockingReactorImpl) asCloserImpl();
     }
 
     public void setIdle(final Runnable _idle) {

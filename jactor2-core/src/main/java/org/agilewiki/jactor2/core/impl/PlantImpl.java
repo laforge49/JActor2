@@ -53,7 +53,7 @@ public class PlantImpl {
             plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
         } else
             plantConfiguration = _plantConfiguration;
-        reactor = new NonBlockingReactor((ReactorImpl) null, plantConfiguration.getInitialBufferSize(),
+        reactor = new NonBlockingReactor((NonBlockingReactorImpl) null, plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize(),
                 plantConfiguration.getRecovery(), plantConfiguration.getScheduler());
         threadManager = plantConfiguration.getThreadManager();

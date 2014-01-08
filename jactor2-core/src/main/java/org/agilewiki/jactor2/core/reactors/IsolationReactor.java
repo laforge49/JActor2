@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.impl.IsolationReactorImpl;
+import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
@@ -39,7 +40,7 @@ public class IsolationReactor extends ReactorBase {
         this(Plant.getReactor());
     }
 
-    public IsolationReactor(final CommonReactor _parentReactor)
+    public IsolationReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize);
@@ -49,17 +50,22 @@ public class IsolationReactor extends ReactorBase {
         this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public IsolationReactor(final CommonReactor _parentReactor,
+    public IsolationReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
                 _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
     }
 
-    public IsolationReactor(final ReactorImpl _parentReactorImpl,
+    public IsolationReactor(final NonBlockingReactorImpl _parentReactorImpl,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        super(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+        initialize(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
                 _recovery, _scheduler));
+    }
+
+    @Override
+    public IsolationReactorImpl asReactorImpl() {
+        return (IsolationReactorImpl) asCloserImpl();
     }
 
     public void setIdle(final Runnable _idle) {

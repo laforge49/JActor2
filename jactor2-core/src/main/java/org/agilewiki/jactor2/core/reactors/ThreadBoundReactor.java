@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -94,7 +95,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
         this(Plant.getReactor());
     }
 
-    public ThreadBoundReactor(final CommonReactor _parentReactor) throws Exception {
+    public ThreadBoundReactor(final NonBlockingReactor _parentReactor) throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize, null);
     }
@@ -104,7 +105,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
         this(Plant.getReactor(), _boundProcessor);
     }
 
-    public ThreadBoundReactor(final CommonReactor _parentReactor, final Runnable _boundProcessor)
+    public ThreadBoundReactor(final NonBlockingReactor _parentReactor, final Runnable _boundProcessor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize, _boundProcessor);
@@ -115,19 +116,32 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
         this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
-    public ThreadBoundReactor(final CommonReactor _parentReactor,
+    public ThreadBoundReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
                 _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler, _boundProcessor);
     }
 
-    public ThreadBoundReactor(final ReactorImpl _parentReactorImpl,
+    public ThreadBoundReactor(final NonBlockingReactorImpl _parentReactorImpl,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Recovery _recovery, final Scheduler _scheduler,
                            final Runnable _boundProcessor) throws Exception {
-        super(new ThreadBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+        initialize(createReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
                 _recovery, _scheduler, _boundProcessor));
+    }
+
+    protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                            final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                            final Recovery _recovery, final Scheduler _scheduler,
+                                            final Runnable _boundProcessor) throws Exception {
+        return new ThreadBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler, _boundProcessor);
+    }
+
+    @Override
+    public ThreadBoundReactorImpl asReactorImpl() {
+        return (ThreadBoundReactorImpl) asCloserImpl();
     }
 
     @Override

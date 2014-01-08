@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.impl.BlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
@@ -34,7 +35,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
         this(Plant.getReactor());
     }
 
-    public BlockingReactor(final CommonReactor _parentReactor)
+    public BlockingReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize);
@@ -44,17 +45,22 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
         this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public BlockingReactor(final CommonReactor _parentReactor,
+    public BlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
                 _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
     }
 
-    public BlockingReactor(final ReactorImpl _parentReactorImpl,
+    public BlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        super(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+        initialize(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
                 _recovery, _scheduler));
+    }
+
+    @Override
+    public BlockingReactorImpl asReactorImpl() {
+        return (BlockingReactorImpl) asCloserImpl();
     }
 
     public void setIdle(final Runnable _idle) {

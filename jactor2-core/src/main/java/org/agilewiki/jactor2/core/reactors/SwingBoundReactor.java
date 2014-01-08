@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -66,13 +67,13 @@ import java.awt.event.WindowListener;
  * }
  * </pre>
  */
-public class SwingBoundReactor extends ReactorBase implements CommonReactor, WindowListener {
+public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener {
 
     public SwingBoundReactor() throws Exception {
-        this(Plant.getReactor());
+        super(Plant.getReactor());
     }
 
-    public SwingBoundReactor(final CommonReactor _parentReactor)
+    public SwingBoundReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
                 _parentReactor.asReactorImpl().initialLocalQueueSize);
@@ -83,19 +84,33 @@ public class SwingBoundReactor extends ReactorBase implements CommonReactor, Win
         this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public SwingBoundReactor(final CommonReactor _parentReactor,
+    public SwingBoundReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
                 _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
     }
 
-    public SwingBoundReactor(final ReactorImpl _parentReactorImpl,
+    public SwingBoundReactor(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Recovery _recovery, final Scheduler _scheduler)
             throws Exception {
-        super(new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler));
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler, null);
+    }
+
+    @Override
+    protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                            final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                            final Recovery _recovery, final Scheduler _scheduler,
+                                            final Runnable _boundProcessor) throws Exception {
+        return new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
+                _recovery, _scheduler);
+    }
+
+    @Override
+    public SwingBoundReactorImpl asReactorImpl() {
+        return (SwingBoundReactorImpl) asCloserImpl();
     }
 
     @Override

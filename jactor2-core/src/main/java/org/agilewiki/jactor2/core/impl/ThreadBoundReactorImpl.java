@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.impl;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
+import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.ArrayDeque;
@@ -17,12 +18,17 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
      */
     private final Runnable boundProcessor;
 
-    public ThreadBoundReactorImpl(final ReactorImpl _parentReactorImpl,
+    public ThreadBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                   final int _initialOutboxSize, final int _initialLocalQueueSize,
                                   final Recovery _recovery, final Scheduler _scheduler,
                                   final Runnable _boundProcessor) throws Exception {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
         boundProcessor = _boundProcessor;
+    }
+
+    @Override
+    public ThreadBoundReactor asReactor() {
+        return (ThreadBoundReactor) getReactor();
     }
 
     @Override
