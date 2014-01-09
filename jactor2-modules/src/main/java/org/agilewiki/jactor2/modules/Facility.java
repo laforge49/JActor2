@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.modules.impl.FacilityImpl;
 import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
@@ -35,15 +36,30 @@ public class Facility extends NonBlockingReactor {
                 _recovery, _scheduler);
     }
 
-    FacilityImpl asFacilityImpl() {
+    public FacilityImpl asFacilityImpl() {
         return (FacilityImpl) asReactorImpl();
     }
 
-    String getName() {
+    public String getName() {
         return asFacilityImpl().getName();
     }
 
-    PropertiesProcessor getPropertiesProcessor() {
+    public PropertiesProcessor getPropertiesProcessor() {
         return asFacilityImpl().getPropertiesProcessor();
+    }
+
+    public Object getProperty(final String propertyName) {
+        return asFacilityImpl().getProperty(propertyName);
+    }
+
+    public AsyncRequest<Void> putPropertyAReq(final String _propertyName,
+                                              final Object _expectedValue,
+                                              final Object _propertyValue) {
+        return asFacilityImpl().putPropertyAReq(_propertyName, _expectedValue, _propertyValue);
+    }
+
+    public AsyncRequest<Void> putPropertyAReq(final String _propertyName,
+                                              final Object _propertyValue) {
+        return asFacilityImpl().putPropertyAReq(_propertyName, _propertyValue);
     }
 }

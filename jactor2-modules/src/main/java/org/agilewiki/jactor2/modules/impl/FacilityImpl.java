@@ -86,45 +86,11 @@ public class FacilityImpl extends NonBlockingReactorImpl {
         return FACILITY_PREFIX+_facilityName+"~"+FACILITY_STOPPED_POSTFIX;
     }
 
-    public Recovery recovery;
-    public Scheduler scheduler;
-
-    /**
-     * Set when the facility reaches end-of-life.
-     * Can only be updated via a request to the facility.
-     */
-    protected volatile boolean shuttingDown;
-
-    private volatile boolean startClosing;
-
-    /**
-     * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
-     */
-    @SuppressWarnings("rawtypes")
-    public final ConcurrentSkipListMap<Long, Set<RequestImpl>> pendingRequests = PlantImpl.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestImpl>>()
-            : null;
-
-    /**
-     * The logger used by targetReactor.
-     */
-    protected final Logger log = LoggerFactory
-            .getLogger(Reactor.class);
-
-    /**
-     * How big should the initial inbox doLocal queue size be?
-     */
-    public int initialLocalMessageQueueSize;
-
-    /**
-     * How big should the initial outbox (per target Reactor) buffer size be?
-     */
-    public int initialBufferSize;
-
     protected PropertiesProcessor propertiesProcessor;
 
     private String name;
 
-    private PlantImpl plantImpl;
+    private MPlantImpl plantImpl;
 
     public FacilityImpl(final int _initialOutboxSize, final int _initialLocalQueueSize,
                         final Recovery _recovery, final Scheduler _scheduler) throws Exception {
@@ -144,18 +110,19 @@ public class FacilityImpl extends NonBlockingReactorImpl {
     }
 
     public void initialize() throws Exception {
-        plantImpl = PlantImpl.getSingleton();
+        plantImpl = MPlantImpl.getSingleton();
+        final FacilityImpl plantFacilityImpl = plantImpl.getInternalFacility().asFacilityImpl();
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(this.getFacility(), initialState);
         String dependencyPrefix = dependencyPrefix(name);
         ImmutableProperties<Object> dependencies =
-                plantImpl.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
+                plantFacilityImpl.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
         Iterator<String> dit = dependencies.keySet().iterator();
         while (dit.hasNext()) {
             String d = dit.next();
             String dependencyName = d.substring(dependencyPrefix.length());
-            Facility dependency = plantImpl.getFacility(dependencyName);
+            FacilityImpl dependency = plantImpl.getFacilityImpl(dependencyName);
             if (dependency == null)
                 throw new IllegalStateException("dependency not present: "+dependencyName);
             dependency.addCloseable(this);
@@ -164,7 +131,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
         RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 validationBus,
-                (NonBlockingReactor) internalReactor) {
+                this.asReactor()) {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
@@ -181,7 +148,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                     Object oldValue = pc.oldValue;
                     Object newValue = pc.newValue;
                     if (key.startsWith(FACILITY_PROPERTY_PREFIX)) {
-                        if (!(FacilityImpl.this instanceof PlantImpl))
+                        if (!(FacilityImpl.this == plantFacilityImpl))
                             throw new UnsupportedOperationException("only a plant can have a facility");
                         if (newValue != null && !(newValue instanceof Facility))
                             throw new IllegalArgumentException(key
@@ -191,7 +158,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                             throw new IllegalStateException("Facility already exists: "+facility.name);
                         }
                     } else if (key.startsWith(FACILITY_PREFIX)) {
-                        if (!(FacilityImpl.this instanceof PlantImpl))
+                        if (!(FacilityImpl.this == plantFacilityImpl))
                             throw new UnsupportedOperationException(
                                     "only a plant can have a facility configuration property: "+key);
                         String name1 = key.substring(FACILITY_PREFIX.length());
@@ -200,7 +167,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                             throw new UnsupportedOperationException("undeliminated facility");
                         String name2 = name1.substring(i + 1);
                         name1 = name1.substring(0, i);
-                        Facility facility0 = plantImpl.getFacility(name1);
+                        FacilityImpl facility0 = plantImpl.getFacilityImpl(name1);
                         if (name2.startsWith(FACILITY_DEPENDENCY_INFIX)) {
                             if (facility0 != null) {
                                 throw new IllegalStateException(
@@ -269,26 +236,8 @@ public class FacilityImpl extends NonBlockingReactorImpl {
         return name;
     }
 
-    public Scheduler getScheduler() {
-        return scheduler;
-    }
-
-    @Override
-    public NonBlockingReactor getReactor() {
-        return (NonBlockingReactor) super.getReactor();
-    }
-
-    @Override
     public PropertiesProcessor getPropertiesProcessor() {
         return propertiesProcessor;
-    }
-
-    public final boolean startedClosing() {
-        return startClosing;
-    }
-
-    public final boolean isShuttingDown() {
-        return shuttingDown;
     }
 
     protected void validateName(final String _name) throws Exception {
@@ -311,90 +260,61 @@ public class FacilityImpl extends NonBlockingReactorImpl {
         }
     }
 
-    public Logger getLogger() {
-        return log;
-    }
-
-    /**
-     * Returns the initial buffer size to be used by outboxes.
-     *
-     * @return The initial buffer size.
-     */
-    public int getInitialBufferSize() {
-        return initialBufferSize;
-    }
-
-    /**
-     * Returns the initial doLocal message queue(s) size.
-     *
-     * @return The initial doLocal message queue(s) size.
-     */
-    public int getInitialLocalMessageQueueSize() {
-        return initialLocalMessageQueueSize;
-    }
-
     @Override
     public void close() throws Exception {
-        if (startClosing)
+        if (startedClosing())
             return;
-        startClosing = true;
-        final Plant plant = PlantImpl.getSingleton();
-        if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
-            plantImpl.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+        final MPlantImpl plantImpl = MPlantImpl.getSingleton();
+        if ((plantImpl != null) &&
+                plantImpl.getInternalFacility().asFacilityImpl() != this &&
+                !plantImpl.getInternalFacility().asFacilityImpl().startedClosing()) {
+            plantImpl.getInternalFacility().putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
-        closeAll();
+        super.close();
     }
 
     public void stop() throws Exception {
-        if (startClosing) {
-            plantImpl.putPropertyAReq(stoppedKey(name), true,
+        if (startedClosing()) {
+            plantImpl.getInternalFacility().putPropertyAReq(stoppedKey(name), true,
                     null).signal();
             return;
         }
-        startClosing = true;
-        final Plant plant = PlantImpl.getSingleton();
-        if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
-            new PropertiesTransactionAReq(plantImpl.getPropertiesProcessor().commonReactor,
-                    plantImpl.getPropertiesProcessor()){
+        final MPlantImpl plantImpl = MPlantImpl.getSingleton();
+        if ((plantImpl != null) &&
+                plantImpl.getInternalFacility().asFacilityImpl() != this &&
+                !plantImpl.getInternalFacility().asFacilityImpl().startedClosing()) {
+            new PropertiesTransactionAReq(plantImpl.getInternalFacility(),
+                    plantImpl.getInternalFacility().getPropertiesProcessor()){
                 protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                     _changeManager.put(FACILITY_PROPERTY_PREFIX + name, null);
                     _changeManager.put(stoppedKey(name), true);
                 }}.signal();
-            plantImpl.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+            plantImpl.getInternalFacility().putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
-        closeAll();
+        super.close();
     }
 
     public void fail(final Object reason) throws Exception {
-        if (startClosing) {
-            plantImpl.putPropertyAReq(failedKey(name), reason,
+        if (startedClosing()) {
+            plantImpl.getInternalFacility().putPropertyAReq(failedKey(name), reason,
                     null).signal();
             return;
         }
-        startClosing = true;
-        final Plant plant = PlantImpl.getSingleton();
-        if ((plant != null) && (plantImpl != FacilityImpl.this && !plantImpl.startedClosing())) {
-            new PropertiesTransactionAReq(plantImpl.getPropertiesProcessor().commonReactor,
-                    plantImpl.getPropertiesProcessor()){
+        final MPlantImpl plantImpl = MPlantImpl.getSingleton();
+        if ((plantImpl != null) &&
+                plantImpl.getInternalFacility().asFacilityImpl() != this &&
+                !plantImpl.getInternalFacility().asFacilityImpl().startedClosing()) {
+            new PropertiesTransactionAReq(plantImpl.getInternalFacility(),
+                    plantImpl.getInternalFacility().getPropertiesProcessor()){
                 protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                     _changeManager.put(FACILITY_PROPERTY_PREFIX + name, null);
                     _changeManager.put(failedKey(name), reason);
                 }}.signal();
-            plantImpl.putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+            plantImpl.getInternalFacility().putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
-        closeAll();
-    }
-
-
-    protected void close2() throws Exception {
-        if (shuttingDown) {
-            return;
-        }
-        internalReactor.close();
-        shuttingDown = true;
         super.close();
     }
 
@@ -406,14 +326,6 @@ public class FacilityImpl extends NonBlockingReactorImpl {
      */
     public Object getProperty(final String propertyName) {
         return propertiesProcessor.getImmutableState().get(propertyName);
-    }
-
-    public Plant getPlant() {
-        return plant;
-    }
-
-    public PlantImpl getPlantImpl() {
-        return plantImpl;
     }
 
     public AsyncRequest<Void> putPropertyAReq(final String _propertyName,
@@ -455,14 +367,14 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                         _activatorClassName);
                 final Activator activator = (Activator) initiatorClass
                         .newInstance();
-                activator.initialize(getReactor());
+                activator.initialize(asReactor());
                 send(activator.startAReq(), this, null);
             }
         };
     }
 
     public AsyncRequest<Subscription<ImmutablePropertyChanges>> tracePropertyChangesAReq() {
-        return new SubscribeAReq<ImmutablePropertyChanges>(propertiesProcessor.changeBus, internalReactor) {
+        return new SubscribeAReq<ImmutablePropertyChanges>(propertiesProcessor.changeBus, asReactor()) {
             @Override
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
@@ -476,7 +388,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                             "" + propertyChange.oldValue,
                             "" + propertyChange.newValue
                     };
-                    log.info("\n    facility={}\n    key={}\n    old={}\n    new={}", args);
+                    logger.info("\n    facility={}\n    key={}\n    old={}\n    new={}", args);
                 }
             }
         };
@@ -491,19 +403,6 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             ReactorImpl reactor = (ReactorImpl) closeable;
             reactor.reactorPoll();
         }
-        internalReactor.asReactorImpl().reactorPoll();
-    }
-
-    /**
-     * The reactor used internally, is not a functional closer.
-     */
-    private class InternalReactor extends NonBlockingReactor {
-
-        /**
-         * Create an internal reactor.
-         */
-        public InternalReactor() throws Exception {
-            super(FacilityImpl.this, true);
-        }
+        reactorPoll();
     }
 }
