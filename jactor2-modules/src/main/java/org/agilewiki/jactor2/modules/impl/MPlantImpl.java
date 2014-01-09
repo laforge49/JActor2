@@ -2,6 +2,8 @@ package org.agilewiki.jactor2.modules.impl;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -26,62 +28,22 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.SortedMap;
 
-public class MPlantImpl extends FacilityImpl {
-    /**
-     * System property flag, jactor.debug, to turn on debug;
-     */
-    public static final boolean DEBUG = "true".equals(System
-            .getProperty("jactor.debug"));
+public class MPlantImpl extends PlantImpl {
 
-    private static volatile Plant singleton;
-
-    public static Plant getSingleton() {
-        return singleton;
+    public static MPlantImpl getSingleton() {
+        return (MPlantImpl) PlantImpl.getSingleton();
     }
-
-    private PlantConfiguration plantConfiguration;
-
-    private boolean exitOnClose;
-
-    /**
-     * The thread pool.
-     */
-    private ThreadManager threadManager;
 
     public MPlantImpl() throws Exception {
-        super(PLANT_NAME);
+        this(new PlantConfiguration());
     }
 
-    public void initialize(final Plant _plant) throws Exception {
-        initialize(_plant, new PlantConfiguration());
+    public MPlantImpl(final int _threadCount) throws Exception {
+        this(new PlantConfiguration(_threadCount));
     }
 
-    public void initialize(final Plant _plant, final int _threadCount) throws Exception {
-        initialize(_plant, new PlantConfiguration(_threadCount));
-    }
-
-    public void initialize(final Plant _plant, final PlantConfiguration _plantConfiguration) throws Exception {
-        _plantConfiguration.initialize();
-        if (singleton != null) {
-            throw new IllegalStateException("the singleton already exists");
-        }
-        singleton = _plant;
-        if (DEBUG) {
-            System.out.println("\n*** jactor.debug = true ***\n");
-        }
-        String configurationClassName = System.getProperty("jactor.configurationClass");
-        if (configurationClassName != null) {
-            ClassLoader classLoader = getClass().getClassLoader();
-            Class configurationClass = classLoader.loadClass(configurationClassName);
-            plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
-        } else
-            plantConfiguration = _plantConfiguration;
-        recovery = plantConfiguration.getRecovery();
-        scheduler = plantConfiguration.getScheduler();
-        initialLocalMessageQueueSize = plantConfiguration.getInitialLocalMessageQueueSize();
-        initialBufferSize = plantConfiguration.getInitialBufferSize();
-        threadManager = plantConfiguration.getThreadManager();
-        initialize();
+    public MPlantImpl(final PlantConfiguration _plantConfiguration) throws Exception {
+        super(_plantConfiguration);
         RequestBus<ImmutablePropertyChanges> changeBus = propertiesProcessor.changeBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 changeBus,
@@ -133,8 +95,15 @@ public class MPlantImpl extends FacilityImpl {
                 reactorPollMillis);
     }
 
-    public Plant asPlant() {
-        return plant;
+    public Facility getInternalFacility() {
+        return (Facility) getReactor();
+    }
+
+    protected NonBlockingReactor createInternalReactor() throws Exception {
+        PlantConfiguration plantConfiguration = getPlantConfiguration();
+        return new NonBlockingReactor(null, plantConfiguration.getInitialBufferSize(),
+                plantConfiguration.getInitialLocalMessageQueueSize(),
+                plantConfiguration.getRecovery(), plantConfiguration.getScheduler());
     }
 
     private Runnable plantPoll() {
@@ -437,7 +406,7 @@ public class MPlantImpl extends FacilityImpl {
         return (String) getProperty(activatorKey(_facilityName));
     }
 
-    public FacilityImpl getFacility(String name) {
+    public FacilityImpl getFacilityImpl(String name) {
         return (FacilityImpl) getProperty(FACILITY_PROPERTY_PREFIX + name);
     }
 

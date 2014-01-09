@@ -1,10 +1,7 @@
 package org.agilewiki.jactor2.modules.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.impl.CloserImpl;
-import org.agilewiki.jactor2.core.impl.PlantImpl;
-import org.agilewiki.jactor2.core.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.RequestImpl;
+import org.agilewiki.jactor2.core.impl.*;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -29,16 +26,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-/**
- * Provides a thread pool for
- * non-blocking and isolation targetReactor. Multiple facilities with independent life cycles
- * are also supported.
- * (A ServiceClosedException may be thrown when messages cross facilities and the target facility is closed.)
- * In addition, the facility maintains a set of AutoClosable objects that are closed
- * when the facility is closed, as well as a table of properties.
- */
-
-public class FacilityImpl extends CloserImpl implements Facility {
+public class FacilityImpl extends NonBlockingReactorImpl {
 
     public static final String CORE_PREFIX = "core.";
 
@@ -102,11 +90,6 @@ public class FacilityImpl extends CloserImpl implements Facility {
     public Scheduler scheduler;
 
     /**
-     * The facility's internal reactor for managing the auto closeable set and for closing itself.
-     */
-    protected NonBlockingReactor internalReactor;
-
-    /**
      * Set when the facility reaches end-of-life.
      * Can only be updated via a request to the facility.
      */
@@ -139,32 +122,32 @@ public class FacilityImpl extends CloserImpl implements Facility {
 
     protected PropertiesProcessor propertiesProcessor;
 
-    public final String name;
-
-    protected Plant plant;
+    private String name;
 
     private PlantImpl plantImpl;
 
-    /**
-     * Create a Facility.
-     *
-     * @param _name                         The name of the facility.
-     */
-    public FacilityImpl(final String _name) throws Exception {
+    public FacilityImpl(final int _initialOutboxSize, final int _initialLocalQueueSize,
+                        final Recovery _recovery, final Scheduler _scheduler) throws Exception {
+        super(PlantImpl.getSingleton() == null ? null : PlantImpl.getSingleton().getReactor().asReactorImpl(),
+                _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
+    }
+
+    public void setName(final String _name) throws Exception {
+        if (name != null)
+            throw new IllegalStateException("name already set");
         validateName(_name);
         name = _name;
     }
 
+    public Facility getFacility() {
+        return (Facility) getReactor();
+    }
+
     public void initialize() throws Exception {
-        plant = PlantImpl.getSingleton();
-        plantImpl = plant.asPlantImpl();
-        internalReactor = new InternalReactor();
-        initialize(internalReactor);
-        if (this != plantImpl)
-            plantImpl.addCloseable(this);
+        plantImpl = PlantImpl.getSingleton();
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         initialState.put(NAME_PROPERTY, name);
-        propertiesProcessor = new PropertiesProcessor(new IsolationReactor(this), internalReactor, initialState);
+        propertiesProcessor = new PropertiesProcessor(this.getFacility(), initialState);
         String dependencyPrefix = dependencyPrefix(name);
         ImmutableProperties<Object> dependencies =
                 plantImpl.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
@@ -278,12 +261,10 @@ public class FacilityImpl extends CloserImpl implements Facility {
         }.signal();
     }
 
-    @Override
-    public FacilityImpl asFacilityImpl() {
-        return this;
+    public Facility asFacility() {
+        return (Facility) asReactor();
     }
 
-    @Override
     public String getName() {
         return name;
     }

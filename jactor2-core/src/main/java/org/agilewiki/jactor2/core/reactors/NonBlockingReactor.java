@@ -49,14 +49,20 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     public NonBlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
+        this(_parentReactor, _initialOutboxSize, _initialLocalQueueSize,
                 _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
     }
 
-    public NonBlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
+    public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
+                              final Recovery _recovery, final Scheduler _scheduler) throws Exception {
+        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
+    }
+
+    public NonBlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize,
                               final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        initialize(createReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,                _recovery, _scheduler));
+        initialize(createReactorImpl(_parentReactor == null ? null : _parentReactor.asReactorImpl(),
+                _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler));
     }
 
     protected NonBlockingReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,

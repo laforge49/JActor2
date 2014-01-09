@@ -53,13 +53,17 @@ public class PlantImpl {
             plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
         } else
             plantConfiguration = _plantConfiguration;
-        reactor = new NonBlockingReactor((NonBlockingReactorImpl) null, plantConfiguration.getInitialBufferSize(),
-                plantConfiguration.getInitialLocalMessageQueueSize(),
-                plantConfiguration.getRecovery(), plantConfiguration.getScheduler());
         threadManager = plantConfiguration.getThreadManager();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
         _plantConfiguration.getScheduler().scheduleAtFixedRate(plantPoll(),
                 reactorPollMillis);
+        reactor = createInternalReactor();
+    }
+
+    protected NonBlockingReactor createInternalReactor() throws Exception {
+        return new NonBlockingReactor((NonBlockingReactor) null, plantConfiguration.getInitialBufferSize(),
+                plantConfiguration.getInitialLocalMessageQueueSize(),
+                plantConfiguration.getRecovery(), plantConfiguration.getScheduler());
     }
 
     public NonBlockingReactor getReactor() {
