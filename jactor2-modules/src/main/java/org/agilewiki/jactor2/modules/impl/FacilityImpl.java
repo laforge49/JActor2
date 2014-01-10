@@ -13,6 +13,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.Activator;
 import org.agilewiki.jactor2.modules.Facility;
+import org.agilewiki.jactor2.modules.MPlant;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.modules.pubSub.Subscription;
@@ -28,94 +29,28 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public class FacilityImpl extends NonBlockingReactorImpl {
 
-    public static final String CORE_PREFIX = "core.";
-
-    public static final String NAME_PROPERTY = CORE_PREFIX+"facilityName";
-
-    public static final String PLANT_NAME = "Plant";
-
-    public static final String FACILITY_PROPERTY_PREFIX = CORE_PREFIX+"facility_";
-
-    public static final String FACILITY_PREFIX = "facility_";
-
-    public static final String FACILITY_DEPENDENCY_INFIX = CORE_PREFIX+"dependency_";
-
-    public static String dependencyPrefix(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_DEPENDENCY_INFIX;
-    }
-
-    public static final String FACILITY_RECOVERY_POSTFIX = CORE_PREFIX+"recovery";
-
-    public static String recoveryKey(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_RECOVERY_POSTFIX;
-    }
-
-    public static final String FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX = CORE_PREFIX+"initialLocalMessageQueueSize";
-
-    public static String initialLocalMessageQueueSizeKey(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX;
-    }
-
-    public static final String FACILITY_INITIAL_BUFFER_SIZE_POSTFIX = CORE_PREFIX+"initialBufferSize";
-
-    public static String initialBufferSizeKey(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_INITIAL_BUFFER_SIZE_POSTFIX;
-    }
-
-    public static final String FACILITY_ACTIVATOR_POSTFIX = CORE_PREFIX+"activator";
-
-    public static String activatorKey(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_ACTIVATOR_POSTFIX;
-    }
-
-    public static String FACILITY_AUTO_START_POSTFIX = CORE_PREFIX+"autoStart";
-
-    public static String autoStartKey(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_AUTO_START_POSTFIX;
-    }
-
-    public static String FACILITY_FAILED_POSTFIX = CORE_PREFIX+"failed";
-
-    public static String failedKey(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_FAILED_POSTFIX;
-    }
-
-    public static String FACILITY_STOPPED_POSTFIX = CORE_PREFIX+"stopped";
-
-    public static String stoppedKey(final String _facilityName) {
-        return FACILITY_PREFIX+_facilityName+"~"+FACILITY_STOPPED_POSTFIX;
-    }
-
     protected PropertiesProcessor propertiesProcessor;
 
     private String name;
 
     private MPlantImpl plantImpl;
 
-    public FacilityImpl(final int _initialOutboxSize, final int _initialLocalQueueSize,
-                        final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        super(PlantImpl.getSingleton() == null ? null : PlantImpl.getSingleton().getReactor().asReactorImpl(),
-                _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
-    }
+    private FacilityImpl plantFacilityImpl;
 
-    public void setName(final String _name) throws Exception {
+    public FacilityImpl(final String _name,
+                        final int _initialOutboxSize, final int _initialLocalQueueSize,
+                        final Recovery _recovery, final Scheduler _scheduler) throws Exception {
+        super(PlantImpl.getSingleton().getReactor() == null ? null : PlantImpl.getSingleton().getReactor().asReactorImpl(),
+                _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
         if (name != null)
             throw new IllegalStateException("name already set");
         validateName(_name);
         name = _name;
-    }
-
-    public Facility getFacility() {
-        return (Facility) getReactor();
-    }
-
-    public void initialize() throws Exception {
         plantImpl = MPlantImpl.getSingleton();
-        final FacilityImpl plantFacilityImpl = plantImpl.getInternalFacility().asFacilityImpl();
+        plantFacilityImpl = plantImpl.getInternalFacility().asFacilityImpl();
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
-        initialState.put(NAME_PROPERTY, name);
         propertiesProcessor = new PropertiesProcessor(this.getFacility(), initialState);
-        String dependencyPrefix = dependencyPrefix(name);
+        String dependencyPrefix = MPlantImpl.dependencyPrefix(name);
         ImmutableProperties<Object> dependencies =
                 plantFacilityImpl.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
         Iterator<String> dit = dependencies.keySet().iterator();
@@ -128,108 +63,14 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             dependency.addCloseable(this);
         }
         tracePropertyChangesAReq().signal();
-        RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
-        new SubscribeAReq<ImmutablePropertyChanges>(
-                validationBus,
-                this.asReactor()) {
-            protected void processContent(final ImmutablePropertyChanges _content)
-                    throws Exception {
-                SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
-                PropertyChange pc = readOnlyChanges.get(NAME_PROPERTY);
-                if (pc != null && pc.oldValue != null)
-                    throw new IllegalStateException(
-                            "once set, this property can not be changed: "
-                                    + NAME_PROPERTY);
-
-                final Iterator<PropertyChange> it = readOnlyChanges.values().iterator();
-                while (it.hasNext()) {
-                    pc = it.next();
-                    String key = pc.name;
-                    Object oldValue = pc.oldValue;
-                    Object newValue = pc.newValue;
-                    if (key.startsWith(FACILITY_PROPERTY_PREFIX)) {
-                        if (!(FacilityImpl.this == plantFacilityImpl))
-                            throw new UnsupportedOperationException("only a plant can have a facility");
-                        if (newValue != null && !(newValue instanceof Facility))
-                            throw new IllegalArgumentException(key
-                                    + " not set to a Facility " + newValue);
-                        if (oldValue != null && newValue != null) {
-                            FacilityImpl facility = (FacilityImpl) oldValue;
-                            throw new IllegalStateException("Facility already exists: "+facility.name);
-                        }
-                    } else if (key.startsWith(FACILITY_PREFIX)) {
-                        if (!(FacilityImpl.this == plantFacilityImpl))
-                            throw new UnsupportedOperationException(
-                                    "only a plant can have a facility configuration property: "+key);
-                        String name1 = key.substring(FACILITY_PREFIX.length());
-                        int i = name1.indexOf('~');
-                        if (i == -1)
-                            throw new UnsupportedOperationException("undeliminated facility");
-                        String name2 = name1.substring(i + 1);
-                        name1 = name1.substring(0, i);
-                        FacilityImpl facility0 = plantImpl.getFacilityImpl(name1);
-                        if (name2.startsWith(FACILITY_DEPENDENCY_INFIX)) {
-                            if (facility0 != null) {
-                                throw new IllegalStateException(
-                                        "the dependency properties can not change while a facility is running ");
-                            }
-                            name2 = name2.substring(FACILITY_DEPENDENCY_INFIX.length());
-                            if (PLANT_NAME.equals(name1))
-                                throw new UnsupportedOperationException("a plant can not have a dependency");
-                            if (plantImpl.hasDependency(name2, key))
-                                throw new IllegalArgumentException(
-                                        "Would create a dependency cycle.");
-                        } else if (name2.equals(FACILITY_RECOVERY_POSTFIX)) {
-                            if (facility0 != null) {
-                                throw new IllegalStateException(
-                                        "the recovery property can not change while a facility is running ");
-                            }
-                            if (PLANT_NAME.equals(name1))
-                                throw new UnsupportedOperationException("a plant can not have a recovery property");
-                            if (newValue != null && !(newValue instanceof Recovery))
-                                throw new IllegalArgumentException("recovery value must implement Recovery");
-                        } else if (name2.equals(FACILITY_INITIAL_LOCAL_MESSAGE_QUEUE_SIZE_POSTFIX)) {
-                            if (facility0 != null) {
-                                throw new IllegalStateException(
-                                        "the initial local message queue size property can not change while a facility is running ");
-                            }
-                            if (PLANT_NAME.equals(name1))
-                                throw new UnsupportedOperationException(
-                                        "a plant can not have an initial local message queue size property");
-                            if (newValue != null && !(newValue instanceof Integer))
-                                throw new IllegalArgumentException(
-                                        "the initial local message queue size property value must be an Integer");
-                        } else if (name2.equals(FACILITY_INITIAL_BUFFER_SIZE_POSTFIX)) {
-                            if (facility0 != null) {
-                                throw new IllegalStateException(
-                                        "the initial buffer size property can not change while a facility is running ");
-                            }
-                            if (PLANT_NAME.equals(name1))
-                                throw new UnsupportedOperationException(
-                                        "a plant can not have an initial buffer size property");
-                            if (newValue != null && !(newValue instanceof Integer))
-                                throw new IllegalArgumentException(
-                                        "the initial buffer size property value must be an Integer");
-                        } else if (name2.equals(FACILITY_ACTIVATOR_POSTFIX)) {
-                            if (facility0 != null) {
-                                throw new IllegalStateException(
-                                        "the activator property can not change while a facility is running ");
-                            }
-                            if (PLANT_NAME.equals(name1))
-                                throw new UnsupportedOperationException(
-                                        "a plant can not have an activator property");
-                            if (newValue != null && !(newValue instanceof String))
-                                throw new IllegalArgumentException(
-                                        "the activator property value must be a String");
-                        }
-                    }
-                }
-            }
-        }.signal();
     }
 
     public Facility asFacility() {
         return (Facility) asReactor();
+    }
+
+    public Facility getFacility() {
+        return (Facility) getReactor();
     }
 
     public String getName() {
@@ -255,8 +96,10 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             throw new IllegalArgumentException("name may not contain ~: "
                     + _name);
         }
-        if (_name.equals(PLANT_NAME)) {
-            throw new IllegalArgumentException("name may be " + PLANT_NAME);
+        if (_name.equals(MPlantImpl.PLANT_NAME) && getParentReactor() != null) {
+            throw new IllegalArgumentException("name may not be " + MPlantImpl.PLANT_NAME);
+        } else if (MPlant.getFacility(_name) != null) {
+            throw new IllegalStateException("facility by that name already exists");
         }
     }
 
@@ -268,7 +111,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
         if ((plantImpl != null) &&
                 plantImpl.getInternalFacility().asFacilityImpl() != this &&
                 !plantImpl.getInternalFacility().asFacilityImpl().startedClosing()) {
-            plantImpl.getInternalFacility().putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+            plantImpl.getInternalFacility().putPropertyAReq(MPlantImpl.FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
         super.close();
@@ -276,7 +119,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
 
     public void stop() throws Exception {
         if (startedClosing()) {
-            plantImpl.getInternalFacility().putPropertyAReq(stoppedKey(name), true,
+            plantImpl.getInternalFacility().putPropertyAReq(MPlantImpl.stoppedKey(name), true,
                     null).signal();
             return;
         }
@@ -287,10 +130,10 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             new PropertiesTransactionAReq(plantImpl.getInternalFacility(),
                     plantImpl.getInternalFacility().getPropertiesProcessor()){
                 protected void update(final PropertiesChangeManager _changeManager) throws Exception {
-                    _changeManager.put(FACILITY_PROPERTY_PREFIX + name, null);
-                    _changeManager.put(stoppedKey(name), true);
+                    _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, null);
+                    _changeManager.put(MPlantImpl.stoppedKey(name), true);
                 }}.signal();
-            plantImpl.getInternalFacility().putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+            plantImpl.getInternalFacility().putPropertyAReq(MPlantImpl.FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
         super.close();
@@ -298,7 +141,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
 
     public void fail(final Object reason) throws Exception {
         if (startedClosing()) {
-            plantImpl.getInternalFacility().putPropertyAReq(failedKey(name), reason,
+            plantImpl.getInternalFacility().putPropertyAReq(MPlantImpl.failedKey(name), reason,
                     null).signal();
             return;
         }
@@ -309,10 +152,10 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             new PropertiesTransactionAReq(plantImpl.getInternalFacility(),
                     plantImpl.getInternalFacility().getPropertiesProcessor()){
                 protected void update(final PropertiesChangeManager _changeManager) throws Exception {
-                    _changeManager.put(FACILITY_PROPERTY_PREFIX + name, null);
-                    _changeManager.put(failedKey(name), reason);
+                    _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, null);
+                    _changeManager.put(MPlantImpl.failedKey(name), reason);
                 }}.signal();
-            plantImpl.getInternalFacility().putPropertyAReq(FACILITY_PROPERTY_PREFIX + name,
+            plantImpl.getInternalFacility().putPropertyAReq(MPlantImpl.FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
         super.close();
