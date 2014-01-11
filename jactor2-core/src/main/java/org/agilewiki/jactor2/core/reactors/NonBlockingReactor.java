@@ -40,10 +40,10 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
     public NonBlockingReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor,
-                _parentReactor == null ? PlantImpl.getSingleton().getReactor().asReactorImpl().initialBufferSize :
-                        _parentReactor.asReactorImpl().initialBufferSize,
-                _parentReactor == null ? PlantImpl.getSingleton().getReactor().asReactorImpl().initialLocalQueueSize :
-                        _parentReactor.asReactorImpl().initialLocalQueueSize);
+                _parentReactor == null ? PlantImpl.getSingleton().getReactor().asReactorImpl().getInitialBufferSize() :
+                        _parentReactor.asReactorImpl().getInitialBufferSize(),
+                _parentReactor == null ? PlantImpl.getSingleton().getReactor().asReactorImpl().getInitialLocalQueueSize() :
+                        _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
 
     public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {

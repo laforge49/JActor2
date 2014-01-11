@@ -36,13 +36,13 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     /**
      * The inbox, implemented as a local queue and a concurrent queue.
      */
-    protected final Inbox inbox;
+    protected Inbox inbox;
 
     /**
      * Holds the buffered messages until they are passed as blocks to their
      * various destinations.
      */
-    protected final Outbox outbox;
+    protected Outbox outbox;
 
     /**
      * The currently active exception handler.
@@ -62,9 +62,9 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
 
     private boolean startClosing;
 
-    public final int initialBufferSize;
+    protected int initialBufferSize;
 
-    public final int initialLocalQueueSize;
+    protected int initialLocalQueueSize;
 
     public final CommonReactor parentReactor;
 
@@ -75,9 +75,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         initialBufferSize = _initialBufferSize;
         initialLocalQueueSize = _initialLocalQueueSize;
         parentReactor = _parentReactorImpl == null ? null : _parentReactorImpl.asReactor();
-        inbox = createInbox(_initialLocalQueueSize);
         logger = LoggerFactory.getLogger(Reactor.class);
-        outbox = new Outbox(_initialBufferSize);
         recovery = _recovery;
         scheduler = _scheduler;
         if (_parentReactorImpl != null)
@@ -87,18 +85,24 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     @Override
     public void initialize(final Reactor _reactor) throws Exception {
         super.initialize(_reactor);
+        inbox = createInbox(initialLocalQueueSize);
+        outbox = new Outbox(initialBufferSize);
     }
 
     public Reactor asReactor() {
         return getReactor();
     }
 
-    public ReactorImpl asReactorImpl() {
-        return this;
-    }
-
     public Reactor getParentReactor() {
         return parentReactor;
+    }
+
+    public int getInitialBufferSize() {
+        return initialBufferSize;
+    }
+
+    public int getInitialLocalQueueSize() {
+        return initialLocalQueueSize;
     }
 
     /**

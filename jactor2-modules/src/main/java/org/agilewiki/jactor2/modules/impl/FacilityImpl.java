@@ -51,8 +51,9 @@ public class FacilityImpl extends NonBlockingReactorImpl {
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         propertiesProcessor = new PropertiesProcessor(this.getFacility(), initialState);
         String dependencyPrefix = MPlantImpl.dependencyPrefix(name);
+        PropertiesProcessor plantProperties = plantFacilityImpl.getPropertiesProcessor();
         ImmutableProperties<Object> dependencies =
-                plantFacilityImpl.getPropertiesProcessor().getImmutableState().subMap(dependencyPrefix);
+                plantProperties.getImmutableState().subMap(dependencyPrefix);
         Iterator<String> dit = dependencies.keySet().iterator();
         while (dit.hasNext()) {
             String d = dit.next();
@@ -63,6 +64,12 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             dependency.addCloseable(this);
         }
         tracePropertyChangesAReq().signal();
+        Integer v = (Integer) plantImpl.getProperty(MPlantImpl.initialLocalMessageQueueSizeKey(_name));
+        if (v != null)
+            initialLocalQueueSize = v;
+        v = (Integer) plantImpl.getProperty(MPlantImpl.initialBufferSizeKey(_name));
+        if (v != null)
+            initialBufferSize = v;
     }
 
     public Facility asFacility() {

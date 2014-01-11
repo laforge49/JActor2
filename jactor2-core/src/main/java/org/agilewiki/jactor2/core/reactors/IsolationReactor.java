@@ -42,8 +42,8 @@ public class IsolationReactor extends ReactorBase {
 
     public IsolationReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
-        this(_parentReactor, _parentReactor.asReactorImpl().initialBufferSize,
-                _parentReactor.asReactorImpl().initialLocalQueueSize);
+        this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
+                _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
 
     public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {

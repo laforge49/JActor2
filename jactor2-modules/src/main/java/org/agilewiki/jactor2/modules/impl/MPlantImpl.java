@@ -201,6 +201,9 @@ public class MPlantImpl extends PlantImpl {
                     String key = pc.name;
                     Object newValue = pc.newValue;
                     if (key.startsWith(FACILITY_PROPERTY_PREFIX) && newValue != null) {
+                        if (pc.oldValue != null) {
+                            throw new IllegalStateException("facility already exists");
+                        }
                         String facilityName = ((FacilityImpl) newValue).getName();
                         ImmutableProperties<Object> immutableProperties = _content.immutableProperties;
                         ImmutableProperties<Object> facilityProperties = immutableProperties.subMap(FACILITY_PREFIX);
@@ -314,18 +317,6 @@ public class MPlantImpl extends PlantImpl {
 
             @Override
             public void processAsyncRequest() throws Exception {
-                Integer v = (Integer) getProperty(initialLocalMessageQueueSizeKey(_name));
-                if (v == null)
-                    facility.initialLocalMessageQueueSize = initialLocalMessageQueueSize;
-                else
-                    facility.initialLocalMessageQueueSize = v;
-
-                v = (Integer) getProperty(initialBufferSizeKey(_name));
-                if (v == null)
-                    facility.initialBufferSize = initialBufferSize;
-                else
-                    facility.initialBufferSize = v;
-
                 facility.initialize();
                 send(new PropertiesTransactionAReq(internalFacility, propertiesProcessor) {
                          @Override
