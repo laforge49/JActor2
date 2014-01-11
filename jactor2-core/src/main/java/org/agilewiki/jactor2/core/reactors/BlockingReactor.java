@@ -47,15 +47,12 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
 
     public BlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
-                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
+        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public BlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        initialize(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler));
+                              final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+        initialize(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     @Override

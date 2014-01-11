@@ -87,25 +87,14 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
     public SwingBoundReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
-                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
-    }
-
-    public SwingBoundReactor(final NonBlockingReactorImpl _parentReactorImpl,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Recovery _recovery, final Scheduler _scheduler)
-            throws Exception {
-        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler, null);
+        super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 
     @Override
     protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                            final Recovery _recovery, final Scheduler _scheduler,
-                                            final Runnable _boundProcessor) throws Exception {
-        return new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler);
+                                           final Runnable _boundProcessor) throws Exception {
+        return new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override

@@ -52,42 +52,23 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     public NonBlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(_parentReactor, _initialOutboxSize, _initialLocalQueueSize,
-                _parentReactor == null ? PlantImpl.getSingleton().getReactor().asReactorImpl().recovery :
-                        _parentReactor.asReactorImpl().recovery,
-                _parentReactor == null ? PlantImpl.getSingleton().getReactor().asReactorImpl().scheduler :
-                        _parentReactor.asReactorImpl().scheduler);
-    }
-
-    public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
-    }
-
-    public NonBlockingReactor(final NonBlockingReactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Recovery _recovery, final Scheduler _scheduler) throws Exception {
         initialize(createReactorImpl(_parentReactor == null ? null : _parentReactor.asReactorImpl(),
-                _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler, null));
+                _initialOutboxSize, _initialLocalQueueSize, null));
     }
 
     public NonBlockingReactor(final String _name, final NonBlockingReactorImpl _parentReactorImpl,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Recovery _recovery, final Scheduler _scheduler)
+                              final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         initialize(createReactorImpl(_parentReactorImpl,
                 _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler,
                 _name));
     }
 
     protected NonBlockingReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                                        final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                                       final Recovery _recovery, final Scheduler _scheduler,
                                                        final String _name)
             throws Exception {
-        return new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler);
+        return new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override

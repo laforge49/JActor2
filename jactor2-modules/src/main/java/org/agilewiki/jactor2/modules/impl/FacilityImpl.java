@@ -4,10 +4,12 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.*;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
@@ -38,10 +40,9 @@ public class FacilityImpl extends NonBlockingReactorImpl {
     private FacilityImpl plantFacilityImpl;
 
     public FacilityImpl(final String _name,
-                        final int _initialOutboxSize, final int _initialLocalQueueSize,
-                        final Recovery _recovery, final Scheduler _scheduler) throws Exception {
+                        final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         super(PlantImpl.getSingleton().getReactor() == null ? null : PlantImpl.getSingleton().getReactor().asReactorImpl(),
-                _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
+                _initialOutboxSize, _initialLocalQueueSize);
         if (name != null)
             throw new IllegalStateException("name already set");
         validateName(_name);
@@ -63,13 +64,25 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                 throw new IllegalStateException("dependency not present: "+dependencyName);
             dependency.addCloseable(this);
         }
-        tracePropertyChangesAReq().signal();
         Integer v = (Integer) plantImpl.getProperty(MPlantImpl.initialLocalMessageQueueSizeKey(_name));
         if (v != null)
             initialLocalQueueSize = v;
         v = (Integer) plantImpl.getProperty(MPlantImpl.initialBufferSizeKey(_name));
         if (v != null)
             initialBufferSize = v;
+        tracePropertyChangesAReq().signal();
+        registerFacilityAReq().signal();
+    }
+
+    private AsyncRequest<Void> registerFacilityAReq() {
+        return new PropertiesTransactionAReq(asReactor(), propertiesProcessor) {
+            @Override
+            protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+                _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, this);
+                _changeManager.put(MPlantImpl.failedKey(name), null);
+                _changeManager.put(MPlantImpl.stoppedKey(name), null);
+            }
+        };
     }
 
     public Facility asFacility() {

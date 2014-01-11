@@ -29,10 +29,9 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
     public Runnable onIdle;
 
     public UnboundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                              final Recovery _recovery, final Scheduler _scheduler)
+                              final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override

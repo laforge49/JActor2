@@ -13,35 +13,23 @@ public class Facility extends NonBlockingReactor {
 
     public Facility(final String _name) throws Exception {
         this(_name,
-                Plant.getReactor().asReactorImpl().initialBufferSize,
-                Plant.getReactor().asReactorImpl().initialLocalQueueSize);
+                Plant.getReactor().asReactorImpl().getInitialBufferSize(),
+                Plant.getReactor().asReactorImpl().getInitialLocalQueueSize());
     }
 
     public Facility(final String _name, final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        this(_name, _initialOutboxSize, _initialLocalQueueSize,
-                Plant.getReactor().asReactorImpl().recovery, Plant.getReactor().asReactorImpl().scheduler);
-    }
-
-    public Facility(final String _name, final int _initialOutboxSize, final int _initialLocalQueueSize,
-                    final Recovery _recovery, final Scheduler _scheduler)
-            throws Exception {
         super(_name, Plant.getReactor().asReactorImpl(),
-                _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler);
+                _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override
     protected FacilityImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                              final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                             final Recovery _recovery, final Scheduler _scheduler,
                                              final String _name)
             throws Exception {
 
-
-
-        return new FacilityImpl(_name, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler);
+        return new FacilityImpl(_name, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public FacilityImpl asFacilityImpl() {

@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
 import com.google.common.collect.MapMaker;
+import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.util.Closeable;
@@ -24,8 +25,9 @@ abstract public class CloserImpl extends Closeable implements Closer {
     private Set<Closeable> closeables;
 
     public CloserImpl(final Recovery _recovery, final Scheduler _scheduler) {
-        recovery = _recovery;
-        scheduler = _scheduler;
+        PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
+        recovery = _recovery == null ? plantConfiguration.getRecovery() : _recovery;
+        scheduler = _scheduler == null ? plantConfiguration.getScheduler() : _scheduler;
     }
 
     @Override

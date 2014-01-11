@@ -69,17 +69,19 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     public final CommonReactor parentReactor;
 
     public ReactorImpl(final NonBlockingReactorImpl _parentReactorImpl, final int _initialBufferSize,
-                       final int _initialLocalQueueSize, final Recovery _recovery, final Scheduler _scheduler)
+                       final int _initialLocalQueueSize)
             throws Exception {
-        super(_recovery, _scheduler);
+        super(_parentReactorImpl == null ? null : _parentReactorImpl.recovery,
+                _parentReactorImpl == null ? null : _parentReactorImpl.scheduler);
         initialBufferSize = _initialBufferSize;
         initialLocalQueueSize = _initialLocalQueueSize;
         parentReactor = _parentReactorImpl == null ? null : _parentReactorImpl.asReactor();
         logger = LoggerFactory.getLogger(Reactor.class);
-        recovery = _recovery;
-        scheduler = _scheduler;
-        if (_parentReactorImpl != null)
+        if (_parentReactorImpl != null) {
             _parentReactorImpl.addCloseable(this);
+        } else {
+
+        }
     }
 
     @Override

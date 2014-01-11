@@ -9,9 +9,8 @@ import org.agilewiki.jactor2.core.util.Recovery;
 public class BlockingReactorImpl extends UnboundReactorImpl {
 
     public BlockingReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                               final int _initialOutboxSize, final int _initialLocalQueueSize,
-                               final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
+                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override

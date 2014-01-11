@@ -52,15 +52,12 @@ public class IsolationReactor extends ReactorBase {
 
     public IsolationReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
-                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler);
+        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public IsolationReactor(final NonBlockingReactorImpl _parentReactorImpl,
-                           final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Recovery _recovery, final Scheduler _scheduler) throws Exception {
-        initialize(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler));
+                           final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+        initialize(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     @Override

@@ -119,24 +119,15 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) throws Exception {
-        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
-                _parentReactor.asReactorImpl().recovery, _parentReactor.asReactorImpl().scheduler, _boundProcessor);
-    }
-
-    public ThreadBoundReactor(final NonBlockingReactorImpl _parentReactorImpl,
-                           final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Recovery _recovery, final Scheduler _scheduler,
-                           final Runnable _boundProcessor) throws Exception {
-        initialize(createReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler, _boundProcessor));
+        initialize(createReactorImpl(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
+                _boundProcessor));
     }
 
     protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                            final Recovery _recovery, final Scheduler _scheduler,
                                             final Runnable _boundProcessor) throws Exception {
         return new ThreadBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _recovery, _scheduler, _boundProcessor);
+                _boundProcessor);
     }
 
     @Override

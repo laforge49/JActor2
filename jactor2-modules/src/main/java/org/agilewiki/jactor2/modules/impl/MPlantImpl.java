@@ -250,8 +250,7 @@ public class MPlantImpl extends PlantImpl {
     protected NonBlockingReactor createInternalReactor() throws Exception {
         PlantConfiguration plantConfiguration = getPlantConfiguration();
         return new Facility(PLANT_NAME, plantConfiguration.getInitialBufferSize(),
-                plantConfiguration.getInitialLocalMessageQueueSize(),
-                plantConfiguration.getRecovery(), plantConfiguration.getScheduler());
+                plantConfiguration.getInitialLocalMessageQueueSize());
     }
 
     private Runnable plantPoll() {

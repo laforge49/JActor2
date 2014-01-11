@@ -20,9 +20,8 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
 
     public ThreadBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                   final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                  final Recovery _recovery, final Scheduler _scheduler,
                                   final Runnable _boundProcessor) throws Exception {
-        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _recovery, _scheduler);
+        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }
 
