@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.modules;
 
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.modules.impl.FacilityImpl;
 import org.agilewiki.jactor2.modules.impl.MPlantImpl;
 
 public class MPlant {
@@ -11,7 +12,10 @@ public class MPlant {
     }
 
     public static Facility getFacility(String name) {
-        return MPlantImpl.getSingleton().getFacilityImpl(name).asFacility();
+        FacilityImpl facilityImpl = MPlantImpl.getSingleton().getFacilityImpl(name);
+        if (facilityImpl == null)
+            return null;
+        return facilityImpl.asFacility();
     }
 
     public static AsyncRequest<Facility> createFacilityAReq(final String _name)

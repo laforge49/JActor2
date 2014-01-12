@@ -74,8 +74,6 @@ public class MPlantImpl extends PlantImpl {
         return (MPlantImpl) PlantImpl.getSingleton();
     }
 
-    private final Facility internalFacility;
-
     private final PropertiesProcessor propertiesProcessor;
 
     public MPlantImpl() throws Exception {
@@ -88,8 +86,8 @@ public class MPlantImpl extends PlantImpl {
 
     public MPlantImpl(final PlantConfiguration _plantConfiguration) throws Exception {
         super(_plantConfiguration);
-        internalFacility = getInternalFacility();
-        propertiesProcessor = internalFacility.getPropertiesProcessor();
+        getInternalFacility().asFacilityImpl().setName(PLANT_NAME);
+        propertiesProcessor = getInternalFacility().getPropertiesProcessor();
         validate();
         changes();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
@@ -101,7 +99,7 @@ public class MPlantImpl extends PlantImpl {
         RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 validationBus,
-                internalFacility) {
+                getInternalFacility()) {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
@@ -183,7 +181,7 @@ public class MPlantImpl extends PlantImpl {
         RequestBus<ImmutablePropertyChanges> changeBus = propertiesProcessor.changeBus;
         new SubscribeAReq<ImmutablePropertyChanges>(
                 changeBus,
-                internalFacility) {
+                getInternalFacility()) {
             protected void processContent(final ImmutablePropertyChanges _content)
                     throws Exception {
                 SortedMap<String, PropertyChange> readOnlyChanges = _content.readOnlyChanges;
@@ -236,20 +234,18 @@ public class MPlantImpl extends PlantImpl {
     }
 
     public Object getProperty(final String propertyName) {
-        return internalFacility.getProperty(propertyName);
+        return getInternalFacility().getProperty(propertyName);
     }
 
     protected NonBlockingReactor createInternalReactor() throws Exception {
-        Facility facility = new Facility();
-        facility.asFacilityImpl().setName(PLANT_NAME);
-        return facility;
+        return new Facility();
     }
 
     private Runnable plantPoll() {
         return new Runnable() {
             public void run() {
                 try {
-                    internalFacility.asFacilityImpl().facilityPoll();
+                    getInternalFacility().asFacilityImpl().facilityPoll();
                 } catch (Exception x) {
                     x.printStackTrace();
                 }
@@ -304,7 +300,7 @@ public class MPlantImpl extends PlantImpl {
     public void stopFacility(final String _facilityName) throws Exception {
         FacilityImpl facility = getFacilityImpl(_facilityName);
         if (facility == null) {
-            internalFacility.putPropertyAReq(stoppedKey(_facilityName), true).signal();
+            getInternalFacility().putPropertyAReq(stoppedKey(_facilityName), true).signal();
             return;
         }
         facility.stop();
@@ -313,7 +309,7 @@ public class MPlantImpl extends PlantImpl {
     public void failFacility(final String _facilityName, final Object reason) throws Exception {
         FacilityImpl facility = getFacilityImpl(_facilityName);
         if (facility == null) {
-            internalFacility.putPropertyAReq(failedKey(_facilityName), reason).signal();
+            getInternalFacility().putPropertyAReq(failedKey(_facilityName), reason).signal();
             return;
         }
         facility.fail(reason);

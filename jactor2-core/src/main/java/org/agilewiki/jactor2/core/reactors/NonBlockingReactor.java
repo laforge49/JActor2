@@ -38,10 +38,16 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
     public NonBlockingReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor,
-                _parentReactor == null ? PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
-                        _parentReactor.asReactorImpl().getInitialBufferSize(),
-                _parentReactor == null ? PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
-                        _parentReactor.asReactorImpl().getInitialLocalQueueSize());
+                _parentReactor != null ?
+                        _parentReactor.asReactorImpl().getInitialBufferSize() :
+                        PlantImpl.getSingleton().getInternalReactor() != null ?
+                                PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
+                                PlantImpl.getSingleton().getPlantConfiguration().getInitialBufferSize(),
+                _parentReactor != null ?
+                        _parentReactor.asReactorImpl().getInitialLocalQueueSize() :
+                        PlantImpl.getSingleton().getInternalReactor() != null ?
+                                PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
+                                PlantImpl.getSingleton().getPlantConfiguration().getInitialLocalMessageQueueSize());
     }
 
     public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {

@@ -35,15 +35,14 @@ public class FacilityImpl extends NonBlockingReactorImpl {
         super(PlantImpl.getSingleton().getInternalReactor() == null ? null : PlantImpl.getSingleton().getInternalReactor().asReactorImpl(),
                 _initialOutboxSize, _initialLocalQueueSize);
         plantImpl = MPlantImpl.getSingleton();
-        plantFacilityImpl = plantImpl.getInternalFacility().asFacilityImpl();
-        final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
-        propertiesProcessor = new PropertiesProcessor(this.getFacility(), initialState);
-        tracePropertyChangesAReq().signal();
     }
 
     public void setName(final String _name) throws Exception {
         validateName(_name);
         name = _name;
+        plantFacilityImpl = plantImpl.getInternalFacility().asFacilityImpl();
+        propertiesProcessor = new PropertiesProcessor(this.getFacility());
+        tracePropertyChangesAReq().signal();
         String dependencyPrefix = MPlantImpl.dependencyPrefix(name);
         PropertiesProcessor plantProperties = plantFacilityImpl.getPropertiesProcessor();
         ImmutableProperties<Object> dependencies =
@@ -150,8 +149,9 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             throw new IllegalArgumentException("name may not contain ~: "
                     + _name);
         }
-        if (_name.equals(MPlantImpl.PLANT_NAME) && getParentReactor() != null) {
-            throw new IllegalArgumentException("name may not be " + MPlantImpl.PLANT_NAME);
+        if (_name.equals(MPlantImpl.PLANT_NAME)) {
+            if (getParentReactor() != null)
+                throw new IllegalArgumentException("name may not be " + MPlantImpl.PLANT_NAME);
         } else if (MPlant.getFacility(_name) != null) {
             throw new IllegalStateException("facility by that name already exists");
         }

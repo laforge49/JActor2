@@ -27,7 +27,7 @@ public class PlantImpl {
      */
     private ThreadManager threadManager;
 
-    private NonBlockingReactor reactor;
+    private NonBlockingReactor internalReactor;
 
     public PlantImpl() throws Exception {
         this(new PlantConfiguration());
@@ -55,9 +55,9 @@ public class PlantImpl {
             plantConfiguration = _plantConfiguration;
         threadManager = plantConfiguration.getThreadManager();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
+        internalReactor = createInternalReactor();
         _plantConfiguration.getScheduler().scheduleAtFixedRate(plantPoll(),
                 reactorPollMillis);
-        reactor = createInternalReactor();
     }
 
     protected NonBlockingReactor createInternalReactor() throws Exception {
@@ -66,14 +66,14 @@ public class PlantImpl {
     }
 
     public NonBlockingReactor getInternalReactor() {
-        return reactor;
+        return internalReactor;
     }
 
     private Runnable plantPoll() {
         return new Runnable() {
             public void run() {
                 try {
-                    reactor.asReactorImpl().reactorPoll();
+                    internalReactor.asReactorImpl().reactorPoll();
                 } catch (Exception x) {
                     x.printStackTrace();
                 }
@@ -94,11 +94,11 @@ public class PlantImpl {
         try {
             threadManager.execute(_reactor);
         } catch (final Exception e) {
-            if (!reactor.asReactorImpl().isClosing()) {
+            if (!internalReactor.asReactorImpl().isClosing()) {
                 throw e;
             }
         } catch (final Error e) {
-            if (!reactor.asReactorImpl().isClosing()) {
+            if (!internalReactor.asReactorImpl().isClosing()) {
                 throw e;
             }
         }
@@ -109,7 +109,7 @@ public class PlantImpl {
             return;
         }
         try {
-            reactor.close();
+            internalReactor.close();
         } finally {
             singleton = null;
             plantConfiguration.close();
@@ -124,7 +124,7 @@ public class PlantImpl {
         try {
             close();
         } catch (Throwable t) {
-            reactor.asReactorImpl().getLogger().error("exception on exit", t);
+            internalReactor.asReactorImpl().getLogger().error("exception on exit", t);
         } finally {
             System.exit(1);
         }
