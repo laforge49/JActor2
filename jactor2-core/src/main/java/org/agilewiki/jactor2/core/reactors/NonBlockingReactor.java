@@ -3,8 +3,6 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.Scheduler;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 /**
  * A targetReactor for blades which process messages quickly and without blocking the thread.
@@ -34,20 +32,20 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     public NonBlockingReactor()
             throws Exception {
-        this(Plant.getReactor());
+        this(Plant.getInternalReactor());
     }
 
     public NonBlockingReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor,
-                _parentReactor == null ? PlantImpl.getSingleton().getReactor().asReactorImpl().getInitialBufferSize() :
+                _parentReactor == null ? PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
                         _parentReactor.asReactorImpl().getInitialBufferSize(),
-                _parentReactor == null ? PlantImpl.getSingleton().getReactor().asReactorImpl().getInitialLocalQueueSize() :
+                _parentReactor == null ? PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
                         _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
 
     public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public NonBlockingReactor(final NonBlockingReactor _parentReactor,

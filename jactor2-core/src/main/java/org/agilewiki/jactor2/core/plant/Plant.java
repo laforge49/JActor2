@@ -19,8 +19,8 @@ final public class Plant {
             System.exit(10);
     }
 
-    public static NonBlockingReactor getReactor() {
-        return PlantImpl.getSingleton().getReactor();
+    public static NonBlockingReactor getInternalReactor() {
+        return PlantImpl.getSingleton().getInternalReactor();
     }
 
     public Plant() throws Exception {

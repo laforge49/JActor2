@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
@@ -33,7 +32,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
     private FacilityImpl plantFacilityImpl;
 
     public FacilityImpl(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        super(PlantImpl.getSingleton().getReactor() == null ? null : PlantImpl.getSingleton().getReactor().asReactorImpl(),
+        super(PlantImpl.getSingleton().getInternalReactor() == null ? null : PlantImpl.getSingleton().getInternalReactor().asReactorImpl(),
                 _initialOutboxSize, _initialLocalQueueSize);
         plantImpl = MPlantImpl.getSingleton();
         plantFacilityImpl = plantImpl.getInternalFacility().asFacilityImpl();

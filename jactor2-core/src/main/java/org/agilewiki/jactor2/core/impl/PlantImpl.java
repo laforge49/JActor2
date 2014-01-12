@@ -65,7 +65,7 @@ public class PlantImpl {
                 plantConfiguration.getInitialLocalMessageQueueSize());
     }
 
-    public NonBlockingReactor getReactor() {
+    public NonBlockingReactor getInternalReactor() {
         return reactor;
     }
 

@@ -2,10 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.impl.IsolationReactorImpl;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
-import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.Scheduler;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 /**
  * A targetReactor which processes each request to completion. And unlike other types of
@@ -37,7 +34,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
 public class IsolationReactor extends ReactorBase {
 
     public IsolationReactor() throws Exception {
-        this(Plant.getReactor());
+        this(Plant.getInternalReactor());
     }
 
     public IsolationReactor(final NonBlockingReactor _parentReactor)
@@ -47,7 +44,7 @@ public class IsolationReactor extends ReactorBase {
     }
 
     public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public IsolationReactor(final NonBlockingReactor _parentReactor,

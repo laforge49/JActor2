@@ -3,14 +3,11 @@ package org.agilewiki.jactor2.core.impl;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.PoolThread;
-import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.Recovery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -156,7 +153,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         PlantImpl plantImpl = PlantImpl.getSingleton();
         if (plantImpl == null)
             return;
-        ReactorImpl plantReactorImpl = plantImpl.getReactor().asReactorImpl();
+        ReactorImpl plantReactorImpl = plantImpl.getInternalReactor().asReactorImpl();
 
         if (!isRunning())
             return;

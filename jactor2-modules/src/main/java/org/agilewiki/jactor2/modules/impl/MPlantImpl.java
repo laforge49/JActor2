@@ -1,20 +1,12 @@
 package org.agilewiki.jactor2.modules.impl;
 
-import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
-import org.agilewiki.jactor2.core.impl.SchedulableSemaphore;
-import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.plant.ThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.Facility;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
@@ -240,7 +232,7 @@ public class MPlantImpl extends PlantImpl {
     }
 
     public Facility getInternalFacility() {
-        return (Facility) getReactor();
+        return (Facility) getInternalReactor();
     }
 
     public Object getProperty(final String propertyName) {
@@ -266,7 +258,7 @@ public class MPlantImpl extends PlantImpl {
     }
 
     private AsyncRequest<String> autoStartAReq(final String _facilityName) {
-        return new AsyncRequest<String>(getReactor()) {
+        return new AsyncRequest<String>(getInternalReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
                 if (getFacilityImpl(_facilityName) != null) {
@@ -328,7 +320,7 @@ public class MPlantImpl extends PlantImpl {
     }
 
     public AsyncRequest<Void> dependencyPropertyAReq(final String _dependentName, final String _dependencyName) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncRequest<Void>(getInternalReactor()) {
 
             AsyncResponseProcessor<Void> dis = this;
 
@@ -422,7 +414,7 @@ public class MPlantImpl extends PlantImpl {
     }
 
     public AsyncRequest<Void> purgeFacilitySReq(final String _facilityName) {
-        return new AsyncRequest<Void>(getReactor()) {
+        return new AsyncRequest<Void>(getInternalReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override

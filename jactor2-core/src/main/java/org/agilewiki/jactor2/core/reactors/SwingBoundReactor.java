@@ -4,8 +4,6 @@ import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.Scheduler;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -70,7 +68,7 @@ import java.awt.event.WindowListener;
 public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener {
 
     public SwingBoundReactor() throws Exception {
-        super(Plant.getReactor());
+        super(Plant.getInternalReactor());
     }
 
     public SwingBoundReactor(final NonBlockingReactor _parentReactor)
@@ -81,7 +79,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
 
     public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public SwingBoundReactor(final NonBlockingReactor _parentReactor,

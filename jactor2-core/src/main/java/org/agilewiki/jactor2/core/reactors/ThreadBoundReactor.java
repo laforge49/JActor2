@@ -4,8 +4,6 @@ import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.Scheduler;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 /**
  * A targetReactor bound to a pre-existing thread, a thread-bound targetReactor can use
@@ -50,7 +48,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
  *         final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
  *
  *         //Terminate the blades.
- *         new SyncRequest&lt;Void&gt;(threadBoundBlade.getReactor()) {
+ *         new SyncRequest&lt;Void&gt;(threadBoundBlade.getInternalReactor()) {
  *
  *             {@literal @}Override
  *             protected Void processSyncRequest() throws Exception {
@@ -92,7 +90,7 @@ import org.agilewiki.jactor2.core.util.Recovery;
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Runnable {
 
     public ThreadBoundReactor() throws Exception {
-        this(Plant.getReactor());
+        this(Plant.getInternalReactor());
     }
 
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor) throws Exception {
@@ -102,7 +100,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
 
     public ThreadBoundReactor(final Runnable _boundProcessor)
             throws Exception {
-        this(Plant.getReactor(), _boundProcessor);
+        this(Plant.getInternalReactor(), _boundProcessor);
     }
 
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor, final Runnable _boundProcessor)
@@ -113,7 +111,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
 
     public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) throws Exception {
-        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor,

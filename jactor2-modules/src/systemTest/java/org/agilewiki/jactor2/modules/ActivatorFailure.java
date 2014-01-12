@@ -5,17 +5,18 @@ import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 
 public class ActivatorFailure {
     static public void main(final String[] _args) throws Exception {
-        final Plant plant = new Plant();
+        new MPlant();
         try {
-            plant.activatorPropertyAReq("a", "NoSuchActivator").call();
+            MPlant.activatorPropertyAReq("a", "NoSuchActivator").call();
             try {
-                plant.createFacilityAReq("a").call();
+                Facility.createFacilityAReq("a").call();
             } catch (ServiceClosedException e) {
-                plant.asFacility().getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
-                System.out.println(plant.asFacility().getPropertiesProcessor().getImmutableState());
+                Facility facility = MPlant.getInternalFacility();
+                facility.nullSReq().call(); //synchronize for the properties update
+                System.out.println(facility.getPropertiesProcessor().getImmutableState());
             }
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

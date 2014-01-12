@@ -2,10 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.impl.BlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
-import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.Scheduler;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 /**
  * A targetReactor which should be used by blades
@@ -32,7 +29,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
 
     public BlockingReactor()
             throws Exception {
-        this(Plant.getReactor());
+        this(Plant.getInternalReactor());
     }
 
     public BlockingReactor(final NonBlockingReactor _parentReactor)
@@ -42,7 +39,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
     }
 
     public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(Plant.getReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public BlockingReactor(final NonBlockingReactor _parentReactor,

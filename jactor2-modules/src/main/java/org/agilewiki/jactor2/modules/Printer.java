@@ -49,7 +49,7 @@ import java.util.Locale;
 public class Printer extends BlockingBladeBase {
 
     public static AsyncRequest<Void> printlnAReq(final String _string) throws Exception {
-        return new AsyncRequest<Void>(Plant.getReactor()) {
+        return new AsyncRequest<Void>(Plant.getInternalReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
@@ -67,7 +67,7 @@ public class Printer extends BlockingBladeBase {
     }
 
     public static AsyncRequest<Void> printfAReq(final String _format, final Object... _args) throws Exception {
-        return new AsyncRequest<Void>(Plant.getReactor()) {
+        return new AsyncRequest<Void>(Plant.getInternalReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
@@ -86,7 +86,7 @@ public class Printer extends BlockingBladeBase {
 
     static public AsyncRequest<Printer> stdoutAReq()
             throws Exception {
-        return new AsyncRequest<Printer>(Plant.getReactor()) {
+        return new AsyncRequest<Printer>(Plant.getInternalReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
             PropertiesProcessor propertiesProcessor = MPlant.getInternalFacility().getPropertiesProcessor();
             ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
