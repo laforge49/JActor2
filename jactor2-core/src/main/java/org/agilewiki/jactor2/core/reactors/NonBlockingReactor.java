@@ -56,11 +56,11 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
                 _initialOutboxSize, _initialLocalQueueSize, null));
     }
 
-    public NonBlockingReactor(final String _name, final NonBlockingReactorImpl _parentReactorImpl,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize)
+    public NonBlockingReactor(final String _name)
             throws Exception {
-        initialize(createReactorImpl(_parentReactorImpl,
-                _initialOutboxSize, _initialLocalQueueSize,
+        initialize(createReactorImpl(Plant.getReactor().asReactorImpl(),
+                Plant.getReactor().asReactorImpl().getInitialBufferSize(),
+                Plant.getReactor().asReactorImpl().getInitialLocalQueueSize(),
                 _name));
     }
 

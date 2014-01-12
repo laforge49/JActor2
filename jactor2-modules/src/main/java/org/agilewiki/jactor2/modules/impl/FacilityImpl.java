@@ -1,33 +1,24 @@
 package org.agilewiki.jactor2.modules.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.impl.*;
-import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.Scheduler;
+import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.PlantImpl;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.Activator;
 import org.agilewiki.jactor2.modules.Facility;
 import org.agilewiki.jactor2.modules.MPlant;
-import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.modules.pubSub.Subscription;
 import org.agilewiki.jactor2.modules.transactions.properties.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public class FacilityImpl extends NonBlockingReactorImpl {
 
@@ -61,7 +52,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             String dependencyName = d.substring(dependencyPrefix.length());
             FacilityImpl dependency = plantImpl.getFacilityImpl(dependencyName);
             if (dependency == null)
-                throw new IllegalStateException("dependency not present: "+dependencyName);
+                throw new IllegalStateException("dependency not present: " + dependencyName);
             dependency.addCloseable(this);
         }
         Integer v = (Integer) plantImpl.getProperty(MPlantImpl.initialLocalMessageQueueSizeKey(_name));
@@ -71,7 +62,55 @@ public class FacilityImpl extends NonBlockingReactorImpl {
         if (v != null)
             initialBufferSize = v;
         tracePropertyChangesAReq().signal();
-        registerFacilityAReq().signal();
+    }
+
+    public AsyncRequest<Void> startFacilityAReq() {
+        return new AsyncRequest<Void>(this.asReactor()) {
+            AsyncRequest<Void> dis = this;
+
+            AsyncResponseProcessor<Void> registerResponseProcessor =
+                    new AsyncResponseProcessor<Void>() {
+                        @Override
+                        public void processAsyncResponse(Void _response) throws Exception {
+                            parentReactor.addCloseable(FacilityImpl.this);
+                            String activatorClassName = getActivatorClassName(_name);
+                            if (activatorClassName == null)
+                                dis.processAsyncResponse(facility);
+                            else {
+                                send(facility.activateAReq(activatorClassName), new AsyncResponseProcessor<String>() {
+                                    @Override
+                                    public void processAsyncResponse(final String _failure) throws Exception {
+                                        if (_failure == null) {
+                                            dis.processAsyncResponse(facility);
+                                            return;
+                                        }
+                                        send(new PropertiesTransactionAReq(
+                                                     internalFacility,
+                                                     propertiesProcessor) {
+                                                 @Override
+                                                 protected void update(final PropertiesChangeManager _changeManager)
+                                                         throws Exception {
+                                                     _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, null);
+                                                     _changeManager.put(failedKey(_name), _failure);
+                                                 }
+                                             }, new AsyncResponseProcessor<Void>() {
+                                                 @Override
+                                                 public void processAsyncResponse(Void _response) throws Exception {
+                                                     throw new ServiceClosedException();
+                                                 }
+                                             }
+                                        );
+                                    }
+                                });
+                            }
+                        }
+                    };
+
+            @Override
+            public void processAsyncRequest() throws Exception {
+                send(registerFacilityAReq(), registerResponseProcessor);
+            }
+        };
     }
 
     private AsyncRequest<Void> registerFacilityAReq() {
@@ -148,11 +187,12 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                 plantImpl.getInternalFacility().asFacilityImpl() != this &&
                 !plantImpl.getInternalFacility().asFacilityImpl().startedClosing()) {
             new PropertiesTransactionAReq(plantImpl.getInternalFacility(),
-                    plantImpl.getInternalFacility().getPropertiesProcessor()){
+                    plantImpl.getInternalFacility().getPropertiesProcessor()) {
                 protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                     _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, null);
                     _changeManager.put(MPlantImpl.stoppedKey(name), true);
-                }}.signal();
+                }
+            }.signal();
             plantImpl.getInternalFacility().putPropertyAReq(MPlantImpl.FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
@@ -170,11 +210,12 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                 plantImpl.getInternalFacility().asFacilityImpl() != this &&
                 !plantImpl.getInternalFacility().asFacilityImpl().startedClosing()) {
             new PropertiesTransactionAReq(plantImpl.getInternalFacility(),
-                    plantImpl.getInternalFacility().getPropertiesProcessor()){
+                    plantImpl.getInternalFacility().getPropertiesProcessor()) {
                 protected void update(final PropertiesChangeManager _changeManager) throws Exception {
                     _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, null);
                     _changeManager.put(MPlantImpl.failedKey(name), reason);
-                }}.signal();
+                }
+            }.signal();
             plantImpl.getInternalFacility().putPropertyAReq(MPlantImpl.FACILITY_PROPERTY_PREFIX + name,
                     null).signal();
         }
@@ -222,8 +263,8 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                 setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(Exception e) throws Exception {
-                        getLogger().error("activation exception, facility "+name, e);
-                        return "activation exception, "+e;
+                        getLogger().error("activation exception, facility " + name, e);
+                        return "activation exception, " + e;
                     }
                 });
                 final Class<?> initiatorClass = getClassLoader().loadClass(

@@ -248,9 +248,7 @@ public class MPlantImpl extends PlantImpl {
     }
 
     protected NonBlockingReactor createInternalReactor() throws Exception {
-        PlantConfiguration plantConfiguration = getPlantConfiguration();
-        return new Facility(PLANT_NAME, plantConfiguration.getInitialBufferSize(),
-                plantConfiguration.getInitialLocalMessageQueueSize());
+        return new Facility();
     }
 
     private Runnable plantPoll() {
@@ -304,64 +302,7 @@ public class MPlantImpl extends PlantImpl {
                             return "create facility exception: " + e;
                     }
                 });
-                send(createFacilityAReq(_facilityName), this, null);
-            }
-        };
-    }
-
-    public AsyncRequest<Facility> createFacilityAReq(final String _name)
-            throws Exception {
-        return new AsyncRequest<Facility>(getReactor()) {
-            final AsyncResponseProcessor<Facility> dis = this;
-
-            @Override
-            public void processAsyncRequest() throws Exception {
-                facility.initialize();
-                send(new PropertiesTransactionAReq(internalFacility, propertiesProcessor) {
-                         @Override
-                         protected void update(final PropertiesChangeManager _changeManager) throws Exception {
-                             _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, facility);
-                             _changeManager.put(failedKey(_name), null);
-                             _changeManager.put(stoppedKey(_name), null);
-                         }
-                     }, new AsyncResponseProcessor<Void>() {
-                         @Override
-                         public void processAsyncResponse(
-                                 final Void _response) throws Exception {
-                             getCloseableSet().add(facility);
-                             String activatorClassName = getActivatorClassName(_name);
-                             if (activatorClassName == null)
-                                 dis.processAsyncResponse(facility);
-                             else {
-                                 send(facility.activateAReq(activatorClassName), new AsyncResponseProcessor<String>() {
-                                     @Override
-                                     public void processAsyncResponse(final String _failure) throws Exception {
-                                         if (_failure == null) {
-                                             dis.processAsyncResponse(facility);
-                                             return;
-                                         }
-                                         send(new PropertiesTransactionAReq(
-                                                      internalFacility,
-                                                      propertiesProcessor) {
-                                                  @Override
-                                                  protected void update(final PropertiesChangeManager _changeManager)
-                                                          throws Exception {
-                                                      _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, null);
-                                                      _changeManager.put(failedKey(_name), _failure);
-                                                  }
-                                              }, new AsyncResponseProcessor<Void>() {
-                                                  @Override
-                                                  public void processAsyncResponse(Void _response) throws Exception {
-                                                      throw new ServiceClosedException();
-                                                  }
-                                              }
-                                         );
-                                     }
-                                 });
-                             }
-                         }
-                     }
-                );
+                send(Facility.createFacilityAReq(_facilityName), this, null);
             }
         };
     }

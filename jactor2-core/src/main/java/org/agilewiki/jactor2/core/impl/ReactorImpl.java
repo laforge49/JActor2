@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.util.Closeable;
@@ -66,7 +67,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
 
     protected int initialLocalQueueSize;
 
-    public final CommonReactor parentReactor;
+    public final NonBlockingReactor parentReactor;
 
     public ReactorImpl(final NonBlockingReactorImpl _parentReactorImpl, final int _initialBufferSize,
                        final int _initialLocalQueueSize)

@@ -5,22 +5,29 @@ import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.util.Recovery;
 import org.agilewiki.jactor2.modules.impl.FacilityImpl;
+import org.agilewiki.jactor2.modules.impl.MPlantImpl;
 import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 
 public class Facility extends NonBlockingReactor {
-
-    public Facility(final String _name) throws Exception {
-        this(_name,
-                Plant.getReactor().asReactorImpl().getInitialBufferSize(),
-                Plant.getReactor().asReactorImpl().getInitialLocalQueueSize());
+    public static AsyncRequest<Facility> createFacilityAReq(final String _name) throws Exception {
+        final Facility facility = new Facility(_name);
+        return new AsyncRequest<Facility>(facility) {
+            @Override
+            public void processAsyncRequest() throws Exception {
+                send(facility.asFacilityImpl().startFacilityAReq(), this, facility);
+            }
+        };
     }
 
-    public Facility(final String _name, final int _initialOutboxSize, final int _initialLocalQueueSize)
-            throws Exception {
-        super(_name, Plant.getReactor().asReactorImpl(),
-                _initialOutboxSize, _initialLocalQueueSize);
+    public Facility() throws Exception {
+        super(MPlantImpl.PLANT_NAME);
+    }
+
+    private Facility(final String _name) throws Exception {
+        super(_name);
     }
 
     @Override
@@ -28,7 +35,6 @@ public class Facility extends NonBlockingReactor {
                                              final int _initialOutboxSize, final int _initialLocalQueueSize,
                                              final String _name)
             throws Exception {
-
         return new FacilityImpl(_name, _initialOutboxSize, _initialLocalQueueSize);
     }
 
