@@ -73,25 +73,25 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                         @Override
                         public void processAsyncResponse(Void _response) throws Exception {
                             parentReactor.addCloseable(FacilityImpl.this);
-                            String activatorClassName = getActivatorClassName(_name);
+                            String activatorClassName = MPlant.getActivatorClassName(name);
                             if (activatorClassName == null)
-                                dis.processAsyncResponse(facility);
+                                dis.processAsyncResponse(null);
                             else {
-                                send(facility.activateAReq(activatorClassName), new AsyncResponseProcessor<String>() {
+                                send(activateAReq(activatorClassName), new AsyncResponseProcessor<String>() {
                                     @Override
                                     public void processAsyncResponse(final String _failure) throws Exception {
                                         if (_failure == null) {
-                                            dis.processAsyncResponse(facility);
+                                            dis.processAsyncResponse(null);
                                             return;
                                         }
                                         send(new PropertiesTransactionAReq(
-                                                     internalFacility,
+                                                     parentReactor,
                                                      propertiesProcessor) {
                                                  @Override
                                                  protected void update(final PropertiesChangeManager _changeManager)
                                                          throws Exception {
-                                                     _changeManager.put(FACILITY_PROPERTY_PREFIX + _name, null);
-                                                     _changeManager.put(failedKey(_name), _failure);
+                                                     _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, null);
+                                                     _changeManager.put(MPlantImpl.failedKey(name), _failure);
                                                  }
                                              }, new AsyncResponseProcessor<Void>() {
                                                  @Override
