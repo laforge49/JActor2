@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.modules.MPlant;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 
@@ -12,9 +13,9 @@ import java.util.SortedMap;
 
 public class PropertiesSample {
     public static void main(final String[] _args) throws Exception {
-        final Plant plant = new Plant();
+        new MPlant();
         try {
-            PropertiesProcessor propertiesProcessor = new PropertiesProcessor(new IsolationReactor());
+            PropertiesProcessor propertiesProcessor = new PropertiesProcessor(Plant.getInternalReactor());
             final CommonReactor reactor = new NonBlockingReactor();
             RequestBus<ImmutablePropertyChanges> validationBus = propertiesProcessor.validationBus;
 
@@ -50,7 +51,7 @@ public class PropertiesSample {
             }
             System.out.println(propertiesProcessor.getImmutableState().sortedKeySet());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

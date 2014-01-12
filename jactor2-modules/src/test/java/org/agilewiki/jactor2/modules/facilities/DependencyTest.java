@@ -4,29 +4,30 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.Facility;
+import org.agilewiki.jactor2.modules.MPlant;
 import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor;
 
 public class DependencyTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = new Plant();
+        new MPlant();
         try {
-            plant.dependencyPropertyAReq("B", "A").call();
-            plant.dependencyPropertyAReq("C", "B").call();
-            final Facility a = plant.createFacilityAReq("A")
+            MPlant.dependencyPropertyAReq("B", "A").call();
+            MPlant.dependencyPropertyAReq("C", "B").call();
+            final Facility a = MPlant.createFacilityAReq("A")
                     .call();
-            final Facility b = plant.createFacilityAReq("B")
+            final Facility b = MPlant.createFacilityAReq("B")
                     .call();
-            final Facility c = plant.createFacilityAReq("C")
+            final Facility c = MPlant.createFacilityAReq("C")
                     .call();
-            PropertiesProcessor propertiesProcessor = plant.asFacility().getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = MPlant.getInternalFacility().getPropertiesProcessor();
             ImmutableProperties<Object> properties = propertiesProcessor.getImmutableState();
             System.out.println("before: "+properties);
-            plant.purgeFacilitySReq("A").call();
-            plant.asFacility().getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
+            MPlant.purgeFacilitySReq("A").call();
+            MPlant.getInternalFacility().getPropertiesProcessor().getReactor().nullSReq().call(); //synchronize for the properties update
             properties = propertiesProcessor.getImmutableState();
             System.out.println("after: "+properties);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
