@@ -75,6 +75,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                                     @Override
                                     public void processAsyncResponse(final String _failure) throws Exception {
                                         if (_failure == null) {
+                                            System.out.println("registered "+name);
                                             dis.processAsyncResponse(null);
                                             return;
                                         }
@@ -108,10 +109,10 @@ public class FacilityImpl extends NonBlockingReactorImpl {
     }
 
     private AsyncRequest<Void> registerFacilityAReq() {
-        return new PropertiesTransactionAReq(asReactor(), propertiesProcessor) {
+        return new PropertiesTransactionAReq(asReactor(), MPlant.getInternalFacility().getPropertiesProcessor()) {
             @Override
             protected void update(final PropertiesChangeManager _changeManager) throws Exception {
-                _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, this);
+                _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, FacilityImpl.this.asFacility());
                 _changeManager.put(MPlantImpl.failedKey(name), null);
                 _changeManager.put(MPlantImpl.stoppedKey(name), null);
             }

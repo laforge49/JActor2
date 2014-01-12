@@ -49,5 +49,6 @@
 
     <modules>
         <module>jactor2-core</module>
+        <module>jactor2-modules</module>
     </modules>
 </project>

@@ -6,13 +6,14 @@ import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.modules.MPlant;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PubSubTest extends TestCase {
     public void testI() throws Exception {
         System.out.println("I");
-        final Plant plant = new Plant();
+        new MPlant();
         try {
             final NonBlockingReactor reactor = new NonBlockingReactor();
             final RequestBus<Void> requestBus = new RequestBus<Void>(reactor);
@@ -32,13 +33,13 @@ public class PubSubTest extends TestCase {
             s1.unsubscribe();
             requestBus.signalsContentSReq(null).call();
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 
     public void testJ() throws Exception {
         System.out.println("J");
-        final Plant plant = new Plant();
+        new MPlant();
         try {
             final AtomicInteger counter = new AtomicInteger();
             final NonBlockingReactor busReactor = new NonBlockingReactor();
@@ -67,7 +68,7 @@ public class PubSubTest extends TestCase {
             }
             assertEquals(counter.get(), 1);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

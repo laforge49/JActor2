@@ -115,7 +115,7 @@ public class MPlantImpl extends PlantImpl {
                             throw new IllegalArgumentException(key
                                     + " not set to a Facility " + newValue);
                         if (oldValue != null && newValue != null) {
-                            FacilityImpl facilityImpl = (FacilityImpl) oldValue;
+                            FacilityImpl facilityImpl = ((Facility) oldValue).asFacilityImpl();
                             throw new IllegalStateException("Facility already exists: "+facilityImpl.getName());
                         }
                     } else if (key.startsWith(FACILITY_PREFIX)) {
@@ -194,7 +194,7 @@ public class MPlantImpl extends PlantImpl {
                         if (pc.oldValue != null) {
                             throw new IllegalStateException("facility already exists");
                         }
-                        String facilityName = ((FacilityImpl) newValue).getName();
+                        String facilityName = ((Facility) newValue).asFacilityImpl().getName();
                         ImmutableProperties<Object> immutableProperties = _content.immutableProperties;
                         ImmutableProperties<Object> facilityProperties = immutableProperties.subMap(FACILITY_PREFIX);
                         Iterator<String> kit = facilityProperties.keySet().iterator();
@@ -382,7 +382,10 @@ public class MPlantImpl extends PlantImpl {
     }
 
     public FacilityImpl getFacilityImpl(String name) {
-        return (FacilityImpl) getProperty(FACILITY_PROPERTY_PREFIX + name);
+        Facility facility = ((Facility) getProperty(FACILITY_PROPERTY_PREFIX + name));
+        if (facility == null)
+            return null;
+        return facility.asFacilityImpl();
     }
 
     public AsyncRequest<Void> autoStartAReq(final String _facilityName, final boolean _newValue) {

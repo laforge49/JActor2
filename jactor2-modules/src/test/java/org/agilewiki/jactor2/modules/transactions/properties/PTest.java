@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.MPlant;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 
@@ -13,7 +14,7 @@ import java.util.SortedMap;
 
 public class PTest extends TestCase {
     public void testI() throws Exception {
-        final Plant plant = new Plant();
+        new MPlant();
         try {
             PropertiesProcessor propertiesProcessor = new PropertiesProcessor(Plant.getInternalReactor());
             final CommonReactor reactor = new NonBlockingReactor();
@@ -79,7 +80,7 @@ public class PTest extends TestCase {
             immutableState = propertiesProcessor.getImmutableState();
             assertEquals(0, immutableState.size());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
