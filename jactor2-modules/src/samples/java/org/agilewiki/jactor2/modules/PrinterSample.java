@@ -7,7 +7,7 @@ public class PrinterSample {
     public static void main(String[] args) throws Exception {
 
         //A facility with one thread.
-        final Plant plant = new Plant(1);
+        new MPlant(1);
 
         try {
 
@@ -16,7 +16,7 @@ public class PrinterSample {
 
         } finally {
             //shutdown the plant
-            plant.close();
+            Plant.close();
         }
 
     }

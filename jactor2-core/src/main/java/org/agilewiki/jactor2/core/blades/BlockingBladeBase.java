@@ -19,15 +19,6 @@ public class BlockingBladeBase extends BladeBase implements BlockingBlade {
         _initialize(_reactor);
     }
 
-    /**
-     * Create a blocking blades.
-     *
-     * @param _reactor The reactor used by the blocking blade.
-     */
-    public void initialize(final BlockingReactor _reactor) throws Exception {
-        _initialize(_reactor);
-    }
-
     @Override
     public BlockingReactor getReactor() {
         return (BlockingReactor) super.getReactor();

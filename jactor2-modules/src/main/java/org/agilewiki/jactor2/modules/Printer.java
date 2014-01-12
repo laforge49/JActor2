@@ -157,7 +157,6 @@ public class Printer extends BlockingBladeBase {
     public Printer(final BlockingReactor _reactor,
             final PrintStream _printStream, final Locale _locale)
             throws Exception {
-        initialize(_reactor);
         printStream = _printStream;
         locale = _locale;
     }
