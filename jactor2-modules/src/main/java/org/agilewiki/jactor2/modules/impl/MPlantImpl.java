@@ -248,7 +248,9 @@ public class MPlantImpl extends PlantImpl {
     }
 
     protected NonBlockingReactor createInternalReactor() throws Exception {
-        return new Facility();
+        Facility facility = new Facility();
+        facility.asFacilityImpl().setName(PLANT_NAME);
+        return facility;
     }
 
     private Runnable plantPoll() {

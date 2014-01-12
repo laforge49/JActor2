@@ -13,7 +13,21 @@ import org.agilewiki.jactor2.modules.transactions.properties.PropertiesProcessor
 
 public class Facility extends NonBlockingReactor {
     public static AsyncRequest<Facility> createFacilityAReq(final String _name) throws Exception {
-        final Facility facility = new Facility(_name);
+        MPlantImpl plantImpl = MPlantImpl.getSingleton();
+        final int initialBufferSize;
+        Integer v = (Integer) plantImpl.getProperty(MPlantImpl.initialBufferSizeKey(_name));
+        if (v != null)
+            initialBufferSize = v;
+        else
+            initialBufferSize = plantImpl.getInternalFacility().asFacilityImpl().getInitialBufferSize();
+        final int initialLocalQueueSize;
+        v = (Integer) plantImpl.getProperty(MPlantImpl.initialLocalMessageQueueSizeKey(_name));
+        if (v != null)
+            initialLocalQueueSize = v;
+        else
+            initialLocalQueueSize = plantImpl.getInternalFacility().asFacilityImpl().getInitialLocalQueueSize();
+        final Facility facility = new Facility(initialBufferSize, initialLocalQueueSize);
+        facility.asFacilityImpl().setName(_name);
         return new AsyncRequest<Facility>(facility) {
             @Override
             public void processAsyncRequest() throws Exception {
@@ -23,19 +37,17 @@ public class Facility extends NonBlockingReactor {
     }
 
     public Facility() throws Exception {
-        super(MPlantImpl.PLANT_NAME);
     }
 
-    private Facility(final String _name) throws Exception {
-        super(_name);
+    private Facility(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+        super(_initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override
     protected FacilityImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                             final String _name)
+                                             final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        return new FacilityImpl(_name, _initialOutboxSize, _initialLocalQueueSize);
+        return new FacilityImpl(_initialOutboxSize, _initialLocalQueueSize);
     }
 
     public FacilityImpl asFacilityImpl() {

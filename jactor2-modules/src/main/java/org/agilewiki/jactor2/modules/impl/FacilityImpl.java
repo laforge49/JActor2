@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
@@ -23,7 +24,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class FacilityImpl extends NonBlockingReactorImpl {
-
     protected PropertiesProcessor propertiesProcessor;
 
     private String name;
@@ -32,18 +32,19 @@ public class FacilityImpl extends NonBlockingReactorImpl {
 
     private FacilityImpl plantFacilityImpl;
 
-    public FacilityImpl(final String _name,
-                        final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+    public FacilityImpl(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         super(PlantImpl.getSingleton().getReactor() == null ? null : PlantImpl.getSingleton().getReactor().asReactorImpl(),
                 _initialOutboxSize, _initialLocalQueueSize);
-        if (name != null)
-            throw new IllegalStateException("name already set");
-        validateName(_name);
-        name = _name;
         plantImpl = MPlantImpl.getSingleton();
         plantFacilityImpl = plantImpl.getInternalFacility().asFacilityImpl();
         final TreeMap<String, Object> initialState = new TreeMap<String, Object>();
         propertiesProcessor = new PropertiesProcessor(this.getFacility(), initialState);
+        tracePropertyChangesAReq().signal();
+    }
+
+    public void setName(final String _name) throws Exception {
+        validateName(_name);
+        name = _name;
         String dependencyPrefix = MPlantImpl.dependencyPrefix(name);
         PropertiesProcessor plantProperties = plantFacilityImpl.getPropertiesProcessor();
         ImmutableProperties<Object> dependencies =
@@ -57,13 +58,6 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                 throw new IllegalStateException("dependency not present: " + dependencyName);
             dependency.addCloseable(this);
         }
-        Integer v = (Integer) plantImpl.getProperty(MPlantImpl.initialLocalMessageQueueSizeKey(_name));
-        if (v != null)
-            initialLocalQueueSize = v;
-        v = (Integer) plantImpl.getProperty(MPlantImpl.initialBufferSizeKey(_name));
-        if (v != null)
-            initialBufferSize = v;
-        tracePropertyChangesAReq().signal();
     }
 
     public AsyncRequest<Void> startFacilityAReq() {
