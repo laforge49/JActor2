@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.modules.transactions.properties;
 
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.util.immutable.HashTreePProperties;

@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.modules.transactions.properties;
 
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.modules.MPlant;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;

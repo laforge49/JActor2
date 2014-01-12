@@ -10,13 +10,14 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.Request;
 import org.agilewiki.jactor2.modules.Facility;
+import org.agilewiki.jactor2.modules.MPlant;
 
 public class ServiceTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = new Plant();
-        final Facility clientFacility = plant.createFacilityAReq("Client")
+        new MPlant();
+        final Facility clientFacility = MPlant.createFacilityAReq("Client")
                 .call();
-        final Facility serverFacility = plant.createFacilityAReq("Server")
+        final Facility serverFacility = MPlant.createFacilityAReq("Server")
                 .call();
         try {
             NonBlockingReactor serverReactor = new NonBlockingReactor(serverFacility);
@@ -47,7 +48,7 @@ public class ServiceTest extends TestCase {
             //serverReactor.close();     //this works
             serverFacility.close();  //this also works
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
@@ -57,7 +58,7 @@ class Client extends NonBlockingBladeBase {
     Server server;
 
     Client(final NonBlockingReactor reactor, final Server _server) throws Exception {
-        initialize(reactor);
+        super(reactor);
         server = _server;
     }
 
@@ -90,7 +91,7 @@ class Client extends NonBlockingBladeBase {
 
 class Server extends NonBlockingBladeBase {
     Server(final NonBlockingReactor reactor) throws Exception {
-        initialize(reactor);
+        super(reactor);
     }
 
     AsyncRequest<Void> hangAReq() {

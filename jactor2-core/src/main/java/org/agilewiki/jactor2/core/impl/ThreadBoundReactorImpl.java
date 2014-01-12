@@ -1,10 +1,8 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.plant.PoolThread;
-import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;

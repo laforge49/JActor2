@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.modules;
 
-import org.agilewiki.jactor2.core.blades.Blade;
-import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;

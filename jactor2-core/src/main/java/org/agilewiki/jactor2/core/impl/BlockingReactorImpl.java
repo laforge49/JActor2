@@ -1,10 +1,8 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 public class BlockingReactorImpl extends UnboundReactorImpl {
 

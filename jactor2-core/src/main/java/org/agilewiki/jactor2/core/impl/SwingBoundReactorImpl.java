@@ -1,8 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 import javax.swing.*;
 
