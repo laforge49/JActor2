@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.util.Closeable;
@@ -16,6 +17,7 @@ import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.modules.pubSub.Subscription;
 import org.agilewiki.jactor2.modules.transactions.properties.*;
 
+import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -269,9 +271,8 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                 });
                 final Class<?> initiatorClass = getClassLoader().loadClass(
                         _activatorClassName);
-                final Activator activator = (Activator) initiatorClass
-                        .newInstance();
-                activator.initialize(asReactor());
+                final Constructor<?> constructor = initiatorClass.getConstructor(NonBlockingReactor.class);
+                final Activator activator = (Activator) constructor.newInstance(asReactor());
                 send(activator.startAReq(), this, null);
             }
         };

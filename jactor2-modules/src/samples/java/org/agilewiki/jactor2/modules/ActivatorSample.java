@@ -4,12 +4,12 @@ import org.agilewiki.jactor2.core.plant.Plant;
 
 public class ActivatorSample {
     public static void main(String[] args) throws Exception {
-        final Plant plant = new Plant();
+        new MPlant();
         try {
-            plant.activatorPropertyAReq("a", "org.agilewiki.jactor2.core.blades.SampleActivator").call();
-            plant.createFacilityAReq("a").call();
+            MPlant.activatorPropertyAReq("a", "org.agilewiki.jactor2.core.blades.SampleActivator").call();
+            MPlant.createFacilityAReq("a").call();
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

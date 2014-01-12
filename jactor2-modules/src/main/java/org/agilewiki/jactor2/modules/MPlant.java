@@ -20,7 +20,7 @@ public class MPlant {
 
     public static AsyncRequest<Facility> createFacilityAReq(final String _name)
             throws Exception {
-        return MPlantImpl.getSingleton().createFacilityAReq(_name);
+        return Facility.createFacilityAReq(_name);
     }
 
     public static String getActivatorClassName(final String _facilityName) {
@@ -69,10 +69,6 @@ public class MPlant {
 
     public static AsyncRequest<Void> clearStoppedAReq(final String _facilityName) {
         return MPlantImpl.getSingleton().stoppedAReq(_facilityName, false);
-    }
-
-    public static AsyncRequest<Void> recoveryPropertyAReq(final String _facilityName, final Recovery _recovery) {
-        return MPlantImpl.getSingleton().recoveryPropertyAReq(_facilityName, _recovery);
     }
 
     public static AsyncRequest<Void> initialLocalMerssageQueueSizePropertyAReq(final String _facilityName, final Integer _value) {

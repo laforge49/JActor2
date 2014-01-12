@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -48,7 +49,7 @@ import java.util.Locale;
 public class Printer extends BlockingBladeBase {
 
     public static AsyncRequest<Void> printlnAReq(final String _string) throws Exception {
-        return new AsyncRequest<Void>(Plant.getSingleton().getReactor()) {
+        return new AsyncRequest<Void>(Plant.getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
@@ -66,7 +67,7 @@ public class Printer extends BlockingBladeBase {
     }
 
     public static AsyncRequest<Void> printfAReq(final String _format, final Object... _args) throws Exception {
-        return new AsyncRequest<Void>(Plant.getSingleton().getReactor()) {
+        return new AsyncRequest<Void>(Plant.getReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
@@ -85,9 +86,9 @@ public class Printer extends BlockingBladeBase {
 
     static public AsyncRequest<Printer> stdoutAReq()
             throws Exception {
-        return new AsyncRequest<Printer>(Plant.getSingleton().getReactor()) {
+        return new AsyncRequest<Printer>(Plant.getReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
-            PropertiesProcessor propertiesProcessor = Plant.getSingleton().asFacility().getPropertiesProcessor();
+            PropertiesProcessor propertiesProcessor = MPlant.getInternalFacility().getPropertiesProcessor();
             ImmutableProperties<Object> immutableProperties = propertiesProcessor.getImmutableState();
             Printer printer = (Printer) immutableProperties.get("stdout");
 
@@ -161,6 +162,11 @@ public class Printer extends BlockingBladeBase {
         locale = _locale;
     }
 
+    public void println(final Reactor _sourceReactor, final String _string) {
+        directCheck(_sourceReactor);
+        printStream.println(_string);
+    }
+
     /**
      * A request to print a string.
      *
@@ -171,10 +177,16 @@ public class Printer extends BlockingBladeBase {
         return new SyncBladeRequest<Void>() {
             @Override
             public Void processSyncRequest() throws Exception {
-                System.out.println(_string);
+                printStream.println(_string);
                 return null;
             }
         };
+    }
+
+    public void printf(final Reactor _sourceReactor, final String _format,
+                       final Object... _args) {
+        directCheck(_sourceReactor);
+        printStream.print(String.format(locale, _format, _args));
     }
 
     /**

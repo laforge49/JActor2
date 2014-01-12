@@ -1,11 +1,15 @@
 package org.agilewiki.jactor2.modules;
 
 import org.agilewiki.jactor2.core.blades.Blade;
+import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
-public interface Activator extends Blade {
-    void initialize(final NonBlockingReactor _reactor) throws Exception;
+public abstract class Activator extends NonBlockingBladeBase {
+    public Activator(NonBlockingReactor _reactor) throws Exception {
+        super(_reactor);
+    }
 
-    AsyncRequest<Void> startAReq();
+    public abstract AsyncRequest<Void> startAReq();
 }
