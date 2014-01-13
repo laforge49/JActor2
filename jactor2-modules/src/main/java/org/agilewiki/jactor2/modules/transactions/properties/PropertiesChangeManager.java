@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.modules.transactions.properties;
 
-import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 
 import java.util.Collections;
 import java.util.SortedMap;

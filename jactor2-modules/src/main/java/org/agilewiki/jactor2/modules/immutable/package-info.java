@@ -27,4 +27,4 @@
  *     garbage collection when there are no references remaining to the original data structure.
  * </p>
  */
-package org.agilewiki.jactor2.core.util.immutable;
+package org.agilewiki.jactor2.modules.immutable;

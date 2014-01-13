@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.modules.transactions.properties;
 
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.util.immutable.HashTreePProperties;
-import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.immutable.HashTreePProperties;
+import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.transactions.TransactionProcessor;
 
 import java.util.Map;

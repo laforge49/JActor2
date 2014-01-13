@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.Activator;
 import org.agilewiki.jactor2.modules.Facility;
 import org.agilewiki.jactor2.modules.MPlant;
@@ -20,7 +20,6 @@ import org.agilewiki.jactor2.modules.transactions.properties.*;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 public class FacilityImpl extends NonBlockingReactorImpl {
     protected PropertiesProcessor propertiesProcessor;

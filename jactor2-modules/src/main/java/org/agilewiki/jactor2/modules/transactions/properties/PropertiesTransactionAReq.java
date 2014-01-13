@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.modules.transactions.properties;
 
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.transactions.TransactionAReq;
 
 /**

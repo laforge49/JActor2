@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.util.immutable;
+package org.agilewiki.jactor2.modules.immutable;
 
 import org.pcollections.HashPMap;
 import org.pcollections.HashTreePMap;
