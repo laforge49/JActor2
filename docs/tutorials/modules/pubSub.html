@@ -5,26 +5,28 @@
 </p>
 <h1>PubSub - Publish/Subscribe</h1>
 <p>
-<a href="../../api/org/agilewiki/jactor2/core/blades/pubSub/RequestBus.html">RequestBus</a>&lt;CONTENT&gt;
+<a href="../../api/org/agilewiki/jactor2/modules/pubSub/RequestBus.html">RequestBus</a>
 provides a means of publishing some content to a set of subscribers.
-The <a href="PubSub.java">PubSub</a> program demonstrates this capability.
+The <a href="java7/PubSub.java">PubSub</a> program demonstrates this capability.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.blades.pubSub.IsInstanceFilter;
-import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
-import org.agilewiki.jactor2.core.facilities.BasicPlant;
-import org.agilewiki.jactor2.core.facilities.Plant;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+
+import org.agilewiki.jactor2.modules.MPlant;
+import org.agilewiki.jactor2.modules.Printer;
+import org.agilewiki.jactor2.modules.pubSub.IsInstanceFilter;
+import org.agilewiki.jactor2.modules.pubSub.RequestBus;
+import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.modules.pubSub.Subscription;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 public class PubSub {
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        new MPlant();
         try {
             Printer printer = Printer.stdoutAReq().call();
             RequestBus&lt;Object&gt; requestBus =
@@ -36,7 +38,7 @@ public class PubSub {
                     new Publisher(new NonBlockingReactor(), requestBus);
             publisher.goAReq().call();
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
@@ -58,7 +60,7 @@ class Publisher extends NonBlockingBladeBase {
 
     Publisher(final NonBlockingReactor _reactor, final RequestBus&lt;Object&gt; _requestBus) 
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
         requestBus = _requestBus;
     }
     
@@ -77,16 +79,15 @@ class Publisher extends NonBlockingBladeBase {
 </pre>
 <p>
 As we have seen before, when passing multiple requests between the same two blades we can often use
-signal. But the last request is passed using a send to ensure that processing of the requests is complete.
+signal. But the last request is passed using a send to ensure that processing of all the signals is complete.
 </p>
 <h2>
 Subscriber
 </h2>
 <p>
 The Subscriber blade creates two subscriptions, one for strings and the other for integers, using 
-<a href="../../api/org/agilewiki/jactor2/core/blades/pubSub/SubscribeAReq.html">SubscribeAReq</a>&lt;CONTENT&gt;
-and
-<a href="../../api/org/agilewiki/jactor2/core/blades/pubSub/IsInstanceFilter.html">IsInstanceFilter</a>&lt;CONTENT&gt;.
+<a href="../../api/org/agilewiki/jactor2/modules/pubSub/SubscribeAReq.html">SubscribeAReq</a> and
+<a href="../../api/org/agilewiki/jactor2/modules/pubSub/IsInstanceFilter.html">IsInstanceFilter</a>.
 </p>
 <pre>
 class Subscriber extends NonBlockingBladeBase {
@@ -96,7 +97,7 @@ class Subscriber extends NonBlockingBladeBase {
 
     Subscriber(final NonBlockingReactor _reactor, final RequestBus&lt;Object&gt; _requestBus, final Printer _printer) 
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
         requestBus = _requestBus;
         printer = _printer;
     }
@@ -105,7 +106,7 @@ class Subscriber extends NonBlockingBladeBase {
         return new AsyncBladeRequest&lt;Void&gt;() {
             AsyncResponseProcessor dis = this;
 
-            p void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws Exception {
                 //Creates a subscription that updates the state when an int is passed as content.
                 new SubscribeAReq&lt;Object&gt;(requestBus,
                         (NonBlockingReactor) getReactor(),
@@ -124,7 +125,7 @@ class Subscriber extends NonBlockingBladeBase {
 
                 //Creates a subscription that prints any strings received as content.
                 send(new SubscribeAReq&lt;Object&gt;(requestBus,
-                             (NonBlockingReactor) getReactor(),
+                             getReactor(),
                              new IsInstanceFilter&lt;Object&gt;(String.class)) {
                          @Override
                          protected void processContent(Object _content, AsyncRequest&lt;Void&gt; arp)

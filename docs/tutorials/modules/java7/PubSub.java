@@ -71,7 +71,7 @@ class Subscriber extends NonBlockingBladeBase {
             public void processAsyncRequest() throws Exception {
             
                 new SubscribeAReq<Object>(requestBus,
-                        (NonBlockingReactor) getReactor(),
+                        getReactor(),
                         new IsInstanceFilter<Object>(Integer.class)) {
                     @Override
                     protected void processContent(Object _content, AsyncRequest<Void> arp)
