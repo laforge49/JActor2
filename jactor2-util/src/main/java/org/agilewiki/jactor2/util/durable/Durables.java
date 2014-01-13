@@ -77,11 +77,11 @@ public final class Durables {
      * @return The factoryLocator for that processing.
      */
     public static FactoryLocator getFactoryLocator(final Reactor _reactor) {
-        return getFactoryLocator(_reactor.getStructure());
+        return getFactoryLocator(Facility.asFacility(_reactor));
     }
 
-    public static FactoryLocator getFactoryLocator(final Plant _plant) {
-        return getFactoryLocator(_plant.asFacility());
+    public static FactoryLocator getFactoryLocator() {
+        return getFactoryLocator(MPlant.getInternalFacility());
     }
 
     public static FactoryLocator getFactoryLocator(final Facility _facility) {
@@ -339,10 +339,9 @@ public final class Durables {
     }
 
     public static JASerializable newSerializable(
-            final FactoryLocator _factoryLocator, final String _factoryName,
-            final Plant _plant) throws Exception {
+            final FactoryLocator _factoryLocator, final String _factoryName) throws Exception {
         return ((FactoryLocatorImpl) _factoryLocator).newSerializable(
-                _factoryName, new NonBlockingReactor(_plant.asFacility()), null);
+                _factoryName, new NonBlockingReactor(MPlant.getInternalFacility()), null);
     }
 
     public static JASerializable newSerializable(
@@ -368,9 +367,8 @@ public final class Durables {
                 _factoryName, new NonBlockingReactor(_facility), _parent);
     }
 
-    public static JASerializable newSerializable(final Plant _plant,
-                                                 final String _factoryName) throws Exception {
-        return newSerializable(_plant.asFacility(), _factoryName);
+    public static JASerializable newSerializable(final String _factoryName) throws Exception {
+        return newSerializable(MPlant.getInternalFacility(), _factoryName);
     }
 
     public static JASerializable newSerializable(final Facility _facility,
@@ -379,9 +377,8 @@ public final class Durables {
                 _facility, null);
     }
 
-    public static JASerializable newSerializable(final Plant _plant,
-                                                 final String _factoryName, final Ancestor _parent) throws Exception {
-        return newSerializable(_plant.asFacility(), _factoryName, _parent);
+    public static JASerializable newSerializable(final String _factoryName, final Ancestor _parent) throws Exception {
+        return newSerializable(MPlant.getInternalFacility(), _factoryName, _parent);
     }
 
     public static JASerializable newSerializable(final Facility _facility,
@@ -400,7 +397,7 @@ public final class Durables {
      */
     public static JASerializable newSerializable(final String _factoryName,
             final Reactor _reactor) throws Exception {
-        return newSerializable(getFactoryLocator(_reactor.getStructure()),
+        return newSerializable(getFactoryLocator(Facility.asFacility(_reactor)),
                 _factoryName, _reactor, null);
     }
 
@@ -415,7 +412,7 @@ public final class Durables {
      */
     public static JASerializable newSerializable(final String _factoryName,
             final Reactor _reactor, final Ancestor _parent) throws Exception {
-        return newSerializable(getFactoryLocator(_reactor.getStructure()),
+        return newSerializable(getFactoryLocator(Facility.asFacility(_reactor)),
                 _factoryName, _reactor, _parent);
     }
 }
