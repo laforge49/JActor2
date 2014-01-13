@@ -1,5 +1,5 @@
-import org.agilewiki.jactor2.core.util.immutable.HashTreePProperties;
-import org.agilewiki.jactor2.core.util.immutable.ImmutableProperties;
+import org.agilewiki.jactor2.modules.immutable.HashTreePProperties;
+import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 
 public class HashTreePPropertiesSample {
     public static void main(final String[] args) {

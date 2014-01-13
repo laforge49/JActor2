@@ -1,18 +1,19 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.blades.misc.Printer;
-import org.agilewiki.jactor2.core.blades.pubSub.IsInstanceFilter;
-import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
-import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
-import org.agilewiki.jactor2.core.plant.BasicPlant;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.messages.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+
+import org.agilewiki.jactor2.modules.MPlant;
+import org.agilewiki.jactor2.modules.Printer;
+import org.agilewiki.jactor2.modules.pubSub.IsInstanceFilter;
+import org.agilewiki.jactor2.modules.pubSub.RequestBus;
+import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.modules.pubSub.Subscription;
 
 public class PubSub {
     public static void main(final String[] _args) throws Exception {
-        BasicPlant plant = new Plant();
+        new MPlant();
         try {
             Printer printer = Printer.stdoutAReq().call();
             RequestBus<Object> requestBus =
@@ -24,7 +25,7 @@ public class PubSub {
                     new Publisher(new NonBlockingReactor(), requestBus);
             publisher.goAReq().call();
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
@@ -34,7 +35,7 @@ class Publisher extends NonBlockingBladeBase {
 
     Publisher(final NonBlockingReactor _reactor, final RequestBus<Object> _requestBus) 
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
         requestBus = _requestBus;
     }
     
@@ -58,7 +59,7 @@ class Subscriber extends NonBlockingBladeBase {
 
     Subscriber(final NonBlockingReactor _reactor, final RequestBus<Object> _requestBus, final Printer _printer) 
             throws Exception {
-        initialize(_reactor);
+        super(_reactor);
         requestBus = _requestBus;
         printer = _printer;
     }
