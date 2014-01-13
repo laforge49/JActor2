@@ -7,8 +7,8 @@ org.agilewiki.jactor2.core.plant
 org.agilewiki.jactor2.core.reactors
 org.agilewiki.jactor2.core.requests
 org.agilewiki.jactor2.core.util
-org.agilewiki.jactor2.core.util.immutable
 org.agilewiki.jactor2.modules
+org.agilewiki.jactor2.modules.immutable
 org.agilewiki.jactor2.modules.impl
 org.agilewiki.jactor2.modules.pubSub
 org.agilewiki.jactor2.modules.transactions
