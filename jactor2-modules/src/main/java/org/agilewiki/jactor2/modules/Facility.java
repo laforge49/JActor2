@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.modules;
 
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.modules.impl.FacilityImpl;
 import org.agilewiki.jactor2.modules.impl.MPlantImpl;
@@ -30,6 +31,12 @@ public class Facility extends NonBlockingReactor {
                 send(facility.asFacilityImpl().startFacilityAReq(), this, facility);
             }
         };
+    }
+
+    public static Facility asFacility(final Reactor _reactor) {
+        if (_reactor instanceof Facility)
+            return (Facility) _reactor;
+        return asFacility(_reactor.getParentReactor());
     }
 
     public Facility() throws Exception {

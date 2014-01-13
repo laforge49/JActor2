@@ -62,7 +62,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jactor2-core</artifactId>
+            <artifactId>jactor2-modules</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

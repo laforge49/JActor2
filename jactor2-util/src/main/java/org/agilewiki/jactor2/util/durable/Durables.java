@@ -1,11 +1,12 @@
 package org.agilewiki.jactor2.util.durable;
 
-import org.agilewiki.jactor2.core.facilities.Facility;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.modules.Facility;
+import org.agilewiki.jactor2.modules.MPlant;
 import org.agilewiki.jactor2.util.Ancestor;
 import org.agilewiki.jactor2.util.durable.app.App;
 import org.agilewiki.jactor2.util.durable.incDes.*;
@@ -30,12 +31,11 @@ public final class Durables {
      *
      * @return A facility whose properties include the factoryLocator.
      */
-    public static Plant createPlant() throws Exception {
-        final Plant plant = new Plant();
-        final FactoryLocator factoryLocator = createFactoryLocatorAReq(plant.asFacility(),
+    public static void createPlant() throws Exception {
+        new MPlant();
+        final FactoryLocator factoryLocator = createFactoryLocatorAReq(MPlant.getInternalFacility(),
                 "org.agilewiki.jactor2.util.durable", "", "").call();
         registerFactories(factoryLocator);
-        return plant;
     }
 
     /**
