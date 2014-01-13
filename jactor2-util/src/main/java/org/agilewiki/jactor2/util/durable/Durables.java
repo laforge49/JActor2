@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.util.durable;
 
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;

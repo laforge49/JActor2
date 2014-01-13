@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.MPlant;
+import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 

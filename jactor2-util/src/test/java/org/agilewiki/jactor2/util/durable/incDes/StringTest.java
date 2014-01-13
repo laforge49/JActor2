@@ -6,10 +6,9 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class StringTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
-            final JAString jaString1 = (JAString) Durables.newSerializable(
-                    plant, JAString.FACTORY_NAME);
+            final JAString jaString1 = (JAString) Durables.newSerializable(JAString.FACTORY_NAME);
             final JAString jaString2 = (JAString) jaString1.copyReq(null)
                     .call();
             jaString2.setValueReq("abc").call();
@@ -27,8 +26,7 @@ public class StringTest extends TestCase {
             assertEquals("abc", jaString2.getValueReq().call());
             assertEquals("abc", jaString3.getValueReq().call());
 
-            final Box box = (Box) Durables.newSerializable(plant,
-                    Box.FACTORY_NAME);
+            final Box box = (Box) Durables.newSerializable(Box.FACTORY_NAME);
             box.setValueReq(JAString.FACTORY_NAME).call();
             JAString rpa = (JAString) box.resolvePathnameReq("0").call();
             assertNull(rpa.getValueReq().call());
@@ -44,7 +42,7 @@ public class StringTest extends TestCase {
             assertNull(rpa.getValueReq().call());
 
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

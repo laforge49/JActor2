@@ -9,10 +9,10 @@ import org.agilewiki.jactor2.util.durable.Durables;
 public class BListTest extends TestCase {
     public void test1() throws Exception {
         System.out.println("1");
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final JAList<JAString> stringList1 = (JAList) Durables
-                    .newSerializable(plant, JAList.JASTRING_LIST);
+                    .newSerializable(JAList.JASTRING_LIST);
             stringList1.iAdd(0);
             stringList1.iAdd(1);
             stringList1.iAdd(2);
@@ -32,16 +32,16 @@ public class BListTest extends TestCase {
             assertEquals("b", s1.getValue());
             assertEquals("c", s2.getValue());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 
     public void test2() throws Exception {
         System.out.println("2");
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
-                    .newSerializable(plant, JAList.JAINTEGER_LIST);
+                    .newSerializable(JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 28) {
                 intList1.iAdd(i);
@@ -56,16 +56,16 @@ public class BListTest extends TestCase {
                 i += 1;
             }
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 
     public void test3() throws Exception {
         System.out.println("3");
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
-                    .newSerializable(plant, JAList.JAINTEGER_LIST);
+                    .newSerializable(JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 41) {
                 intList1.iAdd(-1);
@@ -80,16 +80,16 @@ public class BListTest extends TestCase {
                 i += 1;
             }
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 
     public void test4() throws Exception {
         System.out.println("4");
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
-                    .newSerializable(plant, JAList.JAINTEGER_LIST);
+                    .newSerializable(JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 391) {
                 intList1.iAdd(-1);
@@ -104,16 +104,16 @@ public class BListTest extends TestCase {
                 i += 1;
             }
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 
     public void test5() throws Exception {
         System.out.println("5");
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
-                    .newSerializable(plant, JAList.JAINTEGER_LIST);
+                    .newSerializable(JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 10000) {
                 intList1.iAdd(-1);
@@ -128,16 +128,16 @@ public class BListTest extends TestCase {
                 i += 1;
             }
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 
     public void test6() throws Exception {
         System.out.println("6");
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final JAList<JAInteger> intList1 = (JAList) Durables
-                    .newSerializable(plant, JAList.JAINTEGER_LIST);
+                    .newSerializable(JAList.JAINTEGER_LIST);
             int i = 0;
             while (i < 10000) {
                 intList1.iAdd(-1);
@@ -152,7 +152,7 @@ public class BListTest extends TestCase {
             }
             assertEquals(0, intList1.size());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

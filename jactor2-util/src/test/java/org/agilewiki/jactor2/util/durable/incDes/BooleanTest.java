@@ -6,10 +6,9 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class BooleanTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
-            final JABoolean boolean1 = (JABoolean) Durables.newSerializable(
-                    plant, JABoolean.FACTORY_NAME);
+            final JABoolean boolean1 = (JABoolean) Durables.newSerializable(JABoolean.FACTORY_NAME);
             final JABoolean boolean2 = (JABoolean) boolean1.copyReq(null)
                     .call();
             boolean2.setValueReq(true).call();
@@ -27,8 +26,7 @@ public class BooleanTest extends TestCase {
             assertTrue(boolean2.getValueReq().call());
             assertTrue(boolean3.getValueReq().call());
 
-            final Box box = (Box) Durables.newSerializable(plant,
-                    Box.FACTORY_NAME);
+            final Box box = (Box) Durables.newSerializable(Box.FACTORY_NAME);
             box.setValueReq(JABoolean.FACTORY_NAME).call();
             JABoolean rpa = (JABoolean) box.resolvePathnameReq("0").call();
             assertFalse(rpa.getValueReq().call());
@@ -37,7 +35,7 @@ public class BooleanTest extends TestCase {
             assertTrue(rpa.getValueReq().call());
 
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
