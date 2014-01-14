@@ -2,13 +2,14 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.impl.CloserImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
  * The Reactor interface identifies the processing methods that can be used by applications.
  */
-public interface Reactor extends AutoCloseable, Closer, Blade {
+public interface Reactor extends AutoCloseable, Blade {
 
     ReactorImpl asReactorImpl();
 
@@ -40,4 +41,7 @@ public interface Reactor extends AutoCloseable, Closer, Blade {
     SyncRequest<Void> nullSReq();
 
     Reactor getParentReactor();
+
+    boolean addCloseable(final CloseableBase _closeable) throws Exception;
+    boolean removeCloseable(final CloseableBase _closeable);
 }

@@ -59,7 +59,7 @@ public class IsolationReactor extends ReactorBase {
 
     @Override
     public IsolationReactorImpl asReactorImpl() {
-        return (IsolationReactorImpl) asCloserImpl();
+        return (IsolationReactorImpl) super.asReactorImpl();
     }
 
     public void setIdle(final Runnable _idle) {

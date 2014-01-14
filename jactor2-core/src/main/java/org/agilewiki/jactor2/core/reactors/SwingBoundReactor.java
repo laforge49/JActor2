@@ -97,7 +97,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
 
     @Override
     public SwingBoundReactorImpl asReactorImpl() {
-        return (SwingBoundReactorImpl) asCloserImpl();
+        return (SwingBoundReactorImpl) super.asReactorImpl();
     }
 
     @Override

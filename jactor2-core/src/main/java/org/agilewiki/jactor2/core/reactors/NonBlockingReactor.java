@@ -68,7 +68,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     @Override
     public NonBlockingReactorImpl asReactorImpl() {
-        return (NonBlockingReactorImpl) asCloserImpl();
+        return (NonBlockingReactorImpl) super.asReactorImpl();
     }
 
     public void setIdle(final Runnable _idle) {

@@ -5,24 +5,19 @@ import org.agilewiki.jactor2.core.impl.CloserImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
-abstract public class ReactorBase implements Closer, Reactor {
+abstract public class ReactorBase implements Reactor {
 
-    private CloserImpl closerImpl;
+    private ReactorImpl reactorImpl;
 
     public void initialize(final ReactorImpl _reactorImpl) throws Exception {
         if (_reactorImpl != null)
-            closerImpl = _reactorImpl;
+            reactorImpl = _reactorImpl;
         _reactorImpl.initialize(this);
     }
 
     @Override
-    public CloserImpl asCloserImpl() {
-        return closerImpl;
-    }
-
-    @Override
     public ReactorImpl asReactorImpl() {
-        return (ReactorImpl) asCloserImpl();
+        return reactorImpl;
     }
 
     @Override
@@ -37,17 +32,17 @@ abstract public class ReactorBase implements Closer, Reactor {
 
     @Override
     public boolean addCloseable(CloseableBase _closeable) throws Exception {
-        return closerImpl.addCloseable(_closeable);
+        return reactorImpl.addCloseable(_closeable);
     }
 
     @Override
     public boolean removeCloseable(CloseableBase _closeable) {
-        return closerImpl.removeCloseable(_closeable);
+        return reactorImpl.removeCloseable(_closeable);
     }
 
     @Override
     public void close() throws Exception {
-        closerImpl.close();
+        reactorImpl.close();
     }
 
     @Override

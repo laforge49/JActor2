@@ -6,7 +6,6 @@ import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.CloseableBase;
-import org.agilewiki.jactor2.core.reactors.Closer;
 import org.slf4j.Logger;
 
 import java.util.Collections;
@@ -14,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-abstract public class CloserImpl extends CloseableBase implements Closer {
+abstract public class CloserImpl extends CloseableBase {
     public Recovery recovery;
     public Scheduler scheduler;
 
@@ -28,11 +27,6 @@ abstract public class CloserImpl extends CloseableBase implements Closer {
         PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
         recovery = _recovery == null ? plantConfiguration.getRecovery() : _recovery;
         scheduler = _scheduler == null ? plantConfiguration.getScheduler() : _scheduler;
-    }
-
-    @Override
-    public CloserImpl asCloserImpl() {
-        return this;
     }
 
     /**
@@ -67,7 +61,6 @@ abstract public class CloserImpl extends CloseableBase implements Closer {
         return closeables;
     }
 
-    @Override
     public boolean addCloseable(final CloseableBase _closeable) throws Exception {
         if (startedClosing())
             throw new ServiceClosedException();
@@ -79,7 +72,6 @@ abstract public class CloserImpl extends CloseableBase implements Closer {
         return true;
     }
 
-    @Override
     public boolean removeCloseable(final CloseableBase _closeable) {
         if (closeables == null)
             return false;

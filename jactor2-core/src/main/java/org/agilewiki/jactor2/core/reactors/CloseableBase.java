@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.impl.CloserImpl;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 
 import java.util.Collections;
@@ -9,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CloseableBase extends BladeBase implements AutoCloseable {
-    private Set<Closer> closers = Collections.newSetFromMap(new ConcurrentHashMap<Closer, Boolean>(8, 0.9f, 1));
+    private Set<CloserImpl> closers = Collections.newSetFromMap(new ConcurrentHashMap<CloserImpl, Boolean>(8, 0.9f, 1));
 
     private volatile boolean closing;
 
@@ -17,13 +18,13 @@ public class CloseableBase extends BladeBase implements AutoCloseable {
         _initialize(_reactor);
     }
 
-    public void addCloser(final Closer _closer) throws Exception {
+    public void addCloser(final CloserImpl _closer) throws Exception {
         if (closing)
             throw new ServiceClosedException();
         closers.add(_closer);
     }
 
-    public void removeCloser(final Closer _closer) {
+    public void removeCloser(final CloserImpl _closer) {
         if (closing)
             return;
         closers.remove(_closer);
@@ -32,9 +33,9 @@ public class CloseableBase extends BladeBase implements AutoCloseable {
     @Override
     public void close() throws Exception {
         closing = true;
-        Iterator<Closer> it = closers.iterator();
+        Iterator<CloserImpl> it = closers.iterator();
         while (it.hasNext()) {
-            Closer closer = it.next();
+            CloserImpl closer = it.next();
             closer.removeCloseable(this);
         }
     }

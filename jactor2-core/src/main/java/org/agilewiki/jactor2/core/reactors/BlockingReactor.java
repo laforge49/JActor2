@@ -54,7 +54,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
 
     @Override
     public BlockingReactorImpl asReactorImpl() {
-        return (BlockingReactorImpl) asCloserImpl();
+        return (BlockingReactorImpl) super.asReactorImpl();
     }
 
     public void setIdle(final Runnable _idle) {

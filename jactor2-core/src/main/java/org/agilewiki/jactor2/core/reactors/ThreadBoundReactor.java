@@ -130,7 +130,7 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
 
     @Override
     public ThreadBoundReactorImpl asReactorImpl() {
-        return (ThreadBoundReactorImpl) asCloserImpl();
+        return (ThreadBoundReactorImpl) super.asReactorImpl();
     }
 
     @Override
