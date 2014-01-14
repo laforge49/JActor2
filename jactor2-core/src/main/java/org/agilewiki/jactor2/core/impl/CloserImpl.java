@@ -2,11 +2,11 @@ package org.agilewiki.jactor2.core.impl;
 
 import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
+import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.util.Closeable;
 import org.agilewiki.jactor2.core.util.Closer;
-import org.agilewiki.jactor2.core.util.Recovery;
 import org.slf4j.Logger;
 
 import java.util.Collections;

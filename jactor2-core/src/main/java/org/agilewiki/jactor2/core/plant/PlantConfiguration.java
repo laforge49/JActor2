@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.util.Recovery;
-
 import java.util.concurrent.ThreadFactory;
 
 public class PlantConfiguration {

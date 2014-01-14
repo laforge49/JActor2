@@ -1,8 +1,7 @@
-package org.agilewiki.jactor2.core.util;
+package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.RequestImpl;
-import org.agilewiki.jactor2.core.plant.Plant;
 
 public class Recovery {
 

@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl;
 
+import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.util.Recovery;
 
 import java.util.HashSet;
 import java.util.Iterator;
