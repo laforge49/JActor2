@@ -11,14 +11,18 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorImpl extends MessageCloser implements Runnable, MessageSource {
+abstract public class ReactorImpl extends CloserImpl implements Runnable, MessageSource {
+
+    private Set<RequestImpl> messages = new HashSet<RequestImpl>();
 
     private volatile boolean running;
 
@@ -133,6 +137,11 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
         if (startClosing)
             return;
         startClosing = true;
+        Iterator<RequestImpl> it = messages.iterator();
+        while (it.hasNext()) {
+            RequestImpl message = it.next();
+            message.close();
+        }
         closeAll();
     }
 
@@ -319,10 +328,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
     protected void processMessage(final RequestImpl _message) {
         _message.eval();
         if (!_message.isClosed() && _message.isForeign() && !startClosing && !_message.isSignal()) {
-            try {
-                addMessage(_message);
-            } catch (ServiceClosedException e) {
-            }
+            messages.add(_message);
         }
     }
 
@@ -360,7 +366,7 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
      */
     public void requestEnd(final RequestImpl _message) {
         if (_message.isForeign()) {
-            boolean b = removeMessage(_message);
+            boolean b = messages.remove(_message);
         }
         inbox.requestEnd();
     }
