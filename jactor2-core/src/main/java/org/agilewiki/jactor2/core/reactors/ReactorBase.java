@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.impl.CloserImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
