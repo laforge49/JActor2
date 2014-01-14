@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-import org.agilewiki.jactor2.core.util.Closer;
 
 /**
  * The Reactor interface identifies the processing methods that can be used by applications.

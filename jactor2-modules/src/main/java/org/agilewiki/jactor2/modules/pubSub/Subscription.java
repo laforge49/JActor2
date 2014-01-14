@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.modules.pubSub;
 
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.util.Closeable;
+import org.agilewiki.jactor2.core.reactors.Closeable;
 
 /**
  * A subscription allows a subscriber to receive content of interest from a RequestBus.

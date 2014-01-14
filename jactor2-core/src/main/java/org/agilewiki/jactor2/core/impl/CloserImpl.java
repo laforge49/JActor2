@@ -5,8 +5,8 @@ import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.util.Closeable;
-import org.agilewiki.jactor2.core.util.Closer;
+import org.agilewiki.jactor2.core.reactors.Closeable;
+import org.agilewiki.jactor2.core.reactors.Closer;
 import org.slf4j.Logger;
 
 import java.util.Collections;

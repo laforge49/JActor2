@@ -1,9 +1,7 @@
-package org.agilewiki.jactor2.core.util;
+package org.agilewiki.jactor2.core.reactors;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * Test code.

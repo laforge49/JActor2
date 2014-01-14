@@ -4,10 +4,10 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
+import org.agilewiki.jactor2.core.reactors.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-import org.agilewiki.jactor2.core.util.Closeable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
