@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.plant.Scheduler;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.reactors.Closeable;
+import org.agilewiki.jactor2.core.reactors.CloseableBase;
 import org.agilewiki.jactor2.core.reactors.Closer;
 import org.slf4j.Logger;
 
@@ -14,15 +14,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-abstract public class CloserImpl extends Closeable implements Closer {
+abstract public class CloserImpl extends CloseableBase implements Closer {
     public Recovery recovery;
     public Scheduler scheduler;
 
     /**
-     * A set of Closeable objects.
+     * A set of CloseableBase objects.
      * Can only be accessed via a request to the facility.
      */
-    private Set<Closeable> closeables;
+    private Set<CloseableBase> closeables;
 
     public CloserImpl(final Recovery _recovery, final Scheduler _scheduler) {
         PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
@@ -59,7 +59,7 @@ abstract public class CloserImpl extends Closeable implements Closer {
      *
      * @return The CloseableSet.
      */
-    protected final Set<Closeable> getCloseableSet() {
+    protected final Set<CloseableBase> getCloseableSet() {
         if (closeables == null) {
             closeables = Collections.newSetFromMap((Map)
                     new MapMaker().concurrencyLevel(1).weakKeys().makeMap());
@@ -68,7 +68,7 @@ abstract public class CloserImpl extends Closeable implements Closer {
     }
 
     @Override
-    public boolean addCloseable(final Closeable _closeable) throws Exception {
+    public boolean addCloseable(final CloseableBase _closeable) throws Exception {
         if (startedClosing())
             throw new ServiceClosedException();
         if (this == _closeable)
@@ -80,7 +80,7 @@ abstract public class CloserImpl extends Closeable implements Closer {
     }
 
     @Override
-    public boolean removeCloseable(final Closeable _closeable) {
+    public boolean removeCloseable(final CloseableBase _closeable) {
         if (closeables == null)
             return false;
         if (!closeables.remove(_closeable))
@@ -94,9 +94,9 @@ abstract public class CloserImpl extends Closeable implements Closer {
             close2();
             return;
         }
-        Iterator<Closeable> it = closeables.iterator();
+        Iterator<CloseableBase> it = closeables.iterator();
         while (it.hasNext()) {
-            Closeable closeable = it.next();
+            CloseableBase closeable = it.next();
             try {
                 closeable.close();
             } catch (final Throwable t) {
@@ -107,7 +107,7 @@ abstract public class CloserImpl extends Closeable implements Closer {
         }
         it = closeables.iterator();
         while (it.hasNext()) {
-            Closeable closeable = it.next();
+            CloseableBase closeable = it.next();
             getLogger().warn("still has closable: " + this + "\n" + closeable);
         }
         close2();

@@ -16,12 +16,12 @@ public class CloserBase implements Closer {
     }
 
     @Override
-    public boolean addCloseable(Closeable _closeable) throws Exception {
+    public boolean addCloseable(CloseableBase _closeable) throws Exception {
         return closerImpl.addCloseable(_closeable);
     }
 
     @Override
-    public boolean removeCloseable(Closeable _closeable) {
+    public boolean removeCloseable(CloseableBase _closeable) {
         return closerImpl.removeCloseable(_closeable);
     }
 

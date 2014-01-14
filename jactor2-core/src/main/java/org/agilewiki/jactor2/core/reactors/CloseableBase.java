@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Closeable extends BladeBase implements AutoCloseable {
+public class CloseableBase extends BladeBase implements AutoCloseable {
     private Set<Closer> closers = Collections.newSetFromMap(new ConcurrentHashMap<Closer, Boolean>(8, 0.9f, 1));
 
     private volatile boolean closing;

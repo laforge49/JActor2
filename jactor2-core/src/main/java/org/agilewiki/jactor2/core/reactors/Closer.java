@@ -10,6 +10,6 @@ import org.agilewiki.jactor2.core.impl.CloserImpl;
  */
 public interface Closer extends Blade, AutoCloseable {
     CloserImpl asCloserImpl();
-    boolean addCloseable(final Closeable _closeable) throws Exception;
-    boolean removeCloseable(final Closeable _closeable);
+    boolean addCloseable(final CloseableBase _closeable) throws Exception;
+    boolean removeCloseable(final CloseableBase _closeable);
 }

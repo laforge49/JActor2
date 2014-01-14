@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.reactors.Closeable;
+import org.agilewiki.jactor2.core.reactors.CloseableBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -451,9 +451,9 @@ abstract public class ReactorImpl extends MessageCloser implements Runnable, Mes
                 recovery.messageTimeout(this);
             }
         }
-        Iterator<Closeable> it = getCloseableSet().iterator();
+        Iterator<CloseableBase> it = getCloseableSet().iterator();
         while (it.hasNext()) {
-            Closeable closeable = it.next();
+            CloseableBase closeable = it.next();
             if (!(closeable instanceof ReactorImpl))
                 continue;
             ReactorImpl reactor = (ReactorImpl) closeable;
