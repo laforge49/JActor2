@@ -9,10 +9,10 @@ import org.agilewiki.jactor2.util.durable.incDes.Root;
 
 public class LBlockTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final FactoryLocator factoryLocator = Durables
-                    .getFactoryLocator(plant);
+                    .getFactoryLocator();
             final Root rj = (Root) Durables.newSerializable(factoryLocator,
                     Root.FACTORY_NAME, new NonBlockingReactor());
             final LBlock lb1 = new LBlock();
@@ -34,7 +34,7 @@ public class LBlockTest extends TestCase {
             final Root rj2 = lb2.getRoot(factoryLocator,
                     new NonBlockingReactor(), null);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

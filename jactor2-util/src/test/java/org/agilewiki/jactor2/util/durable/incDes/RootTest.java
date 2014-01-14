@@ -10,10 +10,10 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class RootTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final FactoryLocator factoryLocator = Durables
-                    .getFactoryLocator(plant);
+                    .getFactoryLocator();
             final Factory rootFactory = factoryLocator
                     .getFactory(Root.FACTORY_NAME);
             final Reactor reactor = new NonBlockingReactor();
@@ -76,7 +76,7 @@ public class RootTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

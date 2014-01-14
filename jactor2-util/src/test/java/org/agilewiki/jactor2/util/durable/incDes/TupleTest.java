@@ -10,10 +10,10 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class TupleTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final FactoryLocator factoryLocator = Durables
-                    .getFactoryLocator(plant);
+                    .getFactoryLocator();
             Durables.registerTupleFactory(factoryLocator, "sst",
                     JAString.FACTORY_NAME, JAString.FACTORY_NAME);
             final Factory tjf = factoryLocator.getFactory("sst");
@@ -34,15 +34,14 @@ public class TupleTest extends TestCase {
             final JAString f1 = (JAString) t1.resolvePathnameReq("1").call();
             assertEquals("Oranges", f1.getValueReq().call());
 
-            final JAString jaString1 = (JAString) Durables.newSerializable(
-                    plant, JAString.FACTORY_NAME);
+            final JAString jaString1 = (JAString) Durables.newSerializable(JAString.FACTORY_NAME);
             jaString1.setValueReq("Peaches").call();
             final byte[] sb = jaString1.getSerializedBytesReq().call();
             t1.iSetReq(1, sb).call();
             final JAString f1b = (JAString) t1.resolvePathnameReq("1").call();
             assertEquals("Peaches", f1b.getValueReq().call());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

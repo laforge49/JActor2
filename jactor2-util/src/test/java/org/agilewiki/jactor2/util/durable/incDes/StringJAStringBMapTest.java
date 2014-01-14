@@ -6,10 +6,9 @@ import org.agilewiki.jactor2.util.durable.Durables;
 
 public class StringJAStringBMapTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
-            final JAMap<String, JAString> m = (JAMap) Durables.newSerializable(
-                    plant, JAMap.STRING_JASTRING_MAP);
+            final JAMap<String, JAString> m = (JAMap) Durables.newSerializable(JAMap.STRING_JASTRING_MAP);
             assertEquals(0, m.size());
             assertTrue(m.kMake("1"));
             assertFalse(m.kMake("1"));
@@ -39,7 +38,7 @@ public class StringJAStringBMapTest extends TestCase {
             assertTrue(m.kRemove("1"));
             assertEquals(0, m.size());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

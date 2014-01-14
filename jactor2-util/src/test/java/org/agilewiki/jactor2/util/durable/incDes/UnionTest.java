@@ -9,14 +9,13 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class UnionTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final FactoryLocator factoryLocator = Durables
-                    .getFactoryLocator(plant);
+                    .getFactoryLocator();
             Durables.registerUnionFactory(factoryLocator, "siUnion",
                     JAString.FACTORY_NAME, "siUnion");
-            final Union siu1 = (Union) Durables.newSerializable(plant,
-                    "siUnion");
+            final Union siu1 = (Union) Durables.newSerializable("siUnion");
             assertNull(siu1.getValue());
             final Reactor reactor = new NonBlockingReactor();
             final Union siu2 = (Union) siu1.copy(reactor);
@@ -28,7 +27,7 @@ public class UnionTest extends TestCase {
             final JAString sj3 = (JAString) siu3.getValue();
             assertNotNull(sj3);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

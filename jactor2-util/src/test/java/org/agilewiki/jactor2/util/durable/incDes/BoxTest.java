@@ -10,10 +10,10 @@ import org.agilewiki.jactor2.util.durable.FactoryLocator;
 
 public class BoxTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final FactoryLocator factoryLocator = Durables
-                    .getFactoryLocator(plant);
+                    .getFactoryLocator();
             final Factory boxAFactory = factoryLocator
                     .getFactory(Box.FACTORY_NAME);
             final Reactor reactor = new NonBlockingReactor();
@@ -75,8 +75,7 @@ public class BoxTest extends TestCase {
             sl = rpa.getSerializedLength();
             assertEquals(0, sl);
 
-            final Box box3 = (Box) Durables.newSerializable(factoryLocator,
-                    Box.FACTORY_NAME, plant);
+            final Box box3 = (Box) Durables.newSerializable(factoryLocator, Box.FACTORY_NAME);
             sl = box3.getSerializedLength();
             assertEquals(4, sl);
             made = box3.makeValueReq(Box.FACTORY_NAME).call();
@@ -130,7 +129,7 @@ public class BoxTest extends TestCase {
             assertEquals(0, sl);
 
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

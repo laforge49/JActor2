@@ -9,12 +9,12 @@ import org.agilewiki.jactor2.util.durable.incDes.Box;
 
 public class AppTest extends TestCase {
     public void test1() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final FactoryLocator factoryLocator = Durables
-                    .getFactoryLocator(plant);
+                    .getFactoryLocator();
             User.register(factoryLocator);
-            final User user1 = (User) Durables.newSerializable(plant, "user");
+            final User user1 = (User) Durables.newSerializable("user");
             user1.PAName().setValue("Joe");
             user1.PAAge().setValue(42);
             user1.PALocation().setValue("Boston");
@@ -24,18 +24,17 @@ public class AppTest extends TestCase {
             assertEquals(42, (int) user2.PAAge().getValue());
             Assert.assertEquals("Boston", user2.PALocation().getValue());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 
     public void test2() throws Exception {
-        final Plant plant = Durables.createPlant();
+        Durables.createPlant();
         try {
             final FactoryLocator factoryLocator = Durables
-                    .getFactoryLocator(plant);
+                    .getFactoryLocator();
             User.register(factoryLocator);
-            final Box box1 = (Box) Durables.newSerializable(plant,
-                    Box.FACTORY_NAME);
+            final Box box1 = (Box) Durables.newSerializable(Box.FACTORY_NAME);
             box1.setValue("user");
             final User user1 = (User) box1.getValue();
             user1.PAName().setValue("Joe");
@@ -48,7 +47,7 @@ public class AppTest extends TestCase {
             assertEquals(42, (int) user2.PAAge().getValue());
             Assert.assertEquals("Boston", user2.PALocation().getValue());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
