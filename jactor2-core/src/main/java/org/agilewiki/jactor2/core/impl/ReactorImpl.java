@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl;
 
+import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.plant.PoolThread;
+import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.reactors.CloseableBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -10,16 +10,22 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorImpl extends CloserImpl implements Runnable, MessageSource {
+abstract public class ReactorImpl extends CloseableBase implements Runnable, MessageSource {
+    public Recovery recovery;
+
+    public Scheduler scheduler;
+
+    /**
+     * A set of CloseableBase objects.
+     * Can only be accessed via a request to the facility.
+     */
+    private Set<CloseableBase> closeables;
 
     private Set<RequestImpl> messages = new HashSet<RequestImpl>();
 
@@ -72,8 +78,9 @@ abstract public class ReactorImpl extends CloserImpl implements Runnable, Messag
     public ReactorImpl(final NonBlockingReactorImpl _parentReactorImpl, final int _initialBufferSize,
                        final int _initialLocalQueueSize)
             throws Exception {
-        super(_parentReactorImpl == null ? null : _parentReactorImpl.recovery,
-                _parentReactorImpl == null ? null : _parentReactorImpl.scheduler);
+        PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
+        recovery = _parentReactorImpl == null ? plantConfiguration.getRecovery() : _parentReactorImpl.recovery;
+        scheduler = _parentReactorImpl == null ? plantConfiguration.getScheduler() : _parentReactorImpl.scheduler;
         initialBufferSize = _initialBufferSize;
         initialLocalQueueSize = _initialLocalQueueSize;
         parentReactor = _parentReactorImpl == null ? null : _parentReactorImpl.asReactor();
@@ -117,12 +124,20 @@ abstract public class ReactorImpl extends CloserImpl implements Runnable, Messag
         return running;
     }
 
-    @Override
+    /**
+     * Returns the logger.
+     *
+     * @return A logger.
+     */
     public Logger getLogger() {
         return logger;
     }
 
-    @Override
+    /**
+     * Returns true when the first phase of closing has begun.
+     *
+     * @return True when the first phase of closing has begun.
+     */
     protected final boolean startedClosing() {
         return startClosing;
     }
@@ -144,6 +159,9 @@ abstract public class ReactorImpl extends CloserImpl implements Runnable, Messag
         closeAll();
     }
 
+    /**
+     * Performs the second phase of closing.
+     */
     protected void close2() throws Exception {
         if (shuttingDown) {
             return;
@@ -464,5 +482,62 @@ abstract public class ReactorImpl extends CloserImpl implements Runnable, Messag
             ReactorImpl reactor = (ReactorImpl) closeable;
             reactor.reactorPoll();
         }
+    }
+
+    /**
+     * Returns the CloseableSet. Creates it if needed.
+     *
+     * @return The CloseableSet.
+     */
+    protected final Set<CloseableBase> getCloseableSet() {
+        if (closeables == null) {
+            closeables = Collections.newSetFromMap((Map)
+                    new MapMaker().concurrencyLevel(1).weakKeys().makeMap());
+        }
+        return closeables;
+    }
+
+    public boolean addCloseable(final CloseableBase _closeable) throws Exception {
+        if (startedClosing())
+            throw new ServiceClosedException();
+        if (this == _closeable)
+            return false;
+        if (!getCloseableSet().add(_closeable))
+            return false;
+        _closeable.addCloser(this);
+        return true;
+    }
+
+    public boolean removeCloseable(final CloseableBase _closeable) {
+        if (closeables == null)
+            return false;
+        if (!closeables.remove(_closeable))
+            return false;
+        _closeable.removeCloser(this);
+        return true;
+    }
+
+    protected void closeAll() throws Exception {
+        if (closeables == null) {
+            close2();
+            return;
+        }
+        Iterator<CloseableBase> it = closeables.iterator();
+        while (it.hasNext()) {
+            CloseableBase closeable = it.next();
+            try {
+                closeable.close();
+            } catch (final Throwable t) {
+                if (closeable != null && PlantImpl.DEBUG) {
+                    getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
+                }
+            }
+        }
+        it = closeables.iterator();
+        while (it.hasNext()) {
+            CloseableBase closeable = it.next();
+            getLogger().warn("still has closable: " + this + "\n" + closeable);
+        }
+        close2();
     }
 }
