@@ -30,12 +30,12 @@ abstract public class ReactorBase implements Reactor {
     }
 
     @Override
-    public boolean addCloseable(CloseableBase _closeable) throws Exception {
+    public boolean addCloseable(Closeable _closeable) throws Exception {
         return reactorImpl.addCloseable(_closeable);
     }
 
     @Override
-    public boolean removeCloseable(CloseableBase _closeable) {
+    public boolean removeCloseable(Closeable _closeable) {
         return reactorImpl.removeCloseable(_closeable);
     }
 

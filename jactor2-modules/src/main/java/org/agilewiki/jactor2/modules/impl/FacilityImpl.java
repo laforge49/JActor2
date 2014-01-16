@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
-import org.agilewiki.jactor2.core.reactors.CloseableBase;
+import org.agilewiki.jactor2.core.reactors.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -293,9 +293,9 @@ public class FacilityImpl extends NonBlockingReactorImpl {
     }
 
     public void facilityPoll() throws Exception {
-        Iterator<CloseableBase> it = getCloseableSet().iterator();
+        Iterator<Closeable> it = getCloseableSet().iterator();
         while (it.hasNext()) {
-            CloseableBase closeable = it.next();
+            Closeable closeable = it.next();
             if (!(closeable instanceof ReactorImpl))
                 continue;
             ReactorImpl reactor = (ReactorImpl) closeable;

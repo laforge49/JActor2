@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.modules.pubSub;
 
-import org.agilewiki.jactor2.core.reactors.CloseableBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.impl.CloseableImpl;
+import org.agilewiki.jactor2.core.reactors.Closeable;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
@@ -9,8 +11,9 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
  *
  * @param <CONTENT> The type of content.
  */
-abstract public class Subscription<CONTENT> extends CloseableBase implements
-        AutoCloseable {
+abstract public class Subscription<CONTENT> extends NonBlockingBladeBase implements
+        Closeable {
+    private final CloseableImpl closeableImpl;
     private final RequestBus<CONTENT> requestBus;
     private final CommonReactor subscriberReactor;
     final Filter<CONTENT> filter;
@@ -18,7 +21,8 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
     Subscription(final RequestBus<CONTENT> _requestBus,
                  final CommonReactor _subscriberReactor,
                  final Filter<CONTENT> _filter) throws Exception {
-        initialize(_requestBus.getReactor());
+        super(_requestBus.getReactor());
+        closeableImpl = new CloseableImpl(this);
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
         if (_filter == null) {
@@ -26,6 +30,11 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
         } else {
             filter = _filter;
         }
+    }
+
+    @Override
+    public CloseableImpl asCloseableImpl() {
+        return closeableImpl;
     }
 
     /**
@@ -46,6 +55,7 @@ abstract public class Subscription<CONTENT> extends CloseableBase implements
     @Override
     public void close() throws Exception {
         unsubscribe();
+        closeableImpl.close();
     }
 
     AsyncRequest<Void> publicationAReq(final CONTENT _content) {

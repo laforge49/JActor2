@@ -1,9 +1,11 @@
 package org.agilewiki.jactor2.core.impl;
 
 import com.google.common.collect.MapMaker;
+import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.*;
-import org.agilewiki.jactor2.core.reactors.CloseableBase;
+import org.agilewiki.jactor2.core.reactors.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -16,16 +18,18 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorImpl extends CloseableBase implements Runnable, MessageSource {
+abstract public class ReactorImpl extends BladeBase implements Closeable, Runnable, MessageSource {
     public Recovery recovery;
 
     public Scheduler scheduler;
+
+    private CloseableImpl closeableImpl;
 
     /**
      * A set of CloseableBase objects.
      * Can only be accessed via a request to the facility.
      */
-    private Set<CloseableBase> closeables;
+    private Set<Closeable> closeables;
 
     private Set<RequestImpl> messages = new HashSet<RequestImpl>();
 
@@ -78,6 +82,7 @@ abstract public class ReactorImpl extends CloseableBase implements Runnable, Mes
     public ReactorImpl(final NonBlockingReactorImpl _parentReactorImpl, final int _initialBufferSize,
                        final int _initialLocalQueueSize)
             throws Exception {
+        closeableImpl = new CloseableImpl(this);
         PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
         recovery = _parentReactorImpl == null ? plantConfiguration.getRecovery() : _parentReactorImpl.recovery;
         scheduler = _parentReactorImpl == null ? plantConfiguration.getScheduler() : _parentReactorImpl.scheduler;
@@ -92,15 +97,19 @@ abstract public class ReactorImpl extends CloseableBase implements Runnable, Mes
         }
     }
 
-    @Override
     public void initialize(final Reactor _reactor) throws Exception {
-        super.initialize(_reactor);
+        super._initialize(_reactor);
         inbox = createInbox(initialLocalQueueSize);
         outbox = new Outbox(initialBufferSize);
     }
 
     public Reactor asReactor() {
         return getReactor();
+    }
+
+    @Override
+    public CloseableImpl asCloseableImpl() {
+        return closeableImpl;
     }
 
     public Reactor getParentReactor() {
@@ -175,7 +184,7 @@ abstract public class ReactorImpl extends CloseableBase implements Runnable, Mes
             inbox.close();
         } catch (final Exception e) {
         }
-        super.close();
+        closeableImpl.close();
         PlantImpl plantImpl = PlantImpl.getSingleton();
         if (plantImpl == null)
             return;
@@ -474,9 +483,9 @@ abstract public class ReactorImpl extends CloseableBase implements Runnable, Mes
                 recovery.messageTimeout(this);
             }
         }
-        Iterator<CloseableBase> it = getCloseableSet().iterator();
+        Iterator<Closeable> it = getCloseableSet().iterator();
         while (it.hasNext()) {
-            CloseableBase closeable = it.next();
+            Closeable closeable = it.next();
             if (!(closeable instanceof ReactorImpl))
                 continue;
             ReactorImpl reactor = (ReactorImpl) closeable;
@@ -489,7 +498,7 @@ abstract public class ReactorImpl extends CloseableBase implements Runnable, Mes
      *
      * @return The CloseableSet.
      */
-    protected final Set<CloseableBase> getCloseableSet() {
+    protected final Set<Closeable> getCloseableSet() {
         if (closeables == null) {
             closeables = Collections.newSetFromMap((Map)
                     new MapMaker().concurrencyLevel(1).weakKeys().makeMap());
@@ -497,23 +506,23 @@ abstract public class ReactorImpl extends CloseableBase implements Runnable, Mes
         return closeables;
     }
 
-    public boolean addCloseable(final CloseableBase _closeable) throws Exception {
+    public boolean addCloseable(final Closeable _closeable) throws Exception {
         if (startedClosing())
             throw new ServiceClosedException();
         if (this == _closeable)
             return false;
         if (!getCloseableSet().add(_closeable))
             return false;
-        _closeable.addCloser(this);
+        _closeable.asCloseableImpl().addReactor(this);
         return true;
     }
 
-    public boolean removeCloseable(final CloseableBase _closeable) {
+    public boolean removeCloseable(final Closeable _closeable) {
         if (closeables == null)
             return false;
         if (!closeables.remove(_closeable))
             return false;
-        _closeable.removeCloser(this);
+        _closeable.asCloseableImpl().removeReactor(this);
         return true;
     }
 
@@ -522,9 +531,9 @@ abstract public class ReactorImpl extends CloseableBase implements Runnable, Mes
             close2();
             return;
         }
-        Iterator<CloseableBase> it = closeables.iterator();
+        Iterator<Closeable> it = closeables.iterator();
         while (it.hasNext()) {
-            CloseableBase closeable = it.next();
+            Closeable closeable = it.next();
             try {
                 closeable.close();
             } catch (final Throwable t) {
@@ -535,7 +544,7 @@ abstract public class ReactorImpl extends CloseableBase implements Runnable, Mes
         }
         it = closeables.iterator();
         while (it.hasNext()) {
-            CloseableBase closeable = it.next();
+            Closeable closeable = it.next();
             getLogger().warn("still has closable: " + this + "\n" + closeable);
         }
         close2();

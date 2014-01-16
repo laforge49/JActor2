@@ -41,6 +41,6 @@ public interface Reactor extends AutoCloseable, Blade {
 
     Reactor getParentReactor();
 
-    boolean addCloseable(final CloseableBase _closeable) throws Exception;
-    boolean removeCloseable(final CloseableBase _closeable);
+    boolean addCloseable(final Closeable _closeable) throws Exception;
+    boolean removeCloseable(final Closeable _closeable);
 }

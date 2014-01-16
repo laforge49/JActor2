@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import junit.framework.TestCase;
+import org.agilewiki.jactor2.core.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
@@ -43,17 +44,23 @@ public class CloseableSetTest extends TestCase {
     }
 }
 
-class MyCloseable extends CloseableBase {
+class MyCloseable implements Closeable {
     public volatile int closed;
+    CloseableImpl closeableImpl;
 
     MyCloseable() throws Exception {
-        initialize(new NonBlockingReactor());
+        closeableImpl = new CloseableImpl(this);
+    }
+
+    @Override
+    public CloseableImpl asCloseableImpl() {
+        return closeableImpl;
     }
 
     @Override
     public void close() throws Exception {
         closed++;
-        super.close();
+        closeableImpl.close();
     }
 }
 
