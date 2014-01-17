@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.impl.CloseableImpl;
+import org.agilewiki.jactor2.core.impl.CloseableImpl1;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
@@ -49,7 +50,7 @@ class MyCloseable implements Closeable {
     CloseableImpl closeableImpl;
 
     MyCloseable() throws Exception {
-        closeableImpl = new CloseableImpl(this);
+        closeableImpl = new CloseableImpl1(this);
     }
 
     @Override

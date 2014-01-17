@@ -27,8 +27,6 @@ public final class Durables {
 
     /**
      * Creates a facility with a factoryLocator that supports all the pre-defined factories.
-     *
-     * @return A facility whose properties include the factoryLocator.
      */
     public static void createPlant() throws Exception {
         new MPlant();

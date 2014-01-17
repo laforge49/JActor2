@@ -82,7 +82,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     public ReactorImpl(final NonBlockingReactorImpl _parentReactorImpl, final int _initialBufferSize,
                        final int _initialLocalQueueSize)
             throws Exception {
-        closeableImpl = new CloseableImpl(this);
+        closeableImpl = new CloseableImpl1(this);
         PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
         recovery = _parentReactorImpl == null ? plantConfiguration.getRecovery() : _parentReactorImpl.recovery;
         scheduler = _parentReactorImpl == null ? plantConfiguration.getScheduler() : _parentReactorImpl.scheduler;

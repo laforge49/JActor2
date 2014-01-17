@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.modules.pubSub;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.CloseableImpl;
+import org.agilewiki.jactor2.core.impl.CloseableImpl1;
 import org.agilewiki.jactor2.core.reactors.Closeable;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
@@ -22,7 +23,7 @@ abstract public class Subscription<CONTENT> extends NonBlockingBladeBase impleme
                  final CommonReactor _subscriberReactor,
                  final Filter<CONTENT> _filter) throws Exception {
         super(_requestBus.getReactor());
-        closeableImpl = new CloseableImpl(this);
+        closeableImpl = new CloseableImpl1(this);
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
         if (_filter == null) {
