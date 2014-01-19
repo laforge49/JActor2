@@ -1,0 +1,17 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Closeable
+</p>
+<h1>Closeable - Assured Close</h1>
+<p>
+Some types of objects, like Sockets, need to be closed.
+This type of assurance is supported by classes which implement
+<a href="../../api/org/agilewiki/jactor2/core/reactors/Closeable.html">Closeable</a>.
+The Reactor method <a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html#addCloseable-org.agilewiki.jactor2.core.reactors.Closeable-">addCloseable</a>
+can then be used to ensure that the Closeable is closed when the Reactor is closed.
+But note that weak references are used to track closeables, 
+and there is no assurance that close will be called on an object that has been garbage collected.
+</p>
+</body>
+</html>
