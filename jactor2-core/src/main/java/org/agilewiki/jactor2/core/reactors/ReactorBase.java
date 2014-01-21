@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 abstract public class ReactorBase implements Reactor {
@@ -57,5 +58,15 @@ abstract public class ReactorBase implements Reactor {
     @Override
     public SyncRequest<Void> nullSReq() {
         return asReactorImpl().nullSReq();
+    }
+
+    @Override
+    public Recovery getRecovery() {
+        return asReactorImpl().recovery;
+    }
+
+    @Override
+    public void setRecovery(final Recovery _recovery) {
+        asReactorImpl().recovery = _recovery;
     }
 }

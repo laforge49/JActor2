@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
@@ -43,4 +44,6 @@ public interface Reactor extends AutoCloseable, Blade {
 
     boolean addCloseable(final Closeable _closeable) throws Exception;
     boolean removeCloseable(final Closeable _closeable);
+    Recovery getRecovery();
+    void setRecovery(final Recovery _recovery);
 }
