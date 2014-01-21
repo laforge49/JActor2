@@ -479,7 +479,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         long currentTimeMillis = scheduler.currentTimeMillis();
         long mst = messageStartTimeMillis;
         if (mst > 0) {
-            if (mst + recovery.messageTimeoutMillis() < currentTimeMillis) {
+            if (mst + recovery.messageTimeoutMillis(this) < currentTimeMillis) {
                 recovery.messageTimeout(this);
             }
         }

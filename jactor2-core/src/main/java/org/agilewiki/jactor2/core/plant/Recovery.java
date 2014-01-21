@@ -1,33 +1,37 @@
 package org.agilewiki.jactor2.core.plant;
 
+import org.agilewiki.jactor2.core.impl.BlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.RequestImpl;
 
 public class Recovery {
 
     public long getReactorPollMillis() {
+        return 500;
+    }
+
+    public long messageTimeoutMillis(final ReactorImpl _reactorImpl) {
+        if (_reactorImpl instanceof BlockingReactorImpl)
+            return 300000;
         return 1000;
     }
 
-    public long messageTimeoutMillis() {
-        return 60000;
+    public void messageTimeout(final ReactorImpl _reactorImpl) throws Exception {
+        _reactorImpl.getLogger().error("message timeout -> reactor close");
+        _reactorImpl.close();
     }
 
-    public void messageTimeout(ReactorImpl _reactor) throws Exception {
-        _reactor.getLogger().error("message timeout -> reactor close");
-        _reactor.close();
-    }
-
-    public long getThreadInterruptMillis(final ReactorImpl _reactor) {
+    public long getThreadInterruptMillis(final ReactorImpl _reactorImpl) {
         return 1000;
     }
 
-    public void hungThread(ReactorImpl _reactor) {
+    public void hungThread(final ReactorImpl _reactorImpl) {
         Plant.exit();
     }
 
-    public void hungResponse(final RequestImpl _message) throws Exception {
-        ReactorImpl reactor = _message.getTargetReactorImpl();
+    public void hungResponse(final RequestImpl _requestImpl) throws Exception {
+        ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.getLogger().error("request hung -> reactor close");
         reactor.close();
     }
