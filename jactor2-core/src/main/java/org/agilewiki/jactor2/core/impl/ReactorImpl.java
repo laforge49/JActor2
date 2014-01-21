@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.impl;
 import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.*;
 import org.agilewiki.jactor2.core.reactors.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -213,7 +212,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        recovery.hungThread(this);
+        recovery.onHungThread(this);
     }
 
     /**
@@ -480,7 +479,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         long mst = messageStartTimeMillis;
         if (mst > 0) {
             if (mst + recovery.messageTimeoutMillis(this) < currentTimeMillis) {
-                recovery.messageTimeout(this);
+                recovery.onMessageTimeout(this);
             }
         }
         Iterator<Closeable> it = getCloseableSet().iterator();

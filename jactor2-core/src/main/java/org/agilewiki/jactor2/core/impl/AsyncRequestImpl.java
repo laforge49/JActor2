@@ -60,7 +60,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         if (unClosed && pendingResponseCount == 0 && !noHungRequestCheck) {
             targetReactor.asReactorImpl().getLogger().error("hung request:\n" + toString());
             close();
-            targetReactorImpl.recovery.hungResponse(this);
+            targetReactorImpl.recovery.onHungRequest(this);
         }
     }
 

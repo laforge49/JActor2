@@ -17,7 +17,7 @@ public class Recovery {
         return 1000;
     }
 
-    public void messageTimeout(final ReactorImpl _reactorImpl) throws Exception {
+    public void onMessageTimeout(final ReactorImpl _reactorImpl) throws Exception {
         _reactorImpl.getLogger().error("message timeout -> reactor close");
         _reactorImpl.close();
     }
@@ -26,11 +26,11 @@ public class Recovery {
         return 1000;
     }
 
-    public void hungThread(final ReactorImpl _reactorImpl) {
+    public void onHungThread(final ReactorImpl _reactorImpl) {
         Plant.exit();
     }
 
-    public void hungResponse(final RequestImpl _requestImpl) throws Exception {
+    public void onHungRequest(final RequestImpl _requestImpl) throws Exception {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.getLogger().error("request hung -> reactor close");
         reactor.close();
