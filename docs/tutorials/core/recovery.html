@@ -1,0 +1,27 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Recovery
+</p>
+<h1>Recovery - When failures occur</h1>
+<p>
+In <a href="gettingStarted.html">Getting Started</a> we saw how we could change the plant configuration using a system property
+to specify a subclass of
+<a href="../../api/org/agilewiki/jactor2/core/plant/PlantConfiguration.html">PlantConfiguration</a>.
+Alternatively, you can use a
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#Plant-org.agilewiki.jactor2.core.plant.PlantConfiguration-">Plant constructor</a>
+to specify the desired subclass of PlantConfiguration.
+</p>
+<p>
+The <a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html">Recovery</a> class
+is included in PlantConfiguration. Recovery defines both failure detection and recovery.
+Changing the Recovery class is done by overriding the 
+<a href="../../api/org/agilewiki/jactor2/core/plant/PlantConfiguration.html#createRecovery--">createRecovery</a> method
+in a subclass of PlantConfiguration.
+</p>
+<p>
+Three types of failure are handled by Recovery: 
+message timeout, hung thread and hung request.
+</p>
+</body>
+</html>

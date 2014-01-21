@@ -3,7 +3,7 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class DirectSpeedReport {
     public static void main(final String[] _args) throws Exception {
-        final long count = 500000000L;
+        final long count = 2000000000L;
         new Plant();
         try {
             Ponger ponger = new Ponger();
