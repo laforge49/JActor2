@@ -11,7 +11,7 @@ public class Recovery {
         return 500;
     }
 
-    public long messageTimeoutMillis(final ReactorImpl _reactorImpl) {
+    public long getMessageTimeoutMillis(final ReactorImpl _reactorImpl) {
         if (_reactorImpl instanceof BlockingReactorImpl)
             return 300000;
         return 1000;
