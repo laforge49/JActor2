@@ -45,15 +45,18 @@ is used to determine how long a message can be processed before being timed out.
 300,000 milliseconds for blocking reactors and 1,000 milliseconds for all other types of reactors.
 </p>
 <p>
-Once a message has timed out, the thread processing that message is interrupted. The application then has a limited
+Once a message has timed out, then the Recovery method
+<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#onMessageTimeout-org.agilewiki.jactor2.core.impl.ReactorImpl-">onMessageTimeout</a>
+handles the recovery. The default action is to close the Reactor, which results in an interrupt being passed to the thread processing the message. 
+The application then has a limited
 time to detect and throw an InterruptedException. How long it has is determined by the Recovery method
 <a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#getThreadInterruptMillis-org.agilewiki.jactor2.core.impl.ReactorImpl-">getThreadInterruptMillis</a>.
 The default value is 1,000 milliseconds.
 </p>
 <p>
-If the application logic throws the InterruptedException in time, then the Recovery method
-<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#onMessageTimeout-org.agilewiki.jactor2.core.impl.ReactorImpl-">onMessageTimeout</a>
-handles the recovery. The default action is to close the Reactor. On the other hand, if the application logic does not throw an InterruptedException
+If the application logic throws the InterruptedException in time, then the Reactor is successfully closed and all incomplete request are given
+a ServiceClosedException.
+But if the application logic does not throw an InterruptedException
 (or complete the message processing) in time, then the thread is considered hung--which is a far more serious issue.
 </p>
 <h2>Hung Thread</h2>
