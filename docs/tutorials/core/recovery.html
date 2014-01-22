@@ -19,9 +19,44 @@ Changing the Recovery class is done by overriding the
 <a href="../../api/org/agilewiki/jactor2/core/plant/PlantConfiguration.html#createRecovery--">createRecovery</a> method
 in a subclass of PlantConfiguration.
 </p>
+When the
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html">Plant</a> singleton is created,
+it creates a reactor for internal use and assigns the Recovery object found in its PlantConfiguration using the
+<a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html#setRecovery-org.agilewiki.jactor2.core.plant.Recovery-">setRecovery</a>
+method. When subsequent reactors are created, they are assigned the same recovery object as their parent reactor--which is,
+by default, the internal reactor of the plant.
 <p>
-Three types of failure are handled by Recovery: 
-message timeout, hung thread and hung request.
+Failures may occur when a reactor processes a request or response message. Three types of failure are handled by Recovery: 
+message timeout, hung thread and hung asynchronous request. Which reactor is used to handle a failure is determined by the reactor 
+processing the message that caused the failure.
 </p>
+<h2>Message Timeouts</h2>
+<p>
+When there are millions of messages processed each second, adding a timer to each one can slow things down considerably.
+So instead of timing each message, the reactor tracks when processing began on each message and the reactors are polled
+to see if any reactor has been processing the same message for too long. The Recovery method
+<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#getReactorPollMillis--">getReactorPollMillis</a>
+is used to determine how often the reactors are to be polled. The default value is 500 milliseconds.
+</p>
+<p>
+The Recovery method
+<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#getMessageTimeoutMillis-org.agilewiki.jactor2.core.impl.ReactorImpl-">getMessageTimeoutMillis</a>
+is used to determine how long a message can be processed before being timed out. The default value is
+300,000 milliseconds for blocking reactors and 1,000 milliseconds for all other types of reactors.
+</p>
+<p>
+Once a message has timed out, the thread processing that message is interrupted. The application then has a limited
+time to detect and throw an InterruptedException. How long it has is determined by the Recovery method
+<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#getThreadInterruptMillis-org.agilewiki.jactor2.core.impl.ReactorImpl-">getThreadInterruptMillis</a>.
+The default value is 1,000 milliseconds.
+</p>
+<p>
+If the application logic throws the InterruptedException in time, then the Recovery method
+<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#onMessageTimeout-org.agilewiki.jactor2.core.impl.ReactorImpl-">onMessageTimeout</a>
+handles the recovery. The default action is to close the Reactor. On the other hand, if the application logic does not throw an InterruptedException
+(or complete the message processing) in time, then the thread is considered hung--which is a far more serious issue.
+</p>
+<h2>Hung Thread</h2>
+<h2>Hung Asynchronous Request</h2>
 </body>
 </html>
