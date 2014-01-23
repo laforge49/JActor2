@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.plant;
 
 /**
- * A schedular for Plant.
+ * A scheduler for Plant, created by PlantConfiguration.
  */
 public interface Scheduler {
     /**
