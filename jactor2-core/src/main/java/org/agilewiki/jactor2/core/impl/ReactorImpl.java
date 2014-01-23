@@ -159,21 +159,33 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         if (startClosing)
             return;
         startClosing = true;
-        Iterator<RequestImpl> it = messages.iterator();
-        while (it.hasNext()) {
-            RequestImpl message = it.next();
+
+        Iterator<RequestImpl> mit = messages.iterator();
+        while (mit.hasNext()) {
+            RequestImpl message = mit.next();
             message.close();
         }
-        closeAll();
-    }
 
-    /**
-     * Performs the second phase of closing.
-     */
-    protected void close2() throws Exception {
-        if (shuttingDown) {
-            return;
+        if (closeables != null) {
+            Iterator<Closeable> cit = closeables.iterator();
+            while (cit.hasNext()) {
+                Closeable closeable = cit.next();
+                try {
+                    closeable.close();
+                } catch (final Throwable t) {
+                    if (closeable != null && PlantImpl.DEBUG) {
+                        getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
+                    }
+                }
+                cit = closeables.iterator();
+            }
+            cit = closeables.iterator();
+            while (cit.hasNext()) {
+                Closeable closeable = cit.next();
+                getLogger().warn("still has closable: " + this + "\n" + closeable);
+            }
         }
+
         shuttingDown = true;
         try {
             outbox.close();
@@ -187,7 +199,6 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         PlantImpl plantImpl = PlantImpl.getSingleton();
         if (plantImpl == null)
             return;
-        ReactorImpl plantReactorImpl = plantImpl.getInternalReactor().asReactorImpl();
 
         if (!isRunning())
             return;
@@ -366,7 +377,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     public final void incomingResponse(final RequestImpl _message,
                                        final ReactorImpl _responseSource) {
         try {
-            final ReactorImpl responseSource = _responseSource==null ? null : _responseSource;
+            final ReactorImpl responseSource = _responseSource == null ? null : _responseSource;
             final boolean local = this == _responseSource;
             if (local || (_responseSource == null)
                     || !responseSource.buffer(_message, this)) {
@@ -387,7 +398,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     /**
      * Signals that a request has completed.
      *
-     * @param _message    The request that has completed
+     * @param _message The request that has completed
      */
     public void requestEnd(final RequestImpl _message) {
         if (_message.isForeign()) {
@@ -519,33 +530,10 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     public boolean removeCloseable(final Closeable _closeable) {
         if (closeables == null)
             return false;
-        if (!closeables.remove(_closeable))
+        if (!closeables.remove(_closeable)) {
             return false;
+        }
         _closeable.asCloseableImpl().removeReactor(this);
         return true;
-    }
-
-    protected void closeAll() throws Exception {
-        if (closeables == null) {
-            close2();
-            return;
-        }
-        Iterator<Closeable> it = closeables.iterator();
-        while (it.hasNext()) {
-            Closeable closeable = it.next();
-            try {
-                closeable.close();
-            } catch (final Throwable t) {
-                if (closeable != null && PlantImpl.DEBUG) {
-                    getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
-                }
-            }
-        }
-        it = closeables.iterator();
-        while (it.hasNext()) {
-            Closeable closeable = it.next();
-            getLogger().warn("still has closable: " + this + "\n" + closeable);
-        }
-        close2();
     }
 }

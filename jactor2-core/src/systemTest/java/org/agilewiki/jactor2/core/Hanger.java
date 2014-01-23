@@ -5,8 +5,8 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 class Hanger extends NonBlockingBladeBase {
-    Hanger(final NonBlockingReactor _reactor) throws Exception {
-        super(_reactor);
+    Hanger() throws Exception {
+        super(new NonBlockingReactor());
     }
 
     SyncRequest<Void> looperSReq() {
