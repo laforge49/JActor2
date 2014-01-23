@@ -98,6 +98,28 @@ class Hanger extends NonBlockingBladeBase {
         };
     }
 }
+</pre>
+<p>
+The <a href="java7/SleeperMessageTimeout.java">SleeperMessageTimeout</a> program
+calls the sleeper request to demonstrate the result of a message timeout.
+As you can see below, the Hanger's reactor is closed and the result of the call to
+sleeper is that a ServiceClosedException is thrown.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.plant.Plant;
+
+public class SleeperMessageTimeout {
+    static public void main(final String[] _args) throws Exception {
+        final Plant plant = new Plant();
+        try {
+            Hanger hanger = new Hanger();
+            hanger.sleeperSReq().call();
+            System.out.println("never gets here");
+        } finally {
+            plant.close();
+        }
+    }
+}
 
     Output:
     
@@ -139,6 +161,46 @@ java:1142)
         at java.lang.Thread.run(Thread.java:744)
 </pre>
 <h2>Hung Thread</h2>
+<p>
+When there is no response to an interrupt, the thread is considered hung and the
+Recovery method
+<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#onHungThread-org.agilewiki.jactor2.core.impl.ReactorImpl-">onHungThread</a>
+is called to handle the recovery.
+The default action is to call the 
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#exit--">exit</a> method on Plant.
+This method closes all reactors and their closeables before calling System.exit.
+</p>
+<p>
+The <a href="java7/LooperMessageTimeout.java">LooperMessageTimeout</a> program
+calls the looper request on Hanger, resulting in a hung thread and then termination
+of the program.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.plant.Plant;
+
+public class LooperMessageTimeout {
+    static public void main(final String[] _args) throws Exception {
+        final Plant plant = new Plant();
+        try {
+            Hanger hanger = new Hanger();
+            hanger.looperSReq().signal();
+            Thread.sleep(Long.MAX_VALUE);
+        } finally {
+            plant.close();
+        }
+    }
+}
+
+    Output:
+    
+[pool-1-thread-1] ERROR org.agilewiki.jactor2.core.reactors.Reactor - message ti
+meout -> reactor close
+[pool-1-thread-1] ERROR org.agilewiki.jactor2.core.reactors.Reactor - hung threa
+d
+message=Hanger$1, isClosed=true, isSignal=true, source=null, target=org.agilewik
+i.jactor2.core.reactors.NonBlockingReactor, this=org.agilewiki.jactor2.core.impl
+.SyncRequestImpl@1b4f5062
+</pre>
 <h2>Hung Asynchronous Request</h2>
 </body>
 </html>
