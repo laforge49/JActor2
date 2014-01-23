@@ -59,6 +59,85 @@ a ServiceClosedException.
 But if the application logic does not throw an InterruptedException
 (or complete the message processing) in time, then the thread is considered hung--which is a far more serious issue.
 </p>
+<p>
+The <a href="java7/Hanger.java">Hanger</a> class is used to test message timeouts.
+It has two synchronous requests, sleeper and looper.
+The sleeper requests causes a message timeout but uses Thread.sleep which responds to a thread interrupt by throwing an InterruptedException.
+In contrast, the looper request does not check to see if the thread has received an interrupt.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
+
+class Hanger extends NonBlockingBladeBase {
+    Hanger() throws Exception {
+        super(new NonBlockingReactor());
+    }
+
+    SyncRequest&lt;Void&gt; looperSReq() {
+        return new SyncBladeRequest&lt;Void&gt;() {
+            @Override
+            public Void processSyncRequest() throws Exception {
+                while (true) {}
+            }
+        };
+    }
+
+    SyncRequest&lt;Void&gt; sleeperSReq() {
+        return new SyncBladeRequest&lt;Void&gt;() {
+            @Override
+            public Void processSyncRequest() throws Exception {
+                try {
+                    Thread.sleep(Long.MAX_VALUE);
+                } catch (InterruptedException ie) {
+                    throw ie;
+                }
+                return null;
+            }
+        };
+    }
+}
+
+    Output:
+    
+[pool-1-thread-1] ERROR org.agilewiki.jactor2.core.reactors.Reactor - message ti
+meout -> reactor close
+[Thread-0] WARN org.agilewiki.jactor2.core.reactors.Reactor - message interrupte
+d on close message=Hanger$2, isClosed=false, isSignal=false, source=org.agilewik
+i.jactor2.core.impl.RequestImplBase$Pender, target=org.agilewiki.jactor2.core.re
+actors.NonBlockingReactor, this=org.agilewiki.jactor2.core.impl.SyncRequestImpl@
+28741fab
+Exception in thread "main" org.agilewiki.jactor2.core.plant.ServiceClosedExcepti
+on
+        at org.agilewiki.jactor2.core.impl.RequestImplBase.close(RequestImplBase
+.java:288)
+        at org.agilewiki.jactor2.core.impl.ReactorImpl.close2(ReactorImpl.java:2
+02)
+        at org.agilewiki.jactor2.core.impl.ReactorImpl.closeAll(ReactorImpl.java
+:549)
+        at org.agilewiki.jactor2.core.impl.ReactorImpl.close(ReactorImpl.java:16
+7)
+        at org.agilewiki.jactor2.core.plant.Recovery.onMessageTimeout(Recovery.j
+ava:22)
+        at org.agilewiki.jactor2.core.impl.ReactorImpl.reactorPoll(ReactorImpl.j
+ava:482)
+        at org.agilewiki.jactor2.core.impl.ReactorImpl.reactorPoll(ReactorImpl.j
+ava:491)
+        at org.agilewiki.jactor2.core.impl.PlantImpl$1.run(PlantImpl.java:76)
+        at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:51
+1)
+        at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+        at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.
+access$301(ScheduledThreadPoolExecutor.java:180)
+        at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.
+run(ScheduledThreadPoolExecutor.java:294)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.
+java:1142)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor
+.java:617)
+        at java.lang.Thread.run(Thread.java:744)
+</pre>
 <h2>Hung Thread</h2>
 <h2>Hung Asynchronous Request</h2>
 </body>
