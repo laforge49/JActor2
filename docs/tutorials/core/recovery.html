@@ -209,7 +209,7 @@ added to detect this situation.
 </p>
 <p>
 As we saw in <a href="parallel.html">Parallel</a>,
-an AsyncRequest track the number of pending requests.
+an AsyncRequest tracks the number of pending requests.
 So when a message is done processing, there is no response yet for the
 current request and there are no pending responses, it is quite likely that
 there is a bug and the request has been hung.
