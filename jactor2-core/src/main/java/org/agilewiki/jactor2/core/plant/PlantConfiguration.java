@@ -32,7 +32,6 @@ public class PlantConfiguration {
     public void initialize() {
         recovery = createRecovery();
         scheduler = createScheduler();
-        scheduler.initialize();
     }
 
     protected Recovery createRecovery() {

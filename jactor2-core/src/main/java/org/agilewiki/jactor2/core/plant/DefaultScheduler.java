@@ -13,8 +13,7 @@ public class DefaultScheduler implements Scheduler {
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
-    @Override
-    public void initialize() {
+    public DefaultScheduler() {
         scheduledThreadPoolExecutor =
                 new ScheduledThreadPoolExecutor(getSchedulerPoolSize());
         currentTimeMillis = System.currentTimeMillis();
