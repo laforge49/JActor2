@@ -156,6 +156,8 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
     @Override
     public void close() throws Exception {
+        closeableImpl.close();
+
         if (startClosing)
             return;
         startClosing = true;
@@ -167,7 +169,8 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         }
 
         if (closeables != null) {
-            Iterator<Closeable> cit = closeables.iterator();
+            HashSet<Closeable> hs = new HashSet<Closeable>(closeables);
+            Iterator<Closeable> cit = hs.iterator();
             while (cit.hasNext()) {
                 Closeable closeable = cit.next();
                 try {
@@ -177,7 +180,6 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                         getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
                     }
                 }
-                cit = closeables.iterator();
             }
             cit = closeables.iterator();
             while (cit.hasNext()) {
@@ -195,7 +197,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
             inbox.close();
         } catch (final Exception e) {
         }
-        closeableImpl.close();
+
         PlantImpl plantImpl = PlantImpl.getSingleton();
         if (plantImpl == null)
             return;
