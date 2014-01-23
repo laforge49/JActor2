@@ -160,7 +160,7 @@ java:1142)
 .java:617)
         at java.lang.Thread.run(Thread.java:744)
 </pre>
-<h2>Hung Thread</h2>
+<h2>Hung Threads</h2>
 <p>
 When there is no response to an interrupt, the thread is considered hung and the
 Recovery method
@@ -201,6 +201,90 @@ message=Hanger$1, isClosed=true, isSignal=true, source=null, target=org.agilewik
 i.jactor2.core.reactors.NonBlockingReactor, this=org.agilewiki.jactor2.core.impl
 .SyncRequestImpl@1b4f5062
 </pre>
-<h2>Hung Asynchronous Request</h2>
+<h2>Hung Asynchronous Requests</h2>
+<p>
+When working with asynchronous requests, it is easy to forget to send a response.
+Then the program hangs without a hint as to what went wrong. So a bit of logic has been
+added to detect this situation.
+</p>
+<p>
+As we saw in <a href="parallel.html">Parallel</a>,
+an AsyncRequest track the number of pending requests.
+So when a message is done processing, there is no response yet for the
+current request and there are no pending responses, it is quite likely that
+there is a bug and the request has been hung.
+This is when the recovery method
+<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#onHungRequest-org.agilewiki.jactor2.core.impl.RequestImpl-">onHungRequest</a>
+is called.
+The default action is to close the reactor.
+</p>
+<p>
+Of course, things are often not that simple. A blade may save a request and respond to it later.
+In this case we need to call
+<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#setNoHungRequestCheck--">setNoHungRequestCheck</a>.
+Fortunately this is an unusual case, so most of the time we are assured that the request will not hang
+and we can focus our code reviews on code that uses the setNoHungRequestCheck method.
+</p>
+<p>
+The <a href="java7/AsyncHang.java">AsyncHang</a> program
+demonstrates what happens when there is no response to an asynchronous request.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+
+public class AsyncHang extends NonBlockingBladeBase {
+
+    public static void main(final String[] _args) throws Exception {
+        new Plant();
+        try {
+            AsyncHang asyncHang = new AsyncHang();
+            asyncHang.hangAReq().call();
+        } finally {
+            Plant.close();
+        }
+    }
+
+    public AsyncHang() throws Exception {
+    }
+
+    public AsyncRequest<Void> hangAReq() {
+        return new AsyncBladeRequest<Void>() {
+            @Override
+            public void processAsyncRequest() throws Exception {
+                //no response--the request hangs
+            }
+        };
+    }
+}
+
+    Output:
+    
+[Thread-0] ERROR org.agilewiki.jactor2.core.reactors.Reactor - hung request:
+message=AsyncHang$1, isClosed=false, isSignal=false, source=org.agilewiki.jactor
+2.core.impl.RequestImplBase$Pender, target=org.agilewiki.jactor2.core.reactors.N
+onBlockingReactor, this=org.agilewiki.jactor2.core.impl.AsyncRequestImpl@ff60fc4
+
+[Thread-0] ERROR org.agilewiki.jactor2.core.reactors.Reactor - request hung -> r
+eactor close
+Exception in thread "main" org.agilewiki.jactor2.core.plant.ServiceClosedExcepti
+on
+        at org.agilewiki.jactor2.core.impl.RequestImplBase.close(RequestImplBase
+.java:288)
+        at org.agilewiki.jactor2.core.impl.AsyncRequestImpl.pendingCheck(AsyncRe
+questImpl.java:62)
+        at org.agilewiki.jactor2.core.impl.AsyncRequestImpl.processRequestMessag
+e(AsyncRequestImpl.java:70)
+        at org.agilewiki.jactor2.core.impl.RequestImplBase.eval(RequestImplBase.
+java:303)
+        at org.agilewiki.jactor2.core.impl.ReactorImpl.processMessage(ReactorImp
+l.java:367)
+        at org.agilewiki.jactor2.core.impl.ReactorImpl.run(ReactorImpl.java:460)
+
+        at org.agilewiki.jactor2.core.plant.ThreadManager$1.run(ThreadManager.ja
+va:76)
+        at java.lang.Thread.run(Thread.java:744)
+</pre>
 </body>
 </html>
