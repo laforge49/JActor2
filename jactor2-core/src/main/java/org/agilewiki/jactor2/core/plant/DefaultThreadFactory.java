@@ -13,6 +13,6 @@ public final class DefaultThreadFactory implements ThreadFactory {
      */
     @Override
     public PoolThreadx newThread(final Runnable _runnable) {
-        return new PoolThreadImpl(_runnable);
+        return new PoolThread(_runnable);
     }
 }
