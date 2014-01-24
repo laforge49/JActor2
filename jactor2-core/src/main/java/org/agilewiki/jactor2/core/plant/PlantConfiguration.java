@@ -78,21 +78,37 @@ public class PlantConfiguration {
     }
 
     /**
-     * create
-     * @return
+     * Create the reactor pool thread factory.
+     *
+     * @return The thread factory for the reactor pool thread manager.
      */
     protected ThreadFactory createReactorPoolThreadFactory() {
         return new DefaultReactorPoolThreadFactory();
     }
 
-    public ReactorPoolThreadManager createThreadManager() {
+    /**
+     * Create the reactor pool thread manager.
+     *
+     * @return The reactor pool thread manager.
+     */
+    public ReactorPoolThreadManager createReactorPoolThreadManager() {
         return new ReactorPoolThreadManager(reactorThreadPoolSize, createReactorPoolThreadFactory());
     }
 
+    /**
+     * Returns 16.
+     *
+     * @return The reactor default initial local message queue size.
+     */
     public int getInitialLocalMessageQueueSize() {
         return 16;
     }
 
+    /**
+     * Returns 16.
+     *
+     * @return The reactor default initial buffer size.
+     */
     public int getInitialBufferSize() {
         return 16;
     }

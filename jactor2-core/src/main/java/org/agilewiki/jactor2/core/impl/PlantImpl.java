@@ -52,7 +52,7 @@ public class PlantImpl {
             plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
         } else
             plantConfiguration = _plantConfiguration;
-        reactorPoolThreadManager = plantConfiguration.createThreadManager();
+        reactorPoolThreadManager = plantConfiguration.createReactorPoolThreadManager();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
         internalReactor = createInternalReactor();
         _plantConfiguration.getPlantScheduler().scheduleAtFixedRate(plantPoll(),
