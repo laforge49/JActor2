@@ -58,14 +58,14 @@ public final class ThreadManager {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                final PoolThread currentThread = (PoolThread) Thread
+                final PoolThreadx currentThread = (PoolThreadx) Thread
                         .currentThread();
                 while (true) {
                     try {
                         taskRequest.acquire();
                         UnboundReactorImpl reactor = reactors.poll();
                         if (reactor != null) {
-                            AtomicReference<PoolThread> threadReference = reactor
+                            AtomicReference<PoolThreadx> threadReference = reactor
                                     .getThreadReference();
                             if ((threadReference.get() == null)
                                     && threadReference.compareAndSet(null,

@@ -7,12 +7,12 @@ import java.util.concurrent.ThreadFactory;
  */
 public final class DefaultThreadFactory implements ThreadFactory {
     /**
-     * The newThread method returns a newly created PoolThread.
+     * The newThread method returns a newly created PoolThreadx.
      *
      * @param _runnable The run method is called when the thread is started.
      */
     @Override
-    public Thread newThread(final Runnable _runnable) {
+    public PoolThreadx newThread(final Runnable _runnable) {
         return new PoolThreadImpl(_runnable);
     }
 }
