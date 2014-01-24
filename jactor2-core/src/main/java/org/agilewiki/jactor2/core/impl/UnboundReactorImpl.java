@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.plant.PoolThreadx;
+import org.agilewiki.jactor2.core.plant.PoolThread;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
     /**
      * A reference to the thread that is executing this targetReactor.
      */
-    protected final AtomicReference<PoolThreadx> threadReference = new AtomicReference<PoolThreadx>();
+    protected final AtomicReference<PoolThread> threadReference = new AtomicReference<PoolThread>();
 
     /**
      * The object to be run when the inbox is emptied and before the threadReference is cleared.
@@ -33,7 +33,7 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
     }
 
     @Override
-    public AtomicReference<PoolThreadx> getThreadReference() {
+    public AtomicReference<PoolThread> getThreadReference() {
         return threadReference;
     }
 
@@ -90,9 +90,9 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
                 if (!iter.hasNext() && _mayMigrate
                         && (target instanceof UnboundReactorImpl)) {
                     if (!target.isRunning()) {
-                        final PoolThreadx currentThread = threadReference.get();
+                        final PoolThread currentThread = threadReference.get();
                         final UnboundReactorImpl targ = (UnboundReactorImpl) target;
-                        final AtomicReference<PoolThreadx> targetThreadReference = targ
+                        final AtomicReference<PoolThread> targetThreadReference = targ
                                 .getThreadReference();
                         if ((targetThreadReference.get() == null)
                                 && targetThreadReference.compareAndSet(null,

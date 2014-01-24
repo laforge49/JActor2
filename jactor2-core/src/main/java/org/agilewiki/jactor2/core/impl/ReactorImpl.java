@@ -414,7 +414,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      *
      * @return The atomic reference to the current thread.
      */
-    abstract public AtomicReference<PoolThreadx> getThreadReference();
+    abstract public AtomicReference<PoolThread> getThreadReference();
 
     /**
      * Returns true when there is code to be executed when the inbox is emptied.

@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.plant.MigrationException;
-import org.agilewiki.jactor2.core.plant.PoolThreadx;
+import org.agilewiki.jactor2.core.plant.PoolThread;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -152,7 +152,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         final ReactorImpl source = (ReactorImpl) _source;
         if (PlantImpl.DEBUG) {
             if (source instanceof ThreadBoundReactorImpl) {
-                if (Thread.currentThread() instanceof PoolThreadx) {
+                if (Thread.currentThread() instanceof PoolThread) {
                     throw new IllegalStateException("send from wrong thread");
                 }
             } else {
@@ -204,9 +204,9 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
-        if (Thread.currentThread() instanceof PoolThreadx) {
+        if (Thread.currentThread() instanceof PoolThread) {
             throw new UnsupportedOperationException(
-                    "Use of call on a PoolThreadx can result in a deadlock");
+                    "Use of call on a PoolThread can result in a deadlock");
         }
         messageSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
@@ -236,7 +236,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             throws Exception {
         if (PlantImpl.DEBUG) {
             if (targetReactor instanceof ThreadBoundReactorImpl) {
-                if (Thread.currentThread() instanceof PoolThreadx) {
+                if (Thread.currentThread() instanceof PoolThread) {
                     final Exception ex = new IllegalStateException(
                             "response from wrong thread");
                     targetReactor.asReactorImpl().getLogger().error(
