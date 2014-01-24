@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.impl.BlockingReactorImpl;
-import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.RequestImpl;
 
