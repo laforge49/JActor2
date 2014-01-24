@@ -3,13 +3,18 @@ package org.agilewiki.jactor2.core.plant;
 import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
 
 /**
- * Interface for all threads in a facility thread pool.
- * The RequestImplBase.call method should not be invoked from a PoolThread.
+ * Base class for pool threads used by reactors.
+ * Created by DefaultThreadFactory.
  */
 public class PoolThread extends Thread {
 
     private volatile UnboundReactorImpl currentReactor;
 
+    /**
+     * Create a pool thread.
+     *
+     * @param _runnable The runnable to be executed by the thread.
+     */
     public PoolThread(final Runnable _runnable) {
         super(_runnable);
     }
