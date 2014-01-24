@@ -3,7 +3,8 @@ package org.agilewiki.jactor2.core.plant;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * DefaultThreadFactory is used to create pool threads.
+ * Base class used to create the pool threads used by reactors.
+ * Created by PlantConfiguration.
  */
 public final class DefaultThreadFactory implements ThreadFactory {
     /**
