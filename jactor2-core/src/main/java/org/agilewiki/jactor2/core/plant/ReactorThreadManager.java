@@ -10,15 +10,15 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The ThreadManager is used to process a queue of Reactor's
+ * The ReactorThreadManager is used to process a queue of Reactor's
  * that have non-empty inboxes.
- * ThreadManager is a thread pool, but it has a simplified API and
+ * ReactorThreadManager is a thread pool, but it has a simplified API and
  * assumes that the thread pool has a fixed number of threads.
- * ThreadManager is also responsible for assigning the threadReference
+ * ReactorThreadManager is also responsible for assigning the threadReference
  * when a Reactor is run.
  */
-public final class ThreadManager {
-    final Logger logger = LoggerFactory.getLogger(ThreadManager.class);
+public final class ReactorThreadManager {
+    final Logger logger = LoggerFactory.getLogger(ReactorThreadManager.class);
 
     /**
      * The taskRequest semaphore is used to wake up a thread
@@ -47,25 +47,25 @@ public final class ThreadManager {
     private Thread threads[] = null;
 
     /**
-     * Create a ThreadManager
+     * Create a ReactorThreadManager
      *
      * @param _threadCount   The number of threads to be created.
      * @param _threadFactory Used to create the threads.
      */
-    public ThreadManager(final int _threadCount,
-            final ThreadFactory _threadFactory) {
+    public ReactorThreadManager(final int _threadCount,
+                                final ThreadFactory _threadFactory) {
         this.threadCount = _threadCount;
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                final PoolThread currentThread = (PoolThread) Thread
+                final ReactorPoolThread currentThread = (ReactorPoolThread) Thread
                         .currentThread();
                 while (true) {
                     try {
                         taskRequest.acquire();
                         UnboundReactorImpl reactor = reactors.poll();
                         if (reactor != null) {
-                            AtomicReference<PoolThread> threadReference = reactor
+                            AtomicReference<ReactorPoolThread> threadReference = reactor
                                     .getThreadReference();
                             if ((threadReference.get() == null)
                                     && threadReference.compareAndSet(null,

@@ -91,7 +91,7 @@ public class MPlantImpl extends PlantImpl {
         validate();
         changes();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
-        _plantConfiguration.getScheduler().scheduleAtFixedRate(plantPoll(),
+        _plantConfiguration.getPlantScheduler().scheduleAtFixedRate(plantPoll(),
                 reactorPollMillis);
     }
 

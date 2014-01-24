@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 abstract public class ReactorImpl extends BladeBase implements Closeable, Runnable, MessageSource {
     public Recovery recovery;
 
-    public Scheduler scheduler;
+    public PlantScheduler plantScheduler;
 
     private CloseableImpl closeableImpl;
 
@@ -84,7 +84,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         closeableImpl = new CloseableImpl1(this);
         PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
         recovery = _parentReactorImpl == null ? plantConfiguration.getRecovery() : _parentReactorImpl.recovery;
-        scheduler = _parentReactorImpl == null ? plantConfiguration.getScheduler() : _parentReactorImpl.scheduler;
+        plantScheduler = _parentReactorImpl == null ? plantConfiguration.getPlantScheduler() : _parentReactorImpl.plantScheduler;
         initialBufferSize = _initialBufferSize;
         initialLocalQueueSize = _initialLocalQueueSize;
         parentReactor = _parentReactorImpl == null ? null : _parentReactorImpl.asReactor();
@@ -414,7 +414,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      *
      * @return The atomic reference to the current thread.
      */
-    abstract public AtomicReference<PoolThread> getThreadReference();
+    abstract public AtomicReference<ReactorPoolThread> getThreadReference();
 
     /**
      * Returns true when there is code to be executed when the inbox is emptied.
@@ -456,7 +456,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                 if (timeoutSemaphore != null) {
                     return;
                 }
-                messageStartTimeMillis = scheduler.currentTimeMillis();
+                messageStartTimeMillis = plantScheduler.currentTimeMillis();
                 processMessage(message);
                 messageStartTimeMillis = 0;
             }
@@ -488,7 +488,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     }
 
     public void reactorPoll() throws Exception {
-        long currentTimeMillis = scheduler.currentTimeMillis();
+        long currentTimeMillis = plantScheduler.currentTimeMillis();
         long mst = messageStartTimeMillis;
         if (mst > 0) {
             if (mst + recovery.getMessageTimeoutMillis(this) < currentTimeMillis) {

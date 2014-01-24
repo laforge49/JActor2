@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.plant.PoolThread;
+import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
@@ -34,7 +34,7 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
     }
 
     @Override
-    public AtomicReference<PoolThread> getThreadReference() {
+    public AtomicReference<ReactorPoolThread> getThreadReference() {
         throw new UnsupportedOperationException();
     }
 

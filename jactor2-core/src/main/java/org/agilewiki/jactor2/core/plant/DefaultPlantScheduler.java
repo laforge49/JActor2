@@ -4,18 +4,18 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The scheduler created by PlantConfiguration.
+ * The plantScheduler created by PlantConfiguration.
  */
-public class DefaultScheduler implements Scheduler {
+public class DefaultPlantScheduler implements PlantScheduler {
 
     private volatile long currentTimeMillis;
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
     /**
-     * Creates the default scheduler.
+     * Creates the default plantScheduler.
      */
-    public DefaultScheduler() {
+    public DefaultPlantScheduler() {
         scheduledThreadPoolExecutor =
                 new ScheduledThreadPoolExecutor(getSchedulerPoolSize());
         currentTimeMillis = System.currentTimeMillis();

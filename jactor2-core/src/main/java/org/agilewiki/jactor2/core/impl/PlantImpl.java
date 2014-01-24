@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
-import org.agilewiki.jactor2.core.plant.ThreadManager;
+import org.agilewiki.jactor2.core.plant.ReactorThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PlantImpl {
@@ -25,7 +25,7 @@ public class PlantImpl {
     /**
      * The thread pool.
      */
-    private ThreadManager threadManager;
+    private ReactorThreadManager reactorThreadManager;
 
     private NonBlockingReactor internalReactor;
 
@@ -53,10 +53,10 @@ public class PlantImpl {
             plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
         } else
             plantConfiguration = _plantConfiguration;
-        threadManager = plantConfiguration.getThreadManager();
+        reactorThreadManager = plantConfiguration.createThreadManager();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
         internalReactor = createInternalReactor();
-        _plantConfiguration.getScheduler().scheduleAtFixedRate(plantPoll(),
+        _plantConfiguration.getPlantScheduler().scheduleAtFixedRate(plantPoll(),
                 reactorPollMillis);
     }
 
@@ -92,7 +92,7 @@ public class PlantImpl {
      */
     public final void submit(final UnboundReactorImpl _reactor) throws Exception {
         try {
-            threadManager.execute(_reactor);
+            reactorThreadManager.execute(_reactor);
         } catch (final Exception e) {
             if (!internalReactor.asReactorImpl().isClosing()) {
                 throw e;
@@ -115,7 +115,7 @@ public class PlantImpl {
             plantConfiguration.close();
             if (exitOnClose)
                 System.exit(0);
-            threadManager.close();
+            reactorThreadManager.close();
         }
     }
 
@@ -132,7 +132,7 @@ public class PlantImpl {
 
     public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
-        plantConfiguration.getScheduler().schedule(schedulableSemaphore.runnable, _millisecondDelay);
+        plantConfiguration.getPlantScheduler().schedule(schedulableSemaphore.runnable, _millisecondDelay);
         return schedulableSemaphore;
     }
 }

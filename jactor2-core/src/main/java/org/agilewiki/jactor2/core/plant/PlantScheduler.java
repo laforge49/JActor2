@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.plant;
 /**
  * A scheduler for Plant, created by PlantConfiguration.
  */
-public interface Scheduler {
+public interface PlantScheduler {
     /**
      * Schedule a Runnable to be run at a later time.
      *
@@ -28,7 +28,7 @@ public interface Scheduler {
     long currentTimeMillis();
 
     /**
-     * Shut down the scheduler thread pool.
+     * Shut down the plantScheduler thread pool.
      */
     void close();
 }

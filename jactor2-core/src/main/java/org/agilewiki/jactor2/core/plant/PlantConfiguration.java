@@ -2,27 +2,22 @@ package org.agilewiki.jactor2.core.plant;
 
 import java.util.concurrent.ThreadFactory;
 
+/**
+ * Base class for configuring the Plant.
+ * Used as the default configuration when none is specified.
+ */
 public class PlantConfiguration {
     /**
-     * Default initial local queue size.
+     * The size of the thread pool used by reactors.
      */
-    private static final int DEFAULT_INITIAL_LOCAL_QUEUE_SIZE = 16;
-
-    /**
-     * Default initial (per target Reactor) buffer.
-     */
-    private static final int DEFAULT_INITIAL_BUFFER_SIZE = 16;
-
-    private static final int DEFAULT_THREAD_COUNT = 20;
-
     public final int threadPoolSize;
 
     private Recovery recovery;
 
-    private Scheduler scheduler;
+    private PlantScheduler plantScheduler;
 
     public PlantConfiguration() {
-        threadPoolSize = DEFAULT_THREAD_COUNT;
+        threadPoolSize = 20;
     }
 
     public PlantConfiguration(final int _threadPoolSize) {
@@ -31,7 +26,7 @@ public class PlantConfiguration {
 
     public void initialize() {
         recovery = createRecovery();
-        scheduler = createScheduler();
+        plantScheduler = createScheduler();
     }
 
     protected Recovery createRecovery() {
@@ -42,29 +37,29 @@ public class PlantConfiguration {
         return recovery;
     }
 
-    protected Scheduler createScheduler() {
-        return new DefaultScheduler();
+    protected PlantScheduler createScheduler() {
+        return new DefaultPlantScheduler();
     }
 
-    public Scheduler getScheduler() { return scheduler; }
+    public PlantScheduler getPlantScheduler() { return plantScheduler; }
 
     public void close() {
-        scheduler.close();
+        plantScheduler.close();
     }
 
-    public ThreadFactory getThreadFactory() {
+    protected ThreadFactory createThreadFactory() {
         return new DefaultThreadFactory();
     }
 
-    public ThreadManager getThreadManager() {
-        return new ThreadManager(threadPoolSize, getThreadFactory());
+    public ReactorThreadManager createThreadManager() {
+        return new ReactorThreadManager(threadPoolSize, createThreadFactory());
     }
 
     public int getInitialLocalMessageQueueSize() {
-        return DEFAULT_INITIAL_LOCAL_QUEUE_SIZE;
+        return 16;
     }
 
     public int getInitialBufferSize() {
-        return DEFAULT_INITIAL_BUFFER_SIZE;
+        return 16;
     }
 }

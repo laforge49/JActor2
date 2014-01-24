@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
  * Base class for pool threads used by reactors.
  * Created by DefaultThreadFactory.
  */
-public class PoolThread extends Thread {
+public class ReactorPoolThread extends Thread {
 
     private volatile UnboundReactorImpl currentReactor;
 
@@ -15,7 +15,7 @@ public class PoolThread extends Thread {
      *
      * @param _runnable The runnable to be executed by the thread.
      */
-    public PoolThread(final Runnable _runnable) {
+    public ReactorPoolThread(final Runnable _runnable) {
         super(_runnable);
     }
 
