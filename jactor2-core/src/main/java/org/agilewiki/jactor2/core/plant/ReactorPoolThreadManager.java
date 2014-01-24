@@ -10,15 +10,15 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The ReactorThreadManager is used to process a queue of Reactor's
+ * The ReactorPoolThreadManager is used to process a queue of Reactor's
  * that have non-empty inboxes.
- * ReactorThreadManager is a thread pool, but it has a simplified API and
+ * ReactorPoolThreadManager is a thread pool, but it has a simplified API and
  * assumes that the thread pool has a fixed number of threads.
- * ReactorThreadManager is also responsible for assigning the threadReference
+ * ReactorPoolThreadManager is also responsible for assigning the threadReference
  * when a Reactor is run.
  */
-public final class ReactorThreadManager {
-    final Logger logger = LoggerFactory.getLogger(ReactorThreadManager.class);
+public final class ReactorPoolThreadManager {
+    final Logger logger = LoggerFactory.getLogger(ReactorPoolThreadManager.class);
 
     /**
      * The taskRequest semaphore is used to wake up a thread
@@ -47,13 +47,13 @@ public final class ReactorThreadManager {
     private Thread threads[] = null;
 
     /**
-     * Create a ReactorThreadManager
+     * Create a ReactorPoolThreadManager
      *
      * @param _threadCount   The number of threads to be created.
      * @param _threadFactory Used to create the threads.
      */
-    public ReactorThreadManager(final int _threadCount,
-                                final ThreadFactory _threadFactory) {
+    public ReactorPoolThreadManager(final int _threadCount,
+                                    final ThreadFactory _threadFactory) {
         this.threadCount = _threadCount;
         final Runnable runnable = new Runnable() {
             @Override

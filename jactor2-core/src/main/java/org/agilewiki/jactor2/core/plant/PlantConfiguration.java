@@ -10,50 +10,83 @@ public class PlantConfiguration {
     /**
      * The size of the thread pool used by reactors.
      */
-    public final int threadPoolSize;
+    public final int reactorThreadPoolSize;
 
     private Recovery recovery;
 
     private PlantScheduler plantScheduler;
 
+    /**
+     * Create a plant configuration with a reactor thread pool size of 20.
+     */
     public PlantConfiguration() {
-        threadPoolSize = 20;
+        reactorThreadPoolSize = 20;
     }
 
-    public PlantConfiguration(final int _threadPoolSize) {
-        threadPoolSize = _threadPoolSize;
+    /**
+     * Create a plant configuration.
+     *
+     * @param _reactorThreadPoolSize    The size of the reactor thread pool.
+     */
+    public PlantConfiguration(final int _reactorThreadPoolSize) {
+        reactorThreadPoolSize = _reactorThreadPoolSize;
     }
 
+    /**
+     * Create the default Recovery instance.
+     *
+     * @return The default Recovery instance.
+     */
     protected Recovery createRecovery() {
         return new Recovery();
     }
 
+    /**
+     * Returns the default Recovery instance.
+     *
+     * @return The default Recovery instance.
+     */
     public Recovery getRecovery() {
         if (recovery == null)
             recovery = createRecovery();
         return recovery;
     }
 
-    protected PlantScheduler createScheduler() {
+    /**
+     * Create the plant scheduler.
+     * @return The plant scheduler.
+     */
+    protected PlantScheduler createPlantScheduler() {
         return new DefaultPlantScheduler();
     }
 
+    /**
+     * Returns the plant scheduler.
+     * @return The plant scheduler.
+     */
     public PlantScheduler getPlantScheduler() {
         if (plantScheduler == null)
-            plantScheduler = createScheduler();
+            plantScheduler = createPlantScheduler();
         return plantScheduler;
     }
 
+    /**
+     * Shut down the plant scheduler.
+     */
     public void close() {
         plantScheduler.close();
     }
 
-    protected ThreadFactory createThreadFactory() {
-        return new DefaultThreadFactory();
+    /**
+     * create
+     * @return
+     */
+    protected ThreadFactory createReactorPoolThreadFactory() {
+        return new DefaultReactorPoolThreadFactory();
     }
 
-    public ReactorThreadManager createThreadManager() {
-        return new ReactorThreadManager(threadPoolSize, createThreadFactory());
+    public ReactorPoolThreadManager createThreadManager() {
+        return new ReactorPoolThreadManager(reactorThreadPoolSize, createReactorPoolThreadFactory());
     }
 
     public int getInitialLocalMessageQueueSize() {

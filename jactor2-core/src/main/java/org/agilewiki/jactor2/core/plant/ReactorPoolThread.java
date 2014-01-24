@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
 
 /**
  * Base class for pool threads used by reactors.
- * Created by DefaultThreadFactory.
+ * Created by DefaultReactorPoolThreadFactory.
  */
 public class ReactorPoolThread extends Thread {
 

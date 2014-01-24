@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadFactory;
  * Base class used to create the pool threads used by reactors.
  * Created by PlantConfiguration.
  */
-public final class DefaultThreadFactory implements ThreadFactory {
+public final class DefaultReactorPoolThreadFactory implements ThreadFactory {
     /**
      * The newThread method returns a newly created ReactorPoolThread.
      *

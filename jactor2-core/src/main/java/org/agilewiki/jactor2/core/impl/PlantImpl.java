@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
-import org.agilewiki.jactor2.core.plant.ReactorThreadManager;
+import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PlantImpl {
@@ -25,7 +25,7 @@ public class PlantImpl {
     /**
      * The thread pool.
      */
-    private ReactorThreadManager reactorThreadManager;
+    private ReactorPoolThreadManager reactorPoolThreadManager;
 
     private NonBlockingReactor internalReactor;
 
@@ -52,7 +52,7 @@ public class PlantImpl {
             plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
         } else
             plantConfiguration = _plantConfiguration;
-        reactorThreadManager = plantConfiguration.createThreadManager();
+        reactorPoolThreadManager = plantConfiguration.createThreadManager();
         long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
         internalReactor = createInternalReactor();
         _plantConfiguration.getPlantScheduler().scheduleAtFixedRate(plantPoll(),
@@ -91,7 +91,7 @@ public class PlantImpl {
      */
     public final void submit(final UnboundReactorImpl _reactor) throws Exception {
         try {
-            reactorThreadManager.execute(_reactor);
+            reactorPoolThreadManager.execute(_reactor);
         } catch (final Exception e) {
             if (!internalReactor.asReactorImpl().isClosing()) {
                 throw e;
@@ -114,7 +114,7 @@ public class PlantImpl {
             plantConfiguration.close();
             if (exitOnClose)
                 System.exit(0);
-            reactorThreadManager.close();
+            reactorPoolThreadManager.close();
         }
     }
 
