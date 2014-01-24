@@ -42,7 +42,6 @@ public class PlantImpl {
             throw new IllegalStateException("the singleton already exists");
         }
         singleton = this;
-        _plantConfiguration.initialize();
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
         }

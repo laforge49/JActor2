@@ -24,16 +24,13 @@ public class PlantConfiguration {
         threadPoolSize = _threadPoolSize;
     }
 
-    public void initialize() {
-        recovery = createRecovery();
-        plantScheduler = createScheduler();
-    }
-
     protected Recovery createRecovery() {
         return new Recovery();
     }
 
     public Recovery getRecovery() {
+        if (recovery == null)
+            recovery = createRecovery();
         return recovery;
     }
 
@@ -41,7 +38,11 @@ public class PlantConfiguration {
         return new DefaultPlantScheduler();
     }
 
-    public PlantScheduler getPlantScheduler() { return plantScheduler; }
+    public PlantScheduler getPlantScheduler() {
+        if (plantScheduler == null)
+            plantScheduler = createScheduler();
+        return plantScheduler;
+    }
 
     public void close() {
         plantScheduler.close();
