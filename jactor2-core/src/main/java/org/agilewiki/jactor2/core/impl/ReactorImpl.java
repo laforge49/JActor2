@@ -9,8 +9,8 @@ import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.reactors.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.ServiceClosedException;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -524,7 +524,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
     public boolean addCloseable(final Closeable _closeable) throws Exception {
         if (startedClosing())
-            throw new ServiceClosedException();
+            throw new ReactorClosedException();
         if (this == _closeable)
             return false;
         if (!getCloseableSet().add(_closeable))

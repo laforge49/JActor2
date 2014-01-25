@@ -3,8 +3,8 @@ package org.agilewiki.jactor2.core.plant;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.ServiceClosedException;
 
 public class HungRequestTest extends TestCase {
     public void testa() throws Exception {
@@ -13,12 +13,12 @@ public class HungRequestTest extends TestCase {
             final Hanger blade1 = new Hanger(new NonBlockingReactor());
             try {
                 blade1.hiAReq().call();
-            } catch (ServiceClosedException sce) {
+            } catch (ReactorClosedException sce) {
             }
             final Hung blade2 = new Hung(new NonBlockingReactor(), new Hanger(new NonBlockingReactor()));
             try {
                 blade2.hoAReq().call();
-            } catch (ServiceClosedException sce) {
+            } catch (ReactorClosedException sce) {
             }
         } finally {
             plant.close();

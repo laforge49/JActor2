@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.reactors.Closeable;
-import org.agilewiki.jactor2.core.requests.ServiceClosedException;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,7 +23,7 @@ public class CloseableImpl1 implements CloseableImpl {
     @Override
     public void addReactor(final ReactorImpl _reactorImpl) throws Exception {
         if (closing)
-            throw new ServiceClosedException();
+            throw new ReactorClosedException();
         closers.add(_reactorImpl);
     }
 

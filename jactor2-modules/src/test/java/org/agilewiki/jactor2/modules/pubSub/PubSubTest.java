@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.modules.pubSub;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.requests.ServiceClosedException;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
@@ -64,7 +64,7 @@ public class PubSubTest extends TestCase {
             subscriberReactor.close();
             try {
              requestBus.sendsContentAReq(null).call();
-            } catch (ServiceClosedException e) {
+            } catch (ReactorClosedException e) {
             }
             assertEquals(counter.get(), 1);
         } finally {

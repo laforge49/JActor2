@@ -3,9 +3,9 @@ package org.agilewiki.jactor2.core.impl;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.ServiceClosedException;
 
 import java.util.concurrent.Semaphore;
 
@@ -284,7 +284,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             return;
         }
         unClosed = false;
-        response = new ServiceClosedException();
+        response = new ReactorClosedException();
         if (messageSource != null)
             messageSource.incomingResponse(this, null);
     }

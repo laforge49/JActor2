@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.modules.impl;
 
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
-import org.agilewiki.jactor2.core.requests.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -286,7 +286,7 @@ public class MPlantImpl extends PlantImpl {
                 setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(Exception e) throws Exception {
-                        if (e instanceof ServiceClosedException)
+                        if (e instanceof ReactorClosedException)
                             return null;
                         else
                             return "create facility exception: " + e;
