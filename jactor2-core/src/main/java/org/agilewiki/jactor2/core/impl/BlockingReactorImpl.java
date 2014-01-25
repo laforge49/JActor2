@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
 
 public class BlockingReactorImpl extends UnboundReactorImpl {
 

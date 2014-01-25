@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
-import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 import java.util.ArrayDeque;
