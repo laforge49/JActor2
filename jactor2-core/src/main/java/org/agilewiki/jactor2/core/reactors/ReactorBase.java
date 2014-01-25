@@ -46,11 +46,6 @@ abstract public class ReactorBase implements Reactor {
     }
 
     @Override
-    public ExceptionHandler setExceptionHandler(ExceptionHandler exceptionHandler) {
-        return asReactorImpl().setExceptionHandler(exceptionHandler);
-    }
-
-    @Override
     public boolean isInboxEmpty() {
         return asReactorImpl().isInboxEmpty();
     }

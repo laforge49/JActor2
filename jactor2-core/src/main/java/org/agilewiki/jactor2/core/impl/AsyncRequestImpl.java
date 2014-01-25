@@ -128,7 +128,11 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
             final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
         final ExceptionHandler<RESPONSE_TYPE> old = targetReactorImpl
                 .getExceptionHandler();
-        targetReactor.setExceptionHandler(_exceptionHandler);
+        targetReactorImpl.setExceptionHandler(_exceptionHandler);
         return old;
+    }
+
+    public ExceptionHandler<RESPONSE_TYPE> getExceptionHandler() {
+        return targetReactorImpl.getExceptionHandler();
     }
 }

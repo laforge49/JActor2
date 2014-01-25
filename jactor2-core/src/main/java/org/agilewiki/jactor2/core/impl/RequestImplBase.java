@@ -295,7 +295,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     @Override
     public void eval() {
         if (unClosed) {
-            targetReactor.setExceptionHandler(null);
+            targetReactorImpl.setExceptionHandler(null);
             targetReactorImpl.setCurrentMessage(this);
             targetReactorImpl.requestBegin();
             try {
