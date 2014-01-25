@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingInbox;
 

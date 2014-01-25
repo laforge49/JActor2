@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.ExceptionHandler;
-import org.agilewiki.jactor2.core.plant.MigrationException;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
