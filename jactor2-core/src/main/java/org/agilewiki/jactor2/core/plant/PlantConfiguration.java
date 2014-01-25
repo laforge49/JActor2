@@ -71,13 +71,6 @@ public class PlantConfiguration {
     }
 
     /**
-     * Shut down the plant scheduler.
-     */
-    public void close() {
-        plantScheduler.close();
-    }
-
-    /**
      * Create the reactor pool thread factory.
      *
      * @return The thread factory for the reactor pool thread manager.

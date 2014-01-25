@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
@@ -84,6 +85,8 @@ public class PlantImpl {
         return plantConfiguration;
     }
 
+    public PlantScheduler getPlantScheduler() { return plantConfiguration.getPlantScheduler(); }
+
     /**
      * Submit a Reactor for subsequent execution.
      *
@@ -111,7 +114,7 @@ public class PlantImpl {
             internalReactor.close();
         } finally {
             singleton = null;
-            plantConfiguration.close();
+            getPlantScheduler().close();
             if (exitOnClose)
                 System.exit(0);
             reactorPoolThreadManager.close();
