@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.modules.facilities;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.plant.ServiceClosedException;
+import org.agilewiki.jactor2.core.requests.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;

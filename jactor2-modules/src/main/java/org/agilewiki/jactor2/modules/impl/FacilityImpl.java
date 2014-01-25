@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.modules.impl;
 
-import org.agilewiki.jactor2.core.blades.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.plant.ServiceClosedException;
+import org.agilewiki.jactor2.core.requests.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.plant.ServiceClosedException;
 import org.agilewiki.jactor2.core.reactors.Closeable;
+import org.agilewiki.jactor2.core.requests.ServiceClosedException;
 
 import java.util.Collections;
 import java.util.Iterator;

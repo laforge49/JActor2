@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.ServiceClosedException;
 
 public class HungRequestTest extends TestCase {
     public void testa() throws Exception {

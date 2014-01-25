@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.plant;
+package org.agilewiki.jactor2.core.requests;
 
 /**
  * This exception is thrown when sending an AsyncRequest to a different reactor and that reactor is closed.

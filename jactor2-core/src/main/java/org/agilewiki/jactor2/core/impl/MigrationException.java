@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
-
 /**
  * Signals a migration of the current thread to another targetReactor.
  * As this exception is never thrown when a message is being processed,

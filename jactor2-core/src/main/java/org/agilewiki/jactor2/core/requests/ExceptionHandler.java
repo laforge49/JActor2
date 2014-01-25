@@ -1,6 +1,4 @@
-package org.agilewiki.jactor2.core.blades;
-
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+package org.agilewiki.jactor2.core.requests;
 
 /**
  * Exception handlers are used to alter how exceptions are processed.

@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.Request;
 
 public class AsyncRequestImpl<RESPONSE_TYPE> extends

@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.requests;
 
-import org.agilewiki.jactor2.core.blades.ExceptionHandler;
 import org.agilewiki.jactor2.core.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 

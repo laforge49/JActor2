@@ -61,7 +61,7 @@ public class PlantImpl {
     }
 
     protected NonBlockingReactor createInternalReactor() throws Exception {
-        return new NonBlockingReactor((NonBlockingReactor) null, plantConfiguration.getInitialBufferSize(),
+        return new NonBlockingReactor(null, plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize());
     }
 
