@@ -4,7 +4,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The plantScheduler created by PlantConfiguration.
+ * The default plantScheduler created by PlantConfiguration.
+ * Implemented using a ScheduledThreadPoolExecutor.
  */
 public class DefaultPlantScheduler implements PlantScheduler {
 
