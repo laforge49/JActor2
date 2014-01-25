@@ -121,17 +121,6 @@ public class PlantImpl {
         }
     }
 
-    public void exit() {
-        exitOnClose = true;
-        try {
-            close();
-        } catch (Throwable t) {
-            internalReactor.asReactorImpl().getLogger().error("exception on exit", t);
-        } finally {
-            System.exit(1);
-        }
-    }
-
     public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
         plantConfiguration.getPlantScheduler().schedule(schedulableSemaphore.runnable, _millisecondDelay);

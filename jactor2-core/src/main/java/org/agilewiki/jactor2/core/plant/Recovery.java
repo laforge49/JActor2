@@ -55,13 +55,16 @@ public class Recovery {
     }
 
     /**
-     * Handles hung thread. Default action: exit the plant.
+     * Handles hung thread. Default action: close the plant and exit the program.
      *
      * @param _reactorImpl    The reactor whose thread is hung.
      */
     public void onHungThread(final ReactorImpl _reactorImpl) {
         _reactorImpl.getLogger().error("hung thread -> plant exit");
-        Plant.exit();
+        try {
+            Plant.close();
+        } catch (Exception ex) {}
+        System.exit(10);
     }
 
     /**

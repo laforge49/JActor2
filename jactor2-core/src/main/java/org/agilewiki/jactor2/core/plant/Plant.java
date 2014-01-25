@@ -21,17 +21,6 @@ final public class Plant {
     }
 
     /**
-     * Closes the plant, as needed, and then exits the program.
-     */
-    public static void exit() {
-        PlantImpl plantImpl = PlantImpl.getSingleton();
-        if (plantImpl != null)
-            plantImpl.exit();
-        else
-            System.exit(10);
-    }
-
-    /**
      * Returns the internal reactor.
      *
      * @return The internal reactor.

@@ -33,7 +33,7 @@ public class ExceptionHandlerSample {
 
         } finally {
             //shutdown the facility
-            plant.exit();
+            plant.close();
         }
     }
 }
