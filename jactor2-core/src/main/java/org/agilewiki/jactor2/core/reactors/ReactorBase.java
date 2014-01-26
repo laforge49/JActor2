@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.closeable.Closeable;
+import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -18,6 +19,11 @@ abstract public class ReactorBase implements Reactor {
     @Override
     public ReactorImpl asReactorImpl() {
         return reactorImpl;
+    }
+
+    @Override
+    public CloseableImpl asCloseableImpl() {
+        return reactorImpl.asCloseableImpl();
     }
 
     @Override

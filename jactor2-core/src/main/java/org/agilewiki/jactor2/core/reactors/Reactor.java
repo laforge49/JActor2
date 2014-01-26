@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 /**
  * The Reactor interface identifies the processing methods that can be used by applications.
  */
-public interface Reactor extends AutoCloseable, Blade {
+public interface Reactor extends Closeable, Blade {
 
     ReactorImpl asReactorImpl();
 
