@@ -103,7 +103,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     public Reactor getTargetReactor() { return targetReactor; }
 
     @Override
-    public MessageSource getMessageSource() {
+    public MessageSource getRequestSource() {
         return messageSource;
     }
 
