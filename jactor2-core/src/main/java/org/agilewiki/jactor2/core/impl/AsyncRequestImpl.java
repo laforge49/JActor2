@@ -87,7 +87,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     public <RT> void send(final Request<RT> _request,
                           final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
-        if (targetReactorImpl.getCurrentMessage() != this)
+        if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         if (_responseProcessor != SignalResponseProcessor.SINGLETON)
             pendingResponseCount += 1;
@@ -97,7 +97,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     public <RT, RT2> void send(final Request<RT> _request,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
             throws Exception {
-        if (targetReactorImpl.getCurrentMessage() != this)
+        if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         pendingResponseCount += 1;
         _request.asRequestImpl().doSend(targetReactorImpl,

@@ -68,7 +68,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     /**
      * The request or signal message being processed.
      */
-    private RequestImpl currentMessage;
+    private RequestImpl currentRequest;
 
     /**
      * Set when the reactor reaches end-of-life.
@@ -210,7 +210,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
         if (!isRunning())
             return;
-        if (currentMessage != null && currentMessage.isClosed())
+        if (currentRequest != null && currentRequest.isClosed())
             return;
         timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
         Thread thread = (Thread) getThreadReference().get();
@@ -218,15 +218,15 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
             return;
         thread.interrupt();
         boolean timeout = timeoutSemaphore.acquire();
-        currentMessage.close();
+        currentRequest.close();
         if (!timeout || !isRunning() || PlantImpl.getSingleton() == null) {
             return;
         }
         try {
-            if (currentMessage == null)
+            if (currentRequest == null)
                 logger.error("hung thread");
             else {
-                logger.error("hung thread\n" + currentMessage.toString());
+                logger.error("hung thread\n" + currentRequest.toString());
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -247,8 +247,8 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      *
      * @return The message currently being processed.
      */
-    public final RequestImpl getCurrentMessage() {
-        return currentMessage;
+    public final RequestImpl getCurrentRequest() {
+        return currentRequest;
     }
 
     /**
@@ -256,8 +256,8 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      *
      * @param _message The message currently being processed.
      */
-    public final void setCurrentMessage(final RequestImpl _message) {
-        currentMessage = _message;
+    public final void setCurrentRequest(final RequestImpl _message) {
+        currentRequest = _message;
     }
 
     /**
@@ -470,9 +470,9 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
             if (timeoutSemaphore == null)
                 Thread.currentThread().interrupt();
             else if (!isClosing())
-                logger.warn("message running too long " + currentMessage.toString());
+                logger.warn("message running too long " + currentRequest.toString());
             else
-                logger.warn("message interrupted on close " + currentMessage.toString());
+                logger.warn("message interrupted on close " + currentRequest.toString());
         } catch (Exception ex) {
             throw ex;
         } finally {

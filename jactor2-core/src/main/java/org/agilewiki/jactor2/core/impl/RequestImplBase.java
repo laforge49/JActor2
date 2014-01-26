@@ -183,7 +183,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         }
         requestSource = source;
-        oldMessage = source.getCurrentMessage();
+        oldMessage = source.getCurrentRequest();
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
         final boolean local = targetReactor == source;
@@ -296,7 +296,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     public void eval() {
         if (unClosed) {
             targetReactorImpl.setExceptionHandler(null);
-            targetReactorImpl.setCurrentMessage(this);
+            targetReactorImpl.setCurrentRequest(this);
             targetReactorImpl.requestBegin();
             try {
                 processRequestMessage();
@@ -330,7 +330,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         oldMessage.responseReceived();
         final ReactorImpl sourceMessageProcessor = (ReactorImpl) requestSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
-        sourceMessageProcessor.setCurrentMessage(oldMessage);
+        sourceMessageProcessor.setCurrentRequest(oldMessage);
         if (response instanceof Exception) {
             oldMessage.processException(sourceMessageProcessor,
                     (Exception) response);
