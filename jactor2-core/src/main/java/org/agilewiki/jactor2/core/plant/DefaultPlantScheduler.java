@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -45,13 +46,13 @@ public class DefaultPlantScheduler implements PlantScheduler {
     public long currentTimeMillis() { return currentTimeMillis; }
 
     @Override
-    public void schedule(Runnable runnable, long _millisecondDelay) {
-        scheduledThreadPoolExecutor.schedule(runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
+    public ScheduledFuture<?> schedule(Runnable runnable, long _millisecondDelay) {
+        return scheduledThreadPoolExecutor.schedule(runnable, _millisecondDelay, TimeUnit.MILLISECONDS);
     }
 
     @Override
-    public void scheduleAtFixedRate(Runnable runnable, long _millisecondDelay) {
-        scheduledThreadPoolExecutor.scheduleAtFixedRate(runnable, _millisecondDelay,
+    public ScheduledFuture<?> scheduleAtFixedRate(Runnable runnable, long _millisecondDelay) {
+        return scheduledThreadPoolExecutor.scheduleAtFixedRate(runnable, _millisecondDelay,
                 _millisecondDelay, TimeUnit.MILLISECONDS);
     }
 
