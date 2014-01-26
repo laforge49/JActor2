@@ -8,6 +8,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Implements multiple dependencies.
+ */
 public class CloseableImpl1 implements CloseableImpl {
     private final Closeable closeable;
 
@@ -16,6 +19,10 @@ public class CloseableImpl1 implements CloseableImpl {
 
     private volatile boolean closing;
 
+    /**
+     * Create a closeableImpl for a closeable.
+     * @param _closeable    The closeable that will hold a reference to this implementation.
+     */
     public CloseableImpl1(final Closeable _closeable) {
         closeable = _closeable;
     }
