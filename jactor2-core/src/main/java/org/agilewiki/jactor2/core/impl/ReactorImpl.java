@@ -2,11 +2,13 @@ package org.agilewiki.jactor2.core.impl;
 
 import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.closeable.CloseableImpl;
+import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.plant.Recovery;
-import org.agilewiki.jactor2.core.reactors.Closeable;
+import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
