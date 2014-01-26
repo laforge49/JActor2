@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.Request;
 
 public class AsyncRequestImpl<RESPONSE_TYPE> extends
-        RequestImplBase<RESPONSE_TYPE> implements AsyncResponseProcessor<RESPONSE_TYPE> {
+        RequestImplBase<RESPONSE_TYPE> {
 
     private int pendingResponseCount;
 
@@ -38,7 +38,6 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         return pendingResponseCount;
     }
 
-    @Override
     public void processAsyncResponse(final RESPONSE_TYPE _response)
             throws Exception {
         processObjectResponse(_response);

@@ -20,8 +20,8 @@ public class IsolationReactorImpl extends UnboundReactorImpl {
     }
 
     @Override
-    protected void processMessage(final RequestImpl message) {
-        super.processMessage(message);
+    protected void processMessage(final RequestImpl _message) {
+        super.processMessage(_message);
         try {
             flush(true);
         } catch (final MigrationException me) {
