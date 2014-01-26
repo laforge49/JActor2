@@ -21,5 +21,7 @@ public interface Request<RESPONSE_TYPE> {
      * If an exception is thrown while processing this Request,
      * that exception is simply logged as a warning.
      */
-    public void signal() throws Exception;
+    void signal() throws Exception;
+
+    Reactor getSourceReactor();
 }

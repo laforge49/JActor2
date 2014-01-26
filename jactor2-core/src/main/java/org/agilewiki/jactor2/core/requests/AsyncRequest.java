@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.core.requests;
 
 import org.agilewiki.jactor2.core.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.RequestSource;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
@@ -164,6 +166,13 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     @Override
     public Reactor getTargetReactor() {
         return asyncRequestImpl.getTargetReactor();
+    }
+
+    public Reactor getSourceReactor() {
+        RequestSource requestSource = asRequestImpl().getRequestSource();
+        if (requestSource instanceof ReactorImpl)
+            return ((ReactorImpl) requestSource).asReactor();
+        return null;
     }
 
     protected void setNoHungRequestCheck() {
