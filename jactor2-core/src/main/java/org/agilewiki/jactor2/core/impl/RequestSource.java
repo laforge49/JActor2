@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.impl;
 /**
  * A source of messages, and which must be able to handle a response.
  */
-public interface MessageSource {
+public interface RequestSource {
 
     /**
      * Process an incoming response.

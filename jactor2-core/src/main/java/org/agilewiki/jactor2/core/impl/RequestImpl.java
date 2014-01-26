@@ -67,7 +67,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
 
     ReactorImpl getTargetReactorImpl();
 
-    MessageSource getRequestSource();
+    RequestSource getRequestSource();
 
     void responseReceived();
 

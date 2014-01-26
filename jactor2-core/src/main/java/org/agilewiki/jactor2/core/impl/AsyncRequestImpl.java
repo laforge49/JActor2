@@ -80,7 +80,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         try {
             pendingCheck();
         } catch (Exception e) {
-            processException((ReactorImpl) messageSource, e);
+            processException((ReactorImpl) requestSource, e);
         }
     }
 

@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for targetReactor.
  */
-abstract public class ReactorImpl extends BladeBase implements Closeable, Runnable, MessageSource {
+abstract public class ReactorImpl extends BladeBase implements Closeable, Runnable, RequestSource {
     public Recovery recovery;
 
     public PlantScheduler plantScheduler;

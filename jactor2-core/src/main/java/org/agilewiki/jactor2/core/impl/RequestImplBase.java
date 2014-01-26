@@ -32,7 +32,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     /**
      * The source reactor or pender that will receive the results.
      */
-    protected MessageSource messageSource;
+    protected RequestSource requestSource;
 
     /**
      * The message targeted to the source reactor which, when processed,
@@ -82,7 +82,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
 
     @Override
     public boolean isForeign() {
-        return targetReactor != messageSource;
+        return targetReactor != requestSource;
     }
 
     @Override
@@ -103,8 +103,8 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     public Reactor getTargetReactor() { return targetReactor; }
 
     @Override
-    public MessageSource getRequestSource() {
-        return messageSource;
+    public RequestSource getRequestSource() {
+        return requestSource;
     }
 
 
@@ -182,7 +182,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         if (rp == null) {
             rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         }
-        messageSource = source;
+        requestSource = source;
         oldMessage = source.getCurrentMessage();
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
@@ -207,10 +207,10 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             throw new UnsupportedOperationException(
                     "Use of call on a ReactorPoolThread can result in a deadlock");
         }
-        messageSource = new Pender();
+        requestSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
-        return (RESPONSE_TYPE) ((Pender) messageSource).pend();
+        return (RESPONSE_TYPE) ((Pender) requestSource).pend();
     }
 
     protected void setResponse(final Object _response,
@@ -258,7 +258,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         }
         setResponse(_response, targetReactorImpl);
         if (responseProcessor != SignalResponseProcessor.SINGLETON) {
-            messageSource.incomingResponse(RequestImplBase.this, targetReactorImpl);
+            requestSource.incomingResponse(RequestImplBase.this, targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
                 targetReactor.asReactorImpl().getLogger().warn("Uncaught throwable",
@@ -285,8 +285,8 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         }
         unClosed = false;
         response = new ReactorClosedException();
-        if (messageSource != null)
-            messageSource.incomingResponse(this, null);
+        if (requestSource != null)
+            requestSource.incomingResponse(this, null);
     }
 
     /**
@@ -328,7 +328,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     protected void processResponseMessage() {
         oldMessage.responseReceived();
-        final ReactorImpl sourceMessageProcessor = (ReactorImpl) messageSource;
+        final ReactorImpl sourceMessageProcessor = (ReactorImpl) requestSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentMessage(oldMessage);
         if (response instanceof Exception) {
@@ -365,7 +365,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                         return;
                     }
                     setResponse(u, activeMessageProcessor);
-                    messageSource
+                    requestSource
                             .incomingResponse(this, activeMessageProcessor);
                 } else {
                     activeMessageProcessor
@@ -380,7 +380,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             }
             setResponse(_e, activeMessageProcessor);
             if (!(responseProcessor instanceof SignalResponseProcessor)) {
-                messageSource.incomingResponse(this, activeMessageProcessor);
+                requestSource.incomingResponse(this, activeMessageProcessor);
             } else {
                 activeMessageProcessor.getLogger().warn("Uncaught throwable",
                         _e);
@@ -393,7 +393,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         return "message=" + asRequest().getClass().getName() +
                 ", isClosed=" + isClosed() +
                 ", isSignal=" + isSignal() +
-                ", source=" + (messageSource == null ? "null" : messageSource.getClass().getName()) +
+                ", source=" + (requestSource == null ? "null" : requestSource.getClass().getName()) +
                 ", target=" + getTargetReactor().getClass().getName() +
                 ", this=" + super.toString() +
                 (oldMessage == null ? "" : "\n" + oldMessage.toString());
@@ -404,7 +404,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * result is available and then either return the result or rethrow it if the result
      * is an exception.
      */
-    private static final class Pender implements MessageSource {
+    private static final class Pender implements RequestSource {
 
         /**
          * Used to signal the arrival of a response.
