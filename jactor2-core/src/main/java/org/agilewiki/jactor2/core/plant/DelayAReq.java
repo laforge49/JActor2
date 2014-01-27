@@ -31,6 +31,8 @@ public class DelayAReq extends AsyncRequest<Void> {
 
     /**
      * Cancel the response if not yet sent.
+     * However a response may still be returned due to a race condition.
+     * So when processing the response, you may wish to check isCanceled().
      */
     public void cancel() throws Exception {
         canceled = true;
