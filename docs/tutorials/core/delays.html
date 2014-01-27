@@ -1,0 +1,16 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Delays
+</p>
+<h1>Delays - Scalable Timers</h1>
+<p>
+Using sleep to create a delay is fine for simulating I/O, but it blocks the thread.
+So it does not scale very well when you need a lot of timers.
+<a href="../../api/org/agilewiki/jactor2/core/plant/DelayAReq.html">DelayAReq</a>,
+on the other hand, is a light-weight request that scales nicely, as it uses the
+<a href="../../api/org/agilewiki/jactor2/core/plant/PlantScheduler.html#schedule-java.lang.Runnable-long-">schedule</a>
+method in PlantScheduler.
+</p>
+</body>
+</html>
