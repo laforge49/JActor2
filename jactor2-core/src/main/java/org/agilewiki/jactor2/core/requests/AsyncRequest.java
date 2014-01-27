@@ -202,13 +202,13 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     public <RT> void send(final Request<RT> _request,
-                             final AsyncResponseProcessor<RT> _responseProcessor)
+                          final AsyncResponseProcessor<RT> _responseProcessor)
             throws Exception {
         asyncRequestImpl.send(_request, _responseProcessor);
     }
 
     public <RT, RT2> void send(final Request<RT> _request,
-                                  final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
             throws Exception {
         asyncRequestImpl.send(_request, _dis, _fixedResponse);
     }
