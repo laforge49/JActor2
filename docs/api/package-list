@@ -1,7 +1,6 @@
 org.agilewiki.jactor2
 org.agilewiki.jactor2.core
 org.agilewiki.jactor2.core.blades
-org.agilewiki.jactor2.core.blades.firehose
 org.agilewiki.jactor2.core.blades.misc
 org.agilewiki.jactor2.core.closeable
 org.agilewiki.jactor2.core.impl
@@ -9,7 +8,6 @@ org.agilewiki.jactor2.core.plant
 org.agilewiki.jactor2.core.reactors
 org.agilewiki.jactor2.core.requests
 org.agilewiki.jactor2.modules
-org.agilewiki.jactor2.modules.facilities
 org.agilewiki.jactor2.modules.immutable
 org.agilewiki.jactor2.modules.impl
 org.agilewiki.jactor2.modules.pubSub
@@ -20,7 +18,6 @@ org.agilewiki.jactor2.util.durable
 org.agilewiki.jactor2.util.durable.app
 org.agilewiki.jactor2.util.durable.block
 org.agilewiki.jactor2.util.durable.incDes
-org.agilewiki.jactor2.util.durable.incDes.timings
 org.agilewiki.jactor2.utilImpl.durable
 org.agilewiki.jactor2.utilImpl.durable.app
 org.agilewiki.jactor2.utilImpl.durable.incDes
