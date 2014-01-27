@@ -11,6 +11,70 @@ So it does not scale very well when you need a lot of timers.
 on the other hand, is a light-weight request that scales nicely, as it uses the
 <a href="../../api/org/agilewiki/jactor2/core/plant/PlantScheduler.html#schedule-java.lang.Runnable-long-">schedule</a>
 method in PlantScheduler.
+The <a href="java7/Delays.java">Delays</a> program demonstrates the scalability of DelayAReq by running 10,000 timers in parallel.
 </p>
+<pre>
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.DelayAReq;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+
+public class Delays extends NonBlockingBladeBase {
+    private final long count;
+
+    Delays(final long _count) throws Exception {
+        count = _count;
+    }
+
+    public AsyncRequest&lt;Void&gt; runAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            final AsyncRequest&lt;Void&gt; dis = this;
+
+            final AsyncResponseProcessor&lt;Void&gt; delayResponseProcessor =
+                    new AsyncResponseProcessor&lt;Void&gt;() {
+                        @Override
+                        public void processAsyncResponse(final Void _response) throws Exception {
+                            if (dis.getPendingResponseCount() == 0)
+                                dis.processAsyncResponse(null);
+                        }
+                    };
+
+            public void processAsyncRequest() throws Exception {
+                long j = 0;
+                while(j < count) {
+                    j++;
+                    DelayAReq delay = new DelayAReq(100);
+                    send(delay, delayResponseProcessor);
+                }
+            }
+        };
+    }
+
+    public static void main(final String[] _args) throws Exception {
+        final long count = 10000L;
+        new Plant(10);
+        try {
+            Delays delays = new Delays(count);
+            AsyncRequest&lt;Void&gt; runAReq = delays.runAReq();
+            final long before = System.currentTimeMillis();
+            runAReq.call();
+            final long after = System.currentTimeMillis();
+            final long duration = after - before;
+            System.out.println("Delay Test with " + count + " delays run in parallel");
+            System.out.println("delay duration: 100 milliseconds each");
+            System.out.println("total time: " + duration + " milliseconds");
+        } finally {
+            Plant.close();
+        }
+    }
+}
+
+    Output:
+    
+Delay Test with 10000 delays run in parallel
+delay duration: 100 milliseconds each
+total time: 172 milliseconds
+</pre>
 </body>
 </html>

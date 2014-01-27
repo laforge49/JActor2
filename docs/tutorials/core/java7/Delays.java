@@ -46,7 +46,6 @@ public class Delays extends NonBlockingBladeBase {
             final long after = System.currentTimeMillis();
             final long duration = after - before;
             System.out.println("Delay Test with " + count + " delays run in parallel");
-            System.out.println("count: " + count);
             System.out.println("delay duration: 100 milliseconds each");
             System.out.println("total time: " + duration + " milliseconds");
         } finally {
