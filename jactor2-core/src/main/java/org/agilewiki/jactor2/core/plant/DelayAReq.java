@@ -3,6 +3,8 @@ package org.agilewiki.jactor2.core.plant;
 import org.agilewiki.jactor2.core.closeable.FutureCloser;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -15,6 +17,7 @@ public class DelayAReq extends AsyncRequest<Void> {
     private FutureCloser futureCloser;
     private ScheduledFuture<?> scheduledFuture;
     private boolean canceled;
+    private AsyncResponseProcessor<Void> dis = this;
 
     /**
      * Create a DelayAReq.
@@ -48,6 +51,7 @@ public class DelayAReq extends AsyncRequest<Void> {
 
     @Override
     public void processAsyncRequest() throws Exception {
+        setNoHungRequestCheck();
         PlantScheduler plantScheduler = Plant.getPlantScheduler();
         Runnable runnable = new Runnable() {
             @Override
@@ -55,7 +59,14 @@ public class DelayAReq extends AsyncRequest<Void> {
                 try {
                     if (futureCloser != null)
                         futureCloser.close();
-                    processAsyncResponse(null);
+                    new SyncRequest<Void>(Plant.getInternalReactor()) {
+                        @Override
+                        public Void processSyncRequest() throws Exception {
+                            if (!canceled)
+                                dis.processAsyncResponse(null);
+                            return null;
+                        }
+                    }.signal();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
