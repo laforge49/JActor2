@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledFuture;
 
 /**
  * Returns a result after a delay.
+ * Builds on PlantScheduler.
  */
 public class DelayAReq extends AsyncRequest<Void> {
     private final long millisecondDelay;
@@ -15,6 +16,11 @@ public class DelayAReq extends AsyncRequest<Void> {
     private ScheduledFuture<?> scheduledFuture;
     private boolean canceled;
 
+    /**
+     * Create a DelayAReq.
+     *
+     * @param _millisecondDelay    How long to wait before the Runnable is to be run.
+     */
     public DelayAReq(long _millisecondDelay) {
         super(Plant.getInternalReactor());
         millisecondDelay = _millisecondDelay;
