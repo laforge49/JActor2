@@ -62,7 +62,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     private void pendingCheck() throws Exception {
-        if (unClosed && pendingRequests.size() == 0 && !noHungRequestCheck) {
+        if (unClosed && !isCanceled() && pendingRequests.size() == 0 && !noHungRequestCheck) {
             targetReactor.asReactorImpl().getLogger().error("hung request:\n" + toString());
             close();
             targetReactorImpl.recovery.onHungRequest(this);
