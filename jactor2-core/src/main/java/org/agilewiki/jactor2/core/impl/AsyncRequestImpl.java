@@ -155,4 +155,11 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         }
         super.close();
     }
+
+    public boolean cancel(RequestImpl _requestImpl) {
+        if (!pendingRequests.remove(_requestImpl))
+            return false;
+        _requestImpl.cancel();
+        return true;
+    }
 }
