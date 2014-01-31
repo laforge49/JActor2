@@ -53,8 +53,12 @@ public class InProcess extends NonBlockingBladeBase {
                 send(indirectDelay.isleep(), responseProcessor);
                 send(indirectDelay.isleep(), responseProcessor);
                 send(indirectDelay.isleep(), responseProcessor);
-                Thread.sleep(25);
-                indirectDelay.getReactor().close();
+                send(new Delay().sleepSReq(200), new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(Void _response) throws Exception {
+                        indirectDelay.getReactor().close();
+                    }
+                });
             }
         };
     }

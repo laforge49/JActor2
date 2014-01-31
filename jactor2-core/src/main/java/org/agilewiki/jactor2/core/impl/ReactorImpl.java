@@ -36,7 +36,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      */
     private Set<Closeable> closeables;
 
-    private Set<RequestImpl> messages = new HashSet<RequestImpl>();
+    private Set<RequestImpl> pendingMessages = new HashSet<RequestImpl>();
 
     private volatile boolean running;
 
@@ -168,7 +168,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
             return;
         startClosing = true;
 
-        Iterator<RequestImpl> mit = messages.iterator();
+        Iterator<RequestImpl> mit = pendingMessages.iterator();
         while (mit.hasNext()) {
             RequestImpl message = mit.next();
             message.close();
@@ -372,7 +372,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     protected void processMessage(final RequestImpl _message) {
         _message.eval();
         if (!_message.isClosed() && _message.isForeign() && !startClosing && !_message.isSignal()) {
-            messages.add(_message);
+            pendingMessages.add(_message);
         }
     }
 
@@ -410,7 +410,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      */
     public void requestEnd(final RequestImpl _message) {
         if (_message.isForeign()) {
-            boolean b = messages.remove(_message);
+            boolean b = pendingMessages.remove(_message);
         }
         inbox.requestEnd();
     }
