@@ -22,7 +22,7 @@ public class DelayAReq extends AsyncRequest<Void> {
     /**
      * Create a DelayAReq.
      *
-     * @param _millisecondDelay    How long to wait before the Runnable is to be run.
+     * @param _millisecondDelay    How long to wait before responding.
      */
     public DelayAReq(long _millisecondDelay) {
         super(Plant.getInternalReactor());

@@ -15,6 +15,9 @@
  * <li>
  * <a href="../../../../../../tutorials/core/recovery.html" target="_top">Recovery</a>
  * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/delays.html" target="_top">Delays</a>
+ * </li>
  * </ul>
  */
 package org.agilewiki.jactor2.core.plant;

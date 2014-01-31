@@ -135,8 +135,10 @@ abstract public class ExceptionHandler<RESPONSE_TYPE> {
      *
      * @param e The exception to be processed.
      */
-    abstract public RESPONSE_TYPE processException(final Exception e)
-            throws Exception;
+    public RESPONSE_TYPE processException(final Exception e)
+            throws Exception {
+        throw e;
+    }
 
     public void processException(final Exception e, final AsyncResponseProcessor _asyncResponseProcessor)
             throws Exception {
