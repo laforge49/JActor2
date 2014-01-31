@@ -56,6 +56,10 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
 
     void close();
 
+    void cancel();
+
+    boolean isCanceled();
+
     /**
      * Returns true when the target reactor is not also the message source.
      *
@@ -69,7 +73,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
 
     RequestSource getRequestSource();
 
-    void responseReceived();
+    void responseReceived(RequestImpl request);
 
     void responseProcessed();
 }

@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.closeable.FutureCloser;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -14,9 +13,7 @@ import java.util.concurrent.ScheduledFuture;
  */
 public class DelayAReq extends AsyncRequest<Void> {
     private final long millisecondDelay;
-    private FutureCloser futureCloser;
     private ScheduledFuture<?> scheduledFuture;
-    private boolean canceled;
     private AsyncResponseProcessor<Void> dis = this;
 
     /**
@@ -30,25 +27,19 @@ public class DelayAReq extends AsyncRequest<Void> {
     }
 
     /**
-     * Cancel the response if not yet sent.
-     * However a response may still be returned due to a race condition.
-     * So when processing the response, you may wish to check isCanceled().
+     * Closes the scheduled future when the request is canceled.
      */
-    public void cancel() throws Exception {
-        canceled = true;
-        if (futureCloser != null)
-            futureCloser.close();
-        else
-            scheduledFuture.cancel(false);
+    @Override
+    public void onCancel() {
+        scheduledFuture.cancel(false);
     }
 
     /**
-     * Returns true if the response was canceled.
-     *
-     * @return True if the response was canceled.
+     * Closes the scheduled future when the request is closed.
      */
-    public boolean isCanceled() {
-        return canceled;
+    @Override
+    public void onClose() {
+        scheduledFuture.cancel(false);
     }
 
     @Override
@@ -59,12 +50,10 @@ public class DelayAReq extends AsyncRequest<Void> {
             @Override
             public void run() {
                 try {
-                    if (futureCloser != null)
-                        futureCloser.close();
                     new SyncRequest<Void>(Plant.getInternalReactor()) {
                         @Override
                         public Void processSyncRequest() throws Exception {
-                            if (!canceled)
+                            if (!isCanceled())
                                 dis.processAsyncResponse(null);
                             return null;
                         }
@@ -76,7 +65,5 @@ public class DelayAReq extends AsyncRequest<Void> {
         };
         scheduledFuture = plantScheduler.schedule(runnable, millisecondDelay);
         Reactor sourceReactor = getSourceReactor();
-        if (sourceReactor != null)
-            futureCloser = new FutureCloser(scheduledFuture);
     }
 }

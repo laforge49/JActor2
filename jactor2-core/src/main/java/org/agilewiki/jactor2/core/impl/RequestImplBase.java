@@ -66,6 +66,8 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     protected Object response;
 
+    private boolean canceled;
+
     /**
      * Create a RequestImplBase.
      *
@@ -268,6 +270,17 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         return true;
     }
 
+    public void cancel() {
+        if (canceled)
+            return;
+        canceled = true;
+        asRequest().onCancel();
+    }
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
     @Override
     public boolean isClosed() {
         return !unClosed;
@@ -287,6 +300,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         response = new ReactorClosedException();
         if (requestSource != null)
             requestSource.incomingResponse(this, null);
+        asRequest().onClose();
     }
 
     /**
@@ -318,7 +332,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     abstract protected void processRequestMessage() throws Exception;
 
     @Override
-    public void responseReceived() {}
+    public void responseReceived(RequestImpl request) {}
 
     @Override
     public void responseProcessed() {}
@@ -327,7 +341,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * Process a response.
      */
     protected void processResponseMessage() {
-        oldMessage.responseReceived();
+        oldMessage.responseReceived(this);
         final ReactorImpl sourceMessageProcessor = (ReactorImpl) requestSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentRequest(oldMessage);

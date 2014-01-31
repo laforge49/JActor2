@@ -371,7 +371,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      */
     protected void processMessage(final RequestImpl _message) {
         _message.eval();
-        if (!_message.isClosed() && _message.isForeign() && !startClosing && !_message.isSignal()) {
+        if (!_message.isClosed() && !startClosing && !_message.isSignal()) {
             inProcessRequests.add(_message);
         }
     }
@@ -440,8 +440,10 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                 if (timeoutSemaphore != null) {
                     return;
                 }
-                final RequestImpl message = inbox.poll();
-                if (message == null) {
+                RequestImpl request = inbox.poll();
+                while (request != null && request.isCanceled())
+                    request = inbox.poll();
+                if (request == null) {
                     try {
                         if (timeoutSemaphore != null) {
                             return;
@@ -463,7 +465,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                     return;
                 }
                 messageStartTimeMillis = plantScheduler.currentTimeMillis();
-                processMessage(message);
+                processMessage(request);
                 messageStartTimeMillis = 0;
             }
         } catch (final InterruptedException ie) {

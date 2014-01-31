@@ -52,4 +52,15 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     public RESPONSE_TYPE call() throws Exception {
         return syncRequestImpl.call();
     }
+
+    @Override
+    public boolean isCanceled() {
+        return syncRequestImpl.isCanceled();
+    }
+
+    @Override
+    public void onCancel() {}
+
+    @Override
+    public void onClose() {}
 }

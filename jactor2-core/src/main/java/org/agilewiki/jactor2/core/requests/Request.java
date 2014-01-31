@@ -24,4 +24,10 @@ public interface Request<RESPONSE_TYPE> {
     void signal() throws Exception;
 
     Reactor getSourceReactor();
+
+    boolean isCanceled();
+
+    void onCancel();
+
+    void onClose();
 }

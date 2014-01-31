@@ -6,10 +6,16 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.Request;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class AsyncRequestImpl<RESPONSE_TYPE> extends
         RequestImplBase<RESPONSE_TYPE> {
 
-    private int pendingResponseCount;
+    private Set<RequestImpl> pendingRequests = new HashSet<RequestImpl>();
 
     private boolean noHungRequestCheck;
 
@@ -35,7 +41,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     public int getPendingResponseCount() {
-        return pendingResponseCount;
+        return pendingRequests.size();
     }
 
     public void processAsyncResponse(final RESPONSE_TYPE _response)
@@ -56,7 +62,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     private void pendingCheck() throws Exception {
-        if (unClosed && pendingResponseCount == 0 && !noHungRequestCheck) {
+        if (unClosed && pendingRequests.size() == 0 && !noHungRequestCheck) {
             targetReactor.asReactorImpl().getLogger().error("hung request:\n" + toString());
             close();
             targetReactorImpl.recovery.onHungRequest(this);
@@ -70,8 +76,8 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     @Override
-    public void responseReceived() {
-        pendingResponseCount -= 1;
+    public void responseReceived(RequestImpl request) {
+        pendingRequests.remove(request);
     }
 
     @Override
@@ -88,9 +94,10 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
             throws Exception {
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
+        RequestImpl<RT> requestImpl = _request.asRequestImpl();
         if (_responseProcessor != SignalResponseProcessor.SINGLETON)
-            pendingResponseCount += 1;
-        _request.asRequestImpl().doSend(targetReactorImpl, _responseProcessor);
+            pendingRequests.add(requestImpl);
+        requestImpl.doSend(targetReactorImpl, _responseProcessor);
     }
 
     public <RT, RT2> void send(final Request<RT> _request,
@@ -98,8 +105,9 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
             throws Exception {
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
-        pendingResponseCount += 1;
-        _request.asRequestImpl().doSend(targetReactorImpl,
+        RequestImpl<RT> requestImpl = _request.asRequestImpl();
+        pendingRequests.add(requestImpl);
+        requestImpl.doSend(targetReactorImpl,
                 new AsyncResponseProcessor<RT>() {
                     @Override
                     public void processAsyncResponse(final RT _response)
@@ -133,5 +141,18 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
 
     public ExceptionHandler<RESPONSE_TYPE> getExceptionHandler() {
         return targetReactorImpl.getExceptionHandler();
+    }
+
+    @Override
+    public void close() {
+        if (!unClosed) {
+            return;
+        }
+        HashSet<RequestImpl> pr = new HashSet<RequestImpl>(pendingRequests);
+        Iterator<RequestImpl> it = pr.iterator();
+        while (it.hasNext()) {
+            it.next().cancel();
+        }
+        super.close();
     }
 }

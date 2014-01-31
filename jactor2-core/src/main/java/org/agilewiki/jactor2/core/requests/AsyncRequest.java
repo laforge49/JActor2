@@ -241,4 +241,19 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
             final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
         return asyncRequestImpl.setExceptionHandler(_exceptionHandler);
     }
+
+    public void cancel(Request _request) {
+        _request.asRequestImpl().cancel();
+    }
+
+    @Override
+    public boolean isCanceled() {
+        return asyncRequestImpl.isCanceled();
+    }
+
+    @Override
+    public void onCancel() {}
+
+    @Override
+    public void onClose() {}
 }
