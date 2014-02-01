@@ -36,6 +36,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
         return asyncRequestImpl.getTargetReactor();
     }
 
+    @Override
     public Reactor getSourceReactor() {
         RequestSource requestSource = asRequestImpl().getRequestSource();
         if (requestSource instanceof ReactorImpl)
@@ -110,12 +111,12 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
         return asyncRequestImpl.setExceptionHandler(_exceptionHandler);
     }
 
-    public boolean cancel(Request _request) {
+    public boolean cancel(final Request _request) {
         return asyncRequestImpl.cancel(_request.asRequestImpl());
     }
 
     @Override
-    public boolean isCanceled() throws InterruptedException {
+    public boolean isCanceled() {
         return asyncRequestImpl.isCanceled();
     }
 

@@ -62,7 +62,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     }
 
     @Override
-    public boolean isCanceled() throws InterruptedException {
+    public boolean isCanceled() {
         return syncRequestImpl.isCanceled();
     }
 

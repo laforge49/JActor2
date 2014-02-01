@@ -50,15 +50,14 @@ public interface Request<RESPONSE_TYPE> {
     Reactor getSourceReactor();
 
     /**
-     * Returns true if the request is canceled.
+     * Returns true if the request is canceled or the thread is interrupted.
      * Closing the source reactor, for example, will result in the request being canceled.
      * Thread.interrupted is also called to see if the thread is interrupted.
      * This method should ideally be called periodically within long loops.
      *
-     * @return True if the request is canceled.
-     * @throws InterruptedException Thrown when the thread is interrupted.
+     * @return True if the request is canceled or the thread is interrupted.
      */
-    boolean isCanceled() throws InterruptedException ;
+    boolean isCanceled() ;
 
     /**
      * Returns true if the request is closed.
