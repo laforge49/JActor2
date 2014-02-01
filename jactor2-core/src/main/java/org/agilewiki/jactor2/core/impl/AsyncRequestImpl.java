@@ -60,7 +60,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     private void pendingCheck() throws Exception {
-        if (unClosed && !isCanceled() && pendingRequests.size() == 0 && !noHungRequestCheck) {
+        if (incomplete && !isCanceled() && pendingRequests.size() == 0 && !noHungRequestCheck) {
             targetReactor.asReactorImpl().getLogger().error("hung request:\n" + toString());
             close();
             targetReactorImpl.recovery.onHungRequest(this);
@@ -143,7 +143,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
 
     @Override
     public void close() {
-        if (!unClosed) {
+        if (!incomplete) {
             return;
         }
         HashSet<RequestImpl> pr = new HashSet<RequestImpl>(pendingRequests);

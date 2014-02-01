@@ -59,6 +59,11 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     }
 
     @Override
+    public boolean isClosed() {
+        return syncRequestImpl.isClosed();
+    }
+
+    @Override
     public void onCancel() {}
 
     @Override

@@ -30,6 +30,8 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      *
      * @return True when a response is expected but has not yet been placed in the message.
      */
+    boolean isComplete();
+
     boolean isClosed();
 
     /**

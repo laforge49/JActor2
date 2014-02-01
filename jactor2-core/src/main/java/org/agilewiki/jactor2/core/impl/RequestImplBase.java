@@ -54,7 +54,9 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     /**
      * True when a response to this message has not yet been determined.
      */
-    protected boolean unClosed = true;
+    protected boolean incomplete = true;
+
+    protected boolean closed = false;
 
     /**
      * True when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
@@ -218,7 +220,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     protected void setResponse(final Object _response,
                                final ReactorImpl _activeReactor) {
         _activeReactor.requestEnd(this);
-        unClosed = false;
+        incomplete = false;
         response = _response;
     }
 
@@ -255,7 +257,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 }
             }
         }
-        if (!unClosed) {
+        if (!incomplete) {
             return false;
         }
         setResponse(_response, targetReactorImpl);
@@ -282,8 +284,13 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     }
 
     @Override
+    public boolean isComplete() {
+        return !incomplete;
+    }
+
+    @Override
     public boolean isClosed() {
-        return !unClosed;
+        return closed;
     }
 
     @Override
@@ -293,10 +300,11 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
 
     @Override
     public void close() {
-        if (!unClosed) {
+        if (!incomplete) {
             return;
         }
-        unClosed = false;
+        incomplete = false;
+        closed = true;
         response = new ReactorClosedException();
         if (requestSource != null)
             requestSource.incomingResponse(this, null);
@@ -308,7 +316,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     @Override
     public void eval() {
-        if (unClosed) {
+        if (incomplete) {
             targetReactorImpl.setExceptionHandler(null);
             targetReactorImpl.setCurrentRequest(this);
             targetReactorImpl.requestBegin();
@@ -375,7 +383,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 });
             } catch (final Throwable u) {
                 if (!(responseProcessor instanceof SignalResponseProcessor)) {
-                    if (!unClosed) {
+                    if (!incomplete) {
                         return;
                     }
                     setResponse(u, activeMessageProcessor);
@@ -389,7 +397,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 }
             }
         } else {
-            if (!unClosed) {
+            if (!incomplete) {
                 return;
             }
             setResponse(_e, activeMessageProcessor);
@@ -405,7 +413,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     @Override
     public String toString() {
         return "message=" + asRequest().getClass().getName() +
-                ", isClosed=" + isClosed() +
+                ", isComplete=" + isComplete() +
                 ", isSignal=" + isSignal() +
                 ", source=" + (requestSource == null ? "null" : requestSource.getClass().getName()) +
                 ", target=" + getTargetReactor().getClass().getName() +

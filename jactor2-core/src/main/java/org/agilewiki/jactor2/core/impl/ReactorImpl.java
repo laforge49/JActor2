@@ -210,7 +210,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
         if (!isRunning())
             return;
-        if (currentRequest != null && currentRequest.isClosed())
+        if (currentRequest != null && currentRequest.isComplete())
             return;
         timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
         Thread thread = (Thread) getThreadReference().get();
@@ -312,7 +312,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     public void unbufferedAddMessage(final RequestImpl _message,
                                      final boolean _local) throws Exception {
         if (isClosing()) {
-            if (!_message.isClosed()) {
+            if (!_message.isComplete()) {
                 try {
                     _message.close();
                 } catch (final Throwable t) {
@@ -335,7 +335,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
             final Iterator<RequestImpl> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final RequestImpl message = itm.next();
-                if (!message.isClosed()) {
+                if (!message.isComplete()) {
                     try {
                         message.close();
                     } catch (final Throwable t) {
@@ -371,7 +371,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      */
     protected void processMessage(final RequestImpl _message) {
         _message.eval();
-        if (!_message.isClosed() && !startClosing && !_message.isSignal()) {
+        if (!_message.isComplete() && !startClosing && !_message.isSignal()) {
             inProcessRequests.add(_message);
         }
     }
