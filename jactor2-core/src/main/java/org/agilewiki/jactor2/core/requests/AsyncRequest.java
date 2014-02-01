@@ -115,7 +115,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     @Override
-    public boolean isCanceled() {
+    public boolean isCanceled() throws InterruptedException {
         return asyncRequestImpl.isCanceled();
     }
 

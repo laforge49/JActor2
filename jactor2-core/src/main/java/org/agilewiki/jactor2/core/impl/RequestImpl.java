@@ -60,7 +60,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
 
     void cancel();
 
-    boolean isCanceled();
+    boolean isCanceled() throws InterruptedException ;
 
     /**
      * Returns true when the target reactor is not also the message source.

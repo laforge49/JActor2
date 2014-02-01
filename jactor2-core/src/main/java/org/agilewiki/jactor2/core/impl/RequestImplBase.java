@@ -279,7 +279,9 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         asRequest().onCancel();
     }
 
-    public boolean isCanceled() {
+    public boolean isCanceled() throws InterruptedException {
+        if (Thread.interrupted())
+            throw new InterruptedException();
         return canceled;
     }
 
