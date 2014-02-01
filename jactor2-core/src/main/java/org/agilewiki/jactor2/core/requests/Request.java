@@ -53,6 +53,7 @@ public interface Request<RESPONSE_TYPE> {
      * Returns true if the request is canceled.
      * Closing the source reactor, for example, will result in the request being canceled.
      * Thread.interrupted is also called to see if the thread is interrupted.
+     * This method should ideally be called periodically within long loops.
      *
      * @return True if the request is canceled.
      * @throws InterruptedException Thrown when the thread is interrupted.
