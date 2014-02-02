@@ -63,7 +63,7 @@ public interface Request<RESPONSE_TYPE> {
      * ReactorClosedException if the request is closed.
      * </p>
      *
-     * @return True if the request has been canceled or the thread is interrupted.
+     * @return True if the request has been canceled.
      * @throws ReactorClosedException Thrown when the request is closed.
      */
     boolean isCanceled() throws ReactorClosedException;

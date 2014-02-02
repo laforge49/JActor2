@@ -160,4 +160,12 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         _requestImpl.cancel();
         return true;
     }
+
+    public void cancelAll() {
+        Set<RequestImpl> all = new HashSet<RequestImpl>(pendingRequests);
+        Iterator<RequestImpl> it = all.iterator();
+        while (it.hasNext()) {
+            cancel(it.next());
+        }
+    }
 }

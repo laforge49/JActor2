@@ -116,6 +116,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
         return asyncRequestImpl.cancel(_request.asRequestImpl());
     }
 
+    public void cancelAll() {
+        asyncRequestImpl.cancelAll();
+    }
+
     @Override
     public boolean isCanceled() throws ReactorClosedException {
         return asyncRequestImpl.isCanceled();
