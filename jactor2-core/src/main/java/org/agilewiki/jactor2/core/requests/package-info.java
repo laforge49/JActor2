@@ -1,7 +1,7 @@
 /**
  * <h3>Related Tutorial Pages</h3>
  * <p>
- * A request is a single-use object used to perform an operation safely and to optionally be pass backed with a response
+ * A request is a single-use object used to perform an operation safely and to optionally be passed backed with a response
  * value that is also processed safely.
  * </p>
  * <p>
@@ -17,7 +17,7 @@
  * </li>
  * </ol>
  * <p>
- * Requests can be passed to a target reactor using either the
+ * All types of requests can be passed to a target reactor using either the
  * <a href="Request.html#call--">call</a>
  * or
  * <a href="Request.html#signal--">signal</a>
