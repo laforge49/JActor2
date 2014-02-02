@@ -3,9 +3,9 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.blades.Blade;
 
 /**
- * A thread-safe wrapper for a AsyncResponseProcessor.
+ * A thread-safe wrapper for an AsyncResponseProcessor.
  * When a request is processed, the AsyncResponseProcessor given must only be used by the
- * same thread that is processing the request. In contrast, the processResult method
+ * same thread that is processing the request. In contrast, the processAsyncResponse method
  * of BoundResponseProcessor can be called from any thread.
  *
  * @param <RESPONSE_TYPE>
@@ -36,7 +36,7 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
 
     /**
      * This method processes the response by immediately passing the wrapped response and AsyncResponseProcessor
-     * via an Event back to the appropriate processing.
+     * back to the appropriate reactor using a signal.
      *
      * @param rsp The response.
      */

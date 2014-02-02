@@ -18,7 +18,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     /**
      * Create a SyncRequest.
      *
-     * @param _targetReactor The targetReactor where this SyncRequest Objects is passed for processing.
+     * @param _targetReactor The targetReactor where this SyncRequest object is passed for processing.
      *                       The thread owned by this targetReactor will process this SyncRequest.
      */
     public SyncRequest(final Reactor _targetReactor) {
@@ -26,8 +26,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     }
 
     /**
-     * The processSyncRequest method will be invoked by the target Reactor on its own thread
-     * when the SyncRequest is dequeued from the target inbox for processing.
+     * The processSyncRequest method will be invoked by the target Reactor on its own thread.
      *
      * @return The value returned by the target blades.
      */

@@ -66,8 +66,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     /**
-     * The processAsyncRequest method will be invoked by the target Reactor on its own thread
-     * when the AsyncRequest is dequeued from the target inbox for processing.
+     * The processAsyncRequest method will be invoked by the target Reactor on its own thread.
      */
     abstract public void processAsyncRequest() throws Exception;
 
@@ -91,7 +90,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
 
     /**
      * Disables the hung request check, which is necessary when a response to a request
-     * is passed back when another request is received.
+     * is not passed back until another request is received.
      */
     protected void setNoHungRequestCheck() {
         asyncRequestImpl.setNoHungRequestCheck();
@@ -107,9 +106,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     /**
-     * Returns an exception as a response instead of throwing it.
+     * Passes back an exception as a response instead of throwing it.
      * But regardless of how a response is returned, if the response is an exception it
-     * is passed to the exception handler of the blades that did the call or doSend on the request.
+     * is passed to the exception handler of the async request that did the send or has the invoking call method
+     * throw an exception.
      *
      * @param _response An exception.
      */
@@ -134,6 +134,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
 
     /**
      * Pass a request to its target and then replace its response value.
+     * Useful when you do not care about the actual response being passed back.
      *
      * @param _request          The request to be passed.
      * @param _dis              The callback to be invoked when a response value is received.
@@ -149,12 +150,6 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
 
     /**
      * Replace the current ExceptionHandler with another.
-     * <p>
-     * When an event or request message is processed by a targetReactor, the current
-     * exception handler is set to null. When a request is sent by a targetReactor, the
-     * current exception handler is saved in the outgoing message and restored when
-     * the response message is processed.
-     * </p>
      *
      * @param _exceptionHandler The exception handler to be used now.
      *                          May be null if the default exception handler is to be used.
