@@ -122,7 +122,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * Pass a request to its target reactor.
      *
      * @param _request              The request to be passed.
-     * @param _responseProcessor    The callback to be invoked when a response value is received.
+     * @param _responseProcessor    The callback to be invoked when a response value is received,
+     *                              or null if no response is required.
      * @param <RT>                  The response value type.
      */
     public <RT> void send(final Request<RT> _request,

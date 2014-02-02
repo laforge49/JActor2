@@ -91,7 +91,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
 
     @Override
     public boolean isSignal() {
-        return responseProcessor == SignalResponseProcessor.SINGLETON;
+        return responseProcessor == EventResponseProcessor.SINGLETON;
     }
 
     /**
@@ -131,7 +131,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     public void signal() throws Exception {
         use();
-        responseProcessor = SignalResponseProcessor.SINGLETON;
+        responseProcessor = EventResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
     }
 
@@ -184,7 +184,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         use();
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
         if (rp == null) {
-            rp = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
+            rp = (AsyncResponseProcessor<RESPONSE_TYPE>) EventResponseProcessor.SINGLETON;
         }
         requestSource = source;
         oldMessage = source.getCurrentRequest();
@@ -261,7 +261,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             return false;
         }
         setResponse(_response, targetReactorImpl);
-        if (responseProcessor != SignalResponseProcessor.SINGLETON) {
+        if (responseProcessor != EventResponseProcessor.SINGLETON) {
             requestSource.incomingResponse(RequestImplBase.this, targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
@@ -383,7 +383,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                     }
                 });
             } catch (final Throwable u) {
-                if (!(responseProcessor instanceof SignalResponseProcessor)) {
+                if (!(responseProcessor instanceof EventResponseProcessor)) {
                     if (!incomplete) {
                         return;
                     }
@@ -402,7 +402,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 return;
             }
             setResponse(_e, activeMessageProcessor);
-            if (!(responseProcessor instanceof SignalResponseProcessor)) {
+            if (!(responseProcessor instanceof EventResponseProcessor)) {
                 requestSource.incomingResponse(this, activeMessageProcessor);
             } else {
                 activeMessageProcessor.getLogger().warn("Uncaught throwable",

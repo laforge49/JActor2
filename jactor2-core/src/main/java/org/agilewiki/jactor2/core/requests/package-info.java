@@ -1,44 +1,69 @@
 /**
- * <h1>Events, Requests, Responses and Exception Handling</h1>
+ * <h3>Related Tutorial Pages</h3>
  * <p>
- *     There are two types of messaging, 1-way (events) and 2-way (request/response).
- * </p>
- * <h2>Event Messages</h2>
- * <p>
- *     Event messages are created and passed using subclasses of the Event class.
- *     An event is not bound to an blades instance, so the same event can be used to
- *     doSend messages to any number of blades. And when passing an event message to an blades,
- *     the message is given to the target blades's processing immediately, without buffering.
- * </p>
- * <h2>AsyncRequest/Response Messages</h2>
- * <p>
- *     In contrast, request messages are created and passed using anonymous subclasses of
- *     the AsyncRequest class, with these anonymous classes present within the blades where the
- *     request message is evaluated. Response messages are simply request messages to which a
- *     response has been assigned. AsyncRequest and response messages are aggregated and sent in
- *     blocks to reduce the overhead of having to pass individual messages.
+ * A request is a single-use object used to perform an operation safely and to optionally be pass backed with a response
+ * value that is also processed safely.
  * </p>
  * <p>
- *     No messages are being processed when a message block is sent. So when the last message
- *     block is sent, the thread migrates to the destination targetReactor along with that
- *     block. More often than not, only a single block of messages is sent, so thread migration
- *     significantly reduces the overhead of message passing.
+ * There are two types of requests:
  * </p>
- * <h2>Exception Handling</h2>
+ * <ol>
+ * <li>
+ * A sync request performs an operation safely within the thread context of the target reactor.
+ * And
+ * </li>
+ * <li>
+ * An async request separates data flow from control flow and its effect can span multiple reactors.
+ * </li>
+ * </ol>
  * <p>
- *     Exception handlers are used to process otherwise uncaught exceptions. But if there is no
- *     exception handler, or if an exception is thrown by an exception handler, then the
- *     exception is returned as a response, though if the current message being processed is
- *     an event then the exception is simply logged. When a response message that
- *     holds an exception is processed by the source targetReactor, the exception is rethrown
- *     within the source blades rather than being pass back to the blades as a valid response.
+ * Requests can be passed to a target reactor using either the
+ * <a href="Request.html#call--">call</a>
+ * or
+ * <a href="Request.html#signal--">signal</a>
+ * methods.
+ * And when operating within the context of an async request, other requests can be passed to a target reactor using the
+ * <a href="AsyncRequest.html#send-org.agilewiki.jactor2.core.requests.Request-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">send</a>
+ * method.
  * </p>
- * <p>
- *     Before an event or a request is processed, the current exception handler is set
- *     to null. The application logic specific to that event or request then has the option of assigning
- *     an exception handler via the Reactor.setExceptionHandler method. When a request message
- *     is sent, the current exception handler is saved in the request message and subsequently
- *     restored when a response is received.
- * </p>
+ * <h3>Related Tutorial Pages</h3>
+ * <ul>
+ * <li>
+ * <a href="../../../../../../tutorials/core/ponger.html" target="_top">Ponger</a>
+ * - SyncRequest
+ * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/callSpeedReport.html" target="_top">CallSpeedReport</a>
+ * - Call Methods per Second
+ * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/pongerLoop.html" target="_top">PongerLoop</a>
+ * - Direct Method calls per Second
+ * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/foreignPing.html" target="_top">ForeignPing</a>
+ * - AsyncRequest
+ * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/pinger.html" target="_top">Pinger</a>
+ * - Asynchronous Loops
+ * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/batcher.html" target="_top">Batcher</a>
+ * - Batched Messages per Second
+ * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/parallel.html" target="_top">Parallel</a>
+ * - Parallel Processing
+ * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/exceptionHandler.html" target="_top">ExceptionHandler</a>
+ * - Beyond try/catch
+ * </li>
+ * <li>
+ * <a href="../../../../../../tutorials/core/signals.html" target="_top">Signals</a>
+ * - One-way Messages
+ * </li>
+ * </ul>
  */
 package org.agilewiki.jactor2.core.requests;
