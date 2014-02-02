@@ -1,7 +1,7 @@
 /**
  * <h3>Related Tutorial Pages</h3>
  * <p>
- * A request is a single-use object used to perform an operation safely and to optionally be passed backed with a response
+ * A request is a single-use object for performing an operation safely and to optionally be passed back with a response
  * value that is also processed safely.
  * </p>
  * <p>

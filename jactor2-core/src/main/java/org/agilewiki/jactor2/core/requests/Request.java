@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 
 /**
- * A request is a single-use object used to perform an operation safely and to optionally be passed backed with a response
+ * A request is a single-use object for performing an operation safely and to optionally be passed back with a response
  * value that is also processed safely.
  *
  * @param <RESPONSE_TYPE>    The type response value.
