@@ -36,7 +36,7 @@ class Hanger extends NonBlockingBladeBase {
         return new AsyncBladeRequest<String>() {
             @Override
             public void processAsyncRequest() throws Exception {
-                System.out.println("hang");
+                System.out.println("    hang");
             }
         };
     }

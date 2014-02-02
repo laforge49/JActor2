@@ -1,8 +1,5 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.impl.Inbox;
-import org.agilewiki.jactor2.core.impl.RequestImpl;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

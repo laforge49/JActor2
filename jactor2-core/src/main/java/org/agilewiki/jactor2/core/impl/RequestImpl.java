@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.Request;
 
@@ -32,8 +33,6 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      */
     boolean isComplete();
 
-    boolean isClosed();
-
     /**
      * Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
      *
@@ -60,7 +59,9 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
 
     void cancel();
 
-    boolean isCanceled() throws InterruptedException ;
+    boolean isCanceled() throws ReactorClosedException;
+
+    boolean _isCanceled() ;
 
     /**
      * Returns true when the target reactor is not also the message source.

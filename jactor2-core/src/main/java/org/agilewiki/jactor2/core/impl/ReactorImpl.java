@@ -2,13 +2,13 @@ package org.agilewiki.jactor2.core.impl;
 
 import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.plant.Recovery;
-import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
@@ -210,8 +210,9 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
         if (!isRunning())
             return;
-        if (currentRequest != null && currentRequest.isComplete())
+        if (currentRequest != null && currentRequest.isComplete()) {
             return;
+        }
         timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
         Thread thread = (Thread) getThreadReference().get();
         if (thread == null)
@@ -441,8 +442,9 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                     return;
                 }
                 RequestImpl request = inbox.poll();
-                while (request != null && request.isCanceled())
+                while (request != null && request._isCanceled()) {
                     request = inbox.poll();
+                }
                 if (request == null) {
                     try {
                         if (timeoutSemaphore != null) {

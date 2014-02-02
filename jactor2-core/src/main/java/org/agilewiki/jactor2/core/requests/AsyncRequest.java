@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.RequestSource;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 
 public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE>,
         AsyncResponseProcessor<RESPONSE_TYPE> {
@@ -116,13 +117,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     @Override
-    public boolean isCanceled() {
+    public boolean isCanceled() throws ReactorClosedException {
         return asyncRequestImpl.isCanceled();
-    }
-
-    @Override
-    public boolean isClosed() {
-        return asyncRequestImpl.isClosed();
     }
 
     @Override

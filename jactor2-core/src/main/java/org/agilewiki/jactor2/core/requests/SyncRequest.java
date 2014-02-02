@@ -4,10 +4,10 @@ import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.RequestSource;
 import org.agilewiki.jactor2.core.impl.SyncRequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 
 /**
  * A sync request performs an operation safely within the thread context of the target reactor.
- * A sync request is constrained in that it can not make use of requests that are targeted to other reactors.
  *
  * @param <RESPONSE_TYPE> The type of response value.
  */
@@ -62,13 +62,8 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     }
 
     @Override
-    public boolean isCanceled() {
+    public boolean isCanceled() throws ReactorClosedException {
         return syncRequestImpl.isCanceled();
-    }
-
-    @Override
-    public boolean isClosed() {
-        return syncRequestImpl.isClosed();
     }
 
     @Override

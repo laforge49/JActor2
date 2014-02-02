@@ -2,9 +2,10 @@ package org.agilewiki.jactor2.core.requests;
 
 import org.agilewiki.jactor2.core.impl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 
 /**
- * A request is a single-use object used to perform an operation safely and to optionally be pass back with a response
+ * A request is a single-use object used to perform an operation safely and to optionally be pass backed with a response
  * value that is also processed safely.
  *
  * @param <RESPONSE_TYPE>    The type response value.
@@ -25,7 +26,7 @@ public interface Request<RESPONSE_TYPE> {
     Reactor getTargetReactor();
 
     /**
-     * Passes this request and then blocks the source thread until the request is returned
+     * Passes this request and then blocks the source thread until the request has been returned
      * with a response value.
      * This method can not be called within the thread context of a reactor.
      *
@@ -50,22 +51,22 @@ public interface Request<RESPONSE_TYPE> {
     Reactor getSourceReactor();
 
     /**
-     * Returns true if the request is canceled or the thread is interrupted.
+     * <p>
+     * Returns true if the request has been canceled.
      * Closing the source reactor, for example, will result in the request being canceled.
-     * Thread.interrupted is also called to see if the thread is interrupted.
      * This method should ideally be called periodically within long loops.
+     * </p>
+     * <p>
+     * A check is also made to see if the request is closed. If processing continues for any length of time
+     * after the request is closed, then a hung thread can result and a recovery process
+     * is initiated. To avoid this, call isCanceled withing any loops. It will throw an
+     * ReactorClosedException if the request is closed.
+     * </p>
      *
-     * @return True if the request is canceled or the thread is interrupted.
+     * @return True if the request has been canceled or the thread is interrupted.
+     * @throws ReactorClosedException Thrown when the request is closed.
      */
-    boolean isCanceled() ;
-
-    /**
-     * Returns true if the request is closed.
-     * Closing the target reactor, for example, will result in the request being closed.
-     *
-     * @return True if the request is canceled.
-     */
-    boolean isClosed();
+    boolean isCanceled() throws ReactorClosedException;
 
     /**
      * An optional callback used to signal that the request has been canceled.

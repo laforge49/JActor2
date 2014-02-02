@@ -279,20 +279,21 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         asRequest().onCancel();
     }
 
-    public boolean isCanceled() {
-        if (Thread.interrupted())
-            return true;
+    @Override
+    public boolean isCanceled() throws ReactorClosedException {
+        if (closed)
+            throw new ReactorClosedException();
+        return canceled;
+    }
+
+    @Override
+    public boolean _isCanceled() {
         return canceled;
     }
 
     @Override
     public boolean isComplete() {
         return !incomplete;
-    }
-
-    @Override
-    public boolean isClosed() {
-        return closed;
     }
 
     @Override
@@ -414,11 +415,11 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
 
     @Override
     public String toString() {
-        return "message=" + asRequest().getClass().getName() +
+        return "message=" + asRequest() +
                 ", isComplete=" + isComplete() +
                 ", isSignal=" + isSignal() +
-                ", source=" + (requestSource == null ? "null" : requestSource.getClass().getName()) +
-                ", target=" + getTargetReactor().getClass().getName() +
+                ", source=" + (requestSource == null ? "null" : requestSource) +
+                ", target=" + getTargetReactor().asReactorImpl() +
                 ", this=" + super.toString() +
                 (oldMessage == null ? "" : "\n" + oldMessage.toString());
     }
