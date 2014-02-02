@@ -65,10 +65,4 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     public boolean isCanceled() throws ReactorClosedException {
         return syncRequestImpl.isCanceled();
     }
-
-    @Override
-    public void onCancel() {}
-
-    @Override
-    public void onClose() {}
 }

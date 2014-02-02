@@ -68,7 +68,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     protected Object response;
 
-    private boolean canceled;
+    protected boolean canceled;
 
     /**
      * Create a RequestImplBase.
@@ -276,7 +276,6 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         if (canceled)
             return;
         canceled = true;
-        asRequest().onCancel();
     }
 
     @Override
@@ -311,7 +310,6 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         response = new ReactorClosedException();
         if (requestSource != null)
             requestSource.incomingResponse(this, null);
-        asRequest().onClose();
     }
 
     /**

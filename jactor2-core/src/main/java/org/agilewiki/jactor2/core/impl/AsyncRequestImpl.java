@@ -30,7 +30,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         asyncRequest = _asyncRequest;
     }
 
-    public Request asRequest() {
+    public AsyncRequest asRequest() {
         return asyncRequest;
     }
 
@@ -152,6 +152,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
             it.next().cancel();
         }
         super.close();
+        asRequest().onClose();
     }
 
     public boolean cancel(RequestImpl _requestImpl) {
@@ -167,5 +168,12 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         while (it.hasNext()) {
             cancel(it.next());
         }
+    }
+
+    public void cancel() {
+        if (canceled)
+            return;
+        canceled = true;
+        asRequest().onCancel();
     }
 }

@@ -67,20 +67,4 @@ public interface Request<RESPONSE_TYPE> {
      * @throws ReactorClosedException Thrown when the request is closed.
      */
     boolean isCanceled() throws ReactorClosedException;
-
-    /**
-     * An optional callback used to signal that the request has been canceled.
-     * This method must be thread-safe, as there is no constraint on which
-     * thread is used to call it.
-     * By default, onCancel does nothing.
-     */
-    void onCancel();
-
-    /**
-     * An optional callback used to signal that the request has been closed.
-     * This method must be thread-safe, as there is no constraint on which
-     * thread is used to call it.
-     * By default, onClose does nothing.
-     */
-    void onClose();
 }

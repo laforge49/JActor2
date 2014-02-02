@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.Request;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class SyncRequestImpl<RESPONSE_TYPE> extends
@@ -14,7 +13,7 @@ public class SyncRequestImpl<RESPONSE_TYPE> extends
         syncRequest = _syncRequest;
     }
 
-    public Request asRequest() {
+    public SyncRequest asRequest() {
         return syncRequest;
     }
 
