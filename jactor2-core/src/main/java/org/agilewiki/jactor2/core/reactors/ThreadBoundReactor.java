@@ -6,114 +6,81 @@ import org.agilewiki.jactor2.core.impl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
- * A targetReactor bound to a pre-existing thread, a thread-bound targetReactor can use
- * a program's main thread or a GUI thread.
+ * A reactor bound to a pre-existing thread.
  * <p>
- * For thread safety, the processing of each message is done in isolation, but when the processing of a
- * message results in the sending of a request, other messages may be processed before a
- * response to that request is received.
+ * Requests/responses are processed one at a time in the order received, except that
+ * requests/responses from the same reactor are given preference.
  * </p>
  * <p>
- * AsyncRequest/Response messages which are destined to a different targetReactor are buffered rather
- * than being sent immediately. These messages are disbursed to their destinations when all
+ * Requests/responses destined to a different reactor are held until all
  * incoming messages have been processed.
  * </p>
- * <h3>Sample Usage:</h3>
- * <pre>
- * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.Plant;
- * import org.agilewiki.jactor2.core.messaging.Event;
- *
- * public class ThreadBoundMessageProcessorSample {
- *
- *     public static void main(String[] args) throws Exception {
- *
- *         //A facility with no threads
- *         final Plant plant = new Plant(0);
- *
- *         //Get a reference to the main thread
- *         final Thread mainThread = Thread.currentThread();
- *
- *         //Create a thread-bound targetReactor.
- *         final ThreadBoundReactor boundMessageProcessor =
- *             new ThreadBoundReactor(plant, new Runnable() {
- *                 {@literal @}Override
- *                 public void run() {
- *                     //Interrupt the main thread when there are messages to process
- *                     mainThread.interrupt();
- *                 }
- *             });
- *
- *         //Create an blades that uses the thread-bound targetReactor.
- *         final ThreadBoundBlade threadBoundBlade = new ThreadBoundBlade(boundMessageProcessor);
- *
- *         //Terminate the blades.
- *         new SyncRequest&lt;Void&gt;(threadBoundBlade.getInternalReactor()) {
- *
- *             {@literal @}Override
- *             protected Void processSyncRequest() throws Exception {
- *                 threadBoundBlade.fin();
- *                 return null;
- *             }
- *         }.signal();
- *
- *         //Process messages when this thread is interrupted
- *         while (true) {
- *             try {
- *                 //Wait for an interrupt
- *                 Thread.sleep(60000);
- *             } catch (InterruptedException e) {
- *                 //Process messages when the main thread is interrupted
- *                 boundMessageProcessor.run();
- *             }
- *         }
- *     }
- * }
- *
- * class ThreadBoundBlade extends BladeBase {
- *
- *     ThreadBoundBlade(final Reactor _messageProcessor) throws Exception {
- *         initialize(_messageProcessor);
- *     }
- *
- *     //Print "finished" and exit when fin is called
- *     void fin() throws Exception {
- *         System.out.println("finished");
- *         System.exit(0);
- *     }
- * }
- *
- * Output:
- * finished
- * </pre>
  */
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Runnable {
 
+    /**
+     * Create a thread-bound reactor with the Plant internal reactor as the parent.
+     */
     public ThreadBoundReactor() throws Exception {
         this(Plant.getInternalReactor());
     }
 
+    /**
+     * Create a thread-bound reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     */
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor) throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize(), null);
     }
 
+    /**
+     * Create a thread-bound reactor with the Plant internal reactor as the parent.
+     *
+     * @param _boundProcessor           The Runnable that is called when there are requests/responses
+     *                                  to be processed.
+     */
     public ThreadBoundReactor(final Runnable _boundProcessor)
             throws Exception {
         this(Plant.getInternalReactor(), _boundProcessor);
     }
 
+    /**
+     * Create a thread-bound reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     * @param _boundProcessor           The Runnable that is called when there are requests/responses
+     *                                  to be processed.
+     */
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor, final Runnable _boundProcessor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize(), _boundProcessor);
     }
 
+    /**
+     * Create a thread-bound reactor with the Plant internal reactor as the parent.
+     *
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     * @param _boundProcessor           The Runnable that is called when there are requests/responses
+     *                                  to be processed.
+     */
     public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) throws Exception {
         this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
+    /**
+     * Create a thread-bound reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     * @param _boundProcessor           The Runnable that is called when there are requests/responses
+     *                                  to be processed.
+     */
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) throws Exception {
@@ -121,6 +88,16 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
                 _boundProcessor));
     }
 
+    /**
+     * Create the object used to implement the reactor.
+     *
+     * @param _parentReactorImpl        The parent reactor impl object.
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     * @param _boundProcessor           The Runnable that is called when there are requests/responses
+     *                                  to be processed.
+     * @return The object used to implement the reactor.
+     */
     protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
                                             final Runnable _boundProcessor) throws Exception {
@@ -133,6 +110,9 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
         return (ThreadBoundReactorImpl) super.asReactorImpl();
     }
 
+    /**
+     * Call by the bound thread to process the requests/responses in the input queue.
+     */
     @Override
     public void run() {
         asReactorImpl().run();
