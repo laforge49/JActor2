@@ -6,5 +6,5 @@ package org.agilewiki.jactor2.core.reactors;
  * This is important as a means of ensuring that every asynchronous request receives a response, even if that
  * response is an exception.
  */
-public class ReactorClosedException extends Exception {
+public class ReactorClosedException extends RuntimeException {
 }
