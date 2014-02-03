@@ -6,10 +6,18 @@ import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
+/**
+ * Base class for reactors.
+ */
 abstract public class ReactorBase implements Reactor {
 
     private ReactorImpl reactorImpl;
 
+    /**
+     * Initialize the reactor.
+     *
+     * @param _reactorImpl    The object used to implement the reactor.
+     */
     public void initialize(final ReactorImpl _reactorImpl) throws Exception {
         if (_reactorImpl != null)
             reactorImpl = _reactorImpl;
