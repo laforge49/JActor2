@@ -18,7 +18,7 @@ import org.agilewiki.jactor2.core.plant.Plant;
 public class NonBlockingReactor extends ReactorBase implements CommonReactor {
 
     /**
-     * Create a reactor with the Plant internal reactor as the parent.
+     * Create a non-blocking reactor with the Plant internal reactor as the parent.
      */
     public NonBlockingReactor()
             throws Exception {
@@ -26,7 +26,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
     }
 
     /**
-     * Create a reactor.
+     * Create a non-blocking reactor.
      *
      * @param _parentReactor            The parent reactor.
      */
@@ -46,7 +46,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
     }
 
     /**
-     * Create a reactor with the Plant internal reactor as the parent.
+     * Create a non-blocking reactor with the Plant internal reactor as the parent.
      *
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
@@ -56,7 +56,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
     }
 
     /**
-     * Create a reactor.
+     * Create a non-blocking reactor.
      *
      * @param _parentReactor            The parent reactor.
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.

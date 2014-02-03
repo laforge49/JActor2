@@ -5,48 +5,66 @@ import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
- * A targetReactor which should be used by blades
- * which perform long computations, I/O, or otherwise block the thread. And unlike other types of
- * reactors, a BlockingReactor should usually be used only by a single blades.
+ * Process requests/responses which may blocking the thread or tie it up with a long computation.
  * <p>
- * AsyncRequest/Response messages which are destined to a different targetReactor are buffered rather
- * than being sent immediately. These messages are disbursed to their destinations when the
- * processing of each incoming message is complete.
+ * Requests/responses are processed one at a time in the order received, except that
+ * requests/responses from the same reactor are given preference.
  * </p>
  * <p>
- * When the last block of buffered messages is being disbursed, if the destination is not
- * a thread-bound targetReactor, the destination targetReactor has no associated thread and the
- * facility of the current targetReactor is the same as the destination targetReactor, then the
- * current thread migrates with the message block. By this means the message block is
- * often kept in the hardware thread's high-speed memory cache, which means much faster
- * execution.
- * </p>
- * <p>
- * The Inbox used by BlockingReactor is NonBlockingInbox.
+ * Requests/responses destined to a different reactor are held until processing is complete
+ * for each incoming request/response.
  * </p>
  */
 public class BlockingReactor extends ReactorBase implements CommonReactor {
 
+    /**
+     * Create a blocking reactor with the Plant internal reactor as the parent.
+     */
     public BlockingReactor()
             throws Exception {
         this(Plant.getInternalReactor());
     }
 
+    /**
+     * Create a blocking reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     */
     public BlockingReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
 
+    /**
+     * Create a blocking reactor with the Plant internal reactor as the parent.
+     *
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     */
     public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    /**
+     * Create a blocking reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     */
     public BlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    /**
+     * Create a blocking reactor.
+     *
+     * @param _parentReactorImpl        The parent reactor impl object.
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     */
     public BlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         initialize(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
@@ -57,6 +75,11 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
         return (BlockingReactorImpl) super.asReactorImpl();
     }
 
+    /**
+     * Define the activity which occurs when the input queue is empty.
+     *
+     * @param _idle    The activity which occurs when the input queue is empty.
+     */
     public void setIdle(final Runnable _idle) {
         ((BlockingReactorImpl) asReactorImpl()).onIdle = _idle;
     }
