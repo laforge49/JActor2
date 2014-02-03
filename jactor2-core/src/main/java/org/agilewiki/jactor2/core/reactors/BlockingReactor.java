@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.blades.BlockingBlade;
 import org.agilewiki.jactor2.core.impl.BlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -15,7 +16,7 @@ import org.agilewiki.jactor2.core.plant.Plant;
  * for each incoming request/response.
  * </p>
  */
-public class BlockingReactor extends ReactorBase implements CommonReactor {
+public class BlockingReactor extends ReactorBase implements CommonReactor, BlockingBlade {
 
     /**
      * Create a blocking reactor with the Plant internal reactor as the parent.
@@ -82,5 +83,10 @@ public class BlockingReactor extends ReactorBase implements CommonReactor {
      */
     public void setIdle(final Runnable _idle) {
         ((BlockingReactorImpl) asReactorImpl()).onIdle = _idle;
+    }
+
+    @Override
+    public BlockingReactor getReactor() {
+        return this;
     }
 }

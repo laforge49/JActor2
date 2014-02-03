@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.blades.ThreadBoundBlade;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.ThreadBoundReactorImpl;
@@ -16,7 +17,8 @@ import org.agilewiki.jactor2.core.plant.Plant;
  * incoming messages have been processed.
  * </p>
  */
-public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Runnable {
+public class ThreadBoundReactor extends ReactorBase
+        implements CommonReactor, Runnable, ThreadBoundBlade {
 
     /**
      * Create a thread-bound reactor with the Plant internal reactor as the parent.
@@ -116,5 +118,10 @@ public class ThreadBoundReactor extends ReactorBase implements CommonReactor, Ru
     @Override
     public void run() {
         asReactorImpl().run();
+    }
+
+    @Override
+    public ThreadBoundReactor getReactor() {
+        return this;
     }
 }

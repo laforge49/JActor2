@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.impl.IsolationReactorImpl;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -12,7 +13,7 @@ import org.agilewiki.jactor2.core.plant.Plant;
  * for each incoming request/response.
  * </p>
  */
-public class IsolationReactor extends ReactorBase {
+public class IsolationReactor extends ReactorBase implements IsolationBlade {
 
     /**
      * Create an isolation reactor with the Plant internal reactor as the parent.
@@ -78,5 +79,10 @@ public class IsolationReactor extends ReactorBase {
      */
     public void setIdle(final Runnable _idle) {
         ((IsolationReactorImpl) asReactorImpl()).onIdle = _idle;
+    }
+
+    @Override
+    public IsolationReactor getReactor() {
+        return this;
     }
 }

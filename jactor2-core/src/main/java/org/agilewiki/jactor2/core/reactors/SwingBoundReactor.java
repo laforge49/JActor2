@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.blades.SwingBoundBlade;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
@@ -19,7 +20,7 @@ import java.awt.event.WindowListener;
  * incoming messages have been processed.
  * </p>
  */
-public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener {
+public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener, SwingBoundBlade {
 
     /**
      * Create a swing-bound reactor with the Plant internal reactor as the parent.
@@ -115,5 +116,10 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
 
     @Override
     public void windowDeactivated(final WindowEvent e) {
+    }
+
+    @Override
+    public SwingBoundReactor getReactor() {
+        return this;
     }
 }

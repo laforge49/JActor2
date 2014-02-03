@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
 import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.PlantImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
@@ -15,7 +16,7 @@ import org.agilewiki.jactor2.core.plant.Plant;
  * incoming messages have been processed.
  * </p>
  */
-public class NonBlockingReactor extends ReactorBase implements CommonReactor {
+public class NonBlockingReactor extends ReactorBase implements CommonReactor, NonBlockingBlade {
 
     /**
      * Create a non-blocking reactor with the Plant internal reactor as the parent.
@@ -94,5 +95,10 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor {
      */
     public void setIdle(final Runnable _idle) {
         ((NonBlockingReactorImpl) asReactorImpl()).onIdle = _idle;
+    }
+
+    @Override
+    public NonBlockingReactor getReactor() {
+        return this;
     }
 }
