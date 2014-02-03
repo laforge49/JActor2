@@ -9,79 +9,54 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 /**
- * Messages are processed on Swing's event-dispatch thread when an blades uses
- * a SwingBoundReactor. This is critical, as so many Swing methods are
- * not thread-safe. Also, if each window has its own facility, then closing a
- * window and its facility will also terminate all activity related to that window.
- * <h3>Sample Usage:</h3>
- * <pre>
- * import org.agilewiki.jactor2.core.blades.BladeBase;
- * import org.agilewiki.jactor2.core.threading.Plant;
- * import org.agilewiki.jactor2.core.messaging.AsyncRequest;
- *
- * import javax.swing.*;
- *
- * public class SwingBoundMessageProcessorSample {
- *     public static void main(final String[] _args) throws Exception {
- *         new HelloWorld().createAndShowAReq().signal();
- *     }
- * }
- *
- * class HelloWorld extends BladeBase {
- *
- *     HelloWorld() throws Exception {
- *
- *         //Create a facility with 5 threads.
- *         Plant plant = new Plant(5);
- *
- *         initialize(new SwingBoundReactor(facility));
- *     }
- *
- *     AsyncRequest&lt;Void&gt; createAndShowAReq() {
- *         return new AsyncBladeRequest&lt;Void&gt;() {
- *             {@literal @}Override
- *             protected void processAsyncRequest() throws Exception {
- *                 //Create and set up the window.
- *                 JFrame frame = new JFrame("HelloWorld");
- *                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
- *
- *                 //Close plant when window is closed.
- *                 frame.addWindowListener((SwingBoundReactor) targetReactor);
- *
- *                 //Add the "Hello World!" label.
- *                 JLabel label = new JLabel("Hello World!");
- *                 frame.getContentPane().add(label);
- *
- *                 //Display the window.
- *                 frame.pack();
- *                 frame.setVisible(true);
- *
- *                 //return the result.
- *                 processAsyncResponse(null);
- *             }
- *         };
- *     }
- *
- * }
- * </pre>
+ * A reactor which processes requests/responses on the Swing UI thread.
+ * <p>
+ * Requests/responses are processed one at a time in the order received, except that
+ * requests/responses from the same reactor are given preference.
+ * </p>
+ * <p>
+ * Requests/responses destined to a different reactor are held until all
+ * incoming messages have been processed.
+ * </p>
  */
 public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener {
 
+    /**
+     * Create a swing-bound reactor with the Plant internal reactor as the parent.
+     */
     public SwingBoundReactor() throws Exception {
         super(Plant.getInternalReactor());
     }
 
+    /**
+     * Create a Swing-bound reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     */
     public SwingBoundReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
 
+    /**
+     * Create a Swing-bound reactor with the Plant internal reactor as the parent.
+     *
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     */
     public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    /**
+     * Create a Swing-bound reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     */
     public SwingBoundReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
@@ -113,6 +88,10 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
     public void windowClosing(final WindowEvent e) {
     }
 
+    /**
+     * Closes the plant when the window is closed.
+     * @param e    A window event.
+     */
     @Override
     public void windowClosed(final WindowEvent e) {
         try {
