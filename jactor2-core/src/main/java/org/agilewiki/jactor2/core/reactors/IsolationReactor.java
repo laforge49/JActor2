@@ -5,53 +5,62 @@ import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
- * A targetReactor which processes each request to completion. And unlike other types of
- * reactors, an IsolationReactor should usually be used only by a single blades.
+ * Processes each request until completion, processing responses and 1-way messages (e.g. signals) in the order received.
+ * The next request is only processed when a result is returned for the current request.
  * <p>
- * For thread safety, the processing of each message is done in isolation from other messages, but when the processing of a message
- * results in the sending of a request message to another blades, other messages may be processed before a
- * response to that request message is received. However, an isolation targetReactor will not process a
- * request until a response is returned for the prior request. This does not however preclude
- * the processing of event messages.
- * </p>
- * <p>
- * AsyncRequest/Response messages which are destined to a different targetReactor are buffered rather
- * than being sent immediately. These messages are disbursed to their destinations when the
- * processing of each incoming message is complete.
- * </p>
- * <p>
- * When the last block of buffered messages is being disbursed, if the destination is not
- * a thread-bound targetReactor, the destination targetReactor has no associated thread and the
- * facility of the current targetReactor is the same as the destination targetReactor, then the
- * current thread migrates with the message block. By this means the message block is
- * often kept in the hardware thread's high-speed memory cache, which means much faster
- * execution.
- * </p>
- * <p>
- * The Inbox used by IsolationReactor is IsolationInbox.
+ * Requests/responses destined to a different reactor are held until processing is complete
+ * for each incoming request/response.
  * </p>
  */
 public class IsolationReactor extends ReactorBase {
 
+    /**
+     * Create an isolation reactor with the Plant internal reactor as the parent.
+     */
     public IsolationReactor() throws Exception {
         this(Plant.getInternalReactor());
     }
 
+    /**
+     * Create an isolation reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     */
     public IsolationReactor(final NonBlockingReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
 
+    /**
+     * Create an isolation reactor with the Plant internal reactor as the parent.
+     *
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     */
     public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    /**
+     * Create an isolation reactor.
+     *
+     * @param _parentReactor            The parent reactor.
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     */
     public IsolationReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    /**
+     * Create an isolation reactor.
+     *
+     * @param _parentReactorImpl        The parent reactor impl object.
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     */
     public IsolationReactor(final NonBlockingReactorImpl _parentReactorImpl,
                            final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         initialize(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
@@ -62,6 +71,11 @@ public class IsolationReactor extends ReactorBase {
         return (IsolationReactorImpl) super.asReactorImpl();
     }
 
+    /**
+     * Define the activity which occurs when the input queue is empty.
+     *
+     * @param _idle    The activity which occurs when the input queue is empty.
+     */
     public void setIdle(final Runnable _idle) {
         ((IsolationReactorImpl) asReactorImpl()).onIdle = _idle;
     }
