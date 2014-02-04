@@ -90,6 +90,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
 
     /**
      * Define the activity which occurs when the input queue is empty.
+     * By default, nothing is done.
      *
      * @param _idle    The activity which occurs when the input queue is empty.
      */

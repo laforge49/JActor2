@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
- * Process requests/responses which may blocking the thread or tie it up with a long computation.
+ * Process requests/responses which may block the thread or tie it up with a long computation.
  * <p>
  * Requests/responses are processed one at a time in the order received, except that
  * requests/responses from the same reactor are given preference.
@@ -66,7 +66,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public BlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
+    private BlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         initialize(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
     }
@@ -78,6 +78,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
 
     /**
      * Define the activity which occurs when the input queue is empty.
+     * By default, nothing is done.
      *
      * @param _idle    The activity which occurs when the input queue is empty.
      */

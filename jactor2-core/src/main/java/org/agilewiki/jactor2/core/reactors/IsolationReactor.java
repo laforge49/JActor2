@@ -62,7 +62,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public IsolationReactor(final NonBlockingReactorImpl _parentReactorImpl,
+    private IsolationReactor(final NonBlockingReactorImpl _parentReactorImpl,
                            final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         initialize(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
     }
@@ -74,6 +74,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
 
     /**
      * Define the activity which occurs when the input queue is empty.
+     * By default, nothing is done.
      *
      * @param _idle    The activity which occurs when the input queue is empty.
      */
