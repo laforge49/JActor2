@@ -171,7 +171,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         Iterator<RequestImpl> mit = inProcessRequests.iterator();
         while (mit.hasNext()) {
             RequestImpl requestImpl = mit.next();
-            requestImpl.close();
+            requestImpl.cancel();
         }
 
         if (closeables != null) {

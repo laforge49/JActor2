@@ -38,14 +38,14 @@ public interface Reactor extends Closeable, Blade {
      * This reactor is removed from the closeables list of the reactors it depends on.
      * </li>
      * <li>
-     * All requests sent by this reactor which are still outstanding are closed.
+     * All requests sent by this reactor which are still outstanding are canceled.
      * </li>
      * <li>
      * All the closables in this reactor's closeables list are closed.
      * </li>
      * <li>
      * All the requests/responses that have been sent but which have not yet been disbursed
-     * to their destinations are closed.
+     * to their destinations are distributed immediately.
      * </li>
      * <li>
      * All incoming requests/responses that have not yet been processed are closed.
