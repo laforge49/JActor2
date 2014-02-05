@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.misc;
+package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
