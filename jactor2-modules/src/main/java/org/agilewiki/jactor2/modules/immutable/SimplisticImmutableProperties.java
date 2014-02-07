@@ -87,26 +87,26 @@ public class SimplisticImmutableProperties<VALUE> implements ImmutableProperties
     public ImmutableProperties<VALUE> minus(String key) {
         TreeMap<String, VALUE> tm = new TreeMap<String, VALUE>(base);
         tm.remove(key);
-        return new SimplisticImmutableProperties<VALUE>(tm);
+        return new SimplisticImmutableProperties(tm);
     }
 
     @Override
     public ImmutableProperties<VALUE> plus(String key, VALUE value) {
         TreeMap<String, VALUE> tm = new TreeMap<String, VALUE>(base);
         tm.put(key, value);
-        return new SimplisticImmutableProperties<VALUE>(tm);
+        return new SimplisticImmutableProperties(tm);
     }
 
     @Override
     public ImmutableProperties<VALUE> plusAll(Map<String, VALUE> m) {
         TreeMap<String, VALUE> tm = new TreeMap<String, VALUE>(base);
         tm.putAll(m);
-        return new SimplisticImmutableProperties<VALUE>(tm);
+        return new SimplisticImmutableProperties(tm);
     }
 
     @Override
     public ImmutableProperties<VALUE> subMap(String keyPrefix) {
-        return new SimplisticImmutableProperties<VALUE>(base.subMap(keyPrefix, keyPrefix + Character.MAX_VALUE));
+        return new SimplisticImmutableProperties(base.subMap(keyPrefix, keyPrefix + Character.MAX_VALUE));
     }
 
     @Override

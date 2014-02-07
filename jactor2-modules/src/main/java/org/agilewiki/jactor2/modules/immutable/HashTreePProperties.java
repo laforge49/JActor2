@@ -87,17 +87,17 @@ public class HashTreePProperties<VALUE> implements ImmutableProperties<VALUE> {
 
     @Override
     public ImmutableProperties<VALUE> minus(String key) {
-        return new HashTreePProperties<VALUE>(base.minus(key));
+        return new HashTreePProperties(base.minus(key));
     }
 
     @Override
     public ImmutableProperties<VALUE> plus(String key, VALUE value) {
-        return new HashTreePProperties<VALUE>(base.plus(key, value));
+        return new HashTreePProperties(base.plus(key, value));
     }
 
     @Override
     public ImmutableProperties<VALUE> plusAll(Map<String, VALUE> m) {
-        return new HashTreePProperties<VALUE>(base.plusAll(m));
+        return new HashTreePProperties(base.plusAll(m));
     }
 
     @Override
@@ -109,7 +109,7 @@ public class HashTreePProperties<VALUE> implements ImmutableProperties<VALUE> {
             if (e.getKey().startsWith(keyPrefix))
                 hpm = hpm.plus(e.getKey(), e.getValue());
         }
-        return new HashTreePProperties<VALUE>(hpm);
+        return new HashTreePProperties(hpm);
     }
 
     @Override
