@@ -8,14 +8,16 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
  * Simulates I/O.
  */
 public class Delay extends BlockingBladeBase {
-
+    /**
+     * Create a Delay blade and a Blocking reactor whose parent is the internal reactor of Plant.
+     */
     public Delay() throws Exception {
     }
 
     /**
-     * Create a Delay blades.
+     * Create a Delay blade.
      *
-     * @param _reactor The blades's facility.
+     * @param _reactor The blade's facility.
      */
     public Delay(final BlockingReactor _reactor) throws Exception {
         super(_reactor);

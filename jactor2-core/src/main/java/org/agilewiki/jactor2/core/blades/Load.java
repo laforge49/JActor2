@@ -11,9 +11,17 @@ public class Load extends BlockingBladeBase {
     private volatile long i;
     private volatile long j;
 
+    /**
+     * Create a Load blade and a Blocking reactor whose parent is the internal reactor of Plant.
+     */
     public Load() throws Exception {
     }
 
+    /**
+     * Create a Load blade.
+     *
+     * @param _reactor The blade's facility.
+     */
     public Load(final BlockingReactor _reactor) throws Exception {
         super(_reactor);
     }
@@ -39,13 +47,5 @@ public class Load extends BlockingBladeBase {
                 return null;
             }
         };
-    }
-
-    public long getI() {
-        return i;
-    }
-
-    public long getJ() {
-        return j;
     }
 }
