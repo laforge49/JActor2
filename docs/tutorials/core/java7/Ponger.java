@@ -1,15 +1,17 @@
-import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Ponger extends NonBlockingBladeBase {
+public class Ponger extends BladeBase {
     private long count = 0;
     
-    public Ponger() throws Exception {}
+    public Ponger() throws Exception {
+        _initialize(new NonBlockingReactor());
+    }
     
-    public Ponger(final NonBlockingReactor _reactor) throws Exception {
-        super(_reactor);
+    public Ponger(final Reactor _reactor) throws Exception {
+        _initialize(_reactor);
     }
 
     private long ping() {

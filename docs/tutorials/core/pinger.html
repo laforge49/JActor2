@@ -143,7 +143,7 @@ public class NativeSendSpeedReport {
         new Plant();
         try {
             Ponger ponger = new Ponger();
-            NonBlockingReactor sharedReactor = ponger.getReactor();
+            NonBlockingReactor sharedReactor = (NonBlockingReactor) ponger.getReactor();
             Pinger pinger = new Pinger(sharedReactor, ponger);
             AsyncRequest&lt;Void&gt; loopAReq = pinger.loopAReq(count);
             final long before = System.nanoTime();
@@ -160,20 +160,20 @@ public class NativeSendSpeedReport {
 Output:
 
 Native Send Timings
-Test duration in nanoseconds: 23366926657
+Test duration in nanoseconds: 25610810971
 Number of exchanges: 100000000
-Exchanges per second: 4279552
-Latency in seconds: 2.3366926657E-7
+Exchanges per second: 3904601
+Latency in seconds: 2.5610810971E-7
 </pre>
 <p>
 This is about 200 times slower than when using direct method calls, but then requests have a lot more overhead:
 </p>
 <pre>
 Direct Timings
-Test duration in nanoseconds: 846853843
-Number of exchanges: 500000000
-Exchanges per second: 590420654
-Latency in seconds: 1.693707686E-9
+Test duration in nanoseconds: 4083868524
+Number of exchanges: 2000000000
+Exchanges per second: 489731730
+Latency in seconds: 2.041934262E-9
 </pre>
 <h2>
 <a href="java7/ForeignSendSpeedReport.java">ForeignSendSpeedReport</a>
@@ -210,10 +210,10 @@ In this case the send is roughly twice as slow as when the two blades use a comm
 </p>
 <pre>
 Foreign Send Timings
-Test duration in nanoseconds: 5176340474
+Test duration in nanoseconds: 5414567417
 Number of exchanges: 10000000
-Exchanges per second: 1931866
-Latency in seconds: 5.176340474E-7
+Exchanges per second: 1846869
+Latency in seconds: 5.414567417E-7
 </pre>
 <p>
 Even so, a send between two blades with different reactors is
@@ -221,10 +221,10 @@ still about 10 times faster than when using a call method:
 </p>
 <pre>
 Call Timings
-Test duration in nanoseconds: 5902333461
+Test duration in nanoseconds: 6162933014
 Number of exchanges: 1000000
-Exchanges per second: 169424
-Latency in seconds: 5.902333461E-6
+Exchanges per second: 162260
+Latency in seconds: 6.162933014E-6
 </pre>
 </body>
 </html>

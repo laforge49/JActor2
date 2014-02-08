@@ -49,20 +49,23 @@ Synchronous requests are a lock-free alternative to Java's synchronized.
 <p>
 Our first example is 
 <a href="java7/Ponger.java">Ponger</a>,
-a non-blocking blade with a synchronous request, pingSReq.
+a blade with a synchronous request, pingSReq.
 This request returns the number of times it has been invoked:
 <pre>
-import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Ponger extends NonBlockingBladeBase {
+public class Ponger extends BladeBase {
     private long count = 0;
     
-    public Ponger() throws Exception {}
+    public Ponger() throws Exception {
+        _initialize(new NonBlockingReactor();
+    }
     
-    public Ponger(final NonBlockingReactor _reactor) throws Exception {
-        super(_reactor);
+    public Ponger(final Reactor _reactor) throws Exception {
+        _initialize(_reactor);
     }
     
     private long ping() {
@@ -100,9 +103,11 @@ request or a directly callable method, which makes it thread-safe.
 The Reactor
 </h3>
 <pre>
-    public Ponger() throws Exception {}
+    public Ponger() throws Exception {
+        _initialize(new NonBlockingReactor();
+    }
     
-    public Ponger(final NonBlockingReactor _reactor) throws Exception {
+    public Ponger(final Reactor _reactor) throws Exception {
         super(_reactor);
     }
 </pre>
@@ -111,7 +116,7 @@ Every blade needs a reactor before it can send or receive messages.
 Reactors serve both as incoming queues, outgoing message buffers and as light-weight threads.
 </p>
 <p>
-The default constructor of NonBlockingBladeBase creates a NonBlockingReactor. So you can either
+The default constructor creates a NonBlockingReactor. So you can either
 specify a particular reactor, which is useful when sharing reactors between blades, or have a new
 reactor created by default.
 </p>

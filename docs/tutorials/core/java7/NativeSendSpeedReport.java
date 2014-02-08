@@ -8,7 +8,7 @@ public class NativeSendSpeedReport {
         new Plant();
         try {
             Ponger ponger = new Ponger();
-            NonBlockingReactor sharedReactor = ponger.getReactor();
+            NonBlockingReactor sharedReactor = (NonBlockingReactor) ponger.getReactor();
             Pinger pinger = new Pinger(sharedReactor, ponger);
             AsyncRequest<Void> loopAReq = pinger.loopAReq(count);
             final long before = System.nanoTime();
