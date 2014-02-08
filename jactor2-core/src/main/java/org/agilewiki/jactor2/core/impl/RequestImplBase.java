@@ -331,7 +331,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             } catch (final Exception e) {
                 processException(targetReactorImpl, e);
             } catch (final StackOverflowError soe) {
-                processException(targetReactorImpl, new StackOverflowException());
+                processException(targetReactorImpl, new StackOverflowException(soe));
             }
         } else {
             processResponseMessage();
