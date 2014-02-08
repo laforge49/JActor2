@@ -6,15 +6,15 @@ import org.agilewiki.jactor2.core.requests.StackOverflowException;
 public class StackOverflow extends NonBlockingBladeBase {
     StackOverflow() throws Exception {}
     
-    void recure() {
-        recure();
+    void recur() {
+        recur();
     }
 
-    SyncRequest<Void> recureSReq() {
+    SyncRequest<Void> recurSReq() {
         return new SyncBladeRequest() {
             @Override
             public Void processSyncRequest() throws Exception {
-                recure();
+                recur();
                 return null;
             }
         };
@@ -23,7 +23,7 @@ public class StackOverflow extends NonBlockingBladeBase {
     public static void main(final String[] args) throws Exception {
         Plant plant = new Plant();
         try {
-            new StackOverflow().recureSReq().call();
+            new StackOverflow().recurSReq().call();
         } catch (final StackOverflowException soe) {
             System.out.println("\nCaught "+soe);
         } finally {
