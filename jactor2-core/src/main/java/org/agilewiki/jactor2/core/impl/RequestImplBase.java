@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.StackOverflowException;
 
 import java.util.concurrent.Semaphore;
 
@@ -329,6 +330,8 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 Thread.currentThread().interrupt();
             } catch (final Exception e) {
                 processException(targetReactorImpl, e);
+            } catch (final StackOverflowError soe) {
+                processException(targetReactorImpl, new StackOverflowException());
             }
         } else {
             processResponseMessage();
