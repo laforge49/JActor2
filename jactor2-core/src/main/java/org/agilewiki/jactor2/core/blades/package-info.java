@@ -1,6 +1,6 @@
 /**
  * <p>
- * A blade is an object with persistent state operated on by requests
+ * A blade is an object with state operated on by requests
  * within the thread context of a single reactor.
  * </p>
  * <h3>Related Tutorial Pages</h3>

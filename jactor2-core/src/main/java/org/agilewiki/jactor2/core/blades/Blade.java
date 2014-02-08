@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * <p>
- * A blade is an object with persistent state operated on by requests
+ * A blade is an object with state operated on by requests
  * within the thread context of a single reactor.
  * </p>
  */
