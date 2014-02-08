@@ -1,6 +1,7 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.StackOverflowException;
 
 public class StackOverflow extends NonBlockingBladeBase {
     StackOverflow() throws Exception {}
@@ -23,8 +24,8 @@ public class StackOverflow extends NonBlockingBladeBase {
         Plant plant = new Plant();
         try {
             new StackOverflow().recureSReq().call();
-        } catch (final StackOverflowError soe) {
-            System.out.println("caught "+soe);
+        } catch (final StackOverflowException soe) {
+            System.out.println("\nCaught "+soe);
         } finally {
             plant.close();
         }
