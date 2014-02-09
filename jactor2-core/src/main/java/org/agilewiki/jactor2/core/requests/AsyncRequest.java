@@ -75,10 +75,18 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * An optional callback used to signal that the request has been canceled.
      * This method must be thread-safe, as there is no constraint on which
      * thread is used to call it.
-     * The default action of onCancel is to call cancelAll.
+     * The default action of onCancel is to call cancelAll and,
+     * if the reactor is not a common reactor, sends a response of null via
+     * a bound response processor.
      */
     public void onCancel() {
         cancelAll();
+        Reactor targetReactor = getTargetReactor();
+        if (!(targetReactor instanceof CommonReactor))
+            try {
+                new BoundResponseProcessor<RESPONSE_TYPE>(targetReactor, this).processAsyncResponse(null);
+            } catch (final Exception e) {
+            }
     }
 
     /**
