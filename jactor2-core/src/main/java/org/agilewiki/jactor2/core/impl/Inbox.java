@@ -93,14 +93,14 @@ public abstract class Inbox implements AutoCloseable {
     /**
      * Signals the start of a request.
      */
-    public void requestBegin() {
+    public void requestBegin(final RequestImpl _requestImpl) {
 
     }
 
     /**
      * Signals that the result of a request has been assigned.
      */
-    public void requestEnd() {
+    public void requestEnd(final RequestImpl _message) {
 
     }
 

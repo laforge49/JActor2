@@ -54,7 +54,7 @@ public class IsolationInbox extends Inbox {
 
     @Override
     protected void offerLocal(final RequestImpl msg) {
-        if (!msg.isComplete()) {
+        if (!msg.isComplete() && !msg.isSignal()) {
             localResponsePendingQueue.offer(msg);
         } else {
             localNoResponsePendingQueue.offer(msg);
@@ -106,7 +106,9 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public void requestBegin() {
+    public void requestBegin(final RequestImpl _requestImpl) {
+        if (_requestImpl.isSignal())
+            return;
         if (processingRequest) {
             throw new IllegalStateException("already processing a request");
         }
@@ -114,7 +116,9 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public void requestEnd() {
+    public void requestEnd(final RequestImpl _message) {
+        if (_message.isSignal())
+            return;
         if (!processingRequest) {
             throw new IllegalStateException("not processing a request");
         }

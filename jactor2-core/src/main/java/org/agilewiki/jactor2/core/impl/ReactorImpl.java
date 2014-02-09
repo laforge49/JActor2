@@ -400,8 +400,8 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     /**
      * Signals the start of a request.
      */
-    public void requestBegin() {
-        inbox.requestBegin();
+    public void requestBegin(final RequestImpl _requestImpl) {
+        inbox.requestBegin(_requestImpl);
     }
 
     /**
@@ -413,7 +413,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         if (_message.isForeign()) {
             boolean b = inProcessRequests.remove(_message);
         }
-        inbox.requestEnd();
+        inbox.requestEnd(_message);
     }
 
     /**

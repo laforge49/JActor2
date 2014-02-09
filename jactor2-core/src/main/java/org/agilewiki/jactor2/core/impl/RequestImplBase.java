@@ -321,7 +321,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         if (incomplete) {
             targetReactorImpl.setExceptionHandler(null);
             targetReactorImpl.setCurrentRequest(this);
-            targetReactorImpl.requestBegin();
+            targetReactorImpl.requestBegin(this);
             try {
                 processRequestMessage();
             } catch (MigrationException _me) {

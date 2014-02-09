@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.plant.DelayAReq;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
 
 public class ICloseTest extends TestCase {
     public void testa() throws Exception {
@@ -33,7 +34,7 @@ class IHang extends BlockingBladeBase {
             public void processAsyncRequest() throws Exception {
                 iHung = new IHung();
                 final AsyncRequest<Void> noRspAReq = iHung.noRspAReq();
-                //send(noRspAReq, dis);
+                send(noRspAReq, dis);
                 send(iHung.getReactor().nullSReq(), dis);
                 send(new DelayAReq(50), new AsyncResponseProcessor<Void>() {
                     @Override
@@ -53,6 +54,14 @@ class IHung extends IsolationBladeBase {
 
     AsyncRequest<Void> noRspAReq() {
         return new AsyncBladeRequest<Void>() {
+            @Override
+            public void onCancel() {
+                System.out.println("blip");
+                try {
+                    new BoundResponseProcessor<Void>(IHung.this, this).processAsyncResponse(null);
+                } catch (final Exception e) {}
+            }
+
             @Override
             public void processAsyncRequest() throws Exception {
                 setNoHungRequestCheck();
