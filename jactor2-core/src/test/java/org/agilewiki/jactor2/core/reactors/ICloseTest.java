@@ -55,14 +55,6 @@ class IHung extends IsolationBladeBase {
     AsyncRequest<Void> noRspAReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            public void onCancel() {
-                System.out.println("blip");
-                try {
-                    new BoundResponseProcessor<Void>(IHung.this, this).processAsyncResponse(null);
-                } catch (final Exception e) {}
-            }
-
-            @Override
             public void processAsyncRequest() throws Exception {
                 setNoHungRequestCheck();
                 System.out.println("hi");

@@ -1,10 +1,8 @@
 package org.agilewiki.jactor2.core.impl;
 
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.Request;
+import org.agilewiki.jactor2.core.requests.*;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -175,5 +173,11 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
             return;
         canceled = true;
         asRequest().onCancel();
+        Reactor targetReactor = getTargetReactor();
+        if (!(targetReactor instanceof CommonReactor))
+            try {
+                new BoundResponseProcessor<RESPONSE_TYPE>(targetReactor, asRequest()).processAsyncResponse(null);
+            } catch (final Exception e) {
+            }
     }
 }

@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.RequestSource;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 
@@ -86,7 +87,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * thread is used to call it.
      * By default, onClose does nothing.
      */
-    public void onClose() {}
+    public void onClose() {
+    }
 
     /**
      * Disables the hung request check, which is necessary when a response to a request
@@ -121,10 +123,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     /**
      * Pass a request to its target reactor.
      *
-     * @param _request              The request to be passed.
-     * @param _responseProcessor    The callback to be invoked when a response value is received,
-     *                              or null if no response is required.
-     * @param <RT>                  The response value type.
+     * @param _request           The request to be passed.
+     * @param _responseProcessor The callback to be invoked when a response value is received,
+     *                           or null if no response is required.
+     * @param <RT>               The response value type.
      */
     public <RT> void send(final Request<RT> _request,
                           final AsyncResponseProcessor<RT> _responseProcessor)
@@ -136,11 +138,11 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * Pass a request to its target and then replace its response value.
      * Useful when you do not care about the actual response being passed back.
      *
-     * @param _request          The request to be passed.
-     * @param _dis              The callback to be invoked when a response value is received.
-     * @param _fixedResponse    The replacement value.
-     * @param <RT>              The response value type.
-     * @param <RT2>             The replacement value type.
+     * @param _request       The request to be passed.
+     * @param _dis           The callback to be invoked when a response value is received.
+     * @param _fixedResponse The replacement value.
+     * @param <RT>           The response value type.
+     * @param <RT2>          The replacement value type.
      */
     public <RT, RT2> void send(final Request<RT> _request,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
@@ -164,8 +166,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     /**
      * Cancel an outstanding request.
      * This method is thread safe, so it can be called from any thread.
-
-     * @param _request    A subordinate request.
+     *
+     * @param _request A subordinate request.
      * @return True if the request was canceled.
      */
     public boolean cancel(final Request _request) {
