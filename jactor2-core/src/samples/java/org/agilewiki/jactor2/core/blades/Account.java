@@ -46,6 +46,8 @@ public class Account extends NonBlockingBladeBase {
             public void processAsyncRequest() throws Exception {
                 if (_amount > balance)
                     dis.processAsyncResponse(false);
+                balance -= _amount;
+                hold += _amount;
                 setExceptionHandler(depositExceptionHandler);
                 send(_account.depositSReq(_amount), depositResponseProcessor);
             }
