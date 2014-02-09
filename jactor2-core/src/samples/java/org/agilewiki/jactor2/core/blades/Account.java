@@ -30,6 +30,8 @@ public class Account extends NonBlockingBladeBase {
             ExceptionHandler<Boolean> depositExceptionHandler = new ExceptionHandler<Boolean>() {
                 @Override
                 public Boolean processException(Exception e) throws Exception {
+                    hold -= _amount;
+                    balance += _amount;
                     return false;
                 }
             };
