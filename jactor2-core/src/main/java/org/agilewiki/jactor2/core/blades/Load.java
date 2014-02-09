@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
- * Simulates a load.
+ * Simulates a load through the use of a nested loop.
  */
 public class Load extends BlockingBladeBase {
     private volatile long i;

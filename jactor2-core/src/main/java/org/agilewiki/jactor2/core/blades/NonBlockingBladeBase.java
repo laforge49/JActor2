@@ -9,16 +9,16 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
  */
 public class NonBlockingBladeBase extends BladeBase implements NonBlockingBlade {
     /**
-     * Create a Blocking blade and a Blocking reactor whose parent is the internal reactor of Plant.
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
      */
     public NonBlockingBladeBase() throws Exception {
         _initialize(new NonBlockingReactor());
     }
 
     /**
-     * Create a Blocking blade.
+     * Create a non-blocking blade.
      *
-     * @param _reactor The blade's facility.
+     * @param _reactor The blade's reactor.
      */
     public NonBlockingBladeBase(final NonBlockingReactor _reactor) throws Exception {
         _initialize(_reactor);

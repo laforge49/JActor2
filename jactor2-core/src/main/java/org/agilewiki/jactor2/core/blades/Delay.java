@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
- * Simulates I/O.
+ * Simulates I/O through the use of Thread.sleep().
  */
 public class Delay extends BlockingBladeBase {
     /**
