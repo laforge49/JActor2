@@ -4,6 +4,8 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
+import java.io.IOException;
+
 public class ExceptionHandlerSample {
 
     public static void main(final String[] _args) throws Exception {
@@ -20,8 +22,8 @@ public class ExceptionHandlerSample {
                 //Create and call an exception request.
                 exceptionBlade.exceptionAReq().call();
                 System.out.println("can not get here");
-            } catch (IllegalStateException ise) {
-                System.out.println("got first IllegalStateException, as expected");
+            } catch (IOException ise) {
+                System.out.println("got first IOException, as expected");
             }
 
             //Create an ExceptionHandlerBlade.
@@ -49,7 +51,7 @@ class ExceptionBlade extends NonBlockingBladeBase {
         return new AsyncBladeRequest<Void>() {
             @Override
             public void processAsyncRequest() throws Exception {
-                throw new IllegalStateException(); //Throw an exception when the request is processed.
+                throw new IOException(); //Throw an exception when the request is processed.
             }
         };
     }
@@ -78,9 +80,9 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
                 setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(final Exception _exception) throws Exception {
-                        if (_exception instanceof IllegalStateException) {
-                            //Returns a result if an IllegalStateException was thrown.
-                            return "got IllegalStateException, as expected";
+                        if (_exception instanceof IOException) {
+                            //Returns a result if an IOException was thrown.
+                            return "got IOException, as expected";
                         } else //Otherwise rethrow the exception.
                             throw _exception;
                     }
