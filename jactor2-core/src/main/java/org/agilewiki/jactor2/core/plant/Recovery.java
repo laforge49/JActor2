@@ -77,4 +77,14 @@ public class Recovery {
         reactor.getLogger().error("request hung -> reactor close");
         reactor.close();
     }
+
+    public void onStackOverflow(final RequestImpl _requestImpl, final StackOverflowError _error) {
+        ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
+        reactor.getLogger().error("stack overflow -> reactor close", _error);
+        try {
+            reactor.close();
+        } catch (Exception e) {
+
+        }
+    }
 }
