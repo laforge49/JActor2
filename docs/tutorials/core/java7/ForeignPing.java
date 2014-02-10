@@ -7,22 +7,22 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 public class ForeignPing extends NonBlockingBladeBase {
     private final Ponger ponger;
 
-    public ForeignPing(final Ponger _ponger) throws Exception {
+    public ForeignPing(final Ponger _ponger) {
         ponger = _ponger;
     }
     
     public AsyncRequest<Void> pingAReq() {
         return new AsyncBladeRequest<Void>() {
-            AsyncResponseProcessor<Void> dis = this;
+            AsyncRequest<Void> dis = this;
         
             AsyncResponseProcessor<Long> pongerResponseProcessor = 
                     new AsyncResponseProcessor<Long>() {
-                public void processAsyncResponse(final Long response) throws Exception {
+                public void processAsyncResponse(final Long response) {
                     dis.processAsyncResponse(null);
                 }
             };
             
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 SyncRequest<Long> pingSReq = ponger.pingSReq();
                 send(pingSReq, pongerResponseProcessor);
             }

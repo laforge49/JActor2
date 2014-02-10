@@ -19,14 +19,14 @@ public class PongerLoop extends SyncRequest&lt;Void&gt; {
 
     public PongerLoop(
             final Ponger _ponger, 
-            final long _count) throws Exception {
+            final long _count) {
         super(_ponger.getReactor());
         ponger = _ponger;
         count = _count;
     }
     
     @Override
-    protected Void processSyncRequest() throws Exception {
+    protected Void processSyncRequest() {
         long i = 0;
         Reactor reactor = getTargetReactor();
         while (i < count) {

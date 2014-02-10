@@ -6,11 +6,11 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class Ponger extends BladeBase {
     private long count = 0;
     
-    public Ponger() throws Exception {
+    public Ponger() {
         _initialize(new NonBlockingReactor());
     }
     
-    public Ponger(final Reactor _reactor) throws Exception {
+    public Ponger(final Reactor _reactor) {
         _initialize(_reactor);
     }
 
@@ -28,7 +28,7 @@ public class Ponger extends BladeBase {
     public SyncRequest<Long> pingSReq() {
         return new SyncBladeRequest() {
             @Override
-            public Long processSyncRequest() throws Exception {
+            public Long processSyncRequest() {
                 return ping();
             }
         };
