@@ -43,7 +43,7 @@ public class DelayAReq extends AsyncRequest<Void> {
     }
 
     @Override
-    public void processAsyncRequest() throws Exception {
+    public void processAsyncRequest() {
         setNoHungRequestCheck();
         PlantScheduler plantScheduler = Plant.getPlantScheduler();
         Runnable runnable = new Runnable() {

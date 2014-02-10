@@ -34,8 +34,7 @@ public class ServiceTest extends TestCase {
                             new AsyncResponseProcessor<Boolean>() {
                                 @Override
                                 public void processAsyncResponse(
-                                        final Boolean response)
-                                        throws Exception {
+                                        final Boolean response) throws Exception {
                                     Thread.sleep(10);
                                     System.out.println("Bingo!");
                                     Thread.sleep(10);

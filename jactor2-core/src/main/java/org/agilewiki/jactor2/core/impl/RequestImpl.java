@@ -23,8 +23,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      *                           that originally invoked this method. If null, then no response is returned.
      */
     void doSend(final ReactorImpl _source,
-                          final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
-            throws Exception;
+                          final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor);
 
     /**
      * Returns true when a response is expected but has not yet been placed in the message.

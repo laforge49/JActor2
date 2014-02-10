@@ -103,7 +103,7 @@ public class PlantImpl {
      *
      * @param _reactor The targetReactor to be run.
      */
-    public final void submit(final UnboundReactorImpl _reactor) throws Exception {
+    public final void submit(final UnboundReactorImpl _reactor) {
         try {
             reactorPoolThreadManager.execute(_reactor);
         } catch (final Exception e) {

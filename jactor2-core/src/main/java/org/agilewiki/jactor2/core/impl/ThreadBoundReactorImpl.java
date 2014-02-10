@@ -48,7 +48,7 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
     }
 
     @Override
-    protected void afterAdd() throws Exception {
+    protected void afterAdd() {
         boundProcessor.run();
     }
 

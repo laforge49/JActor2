@@ -28,7 +28,7 @@ public class InProcess extends NonBlockingBladeBase {
 
             AsyncResponseProcessor<Void> responseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
+                public void processAsyncResponse(Void _response) {
                     System.out.println("normal response");
                     if (dis.getPendingResponseCount() == 0)
                         dis.processAsyncResponse(null);
@@ -55,8 +55,12 @@ public class InProcess extends NonBlockingBladeBase {
                 send(indirectDelay.isleep(), responseProcessor);
                 send(new Delay().sleepSReq(200), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(Void _response) throws Exception {
-                        indirectDelay.getReactor().close();
+                    public void processAsyncResponse(Void _response) {
+                        try {
+                            indirectDelay.getReactor().close();
+                        } catch (Exception e) {
+                            throw new IllegalStateException("exception on close", e);
+                        }
                     }
                 });
             }

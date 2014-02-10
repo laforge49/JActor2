@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 public class IsolationReactorImpl extends UnboundReactorImpl {
 
     public IsolationReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+                                final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 

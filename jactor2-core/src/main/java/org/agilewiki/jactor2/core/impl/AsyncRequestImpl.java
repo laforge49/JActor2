@@ -42,8 +42,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         return pendingRequests.size();
     }
 
-    public void processAsyncResponse(final RESPONSE_TYPE _response)
-            throws Exception {
+    public void processAsyncResponse(final RESPONSE_TYPE _response) {
         processObjectResponse(_response);
     }
 
@@ -88,8 +87,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     public <RT> void send(final Request<RT> _request,
-                          final AsyncResponseProcessor<RT> _responseProcessor)
-            throws Exception {
+                          final AsyncResponseProcessor<RT> _responseProcessor) {
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         RequestImpl<RT> requestImpl = _request.asRequestImpl();
@@ -99,8 +97,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     public <RT, RT2> void send(final Request<RT> _request,
-                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
-            throws Exception {
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         RequestImpl<RT> requestImpl = _request.asRequestImpl();
@@ -108,8 +105,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         requestImpl.doSend(targetReactorImpl,
                 new AsyncResponseProcessor<RT>() {
                     @Override
-                    public void processAsyncResponse(final RT _response)
-                            throws Exception {
+                    public void processAsyncResponse(final RT _response) throws Exception {
                         _dis.processAsyncResponse(_fixedResponse);
                     }
                 });

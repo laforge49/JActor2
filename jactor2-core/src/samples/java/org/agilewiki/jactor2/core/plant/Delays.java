@@ -18,7 +18,7 @@ public class Delays extends NonBlockingBladeBase {
             final AsyncResponseProcessor<Void> delayResponseProcessor =
                     new AsyncResponseProcessor<Void>() {
                         @Override
-                        public void processAsyncResponse(final Void _response) throws Exception {
+                        public void processAsyncResponse(final Void _response) {
                             if (dis.getPendingResponseCount() == 0)
                                 dis.processAsyncResponse(null);
                         }

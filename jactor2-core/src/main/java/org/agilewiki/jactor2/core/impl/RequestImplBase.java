@@ -129,7 +129,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * If an exception is thrown while processing this Request,
      * that exception is simply logged as a warning.
      */
-    public void signal() throws Exception {
+    public void signal() {
         use();
         responseProcessor = EventResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
@@ -150,8 +150,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      *                           that originally invoked this method. If null, then no response is returned.
      */
     public void doSend(final ReactorImpl _source,
-                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor)
-            throws Exception {
+                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
         final ReactorImpl source = (ReactorImpl) _source;
         if (PlantImpl.DEBUG) {
             if (source instanceof ThreadBoundReactorImpl) {
@@ -235,12 +234,11 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * @param _response The response to a request.
      * @return True when this is the first response.
      */
-    protected boolean processObjectResponse(final Object _response)
-            throws Exception {
+    protected boolean processObjectResponse(final Object _response) {
         if (PlantImpl.DEBUG) {
             if (targetReactor instanceof ThreadBoundReactorImpl) {
                 if (Thread.currentThread() instanceof ReactorPoolThread) {
-                    final Exception ex = new IllegalStateException(
+                    final IllegalStateException ex = new IllegalStateException(
                             "response from wrong thread");
                     targetReactor.asReactorImpl().getLogger().error(
                             "response from wrong thread", ex);
@@ -249,7 +247,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             } else {
                 if (targetReactorImpl.getThreadReference().get() != Thread
                         .currentThread()) {
-                    final Exception ex = new IllegalStateException(
+                    final IllegalStateException ex = new IllegalStateException(
                             "response from wrong thread");
                     targetReactor.asReactorImpl().getLogger().error(
                             "response from wrong thread", ex);
@@ -384,7 +382,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             try {
                 exceptionHandler.processException(_e, new AsyncResponseProcessor() {
                     @Override
-                    public void processAsyncResponse(Object _response) throws Exception {
+                    public void processAsyncResponse(Object _response) {
                         processObjectResponse(_response);
                     }
                 });

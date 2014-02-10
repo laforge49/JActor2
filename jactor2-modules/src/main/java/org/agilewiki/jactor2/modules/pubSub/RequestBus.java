@@ -23,7 +23,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
     public RequestBus() throws Exception {
     }
 
-    public RequestBus(final NonBlockingReactor _reactor) throws Exception {
+    public RequestBus(final NonBlockingReactor _reactor) {
         super(_reactor);
     }
 
@@ -67,8 +67,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
 
             final AsyncResponseProcessor<Void> sendResponse = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(final Void _response)
-                        throws Exception {
+                public void processAsyncResponse(final Void _response) throws Exception {
                     i++;
                     if (i == count) {
                         dis.processAsyncResponse(null);

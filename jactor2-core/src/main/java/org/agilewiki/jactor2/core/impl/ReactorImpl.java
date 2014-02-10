@@ -310,7 +310,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      * @param _local   True when the current thread is bound to the targetReactor.
      */
     public void unbufferedAddMessage(final RequestImpl _message,
-                                     final boolean _local) throws Exception {
+                                     final boolean _local) {
         if (isClosing()) {
             if (!_message.isComplete()) {
                 try {
@@ -351,7 +351,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     /**
      * Called after adding some message(s) to the inbox.
      */
-    abstract protected void afterAdd() throws Exception;
+    abstract protected void afterAdd();
 
     /**
      * Buffers a message in the sending targetReactor for sending later.

@@ -51,7 +51,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     }
 
     @Override
-    public void signal() throws Exception {
+    public void signal() {
         syncRequestImpl.signal();
     }
 

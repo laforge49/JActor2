@@ -38,7 +38,7 @@ public class Account extends NonBlockingBladeBase {
 
             AsyncResponseProcessor<Void> depositResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
+                public void processAsyncResponse(Void _response) {
                     hold -= _amount;
                     dis.processAsyncResponse(true);
                 }

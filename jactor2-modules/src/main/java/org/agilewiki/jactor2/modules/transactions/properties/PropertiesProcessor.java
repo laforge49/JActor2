@@ -27,12 +27,12 @@ public class PropertiesProcessor extends TransactionProcessor<PropertiesChangeMa
 
     PropertiesChangeManager propertiesChangeManager;
 
-    public PropertiesProcessor(final NonBlockingReactor _parentReactor) throws Exception {
+    public PropertiesProcessor(final NonBlockingReactor _parentReactor) {
         super(_parentReactor, empty());
     }
 
     public PropertiesProcessor(final NonBlockingReactor _parentReactor,
-                               Map<String, Object> _initialState) throws Exception {
+                               Map<String, Object> _initialState) {
         super(_parentReactor, from(_initialState));
     }
 
@@ -61,7 +61,7 @@ public class PropertiesProcessor extends TransactionProcessor<PropertiesChangeMa
      */
     public AsyncRequest<Void> putAReq(final String _key, final Object _newValue) {
         return new PropertiesTransactionAReq(parentReactor, this) {
-            protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+            protected void update(final PropertiesChangeManager _changeManager) {
                 _changeManager.put(_key, _newValue);
             }
         };
@@ -78,7 +78,7 @@ public class PropertiesProcessor extends TransactionProcessor<PropertiesChangeMa
      */
     public AsyncRequest<Void> compareAndSetAReq(final String _key, final Object _expectedValue, final Object _newValue) {
         return new PropertiesTransactionAReq(parentReactor, this) {
-            protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+            protected void update(final PropertiesChangeManager _changeManager) {
                 Object oldValue = _changeManager.getImmutableProperties().get("stdout");
                 if ((oldValue != null && oldValue.equals(_expectedValue) ||
                         (oldValue == null && _expectedValue == null))) {

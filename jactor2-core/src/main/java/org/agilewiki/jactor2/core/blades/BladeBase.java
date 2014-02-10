@@ -73,8 +73,7 @@ public abstract class BladeBase implements Blade {
      * @param _request        The request to be passed.
      */
     protected <RESPONSE_TYPE> void send(
-            final Request<RESPONSE_TYPE> _request)
-            throws Exception {
+            final Request<RESPONSE_TYPE> _request) {
         _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
     }
 

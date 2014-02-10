@@ -46,8 +46,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     @Override
-    public void processAsyncResponse(final RESPONSE_TYPE _response)
-            throws Exception {
+    public void processAsyncResponse(final RESPONSE_TYPE _response) {
         asyncRequestImpl.processAsyncResponse(_response);
     }
 
@@ -137,8 +136,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * @param <RT>               The response value type.
      */
     public <RT> void send(final Request<RT> _request,
-                          final AsyncResponseProcessor<RT> _responseProcessor)
-            throws Exception {
+                          final AsyncResponseProcessor<RT> _responseProcessor) {
         asyncRequestImpl.send(_request, _responseProcessor);
     }
 
@@ -153,8 +151,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * @param <RT2>          The replacement value type.
      */
     public <RT, RT2> void send(final Request<RT> _request,
-                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse)
-            throws Exception {
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         asyncRequestImpl.send(_request, _dis, _fixedResponse);
     }
 

@@ -45,7 +45,7 @@ abstract public class ReactorBase implements Reactor {
     }
 
     @Override
-    public boolean addCloseable(Closeable _closeable) throws Exception {
+    public boolean addCloseable(Closeable _closeable) {
         return reactorImpl.addCloseable(_closeable);
     }
 

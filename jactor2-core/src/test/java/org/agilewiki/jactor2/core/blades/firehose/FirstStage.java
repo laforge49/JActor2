@@ -43,8 +43,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
         ack = new BoundResponseProcessor<Void>(this,
                 new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(final Void response)
-                            throws Exception {
+                    public void processAsyncResponse(final Void response) {
                         ackCount -= 1;
                         if (list != null) {
                             send();
@@ -86,7 +85,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
         firehoseData = new FirehoseData(ack, list);
     }
 
-    private void send() throws Exception {
+    private void send() {
         send(next.processDataAReq(firehoseData));
         list = null;
         firehoseData = null;

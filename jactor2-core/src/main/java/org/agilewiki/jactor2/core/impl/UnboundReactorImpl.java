@@ -50,7 +50,7 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
     }
 
     @Override
-    protected void afterAdd() throws Exception {
+    protected void afterAdd() {
         if (threadReference == null) {
             System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");

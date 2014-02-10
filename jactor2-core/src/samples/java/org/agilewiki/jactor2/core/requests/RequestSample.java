@@ -90,7 +90,7 @@ class IndirectBlade extends NonBlockingBladeBase {
                 send(req, new AsyncResponseProcessor<Integer>() {
 
                     @Override
-                    public void processAsyncResponse(Integer response) throws Exception {
+                    public void processAsyncResponse(Integer response) {
 
                         //Return the old state.
                         dis.processAsyncResponse(response);

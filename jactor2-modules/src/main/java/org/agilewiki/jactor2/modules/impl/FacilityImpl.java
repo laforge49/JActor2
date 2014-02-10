@@ -65,7 +65,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             AsyncResponseProcessor<Void> registerResponseProcessor =
                     new AsyncResponseProcessor<Void>() {
                         @Override
-                        public void processAsyncResponse(Void _response) throws Exception {
+                        public void processAsyncResponse(Void _response) {
                             parentReactor.addCloseable(FacilityImpl.this);
                             String activatorClassName = MPlant.getActivatorClassName(name);
                             if (activatorClassName == null)
@@ -73,7 +73,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                             else {
                                 send(activateAReq(activatorClassName), new AsyncResponseProcessor<String>() {
                                     @Override
-                                    public void processAsyncResponse(final String _failure) throws Exception {
+                                    public void processAsyncResponse(final String _failure) {
                                         if (_failure == null) {
                                             System.out.println("registered "+name);
                                             dis.processAsyncResponse(null);
@@ -83,14 +83,13 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                                                      parentReactor,
                                                      propertiesProcessor) {
                                                  @Override
-                                                 protected void update(final PropertiesChangeManager _changeManager)
-                                                         throws Exception {
+                                                 protected void update(final PropertiesChangeManager _changeManager) {
                                                      _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, null);
                                                      _changeManager.put(MPlantImpl.failedKey(name), _failure);
                                                  }
                                              }, new AsyncResponseProcessor<Void>() {
                                                  @Override
-                                                 public void processAsyncResponse(Void _response) throws Exception {
+                                                 public void processAsyncResponse(Void _response) {
                                                      throw new ReactorClosedException();
                                                  }
                                              }
@@ -207,7 +206,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
                 !plantImpl.getInternalFacility().asFacilityImpl().startedClosing()) {
             new PropertiesTransactionAReq(plantImpl.getInternalFacility(),
                     plantImpl.getInternalFacility().getPropertiesProcessor()) {
-                protected void update(final PropertiesChangeManager _changeManager) throws Exception {
+                protected void update(final PropertiesChangeManager _changeManager) {
                     _changeManager.put(MPlantImpl.FACILITY_PROPERTY_PREFIX + name, null);
                     _changeManager.put(MPlantImpl.failedKey(name), reason);
                 }

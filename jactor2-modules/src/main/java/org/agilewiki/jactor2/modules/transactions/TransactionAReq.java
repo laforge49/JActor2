@@ -71,7 +71,7 @@ abstract public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMU
 
         final AsyncResponseProcessor<Void> validatorsResponseProcessor = new AsyncResponseProcessor<Void>() {
             @Override
-            public void processAsyncResponse(Void _response) throws Exception {
+            public void processAsyncResponse(Void _response) {
                 transactionProcessor.newImmutableState();
                 send(transactionProcessor.changeBus.signalsContentSReq(immutableChanges), dis);
             }
@@ -79,8 +79,12 @@ abstract public class TransactionAReq<CHANGE_MANAGER extends AutoCloseable, IMMU
 
         final AsyncResponseProcessor<Void> updateResponseProcessor = new AsyncResponseProcessor<Void>() {
             @Override
-            public void processAsyncResponse(Void _response) throws Exception {
-                changeManager.close();
+            public void processAsyncResponse(Void _response) {
+                try {
+                    changeManager.close();
+                } catch (Exception e) {
+                    throw new IllegalStateException("exception on close", e);
+                }
                 immutableChanges = transactionProcessor.newChanges();
                 send(transactionProcessor.validationBus.sendsContentAReq(immutableChanges),
                         validatorsResponseProcessor);

@@ -43,7 +43,7 @@ abstract public class TransactionProcessor<CHANGE_MANAGER extends AutoCloseable,
      * @param _initialState  The initial state to be used.
      */
     protected TransactionProcessor(final NonBlockingReactor _parentReactor,
-                                   final IMMUTABLE_STATE _initialState) throws Exception {
+                                   final IMMUTABLE_STATE _initialState) {
         parentReactor = _parentReactor;
         immutableState = _initialState;
         validationBus = new RequestBus<IMMUTABLE_CHANGES>(_parentReactor);

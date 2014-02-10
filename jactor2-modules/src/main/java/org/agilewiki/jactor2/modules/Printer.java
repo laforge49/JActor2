@@ -48,17 +48,17 @@ import java.util.Locale;
  */
 public class Printer extends BlockingBladeBase {
 
-    public static AsyncRequest<Void> printlnAReq(final String _string) throws Exception {
+    public static AsyncRequest<Void> printlnAReq(final String _string) {
         return new AsyncRequest<Void>(Plant.getInternalReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 send(stdoutAReq(),
                         new AsyncResponseProcessor<Printer>() {
                             @Override
                             public void processAsyncResponse(
-                                    final Printer _printer) throws Exception {
+                                    final Printer _printer) {
                                 send(_printer.printlnSReq(_string), dis);
                             }
                         });
@@ -66,17 +66,17 @@ public class Printer extends BlockingBladeBase {
         };
     }
 
-    public static AsyncRequest<Void> printfAReq(final String _format, final Object... _args) throws Exception {
+    public static AsyncRequest<Void> printfAReq(final String _format, final Object... _args) {
         return new AsyncRequest<Void>(Plant.getInternalReactor()) {
             AsyncResponseProcessor<Void> dis = this;
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 send(stdoutAReq(),
                         new AsyncResponseProcessor<Printer>() {
                             @Override
                             public void processAsyncResponse(
-                                    final Printer _printer) throws Exception {
+                                    final Printer _printer) {
                                 send(_printer.printfSReq(_format, _args), dis);
                             }
                         });
@@ -84,8 +84,7 @@ public class Printer extends BlockingBladeBase {
         };
     }
 
-    static public AsyncRequest<Printer> stdoutAReq()
-            throws Exception {
+    static public AsyncRequest<Printer> stdoutAReq() {
         return new AsyncRequest<Printer>(Plant.getInternalReactor()) {
             AsyncResponseProcessor<Printer> dis = this;
             PropertiesProcessor propertiesProcessor = MPlant.getInternalFacility().getPropertiesProcessor();
@@ -107,7 +106,7 @@ public class Printer extends BlockingBladeBase {
                             (CommonReactor) getTargetReactor(),
                             new PropertyChangesFilter("stdout")) {
                         @Override
-                        protected void processContent(ImmutablePropertyChanges _changes) throws Exception {
+                        protected void processContent(ImmutablePropertyChanges _changes) {
                             PropertyChange propertyChange = _changes.readOnlyChanges.get("stdout");
                             if (propertyChange == null)
                                 return;
