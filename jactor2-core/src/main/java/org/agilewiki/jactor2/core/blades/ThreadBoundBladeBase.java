@@ -12,7 +12,7 @@ public class ThreadBoundBladeBase extends BladeBase implements ThreadBoundBlade 
     /**
      * Create a Thread bound blade and a Thread bound reactor whose parent is the internal reactor of Plant.
      */
-    public ThreadBoundBladeBase() throws Exception {
+    public ThreadBoundBladeBase() {
         _initialize(new ThreadBoundReactor());
     }
 
@@ -21,7 +21,7 @@ public class ThreadBoundBladeBase extends BladeBase implements ThreadBoundBlade 
      *
      * @param _reactor The blade's facility.
      */
-    public ThreadBoundBladeBase(final ThreadBoundReactor _reactor) throws Exception {
+    public ThreadBoundBladeBase(final ThreadBoundReactor _reactor) {
         _initialize(_reactor);
     }
 

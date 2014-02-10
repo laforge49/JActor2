@@ -10,7 +10,7 @@ public class SwingBoundBladeBase extends BladeBase implements SwingBoundBlade {
     /**
      * Create a Swing bound blade and a Swing bound reactor whose parent is the internal reactor of Plant.
      */
-    public SwingBoundBladeBase() throws Exception {
+    public SwingBoundBladeBase() {
         _initialize(new SwingBoundReactor());
     }
 
@@ -19,7 +19,7 @@ public class SwingBoundBladeBase extends BladeBase implements SwingBoundBlade {
      *
      * @param _reactor The blade's facility.
      */
-    public SwingBoundBladeBase(final SwingBoundReactor _reactor) throws Exception {
+    public SwingBoundBladeBase(final SwingBoundReactor _reactor) {
         _initialize(_reactor);
     }
 

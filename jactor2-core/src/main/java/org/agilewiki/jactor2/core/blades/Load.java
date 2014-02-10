@@ -13,7 +13,7 @@ public class Load extends BlockingBladeBase {
     /**
      * Create a Load blade and a Blocking reactor whose parent is the internal reactor of Plant.
      */
-    public Load() throws Exception {
+    public Load() {
     }
 
     /**
@@ -21,7 +21,7 @@ public class Load extends BlockingBladeBase {
      *
      * @param _reactor The blade's facility.
      */
-    public Load(final BlockingReactor _reactor) throws Exception {
+    public Load(final BlockingReactor _reactor) {
         super(_reactor);
     }
 

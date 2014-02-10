@@ -10,7 +10,7 @@ public class Delay extends BlockingBladeBase {
     /**
      * Create a Delay blade and a Blocking reactor whose parent is the internal reactor of Plant.
      */
-    public Delay() throws Exception {
+    public Delay() {
     }
 
     /**
@@ -18,7 +18,7 @@ public class Delay extends BlockingBladeBase {
      *
      * @param _reactor The blade's facility.
      */
-    public Delay(final BlockingReactor _reactor) throws Exception {
+    public Delay(final BlockingReactor _reactor) {
         super(_reactor);
     }
 

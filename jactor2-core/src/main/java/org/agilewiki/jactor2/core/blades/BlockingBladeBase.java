@@ -11,7 +11,7 @@ public class BlockingBladeBase extends BladeBase implements BlockingBlade {
     /**
      * Create a Blocking blade and a Blocking reactor whose parent is the internal reactor of Plant.
      */
-    public BlockingBladeBase() throws Exception {
+    public BlockingBladeBase() {
         _initialize(new BlockingReactor());
     }
 
@@ -20,7 +20,7 @@ public class BlockingBladeBase extends BladeBase implements BlockingBlade {
      *
      * @param _reactor The blade's facility.
      */
-    public BlockingBladeBase(final BlockingReactor _reactor) throws Exception {
+    public BlockingBladeBase(final BlockingReactor _reactor) {
         _initialize(_reactor);
     }
 
