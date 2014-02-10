@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.modules.Facility;
+import org.agilewiki.jactor2.modules.FacilityAlreadyPresentException;
 import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
@@ -116,7 +117,7 @@ public class MPlantImpl extends PlantImpl {
                                     + " not set to a Facility " + newValue);
                         if (oldValue != null && newValue != null) {
                             FacilityImpl facilityImpl = ((Facility) oldValue).asFacilityImpl();
-                            throw new IllegalStateException("Facility already exists: "+facilityImpl.getName());
+                            throw new FacilityAlreadyPresentException(facilityImpl.getName());
                         }
                     } else if (key.startsWith(FACILITY_PREFIX)) {
                         String name1 = key.substring(FACILITY_PREFIX.length());

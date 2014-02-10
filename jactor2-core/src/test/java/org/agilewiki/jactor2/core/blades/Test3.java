@@ -11,7 +11,7 @@ public class Test3 extends TestCase {
         final Plant plant = new Plant();
         final BladeC bladeC = new BladeC(plant);
         final String result = bladeC.throwAReq().call();
-        assertEquals("java.lang.SecurityException: thrown on request", result);
+        assertEquals("java.io.IOException: thrown on request", result);
         plant.close();
     }
 }

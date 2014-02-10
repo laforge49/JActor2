@@ -5,6 +5,8 @@ import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
+import java.io.IOException;
+
 /**
  * Test code.
  */
@@ -15,11 +17,11 @@ public class Test1 extends TestCase {
         final BladeA bladeA = new BladeA(reactor);
         try {
             bladeA.throwRequest.call();
-        } catch (final SecurityException se) {
+        } catch (final IOException se) {
             plant.close();
             return;
         }
-        throw new Exception("Security exception was not caught");
+        throw new Exception("IOException was not caught");
     }
 
 }

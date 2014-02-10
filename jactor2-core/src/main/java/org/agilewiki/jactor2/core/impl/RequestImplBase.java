@@ -327,11 +327,14 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 throw _me;
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
+            } catch (final RuntimeException re) {
+                processException(targetReactorImpl, new ReactorClosedException());
+                targetReactor.getRecovery().onRuntimeException(this, re);
             } catch (final Exception e) {
                 processException(targetReactorImpl, e);
             } catch (final StackOverflowError soe) {
                 processException(targetReactorImpl, new ReactorClosedException());
-                targetReactor.getRecovery().onStackOverflow(this, soe);
+                targetReactor.getRecovery().onStackOverflowError(this, soe);
             }
         } else {
             processResponseMessage();

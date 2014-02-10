@@ -78,9 +78,25 @@ public class Recovery {
         reactor.close();
     }
 
-    public void onStackOverflow(final RequestImpl _requestImpl, final StackOverflowError _error) {
+    /**
+     * Handles StackOverflowError. Default action: close the reactor.
+     *
+     * @param _requestImpl    The reactor with the hung request.
+     * @param _error          The StackOverflowError.
+     */
+    public void onStackOverflowError(final RequestImpl _requestImpl, final StackOverflowError _error) {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
-        reactor.getLogger().error("stack overflow -> reactor close", _error);
+        reactor.getLogger().error("stack overflow error -> reactor close", _error);
+        try {
+            reactor.close();
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void onRuntimeException(final RequestImpl _requestImpl, final RuntimeException _exception) {
+        ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
+        reactor.getLogger().error("runtime exception -> reactor close", _exception);
         try {
             reactor.close();
         } catch (Exception e) {

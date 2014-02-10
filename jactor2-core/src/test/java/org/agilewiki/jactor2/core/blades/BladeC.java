@@ -6,6 +6,8 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
+import java.io.IOException;
+
 public class BladeC {
     private final Reactor reactor;
 
@@ -24,7 +26,7 @@ public class BladeC {
                         return exception.toString();
                     }
                 });
-                throw new SecurityException("thrown on request");
+                throw new IOException("thrown on request");
             }
         };
     }

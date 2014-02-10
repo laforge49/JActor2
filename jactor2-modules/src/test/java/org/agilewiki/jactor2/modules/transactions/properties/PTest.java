@@ -9,6 +9,7 @@ import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
 import org.agilewiki.jactor2.modules.pubSub.RequestBus;
 import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.SortedMap;
 
@@ -29,7 +30,7 @@ public class PTest extends TestCase {
                     while (it.hasNext()) {
                         final PropertyChange propertyChange = it.next();
                         if (propertyChange.name.equals("fudge")) {
-                            throw new IllegalArgumentException("no way");
+                            throw new IOException("no way");
                         }
                     }
                 }

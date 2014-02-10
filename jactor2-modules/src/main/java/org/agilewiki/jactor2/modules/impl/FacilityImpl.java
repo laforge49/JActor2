@@ -10,6 +10,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.modules.Activator;
+import org.agilewiki.jactor2.modules.DependencyNotPresentException;
 import org.agilewiki.jactor2.modules.Facility;
 import org.agilewiki.jactor2.modules.MPlant;
 import org.agilewiki.jactor2.modules.immutable.ImmutableProperties;
@@ -52,7 +53,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
             String dependencyName = d.substring(dependencyPrefix.length());
             FacilityImpl dependency = plantImpl.getFacilityImpl(dependencyName);
             if (dependency == null)
-                throw new IllegalStateException("dependency not present: " + dependencyName);
+                throw new DependencyNotPresentException(dependencyName);
             dependency.addCloseable(this);
         }
     }
