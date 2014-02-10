@@ -31,7 +31,7 @@ public class FacilityImpl extends NonBlockingReactorImpl {
 
     private FacilityImpl plantFacilityImpl;
 
-    public FacilityImpl(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+    public FacilityImpl(final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(PlantImpl.getSingleton().getInternalReactor() == null ? null : PlantImpl.getSingleton().getInternalReactor().asReactorImpl(),
                 _initialOutboxSize, _initialLocalQueueSize);
         plantImpl = MPlantImpl.getSingleton();

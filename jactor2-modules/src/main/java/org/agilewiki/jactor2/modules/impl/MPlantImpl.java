@@ -238,7 +238,7 @@ public class MPlantImpl extends PlantImpl {
         return getInternalFacility().getProperty(propertyName);
     }
 
-    protected NonBlockingReactor createInternalReactor() throws Exception {
+    protected NonBlockingReactor createInternalReactor() {
         return new Facility();
     }
 

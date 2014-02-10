@@ -21,8 +21,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
     /**
      * Create a non-blocking reactor with the Plant internal reactor as the parent.
      */
-    public NonBlockingReactor()
-            throws Exception {
+    public NonBlockingReactor() {
         this(Plant.getInternalReactor());
     }
 
@@ -31,8 +30,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      *
      * @param _parentReactor            The parent reactor.
      */
-    public NonBlockingReactor(final NonBlockingReactor _parentReactor)
-            throws Exception {
+    public NonBlockingReactor(final NonBlockingReactor _parentReactor) {
         this(_parentReactor,
                 _parentReactor != null ?
                         _parentReactor.asReactorImpl().getInitialBufferSize() :
@@ -64,7 +62,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public NonBlockingReactor(final NonBlockingReactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+                              final int _initialOutboxSize, final int _initialLocalQueueSize) {
         initialize(createReactorImpl(_parentReactor == null ? null : _parentReactor.asReactorImpl(),
                 _initialOutboxSize, _initialLocalQueueSize));
     }
@@ -78,8 +76,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * @return The object used to implement the reactor.
      */
     protected NonBlockingReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                                       final int _initialOutboxSize, final int _initialLocalQueueSize)
-            throws Exception {
+                                                       final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new NonBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 

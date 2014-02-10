@@ -39,7 +39,7 @@ public class Facility extends NonBlockingReactor {
         return asFacility(_reactor.getParentReactor());
     }
 
-    public Facility() throws Exception {
+    public Facility() {
     }
 
     private Facility(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
@@ -48,8 +48,7 @@ public class Facility extends NonBlockingReactor {
 
     @Override
     protected FacilityImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                             final int _initialOutboxSize, final int _initialLocalQueueSize)
-            throws Exception {
+                                             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new FacilityImpl(_initialOutboxSize, _initialLocalQueueSize);
     }
 

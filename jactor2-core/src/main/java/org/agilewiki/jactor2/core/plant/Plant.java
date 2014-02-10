@@ -41,7 +41,7 @@ final public class Plant {
     /**
      * Create a plant with the default configuration.
      */
-    public Plant() throws Exception {
+    public Plant() {
         new PlantImpl();
     }
 

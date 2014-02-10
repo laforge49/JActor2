@@ -30,7 +30,7 @@ public class PlantImpl {
 
     private NonBlockingReactor internalReactor;
 
-    public PlantImpl() throws Exception {
+    public PlantImpl() {
         this(new PlantConfiguration());
     }
 
@@ -38,7 +38,7 @@ public class PlantImpl {
         this(new PlantConfiguration(_threadCount));
     }
 
-    public PlantImpl(final PlantConfiguration _plantConfiguration) throws Exception {
+    public PlantImpl(final PlantConfiguration _plantConfiguration) {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
@@ -49,8 +49,19 @@ public class PlantImpl {
         String configurationClassName = System.getProperty("jactor.configurationClass");
         if (configurationClassName != null) {
             ClassLoader classLoader = getClass().getClassLoader();
-            Class configurationClass = classLoader.loadClass(configurationClassName);
-            plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
+            Class configurationClass = null;
+            try {
+                configurationClass = classLoader.loadClass(configurationClassName);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException("unable to load class "+configurationClassName, e);
+            }
+            try {
+                plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
+            } catch (InstantiationException e) {
+                throw new IllegalArgumentException("unable to instantiate "+configurationClassName, e);
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("unable to instantiate "+configurationClassName, e);
+            }
         } else
             plantConfiguration = _plantConfiguration;
         reactorPoolThreadManager = plantConfiguration.createReactorPoolThreadManager();
@@ -60,7 +71,7 @@ public class PlantImpl {
                 reactorPollMillis);
     }
 
-    protected NonBlockingReactor createInternalReactor() throws Exception {
+    protected NonBlockingReactor createInternalReactor() {
         return new NonBlockingReactor(null, plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize());
     }

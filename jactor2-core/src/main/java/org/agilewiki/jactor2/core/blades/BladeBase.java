@@ -35,7 +35,7 @@ public abstract class BladeBase implements Blade {
      *
      * @param _reactor The blade's targetReactor.
      */
-    protected void _initialize(final Reactor _reactor) throws Exception {
+    protected void _initialize(final Reactor _reactor) {
         if (initialized) {
             throw new IllegalStateException("Already initialized " + this);
         }

@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 public class NonBlockingReactorImpl extends UnboundReactorImpl {
 
     public NonBlockingReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                  final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 

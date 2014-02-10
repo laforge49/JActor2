@@ -85,8 +85,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     public final NonBlockingReactor parentReactor;
 
     public ReactorImpl(final NonBlockingReactorImpl _parentReactorImpl, final int _initialBufferSize,
-                       final int _initialLocalQueueSize)
-            throws Exception {
+                       final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImpl1(this);
         PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
         recovery = _parentReactorImpl == null ? plantConfiguration.getRecovery() : _parentReactorImpl.recovery;
@@ -102,7 +101,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         }
     }
 
-    public void initialize(final Reactor _reactor) throws Exception {
+    public void initialize(final Reactor _reactor) {
         super._initialize(_reactor);
         inbox = createInbox(initialLocalQueueSize);
         outbox = new Outbox(initialBufferSize);
@@ -528,7 +527,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         return closeables;
     }
 
-    public boolean addCloseable(final Closeable _closeable) throws Exception {
+    public boolean addCloseable(final Closeable _closeable) {
         if (startedClosing())
             throw new ReactorClosedException();
         if (this == _closeable)

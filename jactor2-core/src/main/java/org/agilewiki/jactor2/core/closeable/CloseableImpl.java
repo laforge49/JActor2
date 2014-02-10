@@ -11,7 +11,7 @@ public interface CloseableImpl extends AutoCloseable {
      *
      * @param _reactorImpl    The new dependency.
      */
-    public void addReactor(final ReactorImpl _reactorImpl) throws Exception;
+    public void addReactor(final ReactorImpl _reactorImpl);
 
     /**
      * Called by a reactorImpl to remove itself from the closeable's set of dependencies.
