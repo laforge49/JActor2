@@ -23,7 +23,7 @@ class HelloWorld extends SwingBoundBladeBase {
     AsyncRequest<Void> createAndShowAReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 //Create and set up the window.
                 JFrame frame = new JFrame("HelloWorld");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.

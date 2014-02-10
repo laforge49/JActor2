@@ -24,7 +24,7 @@ public class Delays extends NonBlockingBladeBase {
                         }
                     };
 
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 long j = 0;
                 while(j < count) {
                     j++;

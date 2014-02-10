@@ -52,8 +52,7 @@ public class PubSubTest extends TestCase {
                 @Override
                 protected void processContent(
                         final Void _content,
-                        final AsyncRequest<Void> _asyncRequest)
-                        throws Exception {
+                        final AsyncRequest<Void> _asyncRequest) {
                     System.out.println("ping");
                     counter.incrementAndGet();
                     _asyncRequest.processAsyncResponse(null);

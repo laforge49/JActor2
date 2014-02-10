@@ -15,7 +15,7 @@ public class SampleActivator extends Activator {
     public AsyncRequest<Void> startAReq() {
         return new BladeBase.AsyncBladeRequest<Void>() {
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 System.out.println("activated!");
                 this.processAsyncResponse(null);
             }

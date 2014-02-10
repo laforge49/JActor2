@@ -19,7 +19,7 @@ public class PubSubSample {
             }.call();
             new SubscribeAReq<String>(requestBus, reactor, new EqualsFilter<String>("ribit")) {
                 @Override
-                protected void processContent(String _content, AsyncRequest<Void> _asyncRequest) throws Exception {
+                protected void processContent(String _content, AsyncRequest<Void> _asyncRequest) {
                     System.out.println("*** Ribit! ***");
                     _asyncRequest.processAsyncResponse(null);
                 }

@@ -45,7 +45,7 @@ public class Account extends NonBlockingBladeBase {
             };
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 if (_amount > balance)
                     dis.processAsyncResponse(false);
                 balance -= _amount;

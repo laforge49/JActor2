@@ -37,7 +37,7 @@ public class InProcess extends NonBlockingBladeBase {
 
             ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
                 @Override
-                public void processException(Exception e, AsyncResponseProcessor dat) throws Exception {
+                public void processException(Exception e, AsyncResponseProcessor dat) {
                     System.out.println(e);
                     if (dis.getPendingResponseCount() == 0)
                         dis.processAsyncResponse(null);
