@@ -52,7 +52,7 @@ final public class Plant {
      * @param _reactorThreadPoolSize    The number of threads to be created for the
      *                                  reactor thread pool.
      */
-    public Plant(final int _reactorThreadPoolSize) throws Exception {
+    public Plant(final int _reactorThreadPoolSize) {
         new PlantImpl(_reactorThreadPoolSize);
     }
 
@@ -61,7 +61,7 @@ final public class Plant {
      *
      * @param _plantConfiguration    The configuration to be used by the plant.
      */
-    public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
+    public Plant(final PlantConfiguration _plantConfiguration) {
         new PlantImpl(_plantConfiguration);
     }
 }

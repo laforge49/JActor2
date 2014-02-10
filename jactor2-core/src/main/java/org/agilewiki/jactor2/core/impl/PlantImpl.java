@@ -34,7 +34,7 @@ public class PlantImpl {
         this(new PlantConfiguration());
     }
 
-    public PlantImpl(final int _threadCount) throws Exception {
+    public PlantImpl(final int _threadCount) {
         this(new PlantConfiguration(_threadCount));
     }
 
