@@ -7,7 +7,7 @@ import javax.swing.*;
 public class SwingBoundReactorImpl extends ThreadBoundReactorImpl {
 
     public SwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                 final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 

@@ -21,8 +21,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
     /**
      * Create a blocking reactor with the Plant internal reactor as the parent.
      */
-    public BlockingReactor()
-            throws Exception {
+    public BlockingReactor() {
         this(Plant.getInternalReactor());
     }
 
@@ -31,8 +30,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      *
      * @param _parentReactor            The parent reactor.
      */
-    public BlockingReactor(final NonBlockingReactor _parentReactor)
-            throws Exception {
+    public BlockingReactor(final NonBlockingReactor _parentReactor) {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
@@ -43,7 +41,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+    public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
         this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
@@ -55,7 +53,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public BlockingReactor(final NonBlockingReactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+                              final int _initialOutboxSize, final int _initialLocalQueueSize) {
         this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
@@ -67,7 +65,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     private BlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+                              final int _initialOutboxSize, final int _initialLocalQueueSize) {
         initialize(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
     }
 

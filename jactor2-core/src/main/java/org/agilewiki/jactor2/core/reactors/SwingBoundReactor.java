@@ -25,7 +25,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
     /**
      * Create a swing-bound reactor with the Plant internal reactor as the parent.
      */
-    public SwingBoundReactor() throws Exception {
+    public SwingBoundReactor() {
         super(Plant.getInternalReactor());
     }
 
@@ -35,7 +35,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _parentReactor            The parent reactor.
      */
     public SwingBoundReactor(final NonBlockingReactor _parentReactor)
-            throws Exception {
+            {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
@@ -47,7 +47,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
-            throws Exception {
+            {
         this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
@@ -59,15 +59,14 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public SwingBoundReactor(final NonBlockingReactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize)
-            throws Exception {
+                              final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 
     @Override
     protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                           final Runnable _boundProcessor) throws Exception {
+                                           final Runnable _boundProcessor) {
         return new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 

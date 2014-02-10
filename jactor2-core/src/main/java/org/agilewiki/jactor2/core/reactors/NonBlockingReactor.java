@@ -50,7 +50,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+    public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
         this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 

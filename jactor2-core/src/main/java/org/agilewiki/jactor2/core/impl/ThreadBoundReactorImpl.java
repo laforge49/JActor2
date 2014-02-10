@@ -17,7 +17,7 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
 
     public ThreadBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                   final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                  final Runnable _boundProcessor) throws Exception {
+                                  final Runnable _boundProcessor) {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }

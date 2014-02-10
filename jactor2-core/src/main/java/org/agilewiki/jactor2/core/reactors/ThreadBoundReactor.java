@@ -23,7 +23,7 @@ public class ThreadBoundReactor extends ReactorBase
     /**
      * Create a thread-bound reactor with the Plant internal reactor as the parent.
      */
-    public ThreadBoundReactor() throws Exception {
+    public ThreadBoundReactor() {
         this(Plant.getInternalReactor());
     }
 
@@ -32,7 +32,7 @@ public class ThreadBoundReactor extends ReactorBase
      *
      * @param _parentReactor            The parent reactor.
      */
-    public ThreadBoundReactor(final NonBlockingReactor _parentReactor) throws Exception {
+    public ThreadBoundReactor(final NonBlockingReactor _parentReactor) {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize(), null);
     }
@@ -43,8 +43,7 @@ public class ThreadBoundReactor extends ReactorBase
      * @param _boundProcessor           The Runnable that is called when there are requests/responses
      *                                  to be processed.
      */
-    public ThreadBoundReactor(final Runnable _boundProcessor)
-            throws Exception {
+    public ThreadBoundReactor(final Runnable _boundProcessor) {
         this(Plant.getInternalReactor(), _boundProcessor);
     }
 
@@ -55,8 +54,7 @@ public class ThreadBoundReactor extends ReactorBase
      * @param _boundProcessor           The Runnable that is called when there are requests/responses
      *                                  to be processed.
      */
-    public ThreadBoundReactor(final NonBlockingReactor _parentReactor, final Runnable _boundProcessor)
-            throws Exception {
+    public ThreadBoundReactor(final NonBlockingReactor _parentReactor, final Runnable _boundProcessor) {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize(), _boundProcessor);
     }
@@ -70,7 +68,7 @@ public class ThreadBoundReactor extends ReactorBase
      *                                  to be processed.
      */
     public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Runnable _boundProcessor) throws Exception {
+                           final Runnable _boundProcessor) {
         this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
@@ -85,7 +83,7 @@ public class ThreadBoundReactor extends ReactorBase
      */
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
-                           final Runnable _boundProcessor) throws Exception {
+                           final Runnable _boundProcessor) {
         initialize(createReactorImpl(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
                 _boundProcessor));
     }
@@ -102,7 +100,7 @@ public class ThreadBoundReactor extends ReactorBase
      */
     protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                            final Runnable _boundProcessor) throws Exception {
+                                            final Runnable _boundProcessor) {
         return new ThreadBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
                 _boundProcessor);
     }

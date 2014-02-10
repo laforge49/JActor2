@@ -88,7 +88,7 @@ public interface Reactor extends Closeable, Blade {
      * @param _closeable    The Closeable to be registered.
      * @return True if the Closeable was registered.
      */
-    boolean addCloseable(final Closeable _closeable) throws Exception;
+    boolean addCloseable(final Closeable _closeable);
 
     /**
      * Unregister a Closeable.
