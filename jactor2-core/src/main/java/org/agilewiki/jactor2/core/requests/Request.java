@@ -40,7 +40,7 @@ public interface Request<RESPONSE_TYPE> {
      * If an exception is thrown while processing this Request,
      * that exception is simply logged as a warning.
      */
-    void signal() throws Exception;
+    void signal();
 
     /**
      * Returns the source reactor, or null.

@@ -51,7 +51,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     @Override
-    public void signal() throws Exception {
+    public void signal() {
         asyncRequestImpl.signal();
     }
 
@@ -122,8 +122,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      *
      * @param _response An exception.
      */
-    public void processAsyncException(final Exception _response)
-            throws Exception {
+    public void processAsyncException(final Exception _response) {
         asyncRequestImpl.processAsyncException(_response);
     }
 

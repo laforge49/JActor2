@@ -53,8 +53,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
      *
      * @param _response An exception.
      */
-    public void processAsyncException(final Exception _response)
-            throws Exception {
+    public void processAsyncException(final Exception _response) {
         processObjectResponse(_response);
     }
 
