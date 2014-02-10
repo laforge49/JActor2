@@ -1,6 +1,6 @@
 /**
  * Core provides a framework that significantly reduces the cost of
- * developing robust asynchronous applications.
+ * developing robust asynchronous applications (beta).
  * This is because of the assurances made by core:
  * <ol>
  *     <li>

@@ -94,6 +94,12 @@ public class Recovery {
         }
     }
 
+    /**
+     * Handles RuntimeException. Default action: close the reactor.
+     *
+     * @param _requestImpl    The reactor with the hung request.
+     * @param _exception      The runtime exception
+     */
     public void onRuntimeException(final RequestImpl _requestImpl, final RuntimeException _exception) {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.getLogger().error("runtime exception -> reactor close", _exception);

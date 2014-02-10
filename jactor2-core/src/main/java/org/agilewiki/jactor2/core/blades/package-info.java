@@ -1,7 +1,7 @@
 /**
  * <p>
  * A blade is an object with state operated on by requests
- * within the thread context of a single reactor.
+ * within the thread context of a single reactor (beta).
  * </p>
  * <h3>Related Tutorial Pages</h3>
  * <ul>

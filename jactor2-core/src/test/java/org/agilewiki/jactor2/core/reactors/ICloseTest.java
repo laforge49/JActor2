@@ -7,7 +7,6 @@ import org.agilewiki.jactor2.core.plant.DelayAReq;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
 
 public class ICloseTest extends TestCase {
     public void testa() throws Exception {

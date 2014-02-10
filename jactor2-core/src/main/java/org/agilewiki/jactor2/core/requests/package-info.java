@@ -1,8 +1,7 @@
 /**
- * <h3>Related Tutorial Pages</h3>
  * <p>
  * A request is a single-use object for performing an operation safely and to optionally be passed back with a response
- * value that is also processed safely.
+ * value that is also processed safely (beta).
  * </p>
  * <p>
  * There are two types of requests:

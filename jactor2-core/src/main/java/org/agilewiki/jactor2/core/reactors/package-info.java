@@ -1,6 +1,7 @@
 /**
  * <p>
- * A reactor is a light-weight thread dedicated to processing requests and responses (requests with a response value).
+ * A reactor is a light-weight thread dedicated to processing requests and responses (requests with a response value)
+ * (beta).
  * </p>
  * <p>
  * A reactor has an input queue of requests/responses not yet processed and
