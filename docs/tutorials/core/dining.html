@@ -36,25 +36,21 @@ The feast request executes a simple loop, calling eatAReq and ateSReq until eatA
 of false--which indicates that there is no more food to eat.
 */
 public class DiningPhilosopher extends NonBlockingBladeBase {
-    public DiningPhilosopher() throws Exception {
-    }
-    
-    public AsyncRequest&lt;Integer&gt; feastAReq(final DiningTable _diningTable, final int _seat)
-            throws Exception {
+    public AsyncRequest&lt;Integer&gt; feastAReq(final DiningTable _diningTable, final int _seat) {
         return new AsyncBladeRequest&lt;Integer&gt;() {
-            final AsyncResponseProcessor&lt;Integer&gt; dis = this;
+            final AsyncRequest&lt;Integer&gt; dis = this;
             
             private int mealsEaten; //The number of meals eaten by this philosopher.
             private AsyncResponseProcessor&lt;Void&gt; ateResponseProcessor;
             private AsyncResponseProcessor&lt;Boolean&gt; eatResponseProcessor;
             
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
             
                 //The logic to process a response from a DiningTable.ateSReq.
                 ateResponseProcessor = new AsyncResponseProcessor&lt;Void&gt;() {
                     @Override
-                    public void processAsyncResponse(final Void _ateResponse) throws Exception {
+                    public void processAsyncResponse(final Void _ateResponse) {
                         AsyncRequest&lt;Boolean&gt; eatAReq = _diningTable.eatAReq(_seat);
                         send(eatAReq, eatResponseProcessor);
                     }
@@ -63,7 +59,7 @@ public class DiningPhilosopher extends NonBlockingBladeBase {
                 //The logic to process a response from a DiningTable.eatAReq.
                 eatResponseProcessor = new AsyncResponseProcessor&lt;Boolean&gt;() {
                     @Override
-                    public void processAsyncResponse(final Boolean _eatResponse) throws Exception {
+                    public void processAsyncResponse(final Boolean _eatResponse) {
                         if (!_eatResponse) {
                             //The food is gone, so return the number of meals eaten.
                             dis.processAsyncResponse(mealsEaten);
@@ -103,8 +99,7 @@ public class DiningTable extends NonBlockingBladeBase {
     private int[] forkUsage;    //seat number which is using the fork, or -1 if available.
     private AsyncResponseProcessor&lt;Boolean&gt;[] pendingResponses; //Pending eat requests, or null.
 
-    public DiningTable(final int _seats, final int _meals) 
-            throws Exception {
+    public DiningTable(final int _seats, final int _meals) {
         seats = _seats;
         meals = _meals;
         forkUsage = new int[seats];
@@ -159,7 +154,7 @@ public class DiningTable extends NonBlockingBladeBase {
     */
     public AsyncRequest&lt;Boolean&gt; eatAReq(final int _seat) {
         return new AsyncBladeRequest&lt;Boolean&gt;() {
-            final AsyncResponseProcessor&lt;Boolean&gt; dis = this;
+            final AsyncRequest&lt;Boolean&gt; dis = this;
             
             @Override
             public void processAsyncRequest() throws Exception {
@@ -262,17 +257,12 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class DiningRoom extends NonBlockingBladeBase {
-    public DiningRoom()
-            throws Exception {
-    }
-    
     /*
         The dining room implements a feast request, which creates the dining table and 
         the philosophers and sends a feast request to all the philosophers. The result 
         returned is a list of the number of meals eaten by each philosopher.
     */
-    public AsyncRequest&lt;List&lt;Integer&gt;&gt; feastAReq(final int _seats, final int _meals)
-            throws Exception {
+    public AsyncRequest&lt;List&lt;Integer&gt;&gt; feastAReq(final int _seats, final int _meals) {
         return new AsyncBladeRequest&lt;List&lt;Integer&gt;&gt;() {
             final AsyncResponseProcessor&lt;List&lt;Integer&gt;&gt; dis = this;
             List&lt;Integer&gt; mealsEaten = new LinkedList&lt;Integer&gt;(); //The list passed back when the feast is done.
@@ -283,8 +273,7 @@ public class DiningRoom extends NonBlockingBladeBase {
             AsyncResponseProcessor&lt;Integer&gt; feastResponseProcessor =
                 new AsyncResponseProcessor&lt;Integer&gt;() {
                     @Override
-                    public void processAsyncResponse(final Integer _feastResponse) 
-                            throws Exception {
+                    public void processAsyncResponse(final Integer _feastResponse) {
                         mealsEaten.add(_feastResponse);
                         if (mealsEaten.size() == _seats) {  //This is the response from the last philosopher.
                             dis.processAsyncResponse(mealsEaten);
@@ -296,7 +285,7 @@ public class DiningRoom extends NonBlockingBladeBase {
                 Start the feast.
             */
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 int i = 0;
                 DiningTable diningTable = new DiningTable(
                     new NonBlockingReactor(),
@@ -354,14 +343,14 @@ Seats: 5
 Meals: 1,000,000
 
 Meals eaten by each philosopher:
-    158,202
-    316,084
-    178,295
-    189,123
-    158,296
+    160221
+    202250
+    165867
+    168376
+    303286
 
-Test duration in nanoseconds: 1,926,880,463
-Total meals eaten per second: 518,973
+Test duration in nanoseconds: 2267395410
+Total meals eaten per second: 441034
 </pre>
 </body>
 </html>

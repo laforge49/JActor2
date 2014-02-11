@@ -7,8 +7,7 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 public class Parallel extends NonBlockingBladeBase {
     private final long count;
     
-    public Parallel(final long _count)
-            throws Exception {
+    public Parallel(final long _count) {
         count = _count;
     }
     
@@ -19,13 +18,13 @@ public class Parallel extends NonBlockingBladeBase {
             final AsyncResponseProcessor<Void> sleepResponseProcessor = 
                     new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(final Void _response) throws Exception {
+                public void processAsyncResponse(final Void _response) {
                     if (dis.getPendingResponseCount() == 0)
                         dis.processAsyncResponse(null);
                 }
             };
             
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 long j = 0;
                 while(j < count) {
                     j++;

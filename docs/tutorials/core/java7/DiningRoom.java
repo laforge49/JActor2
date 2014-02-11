@@ -10,21 +10,15 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class DiningRoom extends NonBlockingBladeBase {
-    public DiningRoom()
-            throws Exception {
-    }
-    
-    public AsyncRequest<List<Integer>> feastAReq(final int _seats, final int _meals)
-            throws Exception {
+    public AsyncRequest<List<Integer>> feastAReq(final int _seats, final int _meals) {
         return new AsyncBladeRequest<List<Integer>>() {
-            final AsyncResponseProcessor<List<Integer>> dis = this;
+            final AsyncRequest<List<Integer>> dis = this;
             List<Integer> mealsEaten = new LinkedList<Integer>();
             
             AsyncResponseProcessor<Integer> feastResponseProcessor =
                 new AsyncResponseProcessor<Integer>() {
                     @Override
-                    public void processAsyncResponse(final Integer _feastResponse) 
-                            throws Exception {
+                    public void processAsyncResponse(final Integer _feastResponse) {
                         mealsEaten.add(_feastResponse);
                         if (mealsEaten.size() == _seats) {
                             dis.processAsyncResponse(mealsEaten);
@@ -33,7 +27,7 @@ public class DiningRoom extends NonBlockingBladeBase {
             };
             
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 int i = 0;
                 DiningTable diningTable = new DiningTable(
                     _seats,

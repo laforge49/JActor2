@@ -21,8 +21,7 @@ public class Batcher extends NonBlockingBladeBase {
     private final long count;
     private final Ponger ponger;
     
-    public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger)
-            throws Exception {
+    public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger) {
         initialize(_reactor);
         count = _count;
         ponger = _ponger;
@@ -30,7 +29,7 @@ public class Batcher extends NonBlockingBladeBase {
     
     public AsyncRequest&lt;Void&gt; runAReq() {
         return new AsyncBladeRequest&lt;Void&gt;() {
-            final AsyncResponseProcessor&lt;Void&gt; dis = this;
+            final AsyncRequest&lt;Void&gt; dis = this;
             
             final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
                 new AsyncResponseProcessor&lt;Long&gt;() {
@@ -38,14 +37,14 @@ public class Batcher extends NonBlockingBladeBase {
                 long i = 0;
                 
                 @Override
-                public void processAsyncResponse(final Long _response) throws Exception {
+                public void processAsyncResponse(final Long _response) {
                     i++;
                     if (i == count)
                         dis.processAsyncResponse(null);
                 }
             };
             
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 long j = 0;
                 while(j < count) {
                     j++;
@@ -86,7 +85,7 @@ The code that drives this is fairly simple. We put the send invocation in a simp
 which means that all the requests will be sent out at one time, when the loop completes:
 </p>
 <pre>
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 long j = 0;
                 while(j < count) {
                     j++;
@@ -105,7 +104,7 @@ all the responses have been received, a result of null is returned:
                 long i = 0;
                 
                 @Override
-                public void processAsyncResponse(final Long _response) throws Exception {
+                public void processAsyncResponse(final Long _response) {
                     i++;
                     if (i == count)
                         dis.processAsyncResponse(null);

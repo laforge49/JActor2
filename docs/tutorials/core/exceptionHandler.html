@@ -62,16 +62,11 @@ public class ExceptionHandlerSample {
 
 //A blade with a request that throws an exception.
 class ExceptionBlade extends NonBlockingBladeBase {
-
-    //Create an ExceptionBlade.
-    ExceptionBlade() throws Exception {
-    }
-
     //Returns an exception request.
     AsyncRequest&lt;Void&gt; exceptionAReq() {
         return new AsyncBladeRequest&lt;Void&gt;() {
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws IOException {
                 throw new IOException(); //Throw an exception when the request is processed.
             }
         };
@@ -85,7 +80,7 @@ class ExceptionHandlerBlade extends BladeBase {
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blade with a reference to an exception blade.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) throws Exception {
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) {
         exceptionBlade = _exceptionBlade;
         initialize(_reactor);
     }
@@ -96,7 +91,7 @@ class ExceptionHandlerBlade extends BladeBase {
             AsyncRequest&lt;String&gt; dis = this;
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
 
                 //Create and assign an exception handler.
                 setExceptionHandler(new ExceptionHandler&lt;String&gt;() {
@@ -114,7 +109,7 @@ class ExceptionHandlerBlade extends BladeBase {
                 //The thrown exception is then caught by the assigned exception handler.
                 send(exceptionBlade.exceptionAReq(), new AsyncResponseProcessor&lt;Void&gt;() {
                     @Override
-                    public void processAsyncResponse(final Void _response) throws Exception {
+                    public void processAsyncResponse(final Void _response) {
                         dis.processAsyncResponse("can not get here");
                     }
                 });

@@ -41,16 +41,11 @@ public class ExceptionHandlerSample {
 
 //A blade with a request that throws an exception.
 class ExceptionBlade extends NonBlockingBladeBase {
-
-    //Create an ExceptionBlade.
-    ExceptionBlade() throws Exception {
-    }
-
     //Returns an exception request.
     AsyncRequest<Void> exceptionAReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() throws IOException {
                 throw new IOException(); //Throw an exception when the request is processed.
             }
         };
@@ -64,7 +59,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blade with a reference to an exception blade.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) throws Exception {
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) {
         exceptionBlade = _exceptionBlade;
     }
 
@@ -74,7 +69,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
             AsyncRequest<String> dis = this;
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
 
                 //Create and assign an exception handler.
                 setExceptionHandler(new ExceptionHandler<String>() {
@@ -92,7 +87,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
                 //The thrown exception is then caught by the assigned exception handler.
                 send(exceptionBlade.exceptionAReq(), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(final Void _response) throws Exception {
+                    public void processAsyncResponse(final Void _response) {
                         dis.processAsyncResponse("can not get here");
                     }
                 });

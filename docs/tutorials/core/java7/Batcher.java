@@ -8,8 +8,7 @@ public class Batcher extends NonBlockingBladeBase {
     private final long count;
     private final Ponger ponger;
     
-    public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger)
-            throws Exception {
+    public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger) {
         super(_reactor);
         count = _count;
         ponger = _ponger;
@@ -17,7 +16,7 @@ public class Batcher extends NonBlockingBladeBase {
     
     public AsyncRequest<Void> runAReq() {
         return new AsyncBladeRequest<Void>() {
-            final AsyncResponseProcessor<Void> dis = this;
+            final AsyncRequest<Void> dis = this;
             
             final AsyncResponseProcessor<Long> pingResponseProcessor = 
                 new AsyncResponseProcessor<Long>() {
@@ -25,14 +24,14 @@ public class Batcher extends NonBlockingBladeBase {
                 long i = 0;
                 
                 @Override
-                public void processAsyncResponse(final Long _response) throws Exception {
+                public void processAsyncResponse(final Long _response) {
                     i++;
                     if (i == count)
                         dis.processAsyncResponse(null);
                 }
             };
             
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 long j = 0;
                 while(j < count) {
                     j++;

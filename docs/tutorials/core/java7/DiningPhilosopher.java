@@ -4,30 +4,26 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class DiningPhilosopher extends NonBlockingBladeBase {
-    public DiningPhilosopher() throws Exception {
-    }
-    
-    public AsyncRequest<Integer> feastAReq(final DiningTable _diningTable, final int _seat)
-            throws Exception {
+    public AsyncRequest<Integer> feastAReq(final DiningTable _diningTable, final int _seat) {
         return new AsyncBladeRequest<Integer>() {
-            final AsyncResponseProcessor<Integer> dis = this;
+            final AsyncRequest<Integer> dis = this;
             
             private int mealsEaten;
             private AsyncResponseProcessor<Void> ateResponseProcessor;
             private AsyncResponseProcessor<Boolean> eatResponseProcessor;
             
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 ateResponseProcessor = new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(final Void _ateResponse) throws Exception {
+                    public void processAsyncResponse(final Void _ateResponse) {
                         AsyncRequest<Boolean> eatAReq = _diningTable.eatAReq(_seat);
                         send(eatAReq, eatResponseProcessor);
                     }
                 };
                 eatResponseProcessor = new AsyncResponseProcessor<Boolean>() {
                     @Override
-                    public void processAsyncResponse(final Boolean _eatResponse) throws Exception {
+                    public void processAsyncResponse(final Boolean _eatResponse) {
                         if (!_eatResponse) {
                             dis.processAsyncResponse(mealsEaten);
                             return;

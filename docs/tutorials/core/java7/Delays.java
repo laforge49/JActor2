@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 public class Delays extends NonBlockingBladeBase {
     private final long count;
 
-    Delays(final long _count) throws Exception {
+    Delays(final long _count) {
         count = _count;
     }
 
@@ -18,13 +18,13 @@ public class Delays extends NonBlockingBladeBase {
             final AsyncResponseProcessor<Void> delayResponseProcessor =
                     new AsyncResponseProcessor<Void>() {
                         @Override
-                        public void processAsyncResponse(final Void _response) throws Exception {
+                        public void processAsyncResponse(final Void _response) {
                             if (dis.getPendingResponseCount() == 0)
                                 dis.processAsyncResponse(null);
                         }
                     };
 
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 long j = 0;
                 while(j < count) {
                     j++;

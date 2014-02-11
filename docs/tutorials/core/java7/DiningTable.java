@@ -11,8 +11,7 @@ public class DiningTable extends NonBlockingBladeBase {
     private int[] forkUsage;
     private AsyncResponseProcessor<Boolean>[] pendingResponses;
 
-    public DiningTable(final int _seats, final int _meals) 
-            throws Exception {
+    public DiningTable(final int _seats, final int _meals) {
         seats = _seats;
         meals = _meals;
         forkUsage = new int[seats];
@@ -49,7 +48,7 @@ public class DiningTable extends NonBlockingBladeBase {
     
     public AsyncRequest<Boolean> eatAReq(final int _seat) {
         return new AsyncBladeRequest<Boolean>() {
-            final AsyncResponseProcessor<Boolean> dis = this;
+            final AsyncRequest<Boolean> dis = this;
             
             @Override
             public void processAsyncRequest() throws Exception {
