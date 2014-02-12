@@ -5,17 +5,14 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
-public class Account extends NonBlockingBladeBase {
+public class BankAccount extends NonBlockingBladeBase {
     private int balance;
     private int hold;
-
-    public Account() throws Exception {
-    }
 
     public SyncRequest<Void> depositSReq(final int _amount) {
         return new SyncBladeRequest<Void>() {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() {
                 balance += _amount;
                 return null;
             }
@@ -28,7 +25,7 @@ public class Account extends NonBlockingBladeBase {
 
             ExceptionHandler<Boolean> depositExceptionHandler = new ExceptionHandler<Boolean>() {
                 @Override
-                public Boolean processException(Exception e) throws Exception {
+                public Boolean processException(Exception e) {
                     hold -= _amount;
                     balance += _amount;
                     return false;
@@ -37,14 +34,14 @@ public class Account extends NonBlockingBladeBase {
 
             AsyncResponseProcessor<Void> depositResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
+                public void processAsyncResponse(Void _response) {
                     hold -= _amount;
                     dis.processAsyncResponse(true);
                 }
             };
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 if (_amount > balance)
                     dis.processAsyncResponse(false);
                 balance -= _amount;
@@ -58,9 +55,9 @@ public class Account extends NonBlockingBladeBase {
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
-            Account account1 = new Account();
+            BankAccount account1 = new BankAccount();
             account1.depositSReq(1000).call();
-            Account account2 = new Account();
+            BankAccount account2 = new BankAccount();
             System.out.println(account1.transferAReq(500, account2).call());
         } finally {
             Plant.close();
