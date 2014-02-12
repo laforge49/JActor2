@@ -58,6 +58,8 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
 
     protected boolean closed = false;
 
+    protected boolean signal = false;
+
     /**
      * True when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
      */
@@ -90,8 +92,13 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     }
 
     @Override
-    public boolean isSignal() {
+    public boolean isOneWay() {
         return responseProcessor == EventResponseProcessor.SINGLETON;
+    }
+
+    @Override
+    public boolean isSignal() {
+        return signal;
     }
 
     /**
@@ -131,6 +138,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     public void signal() {
         use();
+        signal = true;
         responseProcessor = EventResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
     }
@@ -419,7 +427,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     public String toString() {
         return "message=" + asRequest() +
                 ", isComplete=" + isComplete() +
-                ", isSignal=" + isSignal() +
+                ", isOneWay=" + isOneWay() +
                 ", source=" + (requestSource == null ? "null" : requestSource) +
                 ", target=" + getTargetReactor().asReactorImpl() +
                 ", this=" + super.toString() +

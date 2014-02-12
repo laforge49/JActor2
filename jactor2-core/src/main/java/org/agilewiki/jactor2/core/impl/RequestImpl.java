@@ -69,6 +69,8 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      */
     boolean isForeign();
 
+    boolean isOneWay();
+
     boolean isSignal();
 
     ReactorImpl getTargetReactorImpl();

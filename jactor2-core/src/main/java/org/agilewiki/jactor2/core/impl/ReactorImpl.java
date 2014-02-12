@@ -371,7 +371,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      */
     protected void processMessage(final RequestImpl _message) {
         _message.eval();
-        if (!_message.isComplete() && !startClosing && !_message.isSignal()) {
+        if (!_message.isComplete() && !startClosing && !_message.isOneWay()) {
             inProcessRequests.add(_message);
         }
     }
