@@ -18,13 +18,10 @@ public class Signals extends NonBlockingBladeBase {
             Plant.close();
         }
     }
-    
-    public Signals() throws Exception {
-    }
         
     SyncRequest<Void> printSReq(final Integer _i) {
         return new SyncBladeRequest<Void>() {
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() {
                 System.out.println(_i);
                 return null;
             }

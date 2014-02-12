@@ -1,5 +1,6 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.Delay;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -7,44 +8,61 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
-public class Isolation extends BladeBase {
+public class Isolation extends NonBlockingBladeBase {
     
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
+            Isolation isolation = new Isolation();
+
             System.out.println("\nBump with NonBlockingReactor\n");
-            Isolation isolation = new Isolation(new NonBlockingReactor());
-            isolation.bumpAReq().signal();
-            isolation.bumpAReq().signal();
-            isolation.bumpAReq().call(); //call forces all pending bump requests to complete
+            Isolate isolate = new Isolate(new NonBlockingReactor());
+            isolation.runAReq(isolate).call();
             
             System.out.println("\nBump with IsolationReactor\n");
-            isolation = new Isolation(new IsolationReactor());
-            isolation.bumpAReq().signal();
-            isolation.bumpAReq().signal();
-            isolation.bumpAReq().call(); //call forces all pending bump requests to complete
+            isolate = new Isolate(new IsolationReactor());
+            isolation.runAReq(isolate).call();
         } finally {
             Plant.close();
         }
     }
     
+    AsyncRequest<Void> runAReq(final Isolate _isolate) {
+        return new AsyncBladeRequest<Void>() {
+            AsyncRequest<Void> dis = this;
+            
+            AsyncResponseProcessor<Void> ignoreResponse = new AsyncResponseProcessor<Void>() {
+                public void processAsyncResponse(Void response) {
+                }
+            };
+            
+            public void processAsyncRequest() {
+                send(_isolate.bumpAReq(), ignoreResponse);
+                send(_isolate.bumpAReq(), ignoreResponse);
+                send(_isolate.bumpAReq(), dis);
+            }
+        };
+    }
+}
+ 
+class Isolate extends BladeBase { 
     int state;
     
-    public Isolation(final Reactor _reactor) throws Exception {
+    Isolate(final Reactor _reactor) {
         _initialize(_reactor);
     }
     
     AsyncRequest<Void> bumpAReq() {
         return new AsyncBladeRequest<Void>() {
-            AsyncResponseProcessor dis = this;
+            AsyncRequest dis = this;
 
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 int oldState = state;
                 int newState = state + 1;
                 System.out.println("was " + oldState + ", now " + newState); 
                 Delay delay = new Delay();
                 send(delay.sleepSReq(1), new AsyncResponseProcessor<Void>() {
-                    public void processAsyncResponse(Void response) throws Exception {
+                    public void processAsyncResponse(Void response) {
                         state = newState; //belated update
                         dis.processAsyncResponse(null);
                     }

@@ -68,6 +68,7 @@ False
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 Requests are processed to completion before the next request is processed.
+However the processing of signals is not constrained.
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 Disbursed after processing each message.
@@ -118,53 +119,69 @@ This is illustrated by the <a href="java7/Isolation.java">Isolation</a> program:
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.blades.Delay;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
-public class Isolation extends BladeBase {
+public class Isolation extends NonBlockingBladeBase {
     
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
-            Printer printer = Printer.stdoutAReq().call();
+            Isolation isolation = new Isolation();
+
+            System.out.println("\nBump with NonBlockingReactor\n");
+            Isolate isolate = new Isolate(new NonBlockingReactor());
+            isolation.runAReq(isolate).call();
             
-            printer.printlnSReq("\nBump with NonBlockingReactor\n").call();
-            Isolation isolation = new Isolation(new NonBlockingReactor());
-            isolation.bumpAReq().signal();
-            isolation.bumpAReq().signal();
-            isolation.bumpAReq().call(); //call forces all pending bump requests to complete
-            
-            printer.printlnSReq("\nBump with IsolationReactor\n").call();
-            isolation = new Isolation(new IsolationReactor());
-            isolation.bumpAReq().signal();
-            isolation.bumpAReq().signal();
-            isolation.bumpAReq().call(); //call forces all pending bump requests to complete
+            System.out.println("\nBump with IsolationReactor\n");
+            isolate = new Isolate(new IsolationReactor());
+            isolation.runAReq(isolate).call();
         } finally {
             Plant.close();
         }
     }
     
+    AsyncRequest&lt;Void&gt; runAReq(final Isolate _isolate) {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            AsyncRequest&lt;Void&gt; dis = this;
+            
+            AsyncResponseProcessor&lt;Void&gt; ignoreResponse = new AsyncResponseProcessor&lt;Void&gt;() {
+                public void processAsyncResponse(Void response) {
+                }
+            };
+            
+            public void processAsyncRequest() {
+                send(_isolate.bumpAReq(), ignoreResponse);
+                send(_isolate.bumpAReq(), ignoreResponse);
+                send(_isolate.bumpAReq(), dis);
+            }
+        };
+    }
+}
+ 
+class Isolate extends BladeBase { 
     int state;
     
-    public Isolation(final Reactor _reactor) throws Exception {
+    public Isolate(final Reactor _reactor) {
         _initialize(_reactor);
     }
     
     AsyncRequest&lt;Void&gt; bumpAReq() {
         return new AsyncBladeRequest&lt;Void&gt;() {
-            AsyncResponseProcessor dis = this;
+            AsyncRequest dis = this;
 
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 int oldState = state;
                 int newState = state + 1;
                 System.out.println("was " + oldState + ", now " + newState); 
                 Delay delay = new Delay();
                 send(delay.sleepSReq(1), new AsyncResponseProcessor<Void>() {
-                    public void processAsyncResponse(Void response) throws Exception {
+                    public void processAsyncResponse(Void response) {
                         state = newState; //belated update
                         dis.processAsyncResponse(null);
                     }
