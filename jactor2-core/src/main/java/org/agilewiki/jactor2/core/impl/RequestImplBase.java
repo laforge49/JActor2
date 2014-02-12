@@ -58,8 +58,6 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
 
     protected boolean closed = false;
 
-    protected boolean signal = false;
-
     /**
      * True when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
      */
@@ -93,12 +91,13 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
 
     @Override
     public boolean isOneWay() {
-        return responseProcessor == EventResponseProcessor.SINGLETON;
+        return responseProcessor == OneWayResponseProcessor.SINGLETON ||
+                responseProcessor == SignalResponseProcessor.SINGLETON;
     }
 
     @Override
     public boolean isSignal() {
-        return signal;
+        return responseProcessor == SignalResponseProcessor.SINGLETON;
     }
 
     /**
@@ -138,8 +137,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     public void signal() {
         use();
-        signal = true;
-        responseProcessor = EventResponseProcessor.SINGLETON;
+        responseProcessor = SignalResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
     }
 
@@ -191,7 +189,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         use();
         AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
         if (rp == null) {
-            rp = (AsyncResponseProcessor<RESPONSE_TYPE>) EventResponseProcessor.SINGLETON;
+            rp = (AsyncResponseProcessor<RESPONSE_TYPE>) OneWayResponseProcessor.SINGLETON;
         }
         requestSource = source;
         oldMessage = source.getCurrentRequest();
@@ -267,7 +265,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             return false;
         }
         setResponse(_response, targetReactorImpl);
-        if (responseProcessor != EventResponseProcessor.SINGLETON) {
+        if (!isOneWay()) {
             requestSource.incomingResponse(RequestImplBase.this, targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
@@ -395,7 +393,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                     }
                 });
             } catch (final Throwable u) {
-                if (!(responseProcessor instanceof EventResponseProcessor)) {
+                if (!isOneWay()) {
                     if (!incomplete) {
                         return;
                     }
@@ -414,7 +412,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                 return;
             }
             setResponse(_e, activeMessageProcessor);
-            if (!(responseProcessor instanceof EventResponseProcessor)) {
+            if (!isOneWay()) {
                 requestSource.incomingResponse(this, activeMessageProcessor);
             } else {
                 activeMessageProcessor.getLogger().warn("Uncaught throwable",

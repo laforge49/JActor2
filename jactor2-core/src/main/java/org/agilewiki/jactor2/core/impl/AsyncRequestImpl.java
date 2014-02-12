@@ -90,7 +90,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         RequestImpl<RT> requestImpl = _request.asRequestImpl();
-        if (_responseProcessor != EventResponseProcessor.SINGLETON)
+        if (_responseProcessor != OneWayResponseProcessor.SINGLETON)
             pendingRequests.add(requestImpl);
         requestImpl.doSend(targetReactorImpl, _responseProcessor);
     }
