@@ -150,11 +150,6 @@ public class Isolation extends NonBlockingBladeBase {
         return new AsyncBladeRequest&lt;Void&gt;() {
             AsyncRequest&lt;Void&gt; dis = this;
             
-            AsyncResponseProcessor&lt;Void&gt; ignoreResponse = new AsyncResponseProcessor&lt;Void&gt;() {
-                public void processAsyncResponse(Void response) {
-                }
-            };
-            
             public void processAsyncRequest() {
                 send(_isolate.bumpAReq(), null);
                 send(_isolate.bumpAReq(), null);

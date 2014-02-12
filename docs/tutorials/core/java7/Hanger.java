@@ -3,14 +3,14 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 class Hanger extends NonBlockingBladeBase {
-    Hanger() throws Exception {
+    Hanger() {
         super(new NonBlockingReactor());
     }
 
     SyncRequest<Void> looperSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() {
                 while (true) {}
             }
         };
@@ -19,12 +19,8 @@ class Hanger extends NonBlockingBladeBase {
     SyncRequest<Void> sleeperSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
-            public Void processSyncRequest() throws Exception {
-                try {
-                    Thread.sleep(Long.MAX_VALUE);
-                } catch (InterruptedException ie) {
-                    throw ie;
-                }
+            public Void processSyncRequest() throws InterruptedException {
+                Thread.sleep(Long.MAX_VALUE);
                 return null;
             }
         };

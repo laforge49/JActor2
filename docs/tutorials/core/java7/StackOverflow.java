@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class StackOverflow extends NonBlockingBladeBase {
-    StackOverflow() throws Exception {}
     
     void recur() {
         recur();
@@ -13,7 +12,7 @@ public class StackOverflow extends NonBlockingBladeBase {
     SyncRequest<Void> recurSReq() {
         return new SyncBladeRequest() {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncRequest() {
                 recur();
                 return null;
             }

@@ -14,13 +14,10 @@ public class AsyncHang extends NonBlockingBladeBase {
         }
     }
 
-    public AsyncHang() throws Exception {
-    }
-
     public AsyncRequest<Void> hangAReq() {
         return new AsyncBladeRequest<Void>() {
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 //no response--the request hangs
             }
         };
