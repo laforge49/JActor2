@@ -138,8 +138,8 @@ public final class ReactorPoolThreadManager {
      * The close method is used to stop all the threads as they become idle.
      * This method sets a flag to indicate that the thread should stop
      * and then wakes up all the threads.
-     * This method only returns after all the threads have died.
      */
+//    * This method only returns after all the threads have died.
     public final void close() {
         if (closing) {
             return;
@@ -152,6 +152,7 @@ public final class ReactorPoolThreadManager {
                 t.interrupt();
             }
         }
+        /*
         for (final Thread t : threads) {
             if (ct != t) {
                 try {
@@ -162,5 +163,6 @@ public final class ReactorPoolThreadManager {
         }
         // Release the references to the thread array...
         threads = null;
+        */
     }
 }
