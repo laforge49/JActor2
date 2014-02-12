@@ -156,8 +156,8 @@ public class Isolation extends NonBlockingBladeBase {
             };
             
             public void processAsyncRequest() {
-                send(_isolate.bumpAReq(), ignoreResponse);
-                send(_isolate.bumpAReq(), ignoreResponse);
+                send(_isolate.bumpAReq(), null);
+                send(_isolate.bumpAReq(), null);
                 send(_isolate.bumpAReq(), dis);
             }
         };
