@@ -17,6 +17,9 @@ and ease of use. And its API makes it easy to confirm that the application code 
 race conditions.
 
 - [Documentation](http://laforge49.github.io/JActor2/docs/index.html)
+     - [Tutorials](http://laforge49.github.io/JActor2/docs/tutorials/index.html)
+         - [Core](http://laforge49.github.io/JActor2/docs/tutorials/core/index.html) beta
+     - [API](http://laforge49.github.io/JActor2/docs/api/index.html)
 - [Downloads](http://laforge49.github.io/JActor2/downloads)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - Compatible with [Maven 3](http://maven.apache.org/).
