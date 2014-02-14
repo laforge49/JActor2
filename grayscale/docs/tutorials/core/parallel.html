@@ -1,0 +1,82 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Parallel
+</p>
+<h1>Parallel - Parallel Processing</h1>
+<p>
+Parallel processing can be as simple as sending multiple requests to multiple reactors.
+In the <a href="java7/Parallel.java">Parallel</a> program,
+a facility is created with 10 threads and
+10 sleep requests of 100 milliseconds each are sent to 10 different 
+<a href="../../api/org/agilewiki/jactor2/core/blades/Delay.html">Delay</a>
+blades,
+each running in a different reactor. And the total processing time is just over 100 milliseconds.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.blades.Delay;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+
+public class Parallel extends NonBlockingBladeBase {
+    private final long count;
+    
+    public Parallel(final long _count) {
+        count = _count;
+    }
+    
+    public AsyncRequest&lt;Void&gt; runAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            final AsyncRequest&lt;Void&gt; dis = this;
+            
+            final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor = 
+                    new AsyncResponseProcessor&lt;Void&gt;() {
+                @Override
+                public void processAsyncResponse(final Void _response) {
+                    if (dis.getPendingResponseCount() == 0)
+                        dis.processAsyncResponse(null);
+                }
+            };
+            
+            public void processAsyncRequest() {
+                long j = 0;
+                while(j < count) {
+                    j++;
+                    Delay delay = new Delay();
+                    send(delay.sleepSReq(100), sleepResponseProcessor);
+                }
+            }
+        };
+    }
+    
+    public static void main(final String[] _args) throws Exception {
+        final long count = 10L;
+        BasicPlant plant = new Plant(10);
+        try {
+            Parallel parallel = new Parallel(count);
+            AsyncRequest&lt;Void&gt; runAReq = parallel.runAReq();
+            final long before = System.currentTimeMillis();
+            runAReq.call();
+            final long after = System.currentTimeMillis();
+            final long duration = after - before;
+            System.out.println("Parallel Test with 10 Threads");
+            System.out.println("count: " + count);
+            System.out.println("sleep duration: 100 milliseconds");
+            System.out.println("total time: " + duration + " milliseconds");
+        } finally {
+            plant.close();
+        }
+    }
+}
+
+Output:
+
+Parallel Test with 10 Threads
+count: 10
+sleep duration: 100 milliseconds
+total time: 102 milliseconds
+</pre>
+</body>
+</html>

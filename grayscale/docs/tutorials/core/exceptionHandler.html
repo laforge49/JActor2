@@ -1,0 +1,128 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; ExceptionHandler
+</p>
+<h1>ExceptionHandler - Beyond try/catch</h1>
+<p>
+The try/catch clause provides a way to catch exceptions,
+but it does not work so well with send.
+The reason is that the scope of a try/catch clause is determined by control flow, rather than data flow.
+So there is no way to catch an exception that was raised while processing a request on another thread.
+But this is covered through the use of an 
+<a href="../../api/org/agilewiki/jactor2/core/requests/ExceptionHandler.html">ExceptionHandler</a>.
+</p>
+<p>
+An ExceptionHandler can be assigned while processing a asynchronous request by calling the
+<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html#setExceptionHandler-org.agilewiki.jactor2.core.requests.ExceptionHandler-">setExceptionHandler</a> 
+method.
+This is illustrated by the <a href="java7/ExceptionHandlerSample.java">ExceptionHandlerSample</a> program.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+
+import java.io.IOException;
+
+public class ExceptionHandlerSample {
+
+    public static void main(final String[] _args) throws Exception {
+
+        //A facility with two threads.
+        new Plant(2);
+
+        try {
+
+            //Create an ExceptionBlade.
+            ExceptionBlade exceptionBlade = new ExceptionBlade();
+
+            try {
+                //Create and call an exception request.
+                exceptionBlade.exceptionAReq().call();
+                System.out.println("can not get here");
+            } catch (IOException ise) {
+                System.out.println("got first IOException, as expected");
+            }
+
+            //Create an ExceptionHandlerBlade.
+            ExceptionHandlerBlade exceptionHandlerBlade =
+                    new ExceptionHandlerBlade(exceptionBlade);
+            //Create a test request, call it and print the results.
+            System.out.println(exceptionHandlerBlade.testAReq().call());
+
+        } finally {
+            //shutdown the facility
+            Plant.close();
+        }
+    }
+}
+
+//A blade with a request that throws an exception.
+class ExceptionBlade extends NonBlockingBladeBase {
+    //Returns an exception request.
+    AsyncRequest&lt;Void&gt; exceptionAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            @Override
+            public void processAsyncRequest() throws IOException {
+                throw new IOException(); //Throw an exception when the request is processed.
+            }
+        };
+    }
+}
+
+//A blade with an exception handler.
+class ExceptionHandlerBlade extends BladeBase {
+
+    //A blade with a request that throws an exception.
+    private final ExceptionBlade exceptionBlade;
+
+    //Create an exception handler blade with a reference to an exception blade.
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) {
+        exceptionBlade = _exceptionBlade;
+        initialize(_reactor);
+    }
+
+    //Returns a test request.
+    AsyncRequest&lt;String&gt; testAReq() {
+        return new AsyncBladeRequest&lt;String&gt;() {
+            AsyncRequest&lt;String&gt; dis = this;
+
+            @Override
+            public void processAsyncRequest() {
+
+                //Create and assign an exception handler.
+                setExceptionHandler(new ExceptionHandler&lt;String&gt;() {
+                    @Override
+                    public String processException(final Exception _exception) throws Exception {
+                        if (_exception instanceof IOException) {
+                            //Returns a result if an IOException was thrown.
+                            return "got IOException, as expected";
+                        } else //Otherwise rethrow the exception.
+                            throw _exception;
+                    }
+                });
+
+                //Create an exception request and doSend it to the exception blade for processing.
+                //The thrown exception is then caught by the assigned exception handler.
+                send(exceptionBlade.exceptionAReq(), new AsyncResponseProcessor&lt;Void&gt;() {
+                    @Override
+                    public void processAsyncResponse(final Void _response) {
+                        dis.processAsyncResponse("can not get here");
+                    }
+                });
+            }
+        };
+    }
+
+}
+
+Output:
+
+got first IOException, as expected
+got IOException, as expected
+</pre>
+</body>
+</html>

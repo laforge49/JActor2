@@ -1,0 +1,82 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Getting Started
+</p>
+<h1>Getting Started - Jars and Scripts</h1>
+<p>
+You will need a few things to work with JActor2 core:
+</p>
+<ul>
+<li>
+<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">JDK 7</a> or later.
+</li>
+<li>
+<a href="http://www.slf4j.org/download.html">slf4j</a>.
+</li>
+<li>
+<a href="https://code.google.com/p/guava-libraries/">Google guava</a>.
+</li>
+<li>
+The <a href="java7/jactor2-core-0.8.0.jar">JActor2 core jar file</a>. And
+</li>
+<li>
+A test script.
+For windows, you can use <a href="java7/test.bat">test.bat</a>:
+<pre>
+del *.class
+javac -classpath jactor2-core-0.8.0.jar;slf4j-api-1.7.5.jar *.java
+java -classpath jactor2-core-0.8.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;guava-15.0.jar;. %1
+</pre>
+Othrwise, you can likely use <a href="java7/test.sh">test.sh</a>:
+<pre>
+rm -fr *.class
+javac -cp jactor2-core-0.8.0.jar:slf4j-api-1.7.5.jar *.java
+java -cp jactor2-core-0.8.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:guava-15.0.jar:. $1
+</pre>
+</li>
+</ull>
+<h2>Debug</h2>
+<p>
+JActor has a debug mode. And when running in debug mode, additional checking is done that
+is likely too slow for production use. But it can be great when testing.
+Debug mode is set by assigning "true" to the jactor.debug system property.
+For example, you can turn debug mode on by adding this parameter when running JActor:
+</p>
+<pre>
+-Djactor.debug=true
+</pre>
+<p>
+One of the things that jactor does when in debug mode is to track all pending requests.
+They are kept in the pendingRequests variable in each Facility instance.
+</p>
+<pre>
+    /**
+     * When DEBUG, pendingRequests holds the active requests ordered by timestamp.
+     */
+    public final ConcurrentSkipListMap<Long, Set<RequestBase>> pendingRequests =
+            Plant.DEBUG ? new ConcurrentSkipListMap<Long, Set<RequestBase>>() : null;
+</pre>
+<p>
+One fairly common bug is when no response is passed back for a request. This can cause an
+application to hang unexpectedly. Difficult to debug without some means of finding the pending requests.
+Fortunately, the presence of this type of bug is quickly discovered in unit testing.
+</p>
+<h2>Configuration</h2>
+<p>
+When no other configuration is specified, the 
+PlantConfiguration
+<a href="../../api/org/agilewiki/jactor2/core/plant/PlantConfiguration.html">PlantConfiguration</a>
+class is used.
+</p>
+<p>
+To change the configuration, you first subclass PlantConfiguration.
+You can then create an instance of the subclass and pass it as a parameter to the
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html">Plant</a>
+constructor. Or you can set a system property to the name of the subclass when running JActor:
+</p>
+<pre>
+-Djactor.configurationClass=SubclassOfPlantConfiguration
+</pre>
+</body>
+</html>

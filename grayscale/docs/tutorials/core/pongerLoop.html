@@ -1,0 +1,109 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; PongerLoop
+</p>
+<h1>PongerLoop - Direct Method calls per Second</h1>
+<p>
+Direct method calls are quite fast, even with checks for thread safety. 
+We will use <a href="java7/PongerLoop.java">PongerLoop</a>, an external sync request
+that logically extends Ponger, to see just how fast direct access can be.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class PongerLoop extends SyncRequest&lt;Void&gt; {
+    private final Ponger ponger;
+    private final long count;
+
+    public PongerLoop(
+            final Ponger _ponger, 
+            final long _count) {
+        super(_ponger.getReactor());
+        ponger = _ponger;
+        count = _count;
+    }
+    
+    @Override
+    protected Void processSyncRequest() {
+        long i = 0;
+        Reactor reactor = getTargetReactor();
+        while (i < count) {
+            i++;
+            ponger.ping(reactor);
+        }
+        return null;
+    }
+}
+</pre>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>
+</h3>
+<pre>
+public class PongerLoop extends SyncRequest&lt;Void&gt; {
+    ...
+}
+</pre>
+<p>
+PongerLoop extends SyncRequest. The response type is Void.
+This is a form of composition that, in effect, dynamically adds a new type of request to 
+an existing blade.
+</p>
+<h3>
+Directly calling a method on another Blade
+</h3>
+<pre>
+        long i = 0;
+        Reactor reactor = getTargetReactor();
+        while (i < count) {
+            i++;
+            ponger.ping(reactor);
+        }
+</pre>
+<p>
+A direct method call requires the reactor of the request to ensure thread safety.
+Unlike call, no messages are passed between threads and no threads are blocked.
+</p>
+<h3>
+<a href="java7/DirectSpeedReport.java">DirectSpeedReport</a>
+</h3>
+<p>
+DirectSpeedReport is a small program that times the Ponger request and creates a speed report:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
+
+public class DirectSpeedReport {
+    public static void main(final String[] _args) throws Exception {
+        final long count = 500000000L;
+        new Plant();
+        try {
+            Ponger ponger = new Ponger(new BlockingReactor());
+            SyncRequest<Void> startSReq = new PongerLoop(ponger, count);
+            final long before = System.nanoTime();
+            startSReq.call();
+            final long after = System.nanoTime();
+            final long duration = after - before;
+            SpeedReport.print("Direct Timings", duration, count);
+        } finally {
+            Plant.close();
+        }
+    }
+}
+</pre>
+<p>
+DirectSpeedReport uses a BlockingReactor because startRequest will be running to long
+for it to use a NonBlockingReactor.
+</p>
+<pre>
+Direct Timings
+Test duration in nanoseconds: 4083868524
+Number of exchanges: 2000000000
+Exchanges per second: 489731730
+Latency in seconds: 2.041934262E-9
+</pre>
+</body>
+</html>

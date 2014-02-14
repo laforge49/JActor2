@@ -1,0 +1,156 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Modules</a> &gt; PubSub
+</p>
+<h1>PubSub - Publish/Subscribe</h1>
+<p>
+<a href="../../api/org/agilewiki/jactor2/modules/pubSub/RequestBus.html">RequestBus</a>
+provides a means of publishing some content to a set of subscribers.
+The <a href="java7/PubSub.java">PubSub</a> program demonstrates this capability.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+
+import org.agilewiki.jactor2.modules.MPlant;
+import org.agilewiki.jactor2.modules.Printer;
+import org.agilewiki.jactor2.modules.pubSub.IsInstanceFilter;
+import org.agilewiki.jactor2.modules.pubSub.RequestBus;
+import org.agilewiki.jactor2.modules.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.modules.pubSub.Subscription;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+
+public class PubSub {
+    public static void main(final String[] _args) throws Exception {
+        new MPlant();
+        try {
+            Printer printer = Printer.stdoutAReq().call();
+            RequestBus&lt;Object&gt; requestBus =
+                    new RequestBus&lt;Object&gt;(new NonBlockingReactor());
+            Subscriber subscriber =
+                    new Subscriber(new NonBlockingReactor(), requestBus, printer);
+            subscriber.listenAReq().call();
+            Publisher publisher =
+                    new Publisher(new NonBlockingReactor(), requestBus);
+            publisher.goAReq().call();
+        } finally {
+            Plant.close();
+        }
+    }
+}
+</pre>
+<p>
+In this program, the content can be any Object. Two blades are used: (1) Subscriber, which creates 2 subscriptions,
+and (2) Publisher, which publishes several strings and integers.
+</p>
+<h2>
+Publisher
+</h2>
+<p>
+The Publisher blade uses the RequestBus.signalsContentSReq and sendsContentAReq requests to publish a series
+of strings and integers.
+</p>
+<pre>
+class Publisher extends NonBlockingBladeBase {
+    final RequestBus&lt;Object&gt; requestBus;
+
+    Publisher(final NonBlockingReactor _reactor, final RequestBus&lt;Object&gt; _requestBus) 
+            throws Exception {
+        super(_reactor);
+        requestBus = _requestBus;
+    }
+    
+    AsyncRequest&lt;Void&gt; goAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            public void processAsyncRequest() throws Exception {
+                requestBus.signalsContentSReq("start").signal();
+                requestBus.signalsContentSReq(1).signal();
+                requestBus.signalsContentSReq(2).signal();
+                requestBus.signalsContentSReq(3).signal();
+                send(requestBus.sendsContentAReq("done"), this);
+            }
+        };
+    }
+}
+</pre>
+<p>
+As we have seen before, when passing multiple requests between the same two blades we can often use
+signal. But the last request is passed using a send to ensure that processing of all the signals is complete.
+</p>
+<h2>
+Subscriber
+</h2>
+<p>
+The Subscriber blade creates two subscriptions, one for strings and the other for integers, using 
+<a href="../../api/org/agilewiki/jactor2/modules/pubSub/SubscribeAReq.html">SubscribeAReq</a> and
+<a href="../../api/org/agilewiki/jactor2/modules/pubSub/IsInstanceFilter.html">IsInstanceFilter</a>.
+</p>
+<pre>
+class Subscriber extends NonBlockingBladeBase {
+    final RequestBus&lt;Object&gt; requestBus;
+    final Printer printer;
+    int state;
+
+    Subscriber(final NonBlockingReactor _reactor, final RequestBus&lt;Object&gt; _requestBus, final Printer _printer) 
+            throws Exception {
+        super(_reactor);
+        requestBus = _requestBus;
+        printer = _printer;
+    }
+
+    AsyncRequest&lt;Void&gt; listenAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            AsyncResponseProcessor dis = this;
+
+            public void processAsyncRequest() throws Exception {
+                //Creates a subscription that updates the state when an int is passed as content.
+                new SubscribeAReq&lt;Object&gt;(requestBus,
+                        (NonBlockingReactor) getReactor(),
+                        new IsInstanceFilter&lt;Object&gt;(Integer.class)) {
+                    @Override
+                    protected void processContent(Object _content, AsyncRequest&lt;Void&gt; arp)
+                            throws Exception {
+                        //This code is executed safely under the subscriber's reactor/thread.
+                        int oldState = state;
+                        int inc = (Integer) _content;
+                        state = state + inc;
+                        //After printing, a null is passed back to the transaction processor.
+                        arp.send(printer.printlnSReq("" + oldState + " + " + inc + " = " + state), arp);
+                    }
+                }.signal();
+
+                //Creates a subscription that prints any strings received as content.
+                send(new SubscribeAReq&lt;Object&gt;(requestBus,
+                             getReactor(),
+                             new IsInstanceFilter&lt;Object&gt;(String.class)) {
+                         @Override
+                         protected void processContent(Object _content, AsyncRequest&lt;Void&gt; arp)
+                                 throws Exception {
+                            //After printing, a null is passed back to the transaction processor.
+                            arp.send(printer.printlnSReq((String) _content), arp);
+                         }
+                }, dis, null); //A send with 3 arguments means that the response from the request is ignored
+                               //and, in this case, a null is passed back as the response from the listen request.
+            }
+        };
+    }
+}
+</pre>
+<p>
+When the subscriber receives string content, it prints it.
+Subscriber also maintains a state, which is incremented when it receives integer content.
+</p>
+<h2>Output</h2>
+<pre>
+start
+0 + 1 = 1
+1 + 2 = 3
+3 + 3 = 6
+done
+</pre>
+</body>
+</html>

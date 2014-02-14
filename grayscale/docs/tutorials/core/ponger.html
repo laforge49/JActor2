@@ -1,0 +1,346 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Ponger
+</p>
+<h1>Ponger - SyncRequest</h1>
+<p>
+JActor is a framework for ensuring thread safety without locks.
+JActor supports the use of multiple
+<a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html">Reactor</a>s
+which serve as light-weight threads, and which are sometimes called 
+<a href="http://en.wikipedia.org/wiki/Fiber_(computer_science)">fibers</a> or 
+<a href="http://en.wikipedia.org/wiki/E_(programming_language)">vats</a>.
+(JActor actually uses a 
+<a href="http://en.wikipedia.org/wiki/Thread_(computer_science)#Models">M:N threading model</a>.)
+Each reactor, in turn, can have any number of
+<a href="../../api/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>s,
+with each blade having some state that is accessed in a thread-safe way via one or more
+<a href="../../api/org/agilewiki/jactor2/core/requests/Request.html">Request</a>s.
+</p>
+<p>
+There are 5 types of reactors:
+<a href="../../api/org/agilewiki/jactor2/core/reactors/BlockingReactor.html">BlockingReactor</a>,
+<a href="../../api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>,
+<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>,
+<a href="../../api/org/agilewiki/jactor2/core/reactors/SwingBoundReactor.html">SwingBoundReactor</a> and
+<a href="../../api/org/agilewiki/jactor2/core/reactors/ThreadBoundReactor.html">ThreadBoundReactor</a>.
+The most common type of reactor is the NonBlockingReactor, which will be our starting point.
+Non-blocking reactors operate under the assumption that they will not block threads, through locking, I/O
+or long computations.
+</p>
+<p>
+Most blades are specialized and will work with only one type of reactor.
+<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBlade.html">NonBlockingBlade</a>,
+for example, is a type of blade that only works with a NonBlockingReactor. And
+<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html">NonBlockingBladeBase</a>
+is a convenience class used to implement a non-blocking blade.
+Multiple blades can share the same reactor, which introduces an aspect of composition. Such blades
+can safely access each other's state either directly or via simple methods.
+</p>
+<p>
+There are two types of requests:
+<a href="../../api/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>s and
+<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>s.
+Directly callable methods on a blade are also supported,
+but for now we will focus mostly on synchronous requests. 
+Synchronous requests are a lock-free alternative to Java's synchronized.
+</p>
+<p>
+Our first example is 
+<a href="java7/Ponger.java">Ponger</a>,
+a blade with a synchronous request, pingSReq.
+This request returns the number of times it has been invoked:
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class Ponger extends BladeBase {
+    private long count = 0;
+    
+    public Ponger() {
+        _initialize(new NonBlockingReactor();
+    }
+    
+    public Ponger(final Reactor _reactor) {
+        _initialize(_reactor);
+    }
+    
+    private long ping() {
+        count += 1;
+        return count;
+    }
+
+    //Directly callable
+    public long ping(final Reactor _sourceReactor) {
+        directCheck();
+        return ping();
+    }
+
+    public SyncRequest<Long> pingSReq() {
+        return new SyncBladeRequest() {
+            @Override
+            public Long processSyncRequest() {
+                return ping();
+            }
+        };
+    }
+}
+</pre>
+<h3>
+Thread Safety
+</h3>
+<pre>
+    private long count = 0;
+</pre>
+<p>
+The member variable count is private and the only means of updating it are through a
+request or a directly callable method, which makes it thread-safe.
+</p>
+<h3>
+The Reactor
+</h3>
+<pre>
+    public Ponger() {
+        _initialize(new NonBlockingReactor();
+    }
+    
+    public Ponger(final Reactor _reactor) {
+        _initialize(_reactor);
+    }
+</pre>
+<p>
+Every blade needs a reactor before it can send or receive messages.
+Reactors serve both as incoming queues, outgoing message buffers and as light-weight threads.
+</p>
+<p>
+The default constructor creates a NonBlockingReactor. So you can either
+specify a particular reactor, which is useful when sharing reactors between blades, or have a new
+reactor created by default.
+</p>
+<h3>
+Directly Callable Methods
+</h3>
+<pre>
+    //Directly callable
+    public long ping(final Reactor _sourceReactor) {
+        directCheck(_sourceReactor);
+        return ping();
+    }
+</pre>
+<p>
+A request can safely call a method on another blade directly if the calling request and the blade being
+called use the same reactor. A call to the
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#directCheck-org.agilewiki.jactor2.core.reactors.Reactor-">directCheck</a>
+method by the method being directly called ensures that the reactor of the calling request is the same and that the reactor is active.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest</a>
+</h3>
+<pre>
+    public SyncRequest&lt;Long&gt; pingSReq() {
+        return new SyncBladeRequest&lt;Long&gt;() {
+            ...
+        };
+    }
+</pre>
+<p>
+The pingSReq method returns a non-reusable instance of a SyncRequest for accessing the state of the blade.
+Once the caller of the pingSReq method has a SyncRequest there are several different ways to invoke the request,
+as we will see later.
+</p>
+<p>
+SyncBladeRequest is a BladeBase nested class that extends SyncRequest.
+Alternatively, we could use "new SyncRequest&lt;Long&gt;(getReactor())".
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest--">processSyncRequest</a>
+</h3>
+<pre>
+            @Override
+            public Long processSyncRequest() {
+                return ping();
+            }
+</pre>
+<p>
+The processSyncRequest method is called when the SyncRequest is invoked.
+It always runs on the thread of the reactor assigned to the blade,
+regardless of which thread was used to invoke the SyncRequest, making it thread safe.
+</p>
+<h2>
+<a href="java7/PongerTest.java">PongerTest</a>
+</h2>
+<p>
+PongerTest is a simple program that exercises Ponger:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+
+public class PongerTest {
+    public static void main(final String[] _args) throws Exception {
+        new Plant();
+        try {
+            Ponger ponger = new Ponger();
+            long j = ponger.pingSReq().call();
+            if (1 != j)
+                throw new IllegalStateException("unexpected result");
+        } finally {
+            Plant.close();
+        }
+    }
+}
+</pre>
+<table style="border: 2px solid;" bgcolor="lightgray">
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Main Thread
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Non-Blocking Reactor
+</th>
+</tr>
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+PongerTest
+</th>
+<th>
+&nbsp;
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Ponger
+</th>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+create Plant
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+create Ponger
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+call
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+wait
+</td>
+<td style="padding: 5px; text-align: center;">
+---ping-->
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+allocate thread
+</td>
+</tr>
+<tr>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+count += 1
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+wakeup
+</td>
+<td style="padding: 5px; text-align: center;">
+<--response: count---
+</td>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+release thread
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+validate response
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid; padding: 5px;" bgcolor="lightyellow">
+close Plant
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+<td style="padding: 5px;">
+&nbsp;
+</td>
+</tr>
+</table>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html">Plant</a>
+</h3>
+<pre>
+        new Plant();
+        try {
+            ...
+        } finally {
+            Plant.close();
+        }
+</pre>
+<p>
+Every program must have a Plant, which provides a threadpool for the reactors to use.
+But a program will not normally exit until the threadpool is closed. This is done when either
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#close--">Plant.close</a> or
+<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#exit--">Plant.exit</a>
+is called.
+</p>
+<p>
+Plant must be created explicitly, though many of its methods are static. 
+This allows you to change the size of the thread pool, the recovery logic, and many other aspects
+by using an alternate constructor.
+</p>
+<h3>
+<a href="../../api/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
+</h3>
+<pre>
+            long j = ponger.pingSReq().call();
+            if (1 != j)
+                throw new IllegalStateException("unexpected result");
+</pre>
+<p>
+The call method is one of two ways of invoking a synchronous request,
+but <strong>call can not be used from within a request.</strong>
+The call method blocks the main thread until it can return the result passed back from the invoked request.
+</p>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; StackOverflow
+</p>
+<h1>StackOverflow - The StackOverflow<i>Exception</i></h1>
+<p>
+When an uncaught StackOverflowError occurs while processing a request, a
+<a href="../../api/org/agilewiki/jactor2/core/requests/StackOverflowException.html">StackOverflow<i>Exception</i></a>
+is created and passed back to the source of the request.
+This is demonstrated in the <a href="java7/StackOverflow.java">StackOverflow</a> program.
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
+
+public class StackOverflow extends NonBlockingBladeBase {
+    
+    void recur() {
+        recur();
+    }
+
+    SyncRequest<Void> recurSReq() {
+        return new SyncBladeRequest() {
+            @Override
+            public Void processSyncRequest() {
+                recur();
+                return null;
+            }
+        };
+    }
+    
+    public static void main(final String[] args) throws Exception {
+        Plant plant = new Plant();
+        try {
+            new StackOverflow().recurSReq().call();
+        } catch (final ReactorClosedException _rce) {
+            System.out.println("\nCaught " + _rce + "\n");
+        } finally {
+            plant.close();
+        }
+    }
+}
+
+    Output:
+    
+Caught org.agilewiki.jactor2.core.reactors.ReactorClosedException
+[Thread-0] ERROR org.agilewiki.jactor2.core.reactors.Reactor - stack overflow ->
+ reactor close
+
+java.lang.StackOverflowError
+        at StackOverflow.recur(StackOverflow.java:10)
+        at StackOverflow.recur(StackOverflow.java:10)
+        at StackOverflow.recur(StackOverflow.java:10)
+        at StackOverflow.recur(StackOverflow.java:10)
+        at StackOverflow.recur(StackOverflow.java:10)
+        at StackOverflow.recur(StackOverflow.java:10)
+        ...
+</pre>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Reactors
+</p>
+<h1>Reactors - Lightweight Threads</h1>
+<p>
+Reactors manage message flow and serve as lightweight threads.
+A reactor is assigned a thread when it has work to do. 
+The reactor releases the thread
+either when there is nothing left to work on or 
+when the thread follows a message and migrates to another reactor.
+Several different types of reactors are provided:
+</p>
+<table style="border: 2px solid;" bgcolor="lightgray">
+<tr>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Reactor Class
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Implements<br>
+<a href="../../api/org/agilewiki/jactor2/core/reactors/CommonReactor.html">CommonReactor</a>
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Usage
+</th>
+<th style="padding: 5px;" bgcolor="lightyellow">
+Buffered Messages
+</th>
+</tr>
+
+<tr>
+<td style="padding: 5px;" bgcolor="lightyellow">
+<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+True
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+Messages are processed quickly.
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+Disbursed when there are no more messages to be processed.
+</td>
+</tr>
+
+<tr>
+<td style="padding: 5px;" bgcolor="lightyellow">
+<a href="../../api/org/agilewiki/jactor2/core/reactors/BlockingReactor.html">BlockingReactor</a>
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+True
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+Messages may block the thread or perform long computations.
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+Disbursed after processing each message.
+</td>
+</tr>
+
+<tr>
+<td style="padding: 5px;" bgcolor="lightyellow">
+<a href="../../api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+False
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+Requests are processed to completion before the next request is processed.
+However the processing of signals is not constrained.
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+Disbursed after processing each message.
+</td>
+</tr>
+
+<tr>
+<td style="padding: 5px;" bgcolor="lightyellow">
+<a href="../../api/org/agilewiki/jactor2/core/reactors/ThreadBoundReactor.html">ThreadBoundReactor</a>
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+True
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+The reactor always uses the same thread.
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+Disbursed when there are no more messages to be processed.
+</td>
+</tr>
+
+<tr>
+<td style="padding: 5px;" bgcolor="lightyellow">
+<a href="../../api/org/agilewiki/jactor2/core/reactors/SwingBoundReactor.html">SwingBoundReactor</a>
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+True
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+The reactor uses the Swing UI thread.
+</td>
+<td style="padding: 5px;" bgcolor="lightyellow">
+Disbursed when there are no more messages to be processed.
+</td>
+</tr>
+
+</table>
+<h2>
+IsolationReactor
+</h2>
+<p>
+The use of an IsolationReactor is sometimes essential to properly process an asynchronous request.
+This happens when a request accesses the state of the blade,
+sends a request to another reactor,
+and then updates the state of the blade based on its old value.
+This is illustrated by the <a href="java7/Isolation.java">Isolation</a> program:
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.BladeBase;
+import org.agilewiki.jactor2.core.blades.Delay;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+
+public class Isolation extends NonBlockingBladeBase {
+    
+    public static void main(final String[] _args) throws Exception {
+        new Plant();
+        try {
+            Isolation isolation = new Isolation();
+
+            System.out.println("\nBump with NonBlockingReactor\n");
+            Isolate isolate = new Isolate(new NonBlockingReactor());
+            isolation.runAReq(isolate).call();
+            
+            System.out.println("\nBump with IsolationReactor\n");
+            isolate = new Isolate(new IsolationReactor());
+            isolation.runAReq(isolate).call();
+        } finally {
+            Plant.close();
+        }
+    }
+    
+    AsyncRequest&lt;Void&gt; runAReq(final Isolate _isolate) {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            AsyncRequest&lt;Void&gt; dis = this;
+            
+            public void processAsyncRequest() {
+                send(_isolate.bumpAReq(), null);
+                send(_isolate.bumpAReq(), null);
+                send(_isolate.bumpAReq(), dis);
+            }
+        };
+    }
+}
+ 
+class Isolate extends BladeBase { 
+    int state;
+    
+    public Isolate(final Reactor _reactor) {
+        _initialize(_reactor);
+    }
+    
+    AsyncRequest&lt;Void&gt; bumpAReq() {
+        return new AsyncBladeRequest&lt;Void&gt;() {
+            AsyncRequest dis = this;
+
+            public void processAsyncRequest() {
+                int oldState = state;
+                int newState = state + 1;
+                System.out.println("was " + oldState + ", now " + newState); 
+                Delay delay = new Delay();
+                send(delay.sleepSReq(1), new AsyncResponseProcessor<Void>() {
+                    public void processAsyncResponse(Void response) {
+                        state = newState; //belated update
+                        dis.processAsyncResponse(null);
+                    }
+                });
+            }
+        };
+    }
+}
+
+Output:
+
+Bump with NonBlockingReactor
+
+was 0, now 1
+was 0, now 1
+was 0, now 1
+
+Bump with IsolationReactor
+
+was 0, now 1
+was 1, now 2
+was 2, now 3
+</pre>
+</body>
+</html>

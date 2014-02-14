@@ -1,0 +1,85 @@
+<html>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Signals
+</p>
+<h1>Signals - One-way Messages</h1>
+<p>
+In addition to using call, directly callable methods and send, 
+the signal method can be used to pass a request to its target blade for processing.
+Using signals means:
+</p>
+<ul>
+<li>
+Like directly callable methods and send, signal does not block any thread.
+</li>
+<li>
+Unlike call, directly callable methods and send, signal can be used from any thread.
+</li>
+<li>
+Like call and directly callable methods, signal messages are unbuffered--they are sent immediately.
+</li>
+<li>
+Unlike call and send, there is no response passed back from the request passed as a signal.
+And if an exception is thrown and uncaught while processing the request, it is logged rather than being
+passed back to the source of the request.
+</li>
+</ul>
+<p>
+Strange things tend to happen when you overuse signals, as it is easy to fill memory with signals awaiting processing.
+This slows garbage collection and my start the program pagging to disk.
+Signals are supported because there are situations when they are invaluable. But their use is
+not entirely risk free.
+</p>
+<p>
+The <a href="java7/Signals.java">Signals</a> program illustrates the use of signals. 
+</p>
+<pre>
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
+
+public class Signals extends NonBlockingBladeBase {
+    
+    public static void main(final String[] _args) throws Exception {
+        new Plant();
+        try {
+            Signals signals = new Signals();
+            int i = 0;
+            while (i < 10) {
+                i++;
+                signals.printSReq(i).signal();
+            }
+            signals.getReactor().nullSReq().call(); //Force all signals to be processed.
+        } finally {
+            Plant.close();
+        }
+    }
+        
+    SyncRequest<Void> printSReq(final Integer _i) {
+        return new SyncBladeRequest<Void>() {
+            public Void processSyncRequest() {
+                System.out.println(_i);
+                return null;
+            }
+        };
+    }
+}
+
+Output:
+
+Count to 10
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre>
+</body>
+</html>
