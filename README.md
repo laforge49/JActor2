@@ -1,20 +1,14 @@
-Programming for Thread-Safety & Performance
+Multi-threaded Programming for Robustness
 ======
 
-As the number of cores continue to increase, it becomes harder and harder to write software
-that makes effective use of those cores. There are two challenges here.
+JActor2 is a robust actor framework written in Java.
 
-1. The first challenge is to avoid race conditions. This is usually quite difficult as race conditions
-are often quite subtle, hard to spot and impossible to test for.
+Actors are an important innovation as they make it easy to write thread-safe code free of race conditions.
+This is because all operations on the state of an actor are performed using the same thread.
+So operations are performed one at a time, in the same sequence they are received by the actor.
 
-2. The second challenge is to write code that uses multiple threads that runs faster than single-threaded
-code in any but the simplest of cases. Locks cause context switches that result in memory caches having to
-be reloaded. And any data passed between threads similarly must be reloaded into the new thread's memory
-cache.
-
-JActor2 is lock-free code that extends the actor programming paradigm for increased effectiveness
-and ease of use. And its API makes it easy to confirm that the application code is indeed free of
-race conditions.
+Links
+-----
 
 - [Core Tutorial](http://laforge49.github.io/JActor2/docs/tutorials/core/index.html) beta
 - [API](http://laforge49.github.io/JActor2/docs/api/index.html)
