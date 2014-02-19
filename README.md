@@ -21,11 +21,23 @@ At this point neither actor will process any messages.
 Actor deadlocks do not occur in well designed actors. The problem is really that an actor can not be changed
 safely without first considering the design of all the actors it interacts with. In practice, such reviews
 are not always done as thoroughly as they should be and actor deadlocks begin occurring. Common practice is
- to monitor actors and restart them as required.
+to monitor actors and restart them as required.
 
 JActor2 processes messages as they are received. It does not support the processing of selected messages.
 But it does support message-specific state, so that updates to the actor state can be delayed until after
 receiving a response to a message sent to another actor.
+
+Results are Guaranteed
+-----
+
+JActor2 models operations/messages on Java method calls. Operations are implemented using 2-way messaging,
+with the result being returned via a callback. And like a method call, an operation will either return a
+normal result or an exception.
+
+Operations are monitored to make sure they are behaving as expected and if not,
+corrective action is taken and an exception is returned. So if there is a stack overflow error,
+a runtime exception, or even if the operation takes too long to process, the situation is managed and
+an exception is returned on the thread which sent the operation.
 
 Links
 -----
