@@ -111,9 +111,9 @@ are available when the response from actor C is received.
 
 ```java
 
-    class AA extends NonBlockingBladeBase {
+    class A extends NonBlockingBladeBase {
         class Start extends AsyncBladeRequest<Void> {
-            BB b = new BB();
+            B b = new B();
 
             AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
                 @Override
@@ -130,8 +130,8 @@ are available when the response from actor C is received.
         }
     }
 
-    class BB extends NonBlockingBladeBase {
-        private CC c = new CC();
+    class B extends NonBlockingBladeBase {
+        private C c = new C();
         private int count;
 
         class AddValue extends AsyncBladeRequest<Void> {
@@ -151,7 +151,7 @@ are available when the response from actor C is received.
         }
     }
 
-    class CC extends NonBlockingBladeBase {
+    class C extends NonBlockingBladeBase {
         class Value extends AsyncBladeRequest<Integer> {
             @Override
             public void processAsyncRequest() {
