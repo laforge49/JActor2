@@ -74,6 +74,12 @@ processAsyncResponse method on the AsyncResponseProcessor object that was assign
     }
 ```
 
+```java
+class is() {
+    it
+}
+```
+
 Things get just a bit more interesting when actor B wants to send a request to actor C
 while processing the request from actor A. The problem is that while the response from actor C is pending,
 actor C will continue to receive and process other messages. Fortunately requests are single-use first class
