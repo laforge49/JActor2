@@ -83,7 +83,7 @@ processAsyncResponse method on the AsyncResponseProcessor object that was assign
             };
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 send(b.new Add1(), startResponse);
             }
         }
@@ -95,7 +95,7 @@ processAsyncResponse method on the AsyncResponseProcessor object that was assign
         class Add1 extends AsyncBladeRequest<Void> {
 
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncRequest() {
                 count += 1;
                 processAsyncResponse(null);
             }
@@ -107,9 +107,59 @@ Things get just a bit more interesting when actor B wants to send a request to a
 while processing the request from actor A. The problem is that while the response from actor C is pending,
 actor C will continue to receive and process other messages. Fortunately requests are single-use first class
 objects. So any intermediate results can be saved in the request's own member variables and
-are available when the response from actor C is received. (Note that to make this work, the
-AsyncResponseProcessor passed with the request sent to actor C must be an anonymous class created
-within the context of the request passed from actor A.)
+are available when the response from actor C is received.
+
+```java
+
+    class AA extends NonBlockingBladeBase {
+        class Start extends AsyncBladeRequest<Void> {
+            BB b = new BB();
+
+            AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(Void _response) {
+                    System.out.println("added value");
+                    Start.this.processAsyncResponse(null);
+                }
+            };
+
+            @Override
+            public void processAsyncRequest() {
+                send(b.new AddValue(), startResponse);
+            }
+        }
+    }
+
+    class BB extends NonBlockingBladeBase {
+        private CC c = new CC();
+        private int count;
+
+        class AddValue extends AsyncBladeRequest<Void> {
+
+            AsyncResponseProcessor<Integer> valueResponse = new AsyncResponseProcessor<Integer>() {
+                @Override
+                public void processAsyncResponse(Integer _response) {
+                   count += _response;
+                   AddValue.this.processAsyncResponse(null);
+                }
+            };
+
+            @Override
+            public void processAsyncRequest() {
+                send(c.new Value(), valueResponse);
+            }
+        }
+    }
+
+    class CC extends NonBlockingBladeBase {
+        class Value extends AsyncBladeRequest<Integer> {
+            @Override
+            public void processAsyncRequest() {
+                processAsyncResponse(42);
+            }
+        }
+    }
+```
 
 Results are Guaranteed
 -----

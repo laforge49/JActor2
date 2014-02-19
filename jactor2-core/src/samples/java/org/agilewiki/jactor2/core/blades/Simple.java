@@ -21,14 +21,14 @@ class A extends NonBlockingBladeBase {
 
         AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
             @Override
-            public void processAsyncResponse(Void _response) throws Exception {
+            public void processAsyncResponse(Void _response) {
                 System.out.println("added 1");
                 Start.this.processAsyncResponse(null);
             }
         };
 
         @Override
-        public void processAsyncRequest() throws Exception {
+        public void processAsyncRequest() {
             send(b.new Add1(), startResponse);
         }
     }
