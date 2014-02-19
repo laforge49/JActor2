@@ -68,16 +68,39 @@ adds the request (now a response) to the input queue of actor A.
 5. After processing all other messages received before it, actor A processes the request by calling the
 processAsyncResponse method on the AsyncResponseProcessor object that was assigned to that message.
 
-```
-    this is {
-        it
-    }
-```
-
 ```java
-class is() {
-    it
-}
+
+    class A extends NonBlockingBladeBase {
+        class Start extends AsyncBladeRequest<Void> {
+            B b = new B();
+
+            AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(Void _response) throws Exception {
+                    System.out.println("added 1");
+                    Start.this.processAsyncResponse(null);
+                }
+            };
+
+            @Override
+            public void processAsyncRequest() throws Exception {
+                send(b.new Add1(), startResponse);
+            }
+        }
+    }
+
+    class B extends NonBlockingBladeBase {
+        private int count;
+
+        class Add1 extends AsyncBladeRequest<Void> {
+
+            @Override
+            public void processAsyncRequest() throws Exception {
+                count += 1;
+                processAsyncResponse(null);
+            }
+        }
+    }
 ```
 
 Things get just a bit more interesting when actor B wants to send a request to actor C
