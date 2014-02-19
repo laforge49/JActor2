@@ -3,7 +3,6 @@ Robust and Composable Actors
 
 Actors are an important innovation as they make it easy to write thread-safe code free of race conditions.
 This is because all changes to the state of an actor are made using the same thread.
-
 But there are several problems with actors as they are generally conceived:
 
 - Actors provide 1-way messaging with problematic support for request/response.
@@ -15,22 +14,21 @@ garbage collection and gives rise to the occasional out-of-memory error.
 Actor Deadlocks
 -----
 
-Even when actors do not lock threads, deadlocks can occur because many actor frameworks support
-selected message processing.
-For example, actor A can send message X to actor B and then will not process any other type of message except
-a message that is a response to message X.
-Meanwhile actor B can send message Y to actor A and is not processing any other type of message except
-a message that is a response to message Y.
-At this point neither actor will process any messages.
+Actors generally implement request/response in two ways, either by blocking the thread until a response is
+received or by selecting only the expected response message for processing. Either way, there is the
+possibility of a deadlock occurring, depending on the design of the actor to which the request is sent.
 
-Actor deadlocks do not occur in well designed actors. The problem is really that an actor can not be changed
-safely without first considering the design of all the actors it interacts with. In practice, such reviews
-are not always done as thoroughly as they should be and actor deadlocks begin occurring. Common practice is
-to monitor actors and restart them as required.
+The simplest case of deadlock is when two actors each send a request to the other. At this point, neither
+actor will process any further messages. A review of each actor in isolation will not reveal any problems,
+as this is a case of actor coupling.
 
-JActor2 processes messages as they are received. It does not support the processing of selected messages.
-But it does support message-specific state, so that updates to the actor state can be delayed until after
-receiving a response to a message sent to another actor.
+Unfortunately, this problem rarely comes up in simple designs or initial implementations. It is only as
+the code matures and the complexity increases that deadlocks begin to occur. Supervisors detect such failed
+actors and restart them, which in tern gives rise to the increased chance that messages will be lost. So
+timeouts are often added, further increasing the complexity of the code and potentially giving rise to an
+increasing frequency of deadlocks.
+
+Coupling, as we all know, is a bad thing.
 
 Results are Guaranteed
 -----
