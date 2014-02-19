@@ -39,6 +39,18 @@ corrective action is taken and an exception is returned. So if there is a stack 
 a runtime exception, or even if the operation takes too long to process, the situation is managed and
 an exception is returned on the thread which sent the operation.
 
+Architecture
+-----
+
+Actors in JActor2 are called reactors. Reactors are extended by adding blades.
+
+A blade has state and a reference to its reactor. A blade defines the operations on its state. Blades can
+also directly call methods on other blades that are part of the same reactor.
+
+Operations are called requests and are first class objects. An operation is defined as a class or as an
+anonymous or nested class within a blade. A request is complete when there is a result and the request is
+passed back to the originator of the request.
+
 Links
 -----
 
