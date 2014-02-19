@@ -1,4 +1,4 @@
-Robust and Composable Actors
+Actors are Flawed
 =====
 
 Actors are an important innovation as they make it easy to write thread-safe code free of race conditions.
@@ -30,6 +30,28 @@ increasing frequency of deadlocks.
 
 Coupling, as we all know, is a bad thing.
 
+Introducing JActor2
+=====
+
+JActor2 is a robust Java framework for composable actors. But before diving into the details, we should
+first define a few terms:
+
+- An actor in JActor2 is called **reactor** and is a kind of light-weight thread.
+Reactors are extended by adding blades.
+- A message is called **request** and is a first class single-use objects.
+A request is defined as a class or as an anonymous or nested class within a blade.
+Requests are bound to a reactor and are evaluated (executed)
+only on the reactor's thread.
+After a request has been evaluated and has a result, it becomes a response
+and is passed back to the reactor which originated the request.
+- When a request is sent by one actor to another actor, a callback is assigned to the request.
+The callback is a subclass of **AsyncResponseProcessor** and has a single method, processAsyncResponse.
+And when a response is passed back to the originating reactor, this method is called on the thread of
+the originating actor.
+- A **blade** has state and a reference to the reactor it is a part of.
+A blade defines the requests which operate on its state.
+Blades (and requests) can also directly call methods on other blades that are part of the same reactor.
+
 Results are Guaranteed
 -----
 
@@ -41,18 +63,6 @@ Operations are monitored to make sure they are behaving as expected and if not,
 corrective action is taken and an exception is returned. So if there is a stack overflow error,
 a runtime exception, or even if the operation takes too long to process, the situation is managed and
 an exception is returned on the thread which sent the operation.
-
-Architecture
------
-
-Actors in JActor2 are called reactors. Reactors are extended by adding blades.
-
-A blades have state and a reference to the reactor they are a part of. A blade defines the operations on its state.
-Blades can also directly call methods on other blades that are part of the same reactor.
-
-Operations are called requests and are first class objects. An operation is defined as a class or as an
-anonymous or nested class within a blade. A request is complete when there is a result and the request is
-passed back to the originator of that request.
 
 Links
 -----
