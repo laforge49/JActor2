@@ -1,11 +1,16 @@
-Multi-threaded Programming for Robustness
------
-
-JActor2 is a robust actor framework written in Java.
+Robust and Composable Actors
+=====
 
 Actors are an important innovation as they make it easy to write thread-safe code free of race conditions.
-This is because all operations/messages on the state of an actor are performed using the same thread.
-So operations/messages are performed one at a time, in the same sequence they are received by the actor.
+This is because all changes to the state of an actor are made using the same thread.
+
+But there are several problems with actors as they are generally conceived:
+
+- Actors provide 1-way messaging with problematic support for request/response.
+And there is no assurance that a response will be received.
+- Excessive dependency on 1-way messaging sometimes leads to message flooding, which slows
+garbage collection and gives rise to the occasional out-of-memory error.
+- Actors tend to be fragile, with restarts by supervisors and consequently the potential for lost messages.
 
 Actor Deadlocks
 -----
@@ -44,12 +49,12 @@ Architecture
 
 Actors in JActor2 are called reactors. Reactors are extended by adding blades.
 
-A blade has state and a reference to its reactor. A blade defines the operations on its state. Blades can
-also directly call methods on other blades that are part of the same reactor.
+A blades have state and a reference to the reactor they are a part of. A blade defines the operations on its state.
+Blades can also directly call methods on other blades that are part of the same reactor.
 
 Operations are called requests and are first class objects. An operation is defined as a class or as an
 anonymous or nested class within a blade. A request is complete when there is a result and the request is
-passed back to the originator of the request.
+passed back to the originator of that request.
 
 Links
 -----
