@@ -217,6 +217,10 @@ request, but that is simply not possible. So we use an **ExceptionHandler** inst
 When a request does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
 to the originating request. Exceptions then are handled very much as they are when doing a method call.
 
+There is a huge advantage to this approach. When a request is sent, the originating request will **always** get
+back either a result or an exception. So you do not need to write a lot of defensive code, making your applications
+easier to write and naturally more robust.
+
 Results are Guaranteed
 -----
 
