@@ -59,7 +59,7 @@ Request/Response
 
 A basic request/response is fairly simple. Let use say that reactor A wants to send a request to reactor B.
 
-1. Reactor A first creates a request that is defined within reactor B and sends it,
+1. Reactor A first creates a request that is defined within (and targets) reactor B and sends it,
 together with an AsyncResponseProcessor.
 2. The AsyncResponseProcessor object is saved in the request when it is sent. The request is added to
 reactor B's input queue.
