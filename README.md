@@ -1,7 +1,8 @@
 Actors are Flawed
 =====
 
-Actors are an important innovation as they make it easy to write thread-safe code free of race conditions.
+[Actors](http://en.wikipedia.org/wiki/Actor_model)
+are an important innovation as they make it easy to write thread-safe code free of race conditions.
 This is because all changes to the state of an actor are made using the same thread.
 But there are several problems with actors as they are generally conceived:
 
