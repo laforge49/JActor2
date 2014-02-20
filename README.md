@@ -272,4 +272,4 @@ Links
 - Dependencies: slf4j, guava
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-- [JActor](../JActor) - the predecessor to JActor2
+- [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
