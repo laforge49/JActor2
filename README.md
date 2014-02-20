@@ -185,11 +185,11 @@ request, but that is simply not possible. So we use an **ExceptionHandler** inst
             ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
                 @Override
                 public void processException(final Exception _e,
-                                             final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                                             final AsyncResponseProcessor<Void> _arp)
                         throws Exception {
                     if (_e instanceof IOException) {
                         System.out.println("got IOException");
-                        _asyncResponseProcessor.processAsyncResponse(null);
+                        _arp.processAsyncResponse(null);
                     } else
                         throw _e;
                 }
