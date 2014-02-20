@@ -221,17 +221,33 @@ There is a huge advantage to this approach. When a request is sent, the originat
 back either a result or an exception. So you do not need to write a lot of defensive code, making your applications
 easier to write and naturally more robust.
 
-Results are Guaranteed
+Partial Failure
 -----
 
-JActor2 models operations/messages on Java method calls. Operations are implemented using 2-way messaging,
-with the result being returned via a callback. And like a method call, an operation will either return a
-normal result or an exception.
+Reactors can be closed and when they are,
+all pending requests sent to them are passed back a **ReactorClosedException**.
+And once closed, all subsequent requests immediately receive a ReactorClosedException.
 
-Operations are monitored to make sure they are behaving as expected and if not,
-corrective action is taken and an exception is returned. So if there is a stack overflow error,
-a runtime exception, or even if the operation takes too long to process, the situation is managed and
-an exception is returned on the thread which sent the operation.
+When JActor detects a problem that can result in corrupted state while a request is being processed,
+the default reaction is to log the problem and close the reactor. Some examples:
+
+- An uncaught RuntimeException is thrown.
+- A StackOverflowError is thrown.
+- A message takes too long to process.
+- A message is processed, no response has been passed back, and there are no pending requests. (Hung request.)
+
+The ReactorClosedException itself is a RuntimeException, so if a request's ExceptionHandler rethrows it, then
+the request's reactor is also thrown. So it is important to catch this exception at the points where a partial
+failure can be handled.
+
+The key here is that any sufficiently large program will have bugs, and isolating a failure to a few reactors
+can be very important. The failed reactors can then be optionally restarted.
+
+Summary
+=====
+
+We have looked at some of the key aspects of JActor2, but much remains. The API is extensive and supports a wide
+range of multi-threading requirements.
 
 Links
 -----
