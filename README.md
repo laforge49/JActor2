@@ -179,6 +179,6 @@ Links
 - [Core Tutorial](http://laforge49.github.io/JActor2/docs/tutorials/core/index.html) beta
 - [API](http://laforge49.github.io/JActor2/docs/api/index.html)
 - [Downloads](http://laforge49.github.io/JActor2/downloads)
-- Dependencies: lsf4j, guava
+- Dependencies: slf4j, guava
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
