@@ -38,7 +38,7 @@ Jactor2 is not just another actor framework.
 JActor2 is a robust Java framework for composable actors,
 inspired by Alan Kay's early thoughts on
 [Objects](http://c2.com/cgi/wiki?AlanKaysDefinitionOfObjectOriented).
-It is also a partial rewrite of the older JActor project.
+It is also a partial rewrite of the older [JActor project](https://github.com/laforge49/JActor).
 But before diving into the details, we should
 first define a few terms:
 
