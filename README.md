@@ -264,7 +264,8 @@ Summary
 =====
 
 We have looked at some of the key aspects of JActor2, but much remains. The API is extensive and supports a wide
-range of multi-threading requirements.
+range of multi-threading requirements. A good next step would be to look at the
+[core tutorial](http://laforge49.github.io/JActor2/docs/tutorials/core/index.html).
 
 Links
 -----
