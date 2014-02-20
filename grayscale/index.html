@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>JActor - Java Actor Implementation</title>
+    <title>JActor - Robust Java Actor Framework </title>
 
     <!-- Bootstrap Core CSS -->
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -31,7 +31,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand" href="#page-top">
-                     JActor - A Java Actor Implementation.
+                     Rock Solid Java Actors.
                 </a>
             </div>
 
@@ -42,17 +42,20 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
+		    <li class="page-scroll">
+                        <a href="#faq">FAQ</a>
+                    </li>
                     <li class="page-scroll">
-                        <a href="#home">Home</a>
+                        <a href="#home">Documentation</a>
                     </li>
                     <li class="page-scroll">
                         <a href="#products">Products</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#downloads">Downloads</a>
+                        <a href="#downloads">Download</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#events">Events</a>
+                        <a href="#code">Code</a>
                     </li>               
                     <li class="page-scroll">
                         <a href="#community">Community</a>
@@ -136,19 +139,41 @@
         </div>
     </section>
 
+   <section id="faq" class="content-section text-center">
+        <div class="download-section">
+            <div class="container">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h5>What is JActor2?</h5>
+                    <p> JActor2 is Java Lock Free Concurrent Framework</p>
+                    <h5> Why do we require Concurrent Programming?</h5>
+                    <p> The Moore's law(http://en.wikipedia.org/wiki/Moore%27s_law) is not longer valid and the hardware vendors have started putting more CPU cores to boost the processor speed. Writing application to take advantage of the multi core system require to write concurrent application. Here is the basics about the concurrency
+http://en.wikipedia.org/wiki/Concurrent_computing</p>
+		    <h5>Where do we require Concurrent Programming?</h5>
+                    <p> The Moore's law is no longer working and therefore hardware vendors are pushing for multicore processors, read this for more details
+http://www.gotw.ca/publications/concurrency-ddj.htm
+We need Concurrent Programming to leverage the compute utilization from multicore machines. Imagine of deploying the application on machine with 10's and 100's of cores, will the application perform well, will it scale etc.... We need to design/write Concurrent application to address this issue. 
+		    </p>
+		    <h5>How do we write a traditional Concurrent Programming?</h5>
+                    <p> Typical concurrent applications are written using multi threads which prone to deadlocks if not written properly, JActor provides an alternate means to write an Concurrent applications which are easy to maintain.We will see it down.</p>
+		    <h5>What issue do we get writing a Concurrent Programs in a traditional way?</h5>
+                    <p> 
+    			Hard to Write Correctly.
+			Harder to Maintain.
+		    </p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="home" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Solving a major issue</h2>
                 <p>Vertical scaling is today a major issue when writing server code. Threads and locks are the traditional approach to making full utilization of fat (multi-core) computers, but the result is code that is difficult to maintain and which to often does not run much faster than single-threaded code.</p>
 		<p>Actors make good use of fat computers but tend to be slow as messages are passed between threads. Attempts to optimize actor-based programs results in actors with multiple concerns (loss of modularity) and lots of spaghetti code.</p>
-		<p>The approach used by JActor is to minimize the messages passed between threads by executing the messages sent to idle actors on the same thread used by the actor which sent the message. Message buffering is used when messages must be sent between threads, and two-way messaging is used for implicit flow control. The result is an approach that is easy to maintain and which, with a bit of care to the architecture, provides extremely high rates of throughput.</p>
-		<p>On an Intel i7, between 80 and 200 million messages, depending on the mode of transport, can be passed between actors in the same JVM per second–several orders of magnitude faster than comparable actor frameworks.
-A fully durable in-memory database was also developed as a proof of concept, which processes transactions at a rate of 1 million per second when using an SSD for the backing store. Again, this is orders of magnitude greater than comparable approaches.*
-
-Our products are Open Source (LGPL). We offer both consulting and seminars to help you best leverage our products.
-
-Test Environment: i7-3770 @ 3.40 GHz ASUS P8Z77-M Motherboard 16 GB Corsair DDR3 1600 MHz RAMVertex 3 SATA III SSD</p>
+		<p>The approach used by JActor is to minimize the messages passed between threads by executing the messages sent to idle actors on the same thread used by the actor which sent the message. Message buffering is used when messages must be sent between threads, and two-way messaging is used for implicit flow control. The result is an approach that is easy to maintain and which, with a bit of care to the architecture, provides extremely high rates of throughput.</p>		
+<a href="https://github.com/laforge49/JActor2/blob/master/README.md" class="btn btn-default btn-lg">Read Documentation</a>
             </div>
         </div>
     </section>
@@ -158,8 +183,7 @@ Test Environment: i7-3770 @ 3.40 GHz ASUS P8Z77-M Motherboard 16 GB Corsair DDR3
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
                     <h2>Products JActor</h2>
-                    <p>To Be Done</p>
-                    <a href="http://laforge49.github.io/JActor2/downloads" class="btn btn-default btn-lg">Visit Download Page</a>
+                    <p>In Progress, will come soon</p>                   
                 </div>
             </div>
         </div>
@@ -169,26 +193,20 @@ Test Environment: i7-3770 @ 3.40 GHz ASUS P8Z77-M Motherboard 16 GB Corsair DDR3
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <h2>Download JActor</h2>
-                    <p>Product 	Desecription 	Dependencies
-JActor 	High-throughput Java Actor framework 	Java 6, slf4j
-JID 	Java Incremental Deserialization/reserialization 	Java 6, slf4j, JActor
-JASocket 	Mobile Agent Cluster 	Java 7, sshd, jline, joda-time, slf4j, JActor, JID
-JFile 	High-performance in-memory Database 	Java 7, joda-time, slf4j, JActor, JID
-JAConfig 	Basic cluster management 	Java 7, sshd, jline, joda-time, slf4j, JActor, JID, JASocket, JFile</p>
-                    <a href="http://laforge49.github.io/JActor2/downloads" class="btn btn-default btn-lg">Visit Download Page</a>
+                    <h2>JActor2 Releases</h2>
+                    <a href="http://laforge49.github.io/JActor2/downloads/0.8.0/index.html" class="btn btn-default btn-lg">Download 0.8.0 release</a><br>
+<a href="http://laforge49.github.io/JActor2/downloads" class="btn btn-default btn-lg">Older Releases</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="events" class="content-section text-center">
+    <section id="code" class="content-section text-center">
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <h2>Events</h2>
-                    <p>To Be Done</p>
-                    <a href="http://laforge49.github.io/JActor2/downloads" class="btn btn-default btn-lg">Visit Download Page</a>
+                    <p>The source code can be download from the github location, we are looking for all forms of contribution could be code documentation, writing tutorial application, code contribution, feature implementation.</p>
+                    <a href="http://laforge49.github.io/JActor2/downloads" class="btn btn-default btn-lg">Git Source</a>
                 </div>
             </div>
         </div>
@@ -198,9 +216,8 @@ JAConfig 	Basic cluster management 	Java 7, sshd, jline, joda-time, slf4j, JActo
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <h2>Community Area</h2>
-                    <p>To Be Done</p>
-                    <a href="https://groups.google.com/forum/#!forum/agilewikidevelopers" class="btn btn-default btn-lg">Start Contributing</a>
+                    <p>Jactor2 community could be contacted here. All the questions related to JActor2 would be answered here.</p>
+                    <a href="https://groups.google.com/forum/#!forum/agilewikidevelopers" class="btn btn-default btn-lg">Connect to Group</a>
                 </div>
             </div>
         </div>
