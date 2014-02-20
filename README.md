@@ -33,7 +33,9 @@ Coupling, as we all know, is a bad thing.
 Introducing JActor2
 =====
 
-JActor2 is a robust Java framework for composable actors. But before diving into the details, we should
+JActor2 is a robust Java framework for composable actors.
+It is also a partial rewrite of the older JActor project.
+But before diving into the details, we should
 first define a few terms:
 
 - An actor in JActor2 is called **reactor** and is a kind of light-weight thread.
@@ -258,3 +260,4 @@ Links
 - Dependencies: slf4j, guava
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+- [JActor](../JActor) - the predecessor to JActor2
