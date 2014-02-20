@@ -24,7 +24,7 @@ as this is a case of actor coupling.
 
 Unfortunately, this problem rarely comes up in simple designs or initial implementations. It is only as
 the code matures and the complexity increases that deadlocks begin to occur. Supervisors detect such failed
-actors and restart them, which in tern gives rise to the increased chance that messages will be lost. So
+actors and restart them, which in turn gives rise to the increased chance that messages will be lost. So
 timeouts are often added, further increasing the complexity of the code and potentially giving rise to an
 increasing frequency of deadlocks.
 
