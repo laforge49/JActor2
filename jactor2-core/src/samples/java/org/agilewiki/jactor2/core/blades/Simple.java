@@ -40,7 +40,7 @@ class B extends NonBlockingBladeBase {
     class Add1 extends AsyncBladeRequest<Void> {
 
         @Override
-        public void processAsyncRequest() throws Exception {
+        public void processAsyncRequest() {
             count += 1;
             processAsyncResponse(null);
         }

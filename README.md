@@ -161,6 +161,62 @@ are available when the response from actor C is received.
     }
 ```
 
+Exceptions
+-----
+
+When an exception is raised and uncaught while processing a request, the natural thing to do is to pass that exception
+back to the originating request. It would be nice to use try/catch to intercept that exception in the originating
+request, but that is simply not possible. So we use an **ExceptionHandler** instead.
+
+```java
+
+    class A extends NonBlockingBladeBase {
+        class Start extends AsyncBladeRequest<Void> {
+            B b = new B();
+
+            AsyncResponseProcessor<Void> woopsResponse = new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(Void _response) {
+                    System.out.println("can not get here!");
+                    Start.this.processAsyncResponse(null);
+                }
+            };
+
+            ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
+                @Override
+                public void processException(final Exception _e,
+                                             final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        throws Exception {
+                    if (_e instanceof IOException) {
+                        System.out.println("got IOException");
+                        _asyncResponseProcessor.processAsyncResponse(null);
+                    } else
+                        throw _e;
+                }
+            };
+
+            @Override
+            public void processAsyncRequest() {
+                setExceptionHandler(exceptionHandler);
+                send(b.new Woops(), woopsResponse);
+            }
+        }
+    }
+
+    class B extends NonBlockingBladeBase {
+        class Woops extends AsyncBladeRequest<Void> {
+
+            @Override
+            public void processAsyncRequest() throws IOException {
+                throw new IOException();
+            }
+        }
+    }
+```
+
+When a request does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
+to the originating request. Exceptions then are handled very much as they are when doing a method call.
+
 Results are Guaranteed
 -----
 
