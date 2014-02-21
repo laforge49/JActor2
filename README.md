@@ -254,7 +254,7 @@ the default reaction is to log the problem and close the reactor. Some examples:
 - A message takes too long to process.
 - A message is processed, no response has been passed back, and there are no pending requests. (Hung request.)
 
-The ReactorClosedException itself is a RuntimeException, so if a request's ExceptionHandler rethrows
+The ReactorClosedException itself is a RuntimeException, and if a request's ExceptionHandler rethrows
 ReactorClosedException, then the request's reactor is also closed.
 So it is important to catch this exception at the points where a partial failure can be handled.
 
