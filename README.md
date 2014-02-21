@@ -268,6 +268,25 @@ We have looked at some of the key aspects of JActor2, but much remains. The API 
 range of multi-threading requirements. A good next step would be to look at the
 [core tutorial](http://laforge49.github.io/JActor2/docs/tutorials/core/index.html).
 
+Roadmap
+=====
+
+- JActor2 core (beta)
+    - The implementation needs a good review and updated javadocs. Important for advanced users who want to add
+    features.
+    - The tests could use some cleanup as well as better coverage of the core.
+- JActor2 modules (alpha)
+    - A  classpath loader is needed so different modules can access different jar files.
+    - The API needs cleaning up and the javadocs updated.
+    - Integration of facilities with ZooKeeper would move JActor nicely towards cluster support.
+    - The tutorial needs a lot of work.
+- JActor2 web (new)
+    - Integration of JActor2 with something like netty's web server would make it easier to use JActor2 based servlets.
+- JActor2 util (alpha)
+    - The code needs a good rework, using composition to simplify the API much the same way it was done in core.
+    A super high-speed serialization library is important, but no if no one understands how to use it.
+    - A tutorial is needed.
+
 Links
 -----
 
