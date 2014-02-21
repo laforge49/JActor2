@@ -143,22 +143,19 @@
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <h5>What is JActor2?</h5>
+                    <h5> <i>What is JActor2?</h5>
                     <p> JActor2 is Java Lock Free Concurrent Framework</p>
-                    <h5> Why do we require Concurrent Programming?</h5>
-                    <p> The Moore's law(http://en.wikipedia.org/wiki/Moore%27s_law) is not longer valid and the hardware vendors have started putting more CPU cores to boost the processor speed. Writing application to take advantage of the multi core system require to write concurrent application. Here is the basics about the concurrency
-http://en.wikipedia.org/wiki/Concurrent_computing</p>
-		    <h5>Where do we require Concurrent Programming?</h5>
-                    <p> The Moore's law is no longer working and therefore hardware vendors are pushing for multicore processors, read this for more details
-http://www.gotw.ca/publications/concurrency-ddj.htm
-We need Concurrent Programming to leverage the compute utilization from multicore machines. Imagine of deploying the application on machine with 10's and 100's of cores, will the application perform well, will it scale etc.... We need to design/write Concurrent application to address this issue. 
+                    <h5> <i>Why do we require Concurrent Programming?</i></h5>
+                    <p> The <a href="http://en.wikipedia.org/wiki/Moore%27s_law">Moore's law</a> is not longer valid and the hardware vendors have started putting more CPU cores to boost the processor speed, read <a href="http://www.gotw.ca/publications/concurrency-ddj.htm">this</a> for more details. Writing application to take advantage of the multi core system requires to write concurrent application. Here are basics about the
+<a href="http://en.wikipedia.org/wiki/Concurrent_computing">Concurrency</a></p>
+		    <h5> <i>Where do we require Concurrent Programming?</h5>
+                    <p>We need Concurrent Programming model to leverage the compute utilization of multicore systems. Imagine deploying the application on machine with 10's or 100's of cores, will the application perform well, will it scale etc.... Application Developers need to write application to address these issue which is harder for the mainstream developers.
 		    </p>
-		    <h5>How do we write a traditional Concurrent Programming?</h5>
-                    <p> Typical concurrent applications are written using multi threads which prone to deadlocks if not written properly, JActor provides an alternate means to write an Concurrent applications which are easy to maintain.We will see it down.</p>
-		    <h5>What issue do we get writing a Concurrent Programs in a traditional way?</h5>
+		    <h5>How do we write a traditional Concurrent Program?</h5>
+                    <p> Traditional concurrent applications are designed using multi threads which are prone to deadlocks if not written properly; JActor provides an alternate means to write an Concurrent applications which are easy to maintain.</p>
+		    <h5>What issues do we get writing a Concurrent Program in a traditional way?</h5>
                     <p> 
-    			Hard to Write Correctly.
-			Harder to Maintain.
+    			Coding multithreaded application correctly is hard to do and diffucult to maintain.Jactor takes the burden of designing concurrency from developers and let them focus on writing the business logic for multicore systems which are inevitable.
 		    </p>
 
                 </div>
@@ -170,10 +167,13 @@ We need Concurrent Programming to leverage the compute utilization from multicor
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Solving a major issue</h2>
-                <p>Vertical scaling is today a major issue when writing server code. Threads and locks are the traditional approach to making full utilization of fat (multi-core) computers, but the result is code that is difficult to maintain and which to often does not run much faster than single-threaded code.</p>
+                <p>Vertical scaling today is a major issue when writing server code. Threads and locks are the traditional approach to making full utilization of fat (multi-core) computers, but the result is code that is difficult to maintain and which too often does not run much faster than single-threaded code.</p>
 		<p>Actors make good use of fat computers but tend to be slow as messages are passed between threads. Attempts to optimize actor-based programs results in actors with multiple concerns (loss of modularity) and lots of spaghetti code.</p>
-		<p>The approach used by JActor is to minimize the messages passed between threads by executing the messages sent to idle actors on the same thread used by the actor which sent the message. Message buffering is used when messages must be sent between threads, and two-way messaging is used for implicit flow control. The result is an approach that is easy to maintain and which, with a bit of care to the architecture, provides extremely high rates of throughput.</p>		
-<a href="https://github.com/laforge49/JActor2/blob/master/README.md" class="btn btn-default btn-lg">Read Documentation</a>
+		<p>The approach used by JActor is to minimize the messages passed between threads by executing the messages sent to idle actors on the same thread used by the actor which sent the message. Message buffering is used when messages must be sent between threads, and two-way messaging is used for implicit flow control. The result is an approach that is easy to maintain and which, with a bit of care to the architecture, provides extremely high rates of throughput.
+<a href="https://github.com/laforge49/JActor2/blob/master/README.md" >Click</a> for more documentation.
+</p>
+		
+
             </div>
         </div>
     </section>
@@ -182,8 +182,8 @@ We need Concurrent Programming to leverage the compute utilization from multicor
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <h2>Products JActor</h2>
-                    <p>In Progress, will come soon</p>                   
+                    <h5>Products</h5>
+                    <p><a href="https://github.com/laforge49/JActor2">JActor2</> - Robust Java Actor Framework.</p>                   
                 </div>
             </div>
         </div>
@@ -205,7 +205,7 @@ We need Concurrent Programming to leverage the compute utilization from multicor
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <p>The source code can be download from the github location, we are looking for all forms of contribution could be code documentation, writing tutorial application, code contribution, feature implementation.</p>
+                    <p>The source code can be download from the github location, we are looking for all forms of contribution it could be code documentation, writing tutorials, code contribution, feature implementation.</p>
                     <a href="http://laforge49.github.io/JActor2/downloads" class="btn btn-default btn-lg">Git Source</a>
                 </div>
             </div>
@@ -216,8 +216,8 @@ We need Concurrent Programming to leverage the compute utilization from multicor
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <p>Jactor2 community could be contacted here. All the questions related to JActor2 would be answered here.</p>
-                    <a href="https://groups.google.com/forum/#!forum/agilewikidevelopers" class="btn btn-default btn-lg">Connect to Group</a>
+                    <p>Jactor2 community could be contacted on JActor <a href="https://groups.google.com/forum/#!forum/agilewikidevelopers">forum</a>, All the questions related to JActor2 should be posted on forum.</p>
+                    
                 </div>
             </div>
         </div>
