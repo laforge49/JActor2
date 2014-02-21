@@ -119,8 +119,9 @@ processAsyncResponse method on the AsyncResponseProcessor object that was assign
 
 Things get just a bit more interesting when reactor B wants to send a request to reactor C
 while processing the request from reactor A. The problem is that while the response from reactor C is pending,
-reactor C will continue to receive and process other messages. Fortunately requests are single-use first class
-objects. So any intermediate results can be saved in the request's own member variables and
+reactor B is not blocked and will continue to receive and process other messages.
+Fortunately requests are single-use first class objects.
+So any intermediate results can be saved in the request's own member variables and
 are available when the response from reactor C is received.
 
 ```java
@@ -253,9 +254,9 @@ the default reaction is to log the problem and close the reactor. Some examples:
 - A message takes too long to process.
 - A message is processed, no response has been passed back, and there are no pending requests. (Hung request.)
 
-The ReactorClosedException itself is a RuntimeException, so if a request's ExceptionHandler rethrows it, then
-the request's reactor is also thrown. So it is important to catch this exception at the points where a partial
-failure can be handled.
+The ReactorClosedException itself is a RuntimeException, so if a request's ExceptionHandler rethrows
+ReactorClosedException, then the request's reactor is also closed.
+So it is important to catch this exception at the points where a partial failure can be handled.
 
 The key here is that any sufficiently large program will have bugs, and isolating a failure to a few reactors
 can be very important. The failed reactors can then be optionally restarted.
@@ -273,7 +274,7 @@ Links
 - [Core Tutorial](http://laforge49.github.io/JActor2/docs/tutorials/core/index.html) beta
 - [API](http://laforge49.github.io/JActor2/docs/api/index.html)
 - [Downloads](http://laforge49.github.io/JActor2/downloads)
-- Dependencies: slf4j, guava
+- Dependencies: [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 - [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
