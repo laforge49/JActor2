@@ -280,12 +280,17 @@ Roadmap
     - The API needs cleaning up and the javadocs updated.
     - Integration of facilities with ZooKeeper would move JActor nicely towards cluster support.
     - The tutorial needs a lot of work.
+- JActor2 logback (new)
+    - Integration with [logback](http://logback.qos.ch/) would provide added support for clusters.
 - JActor2 web (new)
     - Integration of JActor2 with something like netty's web server would make it easier to use JActor2 based servlets.
 - JActor2 util (alpha)
     - The code needs a good rework, using composition to simplify the API much the same way it was done in core.
     A super high-speed serialization library is important, but no if no one understands how to use it.
     - A tutorial is needed.
+- JActor2 db (new)
+    - A high-performance database with live backups that builds on JActor2 serialization and distributed logging
+    could be very useful in building scalable applications.
 
 Links
 -----
