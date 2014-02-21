@@ -170,7 +170,7 @@
                 <p>Vertical scaling today is a major issue when writing server code. Threads and locks are the traditional approach to making full utilization of fat (multi-core) computers, but the result is code that is difficult to maintain and which too often does not run much faster than single-threaded code.</p>
 		<p>Actors make good use of fat computers but tend to be slow as messages are passed between threads. Attempts to optimize actor-based programs results in actors with multiple concerns (loss of modularity) and lots of spaghetti code.</p>
 		<p>The approach used by JActor is to minimize the messages passed between threads by executing the messages sent to idle actors on the same thread used by the actor which sent the message. Message buffering is used when messages must be sent between threads, and two-way messaging is used for implicit flow control. The result is an approach that is easy to maintain and which, with a bit of care to the architecture, provides extremely high rates of throughput.
-<a href="https://github.com/laforge49/JActor2/blob/master/README.md" >Click</a> for more documentation.
+<a href="https://github.com/laforge49/JActor2#readme" >Click</a> for more documentation.
 </p>
 		
 
