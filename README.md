@@ -282,6 +282,11 @@ Roadmap
     - The tutorial needs a lot of work.
 - JActor2 logback (new)
     - Integration with [logback](http://logback.qos.ch/) would provide added support for clusters.
+    - [Groovy](http://logback.qos.ch/manual/groovy.html) can be used for logback configuration.
+    [ServerSocketAppender](http://logback.qos.ch/manual/appenders.html) and
+    [SocketReceiver](http://logback.qos.ch/manual/receivers.html) can used to pass the logs.
+    This would allow us to have multiple nodes that do the file logging. These nodes then would need
+    to be configured with one SocketReceiver per ZooKeeper node of interest.
 - JActor2 web (new)
     - Integration of JActor2 with something like netty's web server would make it easier to use JActor2 based servlets.
 - JActor2 util (alpha)
