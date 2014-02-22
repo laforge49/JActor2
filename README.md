@@ -43,11 +43,11 @@ But before diving into the details, we should
 first define a few terms:
 
 - An actor in JActor2 is called
-[reactor](http://laforge49.github.io/JActor2/docs/api/org/agilewiki/jactor2/core/reactors/package-summary.html)
+[reactor](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/package-summary.html)
 and is a kind of light-weight thread.
 Reactors are extended by adding blades.
 - A message is called
-[request](http://laforge49.github.io/JActor2/docs/api/org/agilewiki/jactor2/core/requests/package-summary.html)
+[request](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/package-summary.html)
 and is a first class single-use objects.
 A request is defined as a class or as an anonymous or nested class within a blade.
 Requests are bound to a reactor and are evaluated (executed)
@@ -56,12 +56,12 @@ After a request has been evaluated and has a result, it becomes a response
 and is passed back to the reactor which originated the request.
 - When a request is sent by one actor to another actor, a callback is assigned to the request.
 The callback is a subclass of
-[AsyncResponseProcessor](http://laforge49.github.io/JActor2/docs/api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html)
+[AsyncResponseProcessor](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html)
 and has a single method, processAsyncResponse.
 And when a response is passed back to the originating reactor, this method is called on the thread of
 the originating actor.
 - A
-[blade](http://laforge49.github.io/JActor2/docs/api/org/agilewiki/jactor2/core/blades/package-summary.html)
+[blade](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/blades/package-summary.html)
 has state and a reference to the reactor it is a part of.
 A blade defines the requests which operate on its state.
 Blades (and requests) can also directly call methods on other blades that are part of the same reactor.
@@ -182,7 +182,7 @@ Exceptions
 When an exception is raised and uncaught while processing a request, the natural thing to do is to pass that exception
 back to the originating request. It would be nice to use try/catch to intercept that exception in the originating
 request, but that is simply not possible. So we use an
-[ExceptionHandler](http://laforge49.github.io/JActor2/docs/api/org/agilewiki/jactor2/core/requests/ExceptionHandler.html)
+[ExceptionHandler](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/ExceptionHandler.html)
 instead.
 
 ```java
@@ -243,7 +243,7 @@ Partial Failure
 
 Reactors can be closed and when they are,
 all pending requests sent to them are passed back a
-[ReactorClosedException](http://laforge49.github.io/JActor2/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html).
+[ReactorClosedException](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html).
 And once closed, all subsequent requests immediately receive a ReactorClosedException.
 
 When JActor detects a problem that can result in corrupted state while a request is being processed,
@@ -266,7 +266,7 @@ Summary
 
 We have looked at some of the key aspects of JActor2, but much remains. The API is extensive and supports a wide
 range of multi-threading requirements. A good next step would be to look at the
-[core tutorial](http://laforge49.github.io/JActor2/docs/tutorials/core/index.html).
+[core tutorial](http://agilewiki.org/docs/tutorials/core/index.html).
 
 Roadmap
 =====
@@ -295,9 +295,9 @@ Roadmap
 Links
 -----
 
-- [Core Tutorial](http://laforge49.github.io/JActor2/docs/tutorials/core/index.html) beta
-- [API](http://laforge49.github.io/JActor2/docs/api/index.html)
-- [Downloads](http://laforge49.github.io/JActor2/downloads)
+- [Core Tutorial](http://agilewiki.org/docs/tutorials/core/index.html) beta
+- [API](http://agilewiki.org/docs/api/index.html)
+- [Downloads](http://agilewiki.org/downloads)
 - Dependencies: [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
