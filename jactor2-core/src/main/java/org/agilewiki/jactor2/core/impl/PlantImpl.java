@@ -42,6 +42,7 @@ public class PlantImpl {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
+        ThreadBoundReactorImpl.removeReactor();
         singleton = this;
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");

@@ -28,7 +28,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         Thread thread = Thread.currentThread();
         if (thread instanceof ReactorPoolThread)
             return ((ReactorPoolThread) thread).getCurrentReactorImpl();
-        return ThreadBoundReactorImpl.getCurrentReactorImpl();
+        return ThreadBoundReactorImpl.threadReactor();
     }
 
     public Recovery recovery;

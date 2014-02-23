@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
@@ -215,7 +216,9 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         if (Thread.currentThread() instanceof ReactorPoolThread) {
             throw new UnsupportedOperationException(
                     "Use of call on a ReactorPoolThread can result in a deadlock");
-        }
+        } else if (PlantImpl.DEBUG && ThreadBoundReactorImpl.threadReactor() != null)
+            throw new UnsupportedOperationException(
+                    "Use of call on a Thread bound to a reactor can result in a deadlock "+ThreadBoundReactorImpl.threadReactor());
         requestSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);

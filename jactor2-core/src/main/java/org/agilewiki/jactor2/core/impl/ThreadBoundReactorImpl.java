@@ -17,6 +17,10 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
         return threadReactor.get();
     }
 
+    public static void removeReactor() {
+        threadReactor.remove();
+    }
+
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
      */
