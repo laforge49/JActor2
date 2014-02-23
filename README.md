@@ -301,8 +301,8 @@ Links
 -----
 
 - [Core Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html) beta
-- [API](http://agilewiki.org/docs/api/index.html)
-- [Downloads](http://agilewiki.org/downloads)
+- [API](http://www.agilewiki.org/docs/api/index.html)
+- [Downloads](http://www.agilewiki.org/downloads)
 - Dependencies: [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
