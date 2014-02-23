@@ -24,6 +24,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * Base class for targetReactor.
  */
 abstract public class ReactorImpl extends BladeBase implements Closeable, Runnable, RequestSource {
+    public static ReactorImpl getCurrentReactorImpl() {
+        Thread thread = Thread.currentThread();
+        if (thread instanceof ReactorPoolThread)
+            return ((ReactorPoolThread) thread).getCurrentReactorImpl();
+        return ThreadBoundReactorImpl.getCurrentReactorImpl();
+    }
+
     public Recovery recovery;
 
     public PlantScheduler plantScheduler;

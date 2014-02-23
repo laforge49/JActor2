@@ -10,6 +10,13 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ThreadBoundReactorImpl extends ReactorImpl {
 
+    private static final ThreadLocal<ThreadBoundReactorImpl> threadReactor =
+            new ThreadLocal<ThreadBoundReactorImpl>();
+
+    public static ThreadBoundReactorImpl threadReactor() {
+        return threadReactor.get();
+    }
+
     /**
      * The boundProcessor.run method is called when there are messages to be processed.
      */
@@ -25,6 +32,12 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
     @Override
     public ThreadBoundReactor asReactor() {
         return (ThreadBoundReactor) getReactor();
+    }
+
+    @Override
+    public void run() {
+        threadReactor.set(this);
+        super.run();
     }
 
     @Override

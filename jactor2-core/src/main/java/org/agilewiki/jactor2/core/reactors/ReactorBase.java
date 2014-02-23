@@ -10,6 +10,14 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
  * Base class for reactors.
  */
 abstract public class ReactorBase implements Reactor {
+    /**
+     * Returns the reactor of the current thread.
+     *
+     * @return The reactor of the current thread, or null.
+     */
+    public static Reactor getCurrentReactor() {
+        return ReactorImpl.getCurrentReactorImpl().asReactor();
+    }
 
     private ReactorImpl reactorImpl;
 

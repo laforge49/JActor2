@@ -24,7 +24,7 @@ public class ReactorPoolThread extends Thread {
      *
      * @return The current reactor, or null.
      */
-    public UnboundReactorImpl getCurrentReactor() {
+    public UnboundReactorImpl getCurrentReactorImpl() {
         return currentReactor;
     }
 
