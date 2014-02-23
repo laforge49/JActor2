@@ -300,7 +300,7 @@ Roadmap
 Links
 -----
 
-- [Core Tutorial](http://agilewiki.org/docs/tutorials/core/index.html) beta
+- [Core Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html) beta
 - [API](http://agilewiki.org/docs/api/index.html)
 - [Downloads](http://agilewiki.org/downloads)
 - Dependencies: [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/)
