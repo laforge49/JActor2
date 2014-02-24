@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
@@ -111,7 +110,9 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         return targetReactorImpl;
     }
 
-    public Reactor getTargetReactor() { return targetReactor; }
+    public Reactor getTargetReactor() {
+        return targetReactor;
+    }
 
     @Override
     public RequestSource getRequestSource() {
@@ -157,18 +158,10 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      *                           that originally invoked this method. If null, then no response is returned.
      */
     public void doSend(final ReactorImpl _source,
-                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
+                       final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
         final ReactorImpl source = (ReactorImpl) _source;
-        if (PlantImpl.DEBUG) {
-            if (source instanceof ThreadBoundReactorImpl) {
-                if (Thread.currentThread() instanceof ReactorPoolThread) {
-                    throw new IllegalStateException("send from wrong thread");
-                }
-            } else {
-                if (source.getThreadReference().get() != Thread.currentThread()) {
-                    throw new IllegalStateException("send from wrong thread");
-                }
-            }
+        if (PlantImpl.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
+            throw new IllegalStateException("send from wrong thread");
         }
         if (!source.isRunning()) {
             throw new IllegalStateException(
@@ -218,7 +211,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
                     "Use of call on a ReactorPoolThread can result in a deadlock");
         } else if (PlantImpl.DEBUG && ThreadBoundReactorImpl.threadReactor() != null)
             throw new UnsupportedOperationException(
-                    "Use of call on a Thread bound to a reactor can result in a deadlock "+ThreadBoundReactorImpl.threadReactor());
+                    "Use of call on a Thread bound to a reactor can result in a deadlock " + ThreadBoundReactorImpl.threadReactor());
         requestSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
@@ -244,25 +237,13 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * @return True when this is the first response.
      */
     protected boolean processObjectResponse(final Object _response) {
-        if (PlantImpl.DEBUG) {
-            if (targetReactor instanceof ThreadBoundReactorImpl) {
-                if (Thread.currentThread() instanceof ReactorPoolThread) {
-                    final IllegalStateException ex = new IllegalStateException(
-                            "response from wrong thread");
-                    targetReactor.asReactorImpl().getLogger().error(
-                            "response from wrong thread", ex);
-                    throw ex;
-                }
-            } else {
-                if (targetReactorImpl.getThreadReference().get() != Thread
-                        .currentThread()) {
-                    final IllegalStateException ex = new IllegalStateException(
-                            "response from wrong thread");
-                    targetReactor.asReactorImpl().getLogger().error(
-                            "response from wrong thread", ex);
-                    throw ex;
-                }
-            }
+        if (PlantImpl.DEBUG && targetReactorImpl.getThreadReference().get() != Thread
+                .currentThread()) {
+            final IllegalStateException ex = new IllegalStateException(
+                    "response from wrong thread");
+            targetReactor.asReactorImpl().getLogger().error(
+                    "response from wrong thread", ex);
+            throw ex;
         }
         if (!incomplete) {
             return false;
@@ -354,10 +335,12 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     abstract protected void processRequestMessage() throws Exception;
 
     @Override
-    public void responseReceived(RequestImpl request) {}
+    public void responseReceived(RequestImpl request) {
+    }
 
     @Override
-    public void responseProcessed() {}
+    public void responseProcessed() {
+    }
 
     /**
      * Process a response.
