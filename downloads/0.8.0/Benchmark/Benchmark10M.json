@@ -1,0 +1,28 @@
+{
+"cols": [
+{"label": "method", "type": "string"},
+{"label": "Average time [s]", "type": "number"},
+{"label": "StdDev", "type": "number"},
+{"label": "GC time [s]", "type": "number"},
+{"label": "GC average [s]", "type": "number"},
+{"label": "StdDev", "type": "number"},
+{"label": "GC calls", "type": "number"},
+{"label": "benchmark rounds", "type": "number"},
+{"label": "warmup rounds", "type": "number"},
+{"label": "Total benchmark time", "type": "number"},
+{"label": "Total warmup time", "type": "number"}
+],
+"rows": [
+{"c": [{"v": "testJActor2NonBlocking"}, {"v": 6.51}, {"v": 0.12}, {"v": 0.18}, {"v": 0.0}, {"v": 0.0}, {"v": 335}, {"v": 3}, {"v": 3}, {"v": 19.52}, {"v": 19.38}]},
+{"c": [{"v": "testKilimDirectTask"}, {"v": 26.41}, {"v": 0.18}, {"v": 0.27}, {"v": 0.0}, {"v": 0.0}, {"v": 569}, {"v": 3}, {"v": 3}, {"v": 79.23}, {"v": 89.75}]},
+{"c": [{"v": "testJActorBlocking"}, {"v": 92.27}, {"v": 0.21}, {"v": 1.85}, {"v": 0.0}, {"v": 0.0}, {"v": 3509}, {"v": 3}, {"v": 3}, {"v": 276.81}, {"v": 264.14}]},
+{"c": [{"v": "testAkkaNonBlocking"}, {"v": 6.57}, {"v": 0.03}, {"v": 0.21}, {"v": 0.0}, {"v": 0.0}, {"v": 331}, {"v": 3}, {"v": 3}, {"v": 19.7}, {"v": 19.72}]},
+{"c": [{"v": "testAkkaBlocking"}, {"v": 20.33}, {"v": 1.33}, {"v": 13.12}, {"v": 0.0}, {"v": 0.0}, {"v": 159}, {"v": 3}, {"v": 3}, {"v": 61.0}, {"v": 68.67}]},
+{"c": [{"v": "testThreadWithBlockingQueue"}, {"v": 72.22}, {"v": 5.29}, {"v": 0.04}, {"v": 0.0}, {"v": 0.0}, {"v": 20}, {"v": 3}, {"v": 3}, {"v": 216.65}, {"v": 225.41}]},
+{"c": [{"v": "testExecutorService"}, {"v": 8.59}, {"v": 0.05}, {"v": 0.02}, {"v": 0.0}, {"v": 0.0}, {"v": 19}, {"v": 3}, {"v": 3}, {"v": 25.77}, {"v": 24.1}]},
+{"c": [{"v": "testDirect"}, {"v": 0.06}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 0.0}, {"v": 2}, {"v": 3}, {"v": 3}, {"v": 0.17}, {"v": 0.14}]},
+{"c": [{"v": "testJetLang"}, {"v": 1.94}, {"v": 0.01}, {"v": 0.05}, {"v": 0.0}, {"v": 0.0}, {"v": 34}, {"v": 3}, {"v": 3}, {"v": 5.83}, {"v": 5.84}]},
+{"c": [{"v": "testJActorIterator"}, {"v": 0.34}, {"v": 0.02}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 8}, {"v": 3}, {"v": 3}, {"v": 1.01}, {"v": 1.0}]},
+{"c": [{"v": "testJActor2SharedNonBlocking"}, {"v": 2.95}, {"v": 0.0}, {"v": 0.06}, {"v": 0.0}, {"v": 0.0}, {"v": 36}, {"v": 3}, {"v": 3}, {"v": 8.85}, {"v": 9.13}]},
+{"c": [{"v": "testJActorStackOverflow"}, {"v": 1.67}, {"v": 0.02}, {"v": 0.04}, {"v": 0.0}, {"v": 0.0}, {"v": 12}, {"v": 3}, {"v": 3}, {"v": 5.02}, {"v": 4.96}]}
+]}
