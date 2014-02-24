@@ -31,6 +31,11 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         return ThreadBoundReactorImpl.threadReactor();
     }
 
+    /**
+     * A reference to the thread that is executing this targetReactor.
+     */
+    protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
+
     public Recovery recovery;
 
     public PlantScheduler plantScheduler;
@@ -121,6 +126,15 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     @Override
     public CloseableImpl asCloseableImpl() {
         return closeableImpl;
+    }
+
+    /**
+     * Returns the atomic reference to the current thread.
+     *
+     * @return The atomic reference to the current thread.
+     */
+    public AtomicReference<Thread> getThreadReference() {
+        return threadReference;
     }
 
     public Reactor getParentReactor() {
@@ -421,13 +435,6 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         }
         inbox.requestEnd(_message);
     }
-
-    /**
-     * Returns the atomic reference to the current thread.
-     *
-     * @return The atomic reference to the current thread.
-     */
-    abstract public AtomicReference<ReactorPoolThread> getThreadReference();
 
     /**
      * Returns true when there is code to be executed when the inbox is emptied.

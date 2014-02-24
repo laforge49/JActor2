@@ -66,7 +66,7 @@ public final class ReactorPoolThreadManager {
                         taskRequest.acquire();
                         UnboundReactorImpl reactor = reactors.poll();
                         if (reactor != null) {
-                            AtomicReference<ReactorPoolThread> threadReference = reactor
+                            AtomicReference<Thread> threadReference = reactor
                                     .getThreadReference();
                             if ((threadReference.get() == null)
                                     && threadReference.compareAndSet(null,

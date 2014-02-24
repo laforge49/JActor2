@@ -40,18 +40,16 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
 
     @Override
     public void run() {
+        threadReference.set(Thread.currentThread());
         threadReactor.set(this);
         super.run();
+        threadReactor.remove();
+        threadReference.set(null);
     }
 
     @Override
     protected void notBusy() throws Exception {
         flush();
-    }
-
-    @Override
-    public AtomicReference<ReactorPoolThread> getThreadReference() {
-        throw new UnsupportedOperationException();
     }
 
     @Override

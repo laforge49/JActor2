@@ -16,11 +16,6 @@ import java.util.concurrent.atomic.AtomicReference;
 abstract public class UnboundReactorImpl extends ReactorImpl {
 
     /**
-     * A reference to the thread that is executing this targetReactor.
-     */
-    protected final AtomicReference<ReactorPoolThread> threadReference = new AtomicReference<ReactorPoolThread>();
-
-    /**
      * The object to be run when the inbox is emptied and before the threadReference is cleared.
      */
     public Runnable onIdle;
@@ -28,11 +23,6 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
     public UnboundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
-    }
-
-    @Override
-    public AtomicReference<ReactorPoolThread> getThreadReference() {
-        return threadReference;
     }
 
     @Override
@@ -88,9 +78,9 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
                 if (!iter.hasNext() && _mayMigrate
                         && (target instanceof UnboundReactorImpl)) {
                     if (!target.isRunning()) {
-                        final ReactorPoolThread currentThread = threadReference.get();
+                        final Thread currentThread = threadReference.get();
                         final UnboundReactorImpl targ = (UnboundReactorImpl) target;
-                        final AtomicReference<ReactorPoolThread> targetThreadReference = targ
+                        final AtomicReference<Thread> targetThreadReference = targ
                                 .getThreadReference();
                         if ((targetThreadReference.get() == null)
                                 && targetThreadReference.compareAndSet(null,
