@@ -6,7 +6,7 @@ of robust applications.
 Background
 =====
 
-Multi-threading
+Multi-threading with Locks
 -----
 
 Computers continue to increase in power, but they do so by adding more processing cores.
@@ -25,13 +25,19 @@ When more than one lock is used, a deadlock can result if the locks are not alwa
 order. The requirement of maintaining a consistent locking order sometimes becomes difficult as well, as the order must
 be global in scope.
 
-Actors
+Multi-threading with Actors
 =====
 
-[Actors](http://en.wikipedia.org/wiki/Actor_model)
-are an important innovation as they make it easy to write thread-safe code free of race conditions.
-This is because all changes to the state of an actor are made using the same thread.
-But there are several problems with actors as they are generally conceived:
+[Actors](http://en.wikipedia.org/wiki/Actor_model) are an alternative strategy to multi-threading with locks.
+Actors are light-weight threads which interact via messages passed between them. Each actor has a queue of
+pending messages (an inbox). And there is typically a thread pool used to process a queue of inactive actors
+which have messages pending. Once an actor receives control, i.e. is assigned a thread, it process its pending
+messages until there are non remaining and then releases the thread.
+
+An actor never receives control from more than one thread at a time.
+So the messages sent to an actor are processed one at a time.
+This is how race conditions are prevented.
+But there are several problems with actors:
 
 - Actors provide 1-way messaging with problematic support for request/response.
 And there is no assurance that a response will be received.
@@ -39,8 +45,10 @@ And there is no assurance that a response will be received.
 garbage collection and gives rise to the occasional out-of-memory error.
 - Actors tend to be fragile, with restarts by supervisors and consequently the potential for lost messages.
 
-Actors generally implement request/response in two ways, either by blocking the thread until a response is
-received or by selecting only the expected response message for processing. Either way, there is the
+Actors generally implement request/response (2-way messaging) in one of two ways,
+either by blocking the thread until a response is
+received, or by selecting only the expected response message for processing and processing other messages
+only after the response has been processed. Either way, there is the
 possibility of a deadlock occurring, depending on the design of the actor to which the request is sent.
 
 The simplest case of deadlock is when two actors each send a request to the other. At this point, neither
