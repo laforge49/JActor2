@@ -1,22 +1,31 @@
 JActor2 is a multi-threaded OO programming model,
-inspired by Alan Kay's early thoughts on Objcets. (See
-[http://c2.com/cgi/wiki?AlanKaysDefinitionOfObjectOriented](http://c2.com/cgi/wiki?AlanKaysDefinitionOfObjectOriented).)
+inspired by Alan Kay's early thoughts on [Objects](http://c2.com/cgi/wiki?AlanKaysDefinitionOfObjectOriented).
 JActor2 is based on asynchronous 2-way messaging with assured responses, which lends itself to the development
 of robust applications.
 
 Background
 =====
 
-Multi-threading has become more important than ever
+Multi-threading
 -----
 
 Computers continue to increase in power, but they do so by adding more processing cores.
 Over time then, applications which are not able to make use of all the threads supported by the newer
 computers will end up using a smaller and smaller proportion of the available resources.
 
-...
+Problems often arise when more than one thread is executing the same code. Some code is thread-safe, meaning that
+more than one thread can execute it at the some time. But when code is not thread-safe, there can be non-deterministic
+behavior, called race conditions, which vary depending on the exact order of execution and on if both threads share the
+same memory cache.
 
-Actors are Flawed
+Race conditions need to be identified and the unsafe code is typically surrounded by a lock which prevents more than
+one code from executing the same code at the same time. But the identification of race conditions is often difficult,
+and the use of locks can slow execution considerably.
+When more than one lock is used, a deadlock can result if the locks are not always used by all thread in the same
+order. The requirement of maintaining a consistent locking order sometimes becomes difficult as well, as the order must
+be global in scope.
+
+Actors
 =====
 
 [Actors](http://en.wikipedia.org/wiki/Actor_model)
@@ -29,9 +38,6 @@ And there is no assurance that a response will be received.
 - Excessive dependency on 1-way messaging sometimes leads to message flooding, which slows
 garbage collection and gives rise to the occasional out-of-memory error.
 - Actors tend to be fragile, with restarts by supervisors and consequently the potential for lost messages.
-
-Actor Deadlocks
------
 
 Actors generally implement request/response in two ways, either by blocking the thread until a response is
 received or by selecting only the expected response message for processing. Either way, there is the
@@ -52,7 +58,7 @@ Coupling, as we all know, is a bad thing.
 Introducing JActor2
 =====
 
-Jactor2 is not just another actor framework.
+JActor2 is not just another actor framework.
 JActor2 is a robust Java framework for composable actors,
 It is also a partial rewrite of the older [JActor](https://github.com/laforge49/JActor) project.
 But before diving into the details, we should
