@@ -1,3 +1,21 @@
+JActor2 is a multi-threaded OO programming model,
+inspired by Alan Kay's early thoughts on Objcets. (See
+[http://c2.com/cgi/wiki?AlanKaysDefinitionOfObjectOriented](http://c2.com/cgi/wiki?AlanKaysDefinitionOfObjectOriented).)
+JActor2 is based on asynchronous 2-way messaging with assured responses, which lends itself to the development
+of robust applications.
+
+Background
+=====
+
+Multi-threading has become more important than ever
+-----
+
+Computers continue to increase in power, but they do so by adding more processing cores.
+Over time then, applications which are not able to make use of all the threads supported by the newer
+computers will end up using a smaller and smaller proportion of the available resources.
+
+...
+
 Actors are Flawed
 =====
 
@@ -36,8 +54,6 @@ Introducing JActor2
 
 Jactor2 is not just another actor framework.
 JActor2 is a robust Java framework for composable actors,
-inspired by Alan Kay's early thoughts on
-[Objects](http://c2.com/cgi/wiki?AlanKaysDefinitionOfObjectOriented).
 It is also a partial rewrite of the older [JActor](https://github.com/laforge49/JActor) project.
 But before diving into the details, we should
 first define a few terms:
@@ -116,6 +132,8 @@ processAsyncResponse method on the AsyncResponseProcessor object that was assign
         }
     }
 ```
+
+![Image](pic1.jpg)
 
 Things get just a bit more interesting when reactor B wants to send a request to reactor C
 while processing the request from reactor A. The problem is that while the response from reactor C is pending,
