@@ -118,17 +118,6 @@ Request/Response
 A basic request/response is fairly simple. Let use say that a Start request in blade A wants to send
 an Add1 request to blade B.
 
-1. The Start request first creates the Add1 request that is defined within (and targets) blade B and sends it,
-together with an AsyncResponseProcessor callback.
-2. The callback is saved in the Add1 request when it is sent and the request is added to
-the input queue of Blade B's reactor.
-3. Reactor B evaluates the Add1 request after processing all other messages received before it. The Add1 request
-updates its blade's state and then calls its processAsyncRequest method with the response value.
-4. When the Add1.processAsyncRequest method is called, it saves the response value and
-adds itself (now a response) to the input queue of blade A's reactor.
-5. After processing all other messages received before it, reactor A processes the Add1 response by calling the
-processAsyncResponse method on the previously assigned callback object.
-
 ```java
 
     class A extends NonBlockingBladeBase {
@@ -163,6 +152,17 @@ processAsyncResponse method on the previously assigned callback object.
         }
     }
 ```
+
+1. The Start request first creates the Add1 request that is defined within (and targets) blade B and sends it,
+together with an AsyncResponseProcessor callback.
+2. The callback is saved in the Add1 request when it is sent and the request is added to
+the input queue of Blade B's reactor.
+3. Reactor B evaluates the Add1 request after processing all other messages received before it. The Add1 request
+updates its blade's state and then calls its processAsyncRequest method with the response value.
+4. When the Add1.processAsyncRequest method is called, it saves the response value and
+adds itself (now a response) to the input queue of blade A's reactor.
+5. After processing all other messages received before it, reactor A processes the Add1 response by calling the
+processAsyncResponse method on the previously assigned callback object.
 
 ![Image](pic1.jpg)
 
