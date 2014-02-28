@@ -26,7 +26,7 @@ order. The requirement of maintaining a consistent locking order sometimes becom
 be global in scope.
 
 Multi-threading with Actors
-=====
+-----
 
 [Actors](http://en.wikipedia.org/wiki/Actor_model) are an alternative strategy to multi-threading with locks.
 Actors are light-weight threads which interact via messages passed between them. Each actor has a queue of
