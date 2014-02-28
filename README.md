@@ -182,12 +182,12 @@ Let use say that a Start request in blade A wants to send an Add1 request to bla
     }
 ```
 
-1. Blade B is created in the constructor of the Start request.
+1. Blade B is created in the constructor of the Start request, along with startResponse.
 2. The Start request is added to the inbox of blade A's reactor.
 3. Blade A's reactor evaluates the Start request. The Start request creates the Add1 request and adds it
 to the inbox of Blade B's reactor.
-4. Blade B's reactor evaluates the Add1 request. The Add1 request adds 1 to Blade B's count.
-5. The Add1 request is assigned a result value of null and is passed back to Blade A's reactor.
+4. Blade B's reactor evaluates the Add1 request. The Add1 request adds 1 to blade B's count.
+5. The Add1 request is assigned a result value of null and is passed back to blade A's reactor.
 6. The startResponse callback is evaluated by blade A's reactor. The callback prints "added 1".
 7. The Start request is assigned a result value of null and is passed back to the reactor which originated the
 Start request.
@@ -248,6 +248,18 @@ instead.
         }
     }
 ```
+
+1. Blade B is created in the constructor of the Start request, along with the woopsResponse and the exceptionHandler.
+2. The Start request is added to the inbox of blade A's reactor.
+3. Blade A's reactor evaluates the Start request.
+The start request is assigned the exceptionHandler.
+A Woops request is created and added to the inbox of blade B's reactor.
+4. Blade B's reactor evaluates the Woops request,
+which throws an IOException.
+5. The Woops request is assigned a result value of IOException and is passed back to to blade A's reactor.
+6. The exceptionHandler is evaluated by blade A's reactor with a value of IOException, which.
+prints "got IOException"
+7. The Start request is assigned a result value of null and is passed back to the reactor which originated the Start request.
 
 When a request does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
 to the originating request. Exceptions then are handled very much as they are when doing a method call.
