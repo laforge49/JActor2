@@ -137,7 +137,7 @@ public class M {
 2. A blade, A, is created, which in turn creates its own reactor.
 3. A request bound to blade A, Start, is created. The Start request is passed to A's reactor and the main thread
 waits for an assured response or an exception. (A
-[RequestClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/RequestClosedException.html)
+[ReactorClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html)
 is thrown if the Start request hangs.)
 4. The plant is closed.
 
