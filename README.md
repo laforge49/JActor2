@@ -115,18 +115,19 @@ the originating actor.
 Request/Response
 -----
 
-A basic request/response is fairly simple. Let use say that reactor A wants to send a request to reactor B.
+A basic request/response is fairly simple. Let use say that a Start request in blade A wants to send
+an Add1 request to blade B.
 
-1. Reactor A first creates a request that is defined within (and targets) reactor B and sends it,
-together with an AsyncResponseProcessor.
-2. The AsyncResponseProcessor object is saved in the request when it is sent. The request is added to
-reactor B's input queue.
-3. Reactor B evaluates the request after processing all other messages received before it,
-updates the reactor's state and then calls the processAsyncRequest method with the response value.
-4. When the procesAsyncRequest method is called on the request, it saves the response value and
-adds the request (now a response) to the input queue of reactor A.
-5. After processing all other messages received before it, reactor A processes the request by calling the
-processAsyncResponse method on the AsyncResponseProcessor object that was assigned to that message.
+1. The Start request first creates the Add1 request that is defined within (and targets) blade B and sends it,
+together with an AsyncResponseProcessor callback.
+2. The callback is saved in the Add1 request when it is sent and the request is added to
+the input queue of Blade B's reactor.
+3. Reactor B evaluates the Add1 request after processing all other messages received before it. The Add1 request
+updates its blade's state and then calls its processAsyncRequest method with the response value.
+4. When the Add1.processAsyncRequest method is called, it saves the response value and
+adds itself (now a response) to the input queue of blade A's reactor.
+5. After processing all other messages received before it, reactor A processes the Add1 response by calling the
+processAsyncResponse method on the previously assigned callback object.
 
 ```java
 
@@ -166,7 +167,7 @@ processAsyncResponse method on the AsyncResponseProcessor object that was assign
 ![Image](pic1.jpg)
 
 Things get just a bit more interesting when reactor B wants to send a request to reactor C
-while processing the request from reactor A. The problem is that while the response from reactor C is pending,
+as part of the processing of the request from reactor A. The problem is that while the response from reactor C is pending,
 reactor B is not blocked and will continue to receive and process other messages.
 Fortunately requests are single-use first class objects.
 So any intermediate results can be saved in the request's own member variables and
