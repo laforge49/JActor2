@@ -32,7 +32,7 @@ Multi-threading with Actors
 Actors are light-weight threads which interact via messages passed between them. Each actor has a queue of
 pending messages (an inbox). And there is typically a thread pool used to process a queue of inactive actors
 which have messages pending. Once an actor receives control, i.e. is assigned a thread, it process its pending
-messages until there are non remaining and then releases the thread.
+messages until there are no remaining and then releases the thread.
 
 An actor never receives control from more than one thread at a time.
 So the messages sent to an actor are processed one at a time.
@@ -66,21 +66,29 @@ Coupling, as we all know, is a bad thing.
 Introducing JActor2
 =====
 
-JActor2 is not just another actor framework.
-JActor2 is a robust Java framework for composable actors,
-It is also a partial rewrite of the older [JActor](https://github.com/laforge49/JActor) project.
-But before diving into the details, we should
-first define a few terms:
+JActor2 differs from other actor frameworks in several ways:
 
-- An actor in JActor2 is called
-[reactor](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/package-summary.html)
-and is a kind of light-weight thread.
-Reactors are extended by adding blades.
-- A message is called
-[request](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/package-summary.html)
-and is a first class single-use objects.
-A request is defined as a class or as an anonymous or nested class within a blade.
-Requests are bound to a reactor and are evaluated (executed)
+1. Request messages single-use and are bound to the actor they operate on, providing a context for subsequent
+interaction with other actors.
+2. Uncaught exceptions and responses are passed back to the context from which a request originated,
+modeling the way exceptions and return values are handled with Java method calls.
+3. For every request that is sent to another actor, there is every assurance that a response or exception
+will be passed back.
+4. Messages (requests/responses) are processed in the order they are received by an actor.
+
+Before going any further, we need to first define a few terms:
+
+- Actors in JActor2 are called
+[reactors](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/package-summary.html).
+Reactors are composable.
+- The components of a reactor are called
+[blades](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/blades/package-summary.html).
+A blade has state and a reference to the reactor it is a part of.
+Blades define the requests which operate on their state.
+- Messages are called
+[requests](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/package-summary.html)
+and are first class single-use objects.
+Requests are bound to a blade or reactor and are evaluated (executed)
 only on the reactor's thread.
 After a request has been evaluated and has a result, it becomes a response
 and is passed back to the reactor which originated the request.
@@ -88,13 +96,8 @@ and is passed back to the reactor which originated the request.
 The callback is a subclass of
 [AsyncResponseProcessor](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html)
 and has a single method, processAsyncResponse.
-And when a response is passed back to the originating reactor, this method is called on the thread of
+When a response is passed back to the originating reactor, the processAsyncResponse method is called on the thread of
 the originating actor.
-- A
-[blade](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/blades/package-summary.html)
-has state and a reference to the reactor it is a part of.
-A blade defines the requests which operate on its state.
-Blades (and requests) can also directly call methods on other blades that are part of the same reactor.
 
 Request/Response
 -----
