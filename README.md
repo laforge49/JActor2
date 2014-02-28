@@ -76,14 +76,27 @@ modeling the way exceptions and return values are handled with Java method calls
 will be passed back.
 4. Messages (requests/responses) are processed in the order they are received by an actor.
 
-Before going any further, we need to first define a few terms:
+There are three things of particular note here:
+
+1. Uncaught exceptions are passed back to the context which originated a request, i.e. to the context most likely able
+to handle those exceptions. This differs from more traditional actor frameworks where the supervisor of an actor
+must handle the exceptions without knowledge of the context from which they arose.
+2. A response or exception is passed back for every request that is sent, though processing is entirely asynchronous.
+This is largely the result of modeling requests after Java method calls, but with additional support for detecting
+infinite loops and erroneous request processing.
+3. Messages are not selected for processing based on the state of the actor, but are processed in the order received
+with responses/exceptions being passed back to the context that sent the request. Actors then are not coupled, so
+deadlocks are less likely and maintenance is much easier over the life of a project.
+
+Before going any further, we need to define a few terms:
 
 - Actors in JActor2 are called
 [reactors](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/package-summary.html).
 Reactors are composable.
 - The components of a reactor are called
 [blades](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/blades/package-summary.html).
-A blade has state and a reference to the reactor it is a part of.
+A blade has state and a reference to the reactor it is a part of,
+though the default constructor of a blade will often create its own reactor.
 Blades define the requests which operate on their state.
 - Messages are called
 [requests](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/package-summary.html)
