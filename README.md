@@ -182,16 +182,15 @@ Let use say that a Start request in blade A wants to send an Add1 request to bla
     }
 ```
 
-1. The Start request first creates the Add1 request that is defined within (and targets) blade B and sends it,
-together with an AsyncResponseProcessor callback.
-2. The callback is saved in the Add1 request when it is sent and the request is added to
-the input queue of Blade B's reactor.
-3. Reactor B evaluates the Add1 request after processing all other messages received before it. The Add1 request
-updates its blade's state and then calls its processAsyncRequest method with the response value.
-4. When the Add1.processAsyncRequest method is called, it saves the response value and
-adds itself (now a response) to the input queue of blade A's reactor.
-5. After processing all other messages received before it, reactor A processes the Add1 response by calling the
-processAsyncResponse method on the previously assigned callback object.
+1. Blade B is created in the constructor of the Start request.
+2. The Start request is added to the inbox of blade A's reactor.
+3. Blade A's reactor evaluates the Start request. The Start request creates the Add1 request and adds it
+to the inbox of Blade B's reactor.
+4. Blade B's reactor evaluates the Add1 request. The Add1 request adds 1 to Blade B's count.
+5. The Add1 request is assigned a result value of null and is passed back to Blade A's reactor.
+6. The startResponse callback is evaluated by blade A's reactor. The callback prints "added 1".
+7. The Start request is assigned a result value of null and is passed back to the reactor which originated the
+Start request.
 
 ![Image](pic1.jpg)
 
