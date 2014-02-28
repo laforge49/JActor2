@@ -91,15 +91,15 @@ deadlocks are less likely and maintenance is much easier over the life of a proj
 Before going any further, we need to define a few terms:
 
 - Actors in JActor2 are called
-[reactors](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/package-summary.html).
+[reactors](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/package-summary.html).
 Reactors are composable.
 - The components of a reactor are called
-[blades](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/blades/package-summary.html).
+[blades](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/blades/package-summary.html).
 A blade has state and a reference to the reactor it is a part of,
 though the default constructor of a blade will often create its own reactor.
 Blades define the requests which operate on their state.
 - Messages are called
-[requests](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/package-summary.html)
+[requests](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/package-summary.html)
 and are first class single-use objects.
 Requests are bound to a blade or reactor and are evaluated (executed)
 only on the reactor's thread.
@@ -107,16 +107,45 @@ After a request has been evaluated and has a result, it becomes a response
 and is passed back to the reactor which originated the request.
 - When a request is sent by one actor to another actor, a callback is assigned to the request.
 The callback is a subclass of
-[AsyncResponseProcessor](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html)
+[AsyncResponseProcessor](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html)
 and has a single method, processAsyncResponse.
 When a response is passed back to the originating reactor, the processAsyncResponse method is called on the thread of
 the originating actor.
 
-Request/Response
+Synchronous Call
 -----
 
-A basic request/response is fairly simple. Let use say that a Start request in blade A wants to send
-an Add1 request to blade B.
+Reactors mostly interact with other reactors, but it is not turtles all the way down. Java programs begin of course
+with a main method.
+
+```java
+
+public class M {
+    public static void main(final String[] _args) throws Exception {
+        new Plant();
+        try {
+            A a = new A();
+            a.new Start().call();
+        } finally {
+            Plant.close();
+        }
+    }
+}
+```
+
+1. A Plant is created. Plant provides the operating context for the reactors, including a common thread pool.
+2. A blade, A, is created, which in turn creates its own reactor.
+3. A request bound to blade A, Start, is created. The Start request is passed to A's reactor and the main thread
+waits for an assured response or an exception. (A
+[RequestClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/RequestClosedException.html)
+is thrown if the Start request hangs.)
+4. The plant is closed.
+
+Asynchronous Send
+-----
+
+Sending a request from one blade to another is fairly simple.
+Let use say that a Start request in blade A wants to send an Add1 request to blade B.
 
 ```java
 
@@ -166,72 +195,13 @@ processAsyncResponse method on the previously assigned callback object.
 
 ![Image](pic1.jpg)
 
-Things get just a bit more interesting when reactor B wants to send a request to reactor C
-as part of the processing of the request from reactor A. The problem is that while the response from reactor C is pending,
-reactor B is not blocked and will continue to receive and process other messages.
-Fortunately requests are single-use first class objects.
-So any intermediate results can be saved in the request's own member variables and
-are available when the response from reactor C is received.
-
-```java
-
-    class A extends NonBlockingBladeBase {
-        class Start extends AsyncBladeRequest<Void> {
-            B b = new B();
-
-            AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
-                @Override
-                public void processAsyncResponse(Void _response) {
-                    System.out.println("added value");
-                    Start.this.processAsyncResponse(null);
-                }
-            };
-
-            @Override
-            public void processAsyncRequest() {
-                send(b.new AddValue(), startResponse);
-            }
-        }
-    }
-
-    class B extends NonBlockingBladeBase {
-        private C c = new C();
-        private int count;
-
-        class AddValue extends AsyncBladeRequest<Void> {
-
-            AsyncResponseProcessor<Integer> valueResponse = new AsyncResponseProcessor<Integer>() {
-                @Override
-                public void processAsyncResponse(Integer _response) {
-                   count += _response;
-                   AddValue.this.processAsyncResponse(null);
-                }
-            };
-
-            @Override
-            public void processAsyncRequest() {
-                send(c.new Value(), valueResponse);
-            }
-        }
-    }
-
-    class C extends NonBlockingBladeBase {
-        class Value extends AsyncBladeRequest<Integer> {
-            @Override
-            public void processAsyncRequest() {
-                processAsyncResponse(42);
-            }
-        }
-    }
-```
-
 Exceptions
 -----
 
 When an exception is raised and uncaught while processing a request, the natural thing to do is to pass that exception
 back to the originating request. It would be nice to use try/catch to intercept that exception in the originating
 request, but that is simply not possible. So we use an
-[ExceptionHandler](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/ExceptionHandler.html)
+[ExceptionHandler](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/ExceptionHandler.html)
 instead.
 
 ```java
@@ -292,7 +262,7 @@ Partial Failure
 
 Reactors can be closed and when they are,
 all pending requests sent to them are passed back a
-[ReactorClosedException](http://agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html).
+[ReactorClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html).
 And once closed, all subsequent requests immediately receive a ReactorClosedException.
 
 When JActor detects a problem that can result in corrupted state while a request is being processed,
@@ -315,7 +285,7 @@ Summary
 
 We have looked at some of the key aspects of JActor2, but much remains. The API is extensive and supports a wide
 range of multi-threading requirements. A good next step would be to look at the
-[core tutorial](http://agilewiki.org/docs/tutorials/core/index.html).
+[core tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html).
 
 Upcoming Projects
 =====
