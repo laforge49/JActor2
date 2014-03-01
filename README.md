@@ -145,14 +145,15 @@ with a main method.
     }
 ```
 
-1. A Plant is created. Plant provides the operating context for the reactors, including a common thread pool.
+1. A Plant is created. Plant in turn creates a thread pool.
+(Plant is a singleton and its methods are all static.)
 2. A blade, A, is created, which in turn creates its own reactor.
 3. A request bound to blade A, Start, is created.
 4. The Start request is passed to A's reactor.
 5. The main thread waits for an assured response or an exception. (A
 [ReactorClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html)
 is thrown if the Start request hangs.)
-6. The plant is closed.
+6. The plant is closed, which in turn closes blade A's reactor and the thread pool.
 
 Asynchronous Send
 -----
