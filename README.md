@@ -7,8 +7,8 @@ of robust applications.
     - [Multi-threading with Locks](#multi-threading-with-locks)
     - [Multi-threading with Actors](#multi-threading-with-actors)
 - [Introducing JActor2](#introducing-jactor2)
-    - [Synchronous Call](#synchronous-call)
-    - [Asynchronous Send](#asynchronous-send)
+    - [Synchronous Calls](#synchronous-calls)
+    - [Asynchronous Sends](#asynchronous-sends)
     - [Exceptions](#exceptions)
     - [Partial Failure](#partial-failure)
 - [Summary](#summary)
@@ -124,7 +124,7 @@ and has a single method, processAsyncResponse.
 When a response is passed back to the originating reactor, the processAsyncResponse method is called on the thread of
 the originating actor.
 
-Synchronous Call
+Synchronous Calls
 -----
 
 Reactors mostly interact with other reactors, but it is not turtles all the way down. Java programs begin of course
@@ -157,7 +157,7 @@ is thrown if the Start request hangs.)
 
 ![Image](call.jpg)
 
-Asynchronous Send
+Asynchronous Sends
 -----
 
 Sending a request from one blade to another is fairly simple.
