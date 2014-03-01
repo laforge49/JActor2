@@ -155,6 +155,8 @@ with a main method.
 is thrown if the Start request hangs.)
 6. The plant is closed, which in turn closes blade A's reactor and the thread pool.
 
+![Image](call.jpg)
+
 Asynchronous Send
 -----
 
