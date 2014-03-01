@@ -120,17 +120,17 @@ with a main method.
 
 ```java
 
-public class M {
-    public static void main(final String[] _args) throws Exception {
-        new Plant();
-        try {
-            A a = new A();
-            a.new Start().call();
-        } finally {
-            Plant.close();
+    public class M {
+        public static void main(final String[] _args) throws Exception {
+            new Plant();
+            try {
+                A a = new A();
+                a.new Start().call();
+            } finally {
+                Plant.close();
+            }
         }
     }
-}
 ```
 
 1. A Plant is created. Plant provides the operating context for the reactors, including a common thread pool.
