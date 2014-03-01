@@ -213,7 +213,7 @@ Let use say that a Start request in blade A wants to send an Add1 request to bla
 8. The Start request is assigned a result value of null and is passed back to the reactor which originated the
 Start request.
 
-![Image](pic1.jpg)
+![Image](send.jpg)
 
 Exceptions
 -----
