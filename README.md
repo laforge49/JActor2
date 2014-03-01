@@ -149,7 +149,7 @@ with a main method.
 (Plant is a singleton and its methods are all static.)
 2. A blade, A, is created, which in turn creates its own reactor.
 3. A request bound to blade A, Start, is created.
-4. The Start request is passed to A's reactor.
+4. The Start request is added to the inbox of A's reactor.
 5. The main thread waits for an assured response or an exception. (A
 [ReactorClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html)
 is thrown if the Start request hangs.)
@@ -196,14 +196,15 @@ Let use say that a Start request in blade A wants to send an Add1 request to bla
     }
 ```
 
-1. Blade B is created in the constructor of the Start request, along with startResponse.
-2. The Start request is added to the inbox of blade A's reactor.
-3. Blade A's reactor evaluates the Start request. The Start request creates the Add1 request and adds it
-to the inbox of Blade B's reactor.
-4. Blade B's reactor evaluates the Add1 request. The Add1 request adds 1 to blade B's count.
-5. The Add1 request is assigned a result value of null and is passed back to blade A's reactor.
-6. The startResponse callback is evaluated by blade A's reactor. The callback prints "added 1".
-7. The Start request is assigned a result value of null and is passed back to the reactor which originated the
+1. Blade B is created in the constructor of the Start request.
+2. The startResponse is created.
+2. The startResponse is assigned to the Start request and the Start request is added to the inbox of blade A's reactor.
+3. Blade A's reactor evaluates the Start request. The Start request creates the Add1 request.
+4. The  Start request is added to the inbox of Blade B's reactor.
+5. Blade B's reactor evaluates the Add1 request. The Add1 request adds 1 to blade B's count.
+6. The Add1 request is assigned a result value of null and is passed back to blade A's reactor.
+7. The startResponse callback is evaluated by blade A's reactor. The callback prints "added 1".
+8. The Start request is assigned a result value of null and is passed back to the reactor which originated the
 Start request.
 
 ![Image](pic1.jpg)
@@ -263,17 +264,20 @@ instead.
     }
 ```
 
-1. Blade B is created in the constructor of the Start request, along with the woopsResponse and the exceptionHandler.
-2. The Start request is added to the inbox of blade A's reactor.
-3. Blade A's reactor evaluates the Start request.
+1. Blade B is created in the constructor of the Start request.
+2. The woopsResponse is created.
+3. The exceptionHandler is created.
+4. The Start request is added to the inbox of blade A's reactor.
+5. Blade A's reactor evaluates the Start request.
 The start request is assigned the exceptionHandler.
-A Woops request is created and added to the inbox of blade B's reactor.
-4. Blade B's reactor evaluates the Woops request,
+6. A Woops request is created.
+7. The woopsResponse is assigned to the Woops request and the Woops request is added to the inbox of blade B's reactor.
+8. Blade B's reactor evaluates the Woops request,
 which throws an IOException.
-5. The Woops request is assigned a result value of IOException and is passed back to to blade A's reactor.
-6. The exceptionHandler is evaluated by blade A's reactor with a value of IOException, which.
+9. The Woops request is assigned a result value of IOException and is passed back to to blade A's reactor.
+10. The exceptionHandler is evaluated by blade A's reactor with a value of IOException, and
 prints "got IOException"
-7. The Start request is assigned a result value of null and is passed back to the reactor which originated the Start request.
+11. The Start request is assigned a result value of null and is passed back to the reactor which originated the Start request.
 
 When a request does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
 to the originating request. Exceptions then are handled very much as they are when doing a method call.
