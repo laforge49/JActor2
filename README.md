@@ -128,7 +128,11 @@ Synchronous Calls
 -----
 
 Reactors mostly interact with other reactors, but it is not turtles all the way down. Java programs begin of course
-with a main method.
+with a main method. To pass a request to a reactor, we use the request's call method.
+
+The call method is synchronous. The thread is blocked until a response value or an exception is passed back.
+The return value of the call method is the response value assigned by the request when it is evaluated by the
+reactor. But when an exception is passed back, it is thrown.
 
 ```java
 
