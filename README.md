@@ -96,8 +96,8 @@ must handle the exceptions without knowledge of the context from which they aros
 2. A response or exception is passed back for every request that is sent, though processing is entirely asynchronous.
 This is largely the result of modeling requests after Java method calls, but with additional support for detecting
 infinite loops and erroneous request processing.
-3. Messages are not selected for processing based on the state of the actor, but are processed in the order received
-with responses/exceptions being passed back to the context that sent the request. Actors then are not coupled, so
+3. Messages are not selected for processing based on the state of the actor, but are processed in the order received.
+Actors then are not coupled, so
 deadlocks are less likely and maintenance is much easier over the life of a project.
 
 Before going any further, we need to define a few terms:
