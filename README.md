@@ -7,6 +7,12 @@ of robust applications.
     - [Multi-threading with Locks](#multi-threading-with-locks)
     - [Multi-threading with Actors](#multi-threading-with-actors)
 - [Introducing JActor2](introducing-jactor2)
+    - [Synchronous Call](synchronous-call)
+    - [Asynchronous Send](asynchronous-send)
+    - [Exceptions](exceptions)
+    - [Partial Failure](partial-failure)
+- [Summary](summary)
+- [Upcoming Projects](upcoming-projects)
 - [Links](#links)
 
 Background
