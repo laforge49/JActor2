@@ -80,8 +80,8 @@ Introducing JActor2
 
 JActor2 differs from other actor frameworks in several ways:
 
-1. Request messages single-use and are bound to the actor they operate on, providing a context for subsequent
-interaction with other actors.
+1. Request messages are single-use objects and are bound to the actors they operate on,
+providing a context for subsequent interaction with other actors.
 2. Uncaught exceptions and responses are passed back to the context from which a request originated,
 modeling the way exceptions and return values are handled with Java method calls.
 3. For every request that is sent to another actor, there is every assurance that a response or exception
