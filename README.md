@@ -3,6 +3,8 @@ inspired by Alan Kay's early thoughts on [Objects](http://c2.com/cgi/wiki?AlanKa
 JActor2 is based on asynchronous 2-way messaging with assured responses, which lends itself to the development
 of robust applications.
 
+[Links](#links)
+
 Background
 =====
 
