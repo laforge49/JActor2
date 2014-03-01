@@ -44,7 +44,7 @@ Multi-threading with Actors
 Actors are light-weight threads which interact via messages passed between them. Each actor has a queue of
 pending messages (an inbox). And there is typically a thread pool used to process a queue of inactive actors
 which have messages pending. Once an actor receives control, i.e. is assigned a thread, it process its pending
-messages until there are no remaining and then releases the thread.
+messages until there are none remaining and then releases the thread.
 
 An actor never receives control from more than one thread at a time.
 So the messages sent to an actor are processed one at a time.
