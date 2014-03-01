@@ -86,7 +86,7 @@ providing a context for subsequent interaction with other actors.
 modeling the way exceptions and return values are handled with Java method calls.
 3. For every request that is sent to another actor, there is every assurance that a response or exception
 will be passed back.
-4. Messages (requests/responses) are processed in the order they are received by an actor.
+5. Messages (requests/responses) are processed in the order they are received by an actor.
 
 There are three things of particular note here:
 
@@ -147,11 +147,12 @@ with a main method.
 
 1. A Plant is created. Plant provides the operating context for the reactors, including a common thread pool.
 2. A blade, A, is created, which in turn creates its own reactor.
-3. A request bound to blade A, Start, is created. The Start request is passed to A's reactor and the main thread
-waits for an assured response or an exception. (A
+3. A request bound to blade A, Start, is created.
+4. The Start request is passed to A's reactor.
+5. The main thread waits for an assured response or an exception. (A
 [ReactorClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html)
 is thrown if the Start request hangs.)
-4. The plant is closed.
+6. The plant is closed.
 
 Asynchronous Send
 -----
