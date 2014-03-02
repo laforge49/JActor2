@@ -164,8 +164,12 @@ is thrown if the Start request hangs.)
 Asynchronous Sends
 -----
 
-Sending a request from one blade to another is fairly simple.
-Let use say that a Start request in blade A wants to send an Add1 request to blade B.
+Messages are always passed asynchronously between reactors. Two-way messages are passed
+using the send method on the AsyncRequest class. And the two arguments to send are
+(1) the request to be invoked on the target reactor and (2) the callback to be executed
+on completion of that request.
+
+Let use say that a Start request in blade A is to send an Add1 request to blade B.
 
 ```java
 
