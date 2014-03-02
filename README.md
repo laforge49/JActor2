@@ -318,9 +318,12 @@ can be very important. The failed reactors can then be optionally restarted.
 Summary
 =====
 
-We have looked at some of the key aspects of JActor2, but much remains. The API is extensive and supports a wide
-range of multi-threading requirements. A good next step would be to look at the
-[core tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html).
+We have looked at only one way of doing things with JActor2. But one size does not fit all.
+So JActor offers an extensive API, including 5 types of reactor, 4 ways to pass requests and 2 types of request.
+
+A good next step now would be to look at the
+[core tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html),
+which explains how to use JActor2 to meet a wide range of requirements.
 
 Upcoming Projects
 =====
@@ -350,7 +353,7 @@ Upcoming Projects
 Links
 -----
 
-- [Core Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html) beta
+- [Core Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html)
 - [API](http://www.agilewiki.org/docs/api/index.html)
 - [Downloads](http://www.agilewiki.org/downloads)
 - Dependencies: [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/)
