@@ -318,7 +318,7 @@ can be very important. The failed reactors can then be optionally restarted.
 Summary
 =====
 
-We have looked at only one way of doing things with JActor2. But one size does not fit all.
+We have taken a quick look at only one way of doing things with JActor2. But one size does not fit all.
 So JActor offers an extensive API, including 5 types of reactor, 4 ways to pass requests and 2 types of request.
 
 A good next step now would be to look at the
