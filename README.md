@@ -10,6 +10,7 @@ of robust applications.
     - [Synchronous Calls](#synchronous-calls)
     - [Asynchronous Sends](#asynchronous-sends)
     - [Exception Handling](#exception-handling)
+    - [Request Factories](#request-factories)
     - [Partial Failure](#partial-failure)
 - [Summary](#summary)
 - [Upcoming Projects](#upcoming-projects)
@@ -287,7 +288,8 @@ which throws an IOException.
 9. The Woops request is assigned a result value of IOException and is passed back to to blade A's reactor.
 10. The exceptionHandler is evaluated by blade A's reactor with a value of IOException, and
 prints "got IOException"
-11. The Start request is assigned a result value of null and is passed back to the reactor which originated the Start request.
+11. The Start request is assigned a result value of null and
+is passed back to the reactor which originated the Start request.
 
 When a request does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
 to the originating request. Exceptions then are handled very much as they are when doing a method call.
@@ -295,6 +297,72 @@ to the originating request. Exceptions then are handled very much as they are wh
 There is a huge advantage to this approach. When a request is sent, the originating request will **always** get
 back either a result or an exception. So you do not need to write a lot of defensive code, making your applications
 easier to write and naturally more robust.
+
+Request Factories
+-----
+
+Nested classes impede decoupling, which is important for clarity, testing and reusability.
+But by introducing request factory methods we can then use interfaces to decouple blades.
+
+```java
+
+    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.requests.AsyncRequest;
+    import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+
+    interface B {
+        AsyncRequest<Void> newAdd1();
+    }
+
+    class BImpl extends NonBlockingBladeBase implements B {
+        @Override
+        public AsyncRequest<Void> newAdd1() {
+            return new AsyncBladeRequest<Void>() {
+                int count;
+
+                @Override
+                public void processAsyncRequest() throws Exception {
+                    count += 1;
+                    processAsyncResponse(null);
+                }
+            };
+        }
+    }
+
+    class A extends NonBlockingBladeBase {
+        public AsyncRequest<Void> newStart(final B _b) {
+            return new AsyncBladeRequest<Void>() {
+                AsyncRequest<Void> dis = this;
+
+                AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(Void _response) {
+                        System.out.println("added 1");
+                        dis.processAsyncResponse(null);
+                    }
+                };
+
+                @Override
+                public void processAsyncRequest() throws Exception {
+                    send(_b.newAdd1(), startResponse);
+                }
+            };
+        }
+    }
+
+    public class M {
+        public static void main(final String[] _args) throws Exception {
+            new Plant();
+            try {
+                A a = new A();
+                B b = new BImpl();
+                a.newStart(b).call();
+            } finally {
+                Plant.close();
+            }
+        }
+    }
+```
 
 Partial Failure
 -----
