@@ -302,7 +302,7 @@ Request Factories
 -----
 
 Nested classes impede decoupling, which is important for clarity, testing and reusability.
-But by introducing request factory methods we can then use interfaces to decouple the blades.
+But by introducing request factory methods we can then use interfaces to decouple our blades.
 
 ```java
 
