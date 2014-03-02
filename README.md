@@ -9,7 +9,7 @@ of robust applications.
 - [Introducing JActor2](#introducing-jactor2)
     - [Synchronous Calls](#synchronous-calls)
     - [Asynchronous Sends](#asynchronous-sends)
-    - [Exceptions](#exceptions)
+    - [Exception Handling](#exception-handling)
     - [Partial Failure](#partial-failure)
 - [Summary](#summary)
 - [Upcoming Projects](#upcoming-projects)
@@ -215,7 +215,7 @@ Start request.
 
 ![Image](send.jpg)
 
-Exceptions
+Exception Handling
 -----
 
 When an exception is raised and uncaught while processing a request, the natural thing to do is to pass that exception
