@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core.impl;
+package org.agilewiki.jactor2.core.reactors.impl;
 
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 public class IsolationReactorImpl extends UnboundReactorImpl {

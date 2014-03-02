@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.requests;
 
-import org.agilewiki.jactor2.core.impl.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.RequestSource;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.impl.RequestSource;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;

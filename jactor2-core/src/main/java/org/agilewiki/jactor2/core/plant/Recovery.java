@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.impl.BlockingReactorImpl;
-import org.agilewiki.jactor2.core.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.impl.BlockingReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * Base class for managing failure detection and recovery.

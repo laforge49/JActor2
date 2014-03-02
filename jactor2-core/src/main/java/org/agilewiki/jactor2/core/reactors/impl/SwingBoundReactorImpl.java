@@ -1,7 +1,6 @@
-package org.agilewiki.jactor2.core.impl;
+package org.agilewiki.jactor2.core.reactors.impl;
 
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
-import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 import javax.swing.*;
 

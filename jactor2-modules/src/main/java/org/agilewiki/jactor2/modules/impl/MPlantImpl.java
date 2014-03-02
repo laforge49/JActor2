@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.modules.impl;
 
-import org.agilewiki.jactor2.core.impl.PlantImpl;
+import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;

@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.impl;
+package org.agilewiki.jactor2.core.reactors.impl;
 
 /**
  * Signals a migration of the current thread to another targetReactor.

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.modules;
 
-import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;

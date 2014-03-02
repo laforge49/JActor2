@@ -1,6 +1,7 @@
-package org.agilewiki.jactor2.core.impl;
+package org.agilewiki.jactor2.core.reactors.impl;
 
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class BlockingReactorImpl extends UnboundReactorImpl {
 

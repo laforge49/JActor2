@@ -1,12 +1,11 @@
-package org.agilewiki.jactor2.core.impl;
+package org.agilewiki.jactor2.core.reactors.impl;
 
-import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ThreadBoundReactorImpl extends ReactorImpl {
 

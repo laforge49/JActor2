@@ -1,5 +1,7 @@
-package org.agilewiki.jactor2.core.impl;
+package org.agilewiki.jactor2.core.plant.impl;
 
+import org.agilewiki.jactor2.core.reactors.impl.ThreadBoundReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;

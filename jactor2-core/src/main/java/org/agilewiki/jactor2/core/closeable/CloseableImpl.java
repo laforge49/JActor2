@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.closeable;
 
-import org.agilewiki.jactor2.core.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 
 /**
  * The interface of the code that actually implements closeable.

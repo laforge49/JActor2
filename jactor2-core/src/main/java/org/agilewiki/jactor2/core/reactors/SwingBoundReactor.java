@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBlade;
-import org.agilewiki.jactor2.core.impl.NonBlockingReactorImpl;
-import org.agilewiki.jactor2.core.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.SwingBoundReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.SwingBoundReactorImpl;
 import org.agilewiki.jactor2.core.plant.Plant;
 
 import java.awt.event.WindowEvent;

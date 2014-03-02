@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.impl.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.UnboundReactorImpl;
 
 /**
  * Base class for pool threads used by reactors.
