@@ -2,10 +2,12 @@ org.agilewiki.jactor2
 org.agilewiki.jactor2.core
 org.agilewiki.jactor2.core.blades
 org.agilewiki.jactor2.core.closeable
-org.agilewiki.jactor2.core.impl
 org.agilewiki.jactor2.core.plant
+org.agilewiki.jactor2.core.plant.impl
 org.agilewiki.jactor2.core.reactors
+org.agilewiki.jactor2.core.reactors.impl
 org.agilewiki.jactor2.core.requests
+org.agilewiki.jactor2.core.requests.impl
 org.agilewiki.jactor2.modules
 org.agilewiki.jactor2.modules.immutable
 org.agilewiki.jactor2.modules.impl
