@@ -174,6 +174,8 @@ using the send method on the AsyncRequest class. And the two arguments to send a
 (1) the request to be invoked on the target reactor and (2) the callback to be executed
 on completion of that request.
 
+A request/response exchange between actors does not block
+
 Let use say that a Start request in blade A is to send an Add1 request to blade B.
 
 ```java
@@ -302,6 +304,8 @@ prints "got IOException"
 11. The Start request is assigned a result value of null and
 is passed back to the reactor which originated the Start request.
 
+![Image](exceptionHandler.jpg)
+
 When a request does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
 to the originating request. Exceptions then are handled very much as they are when doing a method call.
 
@@ -382,7 +386,7 @@ Partial Failure
 Reactors can be closed and when they are,
 all pending requests sent to them are passed back a
 [ReactorClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html).
-And once closed, all subsequent requests immediately receive a ReactorClosedException.
+And once closed, all subsequent requests immediately receive a ReactorClosedException as well.
 
 When JActor detects a problem that can result in corrupted state while a request is being processed,
 the default reaction is to log the problem and close the reactor. Some examples:
