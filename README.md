@@ -124,6 +124,9 @@ The callback is a subclass of
 and has a single method, processAsyncResponse.
 When a response is passed back to the originating reactor, the processAsyncResponse method is called on the thread of
 the originating actor.
+- The [Plant](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/plant/package-summary.html)
+is a singleton which creates the thread pool used by the reactors.
+Plant's methods are all static.
 
 Synchronous Calls
 -----
@@ -136,6 +139,8 @@ The return value of the call method is the response value assigned by the reques
 reactor. But when an exception is passed back, it is thrown.
 
 ```java
+
+    import org.agilewiki.jactor2.core.plant.Plant;
 
     public class M {
         public static void main(final String[] _args) throws Exception {
@@ -150,8 +155,7 @@ reactor. But when an exception is passed back, it is thrown.
     }
 ```
 
-1. A Plant is created. Plant in turn creates a thread pool.
-(Plant is a singleton and its methods are all static.)
+1. A Plant is created. Plant in turn creates the thread pool.
 2. A blade, A, is created, which in turn creates its own reactor.
 3. A request bound to blade A, Start, is created.
 4. The Start request is added to the inbox of A's reactor.
@@ -173,6 +177,9 @@ on completion of that request.
 Let use say that a Start request in blade A is to send an Add1 request to blade B.
 
 ```java
+
+    import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+    import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
     class A extends NonBlockingBladeBase {
         class Start extends AsyncBladeRequest<Void> {
@@ -230,6 +237,10 @@ request, but that is simply not possible. So we use an
 instead.
 
 ```java
+
+    import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+    import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+    import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
     class A extends NonBlockingBladeBase {
         class Start extends AsyncBladeRequest<Void> {
@@ -306,6 +317,7 @@ But by introducing request factory methods we can then use interfaces to decoupl
 
 ```java
 
+    import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
     import org.agilewiki.jactor2.core.plant.Plant;
     import org.agilewiki.jactor2.core.requests.AsyncRequest;
     import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
