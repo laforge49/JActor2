@@ -25,9 +25,14 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Base class for targetReactor.
+ * Base class for internal reactor implementations.
  */
 abstract public class ReactorImpl extends BladeBase implements Closeable, Runnable, RequestSource {
+    /**
+     * Returns the current thread's ReactorImpl.
+     *
+     * @return A ReactorImpl, or null.
+     */
     public static ReactorImpl getCurrentReactorImpl() {
         Thread thread = Thread.currentThread();
         if (thread instanceof ReactorPoolThread)
@@ -36,12 +41,18 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     }
 
     /**
-     * A reference to the thread that is executing this targetReactor.
+     * A reference to the thread that is executing this reactor.
      */
     protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
 
+    /**
+     * The Recovery object used by this ReactorImpl.
+     */
     public Recovery recovery;
 
+    /**
+     * The PlantScheduler object used by this ReactorImpl.
+     */
     public PlantScheduler plantScheduler;
 
     private CloseableImpl closeableImpl;
@@ -58,15 +69,18 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
     private SchedulableSemaphore timeoutSemaphore;
 
+    /**
+     * The time when processing began on the current message.
+     */
     public volatile long messageStartTimeMillis;
 
     /**
-     * Reactor logger.
+     * The ReactorImpl logger.
      */
     protected final Logger logger;
 
     /**
-     * The inbox, implemented as a local queue and a concurrent queue.
+     * The inbox of this ReactorImpl.
      */
     protected Inbox inbox;
 
@@ -94,12 +108,28 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
     private boolean startClosing;
 
+    /**
+     * The initial size of a send buffer.
+     */
     protected int initialBufferSize;
 
+    /**
+     * The initial size of the local queue.
+     */
     protected int initialLocalQueueSize;
 
+    /**
+     * The parent reactor, or null.
+     */
     public final NonBlockingReactor parentReactor;
 
+    /**
+     * Create a ReactorImpl instance.
+     *
+     * @param _parentReactorImpl        The parent reactor, or null.
+     * @param _initialBufferSize        The initial size of a send buffer.
+     * @param _initialLocalQueueSize    The initial size of the local queue.
+     */
     public ReactorImpl(final NonBlockingReactorImpl _parentReactorImpl, final int _initialBufferSize,
                        final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImpl1(this);
@@ -113,16 +143,25 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         if (_parentReactorImpl != null) {
             _parentReactorImpl.addCloseable(this);
         } else {
-
         }
     }
 
+    /**
+     * Initialize the ReactorImpl.
+     *
+     * @param _reactor    The Reactor of this ReactorImpl.
+     */
     public void initialize(final Reactor _reactor) {
         super._initialize(_reactor);
         inbox = createInbox(initialLocalQueueSize);
         outbox = new Outbox(initialBufferSize);
     }
 
+    /**
+     * Returns the Reactor of this ReactorImpl.
+     *
+     * @return The Reactor of this ReactorImpl.
+     */
     public Reactor asReactor() {
         return getReactor();
     }
@@ -133,30 +172,45 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     }
 
     /**
-     * Returns the atomic reference to the current thread.
+     * Returns the atomic reference to the reactor's thread.
      *
-     * @return The atomic reference to the current thread.
+     * @return The atomic reference to the reactor's thread.
      */
     public AtomicReference<Thread> getThreadReference() {
         return threadReference;
     }
 
+    /**
+     * Returns the parent reactor.
+     *
+     * @return The parent reactor, or null.
+     */
     public Reactor getParentReactor() {
         return parentReactor;
     }
 
+    /**
+     * Returns the initial size of a send buffer.
+     *
+     * @return The initial size of a send buffer.
+     */
     public int getInitialBufferSize() {
         return initialBufferSize;
     }
 
+    /**
+     * Returns the initial size of the local queue.
+     *
+     * @return The initial size of the local queue.
+     */
     public int getInitialLocalQueueSize() {
         return initialLocalQueueSize;
     }
 
     /**
-     * Returns true, if this targetReactor is actively processing messages.
+     * Returns true, if this ReactorImpl is actively processing messages.
      *
-     * @return True, if this targetReactor is actively processing messages.
+     * @return True, if this ReactorImpl is actively processing messages.
      */
     public final boolean isRunning() {
         return running;
@@ -184,6 +238,11 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         return shuttingDown;
     }
 
+    /**
+     * Removes this ReactorImpl from any closers, cancels any requests that are in process,
+     * closes all closeables, closes the outbox, closes the inbox, interrupts the processing
+     * of the current thread and, if the interrupt is not effective, begins hung thread recovery.
+     */
     @Override
     public void close() throws Exception {
         closeableImpl.close();
@@ -270,14 +329,14 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     /**
      * Returns the message currently being processed.
      *
-     * @return The message currently being processed.
+     * @return The message currently being processed, or null.
      */
     public final RequestImpl getCurrentRequest() {
         return currentRequest;
     }
 
     /**
-     * Identify the message currently being processed.
+     * Assigns the message currently being processed.
      *
      * @param _message The message currently being processed.
      */
@@ -304,10 +363,21 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         return inbox.hasConcurrent();
     }
 
+    /**
+     * Returns true when the inbox is not empty.
+     *
+     * @return True when the inbox is not empty.
+     */
     public final boolean isInboxEmpty() {
         return inbox.isEmpty();
     }
 
+    /**
+     * Assign an exception handler.
+     *
+     * @param _handler The new exception handler, or null.
+     * @return The old exception handler, or null.
+     */
     public final ExceptionHandler setExceptionHandler(
             final ExceptionHandler _handler) {
         if (!isRunning()) {
@@ -320,7 +390,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     }
 
     /**
-     * The current exception handler.
+     * Returns the current exception handler.
      *
      * @return The current exception handler, or null.
      */
@@ -332,7 +402,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      * Add a message directly to the input queue of a Reactor.
      *
      * @param _message A message.
-     * @param _local   True when the current thread is bound to the targetReactor.
+     * @param _local   True when the current thread is assigned to the targetReactor.
      */
     public void unbufferedAddMessage(final RequestImpl _message,
                                      final boolean _local) {
@@ -382,7 +452,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      * Buffers a message in the sending targetReactor for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The targetReactor that should eventually receive this message
+     * @param _target  The reactor that should eventually receive this message
      * @return True if the message was buffered.
      */
     public boolean buffer(final RequestImpl _message, final ReactorImpl _target) {
@@ -402,7 +472,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     }
 
     /**
-     * Called when all pending messages have been processed.
+     * Called when all pending messages that can be processed have been processed.
      */
     abstract protected void notBusy() throws Exception;
 
@@ -447,6 +517,9 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      */
     abstract public boolean isIdler();
 
+    /**
+     * Process any pending messages that can be processed.
+     */
     @Override
     public void run() {
         running = true;
@@ -505,6 +578,11 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         }
     }
 
+    /**
+     * A noop request used for synchronizing state.
+     *
+     * @return null.
+     */
     public SyncRequest<Void> nullSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
@@ -514,6 +592,9 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         };
     }
 
+    /**
+     * Check if the current message has timed out and poll any child reactors for same.
+     */
     public void reactorPoll() throws Exception {
         long currentTimeMillis = plantScheduler.currentTimeMillis();
         long mst = messageStartTimeMillis;
@@ -545,6 +626,12 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         return closeables;
     }
 
+    /**
+     * Add a closeable to the list of closeables.
+     *
+     * @param _closeable A closeable to be closed when this ReactorImpl is closed.
+     * @return True when the closeable was added to the list.
+     */
     public boolean addCloseable(final Closeable _closeable) {
         if (startedClosing())
             throw new ReactorClosedException();
@@ -556,6 +643,12 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         return true;
     }
 
+    /**
+     * Remove a closeable from the list of closeables.
+     *
+     * @param _closeable The closeable to be removed.
+     * @return True when the closeable was removed.
+     */
     public boolean removeCloseable(final Closeable _closeable) {
         if (closeables == null)
             return false;

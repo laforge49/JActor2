@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * An outbox holds a collection of doSend buffers.
- * Each doSend buffer holds one or more messages, all destined for the same targetReactor.
+ * An outbox holds a collection of send buffers.
+ * Each send buffer holds one or more messages, all destined for the same reactor.
  */
 public class Outbox implements AutoCloseable {
 
@@ -23,14 +23,19 @@ public class Outbox implements AutoCloseable {
      */
     private Map<ReactorImpl, ArrayDeque<RequestImpl>> sendBuffer;
 
+    /**
+     * Create an Outbox
+     *
+     * @param _initialBufferSize    Initial size of a send buffer.
+     */
     public Outbox(final int _initialBufferSize) {
         initialBufferSize = _initialBufferSize;
     }
 
     /**
-     * Returns an iterator of the doSend buffers held by the outbox.
+     * Returns an iterator of the send buffers held by the outbox.
      *
-     * @return An iterator of the doSend buffers held by the outbox.
+     * @return An iterator of the send buffers held by the outbox.
      */
     public Iterator<Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>>> getIterator() {
         if (sendBuffer == null) {
@@ -40,10 +45,10 @@ public class Outbox implements AutoCloseable {
     }
 
     /**
-     * Buffers a message in the sending targetReactor for sending later.
+     * Buffers a message in the sending reactor for sending later.
      *
      * @param _message Message to be buffered.
-     * @param _target  The targetReactor that should eventually receive this message.
+     * @param _target  The reactor that should eventually receive this message.
      * @return True if the message was successfully buffered.
      */
     public boolean buffer(final RequestImpl _message, final ReactorImpl _target) {
@@ -63,6 +68,9 @@ public class Outbox implements AutoCloseable {
         return true;
     }
 
+    /**
+     * Forwards all the buffered messages.
+     */
     @Override
     public void close() {
         final Iterator<Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>>> iter = getIterator();
