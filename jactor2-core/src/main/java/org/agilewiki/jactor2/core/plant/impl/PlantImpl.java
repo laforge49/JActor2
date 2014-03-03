@@ -7,6 +7,9 @@ import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
+/**
+ * Internal implementation for Plant.
+ */
 public class PlantImpl {
 
     /**
@@ -17,6 +20,11 @@ public class PlantImpl {
 
     private static volatile PlantImpl singleton;
 
+    /**
+     * Returns this singleton.
+     *
+     * @return This singleton.
+     */
     public static PlantImpl getSingleton() {
         return singleton;
     }
@@ -25,21 +33,31 @@ public class PlantImpl {
 
     private boolean exitOnClose;
 
-    /**
-     * The thread pool.
-     */
     private ReactorPoolThreadManager reactorPoolThreadManager;
 
     private NonBlockingReactor internalReactor;
 
+    /**
+     * Create the singleton with a default configuration.
+     */
     public PlantImpl() {
         this(new PlantConfiguration());
     }
 
+    /**
+     * Create the singleton with the given thread pool size.
+     *
+     * @param _threadCount The size of the thread pool.
+     */
     public PlantImpl(final int _threadCount) {
         this(new PlantConfiguration(_threadCount));
     }
 
+    /**
+     * Create the singleton with the given configuration.
+     *
+     * @param _plantConfiguration The configuration to be used by the singleton.
+     */
     public PlantImpl(final PlantConfiguration _plantConfiguration) {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
@@ -74,15 +92,30 @@ public class PlantImpl {
                 reactorPollMillis);
     }
 
+    /**
+     * Create the Plant's internal reactor.
+     *
+     * @return The reactor belonging to the singleton.
+     */
     protected NonBlockingReactor createInternalReactor() {
         return new NonBlockingReactor(null, plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize());
     }
 
+    /**
+     * Returns the Plant's internal reactor.
+     *
+     * @return The reactor belonging to the singleton.
+     */
     public NonBlockingReactor getInternalReactor() {
         return internalReactor;
     }
 
+    /**
+     * Returns the Runnable which polls for timed out messages.
+     *
+     * @return The Runnable which will perform the poll.
+     */
     private Runnable plantPoll() {
         return new Runnable() {
             public void run() {
@@ -95,10 +128,20 @@ public class PlantImpl {
         };
     }
 
+    /**
+     * Returns the Plant's configuration.
+     *
+     * @return The singleton's configuration.
+     */
     public PlantConfiguration getPlantConfiguration() {
         return plantConfiguration;
     }
 
+    /**
+     * Return the scheduler that is a part of the Plant's configuration.
+     *
+     * @return The scheduler.
+     */
     public PlantScheduler getPlantScheduler() { return plantConfiguration.getPlantScheduler(); }
 
     /**
@@ -120,6 +163,9 @@ public class PlantImpl {
         }
     }
 
+    /**
+     * Close the Plant.
+     */
     public void close() throws Exception {
         if (singleton == null) {
             return;
@@ -135,6 +181,11 @@ public class PlantImpl {
         }
     }
 
+    /**
+     * Create a SchedulableSemaphore.
+     * @param _millisecondDelay Milliseconds until the semaphore times out.
+     * @return A new SchedulableSemaphore.
+     */
     public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {
         SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
         plantConfiguration.getPlantScheduler().schedule(schedulableSemaphore.runnable, _millisecondDelay);
