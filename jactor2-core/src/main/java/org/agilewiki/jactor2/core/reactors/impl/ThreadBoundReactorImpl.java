@@ -7,15 +7,26 @@ import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * A reactor bound to a thread.
+ */
 public class ThreadBoundReactorImpl extends ReactorImpl {
 
     private static final ThreadLocal<ThreadBoundReactorImpl> threadReactor =
             new ThreadLocal<ThreadBoundReactorImpl>();
 
+    /**
+     * Returns the ThreadBoundReactorImpl bound to the current thread.
+     *
+     * @return The ThreadBoundReactorImpl bound to the current thread, or null.
+     */
     public static ThreadBoundReactorImpl threadReactor() {
         return threadReactor.get();
     }
 
+    /**
+     * Unbind the ThreadBoundReactorImpl from any thread.
+     */
     public static void removeReactor() {
         threadReactor.remove();
     }
@@ -25,6 +36,14 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
      */
     private final Runnable boundProcessor;
 
+    /**
+     * Create a ThreadBoundReactorImpl.
+     *
+     * @param _parentReactorImpl        The parent reactor.
+     * @param _initialOutboxSize        The initial buffer size for outgoing messages.
+     * @param _initialLocalQueueSize    The initial local queue size.
+     * @param _boundProcessor           The Runnable used when there are messages to be processed.
+     */
     public ThreadBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                   final int _initialOutboxSize, final int _initialLocalQueueSize,
                                   final Runnable _boundProcessor) {
