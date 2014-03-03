@@ -164,7 +164,7 @@ reactor. But when an exception is passed back, it is thrown.
 is thrown if the Start request hangs.)
 6. The plant is closed, which in turn closes blade A's reactor and the thread pool.
 
-![Image](call.jpg)
+![Image](images/call.jpg)
 
 Asynchronous Sends
 -----
@@ -227,7 +227,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
 8. The Start request is assigned a result value of null and is passed back to the reactor which originated the
 Start request.
 
-![Image](send.jpg)
+![Image](images/send.jpg)
 
 Exception Handling
 -----
@@ -304,7 +304,7 @@ prints "got IOException"
 11. The Start request is assigned a result value of null and
 is passed back to the reactor which originated the Start request.
 
-![Image](exceptionHandler.jpg)
+![Image](images/exceptionHandler.jpg)
 
 When a request does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
 to the originating request. Exceptions then are handled very much as they are when doing a method call.
