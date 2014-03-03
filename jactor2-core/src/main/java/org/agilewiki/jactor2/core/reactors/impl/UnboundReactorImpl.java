@@ -21,6 +21,13 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
      */
     public Runnable onIdle;
 
+    /**
+     * Create an UnboundReactor.
+     *
+     * @param _parentReactorImpl        The parent reactor.
+     * @param _initialOutboxSize        The initial buffer size for outgoing messages.
+     * @param _initialLocalQueueSize    The initial local queue size.
+     */
     public UnboundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
