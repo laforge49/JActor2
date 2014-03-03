@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Provides at least two queues for a targetReactor's incoming messages, where the first queue is a
  * concurrent linked queue for messages passed from other reactors and the other(s) are
- * doLocal queues for messages that are passed using the targetReactor's own thread.
+ * local queues for messages that are passed using the targetReactor's own thread.
  *
  * @author monster
  */
@@ -106,6 +106,9 @@ public abstract class Inbox implements AutoCloseable {
 
     }
 
+    /**
+     * Close all messages in the inbox.
+     */
     @Override
     public void close() {
         while (true) {
