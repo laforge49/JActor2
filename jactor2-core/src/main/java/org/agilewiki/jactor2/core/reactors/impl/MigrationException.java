@@ -7,8 +7,8 @@ package org.agilewiki.jactor2.core.reactors.impl;
  */
 public class MigrationException extends RuntimeException {
 
-    /**  */
     private static final long serialVersionUID = 1L;
+
     /**
      * The newly active targetReactor.
      */
