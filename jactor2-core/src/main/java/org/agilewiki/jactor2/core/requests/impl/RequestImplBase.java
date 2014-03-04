@@ -14,6 +14,11 @@ import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
 import java.util.concurrent.Semaphore;
 
+/**
+ * Base class for internal reactor implementations.
+ *
+ * @param <RESPONSE_TYPE>
+ */
 public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESPONSE_TYPE> {
 
     /**
@@ -27,26 +32,30 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     protected boolean used;
 
     /**
-     * The targetReactor where this Request Object is passed for processing. The thread
+     * The reactor where this Request Object is passed for processing. The thread
      * owned by this targetReactor will process the Request.
      */
     protected final Reactor targetReactor;
 
+    /**
+     * The reactor impl where this Request Object is passed for processing. The thread
+     * owned by this reactor impl will process the Request.
+     */
     protected final ReactorImpl targetReactorImpl;
 
     /**
-     * The source reactor or pender that will receive the results.
+     * The source reactor or Pender that will receive the results.
      */
     protected RequestSource requestSource;
 
     /**
-     * The message targeted to the source reactor which, when processed,
+     * The request targeted to the source reactor which, when processed,
      * resulted in this message.
      */
     protected RequestImpl oldMessage;
 
     /**
-     * The exception handler that was active in the source targetReactor at the time
+     * The exception handler that was active in the source reactor
      * when this message was created.
      */
     protected ExceptionHandler sourceExceptionHandler;
@@ -61,6 +70,9 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     protected boolean incomplete = true;
 
+    /**
+     * True when this reactor impl is closed.
+     */
     protected boolean closed = false;
 
     /**
@@ -69,17 +81,20 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     private boolean isolated;
 
     /**
-     * The response created when this message is applied to the target blades.
+     * The response created when this request impl is evaluated.
      */
     protected Object response;
 
+    /**
+     * True when this request impl has been canceled.
+     */
     protected boolean canceled;
 
     /**
      * Create a RequestImplBase.
      *
-     * @param _targetReactor The targetReactor where this Request Objects is passed for processing.
-     *                       The thread owned by this targetReactor will process this Request.
+     * @param _targetReactor The targetReactor where this Request Object is passed for processing.
+     *                       The thread owned by this reactor will process this Request.
      */
     public RequestImplBase(final Reactor _targetReactor) {
         if (_targetReactor == null) {
@@ -149,13 +164,13 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     }
 
     /**
-     * Passes this Request together with the AsyncResponseProcessor to the target Reactor.
-     * Responses are passed back via the targetReactor of the source blades and processed by the
-     * provided AsyncResponseProcessor and any exceptions
+     * Passes this RequestImpl together with the AsyncResponseProcessor to the target Reactor.
+     * Responses are passed back via the source reactor and processed by the
+     * provided AsyncResponseProcessor. Any exceptions
      * raised while processing the request are processed by the exception handler active when
      * the doSend method was called.
      *
-     * @param _source            The sourceReactor on whose thread this method was invoked and which
+     * @param _source            The source reactor impl on whose thread this method was invoked and which
      *                           will buffer this Request and subsequently receive the result for
      *                           processing on the same thread.
      * @param _responseProcessor Passed with this request and then returned with the result, the
@@ -203,10 +218,10 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     /**
      * Passes this Request to the target Reactor and blocks the current thread until
      * a result is returned. The call method sends the message directly without buffering,
-     * as there is no targetReactor. The response message is buffered, though thread migration is
+     * as there is no source reactor. The response message is buffered, though thread migration is
      * not possible.
      *
-     * @return The result from applying this Request to the target blades.
+     * @return The response value from applying this Request to the target reactor.
      * @throws Exception If the result is an exception, it is thrown rather than being returned.
      */
     public RESPONSE_TYPE call() throws Exception {
@@ -223,6 +238,12 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         return (RESPONSE_TYPE) ((Pender) requestSource).pend();
     }
 
+    /**
+     * Assigns a response value.
+     *
+     * @param _response         The response value.
+     * @param _activeReactor    The responding reactor.
+     */
     protected void setResponse(final Object _response,
                                final ReactorImpl _activeReactor) {
         _activeReactor.requestEnd(this);
@@ -231,10 +252,10 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     }
 
     /**
-     * The processObjectResponse method accepts the response of a request.
+     * The processObjectResponse method accepts the response value of a request.
      * <p>
      * This method need not be thread-safe, as it
-     * is always invoked from the same light-weight thread (targetReactor) that passed the
+     * is always invoked from the same light-weight thread (target reactor) that received the
      * Request.
      * </p>
      *
@@ -265,6 +286,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         return true;
     }
 
+    @Override
     public void cancel() {
         if (canceled)
             return;
