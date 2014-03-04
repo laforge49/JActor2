@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.requests.impl;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 
 /**
- * A source of messages, and which must be able to handle a response.
+ * A source of requests, and which must be able to handle a response.
  */
 public interface RequestSource {
 

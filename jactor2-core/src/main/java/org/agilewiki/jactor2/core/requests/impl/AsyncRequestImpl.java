@@ -26,7 +26,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     private final AsyncRequest<RESPONSE_TYPE> asyncRequest;
 
     /**
-     * Create an AsyncRequest and bind it to its target targetReactor.
+     * Create an AsyncRequestImpl and bind it to its target targetReactor.
      *
      * @param _asyncRequest  The request being implemented.
      * @param _targetReactor The targetReactor where this AsyncRequest Objects is passed for processing.
