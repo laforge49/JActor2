@@ -11,6 +11,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Internal implementation of AsyncRequest.
+ *
+ * @param <RESPONSE_TYPE>    The type of response.
+ */
 public class AsyncRequestImpl<RESPONSE_TYPE> extends
         RequestImplBase<RESPONSE_TYPE> {
 
@@ -23,6 +28,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     /**
      * Create an AsyncRequest and bind it to its target targetReactor.
      *
+     * @param _asyncRequest  The request being implemented.
      * @param _targetReactor The targetReactor where this AsyncRequest Objects is passed for processing.
      *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
@@ -31,18 +37,33 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         asyncRequest = _asyncRequest;
     }
 
+    @Override
     public AsyncRequest asRequest() {
         return asyncRequest;
     }
 
+    /**
+     * Disable check for hung request.
+     * This must be called when a response must wait for a subsequent request.
+     */
     public void setNoHungRequestCheck() {
         noHungRequestCheck = true;
     }
 
+    /**
+     * Returns a count of the number of subordinate requests which have not yet responded.
+     *
+     * @return A count of the number of subordinate requests which have not yet responded.
+     */
     public int getPendingResponseCount() {
         return pendingRequests.size();
     }
 
+    /**
+     * Process the response to this request.
+     *
+     * @param _response    The response to this request.
+     */
     public void processAsyncResponse(final RESPONSE_TYPE _response) {
         processObjectResponse(_response);
     }
@@ -50,7 +71,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     /**
      * Returns an exception as a response instead of throwing it.
      * But regardless of how a response is returned, if the response is an exception it
-     * is passed to the exception handler of the blades that did the call or doSend on the request.
+     * is passed to the exception handler of the request that did the call or send on the request.
      *
      * @param _response An exception.
      */
@@ -86,6 +107,13 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         }
     }
 
+    /**
+     * Send a subordinate request.
+     *
+     * @param _request              The subordinate request.
+     * @param _responseProcessor    A callback to handle the result value from the subordinate request.
+     * @param <RT>                  The type of result value.
+     */
     public <RT> void send(final Request<RT> _request,
                           final AsyncResponseProcessor<RT> _responseProcessor) {
         if (targetReactorImpl.getCurrentRequest() != this)
@@ -96,6 +124,16 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         requestImpl.doSend(targetReactorImpl, _responseProcessor);
     }
 
+    /**
+     * Send a subordinate request.
+     *
+     * @param _request              The subordinate request.
+     * @param _dis                  The callback to handle a fixed response when the result of
+     *                              the subordinate request is received.
+     * @param _fixedResponse        The fixed response to be used.
+     * @param <RT>                  The response value type of the subordinate request.
+     * @param <RT2>                 The fixed response type.
+     */
     public <RT, RT2> void send(final Request<RT> _request,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         if (targetReactorImpl.getCurrentRequest() != this)
@@ -133,6 +171,11 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         return old;
     }
 
+    /**
+     * Returns the current exception handler.
+     *
+     * @return The current exception handler, or null.
+     */
     public ExceptionHandler<RESPONSE_TYPE> getExceptionHandler() {
         return targetReactorImpl.getExceptionHandler();
     }
@@ -151,6 +194,12 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         asRequest().onClose();
     }
 
+    /**
+     * Cancel a subordinate RequestImpl.
+     *
+     * @param _requestImpl The subordinate RequestImpl.
+     * @return True if the subordinate RequestImpl was canceled.
+     */
     public boolean cancel(RequestImpl _requestImpl) {
         if (!pendingRequests.remove(_requestImpl))
             return false;
@@ -158,6 +207,9 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         return true;
     }
 
+    /**
+     * Cancel all subordinate RequestImpl's.
+     */
     public void cancelAll() {
         Set<RequestImpl> all = new HashSet<RequestImpl>(pendingRequests);
         Iterator<RequestImpl> it = all.iterator();
@@ -166,6 +218,9 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         }
     }
 
+    /**
+     * Cancel this request.
+     */
     public void cancel() {
         if (canceled)
             return;
