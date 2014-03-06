@@ -35,7 +35,7 @@ public class BankAccount extends NonBlockingBladeBase {
         };
     }
 
-    public AsyncRequest&lt;Boolean&gt; transferAReq(final int _amount, final Account _account) {
+    public AsyncRequest&lt;Boolean&gt; transferAReq(final int _amount, final BankAccount _account) {
         return new AsyncBladeRequest&lt;Boolean&gt;() {
             AsyncRequest&lt;Boolean&gt; dis = this;
 
