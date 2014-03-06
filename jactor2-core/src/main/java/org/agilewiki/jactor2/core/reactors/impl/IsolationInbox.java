@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.reactors.impl;
 
-import co.paralleluniverse.concurrent.util.SingleConsumerNonblockingProducerQueue;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 import java.util.ArrayDeque;
@@ -36,7 +35,7 @@ public class IsolationInbox extends Inbox {
      * @param initialLocalQueueSize The initial doLocal queue size.
      */
     public IsolationInbox(final int initialLocalQueueSize) {
-        concurrentQueue = new SingleConsumerNonblockingProducerQueue<Object>(new ArrayDeque<>());
+        concurrentQueue = new ConcurrentLinkedQueue<Object>();
         localResponsePendingQueue = new ArrayDeque<RequestImpl>(
                 initialLocalQueueSize);
         localNoResponsePendingQueue = new ArrayDeque<RequestImpl>(
