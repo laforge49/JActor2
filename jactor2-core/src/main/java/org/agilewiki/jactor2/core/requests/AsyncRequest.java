@@ -127,7 +127,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     /**
-     * Pass a request to its target reactor.
+     * Pass a request to its target reactor, providing the originating request is not canceled.
      *
      * @param _request           The request to be passed.
      * @param _responseProcessor The callback to be invoked when a response value is received,
@@ -140,7 +140,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
     }
 
     /**
-     * Pass a request to its target and then replace its response value.
+     * Pass a request to its target and then replace its response value,
+     * providing the originating request is not canceled.
      * Useful when you do not care about the actual response being passed back.
      *
      * @param _request       The request to be passed.

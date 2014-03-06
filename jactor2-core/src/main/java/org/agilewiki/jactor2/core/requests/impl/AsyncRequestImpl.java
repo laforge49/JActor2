@@ -108,7 +108,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     /**
-     * Send a subordinate request.
+     * Send a subordinate request, providing the originating request is not canceled.
      *
      * @param _request              The subordinate request.
      * @param _responseProcessor    A callback to handle the result value from the subordinate request.
@@ -116,6 +116,8 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
      */
     public <RT> void send(final Request<RT> _request,
                           final AsyncResponseProcessor<RT> _responseProcessor) {
+        if (canceled)
+            return;
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         RequestImpl<RT> requestImpl = _request.asRequestImpl();
@@ -125,7 +127,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     }
 
     /**
-     * Send a subordinate request.
+     * Send a subordinate request, providing the originating request is not canceled.
      *
      * @param _request              The subordinate request.
      * @param _dis                  The callback to handle a fixed response when the result of
@@ -136,6 +138,8 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
      */
     public <RT, RT2> void send(final Request<RT> _request,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+        if (canceled)
+            return;
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
         RequestImpl<RT> requestImpl = _request.asRequestImpl();
