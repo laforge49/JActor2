@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors.impl;
 
+import co.paralleluniverse.concurrent.util.SingleConsumerNonblockingProducerQueue;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 import java.util.ArrayDeque;
@@ -25,7 +26,7 @@ public class NonBlockingInbox extends Inbox {
      * @param initialLocalQueueSize The initial doLocal queue size.
      */
     public NonBlockingInbox(final int initialLocalQueueSize) {
-        concurrentQueue = new ConcurrentLinkedQueue<Object>();
+        concurrentQueue = new SingleConsumerNonblockingProducerQueue<Object>(new ArrayDeque<>());
         localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
     }
 

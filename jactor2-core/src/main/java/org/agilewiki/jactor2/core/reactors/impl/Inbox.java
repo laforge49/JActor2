@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.reactors.impl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import co.paralleluniverse.concurrent.util.SingleConsumerNonblockingProducerQueue;
 
 /**
  * Provides at least two queues for a targetReactor's incoming messages, where the first queue is a
@@ -17,7 +17,7 @@ public abstract class Inbox implements AutoCloseable {
     /**
      * Concurrent queue for cross-thread exchanges.
      */
-    protected ConcurrentLinkedQueue<Object> concurrentQueue;
+    protected SingleConsumerNonblockingProducerQueue<Object> concurrentQueue;
 
     /**
      * Returns true when a message has been passed from another thread.
