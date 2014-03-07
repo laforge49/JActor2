@@ -231,4 +231,13 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
         canceled = true;
         asRequest().onCancel();
     }
+
+    @Override
+    protected void setResponse(final Object _response,
+                               final ReactorImpl _activeReactor) {
+        if (_response instanceof Throwable)
+            cancelAll();
+        super.setResponse(_response, _activeReactor);
+    }
+
 }
