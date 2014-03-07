@@ -116,7 +116,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
      */
     public <RT> void send(final Request<RT> _request,
                           final AsyncResponseProcessor<RT> _responseProcessor) {
-        if (canceled)
+        if (canceled && _responseProcessor != null)
             return;
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
