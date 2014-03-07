@@ -8,7 +8,12 @@ public class AnyMain {
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
-            new Any(new A2(1), new A2(2), new A2(3)).call();
+            new Any(new A2(1), new A2(2), new A2(0)).call();
+            try {
+                new Any(new A2(0), new A2(0), new A2(0)).call();
+            } catch (ForcedException fe) {
+                System.out.println("Forced Exception");
+            }
         } finally {
             Plant.close();
         }
@@ -57,9 +62,13 @@ class A2 extends AsyncRequest<Void> {
 
     @Override
     public void processAsyncRequest() throws Exception {
+        if (delay == 0)
+            throw new ForcedException();
         for (long i = 0; i < delay * 100000000; i++);
         if (delay > 0)
             System.out.println("A2 "+delay);
         processAsyncResponse(null);
     }
 }
+
+class ForcedException extends Exception {}
