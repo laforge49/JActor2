@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.requests;
 
-import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
