@@ -8,9 +8,13 @@ public class AnyMain {
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
-            new Any(new A2(1), new A2(2), new A2(0)).call();
+            System.out.println("\ntest 1");
+            long x =new Any<Long>(new A2(1), new A2(2), new A2(0)).call();
+            System.out.println("got " + x);
+
+            System.out.println("\ntest 2");
             try {
-                new Any(new A2(0), new A2(0), new A2(0)).call();
+                new Any<Long>(new A2(0), new A2(0), new A2(0)).call();
             } catch (ForcedException fe) {
                 System.out.println("Forced Exception");
             }
@@ -47,7 +51,7 @@ class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
     }
 }
 
-class A2 extends AsyncRequest<Void> {
+class A2 extends AsyncRequest<Long> {
     volatile long delay;
 
     A2(final long _delay) {
@@ -57,6 +61,7 @@ class A2 extends AsyncRequest<Void> {
 
     @Override
     public void onCancel() {
+        System.out.println("canceled: " + delay);
         delay = 0;
     }
 
@@ -65,9 +70,7 @@ class A2 extends AsyncRequest<Void> {
         if (delay == 0)
             throw new ForcedException();
         for (long i = 0; i < delay * 100000000; i++);
-        if (delay > 0)
-            System.out.println("A2 "+delay);
-        processAsyncResponse(null);
+        processAsyncResponse(delay);
     }
 }
 
