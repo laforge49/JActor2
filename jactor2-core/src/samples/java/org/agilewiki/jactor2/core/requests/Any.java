@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.blades.Blade;
 public class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
     final AsyncRequest<RESPONSE_TYPE>[] requests;
 
-    public Any(final Blade _blade, final AsyncRequest<RESPONSE_TYPE>[] _requests) {
+    public Any(final Blade _blade, final AsyncRequest<RESPONSE_TYPE> ... _requests) {
         super(_blade.getReactor());
         requests = _requests;
     }
