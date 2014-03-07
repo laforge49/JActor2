@@ -12,6 +12,7 @@ public class All extends AsyncRequest<Void> {
 
     @Override
     public void processAsyncRequest() throws Exception {
+
         AsyncResponseProcessor<Void> responseProcessor = new AsyncResponseProcessor<Void>() {
             @Override
             public void processAsyncResponse(Void _response) throws Exception {

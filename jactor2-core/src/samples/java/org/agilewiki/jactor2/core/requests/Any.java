@@ -13,14 +13,6 @@ public class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
     @Override
     public void processAsyncRequest() throws Exception {
 
-        AsyncResponseProcessor<RESPONSE_TYPE> responseProcessor = new AsyncResponseProcessor<RESPONSE_TYPE>() {
-            @Override
-            public void processAsyncResponse(RESPONSE_TYPE _response) throws Exception {
-                cancelAll();
-                Any.this.processAsyncResponse(_response);
-            }
-        };
-
         setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
             @Override
             public void processException(Exception e, AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor) throws Exception {
@@ -31,7 +23,7 @@ public class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
 
         int i = 0;
         while (i < requests.length) {
-            send(requests[i], responseProcessor);
+            send(requests[i], this);
             i += 1;
         }
     }
