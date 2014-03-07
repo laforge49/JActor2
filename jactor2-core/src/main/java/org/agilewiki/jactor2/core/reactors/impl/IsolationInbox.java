@@ -114,6 +114,7 @@ public class IsolationInbox extends Inbox {
         if (processingRequest) {
             throw new IllegalStateException("already processing a request");
         }
+//        System.out.println("processing request "+this);
         processingRequest = true;
     }
 
@@ -122,6 +123,7 @@ public class IsolationInbox extends Inbox {
         if (_message.isSignal())
             return;
         if (!processingRequest) {
+//            System.out.println("not processing request "+this);
             throw new IllegalStateException("not processing a request");
         }
         processingRequest = false;

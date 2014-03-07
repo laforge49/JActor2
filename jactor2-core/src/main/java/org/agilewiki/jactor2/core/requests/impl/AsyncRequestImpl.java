@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.requests.impl;
 
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
@@ -235,7 +236,7 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     @Override
     protected void setResponse(final Object _response,
                                final ReactorImpl _activeReactor) {
-        if (_response instanceof Throwable)
+        if (_response instanceof Throwable || targetReactor instanceof CommonReactor)
             cancelAll();
         super.setResponse(_response, _activeReactor);
     }
