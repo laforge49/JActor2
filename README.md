@@ -11,6 +11,7 @@ of robust applications.
     - [Asynchronous Sends](#asynchronous-sends)
     - [Exception Handling](#exception-handling)
     - [Request Factories](#request-factories)
+    - [Parallel Processing](#parallel-processing)
     - [Partial Failure](#partial-failure)
 - [Summary](#summary)
 - [Upcoming Projects](#upcoming-projects)
@@ -379,6 +380,76 @@ But by introducing request factory methods we can then use interfaces to decoupl
         }
     }
 ```
+
+Parallel Processing
+-----
+
+So far everything we have looked at, while fully asynchronous, is entirely sequential--doing one thing at a time in
+a pre-determined order. But doing things in parallel is as simple as having multiple sends.
+
+```java
+
+    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+    import org.agilewiki.jactor2.core.requests.AsyncRequest;
+
+    public class AllMain {
+        public static void main(final String[] _args) throws Exception {
+            new Plant();
+            try {
+                new All(new A1(), new A1(), new A1()).call();
+            } finally {
+                Plant.close();
+            }
+        }
+    }
+
+    class All extends AsyncRequest<Void> {
+        final AsyncRequest<Void>[] requests;
+
+        All(final AsyncRequest<Void> ... _requests) {
+            super(new NonBlockingReactor());
+            requests = _requests;
+        }
+
+        @Override
+        public void processAsyncRequest() throws Exception {
+
+            AsyncResponseProcessor<Void> responseProcessor = new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(Void _response) throws Exception {
+                    if (getPendingResponseCount() == 0)
+                        All.this.processAsyncResponse(null);
+                }
+            };
+
+            int i = 0;
+            while (i < requests.length) {
+                send(requests[i], responseProcessor);
+                i += 1;
+            }
+        }
+    }
+
+    class A1 extends AsyncRequest<Void> {
+        A1() {
+            super(new NonBlockingReactor());
+        }
+
+        @Override
+        public void processAsyncRequest() throws Exception {
+            System.out.println("A1");
+            processAsyncResponse(null);
+        }
+    }
+```
+
+In the above example there is no persistent state, which is why there are no blades. Instead we just define
+request classes and in their constructors we create the required reactors.
+
+One new method has been introduced in the responseProcessor, getPendingResponseCount(). JActor2 tracks the
+number of incomplete subordinate requests and this method returns their count. We use this method to ensure that
+all the requests have completed before the All request returns a null response value.
 
 Partial Failure
 -----
