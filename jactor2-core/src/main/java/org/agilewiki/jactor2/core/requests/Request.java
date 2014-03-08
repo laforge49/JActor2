@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.requests;
 
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * A request is a single-use object for performing an operation safely and to optionally be passed back with a response

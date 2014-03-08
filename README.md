@@ -437,7 +437,7 @@ a pre-determined order. But doing things in parallel is as simple as having mult
         }
 
         @Override
-        public void processAsyncRequest() throws Exception {
+        public void processAsyncRequest() {
             System.out.println("A1");
             processAsyncResponse(null);
         }

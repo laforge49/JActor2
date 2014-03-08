@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
+import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.reactors.impl.IsolationReactorImpl;
 import org.agilewiki.jactor2.core.reactors.impl.NonBlockingReactorImpl;
-import org.agilewiki.jactor2.core.plant.Plant;
 
 /**
  * Processes each request until completion, processing responses and 1-way messages (e.g. signals) in the order received.

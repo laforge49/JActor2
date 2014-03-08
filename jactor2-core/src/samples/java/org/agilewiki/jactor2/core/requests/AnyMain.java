@@ -9,12 +9,16 @@ public class AnyMain {
         new Plant();
         try {
             System.out.println("\ntest 1");
-            long x =new Any<Long>(new A2(1), new A2(2), new A2(0)).call();
+            long x = new Any<Long>(new A2(1), new A2(2), new A2(3)).call();
             System.out.println("got " + x);
 
             System.out.println("\ntest 2");
+            x = new Any<Long>(new A3(1), new A3(2), new A3(0)).call();
+            System.out.println("got " + x);
+
+            System.out.println("\ntest 3");
             try {
-                new Any<Long>(new A2(0), new A2(0), new A2(0)).call();
+                new Any<Long>(new A3(0), new A3(0), new A3(0)).call();
             } catch (ForcedException fe) {
                 System.out.println("Forced Exception");
             }
@@ -60,18 +64,29 @@ class A2 extends AsyncRequest<Long> {
     }
 
     @Override
-    public void onCancel() {
-        System.out.println("canceled: " + delay);
-        delay = 0;
-    }
-
-    @Override
-    public void processAsyncRequest() throws Exception {
-        if (delay == 0)
-            throw new ForcedException();
+    public void processAsyncRequest() {
         for (long i = 0; i < delay * 100000000; i++);
         processAsyncResponse(delay);
     }
 }
 
 class ForcedException extends Exception {}
+
+class A3 extends AsyncRequest<Long> {
+    volatile long delay;
+
+    A3(final long _delay) {
+        super(new BlockingReactor());
+        delay = _delay;
+    }
+
+    @Override
+    public void processAsyncRequest() throws ForcedException {
+        if (delay == 0)
+            throw new ForcedException();
+        for (long i = 0; i < delay * 100000000; i++)
+            if (isCanceled())
+                return;
+        processAsyncResponse(delay);
+    }
+}

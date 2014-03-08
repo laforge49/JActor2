@@ -47,7 +47,7 @@ class A1 extends AsyncRequest<Void> {
     }
 
     @Override
-    public void processAsyncRequest() throws Exception {
+    public void processAsyncRequest() {
         System.out.println("A1");
         processAsyncResponse(null);
     }

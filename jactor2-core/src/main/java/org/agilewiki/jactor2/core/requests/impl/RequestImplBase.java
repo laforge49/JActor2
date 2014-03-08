@@ -287,13 +287,6 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     }
 
     @Override
-    public void cancel() {
-        if (canceled)
-            return;
-        canceled = true;
-    }
-
-    @Override
     public boolean isCanceled() throws ReactorClosedException {
         if (closed)
             throw new ReactorClosedException();
@@ -325,6 +318,15 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         response = new ReactorClosedException();
         if (requestSource != null)
             requestSource.incomingResponse(this, null);
+    }
+
+    /**
+     * Cancel this request.
+     */
+    public void cancel() {
+        if (canceled)
+            return;
+        canceled = true;
     }
 
     /**

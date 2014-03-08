@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors.impl;
 
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
