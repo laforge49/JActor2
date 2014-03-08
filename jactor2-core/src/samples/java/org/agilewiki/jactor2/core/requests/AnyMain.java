@@ -65,7 +65,7 @@ class A2 extends AsyncRequest<Long> {
 
     @Override
     public void processAsyncRequest() {
-        for (long i = 0; i < delay * 100000000; i++);
+        for (long i = 0; i < delay * 1000000; i++);
         processAsyncResponse(delay);
     }
 }
@@ -84,7 +84,7 @@ class A3 extends AsyncRequest<Long> {
     public void processAsyncRequest() throws ForcedException {
         if (delay == 0)
             throw new ForcedException();
-        for (long i = 0; i < delay * 100000000; i++)
+        for (long i = 0; i < delay * 1000000000; i++)
             if (isCanceled())
                 return;
         processAsyncResponse(delay);
