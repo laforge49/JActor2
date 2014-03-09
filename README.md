@@ -12,6 +12,7 @@ of robust applications.
     - [Exception Handling](#exception-handling)
     - [Request Factories](#request-factories)
     - [Parallel Processing](#parallel-processing)
+    - [Canceled Requests](#canceled-requests)
     - [Partial Failure](#partial-failure)
 - [Summary](#summary)
 - [Upcoming Projects](#upcoming-projects)
@@ -450,6 +451,32 @@ request classes and in their constructors we create the required reactors.
 One new method has been introduced in the responseProcessor, getPendingResponseCount(). JActor2 tracks the
 number of incomplete subordinate requests and this method returns their count. We use this method to ensure that
 all the requests have completed before the All request returns a null response value.
+
+Canceled Requests
+-----
+
+Requests are canceled when they are no longer useful and once canceled, a request can no longer send subordinate
+requests.
+There are a number of ways a request can be canceled:
+
+- When a reactor is closed,
+all pending requests sent by that reactor are canceled.
+- When a request completes or a request is canceled,
+all pending requests sent by that request are canceled.
+- The application logic of a request can explicitly cancel a request or all pending requests.
+
+Of course, there may be some cases where just canceling a request will corrupt the state of a reactor.
+But the application logic has the option of overriding the AsyncRequest.onCancel method.
+
+Most cancelations occur when a reactor has outstanding requests and an uncaught RuntimeException occurs.
+The exception causes the reactor to close, and the outstanding requests are canceled in turn.
+But there are cases when a request is canceled because it is no longer useful.
+Consider a requirement where there multiple alternative requests that can be used. We can process these
+requests in parallel and use the first result returned.
+
+```java
+
+```
 
 Partial Failure
 -----
