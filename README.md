@@ -518,6 +518,7 @@ Here then is the rest of the program and its output:
     import org.agilewiki.jactor2.core.plant.Plant;
     import org.agilewiki.jactor2.core.reactors.BlockingReactor;
     import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+    import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
     class A2 extends AsyncRequest<Long> {
         final long delay;
