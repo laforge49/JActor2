@@ -579,7 +579,6 @@ Here then is the rest of the program and its output:
 ```
 
 ````
-
     test 1
     got 2
 
