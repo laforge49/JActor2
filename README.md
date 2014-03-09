@@ -468,7 +468,7 @@ all pending requests sent by that request are canceled.
 Of course, there may be some cases where just canceling a request will corrupt the state of a reactor.
 But the application logic has the option of overriding the AsyncRequest.onCancel method.
 
-Most cancelations occur when a reactor has outstanding requests and an uncaught RuntimeException occurs.
+Most cancellations occur when a reactor has outstanding requests and an uncaught RuntimeException occurs.
 The exception causes the reactor to close, and the outstanding requests are canceled in turn.
 But there are cases when a request is canceled because it is no longer useful.
 Consider a requirement where there multiple alternative requests that can be used. We can process these
@@ -489,7 +489,9 @@ requests in parallel and use the first result returned.
 
             setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
                 @Override
-                public void processException(Exception e, AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor) throws Exception {
+                public void processException(Exception e,
+                                             AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                        throws Exception {
                     if (getPendingResponseCount() == 0)
                         throw e;
                 }
@@ -547,7 +549,7 @@ Here then is the rest of the program and its output:
             if (delay == 0)
                 throw new ForcedException();
             for (long i = 0; i < delay * 1000000000; i++)
-                if (isCanceled())
+                if (i % 1000 == 0 && isCanceled()) {
                     return;
             processAsyncResponse(delay);
         }
@@ -588,6 +590,16 @@ Here then is the rest of the program and its output:
     test 3
     Forced Exception
 ````
+
+Class A2 represents a typical request, with no extra code needed to handle a cancellation.
+Once the processAsyncRequest method is called, the request will execute until control is returned,
+though it can send no requests once it is canceled.
+
+Class A3 represents a long-running request. It uses a BlockingReactor rather than a NonBlockingReactor which
+changes the default message timeout from 1 second to 5 minutes. And it periodically checks to see if it has
+been canceled.
+(A BlockingReactor should be used when there are requests which tie up a thread, either because of heavy
+computation or because of I/O.)
 
 Partial Failure
 -----

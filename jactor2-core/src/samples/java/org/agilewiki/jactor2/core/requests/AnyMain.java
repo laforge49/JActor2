@@ -41,7 +41,9 @@ class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
 
         setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
             @Override
-            public void processException(Exception e, AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor) throws Exception {
+            public void processException(Exception e,
+                                         AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                    throws Exception {
                 if (getPendingResponseCount() == 0)
                     throw e;
             }
@@ -85,7 +87,7 @@ class A3 extends AsyncRequest<Long> {
         if (delay == 0)
             throw new ForcedException();
         for (long i = 0; i < delay * 1000000000; i++)
-            if (isCanceled()) {
+            if (i % 1000 == 0 && isCanceled()) {
                 return;
             }
         processAsyncResponse(delay);
