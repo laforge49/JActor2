@@ -565,7 +565,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                 Thread.currentThread().interrupt();
             else if (!isClosing())
                 logger.warn("message running too long " + currentRequest.toString());
-            else
+            else if (!currentRequest.isComplete())
                 logger.warn("message interrupted on close " + currentRequest.toString());
         } catch (Exception ex) {
             throw ex;

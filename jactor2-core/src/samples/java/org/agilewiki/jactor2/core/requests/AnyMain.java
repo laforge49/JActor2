@@ -56,16 +56,16 @@ class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
 }
 
 class A2 extends AsyncRequest<Long> {
-    volatile long delay;
+    final long delay;
 
     A2(final long _delay) {
-        super(new BlockingReactor());
+        super(new NonBlockingReactor());
         delay = _delay;
     }
 
     @Override
     public void processAsyncRequest() {
-        for (long i = 0; i < delay * 1000000; i++);
+        for (long i = 0; i < delay * 1000; i++);
         processAsyncResponse(delay);
     }
 }
@@ -73,7 +73,7 @@ class A2 extends AsyncRequest<Long> {
 class ForcedException extends Exception {}
 
 class A3 extends AsyncRequest<Long> {
-    volatile long delay;
+    final long delay;
 
     A3(final long _delay) {
         super(new BlockingReactor());
@@ -85,8 +85,9 @@ class A3 extends AsyncRequest<Long> {
         if (delay == 0)
             throw new ForcedException();
         for (long i = 0; i < delay * 1000000000; i++)
-            if (isCanceled())
+            if (isCanceled()) {
                 return;
+            }
         processAsyncResponse(delay);
     }
 }
