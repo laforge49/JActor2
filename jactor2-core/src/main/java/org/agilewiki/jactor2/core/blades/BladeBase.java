@@ -52,6 +52,28 @@ public abstract class BladeBase implements Blade {
     }
 
     /**
+     * Send a one-way message using the blade's reactor as the source.
+     *
+     * @param _request        The request to be passed.
+     */
+    protected <RESPONSE_TYPE> void send(
+            final Request<RESPONSE_TYPE> _request) {
+        _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
+    }
+
+    /**
+     * Validate that the source reactor is the same as the target and that the source reactor is active.
+     *
+     * @param _sourceReactor    The source reactor.
+     */
+    protected void directCheck(final Reactor _sourceReactor) {
+        if (reactor != _sourceReactor)
+            throw new UnsupportedOperationException("Not thread safe: source reactor is not the same");
+        if (!reactor.asReactorImpl().isRunning())
+            throw new IllegalStateException("Not thread safe: not called from within an active request");
+    }
+
+    /**
      * An AsyncRequest targeted to this blade.
      *
      * @param <RESPONSE_TYPE> The type of response value.
@@ -68,16 +90,6 @@ public abstract class BladeBase implements Blade {
     }
 
     /**
-     * Send a one-way message using the blade's reactor as the source.
-     *
-     * @param _request        The request to be passed.
-     */
-    protected <RESPONSE_TYPE> void send(
-            final Request<RESPONSE_TYPE> _request) {
-        _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
-    }
-
-    /**
      * A SyncRequest targeted to this blade.
      * @param <RESPONSE_TYPE>
      */
@@ -90,17 +102,5 @@ public abstract class BladeBase implements Blade {
         public SyncBladeRequest() {
             super(BladeBase.this.reactor);
         }
-    }
-
-    /**
-     * Validate that the source reactor is the same as the target and that the source reactor is active.
-     *
-     * @param _sourceReactor    The source reactor.
-     */
-    protected void directCheck(final Reactor _sourceReactor) {
-        if (reactor != _sourceReactor)
-            throw new UnsupportedOperationException("Not thread safe: source reactor is not the same");
-        if (!reactor.asReactorImpl().isRunning())
-            throw new IllegalStateException("Not thread safe: not called from within an active request");
     }
 }
