@@ -532,7 +532,8 @@ Here then is the rest of the program and its output:
 
         @Override
         public void processAsyncRequest() {
-            for (long i = 0; i < delay * 1000; i++);
+            for (long i = 0; i < delay * 100000; i++)
+                Thread.yield();
             processAsyncResponse(delay);
         }
     }
@@ -551,9 +552,11 @@ Here then is the rest of the program and its output:
         public void processAsyncRequest() throws ForcedException {
             if (delay == 0)
                 throw new ForcedException();
-            for (long i = 0; i < delay * 1000000000; i++) //simulates longer computation.
+            for (long i = 0; i < delay * 10000000; i++) {
                 if (i % 1000 == 0 && isCanceled())
                     return;
+                Thread.yield();
+            }
             processAsyncResponse(delay);
         }
     }
