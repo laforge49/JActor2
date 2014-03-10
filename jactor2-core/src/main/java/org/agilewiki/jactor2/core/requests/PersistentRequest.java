@@ -6,7 +6,8 @@ import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
- * Closes the request when the target reactor is closed.
+ * Closes the request when the target reactor is closed,
+ * all requests saved in a blade's state should be persistent requests.
  *
  * @param <RESPONSE_TYPE> The response type.
  */
