@@ -494,14 +494,14 @@ requests in parallel and use the first result returned.
                         AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
                         throws Exception {
                     if (getPendingResponseCount() == 0)
-                        throw e;
+                        throw e; //pass back the exception if only exceptions were received.
                 }
             });
 
             int i = 0;
             while (i < requests.length) {
                 send(requests[i], this); //Send the requests and
-                                         //pass back the first result received
+                                         //pass back the first result received.
                 i += 1;
             }
         }
