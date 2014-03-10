@@ -524,7 +524,7 @@ Here then is the rest of the program and its output:
         final long delay;
 
         A2(final long _delay) {
-            super(new NonBlockingReactor());
+            super(new NonBlockingReactor()); //simulates small computation.
             delay = _delay;
         }
 
@@ -549,8 +549,8 @@ Here then is the rest of the program and its output:
         public void processAsyncRequest() throws ForcedException {
             if (delay == 0)
                 throw new ForcedException();
-            for (long i = 0; i < delay * 1000000000; i++)
-                if (i % 1000 == 0 && isCanceled()) {
+            for (long i = 0; i < delay * 1000000000; i++) //simulates longer computation.
+                if (i % 1000 == 0 && isCanceled())
                     return;
             processAsyncResponse(delay);
         }
