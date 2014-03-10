@@ -500,7 +500,7 @@ requests in parallel and use the first result returned.
 
             int i = 0;
             while (i < requests.length) {
-                send(requests[i], this);
+                send(requests[i], this);   //Send the requests and pass back the first result received
                 i += 1;
             }
         }
