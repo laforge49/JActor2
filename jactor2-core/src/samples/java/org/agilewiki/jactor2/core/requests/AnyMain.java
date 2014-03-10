@@ -31,7 +31,7 @@ public class AnyMain {
 class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
     final AsyncRequest<RESPONSE_TYPE>[] requests;
 
-    public Any(final AsyncRequest<RESPONSE_TYPE> ... _requests) {
+    public Any(final AsyncRequest<RESPONSE_TYPE>... _requests) {
         super(new NonBlockingReactor());
         requests = _requests;
     }
@@ -41,8 +41,9 @@ class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
 
         setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
             @Override
-            public void processException(Exception e,
-                                         AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            public void processException(
+                    Exception e,
+                    AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
                     throws Exception {
                 if (getPendingResponseCount() == 0)
                     throw e;
@@ -67,12 +68,13 @@ class A2 extends AsyncRequest<Long> {
 
     @Override
     public void processAsyncRequest() {
-        for (long i = 0; i < delay * 1000; i++);
+        for (long i = 0; i < delay * 1000; i++) ;
         processAsyncResponse(delay);
     }
 }
 
-class ForcedException extends Exception {}
+class ForcedException extends Exception {
+}
 
 class A3 extends AsyncRequest<Long> {
     final long delay;

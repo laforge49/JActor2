@@ -489,8 +489,9 @@ requests in parallel and use the first result returned.
 
             setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
                 @Override
-                public void processException(Exception e,
-                                             AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                public void processException(
+                        Exception e,
+                        AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
                         throws Exception {
                     if (getPendingResponseCount() == 0)
                         throw e;
