@@ -51,7 +51,7 @@ class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
 
         int i = 0;
         while (i < requests.length) {
-            send(requests[i], this);
+            send(requests[i], this); //Send the requests and pass back the first result received
             i += 1;
         }
     }
