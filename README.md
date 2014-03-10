@@ -597,7 +597,7 @@ Once the processAsyncRequest method is called, the request will execute until co
 though it can send no requests once it is canceled.
 
 Class A3 represents a long-running request. It uses a BlockingReactor rather than a NonBlockingReactor which
-changes the default message timeout from 1 second to 5 minutes. And it periodically checks to see if it has
+changes the default message timeout from 1 second to 5 minutes. A3 also periodically checks to see if it has
 been canceled.
 (A BlockingReactor should be used when there are requests which tie up a thread, either because of heavy
 computation or because of I/O.)
