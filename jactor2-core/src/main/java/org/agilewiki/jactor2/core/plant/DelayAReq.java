@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.PersistentRequest;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 import java.util.concurrent.ScheduledFuture;
@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledFuture;
  * Returns a result after a delay.
  * Builds on PlantScheduler.
  */
-public class DelayAReq extends AsyncRequest<Void> {
+public class DelayAReq extends PersistentRequest<Void> {
     private final long millisecondDelay;
     private ScheduledFuture<?> scheduledFuture;
     private AsyncResponseProcessor<Void> dis = this;
