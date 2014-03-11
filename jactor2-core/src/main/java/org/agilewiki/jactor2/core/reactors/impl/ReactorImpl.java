@@ -239,7 +239,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     }
 
     /**
-     * Removes this ReactorImpl from any closers, cancels any requests that are in process,
+     * Removes this ReactorImpl from any closers, closes any requests that are in process,
      * closes all closeables, closes the outbox, closes the inbox, interrupts the processing
      * of the current thread and, if the interrupt is not effective, begins hung thread recovery.
      */
@@ -254,7 +254,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         Iterator<RequestImpl> mit = inProcessRequests.iterator();
         while (mit.hasNext()) {
             RequestImpl requestImpl = mit.next();
-            requestImpl.cancel();
+            requestImpl.close();
         }
 
         if (closeables != null) {
