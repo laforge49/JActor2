@@ -14,7 +14,16 @@ of robust applications.
     - [Parallel Processing](#parallel-processing)
     - [Canceled Requests](#canceled-requests)
     - [Partial Failure](#partial-failure)
-- [Summary](#summary)
+- [Advanced Features](#advanced-features)
+    - [Message Buffers](#message-buffers)
+    - [Thread Migration](#thread-migration)
+    - [Direct Method Calls](#direct-method-calls)
+    - [OnIdle](#onidle)
+- [Alternative Implementations](#alternative-implementations)
+    - [Reactors](#reactors)
+    - [Request Passing](#request-passing)
+    - [Request Types](#request-types)
+- [Next Step](#next-step)
 - [Upcoming Projects](#upcoming-projects)
 - [Links](#links)
 
@@ -616,7 +625,7 @@ all pending requests sent to them are passed back a
 And once closed, all subsequent requests immediately receive a ReactorClosedException as well.
 
 When JActor detects a problem that can result in corrupted state while a request is being processed,
-the default reaction is to log the problem and close the reactor. Some examples:
+the default recovery is to log the problem and close the reactor. Some examples:
 
 - An uncaught RuntimeException is thrown.
 - A StackOverflowError is thrown.
@@ -627,14 +636,56 @@ The ReactorClosedException itself is a RuntimeException, and if a request's Exce
 ReactorClosedException, then the request's reactor is also closed.
 So it is important to catch this exception at the points where a partial failure can be handled.
 
-The key here is that any sufficiently large program will have bugs, and isolating a failure to a few reactors
+The point here is that any sufficiently large program will have bugs, and isolating a failure to a few reactors
 can be very important. The failed reactors can then be optionally restarted.
 
-Summary
+Advanced Features
 =====
 
-We have taken a quick look at only one way of doing things with JActor2. But one size does not fit all.
-So JActor offers an extensive API, including 5 types of reactor, 4 ways to pass requests and 2 types of request.
+Message Buffers
+-----
+
+Thread Migration
+-----
+
+Direct Method Calls
+-----
+
+OnIdle
+-----
+
+Alternative Implementations
+=====
+
+So far we have covered only one way of doing things with JActor2. But one size does not fit all.
+So JActor offers a number of alternatives to choose from,
+including 5 types of reactor, 4 ways to pass requests and 2 types of request.
+
+Reactors
+-----
+
+1. NonBlockingReactor
+2. BlockingReactor
+3. IsolationReactor
+4. ThreadBoundReactor
+5. SwingBoundReactor
+
+Request Passing
+-----
+
+1. call
+2. send with callback
+3. send with no callback
+3. signal
+
+Request Types
+-----
+
+1. AsyncRequest
+2. SyncRequest
+
+Next Step
+=====
 
 A good next step now would be to look at the
 [core tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html),
