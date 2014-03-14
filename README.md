@@ -12,12 +12,12 @@ of robust applications.
     - [Exception Handling](#exception-handling)
     - [Request Factories](#request-factories)
     - [Parallel Processing](#parallel-processing)
+- [Advanced Features](#advanced-features)
     - [Canceled Requests](#canceled-requests)
     - [Partial Failure](#partial-failure)
-- [Advanced Features](#advanced-features)
+    - [Direct Method Calls](#direct-method-calls)
     - [Message Buffers](#message-buffers)
     - [Thread Migration](#thread-migration)
-    - [Direct Method Calls](#direct-method-calls)
     - [OnIdle](#onidle)
 - [Alternative Implementations](#alternative-implementations)
     - [Reactors](#reactors)
@@ -461,11 +461,17 @@ One new method has been introduced in the responseProcessor, getPendingResponseC
 number of incomplete subordinate requests and this method returns their count. We use this method to ensure that
 all the requests have completed before the All request returns a null response value.
 
+Advanced Features
+=====
+
+JActor2 goes well beyond basic 2-way messaging, providing a comprehensive and robust set of features.
+
 Canceled Requests
 -----
 
 Requests are canceled when they are no longer useful and once canceled, a request can no longer send subordinate
-requests.
+requests. This has the obvious advantage of quickly freeing up
+resources being used by requests that are no longer relevant.
 There are a number of ways a request can be canceled:
 
 - When a reactor is closed,
@@ -474,7 +480,7 @@ all pending requests sent by that reactor are canceled.
 all pending requests sent by that request are canceled.
 - The application logic of a request can explicitly cancel a request or all pending requests.
 
-Of course, there may be some cases where just canceling a request will corrupt the state of a reactor.
+Of course, there may be some cases where just canceling a request might corrupt the state of a reactor.
 But the application logic has the option of overriding the AsyncRequest.onCancel method.
 
 Most cancellations occur when a reactor has outstanding requests and an uncaught RuntimeException occurs.
@@ -639,20 +645,39 @@ So it is important to catch this exception at the points where a partial failure
 The point here is that any sufficiently large program will have bugs, and isolating a failure to a few reactors
 can be very important. The failed reactors can then be optionally restarted.
 
-Advanced Features
-=====
+Direct Method Calls
+-----
+
+Methods of one blade can and should directly call the methods of another blade, providing either
+
+- The method being called is thread-safe. Or
+- Both blades use the same reactor.
+
+Of course, when a method is not thread-safe, it is a good idea to provide some form of sanity check. The method
+being called can do this by calling the directCheck method on BladeBase, which many blade classes extend.
 
 Message Buffers
 -----
 
+There is a fair amount of overhead in passing messages between threads. Send buffers requests and responses, rather
+than passing them immediately, to avoid some of this overhead and improve throughput. Message buffers are per destination
+reactor and are only passed when a reactor has no further messages to process.
+
 Thread Migration
 -----
 
-Direct Method Calls
------
+Thread migration is another technique used to avoid the overhead of passing messages between threads. Simply put,
+when a destination reactor has no assigned thread, instead of passing a message buffer to another thread, the thread
+reassigns itself to the destination reactor. This means that the data being passed between reactors is likely
+present in the thread's memory cache when the reactor processes it.
 
 OnIdle
 -----
+
+Not everything is always about message processing. There are sometimes low-priority tasks that should be done when
+a reactor becomes idle. If a reactor is aggregating data, for example, it may need to forward the aggregate when
+there are no messages that need processing rather than always waiting until a fixed size has been reached. This
+is easily configured by calling a reactor's setIdle method.
 
 Alternative Implementations
 =====
