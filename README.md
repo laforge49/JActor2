@@ -689,25 +689,29 @@ including 5 types of reactor, 4 ways to pass requests and 2 types of request.
 Reactors
 -----
 
-1. NonBlockingReactor
-2. BlockingReactor
-3. IsolationReactor
-4. ThreadBoundReactor
-5. SwingBoundReactor
+A reactor maintains a queue of unprocessed messages and determines when and in what order they are processed.
+A reactor also handles the buffering of outgoing messages and when those messages should be disbursed to their
+destinations.
+
+1. **NonBlockingReactor** - reactor
+2. **BlockingReactor** -
+3. **IsolationReactor** -
+4. **ThreadBoundReactor** -
+5. **SwingBoundReactor** -
 
 Request Passing
 -----
 
-1. call
-2. send with callback
-3. send with no callback
-3. signal
+1. **call** -
+2. **send with callback** -
+3. **send with no callback** -
+3. **signal** -
 
 Request Types
 -----
 
-1. AsyncRequest
-2. SyncRequest
+1. **AsyncRequest** -
+2. **SyncRequest** -
 
 Next Step
 =====
