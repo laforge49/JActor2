@@ -693,11 +693,24 @@ A reactor maintains a queue of unprocessed messages and determines when and in w
 A reactor also handles the buffering of outgoing messages and when those messages should be disbursed to their
 destinations.
 
-1. **NonBlockingReactor** - reactor
-2. **BlockingReactor** -
-3. **IsolationReactor** -
-4. **ThreadBoundReactor** -
-5. **SwingBoundReactor** -
+Reactors are individually configurable for initial local queue size, initial buffer size, recovery strategies
+and message processing timeouts. The configuration is otherwise inherited from the Plant's internal reactor or
+a parent reactor if one is specified when a reactor is created.
+
+1. **NonBlockingReactor** - A non-blocking reactor presumes that all message processing completes quickly.
+Buffered messages are disbursed when the input queue is empty.
+The default message processing timeout is 1 second.
+2. **BlockingReactor** - A blocking reactor is intended for use when messages may take some time to process or
+when there is I/O that may block its thread.
+Buffered messages are disbursed after processing each message.
+The default message processing timeout is 5 minutes.
+3. **IsolationReactor** - Similar to a non-blocking reactor, except that each request is processed to completion
+before processing the next request.
+Buffered messages are disbursed after processing each message.
+4. **ThreadBoundReactor** - Similar to a non-blocking reactor, except that all message processing is done using
+the thread the reactor is bound to, rather than allocating a thread from a common pool.
+Thread migration is disabled.
+5. **SwingBoundReactor** - Similar to a thread-bound reactor, except that the bound thread is the Swing UI thread.
 
 Request Passing
 -----
