@@ -661,7 +661,7 @@ Message Buffers
 
 There is a fair amount of overhead in passing messages between threads. Send buffers requests and responses, rather
 than passing them immediately, to avoid some of this overhead and improve throughput. Message buffers are per destination
-reactor and are only passed when a reactor has no further messages to process.
+reactor and are only disbursed to their destinations when a reactor has no further messages to process.
 
 Thread Migration
 -----
@@ -741,7 +741,7 @@ Request Types
 
 1. **AsyncRequest** - An AsyncRequest has a send method for sending 2-way messages. It also tracks the number of
 2-way messages that have been sent and for which a result or exception has not been received. An ExceptionHandler
-can be assigned and updated while the request is being processed. Additionally, the AsyncRequest method has onCancel
+can be assigned and updated while the request is being processed. Additionally, the AsyncRequest class has onCancel
 and onClose methods that can be overridden, though these must be thread-safe methods.
 2. **SyncRequest** - SyncRequest is a simplified and synchronous version of AsyncRequest. Being synchronous, it can
 not send other requests with a callback. Nor does it support exception handlers, as try/catch will suffice. In place
