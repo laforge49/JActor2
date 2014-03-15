@@ -684,7 +684,9 @@ Alternative Implementations
 
 So far we have covered only one way of doing things with JActor2. But one size does not fit all.
 So JActor offers a number of alternatives to choose from,
-including 5 types of reactor, 4 ways to pass requests and 2 types of request.
+including 5 types of reactor, 4 ways to pass requests and 2 types of request. Advanced users can, of course,
+define new types of reactors, message passing and requests. This is made possible by minimizing coupling
+in their implementation.
 
 Reactors
 -----
@@ -737,15 +739,21 @@ processed is simply logged.
 Request Types
 -----
 
-1. **AsyncRequest** -
-2. **SyncRequest** -
+1. **AsyncRequest** - An AsyncRequest has a send method for sending 2-way messages. It also tracks the number of
+2-way messages that have been sent and for which a result or exception has not been received. An ExceptionHandler
+can be assigned and updated while the request is being processed. Additionally, the AsyncRequest method has onCancel
+and onClose methods that can be overridden, though these must be thread-safe methods.
+2. **SyncRequest** - SyncRequest is a simplified and synchronous version of AsyncRequest. Being synchronous, it can
+not send other requests with a callback. Nor does it support exception handlers, as try/catch will suffice. In place
+of the processAsyncRequest method, a processSyncRequest method must be overridden, and the result value of the
+SyncRequest must be returned by this method.
 
 Next Step
 =====
 
 A good next step now would be to look at the
 [core tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html),
-which explains how to use JActor2 to meet a wide range of requirements.
+which covers programming with JActor2 step-by-step.
 
 Upcoming Projects
 =====
