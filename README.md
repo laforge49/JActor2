@@ -715,10 +715,24 @@ Thread migration is disabled.
 Request Passing
 -----
 
-1. **call** -
-2. **send with callback** -
-3. **send with no callback** -
-3. **signal** -
+1. **call** - This is a synchronous passing of a 2-way message, as the caller waits for the response. The call
+method can only be done from a foreign thread, not a thread bound to a reactor and not a thread from the common
+thread pool. A response, or an exception, is assured. If the reactor targeted by the call is closed, a
+ReactorClosedException is thrown by the call method.
+2. **send with callback** - Send with callback is the only way a 2-way message can be passed between reactors,
+with buffering being used when passing both the request and the response.
+As with call, a response or exception is assured, though in this case the exception is caught by the optional
+exception handler. A send with callback can only be invoked within the context of another request. And if the
+invoking request is canceled, then the subordinate request is also canceled.
+3. **send with no callback** - A send with no callback is one way to pass a 1-way message to a reactor. Like
+send with callback, the message is buffered. But any
+exception raised while processing the message is simply logged. Send with no callback must be invoked on an
+active reactor--it can but need not be invoked within the context of another request. And if the invoking
+reactor is closed, there is no effect on the processing of the message.
+3. **signal** - Signal is a second way to pass a 1-way message to a reactor. Signal always passes the
+message immediately,
+never buffered. And the signal method can be called on any thread. Any exception thrown when the message is
+processed is simply logged.
 
 Request Types
 -----
