@@ -1,7 +1,7 @@
 JActor2 is a multi-threaded OO programming model,
 inspired by Alan Kay's early thoughts on [Objects](http://c2.com/cgi/wiki?AlanKaysDefinitionOfObjectOriented).
-JActor2 is based on asynchronous 2-way messaging with assured responses, which lends itself to the development
-of robust applications.
+JActor2 is based on asynchronous 2-way messaging with assured responses.
+The net result being code that is both simpler and more robust, and hence easier to maintain.
 
 - [Background](#background)
     - [Multi-threading with Locks](#multi-threading-with-locks)
@@ -37,8 +37,8 @@ Computers continue to increase in power, but they do so by adding more processin
 Over time then, applications which are not able to make use of all the threads supported by the newer
 computers will end up using a smaller and smaller proportion of the available resources.
 
-Problems often arise when more than one thread is executing the same code. Some code is thread-safe, meaning that
-more than one thread can execute it at the some time. But when code is not thread-safe, there can be non-deterministic
+Problems often arise when more than one thread is executing the same code. This is not an issue for code that is
+thread safe. But when code is not thread-safe, there can be non-deterministic
 behavior, called race conditions, which vary depending on the exact order of execution and on if both threads share the
 same memory cache.
 
@@ -85,7 +85,9 @@ actors and restart them, which in turn gives rise to the increased chance that m
 timeouts are often added, further increasing the complexity of the code and potentially giving rise to an
 increasing frequency of deadlocks.
 
-Coupling, as we all know, is a bad thing.
+Coupling, as we all know, is a bad thing. What we really need is another way to handle request/response, where
+the processing of the response is specific to the request and with provision for intermediate state. This was the
+starting point for JActor2.
 
 Introducing JActor2
 =====
