@@ -50,6 +50,5 @@
     <modules>
         <module>jactor2-core</module>
         <module>jactor2-modules</module>
-        <module>jactor2-util</module>
     </modules>
 </project>
