@@ -94,11 +94,18 @@ Introducing JActor2
 
 JActor2 differs from other actor frameworks in several ways:
 
+1. Requests are first-class objects, typically defined within the context of an actor's state
+as a nested or anonymous class, so when
+they are evaluated they can operate on that state. This is in contrast to other frameworks where
+the request is little more than a name and a set of parameters.
+2. Requests are single-use objects, which makes them a good place to store intermediate state.
+And when processing responses to subordinate requests send by a given request,
+the state of that request can be safely accessed and updated.
 1. Request messages are single-use objects and are bound to the actors they operate on,
 providing a context for subsequent interaction with other actors.
-2. Uncaught exceptions and responses are passed back to the context from which a request originated,
+3. Uncaught exceptions and responses are passed back to the context from which a request originated,
 modeling the way exceptions and return values are handled with Java method calls.
-3. For every request that is sent to another actor, there is every assurance that a response or exception
+4. For every request that is sent to another actor, there is every assurance that a response or exception
 will be passed back.
 5. Messages (requests/responses) are processed in the order they are received by an actor.
 
