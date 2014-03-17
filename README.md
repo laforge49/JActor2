@@ -116,6 +116,7 @@ must handle the exceptions without knowledge of the context from which they aros
 This is largely the result of modeling requests after Java method calls, but with additional support for detecting
 infinite loops and erroneous request processing.
 3. Messages are not selected for processing based on the state of the actor, but are processed in the order received.
+Nor does an actor block its thread when waiting for a response.
 Actors then are not coupled, so
 deadlocks are less likely and maintenance is much easier over the life of a project.
 
