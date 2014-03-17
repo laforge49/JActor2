@@ -766,25 +766,25 @@ which covers programming with JActor2 step-by-step.
 Upcoming Projects
 =====
 
-- JActor2 [modules](https://github.com/laforge49/JActor2/issues?milestone=10) (alpha)
+- JActor2 [modules](https://github.com/laforge49/JActor-Modules) (alpha)
     - A  classpath loader is needed so different modules can access different jar files.
     - The API needs cleaning up and the javadocs updated.
     - Integration of facilities with ZooKeeper would move JActor nicely towards cluster support.
     - The tutorial needs a lot of work.
-- JActor2 [logback](https://github.com/laforge49/JActor2/issues?milestone=13) (new)
+- JActor2 [logback](https://github.com/laforge49/JActor-util/issues?milestone=2&page=1&state=open) (new)
     - Integration with [logback](http://logback.qos.ch/) would provide added support for clusters.
     - [Groovy](http://logback.qos.ch/manual/groovy.html) can be used for logback configuration.
     [ServerSocketAppender](http://logback.qos.ch/manual/appenders.html) and
     [SocketReceiver](http://logback.qos.ch/manual/receivers.html) can used to pass the logs.
     This would allow us to have multiple nodes that do the file logging. These nodes then would need
     to be configured with one SocketReceiver per ZooKeeper node of interest.
-- JActor2 [web](https://github.com/laforge49/JActor2/issues?milestone=14) (new)
+- JActor2 [web](https://github.com/laforge49/JActor-util/issues?milestone=4&page=1&state=open) (new)
     - Integration of JActor2 with something like netty's web server would make it easier to use JActor2 based servlets.
-- JActor2 [util](https://github.com/laforge49/JActor2/issues?milestone=15) (alpha)
+- JActor2 [durable](https://github.com/laforge49/JActor-util/issues?milestone=1&page=1&state=open) (alpha)
     - The code needs a good rework, using composition to simplify the API much the same way it was done in core.
     A super high-speed serialization library is important, but no if no one understands how to use it.
     - A tutorial is needed.
-- JActor2 [db](https://github.com/laforge49/JActor2/issues?milestone=16) (new)
+- JActor2 [db](https://github.com/laforge49/JActor-util/issues?milestone=3&page=1&state=open) (new)
     - A high-performance database with live backups that builds on JActor2 serialization and distributed logging
     could be very useful in building scalable applications.
 
