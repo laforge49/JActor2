@@ -101,8 +101,6 @@ the request is little more than a name and a set of parameters.
 2. Requests are single-use objects, which makes them a good place to store intermediate state.
 And when processing responses to subordinate requests send by a given request,
 the state of that request can be safely accessed and updated.
-1. Request messages are single-use objects and are bound to the actors they operate on,
-providing a context for subsequent interaction with other actors.
 3. Uncaught exceptions and responses are passed back to the context from which a request originated,
 modeling the way exceptions and return values are handled with Java method calls.
 4. For every request that is sent to another actor, there is every assurance that a response or exception
