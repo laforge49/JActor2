@@ -40,7 +40,7 @@ public class Recovery {
      */
     public void onMessageTimeout(final ReactorImpl _reactorImpl) throws Exception {
         _reactorImpl.getLogger().error("message timeout -> reactor close");
-        _reactorImpl.close();
+        _reactorImpl.fail("message timeout");
     }
 
     /**
@@ -75,7 +75,7 @@ public class Recovery {
     public void onHungRequest(final RequestImpl _requestImpl) throws Exception {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.getLogger().error("request hung -> reactor close");
-        reactor.close();
+        reactor.fail("hung request");
     }
 
     /**
@@ -88,7 +88,7 @@ public class Recovery {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.getLogger().error("stack overflow error -> reactor close", _error);
         try {
-            reactor.close();
+            reactor.fail("stack overflow");
         } catch (Exception e) {
 
         }
@@ -104,7 +104,7 @@ public class Recovery {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.getLogger().error("runtime exception -> reactor close", _exception);
         try {
-            reactor.close();
+            reactor.fail("message timeout");
         } catch (Exception e) {
 
         }

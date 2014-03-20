@@ -60,6 +60,14 @@ public interface Reactor extends Closeable, Blade {
     void close() throws Exception;
 
     /**
+     * Close the reactor;
+     *
+     * @param _reason    The reason why the reactor is being closed,
+     *                   or null if not a failure.
+     */
+    void fail(final String _reason) throws Exception;
+
+    /**
      * Returns true when there are no more messages in the inbox.
      *
      * @return True when the inbox is empty.

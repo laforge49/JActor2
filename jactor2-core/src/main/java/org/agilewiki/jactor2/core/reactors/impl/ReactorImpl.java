@@ -245,6 +245,16 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      */
     @Override
     public void close() throws Exception {
+        fail(null);
+    }
+
+    /**
+     * Close the reactor;
+     *
+     * @param _reason    The reason why the reactor is being closed,
+     *                   or null if not a failure.
+     */
+    public void fail(final String _reason) throws Exception {
         closeableImpl.close();
 
         if (startClosing)

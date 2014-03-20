@@ -68,6 +68,11 @@ abstract public class ReactorBase implements Reactor {
     }
 
     @Override
+    public void fail(final String _reason) throws Exception {
+        reactorImpl.fail(_reason);
+    }
+
+    @Override
     public boolean isInboxEmpty() {
         return asReactorImpl().isInboxEmpty();
     }
