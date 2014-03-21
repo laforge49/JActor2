@@ -288,6 +288,31 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         }
 
         shuttingDown = true;
+
+        PlantImpl plantImpl = PlantImpl.getSingleton();
+        if (plantImpl != null &&
+                isRunning() &&
+                (currentRequest == null || !currentRequest.isComplete())) {
+            timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
+            Thread thread = (Thread) getThreadReference().get();
+            if (thread != null) {
+                thread.interrupt();
+                boolean timeout = timeoutSemaphore.acquire();
+                currentRequest.close();
+                if (timeout && isRunning() & PlantImpl.getSingleton() != null) {
+                    try {
+                        if (currentRequest == null)
+                            logger.error("hung thread");
+                        else {
+                            logger.error("hung thread\n" + currentRequest.toString());
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    recovery.onHungThread(this);
+                }
+            }
+        }
         try {
             outbox.close();
         } catch (final Exception e) {
@@ -296,36 +321,6 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
             inbox.close();
         } catch (final Exception e) {
         }
-
-        PlantImpl plantImpl = PlantImpl.getSingleton();
-        if (plantImpl == null)
-            return;
-
-        if (!isRunning())
-            return;
-        if (currentRequest != null && currentRequest.isComplete()) {
-            return;
-        }
-        timeoutSemaphore = plantImpl.schedulableSemaphore(recovery.getThreadInterruptMillis(this));
-        Thread thread = (Thread) getThreadReference().get();
-        if (thread == null)
-            return;
-        thread.interrupt();
-        boolean timeout = timeoutSemaphore.acquire();
-        currentRequest.close();
-        if (!timeout || !isRunning() || PlantImpl.getSingleton() == null) {
-            return;
-        }
-        try {
-            if (currentRequest == null)
-                logger.error("hung thread");
-            else {
-                logger.error("hung thread\n" + currentRequest.toString());
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        recovery.onHungThread(this);
     }
 
     /**
