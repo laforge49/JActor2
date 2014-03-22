@@ -261,12 +261,6 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
             return;
         startClosing = true;
 
-        Iterator<RequestImpl> mit = inProcessRequests.iterator();
-        while (mit.hasNext()) {
-            RequestImpl requestImpl = mit.next();
-            requestImpl.close();
-        }
-
         if (closeables != null) {
             HashSet<Closeable> hs = new HashSet<Closeable>(closeables);
             Iterator<Closeable> cit = hs.iterator();
@@ -313,10 +307,18 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                 }
             }
         }
+
+        Iterator<RequestImpl> mit = inProcessRequests.iterator();
+        while (mit.hasNext()) {
+            RequestImpl requestImpl = mit.next();
+            requestImpl.close();
+        }
+
         try {
             outbox.close();
         } catch (final Exception e) {
         }
+
         try {
             inbox.close();
         } catch (final Exception e) {
