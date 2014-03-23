@@ -30,7 +30,7 @@ public class CloseableImpl1 implements CloseableImpl {
     @Override
     public void addReactor(final ReactorImpl _reactorImpl) {
         if (closing)
-            throw new ReactorClosedException();
+            throw new ReactorClosedException("Closeable is closed");
         closers.add(_reactorImpl);
     }
 

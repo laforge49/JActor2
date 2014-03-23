@@ -248,6 +248,12 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         fail(null);
     }
 
+    private String reason;
+
+    public String getReasonForFailure() {
+        return reason;
+    }
+
     /**
      * Close the reactor;
      *
@@ -255,6 +261,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      *                   or null if not a failure.
      */
     public void fail(final String _reason) throws Exception {
+        reason = _reason;
         closeableImpl.close();
 
         if (startClosing)
@@ -641,7 +648,8 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
      */
     public boolean addCloseable(final Closeable _closeable) {
         if (startedClosing())
-            throw new ReactorClosedException();
+            throw new ReactorClosedException("call to addCloseable when reactor already started closing: " +
+            reason);
         if (this == _closeable)
             return false;
         if (!getCloseableSet().add(_closeable))
