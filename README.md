@@ -800,3 +800,4 @@ Links
 - [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
 - benchmark: [repository](https://github.com/skunkiferous/PingPong), [results](http://skunkiferous.github.io/PingPong/)
 - [JActor2 Logback Appender](https://github.com/cp149/jactor-logger) by Champion
+- [Avoiding Actor Deadlock](http://lambda-the-ultimate.org/node/4908)
