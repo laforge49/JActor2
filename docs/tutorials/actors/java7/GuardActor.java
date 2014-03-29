@@ -15,6 +15,7 @@ class GuardActor {
             if (replyExpected == isReply)
                 return;
             busy.set(false);
+            Thread.yield();
         }
     }
     
