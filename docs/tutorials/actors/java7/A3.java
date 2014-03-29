@@ -1,11 +1,11 @@
-class A3 {
+class A3 extends BasicActor {
     void start(final Reply<Void> _reply) {
         Reply<Void> add1Reply = new Reply<Void>() {
             @Override
             public void response(Void value) {
-                synchronized(A3.this) {
-                    System.out.println("added 1");
-                }
+                start();
+                System.out.println("added 1");
+                finish();
                 _reply.response(null);
             }
         };
@@ -13,8 +13,8 @@ class A3 {
         (new Runnable() {
             @Override
             public void run() {
-                synchronized(A3.this) {
-                }
+                start();
+                finish();
                 (new B3()).add1(add1Reply);
             }
         }).run();

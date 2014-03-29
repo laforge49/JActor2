@@ -1,17 +1,17 @@
-class A1 implements Add1Reply {
+class A1 extends BasicActor implements Add1Reply {
     private StartReply caller;
     
     void start(StartReply _caller) {
-        synchronized(this) {
-            caller = _caller;
-        }
+        start();
+        caller = _caller;
+        finish();
         (new B1()).add1(this);
     }
     
     public void reply() {
-        synchronized(this) {
-            System.out.println("added 1");
-        }
+        start();
+        System.out.println("added 1");
+        finish();
         caller.reply();
     }
 }

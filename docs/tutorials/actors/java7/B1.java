@@ -1,10 +1,10 @@
-class B1 {
+class B1 extends BasicActor {
     private int count;
     
     void add1(Add1Reply _caller) {
-        synchronized(this) {
-            count += 1;
-        }
+        start();
+        count += 1;
+        finish();
         _caller.reply();
     }
 }
