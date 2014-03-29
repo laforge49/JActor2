@@ -1,9 +1,9 @@
-class A implements Add1Reply {
-    private StartReply caller;
+class A {
+    private Caller caller;
     
-    void start(StartReply _caller) {
+    void start(Caller _caller, B _b) {
         caller = _caller;
-        (new B()).add1(this);
+        _b.add1(this);
     }
     
     public void reply() {

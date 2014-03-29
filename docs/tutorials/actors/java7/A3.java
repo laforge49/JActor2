@@ -1,5 +1,5 @@
 class A3 extends BasicActor {
-    void start(final Reply<Void> _reply) {
+    void start(final Reply<Void> _reply, final B3 _b) {
         Reply<Void> add1Reply = new Reply<Void>() {
             @Override
             public void response(Void value) {
@@ -15,7 +15,7 @@ class A3 extends BasicActor {
             public void run() {
                 start();
                 finish();
-                (new B3()).add1(add1Reply);
+                _b.add1(add1Reply);
             }
         }).run();
     }

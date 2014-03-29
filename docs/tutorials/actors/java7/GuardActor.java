@@ -3,7 +3,9 @@ class GuardActor {
     private volatile boolean replyExpected;
     
     protected void start(boolean isReply) {
-        while (busy || replyExpected != isReply)
+        if (!replyExpected && isReply)
+            throw new UnsupportedOperationException("Reply received when none expected");
+        while (busy || !replyExpected || isReply)
             Thread.yield();
         busy = true;
     }

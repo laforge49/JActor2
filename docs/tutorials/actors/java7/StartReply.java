@@ -1,3 +1,0 @@
-interface StartReply {
-    void reply();
-}

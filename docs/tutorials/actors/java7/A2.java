@@ -1,11 +1,11 @@
-class A2 extends GuardActor implements Add1Reply {
-    private StartReply caller;
+class A2 extends GuardActor {
+    private Caller caller;
     
-    void start(StartReply _caller) {
+    void start(Caller _caller, B2 _b) {
         start(false);
         caller = _caller;
         finish(true);
-        (new B2()).add1(this);
+        _b.add1(this);
     }
     
     public void reply() {

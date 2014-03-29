@@ -1,0 +1,3 @@
+interface Caller {
+    void reply();
+}
