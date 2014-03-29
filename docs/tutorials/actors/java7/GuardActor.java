@@ -8,11 +8,12 @@ class GuardActor {
         while (true) {
             while ((replyExpected && !isReply) || !busy.compareAndSet(false, true))
                 Thread.yield();
-            if (!replyExpected && isReply)
+            if (!replyExpected && isReply) {
+                busy.set(false);
                 throw new UnsupportedOperationException("Reply received when none expected");
+            }
             if (replyExpected == isReply)
                 return;
-            busy.set(false);
         }
     }
     
