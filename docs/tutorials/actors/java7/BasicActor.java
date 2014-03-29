@@ -1,13 +1,14 @@
+import java.util.concurrent.atomic.AtomicBoolean;
+
 class BasicActor {
-    private volatile boolean busy;
+    private AtomicBoolean busy;
     
     protected void start() {
-        while (busy)
+        while (!busy.compareAndSet(false, true))
             Thread.yield();
-        busy = true;
     }
     
     protected void finish() {
-        busy = false;
+        busy.set(false);
     }
 }

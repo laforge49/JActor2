@@ -1,17 +1,23 @@
+import java.util.concurrent.atomic.AtomicBoolean;
+
 class GuardActor {
-    private volatile boolean busy;
+    private AtomicBoolean busy;
     private volatile boolean replyExpected;
     
     protected void start(boolean isReply) {
         if (!replyExpected && isReply)
             throw new UnsupportedOperationException("Reply received when none expected");
-        while (busy || !replyExpected || isReply)
-            Thread.yield();
-        busy = true;
+        while (true) {
+            while (replyExpected != isReply || !busy.compareAndSet(false, true))
+                Thread.yield();
+            if (replyExpected == isReply)
+                return;
+            busy.set(false);
+        }
     }
     
     protected void finish(boolean expectingReply) {
         replyExpected = expectingReply;
-        busy = false;
+        busy.set(false);
     }
 }
