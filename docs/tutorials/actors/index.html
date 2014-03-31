@@ -77,5 +77,15 @@ class B {
     }
 }
 </pre>
+<p>
+Note that method B.add1 is entirely synchronous, so the reply is done on the same thread that calls this method.
+This is not a limitation of the model, as asynchronous I/O is allowed.
+Blocking the thread, on the other hand, is not allowed.
+</p>
+<p>
+Now there are two points where this code is not thread-safe. First, the statement <strong>count += 1</strong>
+in the B.add1 method.
+The second point is the use of the <strong>externalReply</strong> variable in class A.
+</p>
 </body>
 </html>
