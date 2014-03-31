@@ -32,11 +32,14 @@ abstract class Looper<RESPONSE_TYPE> extends BasicActor {
             
             iterate(reply);
             
-            start();
+            boolean r;
+            //start();
+            synchronized(this) {
             done = true;
-            boolean r = replied;
+            r = replied;
+            }
             RESPONSE_TYPE rsp = response;
-            finish();
+            //finish();
             
             if (!r)
                 return;

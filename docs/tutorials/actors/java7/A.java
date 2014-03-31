@@ -1,13 +1,14 @@
-class A {
-    private Caller caller;
+class A implements Reply<Void> {
+    private Reply<Void> externalReply;
     
-    void start(Caller _caller, B _b) {
-        caller = _caller;
+    void begin(Reply<Void> _externalReply, B _b) {
+        externalReply = _externalReply;
         _b.add1(this);
     }
     
-    public void reply() {
+    @Override
+    public void response(Void value) {
         System.out.println("added 1");
-        caller.reply();
+        externalReply.response(null);
     }
 }

@@ -1,0 +1,81 @@
+<html>
+<head>
+<title>
+Modelling Actors with Locks
+</title>
+</head>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; Modelling Actors
+</p>
+<p>
+It appears that too many developers do not understand actors, and that actors have not been explained very well.
+My thought is that a model that behaves, to a degree, like actors might go a long way to explaining actors through analogy,
+especially if that model can be implemented with a minimum of code. Mind, the model is only an approximation.
+But even so, you may find it interesting/informative.
+</p>
+<h2>
+Asynchronous Methods
+</h2>
+<p>
+Asynchronous methods will serve as models for the asynchronous message processing of actors.
+What this means is that return values will be passed via a callback.
+The Reply interface defines these callbacks:
+</p>
+<pre>
+    interface Reply<RESPONSE_TYPE> {
+        void response(RESPONSE_TYPE _value);
+    }
+</pre>
+<p>
+Asynchronous methods will always have Reply as their first argument,
+and the returned value is passed back to the caller by calling the response method,
+though not always on the same thread.
+</p>
+<h2>
+A Trivial Application
+</h2>
+<p>
+Our application has two objects, instances of class A and B, and a class M which has a main method.
+The main method creates these two instance and calls a method on the instance of A, which in turn calls a method on
+the instance of B. Responses are then passed back with callbacks.
+</p>
+<pre>
+public class M {
+    public static void main(String[] args) {
+        Reply<Void> reply = new Reply<Void>() {
+            @Override
+            public void response(Void value) {
+                System.out.println("end");
+            }
+        };
+        new A().begin(reply, new B());
+    }
+}
+
+class A implements Reply<Void> {
+    private Reply<Void> externalReply;
+    
+    void begin(Reply<Void> _externalReply, B _b) {
+        externalReply = _externalReply;
+        _b.add1(this);
+    }
+    
+    @Override
+    public void response(Void value) {
+        System.out.println("added 1");
+        externalReply.response(null);
+    }
+}
+
+class B {
+    private int count;
+    
+    void add1(Reply<Void> _reply) {
+        count += 1;
+        _reply.response(null);
+    }
+}
+</pre>
+</body>
+</html>
