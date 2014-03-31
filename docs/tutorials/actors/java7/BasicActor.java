@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicBoolean;
 
 class BasicActor {
-    private AtomicBoolean busy;
+    private AtomicBoolean busy = new AtomicBoolean();
     
     protected void start() {
         while (!busy.compareAndSet(false, true))
