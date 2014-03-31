@@ -1,17 +1,14 @@
-class A1 extends BasicActor {
-    private Caller caller;
+class A1 implements Reply<Void> {
+    private Reply<Void> externalReply;
     
-    void start(Caller _caller, B1 _b) {
-        start();
-        caller = _caller;
-        finish();
+    void begin(Reply<Void> _externalReply, B1 _b) {
+        externalReply = _externalReply;
         _b.add1(this);
     }
     
-    public void reply() {
-        start();
+    @Override
+    public void response(Void value) {
         System.out.println("added 1");
-        finish();
-        caller.reply();
+        externalReply.response(null);
     }
 }

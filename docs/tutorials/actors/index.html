@@ -41,41 +41,46 @@ The main method creates these two instance and calls a method on the instance of
 the instance of B. Responses are then passed back with callbacks.
 </p>
 <pre>
-public class M {
-    public static void main(String[] args) {
-        Reply<Void> reply = new Reply<Void>() {
-            @Override
-            public void response(Void value) {
-                System.out.println("end");
-            }
-        };
-        new A().begin(reply, new B());
+    public class M {
+        public static void main(String[] args) {
+            Reply<Void> reply = new Reply<Void>() {
+                @Override
+                public void response(Void value) {
+                    System.out.println("end");
+                }
+            };
+            new A().begin(reply, new B());
+        }
     }
-}
 
-class A implements Reply<Void> {
-    private Reply<Void> externalReply;
+    class A implements Reply<Void> {
+        private Reply<Void> externalReply;
     
-    void begin(Reply<Void> _externalReply, B _b) {
-        externalReply = _externalReply;
-        _b.add1(this);
-    }
+        void begin(Reply<Void> _externalReply, B _b) {
+            externalReply = _externalReply;
+            _b.add1(this);
+        }
     
-    @Override
-    public void response(Void value) {
-        System.out.println("added 1");
-        externalReply.response(null);
+        @Override
+        public void response(Void value) {
+            System.out.println("added 1");
+            externalReply.response(null);
+        }
     }
-}
 
-class B {
-    private int count;
+    class B {
+        private int count;
     
-    void add1(Reply<Void> _reply) {
-        count += 1;
-        _reply.response(null);
+        void add1(Reply<Void> _reply) {
+            count += 1;
+            _reply.response(null);
+        }
     }
-}
+
+    Output:
+
+    added 1
+    end
 </pre>
 <p>
 Note that method B.add1 is entirely synchronous, so the reply is done on the same thread that calls this method.
