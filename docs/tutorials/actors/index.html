@@ -93,7 +93,7 @@ in the B.add1 method.
 The second point is the use of the <strong>externalReply</strong> variable in class A is not thread safe.
 </p>
 <h2>
-Modelling Basic Actors
+Basic Actor Model
 </h2>
 <p>
 Actors do something very nice. They process messages (requests/responses) one at a time. This nicely prevents most,
@@ -131,8 +131,12 @@ So there is strong motivation for actors to provide some facility that makes it 
 The problem with the externalReply variable is generally characterized as the the difficulty of handling streams of messages
 from multiple sources. The number of possible orderings of these messages grows very rapidly as the number of sources increases.
 In the case of class A, the problem arises when a second call is made to the begin method before the first call has completed.
-An obvious solution then is to put some constraints to block some methods from executing while the application logic is busy
+An obvious solution then is to add some constraints to block some methods from executing while the application logic is busy
 doing something else.
 </p>
+<h2>
+Guard Actor Model
+</h2>
+
 </body>
 </html>
