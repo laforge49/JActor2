@@ -93,7 +93,39 @@ in the B.add1 method.
 The second point is the use of the <strong>externalReply</strong> variable in class A is not thread safe.
 </p>
 <h2>
-Modeling Basic Actors
+Modelling Basic Actors
 </h2>
+<p>
+Actors do something very nice. They process messages (requests/responses) one at a time. This nicely prevents most,
+but not all, race conditions from occurring. The key thing here is that an actor can continue to process messages
+when it is not actively processing another message, rather than blocking until it gets a response. So there is no
+risk of deadlocks. This constraint is also easy to model:
+</p>
+<pre>
+    class B {
+        private int count;
+    
+        void add1(Reply<Void> _reply) {
+            synchronized(this) {
+                count += 1;
+            }
+            _reply.response(null);
+        }
+    }
+</pre>
+<p>
+We have wrapped the <strong>count += 1</strong> statement in a synchronized lock to emulate an actor's one message at a time
+constraint, eliminating a rather subtle race condition that would be difficult to expose through testing as it will rarely occur
+even with many threads calling the add1 method in parallel.
+And as long as the scope of the lock remains confined to a single object, there is no risk of deadlocks.
+There is no doubt that the processing of one message at a time by actors is an unqualified goodness.
+</p>
+<p>
+What remains then is the unsafe usage of the <strong>externalReply</strong> variable in class A. On the plus side,
+this potential race condition is not too difficult to spot and may even show up in testing. But fixing problems like this
+in the application logic can easily lead to
+<a href="http://www.infoq.com/presentations/Death-by-Accidental-Complexity">Death by Accidental Complexity</a>.
+So there is strong motivation for actors to provide some facility that makes it easy to address this.
+</p>
 </body>
 </html>
