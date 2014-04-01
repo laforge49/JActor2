@@ -1,10 +1,10 @@
 class B2 extends GuardActor {
     private int count;
     
-    void add1(A2 _caller) {
+    void add1(Reply<Void> _reply) {
         start(false);
         count += 1;
         finish(false);
-        _caller.reply();
+        _reply.response(null);
     }
 }

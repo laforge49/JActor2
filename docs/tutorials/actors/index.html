@@ -127,5 +127,12 @@ in the application logic can easily lead to
 <a href="http://www.infoq.com/presentations/Death-by-Accidental-Complexity">Death by Accidental Complexity</a>.
 So there is strong motivation for actors to provide some facility that makes it easy to address this.
 </p>
+<p>
+The problem with the externalReply variable is generally characterized as the the difficulty of handling streams of messages
+from multiple sources. The number of possible orderings of these messages grows very rapidly as the number of sources increases.
+In the case of class A, the problem arises when a second call is made to the begin method before the first call has completed.
+An obvious solution then is to put some constraints to block some methods from executing while the application logic is busy
+doing something else.
+</p>
 </body>
 </html>

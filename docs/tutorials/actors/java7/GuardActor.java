@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicBoolean;
 
 class GuardActor {
-    private AtomicBoolean busy;
+    private AtomicBoolean busy = new AtomicBoolean();
     private volatile boolean replyExpected;
     
     protected void start(boolean isReply) {

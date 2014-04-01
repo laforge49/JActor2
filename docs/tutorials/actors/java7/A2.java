@@ -1,17 +1,18 @@
-class A2 extends GuardActor {
-    private Caller caller;
+class A2 extends GuardActor implements Reply<Void> {
+    private Reply<Void> externalReply;
     
-    void start(Caller _caller, B2 _b) {
+    void begin(Reply<Void> _externalReply, B2 _b) {
         start(false);
-        caller = _caller;
+        externalReply = _externalReply;
         finish(true);
         _b.add1(this);
     }
     
-    public void reply() {
+    @Override
+    public void response(Void value) {
         start(true);
         System.out.println("added 1");
         finish(false);
-        caller.reply();
+        externalReply.response(null);
     }
 }
