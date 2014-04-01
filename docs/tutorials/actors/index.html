@@ -137,6 +137,96 @@ doing something else.
 <h2>
 Guard Actor Model
 </h2>
+<p>
+Actors are generally implemented as guard actors, meaning that they guard the application from messages they are not prepared 
+to handle in their current state. But for our simplistic application, we really only have two states that are critical: either the 
+application is expecting a response or it is not. If the application is expecting a response, it will not immediately process
+another request. And conversely, if no response is expected then something is wrong. This keeps our emulation logic simple.
+</p>
+<pre>
+    import java.util.concurrent.atomic.AtomicBoolean;
 
+    class GuardActor {
+        private AtomicBoolean busy = new AtomicBoolean();
+        private volatile boolean replyExpected;
+    
+        protected void start(boolean isReply) {
+            while (true) {
+                while ((replyExpected && !isReply) || !busy.compareAndSet(false, true))
+                    Thread.yield();
+                if (!replyExpected && isReply) {
+                    busy.set(false);
+                    throw new UnsupportedOperationException("Reply received when none expected");
+                }
+                if (replyExpected == isReply)
+                    return;
+                busy.set(false);
+                Thread.yield();
+            }
+        }
+    
+        protected void finish(boolean expectingReply) {
+            replyExpected = expectingReply;
+            busy.set(false);
+        }
+    }
+</pre>
+<p>
+Now we replace synchronized with start/finish. But we also need to wrap all the logic of all the application methods:
+</p>
+<pre>
+    class A extends GuardActor implements Reply<Void> {
+        private Reply<Void> externalReply;
+    
+        void begin(Reply<Void> _externalReply, B _b) {
+            start(false);
+            externalReply = _externalReply;
+            finish(true);
+            _b.add1(this);
+        }
+    
+        @Override
+        public void response(Void value) {
+            start(true);
+            System.out.println("added 1");
+            finish(false);
+            externalReply.response(null);
+        }
+    }
+
+    class B extends GuardActor {
+        private int count;
+    
+        void add1(Reply<Void> _reply) {
+            start(false);
+            count += 1;
+            finish(false);
+            _reply.response(null);
+        }
+    }
+</pre>
+<p>
+This approach has eliminated the potential race condition involving <strong>externalReply</strong>.
+But note that calls from A.begin to B.add1 are now done under lock, though calls to Reply.response are not.
+So there will be times when the instances of classes A and B will both be locked because of a call to A.begin.
+The problem then with this approach is that locking order must be maintained or there is a prospect of a
+deadlock occurring.
+</p>
+<p>
+When actors selectively process messages, a lot of care needs to be taken to avoid deadlocks,
+deadlocks often being a specter of large projects that are maintained and embellished over time.
+This problem is often masked by automatic restarts when an actor hangs, but that may not always be the best approach.
+</p>
+<p>
+But there is another problem with selective message processing. Consider if B.add1 instead performed some 
+asynchronous I/O. An instance of class A would remain locked until it gets a response back, which may not be until
+the I/O operation completes. Likewise, any other object which calls any method on that instance of A will also remain
+locked until the I/O operation completes. Ouch!
+</p>
+<p>
+Remember that selective message processing is used to prevent race conditions, in this case a race condition involving
+variable <strong>externalReply</strong>. Solving this in application code can, in time, lead to enormous complexity.
+But it almost seems like the solution is worse than the problem it addresses. So shouldn't we explore alternative approaches?
+</p>
 </body>
 </html>
