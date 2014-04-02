@@ -207,26 +207,27 @@ Now we replace synchronized with start/finish. But we also need to wrap all the 
 </pre>
 <p>
 This approach has eliminated the potential race condition involving <strong>externalReply</strong>.
-But note that calls from A.begin to B.add1 are now done under lock, though calls to Reply.response are not.
-So there will be times when the instances of classes A and B will both be locked because of a call to A.begin.
-The problem then with this approach is that locking order must be maintained or there is a prospect of a
-deadlock occurring.
+But note that calls from A.begin to B.add1 are now while other requests are blocked.
+So there will be times when the instances of classes A and B will both be blocking requests because of a call to A.begin.
+The problem then with this approach is that the order in which blocks are placed must be maintained or there is a prospect
+of mutual blocking, or deadlock, occurring.
 </p>
 <p>
 When actors selectively process messages, a lot of care needs to be taken to avoid deadlocks,
 deadlocks often being a specter of large projects that are maintained and embellished over time.
-This problem is often masked by automatic restarts when an actor hangs, but that may not always be the best approach.
+This problem is often masked by automatic restarts when an actor hangs, though at the risk of masking a serious flaw.
 </p>
 <p>
-But there is another problem with selective message processing. Consider if B.add1 instead performed some 
+But there is another problem with selective message processing. Consider if B.add1, instead of being synchronous, performed some 
 asynchronous I/O. An instance of class A would remain locked until it gets a response back, which may not be until
 the I/O operation completes. Likewise, any other object which calls any method on that instance of A will also remain
-locked until the I/O operation completes. Ouch!
+blocked until the I/O operation completes. Ouch!
 </p>
 <p>
 Remember that selective message processing is used to prevent race conditions, in this case a race condition involving
 variable <strong>externalReply</strong>. Solving this in application code can, in time, lead to enormous complexity.
-But it almost seems like the solution is worse than the problem it addresses. So shouldn't we explore alternative approaches?
+But the solution itself is risky, as potential deadlocks can be introduced that can not be found my reviewing just
+the code of the actor that was changed. So shouldn't we explore alternative approaches?
 </p>
 </body>
 </html>
