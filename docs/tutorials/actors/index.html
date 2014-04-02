@@ -229,5 +229,73 @@ variable <strong>externalReply</strong>. Solving this in application code can, i
 But the solution itself is risky, as potential deadlocks can be introduced that can not be found my reviewing just
 the code of the actor that was changed. So shouldn't we explore alternative approaches?
 </p>
+<h2>
+Contextual Actor Model
+</h2>
+<p>
+In <a href="http://www.infoq.com/presentations/Death-by-Accidental-Complexity">Death by Accidental Complexity</a> 
+an interesting point was made that the reason for the complexity was that context was lost when returning to the 
+event loop for the next message. And the same can be said when a result is passed to an actor by calling a reply method.
+This idea is central to an alternative to selective message processing.
+</p>
+<p>
+In general, requests sent to an actor are sent from the context of another request. So why not use a callback to have
+the response processed in that same context? We can use our actor model to clarify this:
+</p>
+<pre>
+class A {
+    void begin(final Reply<Void> externalReply, final B _b) {
+       (new Runnable() {
+            Reply<Void> add1Reply = new Reply<Void>() {
+                @Override
+                public void response(Void value) {
+                    System.out.println("added 1");
+                    externalReply.response(null);
+                }
+            };
+        
+            @Override
+            public void run() {
+                _b.add1(add1Reply);
+            }
+        }).run();
+    }
+}
+
+class B {
+    private int count;
+    
+    void add1(final Reply<Void> _reply) {
+        (new Runnable() {
+            @Override
+            public void run() {
+                synchronized(B3.this) {
+                    count += 1;
+                }
+                _reply.response(null);
+            }
+        }).run();
+    }
+}
+</pre>
+<p>
+In the contextual actor model, requests are processed within single-use anonymous inner classes.
+And replies are in turn handled by anonymous inner classes within the context of the request.
+This means that state that is specific to a request is not generally accessible when processing
+other requests.
+</p>
+<p>
+Being able to isolate request-specific state can be a great help in preventing or at least reducing
+an explosion of complexity to a manageable level. And note specifically that the <strong>externalReply</strong>
+variable is now final, so it literally can not be involved in a potential race condition.
+</p>
+<p>
+Of course, there will still be actors which need to process each request to completion. But these
+are rare and care can be taken to prevent them from interacting--thus eliminating any possibility 
+of deadlock.
+</p>
+Contextual actors are used by the JActor framework.
+And you will find the same example used in our model recoded using JActor
+<a href="https://github.com/laforge49/JActor2#asynchronous-sends">here</a>.
 </body>
 </html>

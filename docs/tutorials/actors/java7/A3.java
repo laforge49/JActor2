@@ -1,11 +1,11 @@
 class A3 {
-    void begin(final Reply<Void> _reply, final B3 _b) {
+    void begin(final Reply<Void> externalReply, final B3 _b) {
        (new Runnable() {
             Reply<Void> add1Reply = new Reply<Void>() {
                 @Override
                 public void response(Void value) {
                     System.out.println("added 1");
-                    _reply.response(null);
+                    externalReply.response(null);
                 }
             };
         
