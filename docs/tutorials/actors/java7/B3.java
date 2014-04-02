@@ -1,13 +1,13 @@
-class B3 extends BasicActor {
+class B3 {
     private int count;
     
     void add1(final Reply<Void> _reply) {
         (new Runnable() {
             @Override
             public void run() {
-                start();
-                count += 1;
-                finish();
+                synchronized(B3.this) {
+                    count += 1;
+                }
                 _reply.response(null);
             }
         }).run();
