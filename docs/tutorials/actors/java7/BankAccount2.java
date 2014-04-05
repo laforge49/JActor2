@@ -4,13 +4,13 @@ public class BankAccount2 {
     private boolean closed;
 
     public void deposit(int amount, Reply<Boolean> depositCompletion) {
-        boolean success;
+        boolean depositValid;
         synchronized(this) {
-            success = !closed;
-            if (success)
+            depositValid = !closed;
+            if (depositValid)
                 balance += amount;
         }
-        depositCompletion.response(success);
+        depositCompletion.response(depositValid);
     }
 
     public void transfer(final int amount, final BankAccount2 toAccount, final Reply<Boolean> transferCompletion) {
@@ -26,15 +26,15 @@ public class BankAccount2 {
                 }
             };
 
-            boolean success = false;
+            boolean transferValid = false;
             synchronized(this) {
                 if (amount <= balance) {
                     balance -= amount;
                     hold += amount;
-                    success = true;
+                    transferValid = true;
                 }
             }
-            if (success)
+            if (transferValid)
                 toAccount.deposit(amount, onDeposit);
             else
                 transferCompletion.response(false);
