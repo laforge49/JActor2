@@ -2,17 +2,17 @@ class A2 extends GuardActor implements Reply<Void> {
     private Reply<Void> externalReply;
     
     void begin(Reply<Void> _externalReply, B2 _b) {
-        start(false);
+        lock(false);
         externalReply = _externalReply;
-        finish(true);
+        unlock(true);
         _b.add1(this);
     }
     
     @Override
     public void response(Void value) {
-        start(true);
+        lock(true);
         System.out.println("added 1");
-        finish(false);
+        unlock(false);
         externalReply.response(null);
     }
 }

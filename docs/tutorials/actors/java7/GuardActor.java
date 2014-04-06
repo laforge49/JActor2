@@ -4,7 +4,7 @@ class GuardActor {
     private AtomicBoolean busy = new AtomicBoolean();
     private volatile boolean replyExpected;
     
-    protected void start(boolean isReply) {
+    protected void lock(boolean isReply) {
         while (true) {
             while ((replyExpected && !isReply) || !busy.compareAndSet(false, true))
                 Thread.yield();
@@ -19,7 +19,7 @@ class GuardActor {
         }
     }
     
-    protected void finish(boolean expectingReply) {
+    protected void unlock(boolean expectingReply) {
         replyExpected = expectingReply;
         busy.set(false);
     }
