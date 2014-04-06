@@ -1,0 +1,301 @@
+<html>
+<head>
+<title>
+Modelling Actors with Locks
+</title>
+</head>
+<body>
+<p>
+<a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; Modelling Actors
+</p>
+<p>
+It appears that too many developers do not understand actors, and that actors have not been explained very well.
+My thought is that a model that behaves, to a degree, like actors might go a long way to explaining actors through analogy,
+especially if that model can be implemented with a minimum of code. Mind, the model is only an approximation.
+But even so, you may find it interesting/informative.
+</p>
+<h2>
+Asynchronous Methods
+</h2>
+<p>
+Asynchronous methods will serve as models for the asynchronous message processing of actors.
+What this means is that return values will be passed via a callback.
+The Reply interface defines these callbacks:
+</p>
+<pre>
+    interface Reply<RESPONSE_TYPE> {
+        void response(RESPONSE_TYPE _value);
+    }
+</pre>
+<p>
+Asynchronous methods will always have Reply as their first argument,
+and the returned value is passed back to the caller by calling the response method,
+though not always on the same thread.
+</p>
+<h2>
+A Trivial Application
+</h2>
+<p>
+Our application has two objects, instances of class A and B, and a class M which has a main method.
+The main method creates these two instance and calls a method on the instance of A, which in turn calls a method on
+the instance of B. Responses are then passed back with callbacks.
+</p>
+<pre>
+    public class M {
+        public static void main(String[] args) {
+            Reply<Void> reply = new Reply<Void>() {
+                @Override
+                public void response(Void value) {
+                    System.out.println("end");
+                }
+            };
+            new A().begin(reply, new B());
+        }
+    }
+
+    class A implements Reply<Void> {
+        private Reply<Void> externalReply;
+    
+        void begin(Reply<Void> _externalReply, B _b) {
+            externalReply = _externalReply;
+            _b.add1(this);
+        }
+    
+        @Override
+        public void response(Void value) {
+            System.out.println("added 1");
+            externalReply.response(null);
+        }
+    }
+
+    class B {
+        private int count;
+    
+        void add1(Reply<Void> _reply) {
+            count += 1;
+            _reply.response(null);
+        }
+    }
+
+    Output:
+
+    added 1
+    end
+</pre>
+<p>
+Note that method B.add1 is entirely synchronous, so the reply is done on the same thread that calls this method.
+This is not a limitation of the model, as asynchronous I/O is allowed.
+Blocking the thread, on the other hand, is not allowed.
+</p>
+<p>
+Now there are two points where this code is not thread-safe. First, the statement <strong>count += 1</strong>
+in the B.add1 method.
+The second point is the use of the <strong>externalReply</strong> variable in class A is not thread safe.
+</p>
+<h2>
+Basic Actor Model
+</h2>
+<p>
+Actors do something very nice. They process messages (requests/responses) one at a time. This nicely prevents most,
+but not all, race conditions from occurring. The key thing here is that an actor can continue to process messages
+when it is not actively processing another message, rather than blocking until it gets a response. So there is no
+risk of deadlocks. This constraint is also easy to model:
+</p>
+<pre>
+    class B {
+        private int count;
+    
+        void add1(Reply<Void> _reply) {
+            synchronized(this) {
+                count += 1;
+            }
+            _reply.response(null);
+        }
+    }
+</pre>
+<p>
+We have wrapped the <strong>count += 1</strong> statement in a synchronized lock to emulate an actor's one message at a time
+constraint, eliminating a rather subtle race condition that would be difficult to expose through testing as it will rarely occur
+even with many threads calling the add1 method in parallel.
+And as long as the scope of the lock remains confined to a single object, there is no risk of deadlocks.
+There is no doubt that the processing of one message at a time by actors is an unqualified goodness.
+</p>
+<p>
+What remains then is the unsafe usage of the <strong>externalReply</strong> variable in class A. On the plus side,
+this potential race condition is not too difficult to spot and may even show up in testing. But fixing problems like this
+in the application logic can easily lead to
+<a href="http://www.infoq.com/presentations/Death-by-Accidental-Complexity">Death by Accidental Complexity</a>.
+So there is strong motivation for actors to provide some facility that makes it easy to address this.
+</p>
+<p>
+The problem with the externalReply variable is generally characterized as the the difficulty of handling streams of messages
+from multiple sources. The number of possible orderings of these messages grows very rapidly as the number of sources increases.
+In the case of class A, the problem arises when a second call is made to the begin method before the first call has completed.
+An obvious solution then is to add some constraints to block some methods from executing while the application logic is busy
+doing something else.
+</p>
+<h2>
+Guard Actor Model
+</h2>
+<p>
+Actors are generally implemented as guard actors, meaning that they guard the application from messages they are not prepared 
+to handle in their current state. But for our simplistic application, we really only have two states that are critical: either the 
+application is expecting a response or it is not. If the application is expecting a response, it will not immediately process
+another request. And conversely, if no response is expected then something is wrong. This keeps our emulation logic simple.
+</p>
+<pre>
+    import java.util.concurrent.atomic.AtomicBoolean;
+
+    class GuardActor {
+        private AtomicBoolean busy = new AtomicBoolean();
+        private volatile boolean replyExpected;
+    
+        protected void start(boolean isReply) {
+            while (true) {
+                while ((replyExpected && !isReply) || !busy.compareAndSet(false, true))
+                    Thread.yield();
+                if (!replyExpected && isReply) {
+                    busy.set(false);
+                    throw new UnsupportedOperationException("Reply received when none expected");
+                }
+                if (replyExpected == isReply)
+                    return;
+                busy.set(false);
+                Thread.yield();
+            }
+        }
+    
+        protected void finish(boolean expectingReply) {
+            replyExpected = expectingReply;
+            busy.set(false);
+        }
+    }
+</pre>
+<p>
+Now we replace synchronized with start/finish. But we also need to wrap all the logic of all the application methods:
+</p>
+<pre>
+    class A extends GuardActor implements Reply<Void> {
+        private Reply<Void> externalReply;
+    
+        void begin(Reply<Void> _externalReply, B _b) {
+            start(false);
+            externalReply = _externalReply;
+            finish(true);
+            _b.add1(this);
+        }
+    
+        @Override
+        public void response(Void value) {
+            start(true);
+            System.out.println("added 1");
+            finish(false);
+            externalReply.response(null);
+        }
+    }
+
+    class B extends GuardActor {
+        private int count;
+    
+        void add1(Reply<Void> _reply) {
+            start(false);
+            count += 1;
+            finish(false);
+            _reply.response(null);
+        }
+    }
+</pre>
+<p>
+This approach has eliminated the potential race condition involving <strong>externalReply</strong>.
+But note that calls from A.begin to B.add1 are now while other requests are blocked.
+So there will be times when the instances of classes A and B will both be blocking requests because of a call to A.begin.
+The problem then with this approach is that the order in which blocks are placed must be maintained or there is a prospect
+of mutual blocking, or deadlock, occurring.
+</p>
+<p>
+When actors selectively process messages, a lot of care needs to be taken to avoid deadlocks,
+deadlocks often being a specter of large projects that are maintained and embellished over time.
+This problem is often masked by automatic restarts when an actor hangs, though at the risk of masking a serious flaw.
+</p>
+<p>
+But there is another problem with selective message processing. Consider if B.add1, instead of being synchronous, performed some 
+asynchronous I/O. An instance of class A would remain locked until it gets a response back, which may not be until
+the I/O operation completes. Likewise, any other object which calls any method on that instance of A will also remain
+blocked until the I/O operation completes. Ouch!
+</p>
+<p>
+Remember that selective message processing is used to prevent race conditions, in this case a race condition involving
+variable <strong>externalReply</strong>. Solving this in application code can, in time, lead to enormous complexity.
+But the solution itself is risky, as potential deadlocks can be introduced that can not be found my reviewing just
+the code of the actor that was changed. So shouldn't we explore alternative approaches?
+</p>
+<h2>
+Contextual Actor Model
+</h2>
+<p>
+In <a href="http://www.infoq.com/presentations/Death-by-Accidental-Complexity">Death by Accidental Complexity</a> 
+an interesting point was made that the reason for the complexity was that context was lost when returning to the 
+event loop for the next message. And the same can be said when a result is passed to an actor by calling a reply method.
+This idea is central to an alternative to selective message processing.
+</p>
+<p>
+In general, requests sent to an actor are sent from the context of another request. So why not use a callback to have
+the response processed in that same context? We can use our actor model to clarify this:
+</p>
+<pre>
+class A {
+    void begin(final Reply<Void> externalReply, final B _b) {
+       (new Runnable() {
+            Reply<Void> add1Reply = new Reply<Void>() {
+                @Override
+                public void response(Void value) {
+                    System.out.println("added 1");
+                    externalReply.response(null);
+                }
+            };
+        
+            @Override
+            public void run() {
+                _b.add1(add1Reply);
+            }
+        }).run();
+    }
+}
+
+class B {
+    private int count;
+    
+    void add1(final Reply<Void> _reply) {
+        (new Runnable() {
+            @Override
+            public void run() {
+                synchronized(B3.this) {
+                    count += 1;
+                }
+                _reply.response(null);
+            }
+        }).run();
+    }
+}
+</pre>
+<p>
+In the contextual actor model, requests are processed within single-use anonymous inner classes.
+And replies are in turn handled by anonymous inner classes within the context of the request.
+This means that state that is specific to a request is not generally accessible when processing
+other requests.
+</p>
+<p>
+Being able to isolate request-specific state can be a great help in preventing or at least reducing
+an explosion of complexity to a manageable level. And note specifically that the <strong>externalReply</strong>
+variable is now final, so it literally can not be involved in a potential race condition.
+</p>
+<p>
+Of course, there will still be actors which need to process each request to completion. But these
+are rare and care can be taken to prevent them from interacting--thus eliminating any possibility 
+of deadlock.
+</p>
+Contextual actors are used by the JActor framework.
+And you will find the same example used in our model recoded using JActor
+<a href="https://github.com/laforge49/JActor2#asynchronous-sends">here</a>.
+</body>
+</html>
