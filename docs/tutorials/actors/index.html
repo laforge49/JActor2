@@ -363,5 +363,144 @@ But now we have a problem with the <strong>transferSource</strong> and
 <strong>transferAmount</strong> variables not being thread safe.
 The problem arises when the transfer method is called before the previous call to that same method has completed.
 </p>
+<p>
+Actually this is a fairly common problem encountered when using actors which receive messages from 
+multiple sources. You can write application code to manage it, but it quickly becomes a combinatorics
+problem that easily leads to an explosion of complexity, as explained by Ulf Wiger in his video
+<a href="http://www.infoq.com/presentations/Death-by-Accidental-Complexity">Death by Accidental Complexity</a>.
+</p>
+<h2>
+Selected Message Processing
+</h2>
+<p>
+Most application frameworks support selected message processing, which eliminates the problem of multiple possible
+message orderings when messages are being received from multiple sources. This is a bit of a challenge to implement 
+when we are modelling messages with method calls, so we are going to need a base class to handle it for us.
+Fortunately, for this example we only have two states: (1) when we are expecting a response and need to ignore new 
+requests and (2) when we are not expecting any response and are ready to process any new requests.
+</p>
+<pre>
+    import java.util.concurrent.atomic.AtomicBoolean;
+
+    class GuardActor {
+        private AtomicBoolean busy = new AtomicBoolean();
+        private volatile boolean replyExpected;
+    
+        protected void lock(boolean isReply) {
+            while (true) {
+                while ((replyExpected && !isReply) || !busy.compareAndSet(false, true))
+                    Thread.yield();
+                if (!replyExpected && isReply) {
+                    busy.set(false);
+                    throw new UnsupportedOperationException("Reply received when none expected");
+                }
+                if (replyExpected == isReply)
+                    return;
+                busy.set(false);
+                Thread.yield();
+            }
+        }
+    
+        protected void unlock(boolean expectingReply) {
+            replyExpected = expectingReply;
+            busy.set(false);
+        }
+    }
+</pre>
+<p>
+Now we can replace the synchronization locks with calls to lock and unlock.
+The lock and unlock methods take one argument, used to indicate when we are ready to process a response
+to a request that was sent to another actor.
+</p>
+<pre>
+    public class BankAccount4 extends GuardActor implements Source {
+        private int balance;
+        private int hold;
+        private boolean closed;
+    
+        private Source transferSource;
+        private int transferAmount;
+
+        public void deposit(int amount, Source source) {
+            boolean depositValid;
+            lock(false);
+            depositValid = !closed;
+            if (depositValid)
+                balance += amount;
+            unlock(false);
+            source.depositCompletion(depositValid);
+        }
+
+        public void transfer(int amount, BankAccount4 toAccount, Source source) {
+            boolean transferValid = false;
+            lock(false);
+            if (amount <= balance) {
+                balance -= amount;
+                hold += amount;
+                transferValid = true;
+            }
+            if (transferValid) {
+                transferAmount = amount;
+                transferSource = source;
+                unlock(true);
+                toAccount.deposit(amount, this);
+            } else {
+                unlock(false);
+                source.transferCompletion(false);
+            }
+        }
+    
+        @Override
+        public void depositCompletion(boolean depositSuccessful) {
+            lock(true);
+            hold -= transferAmount;
+            if (!depositSuccessful)
+                balance += transferAmount;
+            unlock(false);
+            transferSource.transferCompletion(depositSuccessful);
+        }
+    
+        @Override
+        public void transferCompletion(boolean success) {
+            throw new UnsupportedOperationException();
+        }
+    }
+</pre>
+<p>
+Remember when looking at this code that we are only modelling an actor.
+And most of the code that you see is not needed when using an language that
+supports actors. So the actual application code is really short and sweet.
+</p>
+<p>
+The code no longer has any race conditions, but now we have a new problem.
+There is a potential for two actors to block (a deadlock of sorts) when 
+both actors are transferring money to the other at just the right time.
+But this is not a real deadlock, as no threads are blocked, at least when 
+passing messages rather than modelling messages with method calls. This is
+because actors use light-weight threads for message processing. 
+So the only thing that happens is that the actors stop working.
+</p>
+<p>
+Because of selected message processing, it is not unusual for actors to stop working.
+So it is recommended practice to monitor threads and restart them as needed.
+This means that sometimes a message will be lost, and applications need to handle
+lost messages. So again, it is recommended practice to use timers to detect and
+resend lost messages.
+</p>
+<p>
+The result is that production code has a bit of defensive logic. But mostly things
+work fine.
+</p>
+<h2>
+Conclusion
+</h2>
+<p>
+If at this point you are thinking that I do not like actors, you would be wrong.
+They are a brilliant alternative to threads & locks. Only, I see a real need for
+actors to support two-way messages instead of selective message processing.
+Which is why I developed JActor2, along with some good friends.
+</p>
+You can find the JActor2 version of bank account 
+<a href="http://www.agilewiki.org/docs/tutorials/core/bankAccount.html">here</a>.
 </body>
 </html>
