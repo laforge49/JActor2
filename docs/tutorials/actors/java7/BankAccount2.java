@@ -26,8 +26,8 @@ public class BankAccount2 {
                 toAccount.deposit(amount, (Boolean depositSuccessful) -> {
                     synchronized(BankAccount2.this) {
                         hold -= amount;
-                    if (!depositSuccessful)
-                        balance += amount;
+                        if (!depositSuccessful)
+                            balance += amount;
                     }
                     transferCompletion.response(depositSuccessful);
                 });
