@@ -81,7 +81,7 @@ But we will start by introducing callbacks for returning the results of a method
 The Reply interface defines these callbacks:
 </p>
 <pre>
-    interface Reply<RESPONSE_TYPE> {
+    interface Reply&lt;RESPONSE_TYPE> {
         void response(RESPONSE_TYPE _value);
     }
 </pre>
@@ -96,7 +96,7 @@ though not always on the same thread. Here is what BankAccount example looks lik
         private int hold;
         private boolean closed;
 
-        public void deposit(int amount, Reply<Boolean> depositCompletion) {
+        public void deposit(int amount, Reply&lt;Boolean> depositCompletion) {
             if (closed) {
                 depositCompletion.response(false);
                 return;
@@ -105,8 +105,8 @@ though not always on the same thread. Here is what BankAccount example looks lik
             depositCompletion.response(true);
         }
 
-        public void transfer(final int amount, final BankAccount1 toAccount, final Reply<Boolean> transferCompletion) {
-                Reply<Boolean> onDeposit = new Reply<Boolean>() {
+        public void transfer(final int amount, final BankAccount1 toAccount, final Reply&lt;Boolean> transferCompletion) {
+                Reply&lt;Boolean> onDeposit = new Reply&lt;Boolean>() {
                     @Override
                     public void response(Boolean depositSuccessful) {
                         hold -= amount;
@@ -129,10 +129,10 @@ though not always on the same thread. Here is what BankAccount example looks lik
             BankAccount1 accountA = new BankAccount1();
             BankAccount1 accountB = new BankAccount1();
 
-            Reply<Boolean> onDeposit = new Reply<Boolean>() {
+            Reply&lt;Boolean> onDeposit = new Reply&lt;Boolean>() {
                 @Override
                 public void response(Boolean depositSuccessful) {
-                    Reply<Boolean> onTransfer = new Reply<Boolean>() {
+                    Reply&lt;Boolean> onTransfer = new Reply&lt;Boolean>() {
                         @Override
                         public void response(Boolean transferSuccessful) {
                             if (transferSuccessful)
@@ -177,7 +177,7 @@ The answer is to limit the scope of each lock:
         private int hold;
         private boolean closed;
 
-        public void deposit(int amount, Reply<Boolean> depositCompletion) {
+        public void deposit(int amount, Reply&lt;Boolean> depositCompletion) {
             boolean depositValid;
             synchronized(this) {
                 depositValid = !closed;
@@ -187,8 +187,8 @@ The answer is to limit the scope of each lock:
             depositCompletion.response(depositValid);
         }
 
-        public void transfer(final int amount, final BankAccount2 toAccount, final Reply<Boolean> transferCompletion) {
-                Reply<Boolean> onDeposit = new Reply<Boolean>() {
+        public void transfer(final int amount, final BankAccount2 toAccount, final Reply&lt;Boolean> transferCompletion) {
+                Reply&lt;Boolean> onDeposit = new Reply&lt;Boolean>() {
                     @Override
                     public void response(Boolean depositSuccessful) {
                         synchronized(BankAccount2.this) {
@@ -202,7 +202,7 @@ The answer is to limit the scope of each lock:
 
                 boolean transferValid = false;
                 synchronized(this) {
-                    if (amount <= balance) {
+                    if (amount &lt;= balance) {
                         balance -= amount;
                         hold += amount;
                         transferValid = true;
@@ -218,10 +218,10 @@ The answer is to limit the scope of each lock:
             BankAccount2 accountA = new BankAccount2();
             BankAccount2 accountB = new BankAccount2();
         
-            Reply<Boolean> onDeposit = new Reply<Boolean>() {
+            Reply&lt;Boolean> onDeposit = new Reply&lt;Boolean>() {
                 @Override
                 public void response(Boolean depositSuccessful) {
-                    Reply<Boolean> onTransfer = new Reply<Boolean>() {
+                    Reply&lt;Boolean> onTransfer = new Reply&lt;Boolean>() {
                         @Override
                         public void response(Boolean transferSuccessful) {
                             if (transferSuccessful)
@@ -326,7 +326,7 @@ so they are now separate classes:
         public void transfer(int amount, BankAccount3 toAccount, Source source) {
             boolean transferValid = false;
             synchronized(this) {
-                if (amount <= balance) {
+                if (amount &lt;= balance) {
                     balance -= amount;
                     hold += amount;
                     transferValid = true;
@@ -434,7 +434,7 @@ to a request that was sent to another actor.
         public void transfer(int amount, BankAccount4 toAccount, Source source) {
             boolean transferValid = false;
             lock(false);
-            if (amount <= balance) {
+            if (amount &lt;= balance) {
                 balance -= amount;
                 hold += amount;
                 transferValid = true;
