@@ -13,22 +13,17 @@ public class BankAccount1 {
     }
 
     public void transfer(final int amount, final BankAccount1 toAccount, final Reply<Boolean> transferCompletion) {
-            Reply<Boolean> onDeposit = new Reply<Boolean>() {
-                @Override
-                public void response(Boolean depositSuccessful) {
-                    hold -= amount;
-                    if (!depositSuccessful)
-                        balance += amount;
-                    transferCompletion.response(depositSuccessful);
-                }
-            };
-
             if (amount > balance)
                 transferCompletion.response(false);
             else {
                 balance -= amount;
                 hold += amount;
-                toAccount.deposit(amount, onDeposit);
+                toAccount.deposit(amount, (Boolean depositSuccessful) -> {
+                    hold -= amount;
+                    if (!depositSuccessful)
+                        balance += amount;
+                    transferCompletion.response(depositSuccessful);
+                });
             }
     }
 
@@ -36,27 +31,17 @@ public class BankAccount1 {
         BankAccount1 accountA = new BankAccount1();
         BankAccount1 accountB = new BankAccount1();
 
-        Reply<Boolean> onDeposit = new Reply<Boolean>() {
-            @Override
-            public void response(Boolean depositSuccessful) {
-                Reply<Boolean> onTransfer = new Reply<Boolean>() {
-                    @Override
-                    public void response(Boolean transferSuccessful) {
-                        if (transferSuccessful)
-                            System.out.println("transfer successful");
-                        else
-                            System.out.println("transfer failed");
-                    }
-                };
-                
-                if (depositSuccessful)
-                    System.out.println("deposit successful");
+        accountA.deposit(1000, (Boolean depositSuccessful) -> {
+            if (depositSuccessful)
+                System.out.println("deposit successful");
+            else
+                System.out.println("deposit failed");
+            accountA.transfer(500, accountB, (Boolean transferSuccessful) -> {
+                if (transferSuccessful)
+                    System.out.println("transfer successful");
                 else
-                    System.out.println("deposit failed");
-                accountA.transfer(500, accountB, onTransfer);
-            };
-        };
-        
-        accountA.deposit(1000, onDeposit);
+                    System.out.println("transfer failed");
+            });
+        });
     }
 }

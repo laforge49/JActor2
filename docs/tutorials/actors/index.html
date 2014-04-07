@@ -109,57 +109,42 @@ though not always on the same thread. Here is what BankAccount example looks lik
         }
 
         public void transfer(final int amount, final BankAccount1 toAccount, final Reply&lt;Boolean> transferCompletion) {
-                Reply&lt;Boolean> onDeposit = new Reply&lt;Boolean>() {
-                    @Override
-                    public void response(Boolean depositSuccessful) {
-                        hold -= amount;
-                        if (!depositSuccessful)
-                            balance += amount;
-                        transferCompletion.response(depositSuccessful);
-                    }
-                };
-
-                if (amount > balance)
-                    transferCompletion.response(false);
-                else {
-                    balance -= amount;
-                    hold += amount;
-                    toAccount.deposit(amount, onDeposit);
-                }
+            if (amount > balance)
+                transferCompletion.response(false);
+            else {
+                balance -= amount;
+                hold += amount;
+                toAccount.deposit(amount, (Boolean depositSuccessful) -> {
+                    hold -= amount;
+                    if (!depositSuccessful)
+                        balance += amount;
+                    transferCompletion.response(depositSuccessful);
+                });
+            }
         }
 
         public static void main(String[] args) throws Exception {
             BankAccount1 accountA = new BankAccount1();
             BankAccount1 accountB = new BankAccount1();
 
-            Reply&lt;Boolean> onDeposit = new Reply&lt;Boolean>() {
-                @Override
-                public void response(Boolean depositSuccessful) {
-                    Reply&lt;Boolean> onTransfer = new Reply&lt;Boolean>() {
-                        @Override
-                        public void response(Boolean transferSuccessful) {
-                            if (transferSuccessful)
-                                System.out.println("transfer successful");
-                            else
-                                System.out.println("transfer failed");
-                        }
-                    };
-                
-                    if (depositSuccessful)
-                        System.out.println("deposit successful");
+            accountA.deposit(1000, (Boolean depositSuccessful) -> {
+                if (depositSuccessful)
+                    System.out.println("deposit successful");
+                else
+                    System.out.println("deposit failed");
+                accountA.transfer(500, accountB, (Boolean transferSuccessful) -> {
+                    if (transferSuccessful)
+                        System.out.println("transfer successful");
                     else
-                        System.out.println("deposit failed");
-                    accountA.transfer(500, accountB, onTransfer);
-                };
-            };
-        
-            accountA.deposit(1000, onDeposit);
+                        System.out.println("transfer failed");
+                });
+            });
         }
     }
 </pre>
 <p>
-OK, it is ugly. That's what happens when you use callbacks.
-But there is a more serious problem than its ugliness--the code is not thread-safe.
+OK, if you are not used to using lambdas, the code may look a bit strange.
+But there is a more serious problem than its strangeness--the code is not thread-safe.
 Lets fix that first.
 </p>
 <h2>
@@ -191,18 +176,6 @@ The answer is to limit the scope of each lock:
         }
 
         public void transfer(final int amount, final BankAccount2 toAccount, final Reply&lt;Boolean> transferCompletion) {
-                Reply&lt;Boolean> onDeposit = new Reply&lt;Boolean>() {
-                    @Override
-                    public void response(Boolean depositSuccessful) {
-                        synchronized(BankAccount2.this) {
-                            hold -= amount;
-                            if (!depositSuccessful)
-                                balance += amount;
-                        }
-                        transferCompletion.response(depositSuccessful);
-                    }
-                };
-
                 boolean transferValid = false;
                 synchronized(this) {
                     if (amount &lt;= balance) {
@@ -212,7 +185,14 @@ The answer is to limit the scope of each lock:
                     }
                 }
                 if (transferValid)
-                    toAccount.deposit(amount, onDeposit);
+                    toAccount.deposit(amount, (Boolean depositSuccessful) -> {
+                        synchronized(BankAccount2.this) {
+                            hold -= amount;
+                        if (!depositSuccessful)
+                            balance += amount;
+                        }
+                        transferCompletion.response(depositSuccessful);
+                    });
                 else
                     transferCompletion.response(false);
         }
@@ -221,36 +201,26 @@ The answer is to limit the scope of each lock:
             BankAccount2 accountA = new BankAccount2();
             BankAccount2 accountB = new BankAccount2();
         
-            Reply&lt;Boolean> onDeposit = new Reply&lt;Boolean>() {
-                @Override
-                public void response(Boolean depositSuccessful) {
-                    Reply&lt;Boolean> onTransfer = new Reply&lt;Boolean>() {
-                        @Override
-                        public void response(Boolean transferSuccessful) {
-                            if (transferSuccessful)
-                                System.out.println("transfer successful");
-                            else
-                                System.out.println("transfer failed");
-                        }
-                    };
-                
-                    if (depositSuccessful)
-                        System.out.println("deposit successful");
+            accountA.deposit(1000, (Boolean depositSuccessful) -> {
+                if (depositSuccessful)
+                    System.out.println("deposit successful");
+                else
+                    System.out.println("deposit failed");
+                accountA.transfer(500, accountB, (Boolean transferSuccessful) -> {
+                    if (transferSuccessful)
+                        System.out.println("transfer successful");
                     else
-                        System.out.println("deposit failed");
-                    accountA.transfer(500, accountB, onTransfer);
-                };
-            };
-        
-            accountA.deposit(1000, onDeposit);
+                        System.out.println("transfer failed");
+                });
+            });
         }
     }
 </pre>
 <p>
 The bank account class is now thread-safe.
 And because the scope of the locks is limited, there is no possibility of deadlock.
-But beauty is in the eye of the beholder and if you are not used to dealing with callbacks,
-then the code is not only ugly but hard to understand.
+But beauty is in the eye of the beholder and if you are not used to dealing with callbacks and lambdas,
+then the code may be a bit hard to follow.
 The temptation is to get rid of those callbacks.
 Actors do not use callbacks, so that must be the right way to go, eh?
 </p>
