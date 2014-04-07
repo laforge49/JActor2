@@ -188,8 +188,8 @@ The answer is to limit the scope of each lock:
                     toAccount.deposit(amount, (Boolean depositSuccessful) -> {
                         synchronized(BankAccount2.this) {
                             hold -= amount;
-                        if (!depositSuccessful)
-                            balance += amount;
+                            if (!depositSuccessful)
+                                balance += amount;
                         }
                         transferCompletion.response(depositSuccessful);
                     });
