@@ -6,12 +6,12 @@ import org.agilewiki.jactor2.core.plant.Plant;
 
 public class BoundResponseProcessorTest extends TestCase {
     public void test() throws Exception {
-        final Plant plant = new Plant();
+        new Plant();
         try {
             final Driver driver = new Driver();
             assertEquals("Hello world!", driver.doitAReq().call());
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

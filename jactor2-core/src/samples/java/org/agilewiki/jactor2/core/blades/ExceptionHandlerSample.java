@@ -10,7 +10,7 @@ public class ExceptionHandlerSample {
     public static void main(final String[] _args) throws Exception {
 
         //A facility with two threads.
-        final Plant plant = new Plant(2);
+        new Plant(2);
 
         try {
 
@@ -33,7 +33,7 @@ public class ExceptionHandlerSample {
 
         } finally {
             //shutdown the facility
-            plant.close();
+            Plant.close();
         }
     }
 }

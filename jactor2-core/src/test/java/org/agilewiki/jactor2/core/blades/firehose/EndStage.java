@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
 public class EndStage extends IsolationBladeBase implements DataProcessor {
 
-    public EndStage(final Plant _plant) throws Exception {
+    public EndStage() throws Exception {
     }
 
     @Override

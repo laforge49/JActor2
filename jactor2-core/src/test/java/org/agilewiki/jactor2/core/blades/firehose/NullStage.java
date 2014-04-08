@@ -12,7 +12,7 @@ public class NullStage extends IsolationBladeBase implements DataProcessor {
 
     public long total;
 
-    public NullStage(final Plant _plant, final DataProcessor _next)
+    public NullStage(final DataProcessor _next)
             throws Exception {
         next = _next;
     }

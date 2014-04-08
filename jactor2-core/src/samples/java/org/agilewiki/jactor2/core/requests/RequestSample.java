@@ -9,7 +9,7 @@ public class RequestSample {
     public static void main(String[] args) throws Exception {
 
         //A facility with two threads.
-        final Plant plant = new Plant(2);
+        new Plant(2);
 
         try {
 
@@ -30,7 +30,7 @@ public class RequestSample {
 
         } finally {
             //shutdown the facility
-            plant.close();
+            Plant.close();
         }
 
     }

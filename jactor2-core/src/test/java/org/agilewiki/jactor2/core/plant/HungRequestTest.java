@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
 public class HungRequestTest extends TestCase {
     public void testa() throws Exception {
-        final Plant plant = new Plant();
+        new Plant();
         try {
             final Hanger blade1 = new Hanger(new NonBlockingReactor());
             try {
@@ -21,7 +21,7 @@ public class HungRequestTest extends TestCase {
             } catch (ReactorClosedException sce) {
             }
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

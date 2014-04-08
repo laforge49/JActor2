@@ -10,14 +10,14 @@ public class ThreadBoundTest extends TestCase {
     ThreadBoundReactor reactor;
 
     public void testa() throws Exception {
-        final Plant plant = new Plant();
+        new Plant();
         try {
             reactor = new ThreadBoundReactor(new Runnable() {
                 @Override
                 public void run() {
                     reactor.run();
                     try {
-                        plant.close();
+                        Plant.close();
                     } catch (final Throwable x) {
                     }
                 }
@@ -27,7 +27,7 @@ public class ThreadBoundTest extends TestCase {
             System.out.println(response);
             assertEquals("Hello world!", response);
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

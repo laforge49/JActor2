@@ -5,13 +5,13 @@ import org.agilewiki.jactor2.core.plant.Plant;
 
 public class OneWayError extends NonBlockingBladeBase {
     static public void main(final String[] _args) throws Exception {
-        final Plant plant = new Plant();
+        new Plant();
         try {
             new OneRuntime().new OneWaySReq().signal();
             new OneWayError().new IndirectSReq().call();
             System.out.println("ok");
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 

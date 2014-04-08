@@ -11,7 +11,7 @@ import java.io.IOException;
 public class BladeC {
     private final Reactor reactor;
 
-    public BladeC(final Plant _plant) throws Exception {
+    public BladeC() throws Exception {
         this.reactor = new IsolationReactor();
     }
 

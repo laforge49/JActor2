@@ -6,25 +6,25 @@ import org.agilewiki.jactor2.core.plant.Plant;
 public class FirehoseTest extends TestCase {
     public void test() throws Exception {
         System.gc();
-        final Plant plant = new Plant();
+        new Plant();
         try {
-            DataProcessor next = new EndStage(plant);
-            next = new NullStage(plant, next);
-            next = new NullStage(plant, next);
-            next = new NullStage(plant, next);
-            next = new NullStage(plant, next);
-            next = new NullStage(plant, next);
-            next = new NullStage(plant, next);
-            next = new NullStage(plant, next);
-            next = new NullStage(plant, next);
-            next = new NullStage(plant, next);
-            new FirstStage(plant, next, 100, 10);
+            DataProcessor next = new EndStage();
+            next = new NullStage(next);
+            next = new NullStage(next);
+            next = new NullStage(next);
+            next = new NullStage(next);
+            next = new NullStage(next);
+            next = new NullStage(next);
+            next = new NullStage(next);
+            next = new NullStage(next);
+            next = new NullStage(next);
+            new FirstStage(next, 100, 10);
             try {
                 Thread.sleep(60000);
             } catch (final Exception ex) {
             }
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }

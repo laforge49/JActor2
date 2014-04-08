@@ -13,7 +13,7 @@ public class CloseableSetTest extends TestCase {
 
     public void testReactor() throws Exception {
         System.out.println("R");
-        final Plant plant = new Plant();
+        new Plant();
         try {
             final Reactor reactor = new NonBlockingReactor();
 
@@ -38,7 +38,7 @@ public class CloseableSetTest extends TestCase {
             assertEquals(mfac.closed, 1);
         } finally {
             try {
-                plant.close();
+                Plant.close();
             } catch (final Throwable t) {
                 // NOP
             }

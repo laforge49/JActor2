@@ -12,13 +12,13 @@ import java.io.IOException;
  */
 public class Test1 extends TestCase {
     public void testI() throws Exception {
-        final Plant plant = new Plant();
+        new Plant();
         final Reactor reactor = new IsolationReactor();
         final BladeA bladeA = new BladeA(reactor);
         try {
             bladeA.throwRequest.call();
         } catch (final IOException se) {
-            plant.close();
+            Plant.close();
             return;
         }
         throw new Exception("IOException was not caught");

@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.plant.Plant;
  */
 public class Blade3 extends IsolationBladeBase {
 
-    public Blade3(final Plant _plant) throws Exception {
+    public Blade3() throws Exception {
     }
 
     public SyncRequest<Void> hi3SReq() {

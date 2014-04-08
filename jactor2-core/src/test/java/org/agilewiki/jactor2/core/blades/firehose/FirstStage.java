@@ -32,7 +32,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
 
     long t0;
 
-    public FirstStage(final Plant _plant, final DataProcessor _next,
+    public FirstStage(final DataProcessor _next,
             final long _count, final int _maxWindowSize) throws Exception {
         super(new IsolationReactor());
         getReactor().setIdle(this);
