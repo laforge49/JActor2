@@ -1,11 +1,11 @@
-package org.agilewiki.jactor2.core.plant.impl;
+package org.agilewiki.jactor2.core.impl.plantImpl;
 
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.impl.ThreadBoundReactorImpl;
-import org.agilewiki.jactor2.core.reactors.impl.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ThreadBoundReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
 
 /**
  * Internal implementation for Plant.

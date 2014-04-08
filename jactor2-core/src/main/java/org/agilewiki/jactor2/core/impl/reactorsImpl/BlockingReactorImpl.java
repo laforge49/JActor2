@@ -1,33 +1,33 @@
-package org.agilewiki.jactor2.core.reactors.impl;
+package org.agilewiki.jactor2.core.impl.reactorsImpl;
 
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 
 /**
- * Internal implementation of UnboundReactor.
+ * The internal implementation of BlockingReactor.
  */
-public class IsolationReactorImpl extends UnboundReactorImpl {
+public class BlockingReactorImpl extends UnboundReactorImpl {
 
     /**
-     * Create an IsolationReactorImpl.
+     * Create a BlockingReactorImpl.
      *
      * @param _parentReactorImpl        The parent reactor.
      * @param _initialOutboxSize        The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize    The initial local queue size.
      */
-    public IsolationReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                final int _initialOutboxSize, final int _initialLocalQueueSize) {
+    public BlockingReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                               final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override
-    public IsolationReactor asReactor() {
-        return (IsolationReactor) getReactor();
+    public BlockingReactor asReactor() {
+        return (BlockingReactor) getReactor();
     }
 
     @Override
     protected Inbox createInbox(final int _initialLocalQueueSize) {
-        return new IsolationInbox(_initialLocalQueueSize);
+        return new NonBlockingInbox(_initialLocalQueueSize);
     }
 
     @Override

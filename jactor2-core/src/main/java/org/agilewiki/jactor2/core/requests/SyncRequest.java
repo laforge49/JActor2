@@ -2,9 +2,9 @@ package org.agilewiki.jactor2.core.requests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.impl.RequestSource;
-import org.agilewiki.jactor2.core.requests.impl.SyncRequestImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
+import org.agilewiki.jactor2.core.impl.requestsImpl.SyncRequestImpl;
 
 /**
  * A sync request performs an operation safely within the thread context of the target reactor.

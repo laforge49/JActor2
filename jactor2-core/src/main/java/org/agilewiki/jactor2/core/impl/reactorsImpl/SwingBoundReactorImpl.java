@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.reactors.impl;
+package org.agilewiki.jactor2.core.impl.reactorsImpl;
 
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 

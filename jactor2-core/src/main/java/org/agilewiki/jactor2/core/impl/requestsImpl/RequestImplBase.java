@@ -1,14 +1,14 @@
-package org.agilewiki.jactor2.core.requests.impl;
+package org.agilewiki.jactor2.core.impl.requestsImpl;
 
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
-import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.reactors.impl.IsolationReactorImpl;
-import org.agilewiki.jactor2.core.reactors.impl.MigrationException;
-import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.reactors.impl.ThreadBoundReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.IsolationReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 

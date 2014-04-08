@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.reactors.impl.MigrationException;
-import org.agilewiki.jactor2.core.reactors.impl.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.requests.impl;
+package org.agilewiki.jactor2.core.impl.requestsImpl;
 
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 

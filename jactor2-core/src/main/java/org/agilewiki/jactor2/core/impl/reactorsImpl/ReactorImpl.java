@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.reactors.impl;
+package org.agilewiki.jactor2.core.impl.reactorsImpl;
 
 import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.blades.BladeBase;
@@ -9,15 +9,15 @@ import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.plant.Recovery;
-import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
-import org.agilewiki.jactor2.core.plant.impl.SchedulableSemaphore;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
-import org.agilewiki.jactor2.core.requests.impl.RequestSource;
+import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
