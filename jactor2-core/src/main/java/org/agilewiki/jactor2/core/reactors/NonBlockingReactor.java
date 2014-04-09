@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.plant.PlantBase;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 
 /**
@@ -34,14 +34,14 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
         this(_parentReactor,
                 _parentReactor != null ?
                         _parentReactor.asReactorImpl().getInitialBufferSize() :
-                        PlantImpl.getSingleton().getInternalReactor() != null ?
-                                PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
-                                PlantImpl.getSingleton().getPlantConfiguration().getInitialBufferSize(),
+                        PlantImplBase.getSingleton().getInternalReactor() != null ?
+                                PlantImplBase.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
+                                PlantImplBase.getSingleton().getPlantConfiguration().getInitialBufferSize(),
                 _parentReactor != null ?
                         _parentReactor.asReactorImpl().getInitialLocalQueueSize() :
-                        PlantImpl.getSingleton().getInternalReactor() != null ?
-                                PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
-                                PlantImpl.getSingleton().getPlantConfiguration().getInitialLocalMessageQueueSize());
+                        PlantImplBase.getSingleton().getInternalReactor() != null ?
+                                PlantImplBase.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
+                                PlantImplBase.getSingleton().getPlantConfiguration().getInitialLocalMessageQueueSize());
     }
 
     /**

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl.reactorsImpl;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 
 import java.util.ArrayDeque;
@@ -60,7 +60,7 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
             throw new NullPointerException();
         }
         if (threadReference.get() == null) {
-            PlantImpl.getSingleton().submit(this);
+            PlantImplBase.getSingleton().submit(this);
         }
     }
 

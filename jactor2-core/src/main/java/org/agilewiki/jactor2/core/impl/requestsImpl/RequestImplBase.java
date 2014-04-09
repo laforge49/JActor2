@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.requestsImpl;
 
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
@@ -180,7 +180,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     public void doSend(final ReactorImpl _source,
                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
         final ReactorImpl source = (ReactorImpl) _source;
-        if (PlantImpl.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
+        if (PlantImplBase.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
             throw new IllegalStateException("send from wrong thread");
         }
         if (!source.isRunning()) {
@@ -229,7 +229,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         if (Thread.currentThread() instanceof ReactorPoolThread) {
             throw new UnsupportedOperationException(
                     "Use of call on a ReactorPoolThread can result in a deadlock");
-        } else if (PlantImpl.DEBUG && ThreadBoundReactorImpl.threadReactor() != null)
+        } else if (PlantImplBase.DEBUG && ThreadBoundReactorImpl.threadReactor() != null)
             throw new UnsupportedOperationException(
                     "Use of call on a Thread bound to a reactor can result in a deadlock " + ThreadBoundReactorImpl.threadReactor());
         requestSource = new Pender();
@@ -263,7 +263,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * @return True when this is the first response.
      */
     protected boolean processObjectResponse(final Object _response) {
-        if (PlantImpl.DEBUG && targetReactorImpl.getThreadReference().get() != Thread
+        if (PlantImplBase.DEBUG && targetReactorImpl.getThreadReference().get() != Thread
                 .currentThread()) {
             final IllegalStateException ex = new IllegalStateException(
                     "response from wrong thread");
