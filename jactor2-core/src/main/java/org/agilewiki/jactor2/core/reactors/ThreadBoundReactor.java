@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ThreadBoundBlade;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ThreadBoundReactorImpl;
 
 /**
  * A reactor bound to a pre-existing thread.
@@ -101,13 +101,8 @@ public class ThreadBoundReactor extends ReactorBase
     protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
                                             final Runnable _boundProcessor) {
-        return new ThreadBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize,
-                _boundProcessor);
-    }
-
-    @Override
-    public ThreadBoundReactorImpl asReactorImpl() {
-        return (ThreadBoundReactorImpl) super.asReactorImpl();
+        return PlantImplBase.getSingleton().createThreadBoundReactorImpl(
+                _parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     /**

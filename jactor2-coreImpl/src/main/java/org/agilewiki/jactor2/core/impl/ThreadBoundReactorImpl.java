@@ -1,7 +1,11 @@
-package org.agilewiki.jactor2.core.impl.reactorsImpl;
+package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.Inbox;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingInbox;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -39,10 +43,10 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
     /**
      * Create a ThreadBoundReactorImpl.
      *
-     * @param _parentReactorImpl        The parent reactor.
-     * @param _initialOutboxSize        The initial buffer size for outgoing messages.
-     * @param _initialLocalQueueSize    The initial local queue size.
-     * @param _boundProcessor           The Runnable used when there are messages to be processed.
+     * @param _parentReactorImpl     The parent reactor.
+     * @param _initialOutboxSize     The initial buffer size for outgoing messages.
+     * @param _initialLocalQueueSize The initial local queue size.
+     * @param _boundProcessor        The Runnable used when there are messages to be processed.
      */
     public ThreadBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                   final int _initialOutboxSize, final int _initialLocalQueueSize,

@@ -34,8 +34,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      *
      * @param _parentReactor            The parent reactor.
      */
-    public SwingBoundReactor(final NonBlockingReactor _parentReactor)
-            {
+    public SwingBoundReactor(final NonBlockingReactor _parentReactor) {
         this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
                 _parentReactor.asReactorImpl().getInitialLocalQueueSize());
     }
@@ -46,8 +45,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
-            {
+    public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
         this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 

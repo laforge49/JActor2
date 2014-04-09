@@ -6,7 +6,6 @@ import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
 
 /**
@@ -64,7 +63,7 @@ abstract public class PlantImplBase {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
-        ThreadBoundReactorImpl.removeReactor();
+        removeThreadBoundReactor();
         singleton = this;
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
@@ -194,6 +193,16 @@ abstract public class PlantImplBase {
         return schedulableSemaphore;
     }
 
+    abstract public void removeThreadBoundReactor();
+
+    abstract public ReactorImpl getCurrentReactorImpl();
+
+    abstract public void validateCall();
+
     abstract public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                                  final int _initialOutboxSize, final int _initialLocalQueueSize);
+                                                            final int _initialOutboxSize, final int _initialLocalQueueSize);
+
+    abstract public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                                            final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                                            final Runnable _boundProcessor);
 }

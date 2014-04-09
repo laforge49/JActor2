@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ThreadBoundReactorImpl;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 
 import javax.swing.*;
@@ -23,9 +22,9 @@ public class SwingBoundReactorImpl extends ThreadBoundReactorImpl {
     /**
      * Create a SwingBoundReactorImpl.
      *
-     * @param _parentReactorImpl        The parent reactor.
-     * @param _initialOutboxSize        The initial buffer size for outgoing messages.
-     * @param _initialLocalQueueSize    The initial local queue size.
+     * @param _parentReactorImpl     The parent reactor.
+     * @param _initialOutboxSize     The initial buffer size for outgoing messages.
+     * @param _initialLocalQueueSize The initial local queue size.
      */
     public SwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {

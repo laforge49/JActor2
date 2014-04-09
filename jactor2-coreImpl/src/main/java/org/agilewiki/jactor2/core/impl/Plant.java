@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 
@@ -22,8 +21,8 @@ final public class Plant extends PlantBase {
      * Create a plant with the default configuration,
      * but with the given reactor thread pool size.
      *
-     * @param _reactorThreadPoolSize    The number of threads to be created for the
-     *                                  reactor thread pool.
+     * @param _reactorThreadPoolSize The number of threads to be created for the
+     *                               reactor thread pool.
      */
     public Plant(final int _reactorThreadPoolSize) {
         new PlantImpl(_reactorThreadPoolSize);
@@ -32,7 +31,7 @@ final public class Plant extends PlantBase {
     /**
      * Create a plant with the given configuration.
      *
-     * @param _plantConfiguration    The configuration to be used by the plant.
+     * @param _plantConfiguration The configuration to be used by the plant.
      */
     public Plant(final PlantConfiguration _plantConfiguration) {
         new PlantImpl(_plantConfiguration);

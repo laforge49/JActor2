@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -16,7 +17,7 @@ abstract public class ReactorBase implements Reactor {
      * @return The reactor of the current thread, or null.
      */
     public static Reactor getCurrentReactor() {
-        return ReactorImpl.getCurrentReactorImpl().asReactor();
+        return PlantImplBase.getSingleton().getCurrentReactorImpl().asReactor();
     }
 
     private ReactorImpl reactorImpl;

@@ -29,18 +29,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 abstract public class ReactorImpl extends BladeBase implements Closeable, Runnable, RequestSource {
     /**
-     * Returns the current thread's ReactorImpl.
-     *
-     * @return A ReactorImpl, or null.
-     */
-    public static ReactorImpl getCurrentReactorImpl() {
-        Thread thread = Thread.currentThread();
-        if (thread instanceof ReactorPoolThread)
-            return ((ReactorPoolThread) thread).getCurrentReactorImpl();
-        return ThreadBoundReactorImpl.threadReactor();
-    }
-
-    /**
      * A reference to the thread that is executing this reactor.
      */
     protected final AtomicReference<Thread> threadReference = new AtomicReference<Thread>();
