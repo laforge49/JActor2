@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BlockingBlade;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.BlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 
@@ -22,7 +22,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * Create a blocking reactor with the Plant internal reactor as the parent.
      */
     public BlockingReactor() {
-        this(Plant.getInternalReactor());
+        this(PlantBase.getInternalReactor());
     }
 
     /**
@@ -42,7 +42,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

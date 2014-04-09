@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 
@@ -22,7 +22,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * Create a non-blocking reactor with the Plant internal reactor as the parent.
      */
     public NonBlockingReactor() {
-        this(Plant.getInternalReactor());
+        this(PlantBase.getInternalReactor());
     }
 
     /**
@@ -51,7 +51,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

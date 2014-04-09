@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBlade;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.SwingBoundReactorImpl;
@@ -26,7 +26,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * Create a swing-bound reactor with the Plant internal reactor as the parent.
      */
     public SwingBoundReactor() {
-        super(Plant.getInternalReactor());
+        super(PlantBase.getInternalReactor());
     }
 
     /**
@@ -48,7 +48,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      */
     public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize)
             {
-        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**
@@ -95,7 +95,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
     @Override
     public void windowClosed(final WindowEvent e) {
         try {
-            Plant.close();
+            PlantBase.close();
         } catch (final Exception ex) {
             asReactorImpl().getLogger().warn("Exception when closing Facility", ex);
         }

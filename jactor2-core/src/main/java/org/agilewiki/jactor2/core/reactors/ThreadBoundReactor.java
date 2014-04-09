@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ThreadBoundBlade;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ThreadBoundReactorImpl;
@@ -24,7 +24,7 @@ public class ThreadBoundReactor extends ReactorBase
      * Create a thread-bound reactor with the Plant internal reactor as the parent.
      */
     public ThreadBoundReactor() {
-        this(Plant.getInternalReactor());
+        this(PlantBase.getInternalReactor());
     }
 
     /**
@@ -44,7 +44,7 @@ public class ThreadBoundReactor extends ReactorBase
      *                                  to be processed.
      */
     public ThreadBoundReactor(final Runnable _boundProcessor) {
-        this(Plant.getInternalReactor(), _boundProcessor);
+        this(PlantBase.getInternalReactor(), _boundProcessor);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ThreadBoundReactor extends ReactorBase
      */
     public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) {
-        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     /**

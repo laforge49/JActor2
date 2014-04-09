@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.IsolationReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 
@@ -19,7 +19,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * Create an isolation reactor with the Plant internal reactor as the parent.
      */
     public IsolationReactor() {
-        this(Plant.getInternalReactor());
+        this(PlantBase.getInternalReactor());
     }
 
     /**
@@ -39,7 +39,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(Plant.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

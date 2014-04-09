@@ -22,7 +22,7 @@ public class DelayAReq extends AsyncRequest<Void> {
      * @param _millisecondDelay    How long to wait before responding.
      */
     public DelayAReq(long _millisecondDelay) {
-        super(Plant.getInternalReactor());
+        super(PlantBase.getInternalReactor());
         millisecondDelay = _millisecondDelay;
     }
 
@@ -45,12 +45,12 @@ public class DelayAReq extends AsyncRequest<Void> {
     @Override
     public void processAsyncRequest() {
         setNoHungRequestCheck();
-        PlantScheduler plantScheduler = Plant.getPlantScheduler();
+        PlantScheduler plantScheduler = PlantBase.getPlantScheduler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 try {
-                    new SyncRequest<Void>(Plant.getInternalReactor()) {
+                    new SyncRequest<Void>(PlantBase.getInternalReactor()) {
                         @Override
                         public Void processSyncRequest() throws Exception {
                             if (!isCanceled())

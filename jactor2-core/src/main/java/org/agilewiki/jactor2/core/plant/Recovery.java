@@ -62,7 +62,7 @@ public class Recovery {
     public void onHungThread(final ReactorImpl _reactorImpl) {
         _reactorImpl.getLogger().error("hung thread -> plant exit");
         try {
-            Plant.close();
+            PlantBase.close();
         } catch (Exception ex) {}
         System.exit(10);
     }
