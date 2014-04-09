@@ -8,35 +8,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
  * The plant has an internal reactor which is the root of a tree of all reactors,
  * though this tree is made using weak references.
  */
-final public class Plant {
-
-    /**
-     * Closes all reactors and associated closeables, the plant scheduler and the
-     * reactor thread pool.
-     */
-    public static void close() throws Exception {
-        PlantImpl plantImpl = PlantImpl.getSingleton();
-        if (plantImpl != null)
-            plantImpl.close();
-    }
-
-    /**
-     * Returns the internal reactor.
-     *
-     * @return The internal reactor.
-     */
-    public static NonBlockingReactor getInternalReactor() {
-        return PlantImpl.getSingleton().getInternalReactor();
-    }
-
-    /**
-     * Returns the plant scheduler.
-     *
-     * @return The plant scheduler.
-     */
-    public static PlantScheduler getPlantScheduler() {
-        return PlantImpl.getSingleton().getPlantScheduler();
-    }
+final public class Plant extends PlantBase {
 
     /**
      * Create a plant with the default configuration.
