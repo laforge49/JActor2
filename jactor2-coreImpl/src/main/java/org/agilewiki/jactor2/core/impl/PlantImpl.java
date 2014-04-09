@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 
 public class PlantImpl extends PlantImplBase {
@@ -28,5 +30,10 @@ public class PlantImpl extends PlantImplBase {
      */
     public PlantImpl(final PlantConfiguration _plantConfiguration) {
         super(_plantConfiguration);
+    }
+
+    public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 }

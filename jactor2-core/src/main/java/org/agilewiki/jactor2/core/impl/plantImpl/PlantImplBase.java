@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.impl.plantImpl;
 
+import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
@@ -191,4 +193,7 @@ abstract public class PlantImplBase {
         plantConfiguration.getPlantScheduler().schedule(schedulableSemaphore.runnable, _millisecondDelay);
         return schedulableSemaphore;
     }
+
+    abstract public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                                  final int _initialOutboxSize, final int _initialLocalQueueSize);
 }

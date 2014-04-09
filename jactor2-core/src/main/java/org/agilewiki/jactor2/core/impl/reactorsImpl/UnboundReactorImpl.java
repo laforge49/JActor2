@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Common code for NonBlockingReactor and IsolationReactor, which are not bound to a thread.
+ * Common code for BlockingReactor, NonBlockingReactor and IsolationReactor, which are not bound to a thread.
  * <p>
  * UnboundReactorImpl supports thread migration only between instances of this class.
  * </p>

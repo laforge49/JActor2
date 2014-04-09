@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBlade;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.SwingBoundReactorImpl;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -67,12 +67,8 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
     protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
                                            final Runnable _boundProcessor) {
-        return new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
-    }
-
-    @Override
-    public SwingBoundReactorImpl asReactorImpl() {
-        return (SwingBoundReactorImpl) super.asReactorImpl();
+        return PlantImplBase.getSingleton().createSwingBoundReactorImpl(
+                _parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override
