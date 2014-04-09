@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.reactors;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 /**

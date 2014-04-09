@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.blades.firehose;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 
 public class FirehoseTest extends TestCase {
     public void test() throws Exception {

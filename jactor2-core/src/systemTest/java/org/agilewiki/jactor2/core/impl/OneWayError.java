@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
 
 public class OneWayError extends NonBlockingBladeBase {
     static public void main(final String[] _args) throws Exception {

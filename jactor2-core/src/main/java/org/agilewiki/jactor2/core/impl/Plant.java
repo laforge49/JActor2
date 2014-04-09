@@ -1,6 +1,8 @@
-package org.agilewiki.jactor2.core.plant;
+package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
+import org.agilewiki.jactor2.core.plant.PlantBase;
+import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**

@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl.requests;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
