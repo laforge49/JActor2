@@ -1,8 +1,9 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BlockingBlade;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.BlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 
 /**
@@ -66,12 +67,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      */
     private BlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        initialize(new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
-    }
-
-    @Override
-    public BlockingReactorImpl asReactorImpl() {
-        return (BlockingReactorImpl) super.asReactorImpl();
+        initialize(PlantImplBase.getSingleton().createBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     /**
@@ -81,7 +77,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _idle    The activity which occurs when the input queue is empty.
      */
     public void setIdle(final Runnable _idle) {
-        ((BlockingReactorImpl) asReactorImpl()).onIdle = _idle;
+        ((UnboundReactorImpl) asReactorImpl()).onIdle = _idle;
     }
 
     @Override

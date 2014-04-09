@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.impl.reactorsImpl.BlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 
@@ -27,7 +26,7 @@ public class Recovery {
      * @return Number of milliseconds.
      */
     public long getMessageTimeoutMillis(final ReactorImpl _reactorImpl) {
-        if (_reactorImpl instanceof BlockingReactorImpl)
+        if (_reactorImpl.isSlow())
             return 300000;
         return 1000;
     }

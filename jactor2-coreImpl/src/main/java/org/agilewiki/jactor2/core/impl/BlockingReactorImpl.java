@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core.impl.reactorsImpl;
+package org.agilewiki.jactor2.core.impl;
 
+import org.agilewiki.jactor2.core.impl.reactorsImpl.*;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 
@@ -40,5 +41,9 @@ public class BlockingReactorImpl extends UnboundReactorImpl {
         } catch (final Exception e) {
             logger.error("Exception thrown by flush", e);
         }
+    }
+
+    public boolean isSlow() {
+        return true;
     }
 }

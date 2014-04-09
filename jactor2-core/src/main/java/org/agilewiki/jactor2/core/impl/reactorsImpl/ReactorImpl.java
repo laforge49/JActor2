@@ -661,4 +661,8 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
         _closeable.asCloseableImpl().removeReactor(this);
         return true;
     }
+
+    public boolean isSlow() {
+        return false;
+    }
 }
