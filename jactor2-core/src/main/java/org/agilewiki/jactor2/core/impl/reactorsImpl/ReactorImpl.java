@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.reactorsImpl;
 
+import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for internal reactor implementations.
  */
-public interface ReactorImpl extends Closeable, Runnable, RequestSource {
+public interface ReactorImpl extends Closeable, Runnable, RequestSource, Blade {
 
     /**
      * Initialize the ReactorImpl.

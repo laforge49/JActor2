@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.Inbox;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -10,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 /**
  * The internal implementation of BlockingReactor.
  */
-public class BlockingReactorImpl extends PoolThreadReactorImpl {
+public class BlockingReactorImpl extends PoolThreadReactorImplBase {
 
     /**
      * Create a BlockingReactorImpl.

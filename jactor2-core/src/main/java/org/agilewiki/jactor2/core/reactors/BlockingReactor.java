@@ -64,7 +64,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _idle    The activity which occurs when the input queue is empty.
      */
     public void setIdle(final Runnable _idle) {
-        ((PoolThreadReactorImpl) asReactorImpl()).onIdle = _idle;
+        ((PoolThreadReactorImpl) asReactorImpl()).setOnIdle(_idle);
     }
 
     @Override

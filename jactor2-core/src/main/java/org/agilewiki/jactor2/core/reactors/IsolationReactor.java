@@ -62,7 +62,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _idle    The activity which occurs when the input queue is empty.
      */
     public void setIdle(final Runnable _idle) {
-        ((PoolThreadReactorImpl) asReactorImpl()).onIdle = _idle;
+        ((PoolThreadReactorImpl) asReactorImpl()).setOnIdle(_idle);
     }
 
     @Override
