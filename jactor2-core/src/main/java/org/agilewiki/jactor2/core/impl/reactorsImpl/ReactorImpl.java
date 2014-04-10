@@ -11,6 +11,7 @@ import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.impl.plantImpl.SchedulableSemaphore;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
@@ -664,5 +665,9 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
     public boolean isSlow() {
         return false;
+    }
+
+    public boolean isCommonReactor() {
+        return asReactor() instanceof CommonReactor;
     }
 }

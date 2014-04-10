@@ -55,8 +55,13 @@ public class PlantImpl extends PlantImplBase {
     }
 
     public ReactorImpl createBlockingReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                                          final int _initialOutboxSize, final int _initialLocalQueueSize) {
+                                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
+    }
+
+    public ReactorImpl createIsolationReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,

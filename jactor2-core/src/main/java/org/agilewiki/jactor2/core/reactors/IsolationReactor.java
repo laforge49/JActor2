@@ -1,8 +1,9 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.IsolationReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 
 /**
@@ -63,12 +64,8 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      */
     private IsolationReactor(final NonBlockingReactorImpl _parentReactorImpl,
                            final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        initialize(new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
-    }
-
-    @Override
-    public IsolationReactorImpl asReactorImpl() {
-        return (IsolationReactorImpl) super.asReactorImpl();
+        initialize(PlantImplBase.getSingleton().createIsolationReactorImpl(
+                _parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     /**
@@ -78,7 +75,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _idle    The activity which occurs when the input queue is empty.
      */
     public void setIdle(final Runnable _idle) {
-        ((IsolationReactorImpl) asReactorImpl()).onIdle = _idle;
+        ((UnboundReactorImpl) asReactorImpl()).onIdle = _idle;
     }
 
     @Override

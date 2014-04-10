@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.IsolationReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -189,9 +188,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         if ((oldMessage != null) && oldMessage.isIsolated()) {
             isolated = true;
         }
-        if (source instanceof IsolationReactorImpl) {
-            isolated = true;
-        }
+        isolated = !source.isCommonReactor();
         if (targetReactor instanceof IsolationReactor) {
             if (isolated && (_responseProcessor != null)) {
                 throw new UnsupportedOperationException(

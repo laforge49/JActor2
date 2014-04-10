@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.Inbox;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingInbox;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.CommonInbox;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
@@ -81,7 +81,7 @@ public class ThreadBoundReactorImpl extends ReactorImpl {
 
     @Override
     protected Inbox createInbox(final int _initialLocalQueueSize) {
-        return new NonBlockingInbox(_initialLocalQueueSize);
+        return new CommonInbox(_initialLocalQueueSize);
     }
 
     @Override

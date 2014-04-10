@@ -8,11 +8,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * The inbox used by NonBlockingReactor, ThreadBoundReactor
- * and SwingBoundReactor. NonBlockingInbox uses a single ArrayDeque for the local queue.
+ * and SwingBoundReactor. CommonInbox uses a single ArrayDeque for the local queue.
  *
  * @author monster
  */
-public class NonBlockingInbox extends Inbox {
+public class CommonInbox extends Inbox {
 
     /**
      * Local queue for same-thread exchanges.
@@ -20,11 +20,11 @@ public class NonBlockingInbox extends Inbox {
     private final ArrayDeque<Object> localQueue;
 
     /**
-     * Creates a NonBlockingInbox.
+     * Creates a CommonInbox.
      *
      * @param initialLocalQueueSize The initial doLocal queue size.
      */
-    public NonBlockingInbox(final int initialLocalQueueSize) {
+    public CommonInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
         localQueue = new ArrayDeque<Object>(initialLocalQueueSize);
     }

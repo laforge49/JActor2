@@ -28,7 +28,7 @@ public class BlockingReactorImpl extends UnboundReactorImpl {
 
     @Override
     protected Inbox createInbox(final int _initialLocalQueueSize) {
-        return new NonBlockingInbox(_initialLocalQueueSize);
+        return new CommonInbox(_initialLocalQueueSize);
     }
 
     @Override

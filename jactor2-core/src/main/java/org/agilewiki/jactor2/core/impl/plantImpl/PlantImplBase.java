@@ -200,7 +200,10 @@ abstract public class PlantImplBase {
     abstract public void validateCall();
 
     abstract public ReactorImpl createBlockingReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
-                                                            final int _initialOutboxSize, final int _initialLocalQueueSize);
+                                                          final int _initialOutboxSize, final int _initialLocalQueueSize);
+
+    abstract public ReactorImpl createIsolationReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+                                                          final int _initialOutboxSize, final int _initialLocalQueueSize);
 
     abstract public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
                                                             final int _initialOutboxSize, final int _initialLocalQueueSize);

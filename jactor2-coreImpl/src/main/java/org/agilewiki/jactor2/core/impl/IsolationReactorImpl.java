@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core.impl.reactorsImpl;
+package org.agilewiki.jactor2.core.impl;
 
+import org.agilewiki.jactor2.core.impl.reactorsImpl.*;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 
