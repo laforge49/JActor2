@@ -85,11 +85,11 @@ abstract public class ReactorBase implements Reactor {
 
     @Override
     public Recovery getRecovery() {
-        return asReactorImpl().recovery;
+        return asReactorImpl().getRecovery();
     }
 
     @Override
     public void setRecovery(final Recovery _recovery) {
-        asReactorImpl().recovery = _recovery;
+        asReactorImpl().setRecovery(_recovery);
     }
 }

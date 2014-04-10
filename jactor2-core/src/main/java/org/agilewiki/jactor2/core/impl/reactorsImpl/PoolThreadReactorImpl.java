@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * PoolThreadReactorImpl supports thread migration only between instances of this class.
  * </p>
  */
-abstract public class PoolThreadReactorImpl extends ReactorImpl {
+abstract public class PoolThreadReactorImpl extends ReactorImplBase {
 
     /**
      * The object to be run when the inbox is emptied and before the threadReference is cleared.

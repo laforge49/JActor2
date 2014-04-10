@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.Inbox;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImplBase;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
@@ -13,7 +14,7 @@ import java.util.Map;
 /**
  * A reactor bound to a thread.
  */
-public class ThreadBoundReactorImpl extends ReactorImpl {
+public class ThreadBoundReactorImpl extends ReactorImplBase {
 
     private static final ThreadLocal<ThreadBoundReactorImpl> threadReactor =
             new ThreadLocal<ThreadBoundReactorImpl>();
