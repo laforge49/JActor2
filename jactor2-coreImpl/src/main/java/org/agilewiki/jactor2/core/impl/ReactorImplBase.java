@@ -8,7 +8,6 @@ import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
 import org.agilewiki.jactor2.core.impl.plantImpl.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.Outbox;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
