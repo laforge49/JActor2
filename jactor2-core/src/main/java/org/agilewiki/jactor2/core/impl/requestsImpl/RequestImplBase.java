@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.requestsImpl;
 
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
-import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
@@ -189,7 +189,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
             isolated = true;
         }
         isolated = !source.isCommonReactor();
-        if (targetReactor instanceof IsolationReactor) {
+        if (!(targetReactor instanceof CommonReactor)) {
             if (isolated && (_responseProcessor != null)) {
                 throw new UnsupportedOperationException(
                         "Isolated requests can not be nested, even indirectly.");

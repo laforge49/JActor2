@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ public final class ReactorPoolThreadManager {
     /**
      * The reactors queue holds the reactors which have messages to be processed.
      */
-    final private ConcurrentLinkedQueue<UnboundReactorImpl> reactors = new ConcurrentLinkedQueue<UnboundReactorImpl>();
+    final private ConcurrentLinkedQueue<PoolThreadReactorImpl> reactors = new ConcurrentLinkedQueue<PoolThreadReactorImpl>();
 
     /**
      * When closing is true, the threads exit as they finish their current activity.
@@ -64,7 +64,7 @@ public final class ReactorPoolThreadManager {
                 while (true) {
                     try {
                         taskRequest.acquire();
-                        UnboundReactorImpl reactor = reactors.poll();
+                        PoolThreadReactorImpl reactor = reactors.poll();
                         if (reactor != null) {
                             AtomicReference<Thread> threadReference = reactor
                                     .getThreadReference();
@@ -126,11 +126,11 @@ public final class ReactorPoolThreadManager {
      *
      * @param _reactor The run method is to be called by the selected thread.
      */
-    public final void execute(final UnboundReactorImpl _reactor) {
+    public final void execute(final PoolThreadReactorImpl _reactor) {
         if (closing) {
             return;
         }
-        reactors.add((UnboundReactorImpl) _reactor);
+        reactors.add((PoolThreadReactorImpl) _reactor);
         taskRequest.release();
     }
 

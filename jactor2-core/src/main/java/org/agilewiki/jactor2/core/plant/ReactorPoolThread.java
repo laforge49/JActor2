@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 
 /**
  * Base class for pool threads used by reactors.
@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
  */
 public class ReactorPoolThread extends Thread {
 
-    private volatile UnboundReactorImpl currentReactor;
+    private volatile PoolThreadReactorImpl currentReactor;
 
     /**
      * Create a pool thread.
@@ -24,7 +24,7 @@ public class ReactorPoolThread extends Thread {
      *
      * @return The current reactor, or null.
      */
-    public UnboundReactorImpl getCurrentReactorImpl() {
+    public PoolThreadReactorImpl getCurrentReactorImpl() {
         return currentReactor;
     }
 
@@ -33,7 +33,7 @@ public class ReactorPoolThread extends Thread {
      *
      * @param _reactor The current reactor.
      */
-    public void setCurrentReactor(final UnboundReactorImpl _reactor) {
+    public void setCurrentReactor(final PoolThreadReactorImpl _reactor) {
         currentReactor = _reactor;
     }
 }

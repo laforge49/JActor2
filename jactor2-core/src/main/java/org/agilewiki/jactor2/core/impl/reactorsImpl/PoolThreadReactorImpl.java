@@ -12,10 +12,10 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Common code for BlockingReactor, NonBlockingReactor and IsolationReactor, which are not bound to a thread.
  * <p>
- * UnboundReactorImpl supports thread migration only between instances of this class.
+ * PoolThreadReactorImpl supports thread migration only between instances of this class.
  * </p>
  */
-abstract public class UnboundReactorImpl extends ReactorImpl {
+abstract public class PoolThreadReactorImpl extends ReactorImpl {
 
     /**
      * The object to be run when the inbox is emptied and before the threadReference is cleared.
@@ -29,8 +29,8 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
      * @param _initialOutboxSize        The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize    The initial local queue size.
      */
-    public UnboundReactorImpl(final NonBlockingReactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize) {
+    public PoolThreadReactorImpl(final NonBlockingReactor _parentReactor,
+                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
@@ -85,10 +85,10 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
                 final ArrayDeque<RequestImpl> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
-                        && (target instanceof UnboundReactorImpl)) {
+                        && (target instanceof PoolThreadReactorImpl)) {
                     if (!target.isRunning()) {
                         final Thread currentThread = threadReference.get();
-                        final UnboundReactorImpl targ = (UnboundReactorImpl) target;
+                        final PoolThreadReactorImpl targ = (PoolThreadReactorImpl) target;
                         final AtomicReference<Thread> targetThreadReference = targ
                                 .getThreadReference();
                         if ((targetThreadReference.get() == null)

@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 
 /**
  * Internal implementation for Plant.
@@ -149,7 +149,7 @@ abstract public class PlantImplBase {
      *
      * @param _reactor The targetReactor to be run.
      */
-    public final void submit(final UnboundReactorImpl _reactor) {
+    public final void submit(final PoolThreadReactorImpl _reactor) {
         try {
             reactorPoolThreadManager.execute(_reactor);
         } catch (final Exception e) {

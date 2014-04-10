@@ -12,14 +12,14 @@ public class MigrationException extends RuntimeException {
     /**
      * The newly active targetReactor.
      */
-    public final UnboundReactorImpl reactor;
+    public final PoolThreadReactorImpl reactor;
 
     /**
      * Create a new MigrationException.
      *
      * @param _reactor The newly active processing.
      */
-    public MigrationException(final UnboundReactorImpl _reactor) {
+    public MigrationException(final PoolThreadReactorImpl _reactor) {
         reactor = _reactor;
     }
 

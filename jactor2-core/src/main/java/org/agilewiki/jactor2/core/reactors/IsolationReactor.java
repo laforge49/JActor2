@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 
 /**
@@ -62,7 +62,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _idle    The activity which occurs when the input queue is empty.
      */
     public void setIdle(final Runnable _idle) {
-        ((UnboundReactorImpl) asReactorImpl()).onIdle = _idle;
+        ((PoolThreadReactorImpl) asReactorImpl()).onIdle = _idle;
     }
 
     @Override
