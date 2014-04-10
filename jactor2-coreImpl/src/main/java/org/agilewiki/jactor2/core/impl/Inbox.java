@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.impl.reactorsImpl;
+package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 
