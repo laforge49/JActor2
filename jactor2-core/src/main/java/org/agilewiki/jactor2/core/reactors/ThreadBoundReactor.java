@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.ThreadBoundBlade;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.plant.PlantBase;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 
 /**
@@ -84,25 +83,25 @@ public class ThreadBoundReactor extends ReactorBase
     public ThreadBoundReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) {
-        initialize(createReactorImpl(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize,
+        initialize(createReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize,
                 _boundProcessor));
     }
 
     /**
      * Create the object used to implement the reactor.
      *
-     * @param _parentReactorImpl        The parent reactor impl object.
+     * @param _parentReactor        The parent reactor object.
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      * @param _boundProcessor           The Runnable that is called when there are requests/responses
      *                                  to be processed.
      * @return The object used to implement the reactor.
      */
-    protected ReactorImpl createReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    protected ReactorImpl createReactorImpl(final NonBlockingReactor _parentReactor,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
                                             final Runnable _boundProcessor) {
         return PlantImplBase.getSingleton().createThreadBoundReactorImpl(
-                _parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+                _parentReactor, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     /**

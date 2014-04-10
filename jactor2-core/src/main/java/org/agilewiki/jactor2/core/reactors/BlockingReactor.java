@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.blades.BlockingBlade;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 
 /**
  * Process requests/responses which may block the thread or tie it up with a long computation.
@@ -55,19 +54,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      */
     public BlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize);
-    }
-
-    /**
-     * Create a blocking reactor.
-     *
-     * @param _parentReactorImpl        The parent reactor impl object.
-     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
-     * @param _initialLocalQueueSize    Initial size of the local input queue.
-     */
-    private BlockingReactor(final NonBlockingReactorImpl _parentReactorImpl,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        initialize(PlantImplBase.getSingleton().createBlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
+        initialize(PlantImplBase.getSingleton().createBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     /**

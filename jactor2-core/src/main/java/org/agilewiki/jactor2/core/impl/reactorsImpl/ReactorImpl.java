@@ -8,7 +8,6 @@ import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
-import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.impl.plantImpl.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
@@ -115,22 +114,23 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     /**
      * Create a ReactorImpl instance.
      *
-     * @param _parentReactorImpl        The parent reactor, or null.
+     * @param _parentReactor        The parent reactor, or null.
      * @param _initialBufferSize        The initial size of a send buffer.
      * @param _initialLocalQueueSize    The initial size of the local queue.
      */
-    public ReactorImpl(final NonBlockingReactorImpl _parentReactorImpl, final int _initialBufferSize,
+    public ReactorImpl(final NonBlockingReactor _parentReactor, final int _initialBufferSize,
                        final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImpl1(this);
         PlantConfiguration plantConfiguration = PlantImplBase.getSingleton().getPlantConfiguration();
-        recovery = _parentReactorImpl == null ? plantConfiguration.getRecovery() : _parentReactorImpl.recovery;
-        plantScheduler = _parentReactorImpl == null ? plantConfiguration.getPlantScheduler() : _parentReactorImpl.plantScheduler;
+        ReactorImpl parentReactorImpl = _parentReactor == null ? null : _parentReactor.asReactorImpl();
+        recovery = _parentReactor == null ? plantConfiguration.getRecovery() : parentReactorImpl.recovery;
+        plantScheduler = _parentReactor == null ? plantConfiguration.getPlantScheduler() : parentReactorImpl.plantScheduler;
         initialBufferSize = _initialBufferSize;
         initialLocalQueueSize = _initialLocalQueueSize;
-        parentReactor = _parentReactorImpl == null ? null : _parentReactorImpl.asReactor();
+        parentReactor = _parentReactor;
         logger = LoggerFactory.getLogger(Reactor.class);
-        if (_parentReactorImpl != null) {
-            _parentReactorImpl.addCloseable(this);
+        if (_parentReactor != null) {
+            _parentReactor.addCloseable(this);
         } else {
         }
     }

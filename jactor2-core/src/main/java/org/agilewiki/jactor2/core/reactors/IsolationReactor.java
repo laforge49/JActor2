@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 
 /**
  * Processes each request until completion, processing responses and 1-way messages (e.g. signals) in the order received.
@@ -52,20 +51,8 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      */
     public IsolationReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(_parentReactor.asReactorImpl(), _initialOutboxSize, _initialLocalQueueSize);
-    }
-
-    /**
-     * Create an isolation reactor.
-     *
-     * @param _parentReactorImpl        The parent reactor impl object.
-     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
-     * @param _initialLocalQueueSize    Initial size of the local input queue.
-     */
-    private IsolationReactor(final NonBlockingReactorImpl _parentReactorImpl,
-                           final int _initialOutboxSize, final int _initialLocalQueueSize) {
         initialize(PlantImplBase.getSingleton().createIsolationReactorImpl(
-                _parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize));
+                _parentReactor, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     /**

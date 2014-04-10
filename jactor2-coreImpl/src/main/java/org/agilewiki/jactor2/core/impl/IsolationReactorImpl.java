@@ -1,8 +1,11 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.impl.reactorsImpl.*;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.Inbox;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.UnboundReactorImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**
  * Internal implementation of UnboundReactor.
@@ -12,13 +15,13 @@ public class IsolationReactorImpl extends UnboundReactorImpl {
     /**
      * Create an IsolationReactorImpl.
      *
-     * @param _parentReactorImpl        The parent reactor.
+     * @param _parentReactor        The parent reactor.
      * @param _initialOutboxSize        The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize    The initial local queue size.
      */
-    public IsolationReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    public IsolationReactorImpl(final NonBlockingReactor _parentReactor,
                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
+        super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PlantImpl extends PlantImplBase {
 
@@ -54,24 +54,29 @@ public class PlantImpl extends PlantImplBase {
 
     }
 
-    public ReactorImpl createBlockingReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    public ReactorImpl createNonBlockingReactorImpl(final NonBlockingReactor _parentReactor,
                                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new BlockingReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
+        return new NonBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public ReactorImpl createIsolationReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    public ReactorImpl createBlockingReactorImpl(final NonBlockingReactor _parentReactor,
                                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new IsolationReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
+        return new BlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    public ReactorImpl createIsolationReactorImpl(final NonBlockingReactor _parentReactor,
+                                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return new IsolationReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    }
+
+    public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactor _parentReactor,
                                                    final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new SwingBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
+        return new SwingBoundReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactor _parentReactor,
                                                     final int _initialOutboxSize, final int _initialLocalQueueSize,
                                                     final Runnable _boundProcessor) {
-        return new ThreadBoundReactorImpl(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        return new ThreadBoundReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 }

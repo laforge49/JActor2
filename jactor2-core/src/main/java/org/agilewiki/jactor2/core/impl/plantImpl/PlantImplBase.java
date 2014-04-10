@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.impl.plantImpl;
 
-import org.agilewiki.jactor2.core.impl.reactorsImpl.NonBlockingReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
@@ -199,16 +198,19 @@ abstract public class PlantImplBase {
 
     abstract public void validateCall();
 
-    abstract public ReactorImpl createBlockingReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    abstract public ReactorImpl createNonBlockingReactorImpl(final NonBlockingReactor _parentReactor,
                                                           final int _initialOutboxSize, final int _initialLocalQueueSize);
 
-    abstract public ReactorImpl createIsolationReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    abstract public ReactorImpl createBlockingReactorImpl(final NonBlockingReactor _parentReactor,
                                                           final int _initialOutboxSize, final int _initialLocalQueueSize);
 
-    abstract public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    abstract public ReactorImpl createIsolationReactorImpl(final NonBlockingReactor _parentReactor,
+                                                          final int _initialOutboxSize, final int _initialLocalQueueSize);
+
+    abstract public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactor _parentReactor,
                                                             final int _initialOutboxSize, final int _initialLocalQueueSize);
 
-    abstract public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    abstract public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactor _parentReactor,
                                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
                                                             final Runnable _boundProcessor);
 }

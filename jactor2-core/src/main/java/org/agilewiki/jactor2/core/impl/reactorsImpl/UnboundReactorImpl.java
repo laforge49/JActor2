@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.impl.reactorsImpl;
 
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -24,13 +25,13 @@ abstract public class UnboundReactorImpl extends ReactorImpl {
     /**
      * Create an UnboundReactor.
      *
-     * @param _parentReactorImpl        The parent reactor.
+     * @param _parentReactor        The parent reactor.
      * @param _initialOutboxSize        The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize    The initial local queue size.
      */
-    public UnboundReactorImpl(final NonBlockingReactorImpl _parentReactorImpl,
+    public UnboundReactorImpl(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        super(_parentReactorImpl, _initialOutboxSize, _initialLocalQueueSize);
+        super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override
