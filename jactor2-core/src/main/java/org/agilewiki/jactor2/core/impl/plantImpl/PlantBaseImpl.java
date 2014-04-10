@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 /**
  * Internal implementation for Plant.
  */
-abstract public class PlantImplBase {
+abstract public class PlantBaseImpl {
 
     /**
      * System property flag, jactor.debug, to turn on debug;
@@ -18,14 +18,14 @@ abstract public class PlantImplBase {
     public static final boolean DEBUG = "true".equals(System
             .getProperty("jactor.debug"));
 
-    private static volatile PlantImplBase singleton;
+    private static volatile PlantBaseImpl singleton;
 
     /**
      * Returns this singleton.
      *
      * @return This singleton.
      */
-    public static PlantImplBase getSingleton() {
+    public static PlantBaseImpl getSingleton() {
         return singleton;
     }
 
@@ -40,7 +40,7 @@ abstract public class PlantImplBase {
     /**
      * Create the singleton with a default configuration.
      */
-    public PlantImplBase() {
+    public PlantBaseImpl() {
         this(new PlantConfiguration());
     }
 
@@ -49,7 +49,7 @@ abstract public class PlantImplBase {
      *
      * @param _threadCount The size of the thread pool.
      */
-    public PlantImplBase(final int _threadCount) {
+    public PlantBaseImpl(final int _threadCount) {
         this(new PlantConfiguration(_threadCount));
     }
 
@@ -58,7 +58,7 @@ abstract public class PlantImplBase {
      *
      * @param _plantConfiguration The configuration to be used by the singleton.
      */
-    public PlantImplBase(final PlantConfiguration _plantConfiguration) {
+    public PlantBaseImpl(final PlantConfiguration _plantConfiguration) {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }

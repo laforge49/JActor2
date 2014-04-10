@@ -1,8 +1,7 @@
 package org.agilewiki.jactor2.core.impl.requestsImpl;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
@@ -178,7 +177,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     public void doSend(final ReactorImpl _source,
                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
         final ReactorImpl source = (ReactorImpl) _source;
-        if (PlantImplBase.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
+        if (PlantBaseImpl.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
             throw new IllegalStateException("send from wrong thread");
         }
         if (!source.isRunning()) {
@@ -222,7 +221,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
-        PlantImplBase.getSingleton().validateCall();
+        PlantBaseImpl.getSingleton().validateCall();
         requestSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
@@ -254,7 +253,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
      * @return True when this is the first response.
      */
     protected boolean processObjectResponse(final Object _response) {
-        if (PlantImplBase.DEBUG && targetReactorImpl.getThreadReference().get() != Thread
+        if (PlantBaseImpl.DEBUG && targetReactorImpl.getThreadReference().get() != Thread
                 .currentThread()) {
             final IllegalStateException ex = new IllegalStateException(
                     "response from wrong thread");

@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.Recovery;
@@ -121,7 +121,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
     public ReactorImpl(final NonBlockingReactor _parentReactor, final int _initialBufferSize,
                        final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImpl1(this);
-        PlantConfiguration plantConfiguration = PlantImplBase.getSingleton().getPlantConfiguration();
+        PlantConfiguration plantConfiguration = PlantBaseImpl.getSingleton().getPlantConfiguration();
         ReactorImpl parentReactorImpl = _parentReactor == null ? null : _parentReactor.asReactorImpl();
         recovery = _parentReactor == null ? plantConfiguration.getRecovery() : parentReactorImpl.recovery;
         plantScheduler = _parentReactor == null ? plantConfiguration.getPlantScheduler() : parentReactorImpl.plantScheduler;
@@ -265,7 +265,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                 try {
                     closeable.close();
                 } catch (final Throwable t) {
-                    if (closeable != null && PlantImplBase.DEBUG) {
+                    if (closeable != null && PlantBaseImpl.DEBUG) {
                         getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
                     }
                 }
@@ -279,7 +279,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
 
         shuttingDown = true;
 
-        PlantImplBase plantImpl = PlantImplBase.getSingleton();
+        PlantBaseImpl plantImpl = PlantBaseImpl.getSingleton();
         if (plantImpl != null &&
                 isRunning() &&
                 (currentRequest == null || !currentRequest.isComplete())) {
@@ -289,7 +289,7 @@ abstract public class ReactorImpl extends BladeBase implements Closeable, Runnab
                 thread.interrupt();
                 boolean timeout = timeoutSemaphore.acquire();
                 currentRequest.close();
-                if (timeout && isRunning() & PlantImplBase.getSingleton() != null) {
+                if (timeout && isRunning() & PlantBaseImpl.getSingleton() != null) {
                     try {
                         if (currentRequest == null)
                             logger.error("hung thread");

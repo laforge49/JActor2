@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class PlantImpl extends PlantImplBase {
+public class PlantImpl extends PlantBaseImpl {
 
     /**
      * Create the singleton with a default configuration.

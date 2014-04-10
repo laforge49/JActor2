@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl.reactorsImpl;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImplBase;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
@@ -61,7 +61,7 @@ abstract public class PoolThreadReactorImpl extends ReactorImpl {
             throw new NullPointerException();
         }
         if (threadReference.get() == null) {
-            PlantImplBase.getSingleton().submit(this);
+            PlantBaseImpl.getSingleton().submit(this);
         }
     }
 
