@@ -2,6 +2,8 @@ package org.agilewiki.jactor2.core.mt;
 
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.mt.mtRequests.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.mt.mtRequests.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.mt.mtReactors.*;
@@ -9,6 +11,7 @@ import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class PlantMtImpl extends PlantImpl {
@@ -88,5 +91,10 @@ public class PlantMtImpl extends PlantImpl {
     @Override
     public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(SyncRequest<RESPONSE_TYPE> _syncRequest, Reactor _targetReactor) {
         return new SyncRequestMtImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
+    }
+
+    @Override
+    public <RESPONSE_TYPE> AsyncRequestImpl<RESPONSE_TYPE> createAsyncRequestImpl(AsyncRequest<RESPONSE_TYPE> _asyncRequest, Reactor _targetReactor) {
+        return new AsyncRequestMtImpl<RESPONSE_TYPE>(_asyncRequest, _targetReactor);
     }
 }

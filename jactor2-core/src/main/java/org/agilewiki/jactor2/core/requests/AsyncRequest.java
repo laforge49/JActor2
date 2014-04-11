@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
@@ -25,7 +25,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
     public AsyncRequest(final Reactor _targetReactor) {
-        asyncRequestImpl = new AsyncRequestMtImpl<RESPONSE_TYPE>(this, _targetReactor);
+        asyncRequestImpl = PlantImpl.getSingleton().createAsyncRequestImpl(this, _targetReactor);
     }
 
     @Override
