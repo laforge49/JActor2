@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.mt;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.mt.mtReactors.*;
 import org.agilewiki.jactor2.core.mt.mtRequests.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.mt.mtRequests.SyncRequestMtImpl;

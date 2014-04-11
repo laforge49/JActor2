@@ -1,12 +1,9 @@
-package org.agilewiki.jactor2.core.impl.plantImpl;
+package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
-import org.agilewiki.jactor2.core.plant.PlantConfiguration;
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
-import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
+import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;

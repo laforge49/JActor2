@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.mt.mtRequests;
 
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 /**
  * A source of requests, and which must be able to handle a response.

@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.requests;
 
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 

@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.reactors.MigrationException;
+import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.ArrayDeque;

@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.mt.mtRequests;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.reactors.MigrationException;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.mt.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;

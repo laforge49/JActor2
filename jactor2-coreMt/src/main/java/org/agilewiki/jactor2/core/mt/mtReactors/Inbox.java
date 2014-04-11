@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

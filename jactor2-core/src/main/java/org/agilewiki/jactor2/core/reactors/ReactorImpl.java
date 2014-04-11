@@ -1,12 +1,10 @@
-package org.agilewiki.jactor2.core.impl.reactorsImpl;
+package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.Recovery;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.slf4j.Logger;

@@ -1,10 +1,8 @@
-package org.agilewiki.jactor2.core.impl.requestsImpl;
+package org.agilewiki.jactor2.core.requests;
 
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.Request;
 
 /**
  * API for internal request implementations.

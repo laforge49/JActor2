@@ -1,9 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 
 /**
