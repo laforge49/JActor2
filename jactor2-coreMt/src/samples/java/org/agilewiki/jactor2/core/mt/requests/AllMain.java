@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.mt.requests;
 
-import org.agilewiki.jactor2.core.mt.Plant;
+import org.agilewiki.jactor2.core.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;

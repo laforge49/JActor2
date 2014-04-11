@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.mt.requests;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.mt.Plant;
+import org.agilewiki.jactor2.core.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
 

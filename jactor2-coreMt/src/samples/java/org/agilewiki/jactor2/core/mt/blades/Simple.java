@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.mt.blades;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.mt.Plant;
+import org.agilewiki.jactor2.core.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
 public class Simple {

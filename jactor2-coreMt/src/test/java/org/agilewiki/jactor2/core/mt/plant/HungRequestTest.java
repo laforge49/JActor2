@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.mt.plant;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.mt.Plant;
+import org.agilewiki.jactor2.core.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;

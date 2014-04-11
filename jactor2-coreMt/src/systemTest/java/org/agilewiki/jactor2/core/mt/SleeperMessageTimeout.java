@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.mt;
 
+import org.agilewiki.jactor2.core.Plant;
+
 public class SleeperMessageTimeout {
     static public void main(final String[] _args) throws Exception {
         new Plant();

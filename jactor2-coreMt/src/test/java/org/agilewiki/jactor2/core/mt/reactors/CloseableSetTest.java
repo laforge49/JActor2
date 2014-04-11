@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
-import org.agilewiki.jactor2.core.mt.Plant;
+import org.agilewiki.jactor2.core.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 

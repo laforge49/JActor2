@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core.mt;
+package org.agilewiki.jactor2.core;
 
+import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 
