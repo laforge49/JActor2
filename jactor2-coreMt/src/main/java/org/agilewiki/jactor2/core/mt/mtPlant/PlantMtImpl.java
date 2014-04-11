@@ -20,7 +20,7 @@ public class PlantMtImpl extends PlantImpl {
      * Create the singleton with a default configuration.
      */
     public PlantMtImpl() {
-        super();
+        super(new PlantConfiguration());
     }
 
     /**
@@ -29,7 +29,7 @@ public class PlantMtImpl extends PlantImpl {
      * @param _threadCount The size of the thread pool.
      */
     public PlantMtImpl(final int _threadCount) {
-        super(_threadCount);
+        super(new PlantConfiguration(_threadCount));
     }
 
     /**

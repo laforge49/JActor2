@@ -27,13 +27,4 @@ abstract public class PlantBase {
     public static NonBlockingReactor getInternalReactor() {
         return PlantImpl.getSingleton().getInternalReactor();
     }
-
-    /**
-     * Returns the plant scheduler.
-     *
-     * @return The plant scheduler.
-     */
-    public static PlantScheduler getPlantScheduler() {
-        return PlantImpl.getSingleton().getPlantScheduler();
-    }
 }

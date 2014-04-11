@@ -1,5 +1,7 @@
-package org.agilewiki.jactor2.core.plant;
+package org.agilewiki.jactor2.core;
 
+import org.agilewiki.jactor2.core.plant.PlantBase;
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -45,7 +47,7 @@ public class DelayAReq extends AsyncRequest<Void> {
     @Override
     public void processAsyncRequest() {
         setNoHungRequestCheck();
-        PlantScheduler plantScheduler = PlantBase.getPlantScheduler();
+        PlantScheduler plantScheduler = Plant.getPlantScheduler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

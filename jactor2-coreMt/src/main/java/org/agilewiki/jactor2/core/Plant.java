@@ -3,6 +3,8 @@ package org.agilewiki.jactor2.core;
 import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
 
 /**
  * Plant is a singleton and is the top-level object.
@@ -10,6 +12,15 @@ import org.agilewiki.jactor2.core.plant.PlantConfiguration;
  * though this tree is made using weak references.
  */
 final public class Plant extends PlantBase {
+
+    /**
+     * Returns the plant scheduler.
+     *
+     * @return The plant scheduler.
+     */
+    public static PlantScheduler getPlantScheduler() {
+        return PlantImpl.getSingleton().getPlantScheduler();
+    }
 
     /**
      * Create a plant with the default configuration.

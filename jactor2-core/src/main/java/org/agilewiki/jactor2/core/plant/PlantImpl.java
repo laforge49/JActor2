@@ -40,22 +40,6 @@ abstract public class PlantImpl {
     private NonBlockingReactor internalReactor;
 
     /**
-     * Create the singleton with a default configuration.
-     */
-    public PlantImpl() {
-        this(new PlantConfiguration());
-    }
-
-    /**
-     * Create the singleton with the given thread pool size.
-     *
-     * @param _threadCount The size of the thread pool.
-     */
-    public PlantImpl(final int _threadCount) {
-        this(new PlantConfiguration(_threadCount));
-    }
-
-    /**
      * Create the singleton with the given configuration.
      *
      * @param _plantConfiguration The configuration to be used by the singleton.
