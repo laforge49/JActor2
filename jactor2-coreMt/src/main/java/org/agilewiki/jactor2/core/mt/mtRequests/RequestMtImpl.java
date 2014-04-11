@@ -266,7 +266,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
                 .currentThread()) {
             final IllegalStateException ex = new IllegalStateException(
                     "response from wrong thread");
-            targetReactor.asReactorImpl().getLogger().error(
+            targetReactor.asReactorImpl().error(
                     "response from wrong thread", ex);
             throw ex;
         }
@@ -278,7 +278,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
             requestSource.incomingResponse(RequestMtImpl.this, targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
-                targetReactor.asReactorImpl().getLogger().warn("Uncaught throwable",
+                targetReactor.asReactorImpl().warn("Uncaught throwable",
                         (Throwable) _response);
             }
         }
@@ -416,7 +416,6 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
                             .incomingResponse(this, activeMessageProcessor);
                 } else {
                     activeMessageProcessor
-                            .getLogger()
                             .error("Thrown by exception handler and uncaught "
                                     + exceptionHandler.getClass().getName(), _e);
                 }
@@ -429,7 +428,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
             if (!isOneWay()) {
                 requestSource.incomingResponse(this, activeMessageProcessor);
             } else {
-                activeMessageProcessor.getLogger().warn("Uncaught throwable",
+                activeMessageProcessor.warn("Uncaught throwable",
                         _e);
             }
         }

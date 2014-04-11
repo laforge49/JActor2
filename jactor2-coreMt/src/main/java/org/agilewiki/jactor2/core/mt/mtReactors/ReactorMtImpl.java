@@ -264,7 +264,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
             cit = closeables.iterator();
             while (cit.hasNext()) {
                 Closeable closeable = cit.next();
-                getLogger().warn("still has closable: " + this + "\n" + closeable);
+                warn("still has closable: " + this + "\n" + closeable);
             }
         }
 
@@ -685,5 +685,45 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
 
     public void setMessageStartTimeMillis(long messageStartTimeMillis) {
         this.messageStartTimeMillis = messageStartTimeMillis;
+    }
+
+    /**
+     * Log a message at the WARN level.
+     *
+     * @param msg the message string to be logged
+     */
+    public void warn(String msg) {
+        logger.warn(msg);
+    }
+
+    /**
+     * Log an exception (throwable) at the WARN level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void warn(String msg, Throwable t) {
+        logger.warn(msg, t);
+    }
+
+    /**
+     * Log a message at the ERROR level.
+     *
+     * @param msg the message string to be logged
+     */
+    public void error(String msg) {
+        logger.error(msg);
+    }
+
+    /**
+     * Log an exception (throwable) at the ERROR level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void error(String msg, Throwable t) {
+        logger.error(msg, t);
     }
 }

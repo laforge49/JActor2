@@ -89,7 +89,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
         try {
             PlantBase.close();
         } catch (final Exception ex) {
-            asReactorImpl().getLogger().warn("Exception when closing Facility", ex);
+            asReactorImpl().warn("Exception when closing Facility", ex);
         }
     }
 

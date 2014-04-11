@@ -91,4 +91,15 @@ abstract public class ReactorBase implements Reactor {
     public void setRecovery(final Recovery _recovery) {
         asReactorImpl().setRecovery(_recovery);
     }
+
+    /**
+     * Log an exception (throwable) at the WARN level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void warn(String msg, Throwable t) {
+        asReactorImpl().warn(msg, t);
+    }
 }

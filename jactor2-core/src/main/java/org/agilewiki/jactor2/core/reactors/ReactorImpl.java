@@ -7,7 +7,6 @@ import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-import org.slf4j.Logger;
 
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
@@ -65,13 +64,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @return True, if this ReactorImpl is actively processing messages.
      */
     boolean isRunning();
-
-    /**
-     * Returns the logger.
-     *
-     * @return A logger.
-     */
-    Logger getLogger();
 
     boolean isClosing();
 
@@ -234,4 +226,29 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     public long getMessageStartTimeMillis();
 
     public void setMessageStartTimeMillis(long messageStartTimeMillis);
+
+    /**
+     * Log an exception (throwable) at the WARN level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void warn(String msg, Throwable t);
+
+    /**
+     * Log a message at the ERROR level.
+     *
+     * @param msg the message string to be logged
+     */
+    public void error(String msg);
+
+    /**
+     * Log an exception (throwable) at the ERROR level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void error(String msg, Throwable t);
 }

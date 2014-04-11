@@ -38,7 +38,7 @@ public class Recovery {
      * @param _reactorImpl    The reactor with the timed-out message
      */
     public void onMessageTimeout(final ReactorImpl _reactorImpl) throws Exception {
-        _reactorImpl.getLogger().error("message timeout -> reactor close");
+        _reactorImpl.error("message timeout -> reactor close");
         _reactorImpl.fail("message timeout");
     }
 
@@ -59,7 +59,7 @@ public class Recovery {
      * @param _reactorImpl    The reactor whose thread is hung.
      */
     public void onHungThread(final ReactorImpl _reactorImpl) {
-        _reactorImpl.getLogger().error("hung thread -> plant exit");
+        _reactorImpl.error("hung thread -> plant exit");
         try {
             PlantBase.close();
         } catch (Exception ex) {}
@@ -73,7 +73,7 @@ public class Recovery {
      */
     public void onHungRequest(final RequestImpl _requestImpl) throws Exception {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
-        reactor.getLogger().error("request hung -> reactor close");
+        reactor.error("request hung -> reactor close");
         reactor.fail("hung request");
     }
 
@@ -85,7 +85,7 @@ public class Recovery {
      */
     public void onStackOverflowError(final RequestImpl _requestImpl, final StackOverflowError _error) {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
-        reactor.getLogger().error("stack overflow error -> reactor close", _error);
+        reactor.error("stack overflow error -> reactor close", _error);
         try {
             reactor.fail("stack overflow");
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class Recovery {
      */
     public void onRuntimeException(final RequestImpl _requestImpl, final RuntimeException _exception) {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
-        reactor.getLogger().error("runtime exception -> reactor close", _exception);
+        reactor.error("runtime exception -> reactor close", _exception);
         try {
             reactor.fail("message timeout");
         } catch (Exception e) {

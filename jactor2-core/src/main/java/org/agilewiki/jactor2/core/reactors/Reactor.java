@@ -120,4 +120,13 @@ public interface Reactor extends Closeable, Blade {
      * @param _recovery    The new Recovery object.
      */
     void setRecovery(final Recovery _recovery);
+
+    /**
+     * Log an exception (throwable) at the WARN level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void warn(String msg, Throwable t);
 }
