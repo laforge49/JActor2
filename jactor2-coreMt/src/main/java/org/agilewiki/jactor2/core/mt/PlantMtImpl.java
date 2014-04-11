@@ -2,10 +2,14 @@ package org.agilewiki.jactor2.core.mt;
 
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.mt.mtRequests.SyncRequestImpl;
 import org.agilewiki.jactor2.core.mt.mtReactors.*;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class PlantMtImpl extends PlantImpl {
 
@@ -79,5 +83,10 @@ public class PlantMtImpl extends PlantImpl {
                                                     final int _initialOutboxSize, final int _initialLocalQueueSize,
                                                     final Runnable _boundProcessor) {
         return new ThreadBoundReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+    }
+
+    @Override
+    public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(SyncRequest<RESPONSE_TYPE> _syncRequest, Reactor _targetReactor) {
+        return new SyncRequestImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
     }
 }

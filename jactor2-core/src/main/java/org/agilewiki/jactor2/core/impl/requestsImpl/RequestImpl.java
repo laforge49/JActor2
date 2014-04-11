@@ -137,4 +137,23 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      * A response value from a subordinate request has been processed.
      */
     void responseProcessed();
+
+    /**
+     * Passes this Request to the target Reactor without any result being passed back.
+     * I.E. The signal method results in a 1-way message being passed.
+     * If an exception is thrown while processing this Request,
+     * that exception is simply logged as a warning.
+     */
+    void signal();
+
+    /**
+     * Passes this Request to the target Reactor and blocks the current thread until
+     * a result is returned. The call method sends the message directly without buffering,
+     * as there is no source reactor. The response message is buffered, though thread migration is
+     * not possible.
+     *
+     * @return The response value from applying this Request to the target reactor.
+     * @throws Exception If the result is an exception, it is thrown rather than being returned.
+     */
+    RESPONSE_TYPE call() throws Exception;
 }

@@ -1,11 +1,14 @@
 package org.agilewiki.jactor2.core.impl.plantImpl;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
+import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThreadManager;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
  * Internal implementation for Plant.
@@ -199,18 +202,21 @@ abstract public class PlantImpl {
     abstract public void validateCall();
 
     abstract public ReactorImpl createNonBlockingReactorImpl(final NonBlockingReactor _parentReactor,
-                                                          final int _initialOutboxSize, final int _initialLocalQueueSize);
+                                                          int _initialOutboxSize, int _initialLocalQueueSize);
 
     abstract public ReactorImpl createBlockingReactorImpl(final NonBlockingReactor _parentReactor,
-                                                          final int _initialOutboxSize, final int _initialLocalQueueSize);
+                                                          int _initialOutboxSize, int _initialLocalQueueSize);
 
     abstract public ReactorImpl createIsolationReactorImpl(final NonBlockingReactor _parentReactor,
-                                                          final int _initialOutboxSize, final int _initialLocalQueueSize);
+                                                          int _initialOutboxSize, int _initialLocalQueueSize);
 
     abstract public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactor _parentReactor,
-                                                            final int _initialOutboxSize, final int _initialLocalQueueSize);
+                                                            int _initialOutboxSize, int _initialLocalQueueSize);
 
     abstract public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactor _parentReactor,
-                                                            final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                                            final Runnable _boundProcessor);
+                                                            int _initialOutboxSize, int _initialLocalQueueSize,
+                                                            Runnable _boundProcessor);
+
+    abstract public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(
+            SyncRequest<RESPONSE_TYPE> _syncRequest, Reactor _targetReactor);
 }

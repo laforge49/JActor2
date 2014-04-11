@@ -1,10 +1,11 @@
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
+import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
-import org.agilewiki.jactor2.core.impl.requestsImpl.SyncRequestImpl;
 
 /**
  * A sync request performs an operation safely within the thread context of the target reactor.
@@ -13,7 +14,7 @@ import org.agilewiki.jactor2.core.impl.requestsImpl.SyncRequestImpl;
  */
 abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE> {
 
-    private final SyncRequestImpl<RESPONSE_TYPE> syncRequestImpl;
+    private final RequestImpl<RESPONSE_TYPE> requestImpl;
 
     /**
      * Create a SyncRequest.
@@ -22,7 +23,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
      *                       The thread owned by this targetReactor will process this SyncRequest.
      */
     public SyncRequest(final Reactor _targetReactor) {
-        syncRequestImpl = new SyncRequestImpl<RESPONSE_TYPE> (this, _targetReactor);
+        requestImpl = PlantImpl.getSingleton().createSyncRequestImpl(this, _targetReactor);
     }
 
     /**
@@ -33,13 +34,13 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
     abstract public RESPONSE_TYPE processSyncRequest() throws Exception;
 
     @Override
-    public SyncRequestImpl<RESPONSE_TYPE> asRequestImpl() {
-        return syncRequestImpl;
+    public RequestImpl<RESPONSE_TYPE> asRequestImpl() {
+        return requestImpl;
     }
 
     @Override
     public Reactor getTargetReactor() {
-        return syncRequestImpl.getTargetReactor();
+        return requestImpl.getTargetReactor();
     }
 
     @Override
@@ -52,16 +53,16 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
 
     @Override
     public void signal() {
-        syncRequestImpl.signal();
+        requestImpl.signal();
     }
 
     @Override
     public RESPONSE_TYPE call() throws Exception {
-        return syncRequestImpl.call();
+        return requestImpl.call();
     }
 
     @Override
     public boolean isCanceled() throws ReactorClosedException {
-        return syncRequestImpl.isCanceled();
+        return requestImpl.isCanceled();
     }
 }
