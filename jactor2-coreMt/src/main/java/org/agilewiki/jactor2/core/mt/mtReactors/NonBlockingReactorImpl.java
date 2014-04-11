@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 /**
  * Internal implementation of NonBlockingReactor.
  */
-public class NonBlockingReactorImpl extends PoolThreadReactorImplBase {
+public class NonBlockingReactorImpl extends PoolThreadReactorMtImpl {
 
     /**
      * Create a NonBlockingReactorImpl.

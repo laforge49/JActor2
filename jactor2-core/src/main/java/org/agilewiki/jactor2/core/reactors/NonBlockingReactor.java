@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
@@ -35,14 +35,14 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
         this(_parentReactor,
                 _parentReactor != null ?
                         _parentReactor.asReactorImpl().getInitialBufferSize() :
-                        PlantBaseImpl.getSingleton().getInternalReactor() != null ?
-                                PlantBaseImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
-                                PlantBaseImpl.getSingleton().getPlantConfiguration().getInitialBufferSize(),
+                        PlantImpl.getSingleton().getInternalReactor() != null ?
+                                PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
+                                PlantImpl.getSingleton().getPlantConfiguration().getInitialBufferSize(),
                 _parentReactor != null ?
                         _parentReactor.asReactorImpl().getInitialLocalQueueSize() :
-                        PlantBaseImpl.getSingleton().getInternalReactor() != null ?
-                                PlantBaseImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
-                                PlantBaseImpl.getSingleton().getPlantConfiguration().getInitialLocalMessageQueueSize());
+                        PlantImpl.getSingleton().getInternalReactor() != null ?
+                                PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
+                                PlantImpl.getSingleton().getPlantConfiguration().getInitialLocalMessageQueueSize());
     }
 
     /**
@@ -78,7 +78,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      */
     protected ReactorImpl createReactorImpl(final NonBlockingReactor _parentReactor,
                                                        final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return PlantBaseImpl.getSingleton().createNonBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+        return PlantImpl.getSingleton().createNonBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

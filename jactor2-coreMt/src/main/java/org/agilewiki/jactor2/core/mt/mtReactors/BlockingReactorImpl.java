@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 /**
  * The internal implementation of BlockingReactor.
  */
-public class BlockingReactorImpl extends PoolThreadReactorImplBase {
+public class BlockingReactorImpl extends PoolThreadReactorMtImpl {
 
     /**
      * Create a BlockingReactorImpl.

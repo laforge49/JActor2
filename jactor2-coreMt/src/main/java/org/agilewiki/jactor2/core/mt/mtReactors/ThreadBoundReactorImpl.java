@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * A reactor bound to a thread.
  */
-public class ThreadBoundReactorImpl extends ReactorImplBase {
+public class ThreadBoundReactorImpl extends ReactorMtImpl {
 
     private static final ThreadLocal<ThreadBoundReactorImpl> threadReactor =
             new ThreadLocal<ThreadBoundReactorImpl>();

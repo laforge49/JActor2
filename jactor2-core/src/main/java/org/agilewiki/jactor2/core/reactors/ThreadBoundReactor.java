@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.ThreadBoundBlade;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 
@@ -100,7 +100,7 @@ public class ThreadBoundReactor extends ReactorBase
     protected ReactorImpl createReactorImpl(final NonBlockingReactor _parentReactor,
                                             final int _initialOutboxSize, final int _initialLocalQueueSize,
                                             final Runnable _boundProcessor) {
-        return PlantBaseImpl.getSingleton().createThreadBoundReactorImpl(
+        return PlantImpl.getSingleton().createThreadBoundReactorImpl(
                 _parentReactor, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 

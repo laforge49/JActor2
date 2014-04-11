@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**
@@ -15,7 +15,7 @@ abstract public class PlantBase {
      * reactor thread pool.
      */
     public static void close() throws Exception {
-        PlantBaseImpl plantImpl = PlantBaseImpl.getSingleton();
+        PlantImpl plantImpl = PlantImpl.getSingleton();
         if (plantImpl != null)
             plantImpl.close();
     }
@@ -26,7 +26,7 @@ abstract public class PlantBase {
      * @return The internal reactor.
      */
     public static NonBlockingReactor getInternalReactor() {
-        return PlantBaseImpl.getSingleton().getInternalReactor();
+        return PlantImpl.getSingleton().getInternalReactor();
     }
 
     /**
@@ -35,6 +35,6 @@ abstract public class PlantBase {
      * @return The plant scheduler.
      */
     public static PlantScheduler getPlantScheduler() {
-        return PlantBaseImpl.getSingleton().getPlantScheduler();
+        return PlantImpl.getSingleton().getPlantScheduler();
     }
 }

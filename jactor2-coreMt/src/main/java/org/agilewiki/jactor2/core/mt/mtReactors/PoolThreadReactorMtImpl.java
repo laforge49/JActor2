@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
@@ -12,17 +12,17 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-abstract public class PoolThreadReactorImplBase extends ReactorImplBase implements PoolThreadReactorImpl {
+abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements PoolThreadReactorImpl {
     private Runnable onIdle;
 
     /**
-     * Create an PoolThreadReactorImplBase.
+     * Create an PoolThreadReactorMtImpl.
      *
      * @param _parentReactor         The parent reactor.
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      */
-    public PoolThreadReactorImplBase(
+    public PoolThreadReactorMtImpl(
             NonBlockingReactor _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
@@ -54,7 +54,7 @@ abstract public class PoolThreadReactorImplBase extends ReactorImplBase implemen
             throw new NullPointerException();
         }
         if (threadReference.get() == null) {
-            PlantBaseImpl.getSingleton().submit(this);
+            PlantImpl.getSingleton().submit(this);
         }
     }
 

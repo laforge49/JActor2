@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.plantImpl.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-abstract public class ReactorImplBase extends BladeBase implements ReactorImpl {
+abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl {
     /**
      * A reference to the thread that is executing this reactor.
      */
@@ -103,16 +103,16 @@ abstract public class ReactorImplBase extends BladeBase implements ReactorImpl {
     private String reason;
 
     /**
-     * Create a ReactorImplBase instance.
+     * Create a ReactorMtImpl instance.
      *
      * @param _parentReactor        The parent reactor, or null.
      * @param _initialBufferSize        The initial size of a send buffer.
      * @param _initialLocalQueueSize    The initial size of the local queue.
      */
-    public ReactorImplBase(final NonBlockingReactor _parentReactor, final int _initialBufferSize,
-                       final int _initialLocalQueueSize) {
+    public ReactorMtImpl(final NonBlockingReactor _parentReactor, final int _initialBufferSize,
+                         final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImpl1(this);
-        PlantConfiguration plantConfiguration = PlantBaseImpl.getSingleton().getPlantConfiguration();
+        PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
         ReactorImpl parentReactorImpl = _parentReactor == null ? null : _parentReactor.asReactorImpl();
         recovery = _parentReactor == null ? plantConfiguration.getRecovery() : parentReactorImpl.getRecovery();
         plantScheduler = _parentReactor == null ?
@@ -255,7 +255,7 @@ abstract public class ReactorImplBase extends BladeBase implements ReactorImpl {
                 try {
                     closeable.close();
                 } catch (final Throwable t) {
-                    if (closeable != null && PlantBaseImpl.DEBUG) {
+                    if (closeable != null && PlantImpl.DEBUG) {
                         getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
                     }
                 }
@@ -269,7 +269,7 @@ abstract public class ReactorImplBase extends BladeBase implements ReactorImpl {
 
         shuttingDown = true;
 
-        PlantBaseImpl plantImpl = PlantBaseImpl.getSingleton();
+        PlantImpl plantImpl = PlantImpl.getSingleton();
         if (plantImpl != null &&
                 isRunning() &&
                 (currentRequest == null || !currentRequest.isComplete())) {
@@ -279,7 +279,7 @@ abstract public class ReactorImplBase extends BladeBase implements ReactorImpl {
                 thread.interrupt();
                 boolean timeout = timeoutSemaphore.acquire();
                 currentRequest.close();
-                if (timeout && isRunning() & PlantBaseImpl.getSingleton() != null) {
+                if (timeout && isRunning() & PlantImpl.getSingleton() != null) {
                     try {
                         if (currentRequest == null)
                             logger.error("hung thread");

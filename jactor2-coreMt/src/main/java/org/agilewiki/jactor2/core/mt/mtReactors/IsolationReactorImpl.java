@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 /**
  * Internal implementation of UnboundReactor.
  */
-public class IsolationReactorImpl extends PoolThreadReactorImplBase {
+public class IsolationReactorImpl extends PoolThreadReactorMtImpl {
 
     /**
      * Create an IsolationReactorImpl.

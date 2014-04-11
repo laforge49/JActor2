@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 
@@ -51,7 +51,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      */
     public IsolationReactor(final NonBlockingReactor _parentReactor,
                            final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        initialize(PlantBaseImpl.getSingleton().createIsolationReactorImpl(
+        initialize(PlantImpl.getSingleton().createIsolationReactorImpl(
                 _parentReactor, _initialOutboxSize, _initialLocalQueueSize));
     }
 

@@ -1,18 +1,18 @@
 package org.agilewiki.jactor2.core.mt;
 
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.mt.mtReactors.*;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-public class PlantImpl extends PlantBaseImpl {
+public class PlantMtImpl extends PlantImpl {
 
     /**
      * Create the singleton with a default configuration.
      */
-    public PlantImpl() {
+    public PlantMtImpl() {
         super();
     }
 
@@ -21,7 +21,7 @@ public class PlantImpl extends PlantBaseImpl {
      *
      * @param _threadCount The size of the thread pool.
      */
-    public PlantImpl(final int _threadCount) {
+    public PlantMtImpl(final int _threadCount) {
         super(_threadCount);
     }
 
@@ -30,7 +30,7 @@ public class PlantImpl extends PlantBaseImpl {
      *
      * @param _plantConfiguration The configuration to be used by the singleton.
      */
-    public PlantImpl(final PlantConfiguration _plantConfiguration) {
+    public PlantMtImpl(final PlantConfiguration _plantConfiguration) {
         super(_plantConfiguration);
     }
 

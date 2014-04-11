@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BlockingBlade;
-import org.agilewiki.jactor2.core.impl.plantImpl.PlantBaseImpl;
+import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 
@@ -54,7 +54,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      */
     public BlockingReactor(final NonBlockingReactor _parentReactor,
                               final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        initialize(PlantBaseImpl.getSingleton().createBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize));
+        initialize(PlantImpl.getSingleton().createBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     /**
