@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.mt.mtRequests;
 import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
