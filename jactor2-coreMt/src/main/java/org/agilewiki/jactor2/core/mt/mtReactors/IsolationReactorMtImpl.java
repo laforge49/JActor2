@@ -1,35 +1,35 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**
- * The internal implementation of BlockingReactor.
+ * Internal implementation of UnboundReactor.
  */
-public class BlockingReactorImpl extends PoolThreadReactorMtImpl {
+public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
 
     /**
-     * Create a BlockingReactorImpl.
+     * Create an IsolationReactorMtImpl.
      *
      * @param _parentReactor        The parent reactor.
      * @param _initialOutboxSize        The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize    The initial local queue size.
      */
-    public BlockingReactorImpl(final NonBlockingReactor _parentReactor,
-                               final int _initialOutboxSize, final int _initialLocalQueueSize) {
+    public IsolationReactorMtImpl(final NonBlockingReactor _parentReactor,
+                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override
-    public BlockingReactor asReactor() {
-        return (BlockingReactor) getReactor();
+    public IsolationReactor asReactor() {
+        return (IsolationReactor) getReactor();
     }
 
     @Override
     protected Inbox createInbox(final int _initialLocalQueueSize) {
-        return new CommonInbox(_initialLocalQueueSize);
+        return new IsolationInbox(_initialLocalQueueSize);
     }
 
     @Override
@@ -42,9 +42,5 @@ public class BlockingReactorImpl extends PoolThreadReactorMtImpl {
         } catch (final Exception e) {
             logger.error("Exception thrown by flush", e);
         }
-    }
-
-    public boolean isSlow() {
-        return true;
     }
 }

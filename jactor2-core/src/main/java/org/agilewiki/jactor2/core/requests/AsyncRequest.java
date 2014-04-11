@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
 
 /**
@@ -15,7 +15,7 @@ import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
 public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE>,
         AsyncResponseProcessor<RESPONSE_TYPE> {
 
-    private final AsyncRequestImpl<RESPONSE_TYPE> asyncRequestImpl;
+    private final AsyncRequestMtImpl<RESPONSE_TYPE> asyncRequestImpl;
 
     /**
      * Create an AsyncRequest and bind it to its target targetReactor.
@@ -24,11 +24,11 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
     public AsyncRequest(final Reactor _targetReactor) {
-        asyncRequestImpl = new AsyncRequestImpl<RESPONSE_TYPE>(this, _targetReactor);
+        asyncRequestImpl = new AsyncRequestMtImpl<RESPONSE_TYPE>(this, _targetReactor);
     }
 
     @Override
-    public AsyncRequestImpl<RESPONSE_TYPE> asRequestImpl() {
+    public AsyncRequestMtImpl<RESPONSE_TYPE> asRequestImpl() {
         return asyncRequestImpl;
     }
 

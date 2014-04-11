@@ -8,26 +8,26 @@ import javax.swing.*;
 /**
  * A reactor bound to the Swing UI thread.
  */
-public class SwingBoundReactorImpl extends ThreadBoundReactorImpl {
+public class SwingBoundReactorMtImpl extends ThreadBoundReactorMtImpl {
 
     /**
-     * Returns the SwingBoundReactorImpl bound to the current thread.
+     * Returns the SwingBoundReactorMtImpl bound to the current thread.
      *
-     * @return A SwingBoundReactorImpl, or null.
+     * @return A SwingBoundReactorMtImpl, or null.
      */
-    public static SwingBoundReactorImpl threadReactor() {
-        return (SwingBoundReactorImpl) ThreadBoundReactorImpl.threadReactor();
+    public static SwingBoundReactorMtImpl threadReactor() {
+        return (SwingBoundReactorMtImpl) ThreadBoundReactorMtImpl.threadReactor();
     }
 
     /**
-     * Create a SwingBoundReactorImpl.
+     * Create a SwingBoundReactorMtImpl.
      *
      * @param _parentReactor     The parent reactor.
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      */
-    public SwingBoundReactorImpl(final NonBlockingReactor _parentReactor,
-                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
+    public SwingBoundReactorMtImpl(final NonBlockingReactor _parentReactor,
+                                   final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 

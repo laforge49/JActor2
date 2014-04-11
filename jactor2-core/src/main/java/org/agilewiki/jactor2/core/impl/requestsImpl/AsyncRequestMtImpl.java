@@ -17,7 +17,7 @@ import java.util.Set;
  *
  * @param <RESPONSE_TYPE>    The type of response.
  */
-public class AsyncRequestImpl<RESPONSE_TYPE> extends
+public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestImplBase<RESPONSE_TYPE> {
 
     private Set<RequestImpl> pendingRequests = new HashSet<RequestImpl>();
@@ -27,13 +27,13 @@ public class AsyncRequestImpl<RESPONSE_TYPE> extends
     private final AsyncRequest<RESPONSE_TYPE> asyncRequest;
 
     /**
-     * Create an AsyncRequestImpl and bind it to its target targetReactor.
+     * Create an AsyncRequestMtImpl and bind it to its target targetReactor.
      *
      * @param _asyncRequest  The request being implemented.
      * @param _targetReactor The targetReactor where this AsyncRequest Objects is passed for processing.
      *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
-    public AsyncRequestImpl(final AsyncRequest<RESPONSE_TYPE> _asyncRequest, final Reactor _targetReactor) {
+    public AsyncRequestMtImpl(final AsyncRequest<RESPONSE_TYPE> _asyncRequest, final Reactor _targetReactor) {
         super(_targetReactor);
         asyncRequest = _asyncRequest;
     }

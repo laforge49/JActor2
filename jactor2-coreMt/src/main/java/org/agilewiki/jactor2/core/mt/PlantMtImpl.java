@@ -39,23 +39,23 @@ public class PlantMtImpl extends PlantImpl {
     }
 
     public void removeThreadBoundReactor() {
-        ThreadBoundReactorImpl.removeReactor();
+        ThreadBoundReactorMtImpl.removeReactor();
     }
 
     public ReactorImpl getCurrentReactorImpl() {
         Thread thread = Thread.currentThread();
         if (thread instanceof ReactorPoolThread)
             return ((ReactorPoolThread) thread).getCurrentReactorImpl();
-        return ThreadBoundReactorImpl.threadReactor();
+        return ThreadBoundReactorMtImpl.threadReactor();
     }
 
     public void validateCall() {
         if (Thread.currentThread() instanceof ReactorPoolThread) {
             throw new UnsupportedOperationException(
                     "Use of call on a ReactorPoolThread can result in a deadlock");
-        } else if (ThreadBoundReactorImpl.threadReactor() != null)
+        } else if (ThreadBoundReactorMtImpl.threadReactor() != null)
             throw new UnsupportedOperationException(
-                    "Use of call on a Thread bound to a reactor can result in a deadlock " + ThreadBoundReactorImpl.threadReactor());
+                    "Use of call on a Thread bound to a reactor can result in a deadlock " + ThreadBoundReactorMtImpl.threadReactor());
 
     }
 
@@ -66,23 +66,23 @@ public class PlantMtImpl extends PlantImpl {
 
     public ReactorImpl createBlockingReactorImpl(final NonBlockingReactor _parentReactor,
                                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new BlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+        return new BlockingReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public ReactorImpl createIsolationReactorImpl(final NonBlockingReactor _parentReactor,
                                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new IsolationReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+        return new IsolationReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactor _parentReactor,
                                                    final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new SwingBoundReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+        return new SwingBoundReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactor _parentReactor,
                                                     final int _initialOutboxSize, final int _initialLocalQueueSize,
                                                     final Runnable _boundProcessor) {
-        return new ThreadBoundReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        return new ThreadBoundReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     @Override

@@ -12,22 +12,22 @@ import java.util.Map;
 /**
  * A reactor bound to a thread.
  */
-public class ThreadBoundReactorImpl extends ReactorMtImpl {
+public class ThreadBoundReactorMtImpl extends ReactorMtImpl {
 
-    private static final ThreadLocal<ThreadBoundReactorImpl> threadReactor =
-            new ThreadLocal<ThreadBoundReactorImpl>();
+    private static final ThreadLocal<ThreadBoundReactorMtImpl> threadReactor =
+            new ThreadLocal<ThreadBoundReactorMtImpl>();
 
     /**
-     * Returns the ThreadBoundReactorImpl bound to the current thread.
+     * Returns the ThreadBoundReactorMtImpl bound to the current thread.
      *
-     * @return The ThreadBoundReactorImpl bound to the current thread, or null.
+     * @return The ThreadBoundReactorMtImpl bound to the current thread, or null.
      */
-    public static ThreadBoundReactorImpl threadReactor() {
+    public static ThreadBoundReactorMtImpl threadReactor() {
         return threadReactor.get();
     }
 
     /**
-     * Unbind the ThreadBoundReactorImpl from any thread.
+     * Unbind the ThreadBoundReactorMtImpl from any thread.
      */
     public static void removeReactor() {
         threadReactor.remove();
@@ -39,16 +39,16 @@ public class ThreadBoundReactorImpl extends ReactorMtImpl {
     private final Runnable boundProcessor;
 
     /**
-     * Create a ThreadBoundReactorImpl.
+     * Create a ThreadBoundReactorMtImpl.
      *
      * @param _parentReactor     The parent reactor.
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      * @param _boundProcessor        The Runnable used when there are messages to be processed.
      */
-    public ThreadBoundReactorImpl(final NonBlockingReactor _parentReactor,
-                                  final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                  final Runnable _boundProcessor) {
+    public ThreadBoundReactorMtImpl(final NonBlockingReactor _parentReactor,
+                                    final int _initialOutboxSize, final int _initialLocalQueueSize,
+                                    final Runnable _boundProcessor) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }

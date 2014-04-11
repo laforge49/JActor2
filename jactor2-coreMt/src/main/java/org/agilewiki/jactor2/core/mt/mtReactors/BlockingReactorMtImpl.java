@@ -1,35 +1,35 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**
- * Internal implementation of UnboundReactor.
+ * The internal implementation of BlockingReactor.
  */
-public class IsolationReactorImpl extends PoolThreadReactorMtImpl {
+public class BlockingReactorMtImpl extends PoolThreadReactorMtImpl {
 
     /**
-     * Create an IsolationReactorImpl.
+     * Create a BlockingReactorMtImpl.
      *
      * @param _parentReactor        The parent reactor.
      * @param _initialOutboxSize        The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize    The initial local queue size.
      */
-    public IsolationReactorImpl(final NonBlockingReactor _parentReactor,
-                                final int _initialOutboxSize, final int _initialLocalQueueSize) {
+    public BlockingReactorMtImpl(final NonBlockingReactor _parentReactor,
+                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     @Override
-    public IsolationReactor asReactor() {
-        return (IsolationReactor) getReactor();
+    public BlockingReactor asReactor() {
+        return (BlockingReactor) getReactor();
     }
 
     @Override
     protected Inbox createInbox(final int _initialLocalQueueSize) {
-        return new IsolationInbox(_initialLocalQueueSize);
+        return new CommonInbox(_initialLocalQueueSize);
     }
 
     @Override
@@ -42,5 +42,9 @@ public class IsolationReactorImpl extends PoolThreadReactorMtImpl {
         } catch (final Exception e) {
             logger.error("Exception thrown by flush", e);
         }
+    }
+
+    public boolean isSlow() {
+        return true;
     }
 }
