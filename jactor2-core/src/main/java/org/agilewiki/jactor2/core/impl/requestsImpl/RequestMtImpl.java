@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
  *
  * @param <RESPONSE_TYPE>
  */
-public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESPONSE_TYPE> {
+public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPONSE_TYPE> {
 
     /**
      * Assigned to current time when Facility.DEBUG.
@@ -88,12 +88,12 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     protected boolean canceled;
 
     /**
-     * Create a RequestImplBase.
+     * Create a RequestMtImpl.
      *
      * @param _targetReactor The targetReactor where this Request Object is passed for processing.
      *                       The thread owned by this reactor will process this Request.
      */
-    public RequestImplBase(final Reactor _targetReactor) {
+    public RequestMtImpl(final Reactor _targetReactor) {
         if (_targetReactor == null) {
             throw new NullPointerException("targetMessageProcessor");
         }
@@ -266,7 +266,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         }
         setResponse(_response, targetReactorImpl);
         if (!isOneWay()) {
-            requestSource.incomingResponse(RequestImplBase.this, targetReactorImpl);
+            requestSource.incomingResponse(RequestMtImpl.this, targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
                 targetReactor.asReactorImpl().getLogger().warn("Uncaught throwable",
@@ -438,7 +438,7 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
     }
 
     /**
-     * Pender is used by the RequestImplBase.call method to block the current thread until a
+     * Pender is used by the RequestMtImpl.call method to block the current thread until a
      * result is available and then either return the result or rethrow it if the result
      * is an exception.
      */
@@ -474,13 +474,13 @@ public abstract class RequestImplBase<RESPONSE_TYPE> implements RequestImpl<RESP
         @Override
         public void incomingResponse(final RequestImpl _message,
                                      final ReactorImpl _responseSource) {
-            result = ((RequestImplBase) _message).response;
+            result = ((RequestMtImpl) _message).response;
             done.release();
         }
     }
 
     /**
-     * A subclass of AsyncResponseProcessor that is used as a place holder when the RequestImplBase.call
+     * A subclass of AsyncResponseProcessor that is used as a place holder when the RequestMtImpl.call
      * method is used.
      */
     final private static class CallResponseProcessor implements

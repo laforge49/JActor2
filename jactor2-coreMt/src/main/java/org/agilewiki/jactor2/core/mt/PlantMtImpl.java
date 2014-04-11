@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.mt;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
-import org.agilewiki.jactor2.core.mt.mtRequests.SyncRequestImpl;
+import org.agilewiki.jactor2.core.mt.mtRequests.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.mt.mtReactors.*;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
@@ -87,6 +87,6 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(SyncRequest<RESPONSE_TYPE> _syncRequest, Reactor _targetReactor) {
-        return new SyncRequestImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
+        return new SyncRequestMtImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
     }
 }

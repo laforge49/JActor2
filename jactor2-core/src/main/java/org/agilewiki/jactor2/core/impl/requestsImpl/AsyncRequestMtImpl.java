@@ -18,7 +18,7 @@ import java.util.Set;
  * @param <RESPONSE_TYPE>    The type of response.
  */
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
-        RequestImplBase<RESPONSE_TYPE> {
+        RequestMtImpl<RESPONSE_TYPE> implements AsyncRequestImpl<RESPONSE_TYPE> {
 
     private Set<RequestImpl> pendingRequests = new HashSet<RequestImpl>();
 
