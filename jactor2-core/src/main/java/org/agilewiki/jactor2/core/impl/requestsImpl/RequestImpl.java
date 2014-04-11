@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl.requestsImpl;
 
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.Request;
 
@@ -122,10 +122,12 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
     Reactor getTargetReactor();
 
     /**
-     * Returns the RequestSource.
-     * @return The RequestSource, or null.
+     * Returns the source reactor, or null.
+     * A null is returned if the request was passed using the signal or call methods.
+     *
+     * @return The source reactor or null.
      */
-    RequestSource getRequestSource();
+    Reactor getSourceReactor();
 
     /**
      * A response has been received for a subordinate request.

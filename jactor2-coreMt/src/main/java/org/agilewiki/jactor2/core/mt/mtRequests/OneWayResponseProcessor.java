@@ -1,23 +1,24 @@
-package org.agilewiki.jactor2.core.impl.requestsImpl;
+package org.agilewiki.jactor2.core.mt.mtRequests;
 
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
 /**
- * Used to flag a message as a signal. The singleton serves as a flag,
+ * Used to flag a request as a 1-way message. The singleton serves as a flag,
  * so no response is ever returned and consequently the processAsyncResponse method
  * should never actually be invoked.
+ * This is the AsyncResponseProcessor used when null is passed as the second argument in the send method.
  */
-public final class SignalResponseProcessor implements
+public final class OneWayResponseProcessor implements
         AsyncResponseProcessor<Void> {
     /**
      * The class singleton.
      */
-    public static final SignalResponseProcessor SINGLETON = new SignalResponseProcessor();
+    public static final OneWayResponseProcessor SINGLETON = new OneWayResponseProcessor();
 
     /**
      * Restrict the class to creating only the class singleton.
      */
-    private SignalResponseProcessor() {
+    private OneWayResponseProcessor() {
     }
 
     @Override

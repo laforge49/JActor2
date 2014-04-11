@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**
@@ -13,9 +13,9 @@ public class BlockingReactorMtImpl extends PoolThreadReactorMtImpl {
     /**
      * Create a BlockingReactorMtImpl.
      *
-     * @param _parentReactor        The parent reactor.
-     * @param _initialOutboxSize        The initial buffer size for outgoing messages.
-     * @param _initialLocalQueueSize    The initial local queue size.
+     * @param _parentReactor         The parent reactor.
+     * @param _initialOutboxSize     The initial buffer size for outgoing messages.
+     * @param _initialLocalQueueSize The initial local queue size.
      */
     public BlockingReactorMtImpl(final NonBlockingReactor _parentReactor,
                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {

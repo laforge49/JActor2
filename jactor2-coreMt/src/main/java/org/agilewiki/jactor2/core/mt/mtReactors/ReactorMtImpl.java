@@ -10,6 +10,7 @@ import org.agilewiki.jactor2.core.impl.plantImpl.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
+import org.agilewiki.jactor2.core.mt.mtRequests.RequestSource;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.Recovery;
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl {
+abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, RequestSource {
     /**
      * A reference to the thread that is executing this reactor.
      */
@@ -105,9 +106,9 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl {
     /**
      * Create a ReactorMtImpl instance.
      *
-     * @param _parentReactor        The parent reactor, or null.
-     * @param _initialBufferSize        The initial size of a send buffer.
-     * @param _initialLocalQueueSize    The initial size of the local queue.
+     * @param _parentReactor         The parent reactor, or null.
+     * @param _initialBufferSize     The initial size of a send buffer.
+     * @param _initialLocalQueueSize The initial size of the local queue.
      */
     public ReactorMtImpl(final NonBlockingReactor _parentReactor, final int _initialBufferSize,
                          final int _initialLocalQueueSize) {
@@ -130,7 +131,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl {
     /**
      * Initialize the ReactorImpl.
      *
-     * @param _reactor    The Reactor of this ReactorImpl.
+     * @param _reactor The Reactor of this ReactorImpl.
      */
     public void initialize(final Reactor _reactor) {
         super._initialize(_reactor);
@@ -236,8 +237,8 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl {
     /**
      * Close the reactor;
      *
-     * @param _reason    The reason why the reactor is being closed,
-     *                   or null if not a failure.
+     * @param _reason The reason why the reactor is being closed,
+     *                or null if not a failure.
      */
     public void fail(final String _reason) throws Exception {
         reason = _reason;
@@ -469,7 +470,6 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl {
      */
     abstract protected void notBusy() throws Exception;
 
-    @Override
     public final void incomingResponse(final RequestImpl _message,
                                        final ReactorImpl _responseSource) {
         try {

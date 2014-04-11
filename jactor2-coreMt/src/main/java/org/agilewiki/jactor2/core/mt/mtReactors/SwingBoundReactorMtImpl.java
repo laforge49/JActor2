@@ -22,7 +22,7 @@ public class SwingBoundReactorMtImpl extends ThreadBoundReactorMtImpl {
     /**
      * Create a SwingBoundReactorMtImpl.
      *
-     * @param _parentReactor     The parent reactor.
+     * @param _parentReactor         The parent reactor.
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      */

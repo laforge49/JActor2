@@ -5,17 +5,17 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 /**
  * Internal implementation of NonBlockingReactor.
  */
-public class NonBlockingReactorImpl extends PoolThreadReactorMtImpl {
+public class NonBlockingReactorMtImpl extends PoolThreadReactorMtImpl {
 
     /**
-     * Create a NonBlockingReactorImpl.
+     * Create a NonBlockingReactorMtImpl.
      *
-     * @param _parentReactor        The parent reactor.
-     * @param _initialOutboxSize        The initial buffer size for outgoing messages.
-     * @param _initialLocalQueueSize    The initial local queue size.
+     * @param _parentReactor         The parent reactor.
+     * @param _initialOutboxSize     The initial buffer size for outgoing messages.
+     * @param _initialLocalQueueSize The initial local queue size.
      */
-    public NonBlockingReactorImpl(final NonBlockingReactor _parentReactor,
-                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
+    public NonBlockingReactorMtImpl(final NonBlockingReactor _parentReactor,
+                                    final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 

@@ -4,8 +4,6 @@ import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
 
 /**
  * A sync request performs an operation safely within the thread context of the target reactor.
@@ -45,10 +43,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
 
     @Override
     public Reactor getSourceReactor() {
-        RequestSource requestSource = asRequestImpl().getRequestSource();
-        if (requestSource instanceof ReactorImpl)
-            return ((ReactorImpl) requestSource).asReactor();
-        return null;
+        return requestImpl.getSourceReactor();
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Outbox implements AutoCloseable {
     /**
      * Create an Outbox
      *
-     * @param _initialBufferSize    Initial size of a send buffer.
+     * @param _initialBufferSize Initial size of a send buffer.
      */
     public Outbox(final int _initialBufferSize) {
         initialBufferSize = _initialBufferSize;
@@ -80,12 +80,12 @@ public class Outbox implements AutoCloseable {
                 final Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>> entry = iter
                         .next();
                 final ReactorImpl target = entry.getKey();
-                    final ArrayDeque<RequestImpl> messages = entry.getValue();
-                    iter.remove();
-                    try {
-                        target.unbufferedAddMessages(messages);
-                    } catch (final Exception x) {
-                    }
+                final ArrayDeque<RequestImpl> messages = entry.getValue();
+                iter.remove();
+                try {
+                    target.unbufferedAddMessages(messages);
+                } catch (final Exception x) {
+                }
             }
         }
         sendBuffer = null;

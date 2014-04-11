@@ -5,8 +5,6 @@ import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
 
 /**
  * An async request separates data flow from control flow and its effect can span multiple reactors.
@@ -40,10 +38,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
 
     @Override
     public Reactor getSourceReactor() {
-        RequestSource requestSource = asRequestImpl().getRequestSource();
-        if (requestSource instanceof ReactorImpl)
-            return ((ReactorImpl) requestSource).asReactor();
-        return null;
+        return asyncRequestImpl.getSourceReactor();
     }
 
     @Override

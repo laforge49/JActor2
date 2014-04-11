@@ -1,15 +1,13 @@
 package org.agilewiki.jactor2.core.mt.mtRequests;
 
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.OneWayResponseProcessor;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
-import org.agilewiki.jactor2.core.impl.requestsImpl.SignalResponseProcessor;
+import org.agilewiki.jactor2.core.mt.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.MigrationException;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
@@ -136,6 +134,13 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
     }
 
     @Override
+    public Reactor getSourceReactor() {
+        RequestSource requestSource = getRequestSource();
+        if (requestSource instanceof ReactorImpl)
+            return ((ReactorImpl) requestSource).asReactor();
+        return null;
+    }
+
     public RequestSource getRequestSource() {
         return requestSource;
     }
@@ -180,7 +185,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      */
     public void doSend(final ReactorImpl _source,
                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
-        final ReactorImpl source = (ReactorImpl) _source;
+        final ReactorMtImpl source = (ReactorMtImpl) _source;
         if (PlantImpl.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
             throw new IllegalStateException("send from wrong thread");
         }
@@ -235,8 +240,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
     /**
      * Assigns a response value.
      *
-     * @param _response         The response value.
-     * @param _activeReactor    The responding reactor.
+     * @param _response      The response value.
+     * @param _activeReactor The responding reactor.
      */
     protected void setResponse(final Object _response,
                                final ReactorImpl _activeReactor) {

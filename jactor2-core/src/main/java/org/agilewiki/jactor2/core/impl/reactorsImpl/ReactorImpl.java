@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.impl.reactorsImpl;
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.RequestSource;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -18,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for internal reactor implementations.
  */
-public interface ReactorImpl extends Closeable, Runnable, RequestSource, Blade {
+public interface ReactorImpl extends Closeable, Runnable, Blade {
 
     /**
      * Initialize the ReactorImpl.

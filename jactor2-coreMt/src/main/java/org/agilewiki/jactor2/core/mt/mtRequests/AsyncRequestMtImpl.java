@@ -1,11 +1,10 @@
 package org.agilewiki.jactor2.core.mt.mtRequests;
 
+import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.impl.requestsImpl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
@@ -18,7 +17,7 @@ import java.util.Set;
 /**
  * Internal implementation of AsyncRequest.
  *
- * @param <RESPONSE_TYPE>    The type of response.
+ * @param <RESPONSE_TYPE> The type of response.
  */
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> implements AsyncRequestImpl<RESPONSE_TYPE> {
@@ -66,7 +65,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     /**
      * Process the response to this request.
      *
-     * @param _response    The response to this request.
+     * @param _response The response to this request.
      */
     public void processAsyncResponse(final RESPONSE_TYPE _response) {
         processObjectResponse(_response);
@@ -114,9 +113,9 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     /**
      * Send a subordinate request, providing the originating request is not canceled.
      *
-     * @param _request              The subordinate request.
-     * @param _responseProcessor    A callback to handle the result value from the subordinate request.
-     * @param <RT>                  The type of result value.
+     * @param _request           The subordinate request.
+     * @param _responseProcessor A callback to handle the result value from the subordinate request.
+     * @param <RT>               The type of result value.
      */
     public <RT> void send(final Request<RT> _request,
                           final AsyncResponseProcessor<RT> _responseProcessor) {
@@ -133,12 +132,12 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     /**
      * Send a subordinate request, providing the originating request is not canceled.
      *
-     * @param _request              The subordinate request.
-     * @param _dis                  The callback to handle a fixed response when the result of
-     *                              the subordinate request is received.
-     * @param _fixedResponse        The fixed response to be used.
-     * @param <RT>                  The response value type of the subordinate request.
-     * @param <RT2>                 The fixed response type.
+     * @param _request       The subordinate request.
+     * @param _dis           The callback to handle a fixed response when the result of
+     *                       the subordinate request is received.
+     * @param _fixedResponse The fixed response to be used.
+     * @param <RT>           The response value type of the subordinate request.
+     * @param <RT2>          The fixed response type.
      */
     public <RT, RT2> void send(final Request<RT> _request,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
@@ -154,7 +153,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
                     public void processAsyncResponse(final RT _response) throws Exception {
                         _dis.processAsyncResponse(_fixedResponse);
                     }
-                });
+                }
+        );
     }
 
     /**

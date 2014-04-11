@@ -88,7 +88,7 @@ public abstract class Inbox implements AutoCloseable {
      * null if there are no messages that can be processed.
      *
      * @return The next message to be processed, or null if there are no messages to be
-     *         processed.
+     * processed.
      */
     abstract public RequestImpl poll();
 

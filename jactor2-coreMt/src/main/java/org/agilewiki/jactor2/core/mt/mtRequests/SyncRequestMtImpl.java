@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 /**
  * Internal implementation of a SyncRequest.
  *
- * @param <RESPONSE_TYPE>    The response value type.
+ * @param <RESPONSE_TYPE> The response value type.
  */
 public class SyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> {
@@ -16,8 +16,8 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
     /**
      * Create a SyncRequestMtImpl and bind it to its target reactor.
      *
-     * @param _syncRequest      The request being implemented.
-     * @param _targetReactor    The target reactor.
+     * @param _syncRequest   The request being implemented.
+     * @param _targetReactor The target reactor.
      */
     public SyncRequestMtImpl(final SyncRequest _syncRequest, final Reactor _targetReactor) {
         super(_targetReactor);

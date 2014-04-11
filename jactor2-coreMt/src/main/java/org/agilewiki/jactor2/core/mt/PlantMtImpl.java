@@ -3,10 +3,10 @@ package org.agilewiki.jactor2.core.mt;
 import org.agilewiki.jactor2.core.impl.plantImpl.PlantImpl;
 import org.agilewiki.jactor2.core.impl.reactorsImpl.ReactorImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.mt.mtRequests.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.impl.requestsImpl.RequestImpl;
-import org.agilewiki.jactor2.core.mt.mtRequests.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.mt.mtReactors.*;
+import org.agilewiki.jactor2.core.mt.mtRequests.AsyncRequestMtImpl;
+import org.agilewiki.jactor2.core.mt.mtRequests.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.ReactorPoolThread;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -63,8 +63,8 @@ public class PlantMtImpl extends PlantImpl {
     }
 
     public ReactorImpl createNonBlockingReactorImpl(final NonBlockingReactor _parentReactor,
-                                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new NonBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+                                                    final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return new NonBlockingReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     public ReactorImpl createBlockingReactorImpl(final NonBlockingReactor _parentReactor,
@@ -73,7 +73,7 @@ public class PlantMtImpl extends PlantImpl {
     }
 
     public ReactorImpl createIsolationReactorImpl(final NonBlockingReactor _parentReactor,
-                                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
+                                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new IsolationReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 

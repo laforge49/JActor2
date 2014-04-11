@@ -41,7 +41,7 @@ public class ThreadBoundReactorMtImpl extends ReactorMtImpl {
     /**
      * Create a ThreadBoundReactorMtImpl.
      *
-     * @param _parentReactor     The parent reactor.
+     * @param _parentReactor         The parent reactor.
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      * @param _boundProcessor        The Runnable used when there are messages to be processed.
