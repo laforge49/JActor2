@@ -1,5 +1,7 @@
-package org.agilewiki.jactor2.core.closeable;
+package org.agilewiki.jactor2.core.mt.mtCloseable;
 
+import org.agilewiki.jactor2.core.closeable.Closeable;
+import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
@@ -11,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Implements multiple dependencies.
  */
-public class CloseableImpl1 implements CloseableImpl {
+public class CloseableMtImpl implements CloseableImpl {
     private final Closeable closeable;
 
     private Set<ReactorImpl> closers =
@@ -23,7 +25,7 @@ public class CloseableImpl1 implements CloseableImpl {
      * Create a closeableImpl for a closeable.
      * @param _closeable    The closeable that will hold a reference to this implementation.
      */
-    public CloseableImpl1(final Closeable _closeable) {
+    public CloseableMtImpl(final Closeable _closeable) {
         closeable = _closeable;
     }
 

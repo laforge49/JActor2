@@ -4,7 +4,7 @@ import com.google.common.collect.MapMaker;
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
-import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
+import org.agilewiki.jactor2.core.mt.mtCloseable.CloseableMtImpl;
 import org.agilewiki.jactor2.core.mt.mtPlant.*;
 import org.agilewiki.jactor2.core.mt.mtRequests.RequestSource;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
@@ -104,7 +104,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
      */
     public ReactorMtImpl(final NonBlockingReactor _parentReactor, final int _initialBufferSize,
                          final int _initialLocalQueueSize) {
-        closeableImpl = new CloseableImpl1(this);
+        closeableImpl = new CloseableMtImpl(this);
         PlantConfiguration plantConfiguration = PlantMtImpl.getSingleton().getPlantConfiguration();
         NonBlockingReactorMtImpl parentReactorImpl =
                 _parentReactor == null ? null : (NonBlockingReactorMtImpl) _parentReactor.asReactorImpl();
