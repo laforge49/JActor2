@@ -9,6 +9,6 @@
 	<inherits name="com.google.gwt.logging.Logging"/>
 	<inherits name="com.blockwithme.util.UtilClient"/>
 	<inherits name="org.agilewiki.jactor2.core.JActor2Core"/>
-	<source path="stimpl"/>
-	<entry-point class="org.agilewiki.jactor2.core.stimpl.EntryPoint"/>
+	<source path="impl"/>
+	<entry-point class="org.agilewiki.jactor2.core.impl.EntryPoint"/>
 </module>

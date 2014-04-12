@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.agilewiki.jactor2.core.stimpl;
+package org.agilewiki.jactor2.core.impl;
 
 /**
  * JActor2-Core-St EntryPoint.
