@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.mt.mtRequests;
 
+import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.MigrationException;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
@@ -186,7 +187,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
     public void doSend(final ReactorImpl _source,
                        final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
         final ReactorMtImpl source = (ReactorMtImpl) _source;
-        if (PlantImpl.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
+        if (PlantMtImpl.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
             throw new IllegalStateException("send from wrong thread");
         }
         if (!source.isRunning()) {
@@ -230,7 +231,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      */
     public RESPONSE_TYPE call() throws Exception {
         use();
-        PlantImpl.getSingleton().validateCall();
+        PlantMtImpl.getSingleton().validateCall();
         requestSource = new Pender();
         responseProcessor = CallResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
@@ -262,7 +263,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @return True when this is the first response.
      */
     protected boolean processObjectResponse(final Object _response) {
-        if (PlantImpl.DEBUG && targetReactorImpl.getThreadReference().get() != Thread
+        if (PlantMtImpl.DEBUG && targetReactorImpl.getThreadReference().get() != Thread
                 .currentThread()) {
             final IllegalStateException ex = new IllegalStateException(
                     "response from wrong thread");

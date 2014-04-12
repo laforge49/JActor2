@@ -35,12 +35,12 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
                         _parentReactor.asReactorImpl().getInitialBufferSize() :
                         PlantImpl.getSingleton().getInternalReactor() != null ?
                                 PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
-                                PlantImpl.getSingleton().getPlantConfiguration().getInitialBufferSize(),
+                                PlantImpl.getSingleton().getInitialBufferSize(),
                 _parentReactor != null ?
                         _parentReactor.asReactorImpl().getInitialLocalQueueSize() :
                         PlantImpl.getSingleton().getInternalReactor() != null ?
                                 PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
-                                PlantImpl.getSingleton().getPlantConfiguration().getInitialLocalMessageQueueSize());
+                                PlantImpl.getSingleton().getInitialLocalMessageQueueSize());
     }
 
     /**

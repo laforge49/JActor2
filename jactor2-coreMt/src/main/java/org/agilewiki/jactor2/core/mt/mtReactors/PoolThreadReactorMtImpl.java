@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
+import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.MigrationException;
 import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
@@ -54,7 +55,7 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
             throw new NullPointerException();
         }
         if (threadReference.get() == null) {
-            PlantImpl.getSingleton().submit(this);
+            PlantMtImpl.getSingleton().submit(this);
         }
     }
 

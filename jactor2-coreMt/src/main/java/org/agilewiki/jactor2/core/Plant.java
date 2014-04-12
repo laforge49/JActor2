@@ -19,7 +19,7 @@ final public class Plant extends PlantBase {
      * @return The plant scheduler.
      */
     public static PlantScheduler getPlantScheduler() {
-        return PlantImpl.getSingleton().getPlantScheduler();
+        return PlantMtImpl.getSingleton().getPlantScheduler();
     }
 
     /**

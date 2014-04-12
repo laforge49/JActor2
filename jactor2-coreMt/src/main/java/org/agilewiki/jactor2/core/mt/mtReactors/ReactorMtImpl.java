@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
+import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.reactors.MigrationException;
@@ -113,7 +114,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
     public ReactorMtImpl(final NonBlockingReactor _parentReactor, final int _initialBufferSize,
                          final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImpl1(this);
-        PlantConfiguration plantConfiguration = PlantImpl.getSingleton().getPlantConfiguration();
+        PlantConfiguration plantConfiguration = PlantMtImpl.getSingleton().getPlantConfiguration();
         ReactorImpl parentReactorImpl = _parentReactor == null ? null : _parentReactor.asReactorImpl();
         recovery = _parentReactor == null ? plantConfiguration.getRecovery() : parentReactorImpl.getRecovery();
         plantScheduler = _parentReactor == null ?
@@ -256,7 +257,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
                 try {
                     closeable.close();
                 } catch (final Throwable t) {
-                    if (closeable != null && PlantImpl.DEBUG) {
+                    if (closeable != null && PlantMtImpl.DEBUG) {
                         getLogger().warn("Error closing a " + closeable.getClass().getName(), t);
                     }
                 }
@@ -270,7 +271,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
 
         shuttingDown = true;
 
-        PlantImpl plantImpl = PlantImpl.getSingleton();
+        PlantMtImpl plantImpl = PlantMtImpl.getSingleton();
         if (plantImpl != null &&
                 isRunning() &&
                 (currentRequest == null || !currentRequest.isComplete())) {
