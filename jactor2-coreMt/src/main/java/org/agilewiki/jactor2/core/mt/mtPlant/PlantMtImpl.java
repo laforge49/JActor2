@@ -58,7 +58,6 @@ public class PlantMtImpl extends PlantImpl {
      * @param _plantConfiguration The configuration to be used by the singleton.
      */
     public PlantMtImpl(final PlantConfiguration _plantConfiguration) {
-        super(_plantConfiguration);
         removeThreadBoundReactor();
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");

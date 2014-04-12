@@ -7,13 +7,13 @@ import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
 import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
-import org.agilewiki.jactor2.core.plant.SchedulableSemaphore;
+import org.agilewiki.jactor2.core.mt.mtPlant.SchedulableSemaphore;
 import org.agilewiki.jactor2.core.reactors.MigrationException;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.mt.mtRequests.RequestSource;
-import org.agilewiki.jactor2.core.plant.PlantConfiguration;
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
+import org.agilewiki.jactor2.core.mt.mtPlant.PlantConfiguration;
+import org.agilewiki.jactor2.core.mt.mtPlant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -115,7 +115,8 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
                          final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImpl1(this);
         PlantConfiguration plantConfiguration = PlantMtImpl.getSingleton().getPlantConfiguration();
-        ReactorImpl parentReactorImpl = _parentReactor == null ? null : _parentReactor.asReactorImpl();
+        NonBlockingReactorMtImpl parentReactorImpl =
+                _parentReactor == null ? null : (NonBlockingReactorMtImpl) _parentReactor.asReactorImpl();
         recovery = _parentReactor == null ? plantConfiguration.getRecovery() : parentReactorImpl.getRecovery();
         plantScheduler = _parentReactor == null ?
                 plantConfiguration.getPlantScheduler() : parentReactorImpl.getPlantScheduler();

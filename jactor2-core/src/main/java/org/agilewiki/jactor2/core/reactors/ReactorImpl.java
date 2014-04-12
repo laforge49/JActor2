@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -212,13 +211,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     public Recovery getRecovery();
 
     public void setRecovery(Recovery recovery);
-
-    /**
-     * The PlantScheduler object used by this ReactorImpl.
-     */
-    public PlantScheduler getPlantScheduler();
-
-    public void setPlantScheduler(PlantScheduler plantScheduler);
 
     /**
      * The time when processing began on the current message.

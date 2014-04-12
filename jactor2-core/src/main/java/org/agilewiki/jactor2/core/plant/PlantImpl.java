@@ -26,11 +26,9 @@ abstract public class PlantImpl {
     }
 
     /**
-     * Create the singleton with the given configuration.
-     *
-     * @param _plantConfiguration The configuration to be used by the singleton.
+     * Create the singleton.
      */
-    public PlantImpl(final PlantConfiguration _plantConfiguration) {
+    public PlantImpl() {
         if (singleton != null) {
             throw new IllegalStateException("the singleton already exists");
         }
