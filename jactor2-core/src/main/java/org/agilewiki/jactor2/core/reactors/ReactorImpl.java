@@ -2,9 +2,8 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
-import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 import java.util.Queue;
@@ -204,13 +203,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     public boolean isSlow();
 
     public boolean isCommonReactor();
-
-    /**
-     * The Recovery object used by this ReactorImpl.
-     */
-    public Recovery getRecovery();
-
-    public void setRecovery(Recovery recovery);
 
     /**
      * The time when processing began on the current message.

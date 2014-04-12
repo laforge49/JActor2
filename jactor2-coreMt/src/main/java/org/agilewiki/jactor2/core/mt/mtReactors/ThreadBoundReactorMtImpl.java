@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;

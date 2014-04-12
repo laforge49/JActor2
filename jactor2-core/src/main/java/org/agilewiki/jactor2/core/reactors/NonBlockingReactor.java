@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBlade;
-import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
 
 /**
  * Process requests/responses quickly and without blocking the thread.

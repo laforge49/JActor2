@@ -1,16 +1,11 @@
 package org.agilewiki.jactor2.core.mt.mtRequests;
 
 import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
-import org.agilewiki.jactor2.core.plant.PlantImpl;
-import org.agilewiki.jactor2.core.reactors.MigrationException;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.mt.mtReactors.ReactorMtImpl;
-import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.reactors.*;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 import java.util.concurrent.Semaphore;
 
@@ -41,7 +36,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * The reactor impl where this Request Object is passed for processing. The thread
      * owned by this reactor impl will process the Request.
      */
-    protected final ReactorImpl targetReactorImpl;
+    protected final ReactorMtImpl targetReactorImpl;
 
     /**
      * The source reactor or Pender that will receive the results.
@@ -101,7 +96,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
             throw new NullPointerException("targetMessageProcessor");
         }
         targetReactor = _targetReactor;
-        targetReactorImpl = targetReactor.asReactorImpl();
+        targetReactorImpl = (ReactorMtImpl) targetReactor.asReactorImpl();
     }
 
     @Override
@@ -214,7 +209,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         oldMessage = source.getCurrentRequest();
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
-        final boolean local = targetReactor == source;
+        final boolean local = targetReactor == source.asReactor();
         if (local || !source.buffer(this, targetReactorImpl)) {
             targetReactorImpl.unbufferedAddMessage(this, local);
         }
@@ -346,12 +341,12 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
                 Thread.currentThread().interrupt();
             } catch (final RuntimeException re) {
                 processException(targetReactorImpl, new ReactorClosedException());
-                targetReactor.getRecovery().onRuntimeException(this, re);
+                targetReactorImpl.getRecovery().onRuntimeException(this, re);
             } catch (final Exception e) {
                 processException(targetReactorImpl, e);
             } catch (final StackOverflowError soe) {
                 processException(targetReactorImpl, new ReactorClosedException());
-                targetReactor.getRecovery().onStackOverflowError(this, soe);
+                targetReactorImpl.getRecovery().onStackOverflowError(this, soe);
             }
         } else {
             processResponseMessage();

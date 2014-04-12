@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core;
 
-import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
-import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.mt.mtPlant.PlantConfiguration;
+import org.agilewiki.jactor2.core.mt.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.mt.mtPlant.PlantScheduler;
+import org.agilewiki.jactor2.core.plant.PlantBase;
 
 /**
  * Plant is a singleton and is the top-level object.

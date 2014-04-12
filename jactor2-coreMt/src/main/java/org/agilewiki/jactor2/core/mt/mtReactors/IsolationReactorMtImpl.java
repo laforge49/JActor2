@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.mt.mtReactors;
 
-import org.agilewiki.jactor2.core.reactors.MigrationException;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.MigrationException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 /**
  * Internal implementation of UnboundReactor.

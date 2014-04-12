@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBlade;
-import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

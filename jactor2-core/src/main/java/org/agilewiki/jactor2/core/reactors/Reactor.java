@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
-import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
@@ -104,22 +103,6 @@ public interface Reactor extends Closeable, Blade {
      * @return True if the Closeable was unregistered.
      */
     boolean removeCloseable(final Closeable _closeable);
-
-    /**
-     * Returns the Recovery object used by this reactor.
-     * The default value is the Recovery object used by the parent reactor when
-     * this reactor was created.
-     *
-     * @return The Recovery object.
-     */
-    Recovery getRecovery();
-
-    /**
-     * Change the Recovery object used by this reactor.
-     *
-     * @param _recovery    The new Recovery object.
-     */
-    void setRecovery(final Recovery _recovery);
 
     /**
      * Log an exception (throwable) at the WARN level with an

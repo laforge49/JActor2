@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.closeable;
 
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
 import java.util.Collections;
 import java.util.Iterator;

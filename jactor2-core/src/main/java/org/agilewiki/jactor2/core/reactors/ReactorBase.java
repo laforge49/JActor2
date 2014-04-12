@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
-import org.agilewiki.jactor2.core.plant.Recovery;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
@@ -80,16 +79,6 @@ abstract public class ReactorBase implements Reactor {
     @Override
     public SyncRequest<Void> nullSReq() {
         return asReactorImpl().nullSReq();
-    }
-
-    @Override
-    public Recovery getRecovery() {
-        return asReactorImpl().getRecovery();
-    }
-
-    @Override
-    public void setRecovery(final Recovery _recovery) {
-        asReactorImpl().setRecovery(_recovery);
     }
 
     /**

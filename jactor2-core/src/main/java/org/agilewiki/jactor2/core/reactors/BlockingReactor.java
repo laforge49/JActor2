@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.BlockingBlade;
-import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
+import org.agilewiki.jactor2.core.plant.PlantImpl;
 
 /**
  * Process requests/responses which may block the thread or tie it up with a long computation.
