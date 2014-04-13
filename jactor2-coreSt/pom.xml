@@ -16,7 +16,7 @@
 
 
 	<dependencies>
-		<dependency>
+		<!--dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>2.6.0</version>
@@ -69,11 +69,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.4</version>
-		</dependency>
-		<dependency>
 			<groupId>com.blockwithme</groupId>
 			<artifactId>UtilShared</artifactId>
 			<version>0.0.1</version>
@@ -98,7 +93,7 @@
 			<version>0.0.1</version>
 			<classifier>sources</classifier>
 			<scope>provided</scope>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>jactor2-core</artifactId>
@@ -112,6 +107,11 @@
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -127,7 +127,7 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!--plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.6.0</version>
@@ -148,7 +148,7 @@
 					<mode>htmlunit</mode>
 					<productionMode>true</productionMode>
 				</configuration>
-			</plugin>
+			</plugin-->
 		</plugins>
 	</build>
 </project>

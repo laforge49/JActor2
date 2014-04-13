@@ -92,6 +92,7 @@ public class PlantMtImpl extends PlantImpl {
         ThreadBoundReactorMtImpl.removeReactor();
     }
 
+    @Override
     public ReactorImpl getCurrentReactorImpl() {
         Thread thread = Thread.currentThread();
         if (thread instanceof ReactorPoolThread)
@@ -109,26 +110,31 @@ public class PlantMtImpl extends PlantImpl {
 
     }
 
+    @Override
     public ReactorImpl createNonBlockingReactorImpl(final NonBlockingReactor _parentReactor,
                                                     final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new NonBlockingReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    @Override
     public ReactorImpl createBlockingReactorImpl(final NonBlockingReactor _parentReactor,
                                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new BlockingReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    @Override
     public ReactorImpl createIsolationReactorImpl(final NonBlockingReactor _parentReactor,
                                                   final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new IsolationReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    @Override
     public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactor _parentReactor,
                                                    final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new SwingBoundReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
+    @Override
     public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactor _parentReactor,
                                                     final int _initialOutboxSize, final int _initialLocalQueueSize,
                                                     final Runnable _boundProcessor) {
@@ -148,6 +154,7 @@ public class PlantMtImpl extends PlantImpl {
     /**
      * Close the Plant.
      */
+    @Override
     public void close() throws Exception {
         if (getSingleton() == null) {
             return;
@@ -242,6 +249,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @return The reactor belonging to the singleton.
      */
+    @Override
     public NonBlockingReactor getInternalReactor() {
         return internalReactor;
     }
@@ -251,6 +259,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @return The reactor default initial local message queue size.
      */
+    @Override
     public int getInitialLocalMessageQueueSize() {
         return plantConfiguration.getInitialLocalMessageQueueSize();
     }
@@ -260,6 +269,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @return The reactor default initial buffer size.
      */
+    @Override
     public int getInitialBufferSize() {
         return plantConfiguration.getInitialBufferSize();
     }
