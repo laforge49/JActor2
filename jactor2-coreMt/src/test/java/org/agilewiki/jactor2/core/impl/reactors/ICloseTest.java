@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.reactors;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.impl.DelayAReq;
+import org.agilewiki.jactor2.core.plant.DelayAReq;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;

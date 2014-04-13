@@ -85,4 +85,11 @@ abstract public class PlantImpl {
      * @return The reactor default initial buffer size.
      */
     abstract public int getInitialBufferSize();
+
+    /**
+     * Return the scheduler that is a part of the Plant's configuration.
+     *
+     * @return The scheduler.
+     */
+    abstract public PlantScheduler getPlantScheduler();
 }

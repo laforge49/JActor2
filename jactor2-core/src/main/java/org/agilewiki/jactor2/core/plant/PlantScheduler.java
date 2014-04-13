@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.impl.mtPlant;
+package org.agilewiki.jactor2.core.plant;
 
 import java.util.concurrent.ScheduledFuture;
 

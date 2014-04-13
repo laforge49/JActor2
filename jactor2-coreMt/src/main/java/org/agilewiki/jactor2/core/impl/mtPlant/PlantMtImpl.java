@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.impl.mtReactors.*;
 import org.agilewiki.jactor2.core.impl.mtRequests.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;

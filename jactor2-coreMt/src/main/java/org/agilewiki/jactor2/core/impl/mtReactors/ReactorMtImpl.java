@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.impl.mtCloseable.CloseableMtImpl;
 import org.agilewiki.jactor2.core.impl.mtPlant.*;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestSource;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.*;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
