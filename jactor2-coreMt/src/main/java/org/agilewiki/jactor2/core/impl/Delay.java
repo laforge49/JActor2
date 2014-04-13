@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core.blades;
+package org.agilewiki.jactor2.core.impl;
 
+import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
