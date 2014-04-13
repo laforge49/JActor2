@@ -4,19 +4,19 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.agilewiki.jactor2</groupId>
-        <artifactId>jactor2</artifactId>
-        <version>0.9.0</version>
-    </parent>
+	<parent>
+		<groupId>org.agilewiki.jactor2</groupId>
+		<artifactId>jactor2</artifactId>
+		<version>0.9.0</version>
+	</parent>
 
-    <artifactId>jactor2-coreSt</artifactId>
-    <name>JActor2-CoreSt</name>
-    <packaging>jar</packaging>
+	<artifactId>jactor2-coreSt</artifactId>
+	<name>JActor2-CoreSt</name>
+	<packaging>jar</packaging>
 
 
 	<dependencies>
-		<!--dependency>
+		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>2.6.0</version>
@@ -32,39 +32,39 @@
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx</artifactId>
-	        	<version>0.9.9</version>
+			<version>0.9.9</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx</artifactId>
-	        	<version>0.9.9</version>
+			<version>0.9.9</version>
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		        <groupId>com.google.gwt</groupId>
-		        <artifactId>gwt-dev</artifactId>
-	        	<version>2.6.0</version>
-		        <scope>test</scope>
-        	</dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>2.6.0</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
-		        <groupId>com.google.gwt</groupId>
-		        <artifactId>gwt-dev</artifactId>
-	        	<version>2.6.0</version>
-		        <classifier>sources</classifier>
-		        <scope>test</scope>
-	        </dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>2.6.0</version>
+			<classifier>sources</classifier>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx-backend-gwt</artifactId>
-	        	<version>0.9.9</version>
+			<version>0.9.9</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx-backend-gwt</artifactId>
-	        	<version>0.9.9</version>
+			<version>0.9.9</version>
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
@@ -93,7 +93,7 @@
 			<version>0.0.1</version>
 			<classifier>sources</classifier>
 			<scope>provided</scope>
-		</dependency-->
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>jactor2-core</artifactId>
@@ -107,11 +107,11 @@
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.4</version>
-        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -127,7 +127,7 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-			<!--plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.6.0</version>
@@ -148,7 +148,14 @@
 					<mode>htmlunit</mode>
 					<productionMode>true</productionMode>
 				</configuration>
-			</plugin-->
+			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>blockwithme-mvn-repo</id>
+			<url>https://raw.github.com/skunkiferous/Maven/master</url>
+		</repository>
+	</repositories>
 </project>
