@@ -49,32 +49,8 @@ public class PlantStImpl extends PlantImpl {
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
         }
-        final String configurationClassName = System
-                .getProperty("jactor.configurationClass");
-        if (configurationClassName != null) {
-            throw new UnsupportedOperationException(
-                    "jactor.configurationClass!=null");
-//            ClassLoader classLoader = getClass().getClassLoader();
-//            Class configurationClass = null;
-//            try {
-//                configurationClass = classLoader.loadClass(configurationClassName);
-//            } catch (ClassNotFoundException e) {
-//                throw new IllegalArgumentException("unable to load class " + configurationClassName, e);
-//            }
-//            try {
-//                plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
-//            } catch (InstantiationException e) {
-//                throw new IllegalArgumentException("unable to instantiate " + configurationClassName, e);
-//            } catch (IllegalAccessException e) {
-//                throw new IllegalArgumentException("unable to instantiate " + configurationClassName, e);
-//            }
-        } else
-            plantConfiguration = _plantConfiguration;
-        final long reactorPollMillis = _plantConfiguration.getRecovery()
-                .getReactorPollMillis();
+        plantConfiguration = _plantConfiguration;
         internalReactor = createInternalReactor();
-        _plantConfiguration.getPlantScheduler().scheduleAtFixedRate(
-                plantPoll(), reactorPollMillis);
     }
 
     @Override
