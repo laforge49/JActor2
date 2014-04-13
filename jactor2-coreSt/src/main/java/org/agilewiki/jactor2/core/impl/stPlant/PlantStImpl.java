@@ -129,7 +129,7 @@ public class PlantStImpl extends PlantImpl {
             return;
         }
         try {
-            getInternalReactor().close();
+            //todo getInternalReactor().close();
         } finally {
             getPlantScheduler().close();
             super.close();
@@ -160,7 +160,7 @@ public class PlantStImpl extends PlantImpl {
      * @return The reactor belonging to the singleton.
      */
     protected NonBlockingReactor createInternalReactor() {
-        return new NonBlockingReactor(null);
+        return null; //todo new NonBlockingReactor(null);
     }
 
     /**
