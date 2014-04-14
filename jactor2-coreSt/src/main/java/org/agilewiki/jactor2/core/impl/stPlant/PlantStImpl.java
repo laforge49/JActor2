@@ -5,10 +5,9 @@ import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.*;
+
+import java.util.ArrayDeque;
 
 public class PlantStImpl extends PlantImpl {
 
@@ -32,6 +31,8 @@ public class PlantStImpl extends PlantImpl {
     private final NonBlockingReactor internalReactor;
 
     public ReactorImpl currentReactorImpl;
+
+    private final ArrayDeque<Request<?>> inputQueue = new ArrayDeque<Request<?>>();
 
     /**
      * Create the singleton with a default configuration.
