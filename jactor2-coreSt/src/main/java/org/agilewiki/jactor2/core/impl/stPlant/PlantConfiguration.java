@@ -67,4 +67,13 @@ public class PlantConfiguration {
     public Request<?> getAsynchronousRequest() {
         throw new UnsupportedOperationException("by default, there are no asynchronous requests");
     }
+
+    /**
+     * Returns 16.
+     *
+     * @return The reactor default initial local message queue size.
+     */
+    public int getInitialLocalMessageQueueSize() {
+        return 16;
+    }
 }

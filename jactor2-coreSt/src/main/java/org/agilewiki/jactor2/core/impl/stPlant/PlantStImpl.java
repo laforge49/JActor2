@@ -152,7 +152,7 @@ public class PlantStImpl extends PlantImpl {
      * @return The reactor belonging to the singleton.
      */
     protected NonBlockingReactor createInternalReactor() {
-        return null; //todo new NonBlockingReactor(null);
+        return null; //todo new NonBlockingReactor(null, 0, plantConfiguration.getInitialLocalMessageQueueSize());
     }
 
     /**
@@ -190,7 +190,7 @@ public class PlantStImpl extends PlantImpl {
      */
     @Override
     public int getInitialLocalMessageQueueSize() {
-        return 0;
+        return plantConfiguration.getInitialLocalMessageQueueSize();
     }
 
     /**
