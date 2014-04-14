@@ -7,7 +7,8 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.*;
 
-import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlantStImpl extends PlantImpl {
 
@@ -32,7 +33,8 @@ public class PlantStImpl extends PlantImpl {
 
     public ReactorImpl currentReactorImpl;
 
-    private final ArrayDeque<Request<?>> inputQueue = new ArrayDeque<Request<?>>();
+    //private final Queue<Request<?>> inputQueue = new ArrayDeque<Request<?>>();
+    private final Queue<Request<?>> inputQueue = new LinkedBlockingQueue<Request<?>>();
 
     /**
      * Create the singleton with a default configuration.

@@ -16,7 +16,8 @@ public class PlantConfiguration {
     /**
      * Create a plant configuration with a reactor thread pool size of 20.
      */
-    public PlantConfiguration() {}
+    public PlantConfiguration() {
+    }
 
     /**
      * Create the default Recovery instance.
@@ -40,6 +41,7 @@ public class PlantConfiguration {
 
     /**
      * Create the plant scheduler.
+     *
      * @return The plant scheduler.
      */
     protected PlantScheduler createPlantScheduler() {
@@ -48,6 +50,7 @@ public class PlantConfiguration {
 
     /**
      * Returns the plant scheduler.
+     *
      * @return The plant scheduler.
      */
     public PlantScheduler getPlantScheduler() {

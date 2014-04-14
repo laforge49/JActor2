@@ -20,7 +20,6 @@ import java.util.concurrent.ScheduledFuture;
 
 /**
  * @author monster
- *
  */
 public abstract class MyAbstractTimerTask<V> extends java.util.TimerTask
         implements ScheduledFuture<V> {

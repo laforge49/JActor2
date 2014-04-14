@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit trunk//EN" "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit trunk//EN"
+        "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
 <module>
-	<inherits name="com.google.gwt.user.User"/>
-	<inherits name="com.blockwithme.util.UtilShared"/>
-	<inherits name="com.badlogic.gdx" />
-	<inherits name="com.badlogic.gwtref.GwtReflect"/>
-	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
-	<inherits name="com.google.gwt.logging.Logging"/>
-	<inherits name="com.blockwithme.util.UtilClient"/>
-	<inherits name="org.agilewiki.jactor2.core.JActor2Core"/>
-	<source path="impl"/>
-	<entry-point class="org.agilewiki.jactor2.core.impl.EntryPoint"/>
+    <inherits name="com.google.gwt.user.User"/>
+    <inherits name="com.blockwithme.util.UtilShared"/>
+    <inherits name="com.badlogic.gdx"/>
+    <inherits name="com.badlogic.gwtref.GwtReflect"/>
+    <inherits name='com.badlogic.gdx.backends.gdx_backends_gwt'/>
+    <inherits name="com.google.gwt.logging.Logging"/>
+    <inherits name="com.blockwithme.util.UtilClient"/>
+    <inherits name="org.agilewiki.jactor2.core.JActor2Core"/>
+    <source path="impl"/>
+    <entry-point class="org.agilewiki.jactor2.core.impl.EntryPoint"/>
 </module>

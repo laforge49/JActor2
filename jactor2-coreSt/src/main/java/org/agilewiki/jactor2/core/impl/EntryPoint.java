@@ -17,7 +17,7 @@ package org.agilewiki.jactor2.core.impl;
 
 /**
  * JActor2-Core-St EntryPoint.
- *
+ * <p/>
  * Basically does nothing, except make sure JActor2-Core is compilable with GWT.
  *
  * @author monster
