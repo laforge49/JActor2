@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.impl.stPlant;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.*;
@@ -33,8 +34,7 @@ public class PlantStImpl extends PlantImpl {
 
     public ReactorImpl currentReactorImpl;
 
-    //private final Queue<Request<?>> inputQueue = new ArrayDeque<Request<?>>();
-    private final Queue<Request<?>> inputQueue = new LinkedBlockingQueue<Request<?>>();
+    private final Queue<PoolThreadReactorImpl> pendingReactors = new LinkedBlockingQueue<PoolThreadReactorImpl>();
 
     /**
      * Create the singleton with a default configuration.
@@ -201,5 +201,14 @@ public class PlantStImpl extends PlantImpl {
     @Override
     public int getInitialBufferSize() {
         return 0;
+    }
+
+    /**
+     * Submit a Reactor for subsequent execution.
+     *
+     * @param _reactor The targetReactor to be run.
+     */
+    public final void submit(final PoolThreadReactorImpl _reactor) {
+        pendingReactors.add(_reactor);
     }
 }
