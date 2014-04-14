@@ -104,7 +104,7 @@ public class Recovery {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.error("runtime exception -> reactor close", _exception);
         try {
-            reactor.fail("message timeout");
+            reactor.fail("runtime exception");
         } catch (Exception e) {
 
         }
