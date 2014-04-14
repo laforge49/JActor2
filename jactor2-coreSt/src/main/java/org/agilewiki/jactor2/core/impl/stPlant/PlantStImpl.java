@@ -36,6 +36,8 @@ public class PlantStImpl extends PlantImpl {
 
     private final Queue<PoolThreadReactorImpl> pendingReactors = new LinkedBlockingQueue<PoolThreadReactorImpl>();
 
+    private PoolThreadReactorImpl activeReactor;
+
     /**
      * Create the singleton with a default configuration.
      */
@@ -210,5 +212,21 @@ public class PlantStImpl extends PlantImpl {
      */
     public final void submit(final PoolThreadReactorImpl _reactor) {
         pendingReactors.add(_reactor);
+    }
+
+    /**
+     * Process messages until there are no more.
+     */
+    public void processMessages() {
+        while (true) {
+            activeReactor = pendingReactors.poll();
+            if (activeReactor == null)
+                return;
+            try {
+                activeReactor.run();
+            } finally {
+                activeReactor = null;
+            }
+        }
     }
 }
