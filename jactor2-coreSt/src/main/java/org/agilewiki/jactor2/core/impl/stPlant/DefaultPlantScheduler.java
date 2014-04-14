@@ -1,13 +1,14 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
-import com.blockwithme.util.shared.SystemUtils;
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
-
 import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
+
+import com.blockwithme.util.shared.SystemUtils;
 
 /**
  * A scheduler for Plant, created by PlantConfiguration.
@@ -153,7 +154,7 @@ public class DefaultPlantScheduler implements PlantScheduler {
 
     @Override
     public ScheduledFuture<?> schedule(final Runnable runnable,
-                                       final long _millisecondDelay) {
+            final long _millisecondDelay) {
         final MyTimerTask result = new MyTimerTask(runnable, true);
         timer.schedule(result, _millisecondDelay);
         return result;
@@ -161,7 +162,7 @@ public class DefaultPlantScheduler implements PlantScheduler {
 
     @Override
     public ScheduledFuture<?> scheduleAtFixedRate(final Runnable runnable,
-                                                  final long _millisecondDelay) {
+            final long _millisecondDelay) {
         final MyTimerTask result = new MyTimerTask(runnable, false);
         timer.scheduleAtFixedRate(result, _millisecondDelay, _millisecondDelay);
         return result;
@@ -171,5 +172,19 @@ public class DefaultPlantScheduler implements PlantScheduler {
     public void close() {
         // No way to get the tasks from the Timer. :(
         die = true;
+    }
+
+    /* (non-Javadoc)
+     * @see org.agilewiki.jactor2.core.plant.PlantScheduler#cancel(java.lang.Object)
+     */
+    @Override
+    public void cancel(final Object task) {
+        if (task == null) {
+            throw new NullPointerException("task");
+        }
+        if (!(task instanceof ScheduledFuture)) {
+            throw new IllegalArgumentException("task: " + task.getClass());
+        }
+        ((ScheduledFuture<?>) task).cancel(false);
     }
 }
