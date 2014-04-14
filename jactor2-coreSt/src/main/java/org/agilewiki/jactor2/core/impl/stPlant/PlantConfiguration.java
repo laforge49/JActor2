@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
+import org.agilewiki.jactor2.core.requests.Request;
 
 /**
  * Base class for configuring the Plant.
@@ -53,5 +54,14 @@ public class PlantConfiguration {
         if (plantScheduler == null)
             plantScheduler = createPlantScheduler();
         return plantScheduler;
+    }
+
+    /**
+     * Waits for asynchronous events.
+     *
+     * @return Returns a Request.
+     */
+    public Request<?> getAsynchronousRequest() {
+        throw new UnsupportedOperationException("by default, there are no asynchronous requests");
     }
 }
