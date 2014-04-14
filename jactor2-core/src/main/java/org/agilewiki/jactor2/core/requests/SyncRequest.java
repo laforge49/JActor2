@@ -3,13 +3,15 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * A sync request performs an operation safely within the thread context of the target reactor.
  *
  * @param <RESPONSE_TYPE> The type of response value.
  */
-abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE> {
+abstract public class SyncRequest<RESPONSE_TYPE> implements
+        Request<RESPONSE_TYPE> {
 
     private final RequestImpl<RESPONSE_TYPE> requestImpl;
 
@@ -20,7 +22,8 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
      *                       The thread owned by this targetReactor will process this SyncRequest.
      */
     public SyncRequest(final Reactor _targetReactor) {
-        requestImpl = PlantImpl.getSingleton().createSyncRequestImpl(this, _targetReactor);
+        requestImpl = PlantImpl.getSingleton().createSyncRequestImpl(this,
+                _targetReactor);
     }
 
     /**
@@ -50,6 +53,7 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYP
         requestImpl.signal();
     }
 
+    @GwtIncompatible
     @Override
     public RESPONSE_TYPE call() throws Exception {
         return requestImpl.call();

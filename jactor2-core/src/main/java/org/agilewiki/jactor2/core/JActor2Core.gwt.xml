@@ -11,12 +11,9 @@
 	<inherits name="com.blockwithme.util.UtilClient"/>
 
 	<source path="closeable"/>
-	<source path="blades">
-		<exclude name="**/Swing*.java" />
-	</source>
+	<source path="blades"/>
 	<source path="plant"/>
-	<source path="reactors">
-		<exclude name="**/Swing*.java" />
-	</source>
+	<source path="reactors"/>
 	<source path="requests"/>
+	<source path="util"/>
 </module>

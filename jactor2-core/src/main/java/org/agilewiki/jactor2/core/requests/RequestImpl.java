@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * API for internal request implementations.
@@ -33,7 +34,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      *                           that originally invoked this method. If null, then no response is returned.
      */
     void doSend(final ReactorImpl _source,
-                          final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor);
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor);
 
     /**
      * Returns true when a response has been assigned to the request.
@@ -85,7 +86,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      *
      * @return True if the request has been canceled.
      */
-    boolean _isCanceled() ;
+    boolean _isCanceled();
 
     /**
      * Returns true when the target reactor is not the request source.
@@ -155,5 +156,6 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      * @return The response value from applying this Request to the target reactor.
      * @throws Exception If the result is an exception, it is thrown rather than being returned.
      */
+    @GwtIncompatible
     RESPONSE_TYPE call() throws Exception;
 }

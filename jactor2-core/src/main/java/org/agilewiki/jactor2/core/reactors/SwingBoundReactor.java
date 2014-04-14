@@ -1,11 +1,12 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import org.agilewiki.jactor2.core.blades.SwingBoundBlade;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
-
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * A reactor which processes requests/responses on the Swing UI thread.
@@ -18,7 +19,9 @@ import java.awt.event.WindowListener;
  * incoming messages have been processed.
  * </p>
  */
-public class SwingBoundReactor extends ThreadBoundReactor implements WindowListener, SwingBoundBlade {
+@GwtIncompatible
+public class SwingBoundReactor extends ThreadBoundReactor implements
+        WindowListener, SwingBoundBlade {
 
     /**
      * Create a swing-bound reactor with the Plant internal reactor as the parent.
@@ -33,8 +36,9 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _parentReactor            The parent reactor.
      */
     public SwingBoundReactor(final NonBlockingReactor _parentReactor) {
-        this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
-                _parentReactor.asReactorImpl().getInitialLocalQueueSize());
+        this(_parentReactor, _parentReactor.asReactorImpl()
+                .getInitialBufferSize(), _parentReactor.asReactorImpl()
+                .getInitialLocalQueueSize());
     }
 
     /**
@@ -43,8 +47,10 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public SwingBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
+    public SwingBoundReactor(final int _initialOutboxSize,
+            final int _initialLocalQueueSize) {
+        this(PlantBase.getInternalReactor(), _initialOutboxSize,
+                _initialLocalQueueSize);
     }
 
     /**
@@ -55,14 +61,15 @@ public class SwingBoundReactor extends ThreadBoundReactor implements WindowListe
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public SwingBoundReactor(final NonBlockingReactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize) {
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 
     @Override
-    protected ReactorImpl createReactorImpl(final NonBlockingReactor _parentReactor,
-                                            final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                           final Runnable _boundProcessor) {
+    protected ReactorImpl createReactorImpl(
+            final NonBlockingReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize,
+            final Runnable _boundProcessor) {
         return PlantImpl.getSingleton().createSwingBoundReactorImpl(
                 _parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }

@@ -4,14 +4,15 @@ import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * An async request separates data flow from control flow and its effect can span multiple reactors.
  *
  * @param <RESPONSE_TYPE> The type of response value.
  */
-public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TYPE>,
-        AsyncResponseProcessor<RESPONSE_TYPE> {
+public abstract class AsyncRequest<RESPONSE_TYPE> implements
+        Request<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
 
     private final AsyncRequestImpl<RESPONSE_TYPE> asyncRequestImpl;
 
@@ -22,7 +23,8 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
     public AsyncRequest(final Reactor _targetReactor) {
-        asyncRequestImpl = PlantImpl.getSingleton().createAsyncRequestImpl(this, _targetReactor);
+        asyncRequestImpl = PlantImpl.getSingleton().createAsyncRequestImpl(
+                this, _targetReactor);
     }
 
     @Override
@@ -50,6 +52,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
         asyncRequestImpl.signal();
     }
 
+    @GwtIncompatible
     @Override
     public RESPONSE_TYPE call() throws Exception {
         return asyncRequestImpl.call();
@@ -75,10 +78,11 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      */
     public void onCancel() {
         cancelAll();
-        Reactor targetReactor = getTargetReactor();
+        final Reactor targetReactor = getTargetReactor();
         if (!(targetReactor instanceof CommonReactor))
             try {
-                new BoundResponseProcessor<RESPONSE_TYPE>(targetReactor, this).processAsyncResponse(null);
+                new BoundResponseProcessor<RESPONSE_TYPE>(targetReactor, this)
+                        .processAsyncResponse(null);
             } catch (final Exception e) {
             }
     }
@@ -130,7 +134,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * @param <RT>               The response value type.
      */
     public <RT> void send(final Request<RT> _request,
-                          final AsyncResponseProcessor<RT> _responseProcessor) {
+            final AsyncResponseProcessor<RT> _responseProcessor) {
         asyncRequestImpl.send(_request, _responseProcessor);
     }
 
@@ -146,7 +150,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements Request<RESPONSE_TY
      * @param <RT2>          The replacement value type.
      */
     public <RT, RT2> void send(final Request<RT> _request,
-                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         asyncRequestImpl.send(_request, _dis, _fixedResponse);
     }
 

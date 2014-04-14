@@ -1,11 +1,13 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * A swing-bound blade processes the requests and responses that it receives
  * on the swing UI thread.
  */
+@GwtIncompatible
 public class SwingBoundBladeBase extends BladeBase implements SwingBoundBlade {
     /**
      * Create a Swing bound blade and a Swing bound reactor whose parent is the internal reactor of Plant.
