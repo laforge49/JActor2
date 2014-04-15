@@ -170,7 +170,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      *
      * @return True when there is code to be executed when the inbox is emptied.
      */
-    public boolean isIdler();
+    boolean isIdler();
 
     /**
      * A noop request used for synchronizing state.
@@ -200,16 +200,23 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      */
     boolean removeCloseable(final Closeable _closeable);
 
-    public boolean isSlow();
+    boolean isSlow();
 
-    public boolean isCommonReactor();
+    boolean isCommonReactor();
 
     /**
      * The time when processing began on the current message.
      */
-    public long getMessageStartTimeMillis();
+    long getMessageStartTimeMillis();
 
-    public void setMessageStartTimeMillis(long messageStartTimeMillis);
+    void setMessageStartTimeMillis(long messageStartTimeMillis);
+
+    /**
+     * Log a message at the WARN level.
+     *
+     * @param msg the message string to be logged
+     */
+    void warn(String msg);
 
     /**
      * Log an exception (throwable) at the WARN level with an
@@ -218,14 +225,14 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @param msg the message accompanying the exception
      * @param t the exception (throwable) to log
      */
-    public void warn(String msg, Throwable t);
+    void warn(String msg, Throwable t);
 
     /**
      * Log a message at the ERROR level.
      *
      * @param msg the message string to be logged
      */
-    public void error(String msg);
+    void error(String msg);
 
     /**
      * Log an exception (throwable) at the ERROR level with an
@@ -234,5 +241,5 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @param msg the message accompanying the exception
      * @param t the exception (throwable) to log
      */
-    public void error(String msg, Throwable t);
+    void error(String msg, Throwable t);
 }

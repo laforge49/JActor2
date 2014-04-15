@@ -105,11 +105,34 @@ public interface Reactor extends Closeable, Blade {
     boolean removeCloseable(final Closeable _closeable);
 
     /**
+     * Log a message at the WARN level.
+     *
+     * @param msg the message string to be logged
+     */
+    void warn(String msg);
+
+    /**
      * Log an exception (throwable) at the WARN level with an
      * accompanying message.
      *
      * @param msg the message accompanying the exception
      * @param t the exception (throwable) to log
      */
-    public void warn(String msg, Throwable t);
+    void warn(String msg, Throwable t);
+
+    /**
+     * Log a message at the ERROR level.
+     *
+     * @param msg the message string to be logged
+     */
+    void error(String msg);
+
+    /**
+     * Log an exception (throwable) at the ERROR level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    void error(String msg, Throwable t);
 }

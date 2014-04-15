@@ -82,6 +82,15 @@ abstract public class ReactorBase implements Reactor {
     }
 
     /**
+     * Log a message at the WARN level.
+     *
+     * @param msg the message string to be logged
+     */
+    public void warn(String msg) {
+        asReactorImpl().warn(msg);
+    }
+
+    /**
      * Log an exception (throwable) at the WARN level with an
      * accompanying message.
      *
@@ -90,5 +99,25 @@ abstract public class ReactorBase implements Reactor {
      */
     public void warn(String msg, Throwable t) {
         asReactorImpl().warn(msg, t);
+    }
+
+    /**
+     * Log a message at the ERROR level.
+     *
+     * @param msg the message string to be logged
+     */
+    public void error(String msg) {
+        asReactorImpl().error(msg);
+    }
+
+    /**
+     * Log an exception (throwable) at the ERROR level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void error(String msg, Throwable t) {
+        asReactorImpl().error(msg, t);
     }
 }
