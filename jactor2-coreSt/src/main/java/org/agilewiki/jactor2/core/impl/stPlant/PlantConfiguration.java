@@ -45,7 +45,7 @@ public class PlantConfiguration {
      * @return The plant scheduler.
      */
     protected PlantScheduler createPlantScheduler() {
-        return new DefaultPlantScheduler();
+        return null;
     }
 
     /**

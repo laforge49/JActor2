@@ -124,7 +124,9 @@ public class PlantStImpl extends PlantImpl {
         try {
             //todo getInternalReactor().close();
         } finally {
-            getPlantScheduler().close();
+            PlantScheduler plantScheduler = getPlantScheduler();
+            if (plantScheduler != null)
+                plantScheduler.close();
             super.close();
         }
     }
