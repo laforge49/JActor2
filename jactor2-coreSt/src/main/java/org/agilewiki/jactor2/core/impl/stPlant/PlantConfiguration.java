@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
+import java.util.logging.Logger;
+
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.requests.Request;
 
@@ -8,10 +10,14 @@ import org.agilewiki.jactor2.core.requests.Request;
  * Used as the default configuration when none is specified.
  */
 abstract public class PlantConfiguration {
+    /** The JActor2-St Logger. */
+    private static final Logger LOGGER = Logger.getLogger("JActor2St");
 
     private Recovery recovery;
 
     private PlantScheduler plantScheduler;
+
+    protected abstract String asString(String msg, Throwable t);
 
     /**
      * Create a plant configuration with a reactor thread pool size of 20.
@@ -63,6 +69,47 @@ abstract public class PlantConfiguration {
      * @return Returns a Request.
      */
     public Request<?> getAsynchronousRequest() {
-        throw new UnsupportedOperationException("by default, there are no asynchronous requests");
+        throw new UnsupportedOperationException(
+                "by default, there are no asynchronous requests");
+    }
+
+    /**
+     * Log a message at the WARN level.
+     *
+     * @param msg the message string to be logged
+     */
+    public void warn(final String msg) {
+        LOGGER.warning(msg);
+    }
+
+    /**
+     * Log an exception (throwable) at the WARN level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void warn(final String msg, final Throwable t) {
+        LOGGER.warning(asString(msg, t));
+    }
+
+    /**
+     * Log a message at the ERROR level.
+     *
+     * @param msg the message string to be logged
+     */
+    public void error(final String msg) {
+        LOGGER.severe(msg);
+    }
+
+    /**
+     * Log an exception (throwable) at the ERROR level with an
+     * accompanying message.
+     *
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
+     */
+    public void error(final String msg, final Throwable t) {
+        LOGGER.severe(asString(msg, t));
     }
 }

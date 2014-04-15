@@ -19,6 +19,9 @@ public interface PlantScheduler {
      *
      * @param _runnable          The Runnable to be run.
      * @param _millisecondDelay The delay between each run.
+     *
+     * @throws java.lang.NullPointerException If the _runnable is null.
+     * @throws java.lang.IllegalArgumentException If the value of _millisecondDelay is invalid.
      */
     Object scheduleAtFixedRate(Runnable _runnable, long _millisecondDelay);
 
