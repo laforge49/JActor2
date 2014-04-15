@@ -67,21 +67,21 @@ public class PlantStImpl extends PlantImpl {
     public ReactorImpl createNonBlockingReactorImpl(
             final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return null; //todo new NonBlockingReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+        return null; //todo new NonBlockingReactorStImpl(_parentReactor, 0, 0);
     }
 
     @Override
     public ReactorImpl createBlockingReactorImpl(
             final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return null; //todo new BlockingReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+        return null; //todo new BlockingReactorStImpl(_parentReactor, 0, 0);
     }
 
     @Override
     public ReactorImpl createIsolationReactorImpl(
             final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return null; //todo new IsolationReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+        return null; //todo new IsolationReactorStImpl(_parentReactor, 0, 0);
     }
 
     @Override
@@ -103,14 +103,14 @@ public class PlantStImpl extends PlantImpl {
     public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(
             final SyncRequest<RESPONSE_TYPE> _syncRequest,
             final Reactor _targetReactor) {
-        return null; //todo new SyncRequestMtImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
+        return null; //todo new SyncRequestStImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
     }
 
     @Override
     public <RESPONSE_TYPE> AsyncRequestImpl<RESPONSE_TYPE> createAsyncRequestImpl(
             final AsyncRequest<RESPONSE_TYPE> _asyncRequest,
             final Reactor _targetReactor) {
-        return null; //todo new AsyncRequestMtImpl<RESPONSE_TYPE>(_asyncRequest, _targetReactor);
+        return null; //todo new AsyncRequestStImpl<RESPONSE_TYPE>(_asyncRequest, _targetReactor);
     }
 
     /**
@@ -156,7 +156,7 @@ public class PlantStImpl extends PlantImpl {
      * @return The reactor belonging to the singleton.
      */
     protected NonBlockingReactor createInternalReactor() {
-        return null; //todo new NonBlockingReactor(null, 0, plantConfiguration.getInitialLocalMessageQueueSize());
+        return null; //todo new NonBlockingReactor(null);
     }
 
     /**
@@ -194,7 +194,7 @@ public class PlantStImpl extends PlantImpl {
      */
     @Override
     public int getInitialLocalMessageQueueSize() {
-        return plantConfiguration.getInitialLocalMessageQueueSize();
+        return 0;
     }
 
     /**
