@@ -39,13 +39,6 @@ public class PlantStImpl extends PlantImpl {
     private PoolThreadReactorImpl activeReactor;
 
     /**
-     * Create the singleton with a default configuration.
-     */
-    public PlantStImpl() {
-        this(new PlantConfiguration());
-    }
-
-    /**
      * Create the singleton with the given configuration.
      *
      * @param _plantConfiguration The configuration to be used by the singleton.

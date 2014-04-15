@@ -10,14 +10,6 @@ import org.agilewiki.jactor2.core.plant.PlantBase;
  * though this tree is made using weak references.
  */
 final public class Plant extends PlantBase {
-
-    /**
-     * Create a plant with the default configuration.
-     */
-    public Plant() {
-        new PlantStImpl();
-    }
-
     /**
      * Create a plant with the given configuration.
      *

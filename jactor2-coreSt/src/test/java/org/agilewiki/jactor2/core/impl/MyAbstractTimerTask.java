@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.agilewiki.jactor2.core.impl.plant;
+package org.agilewiki.jactor2.core.impl;
 
 import java.util.concurrent.Delayed;
 import java.util.concurrent.ScheduledFuture;

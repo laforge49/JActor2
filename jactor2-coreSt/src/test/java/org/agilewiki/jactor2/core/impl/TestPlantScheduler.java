@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.impl.plant;
+package org.agilewiki.jactor2.core.impl;
 
 import java.util.Timer;
 import java.util.concurrent.ExecutionException;
@@ -6,14 +6,14 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
+import org.agilewiki.jactor2.core.impl.MyAbstractTimerTask;
 
 import com.blockwithme.util.shared.SystemUtils;
 
 /**
  * A scheduler for Plant, created by PlantConfiguration.
  */
-public class DefaultPlantScheduler implements PlantScheduler {
+public class TestPlantScheduler implements org.agilewiki.jactor2.core.plant.PlantScheduler {
 
     @SuppressWarnings("rawtypes")
     private class MyTimerTask extends MyAbstractTimerTask {
@@ -118,7 +118,7 @@ public class DefaultPlantScheduler implements PlantScheduler {
     /**
      * Creates the default plantScheduler.
      */
-    public DefaultPlantScheduler() {
+    public TestPlantScheduler() {
         timer = SystemUtils.getTimer();
         currentTimeMillis = System.currentTimeMillis();
         timer.scheduleAtFixedRate(new MyTimerTask(new Runnable() {

@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.requests.Request;
  * Base class for configuring the Plant.
  * Used as the default configuration when none is specified.
  */
-public class PlantConfiguration {
+abstract public class PlantConfiguration {
 
     private Recovery recovery;
 
@@ -44,9 +44,7 @@ public class PlantConfiguration {
      *
      * @return The plant scheduler.
      */
-    protected PlantScheduler createPlantScheduler() {
-        return null;
-    }
+    abstract protected PlantScheduler createPlantScheduler();
 
     /**
      * Returns the plant scheduler.
