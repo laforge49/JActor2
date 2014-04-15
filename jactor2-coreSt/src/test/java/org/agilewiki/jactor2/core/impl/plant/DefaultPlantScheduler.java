@@ -6,7 +6,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.agilewiki.jactor2.core.impl.stPlant.MyAbstractTimerTask;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 
 import com.blockwithme.util.shared.SystemUtils;
