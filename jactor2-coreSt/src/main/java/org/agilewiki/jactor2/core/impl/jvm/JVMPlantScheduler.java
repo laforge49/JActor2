@@ -15,7 +15,7 @@
  */
 package org.agilewiki.jactor2.core.impl.jvm;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
@@ -52,7 +52,7 @@ public class JVMPlantScheduler implements PlantScheduler {
             this.task = task;
         }
 
-        /** Executes the task. Returns true if terminated. */
+        /** Executes the task. Returns true if it must be called again. */
         public boolean execute(final long now) {
             if (!cancelled) {
                 task.run();
@@ -62,7 +62,7 @@ public class JVMPlantScheduler implements PlantScheduler {
                     updateNextRun(now);
                 }
             }
-            return cancelled;
+            return !cancelled;
         }
 
         /** Updates the next run. */
@@ -152,20 +152,41 @@ public class JVMPlantScheduler implements PlantScheduler {
         tasks.clear();
     }
 
-    /** Run the tasks that need to run. */
-    public void update(final long now) {
+    /**
+     * Run the tasks that need to run now.
+     *
+     * @param now the current time.
+     * @return the next time it should be called. 0 for "nothing else to do".
+     */
+    public long update(final long now) {
         this.now = now;
+        long result = 0;
         if (!tasks.isEmpty()) {
-            final Iterator<Task> iter = tasks.iterator();
-            while (iter.hasNext()) {
-                final Task task = iter.next();
-                if (task.nextRun > now) {
-                    break;
+            final long nextRun = tasks.first().nextRun;
+            if (nextRun <= now) {
+                ArrayList<Task> readd = null;
+                final Task[] array = tasks.toArray(new Task[tasks.size()]);
+                for (final Task task : array) {
+                    if (task.nextRun > now) {
+                        result = task.nextRun;
+                        break;
+                    }
+                    // Must remove *before* calling execute()
+                    tasks.remove(task);
+                    if (task.execute(now)) {
+                        if (readd == null) {
+                            readd = new ArrayList<>();
+                        }
+                        readd.add(task);
+                    }
                 }
-                if (task.execute(now)) {
-                    iter.remove();
+                if (readd != null) {
+                    tasks.addAll(readd);
                 }
+            } else {
+                result = nextRun;
             }
         }
+        return result;
     }
 }
