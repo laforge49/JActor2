@@ -15,12 +15,12 @@
  */
 package org.agilewiki.jactor2.core.impl.jvm;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 /**
  * The JVM (non-GWT) single-threaded PlantConfiguration implementation.

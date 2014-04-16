@@ -1,14 +1,12 @@
 package org.agilewiki.jactor2.core.impl;
 
+import com.blockwithme.util.shared.SystemUtils;
+
 import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import org.agilewiki.jactor2.core.impl.MyAbstractTimerTask;
-
-import com.blockwithme.util.shared.SystemUtils;
 
 /**
  * A scheduler for Plant, created by PlantConfiguration.

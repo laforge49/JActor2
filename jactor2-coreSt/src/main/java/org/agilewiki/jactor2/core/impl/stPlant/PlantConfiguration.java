@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
-import java.util.logging.Logger;
-
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
+
+import java.util.logging.Logger;
 
 /**
  * Base class for configuring the Plant.

@@ -7,7 +7,6 @@ import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 import java.util.Queue;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for internal reactor implementations.
@@ -27,13 +26,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @return The Reactor of this ReactorImpl.
      */
     Reactor asReactor();
-
-    /**
-     * Returns the atomic reference to the reactor's thread.
-     *
-     * @return The atomic reference to the reactor's thread.
-     */
-    AtomicReference<Thread> getThreadReference();
 
     /**
      * Returns the parent reactor.

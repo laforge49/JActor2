@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
-import org.agilewiki.jactor2.core.reactors.MigrationException;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
@@ -81,7 +80,7 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
                         && (target instanceof PoolThreadReactorImpl)) {
                     if (!target.isRunning()) {
                         final Thread currentThread = threadReference.get();
-                        final PoolThreadReactorImpl targ = (PoolThreadReactorImpl) target;
+                        final PoolThreadReactorMtImpl targ = (PoolThreadReactorMtImpl) target;
                         final AtomicReference<Thread> targetThreadReference = targ
                                 .getThreadReference();
                         if ((targetThreadReference.get() == null)

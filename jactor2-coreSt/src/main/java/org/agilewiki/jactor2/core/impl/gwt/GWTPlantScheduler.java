@@ -15,13 +15,12 @@
  */
 package org.agilewiki.jactor2.core.impl.gwt;
 
-import java.util.HashSet;
-
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
-
 import com.blockwithme.util.shared.SystemUtils;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
+
+import java.util.HashSet;
 
 /**
  * This class implements a PlantScheduler for GWT.

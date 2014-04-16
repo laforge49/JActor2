@@ -7,7 +7,10 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.*;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;

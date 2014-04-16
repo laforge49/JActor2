@@ -15,11 +15,11 @@
  */
 package org.agilewiki.jactor2.core.impl.jvm;
 
-import java.util.ArrayList;
-import java.util.TreeSet;
-
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
+
+import java.util.ArrayList;
+import java.util.TreeSet;
 
 /**
  * The JVM (non-GWT) single-threaded PlantScheduler implementation.

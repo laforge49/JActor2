@@ -2,8 +2,6 @@ package org.agilewiki.jactor2.core.impl.stReactors;
 
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * Internal implementation of NonBlockingReactor.
  */

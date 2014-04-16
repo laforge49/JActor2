@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.reactors;
+package org.agilewiki.jactor2.core.impl.mtReactors;
 
 /**
  * Signals a migration of the current thread to another targetReactor.
@@ -12,14 +12,14 @@ public class MigrationException extends RuntimeException {
     /**
      * The newly active targetReactor.
      */
-    public final PoolThreadReactorImpl reactor;
+    public final PoolThreadReactorMtImpl reactor;
 
     /**
      * Create a new MigrationException.
      *
      * @param _reactor The newly active processing.
      */
-    public MigrationException(final PoolThreadReactorImpl _reactor) {
+    public MigrationException(final PoolThreadReactorMtImpl _reactor) {
         reactor = _reactor;
     }
 

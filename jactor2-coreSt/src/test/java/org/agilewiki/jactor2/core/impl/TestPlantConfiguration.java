@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 public class TestPlantConfiguration extends PlantConfiguration {
     /**

@@ -6,7 +6,6 @@ import org.agilewiki.jactor2.core.impl.mtRequests.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
@@ -230,7 +229,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @param _reactor The targetReactor to be run.
      */
-    public final void submit(final PoolThreadReactorImpl _reactor) {
+    public final void submit(final PoolThreadReactorMtImpl _reactor) {
         try {
             reactorPoolThreadManager.execute(_reactor);
         } catch (final Exception e) {
