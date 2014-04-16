@@ -165,6 +165,9 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         use();
         responseProcessor = SignalResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
+        PlantStImpl plantStImpl = PlantStImpl.getSingleton();
+        if (plantStImpl.currentReactorImpl == null)
+            plantStImpl.processMessages();
     }
 
     /**
