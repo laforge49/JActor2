@@ -258,15 +258,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     }
 
     /**
-     * Returns true when a message has been passed from another thread.
-     *
-     * @return True when a message has been passed from another thread.
-     */
-    public boolean hasConcurrent() {
-        return false;
-    }
-
-    /**
      * Returns true when the inbox is not empty.
      *
      * @return True when the inbox is not empty.
@@ -320,16 +311,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         }
         inbox.offerLocal(_message);
         afterAdd();
-    }
-
-    /**
-     * Adds messages directly to the queue.
-     *
-     * @param _messages Previously buffered messages.
-     */
-    public void unbufferedAddMessages(final Queue<RequestImpl> _messages)
-            throws Exception {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -439,13 +420,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
                 return null;
             }
         };
-    }
-
-    /**
-     * Check if the current message has timed out and poll any child reactors for same.
-     */
-    public void reactorPoll() throws Exception {
-        throw new UnsupportedOperationException();
     }
 
     /**

@@ -90,13 +90,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     boolean hasWork();
 
     /**
-     * Returns true when a message has been passed from another thread.
-     *
-     * @return True when a message has been passed from another thread.
-     */
-    boolean hasConcurrent();
-
-    /**
      * Returns true when the inbox is not empty.
      *
      * @return True when the inbox is not empty.
@@ -129,23 +122,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
                                      final boolean _local);
 
     /**
-     * Adds messages directly to the queue.
-     *
-     * @param _messages Previously buffered messages.
-     */
-    void unbufferedAddMessages(final Queue<RequestImpl> _messages)
-            throws Exception;
-
-    /**
-     * Buffers a message in the sending targetReactor for sending later.
-     *
-     * @param _message Message to be buffered.
-     * @param _target  The reactor that should eventually receive this message
-     * @return True if the message was buffered.
-     */
-    boolean buffer(final RequestImpl _message, final ReactorImpl _target);
-
-    /**
      * Signals the start of a request.
      */
     void requestBegin(final RequestImpl _requestImpl);
@@ -170,11 +146,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @return null.
      */
     SyncRequest<Void> nullSReq();
-
-    /**
-     * Check if the current message has timed out and poll any child reactors for same.
-     */
-    void reactorPoll() throws Exception;
 
     /**
      * Add a closeable to the list of closeables.

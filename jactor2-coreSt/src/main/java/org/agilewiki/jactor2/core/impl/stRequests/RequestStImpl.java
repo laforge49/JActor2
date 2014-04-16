@@ -209,9 +209,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         sourceExceptionHandler = source.getExceptionHandler();
         responseProcessor = rp;
         final boolean local = targetReactor == source.asReactor();
-        if (local || !source.buffer(this, targetReactorImpl)) {
-            targetReactorImpl.unbufferedAddMessage(this, local);
-        }
+        targetReactorImpl.unbufferedAddMessage(this, local);
     }
 
     /**

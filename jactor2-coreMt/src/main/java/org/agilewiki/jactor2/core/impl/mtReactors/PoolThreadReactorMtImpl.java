@@ -73,7 +73,7 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
                 result = true;
                 final Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>> entry = iter
                         .next();
-                final ReactorImpl target = entry.getKey();
+                final ReactorMtImpl target = (ReactorMtImpl) entry.getKey();
                 final ArrayDeque<RequestImpl> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate

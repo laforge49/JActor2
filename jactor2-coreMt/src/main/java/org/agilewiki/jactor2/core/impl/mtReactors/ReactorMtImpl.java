@@ -470,7 +470,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
     public final void incomingResponse(final RequestImpl _message,
                                        final ReactorImpl _responseSource) {
         try {
-            final ReactorImpl responseSource = _responseSource == null ? null : _responseSource;
+            final ReactorMtImpl responseSource = _responseSource == null ? null : (ReactorMtImpl) _responseSource;
             final boolean local = this == _responseSource;
             if (local || (_responseSource == null)
                     || !responseSource.buffer(_message, this)) {
@@ -589,9 +589,9 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl, Re
         Iterator<Closeable> it = getCloseableSet().iterator();
         while (it.hasNext()) {
             Closeable closeable = it.next();
-            if (!(closeable instanceof ReactorImpl))
+            if (!(closeable instanceof ReactorMtImpl))
                 continue;
-            ReactorImpl reactor = (ReactorImpl) closeable;
+            ReactorMtImpl reactor = (ReactorMtImpl) closeable;
             reactor.reactorPoll();
         }
     }

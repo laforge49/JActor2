@@ -216,7 +216,7 @@ public class PlantMtImpl extends PlantImpl {
         return new Runnable() {
             public void run() {
                 try {
-                    getInternalReactor().asReactorImpl().reactorPoll();
+                    ((ReactorMtImpl) getInternalReactor().asReactorImpl()).reactorPoll();
                 } catch (Exception x) {
                     x.printStackTrace();
                 }

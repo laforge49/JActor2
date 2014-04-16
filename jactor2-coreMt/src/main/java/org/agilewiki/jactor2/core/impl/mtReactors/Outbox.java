@@ -79,7 +79,7 @@ public class Outbox implements AutoCloseable {
             while (iter.hasNext()) {
                 final Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>> entry = iter
                         .next();
-                final ReactorImpl target = entry.getKey();
+                final ReactorMtImpl target = (ReactorMtImpl) entry.getKey();
                 final ArrayDeque<RequestImpl> messages = entry.getValue();
                 iter.remove();
                 try {

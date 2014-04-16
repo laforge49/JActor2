@@ -156,24 +156,6 @@ public class PlantStImpl extends PlantImpl {
     }
 
     /**
-     * Returns the Runnable which polls for timed out messages.
-     *
-     * @return The Runnable which will perform the poll.
-     */
-    private Runnable plantPoll() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getInternalReactor().asReactorImpl().reactorPoll();
-                } catch (final Exception x) {
-                    x.printStackTrace();
-                }
-            }
-        };
-    }
-
-    /**
      * Returns the Plant's internal reactor.
      *
      * @return The reactor belonging to the singleton.
