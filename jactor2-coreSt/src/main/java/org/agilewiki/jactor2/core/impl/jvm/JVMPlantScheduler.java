@@ -21,6 +21,8 @@ import java.util.TreeSet;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
+import com.blockwithme.util.shared.SystemUtils;
+
 /**
  * The JVM (non-GWT) single-threaded PlantScheduler implementation.
  *
@@ -83,9 +85,6 @@ public class JVMPlantScheduler implements PlantScheduler {
     /** The scheduled tasks. */
     private final TreeSet<Task> tasks = new TreeSet<>();
 
-    /** The approximate current time. */
-    private long now;
-
     /** Are we closed? */
     private boolean closed;
 
@@ -106,7 +105,7 @@ public class JVMPlantScheduler implements PlantScheduler {
                     + _millisecondDelay);
         }
         final Task result = new Task(_runnable, _millisecondDelay);
-        result.updateNextRun(now);
+        result.updateNextRun(SystemUtils.currentTimeMillis());
         tasks.add(result);
         return result;
     }
@@ -146,7 +145,7 @@ public class JVMPlantScheduler implements PlantScheduler {
      */
     @Override
     public long currentTimeMillis() {
-        return now;
+        return SystemUtils.currentTimeMillis();
     }
 
     /* (non-Javadoc)
@@ -174,7 +173,6 @@ public class JVMPlantScheduler implements PlantScheduler {
         if (closed) {
             throw new IllegalStateException("Closed!");
         }
-        this.now = now;
         long result = 0;
         if (!tasks.isEmpty()) {
             final long nextRun = tasks.first().nextRun;
