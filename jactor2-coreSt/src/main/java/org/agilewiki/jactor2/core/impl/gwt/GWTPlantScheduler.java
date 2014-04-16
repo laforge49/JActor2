@@ -15,12 +15,11 @@
  */
 package org.agilewiki.jactor2.core.impl.gwt;
 
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
+
 import com.blockwithme.util.shared.SystemUtils;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
-
-import java.util.HashSet;
 
 /**
  * This class implements a PlantScheduler for GWT.
@@ -45,6 +44,9 @@ public class GWTPlantScheduler implements PlantScheduler {
          */
         @Override
         public boolean execute() {
+            if (closed) {
+                cancelled = true;
+            }
             if (!cancelled) {
                 task.run();
                 if (onceOnly) {
@@ -59,8 +61,8 @@ public class GWTPlantScheduler implements PlantScheduler {
     /** The real GWT scheduler. */
     private final Scheduler realScheduler = Scheduler.get();
 
-    /** The scheduled tasks. */
-    private final HashSet<MyRepeatingCommand> tasks = new HashSet<>();
+    /** Are we closed? */
+    private boolean closed;
 
     /* (non-Javadoc)
      * @see org.agilewiki.jactor2.core.plant.PlantScheduler#scheduleAtFixedRate(java.lang.Runnable, long)
@@ -68,6 +70,9 @@ public class GWTPlantScheduler implements PlantScheduler {
     @Override
     public MyRepeatingCommand scheduleAtFixedRate(final Runnable _runnable,
             final long _millisecondDelay) {
+        if (closed) {
+            throw new IllegalStateException("Closed!");
+        }
         if (_runnable == null) {
             throw new NullPointerException("_runnable");
         }
@@ -77,7 +82,6 @@ public class GWTPlantScheduler implements PlantScheduler {
         }
         final MyRepeatingCommand result = new MyRepeatingCommand();
         result.task = _runnable;
-        tasks.add(result);
         realScheduler.scheduleFixedPeriod(result, (int) _millisecondDelay);
         return result;
     }
@@ -99,14 +103,11 @@ public class GWTPlantScheduler implements PlantScheduler {
      */
     @Override
     public void cancel(final Object task) {
-        if (task == null) {
-            throw new NullPointerException("task");
-        }
-        if (tasks.remove(task)) {
+        if (task instanceof MyRepeatingCommand) {
             final MyRepeatingCommand cmd = (MyRepeatingCommand) task;
             cmd.cancelled = true;
             cmd.task = null;
-        } else if (!(task instanceof MyRepeatingCommand)) {
+        } else if (task != null) {
             throw new IllegalArgumentException("Not a task: " + task.getClass());
         }
     }
@@ -124,10 +125,6 @@ public class GWTPlantScheduler implements PlantScheduler {
      */
     @Override
     public void close() {
-        for (final MyRepeatingCommand cmd : tasks) {
-            cmd.cancelled = true;
-            cmd.task = null;
-        }
-        tasks.clear();
+        closed = true;
     }
 }

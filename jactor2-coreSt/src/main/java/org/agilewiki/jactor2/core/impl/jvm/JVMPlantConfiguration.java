@@ -19,9 +19,6 @@ import org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 /**
  * The JVM (non-GWT) single-threaded PlantConfiguration implementation.
  *
@@ -29,20 +26,6 @@ import java.io.PrintStream;
  */
 @GwtIncompatible
 public class JVMPlantConfiguration extends PlantConfiguration {
-
-    /* (non-Javadoc)
-     * @see org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration#asString(java.lang.String, java.lang.Throwable)
-     */
-    @Override
-    protected String asString(final String msg, final Throwable t) {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final PrintStream printStream = new PrintStream(baos);
-        printStream.print(msg);
-        printStream.print(System.lineSeparator());
-        t.printStackTrace(printStream);
-        printStream.flush();
-        return baos.toString();
-    }
 
     /* (non-Javadoc)
      * @see org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration#createPlantScheduler()

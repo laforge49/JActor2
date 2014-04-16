@@ -15,11 +15,11 @@
  */
 package org.agilewiki.jactor2.core.impl.jvm;
 
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
-import org.agilewiki.jactor2.core.util.GwtIncompatible;
-
 import java.util.ArrayList;
 import java.util.TreeSet;
+
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * The JVM (non-GWT) single-threaded PlantScheduler implementation.
@@ -86,12 +86,18 @@ public class JVMPlantScheduler implements PlantScheduler {
     /** The approximate current time. */
     private long now;
 
+    /** Are we closed? */
+    private boolean closed;
+
     /* (non-Javadoc)
      * @see org.agilewiki.jactor2.core.plant.PlantScheduler#scheduleAtFixedRate(java.lang.Runnable, long)
      */
     @Override
     public Task scheduleAtFixedRate(final Runnable _runnable,
             final long _millisecondDelay) {
+        if (closed) {
+            throw new IllegalStateException("Closed!");
+        }
         if (_runnable == null) {
             throw new NullPointerException("_runnable");
         }
@@ -123,12 +129,15 @@ public class JVMPlantScheduler implements PlantScheduler {
         if (task == null) {
             throw new NullPointerException("task");
         }
-        if (tasks.remove(task)) {
-            final Task cmd = (Task) task;
-            cmd.cancelled = true;
-            cmd.task = null;
-        } else if (!(task instanceof Task)) {
-            throw new IllegalArgumentException("Not a task: " + task.getClass());
+        if (!closed) {
+            if (tasks.remove(task)) {
+                final Task cmd = (Task) task;
+                cmd.cancelled = true;
+                cmd.task = null;
+            } else if (!(task instanceof Task)) {
+                throw new IllegalArgumentException("Not a task: "
+                        + task.getClass());
+            }
         }
     }
 
@@ -145,11 +154,14 @@ public class JVMPlantScheduler implements PlantScheduler {
      */
     @Override
     public void close() {
-        for (final Task cmd : tasks) {
-            cmd.cancelled = true;
-            cmd.task = null;
+        if (!closed) {
+            closed = true;
+            for (final Task cmd : tasks) {
+                cmd.cancelled = true;
+                cmd.task = null;
+            }
+            tasks.clear();
         }
-        tasks.clear();
     }
 
     /**
@@ -159,6 +171,9 @@ public class JVMPlantScheduler implements PlantScheduler {
      * @return the next time it should be called. 0 for "nothing else to do".
      */
     public long update(final long now) {
+        if (closed) {
+            throw new IllegalStateException("Closed!");
+        }
         this.now = now;
         long result = 0;
         if (!tasks.isEmpty()) {
@@ -181,6 +196,8 @@ public class JVMPlantScheduler implements PlantScheduler {
                     }
                 }
                 if (readd != null) {
+                    // Tasks need to be removed and re-added, because the value
+                    // of nextRun, which will affect their order in the tasks sorted set.
                     tasks.addAll(readd);
                 }
             } else {

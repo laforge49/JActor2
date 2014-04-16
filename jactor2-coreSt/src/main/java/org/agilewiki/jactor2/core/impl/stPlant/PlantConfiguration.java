@@ -1,8 +1,9 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
-
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
 
 /**
  * Base class for configuring the Plant.
@@ -15,8 +16,6 @@ abstract public class PlantConfiguration {
     private Recovery recovery;
 
     private PlantScheduler plantScheduler;
-
-    protected abstract String asString(String msg, Throwable t);
 
     /**
      * Create a plant configuration with a reactor thread pool size of 20.
@@ -79,7 +78,7 @@ abstract public class PlantConfiguration {
      * @param t the exception (throwable) to log
      */
     public void warn(final String msg, final Throwable t) {
-        LOGGER.warning(asString(msg, t));
+        LOGGER.log(Level.WARNING, msg, t);
     }
 
     /**
@@ -99,6 +98,6 @@ abstract public class PlantConfiguration {
      * @param t the exception (throwable) to log
      */
     public void error(final String msg, final Throwable t) {
-        LOGGER.severe(asString(msg, t));
+        LOGGER.log(Level.SEVERE, msg, t);
     }
 }
