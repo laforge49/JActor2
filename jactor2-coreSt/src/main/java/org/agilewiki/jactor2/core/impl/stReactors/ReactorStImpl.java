@@ -14,6 +14,7 @@ import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     private Recovery recovery;
@@ -570,5 +571,15 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      */
     public void error(String msg, Throwable t) {
         plantConfiguration.error(msg, t);
+    }
+
+    /**
+     * Returns the atomic reference to the reactor's thread.
+     *
+     * @return The atomic reference to the reactor's thread.
+     */
+    @Override
+    public AtomicReference<Thread> getThreadReference() {
+        throw new UnsupportedOperationException();
     }
 }

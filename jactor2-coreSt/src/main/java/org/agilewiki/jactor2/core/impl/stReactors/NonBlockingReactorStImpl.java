@@ -23,16 +23,6 @@ public class NonBlockingReactorStImpl extends PoolThreadReactorStImpl {
         return (NonBlockingReactor) getReactor();
     }
 
-    /**
-     * Returns the atomic reference to the reactor's thread.
-     *
-     * @return The atomic reference to the reactor's thread.
-     */
-    @Override
-    public AtomicReference<Thread> getThreadReference() {
-        throw new UnsupportedOperationException();
-    }
-
     @Override
     protected Inbox createInbox() {
         return new CommonInbox();
