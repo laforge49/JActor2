@@ -64,16 +64,6 @@ abstract public class PlantConfiguration {
     }
 
     /**
-     * Waits for asynchronous events.
-     *
-     * @return Returns a Request.
-     */
-    public Request<?> getAsynchronousRequest() {
-        throw new UnsupportedOperationException(
-                "by default, there are no asynchronous requests");
-    }
-
-    /**
      * Log a message at the WARN level.
      *
      * @param msg the message string to be logged
