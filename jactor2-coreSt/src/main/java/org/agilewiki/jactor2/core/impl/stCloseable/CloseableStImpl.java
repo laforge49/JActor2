@@ -5,10 +5,7 @@ import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Implements multiple dependencies.
@@ -17,7 +14,7 @@ public class CloseableStImpl implements CloseableImpl {
     private final Closeable closeable;
 
     private Set<ReactorImpl> closers =
-            Collections.newSetFromMap(new HashMap<ReactorImpl, Boolean>());
+            new HashSet<ReactorImpl>();
 
     private volatile boolean closing;
 
