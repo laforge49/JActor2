@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
 import org.agilewiki.jactor2.core.impl.stReactors.NonBlockingReactorStImpl;
+import org.agilewiki.jactor2.core.impl.stRequests.SyncRequestStImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -98,7 +99,7 @@ public class PlantStImpl extends PlantImpl {
     public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(
             final SyncRequest<RESPONSE_TYPE> _syncRequest,
             final Reactor _targetReactor) {
-        return null; //todo new SyncRequestStImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
+        return new SyncRequestStImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
     }
 
     @Override
