@@ -4,13 +4,9 @@ import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.impl.TestPlantConfiguration;
 
-public class PlantTest extends TestCase {
+public class LogTest extends TestCase {
     public void testa() throws Exception {
         TestPlantConfiguration config = new TestPlantConfiguration();
-        new Plant(new TestPlantConfiguration());
-        try {
-        } finally {
-            Plant.close();
-        }
+        config.warn("exception test", new SecurityException("Ignore this"));
     }
 }
