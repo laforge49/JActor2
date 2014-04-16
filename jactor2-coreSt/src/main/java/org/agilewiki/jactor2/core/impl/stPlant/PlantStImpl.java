@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
+import org.agilewiki.jactor2.core.impl.stReactors.NonBlockingReactorStImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -36,8 +37,6 @@ public class PlantStImpl extends PlantImpl {
 
     private final Queue<PoolThreadReactorImpl> pendingReactors = new LinkedBlockingQueue<PoolThreadReactorImpl>();
 
-    private PoolThreadReactorImpl activeReactor;
-
     /**
      * Create the singleton with the given configuration.
      *
@@ -60,21 +59,21 @@ public class PlantStImpl extends PlantImpl {
     public ReactorImpl createNonBlockingReactorImpl(
             final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return null; //todo new NonBlockingReactorStImpl(_parentReactor, 0, 0);
+        return new NonBlockingReactorStImpl(_parentReactor);
     }
 
     @Override
     public ReactorImpl createBlockingReactorImpl(
             final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return null; //todo new BlockingReactorStImpl(_parentReactor, 0, 0);
+        return null; //todo new BlockingReactorStImpl(_parentReactor);
     }
 
     @Override
     public ReactorImpl createIsolationReactorImpl(
             final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return null; //todo new IsolationReactorStImpl(_parentReactor, 0, 0);
+        return null; //todo new IsolationReactorStImpl(_parentReactor);
     }
 
     @Override
@@ -115,7 +114,7 @@ public class PlantStImpl extends PlantImpl {
             return;
         }
         try {
-            //todo getInternalReactor().close();
+            getInternalReactor().close();
         } finally {
             PlantScheduler plantScheduler = getPlantScheduler();
             if (plantScheduler != null)
@@ -149,7 +148,7 @@ public class PlantStImpl extends PlantImpl {
      * @return The reactor belonging to the singleton.
      */
     protected NonBlockingReactor createInternalReactor() {
-        return null; //todo new NonBlockingReactor(null);
+        return new NonBlockingReactor(null);
     }
 
     /**
@@ -214,13 +213,13 @@ public class PlantStImpl extends PlantImpl {
      */
     public void processMessages() {
         while (true) {
-            activeReactor = pendingReactors.poll();
-            if (activeReactor == null)
+            currentReactorImpl = pendingReactors.poll();
+            if (currentReactorImpl == null)
                 return;
             try {
-                activeReactor.run();
+                currentReactorImpl.run();
             } finally {
-                activeReactor = null;
+                currentReactorImpl = null;
             }
         }
     }
