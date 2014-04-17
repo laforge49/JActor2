@@ -1,10 +1,8 @@
-package org.agilewiki.jactor2.core.impl.mtReactors;
+package org.agilewiki.jactor2.core.impl.stReactors;
 
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The inbox used by IsolationReactor, the next request is not made available for processing
@@ -22,12 +20,12 @@ public class IsolationInbox extends Inbox {
     /**
      * Local response-pending (requests) queue for same-thread exchanges.
      */
-    private final ArrayDeque<RequestImpl> localResponsePendingQueue;
+    private final LinkedBlockingQueue<RequestImpl> localResponsePendingQueue;
 
     /**
      * Local no-response-pending (events and responses) queue for same-thread exchanges.
      */
-    private final ArrayDeque<RequestImpl> localNoResponsePendingQueue;
+    private final LinkedBlockingQueue<RequestImpl> localNoResponsePendingQueue;
 
     /**
      * Creates an IsolationInbox.
@@ -35,23 +33,8 @@ public class IsolationInbox extends Inbox {
      * @param initialLocalQueueSize The initial doLocal queue size.
      */
     public IsolationInbox(final int initialLocalQueueSize) {
-        concurrentQueue = new ConcurrentLinkedQueue<Object>();
-        localResponsePendingQueue = new ArrayDeque<RequestImpl>(
-                initialLocalQueueSize);
-        localNoResponsePendingQueue = new ArrayDeque<RequestImpl>(
-                initialLocalQueueSize);
-    }
-
-    /**
-     * Add the messages in a message block to the appropriate doLocal queue.
-     *
-     * @param _msgs The message to be added.
-     */
-    private void offerLocal(final Queue<RequestImpl> _msgs) {
-        while (!_msgs.isEmpty()) {
-            final RequestImpl msg = _msgs.poll();
-            offerLocal(msg);
-        }
+        localResponsePendingQueue = new LinkedBlockingQueue<RequestImpl>();
+        localNoResponsePendingQueue = new LinkedBlockingQueue<RequestImpl>();
     }
 
     @Override
@@ -66,8 +49,7 @@ public class IsolationInbox extends Inbox {
     @Override
     public boolean isEmpty() {
         return localResponsePendingQueue.isEmpty()
-                && localNoResponsePendingQueue.isEmpty()
-                && (concurrentQueue.peek() == null);
+                && localNoResponsePendingQueue.isEmpty();
     }
 
     @Override
@@ -77,19 +59,9 @@ public class IsolationInbox extends Inbox {
 
     @Override
     public boolean hasWork() {
-        while (localNoResponsePendingQueue.isEmpty()
+        if (localNoResponsePendingQueue.isEmpty()
                 && (processingRequest || localResponsePendingQueue.isEmpty())) {
-            final Object obj = concurrentQueue.poll();
-            if (obj == null) {
-                return false;
-            }
-            if (obj instanceof RequestImpl) {
-                final RequestImpl msg = (RequestImpl) obj;
-                offerLocal(msg);
-            } else {
-                final Queue<RequestImpl> msgs = (Queue<RequestImpl>) obj;
-                offerLocal(msgs);
-            }
+            return false;
         }
         return true;
     }
