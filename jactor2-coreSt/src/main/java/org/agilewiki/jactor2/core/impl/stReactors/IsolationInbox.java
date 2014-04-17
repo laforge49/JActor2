@@ -30,9 +30,8 @@ public class IsolationInbox extends Inbox {
     /**
      * Creates an IsolationInbox.
      *
-     * @param initialLocalQueueSize The initial doLocal queue size.
      */
-    public IsolationInbox(final int initialLocalQueueSize) {
+    public IsolationInbox() {
         localResponsePendingQueue = new LinkedBlockingQueue<RequestImpl>();
         localNoResponsePendingQueue = new LinkedBlockingQueue<RequestImpl>();
     }

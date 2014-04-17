@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
+import org.agilewiki.jactor2.core.impl.stReactors.IsolationReactorStImpl;
 import org.agilewiki.jactor2.core.impl.stReactors.NonBlockingReactorStImpl;
 import org.agilewiki.jactor2.core.impl.stRequests.AsyncRequestStImpl;
 import org.agilewiki.jactor2.core.impl.stRequests.SyncRequestStImpl;
@@ -78,7 +79,7 @@ public class PlantStImpl extends PlantImpl {
     public ReactorImpl createIsolationReactorImpl(
             final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return null; //todo new IsolationReactorStImpl(_parentReactor);
+        return new IsolationReactorStImpl(_parentReactor);
     }
 
     @Override
