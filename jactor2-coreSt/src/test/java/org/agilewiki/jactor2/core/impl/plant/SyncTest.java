@@ -29,7 +29,7 @@ class Sync1 extends NonBlockingBladeBase {
         return new SyncBladeRequest<Void>() {
             @Override
             public Void processSyncRequest() throws Exception {
-                System.out.println("Hi1");
+                System.out.println("Hi");
                 return null;
             }
         };
