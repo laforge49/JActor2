@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
 import org.agilewiki.jactor2.core.impl.stReactors.NonBlockingReactorStImpl;
+import org.agilewiki.jactor2.core.impl.stRequests.AsyncRequestStImpl;
 import org.agilewiki.jactor2.core.impl.stRequests.SyncRequestStImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
@@ -70,7 +71,7 @@ public class PlantStImpl extends PlantImpl {
     public ReactorImpl createBlockingReactorImpl(
             final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return null; //todo new BlockingReactorStImpl(_parentReactor);
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -106,7 +107,7 @@ public class PlantStImpl extends PlantImpl {
     public <RESPONSE_TYPE> AsyncRequestImpl<RESPONSE_TYPE> createAsyncRequestImpl(
             final AsyncRequest<RESPONSE_TYPE> _asyncRequest,
             final Reactor _targetReactor) {
-        return null; //todo new AsyncRequestStImpl<RESPONSE_TYPE>(_asyncRequest, _targetReactor);
+        return new AsyncRequestStImpl<RESPONSE_TYPE>(_asyncRequest, _targetReactor);
     }
 
     /**
