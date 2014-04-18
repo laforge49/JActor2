@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.plant;
 
-import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -62,6 +61,5 @@ public class DelayAReq extends AsyncRequest<Void> {
             }
         };
         scheduledFuture = plantScheduler.schedule(runnable, millisecondDelay);
-        final Reactor sourceReactor = getSourceReactor();
     }
 }
