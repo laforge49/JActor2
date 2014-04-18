@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
-
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
 
 /**
  * The default plantScheduler created by PlantConfiguration.
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DefaultPlantScheduler implements PlantScheduler {
 
-    private volatile long currentTimeMillis;
+    private volatile double currentTimeMillis;
 
     private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
@@ -32,11 +32,11 @@ public class DefaultPlantScheduler implements PlantScheduler {
     }
 
     /**
-     * Controls how often currentTimeMillis is updated: every 500 milliseconds.
+     * Controls how often currentTimeMillis is updated: every 5 milliseconds.
      * @return The number of milliseconds between updates to currentTimeMillis.
      */
     protected long getHeartbeatMillis() {
-        return 500;
+        return 5;
     }
 
     /**
@@ -49,20 +49,20 @@ public class DefaultPlantScheduler implements PlantScheduler {
     }
 
     @Override
-    public long currentTimeMillis() {
+    public double currentTimeMillis() {
         return currentTimeMillis;
     }
 
     @Override
     public ScheduledFuture<?> schedule(final Runnable runnable,
-            final long _millisecondDelay) {
+            final int _millisecondDelay) {
         return scheduledThreadPoolExecutor.schedule(runnable,
                 _millisecondDelay, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public ScheduledFuture<?> scheduleAtFixedRate(final Runnable runnable,
-            final long _millisecondDelay) {
+            final int _millisecondDelay) {
         return scheduledThreadPoolExecutor.scheduleAtFixedRate(runnable,
                 _millisecondDelay, _millisecondDelay, TimeUnit.MILLISECONDS);
     }

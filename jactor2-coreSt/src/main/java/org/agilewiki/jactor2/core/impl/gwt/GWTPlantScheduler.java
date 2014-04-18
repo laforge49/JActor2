@@ -69,7 +69,7 @@ public class GWTPlantScheduler implements PlantScheduler {
      */
     @Override
     public MyRepeatingCommand scheduleAtFixedRate(final Runnable _runnable,
-            final long _millisecondDelay) {
+            final int _millisecondDelay) {
         if (closed) {
             throw new IllegalStateException("Closed!");
         }
@@ -82,7 +82,7 @@ public class GWTPlantScheduler implements PlantScheduler {
         }
         final MyRepeatingCommand result = new MyRepeatingCommand();
         result.task = _runnable;
-        realScheduler.scheduleFixedPeriod(result, (int) _millisecondDelay);
+        realScheduler.scheduleFixedPeriod(result, _millisecondDelay);
         return result;
     }
 
@@ -91,7 +91,7 @@ public class GWTPlantScheduler implements PlantScheduler {
      */
     @Override
     public MyRepeatingCommand schedule(final Runnable _runnable,
-            final long _millisecondDelay) {
+            final int _millisecondDelay) {
         final MyRepeatingCommand result = scheduleAtFixedRate(_runnable,
                 _millisecondDelay);
         result.onceOnly = true;
@@ -116,7 +116,7 @@ public class GWTPlantScheduler implements PlantScheduler {
      * @see org.agilewiki.jactor2.core.plant.PlantScheduler#currentTimeMillis()
      */
     @Override
-    public long currentTimeMillis() {
+    public double currentTimeMillis() {
         return SystemUtils.currentTimeMillis();
     }
 

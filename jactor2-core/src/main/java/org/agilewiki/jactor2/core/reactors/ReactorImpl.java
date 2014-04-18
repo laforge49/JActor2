@@ -6,8 +6,6 @@ import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
-import java.util.Queue;
-
 /**
  * Base class for internal reactor implementations.
  */
@@ -102,8 +100,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @param _handler The new exception handler, or null.
      * @return The old exception handler, or null.
      */
-    ExceptionHandler setExceptionHandler(
-            final ExceptionHandler _handler);
+    ExceptionHandler setExceptionHandler(final ExceptionHandler _handler);
 
     /**
      * Returns the current exception handler.
@@ -118,8 +115,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @param _message A message.
      * @param _local   True when the current thread is assigned to the targetReactor.
      */
-    void unbufferedAddMessage(final RequestImpl _message,
-                                     final boolean _local);
+    void unbufferedAddMessage(final RequestImpl _message, final boolean _local);
 
     /**
      * Signals the start of a request.
@@ -170,9 +166,9 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     /**
      * The time when processing began on the current message.
      */
-    long getMessageStartTimeMillis();
+    double getMessageStartTimeMillis();
 
-    void setMessageStartTimeMillis(long messageStartTimeMillis);
+    void setMessageStartTimeMillis(double messageStartTimeMillis);
 
     /**
      * Log a message at the WARN level.

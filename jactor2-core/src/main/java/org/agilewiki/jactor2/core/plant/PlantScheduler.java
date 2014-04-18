@@ -11,7 +11,7 @@ public interface PlantScheduler {
      * @param _runnable          The Runnable to be scheduled.
      * @param _millisecondDelay How long to wait before the Runnable is to be run.
      */
-    Object schedule(Runnable _runnable, long _millisecondDelay);
+    Object schedule(Runnable _runnable, int _millisecondDelay);
 
     /**
      * Schedule a Runnable to be run repeatedly.
@@ -23,7 +23,7 @@ public interface PlantScheduler {
      * @throws java.lang.NullPointerException If the _runnable is null.
      * @throws java.lang.IllegalArgumentException If the value of _millisecondDelay is invalid.
      */
-    Object scheduleAtFixedRate(Runnable _runnable, long _millisecondDelay);
+    Object scheduleAtFixedRate(Runnable _runnable, int _millisecondDelay);
 
     /**
      * Cancels a task, that was scheduled with either schedule(java.lang.Runnable, long)
@@ -41,7 +41,7 @@ public interface PlantScheduler {
      *
      * @return The *approximate* time.
      */
-    long currentTimeMillis();
+    double currentTimeMillis();
 
     /**
      * Shut down the plantScheduler thread pool.

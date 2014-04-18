@@ -1,5 +1,9 @@
 package org.agilewiki.jactor2.core.impl.stReactors;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
@@ -8,22 +12,21 @@ import org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration;
 import org.agilewiki.jactor2.core.impl.stPlant.PlantStImpl;
 import org.agilewiki.jactor2.core.impl.stPlant.Recovery;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
-import org.agilewiki.jactor2.core.reactors.*;
+import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.Set;
 
 abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     private Recovery recovery;
 
     private PlantScheduler plantScheduler;
 
-    private CloseableImpl closeableImpl;
+    private final CloseableImpl closeableImpl;
 
     /**
      * A set of CloseableBase objects.
@@ -31,7 +34,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      */
     private Set<Closeable> closeables;
 
-    private Set<RequestImpl> inProcessRequests = new HashSet<RequestImpl>();
+    private final Set<RequestImpl> inProcessRequests = new HashSet<RequestImpl>();
 
     private volatile boolean running;
 
@@ -75,11 +78,12 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     public ReactorStImpl(final NonBlockingReactor _parentReactor) {
         closeableImpl = new CloseableStImpl(this);
         plantConfiguration = PlantStImpl.getSingleton().getPlantConfiguration();
-        NonBlockingReactorStImpl parentReactorImpl =
-                _parentReactor == null ? null : (NonBlockingReactorStImpl) _parentReactor.asReactorImpl();
-        recovery = _parentReactor == null ? plantConfiguration.getRecovery() : parentReactorImpl.getRecovery();
-        plantScheduler = _parentReactor == null ?
-                plantConfiguration.getPlantScheduler() : parentReactorImpl.getPlantScheduler();
+        final NonBlockingReactorStImpl parentReactorImpl = _parentReactor == null ? null
+                : (NonBlockingReactorStImpl) _parentReactor.asReactorImpl();
+        recovery = _parentReactor == null ? plantConfiguration.getRecovery()
+                : parentReactorImpl.getRecovery();
+        plantScheduler = _parentReactor == null ? plantConfiguration
+                .getPlantScheduler() : parentReactorImpl.getPlantScheduler();
         parentReactor = _parentReactor;
         if (_parentReactor != null) {
             _parentReactor.addCloseable(this);
@@ -92,6 +96,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @param _reactor The Reactor of this ReactorImpl.
      */
+    @Override
     public void initialize(final Reactor _reactor) {
         super._initialize(_reactor);
         inbox = createInbox();
@@ -102,6 +107,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return The Reactor of this ReactorImpl.
      */
+    @Override
     public Reactor asReactor() {
         return getReactor();
     }
@@ -116,6 +122,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return The parent reactor, or null.
      */
+    @Override
     public NonBlockingReactor getParentReactor() {
         return parentReactor;
     }
@@ -125,6 +132,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return The initial size of a send buffer.
      */
+    @Override
     public int getInitialBufferSize() {
         return 0;
     }
@@ -134,6 +142,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return The initial size of the local queue.
      */
+    @Override
     public int getInitialLocalQueueSize() {
         return 0;
     }
@@ -143,6 +152,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return True, if this ReactorImpl is actively processing messages.
      */
+    @Override
     public final boolean isRunning() {
         return running;
     }
@@ -156,6 +166,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         return startClosing;
     }
 
+    @Override
     public final boolean isClosing() {
         return shuttingDown;
     }
@@ -170,6 +181,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         fail(null);
     }
 
+    @Override
     public String getReasonForFailure() {
         return reason;
     }
@@ -180,6 +192,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @param _reason The reason why the reactor is being closed,
      *                or null if not a failure.
      */
+    @Override
     public void fail(final String _reason) throws Exception {
         reason = _reason;
         closeableImpl.close();
@@ -189,30 +202,31 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         startClosing = true;
 
         if (closeables != null) {
-            HashSet<Closeable> hs = new HashSet<Closeable>(closeables);
+            final HashSet<Closeable> hs = new HashSet<Closeable>(closeables);
             Iterator<Closeable> cit = hs.iterator();
             while (cit.hasNext()) {
-                Closeable closeable = cit.next();
+                final Closeable closeable = cit.next();
                 try {
                     closeable.close();
                 } catch (final Throwable t) {
                     if (closeable != null && PlantStImpl.DEBUG) {
-                        warn("Error closing a " + closeable.getClass().getName(), t);
+                        warn("Error closing a "
+                                + closeable.getClass().getName(), t);
                     }
                 }
             }
             cit = closeables.iterator();
             while (cit.hasNext()) {
-                Closeable closeable = cit.next();
+                final Closeable closeable = cit.next();
                 warn("still has closable: " + this + "\n" + closeable);
             }
         }
 
         shuttingDown = true;
 
-        Iterator<RequestImpl> mit = inProcessRequests.iterator();
+        final Iterator<RequestImpl> mit = inProcessRequests.iterator();
         while (mit.hasNext()) {
-            RequestImpl requestImpl = mit.next();
+            final RequestImpl requestImpl = mit.next();
             requestImpl.close();
         }
 
@@ -234,6 +248,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return The message currently being processed, or null.
      */
+    @Override
     public final RequestImpl getCurrentRequest() {
         return currentRequest;
     }
@@ -243,6 +258,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @param _message The message currently being processed.
      */
+    @Override
     public final void setCurrentRequest(final RequestImpl _message) {
         currentRequest = _message;
     }
@@ -253,6 +269,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return True if there is a message in the inbox that can be processed.
      */
+    @Override
     public final boolean hasWork() {
         return inbox.hasWork();
     }
@@ -262,6 +279,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return True when the inbox is not empty.
      */
+    @Override
     public final boolean isInboxEmpty() {
         return inbox.isEmpty();
     }
@@ -272,6 +290,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @param _handler The new exception handler, or null.
      * @return The old exception handler, or null.
      */
+    @Override
     public final ExceptionHandler setExceptionHandler(
             final ExceptionHandler _handler) {
         if (!isRunning()) {
@@ -288,6 +307,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return The current exception handler, or null.
      */
+    @Override
     public final ExceptionHandler getExceptionHandler() {
         return exceptionHandler;
     }
@@ -298,8 +318,9 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @param _message A message.
      * @param _local   True when the current thread is assigned to the targetReactor.
      */
+    @Override
     public void unbufferedAddMessage(final RequestImpl _message,
-                                     final boolean _local) {
+            final boolean _local) {
         if (isClosing()) {
             if (!_message.isComplete()) {
                 try {
@@ -347,7 +368,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     abstract protected void notBusy() throws Exception;
 
     public final void incomingResponse(final RequestImpl _message,
-                                       final ReactorImpl _responseSource) {
+            final ReactorImpl _responseSource) {
         try {
             final boolean local = this == _responseSource;
             unbufferedAddMessage(_message, local);
@@ -359,6 +380,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     /**
      * Signals the start of a request.
      */
+    @Override
     public void requestBegin(final RequestImpl _requestImpl) {
         inbox.requestBegin(_requestImpl);
     }
@@ -368,9 +390,10 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @param _message The request that has completed
      */
+    @Override
     public void requestEnd(final RequestImpl _message) {
         if (_message.isForeign()) {
-            boolean b = inProcessRequests.remove(_message);
+            final boolean b = inProcessRequests.remove(_message);
         }
         inbox.requestEnd(_message);
     }
@@ -413,6 +436,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return null.
      */
+    @Override
     public SyncRequest<Void> nullSReq() {
         return new SyncBladeRequest<Void>() {
             @Override
@@ -440,10 +464,12 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @param _closeable A closeable to be closed when this ReactorImpl is closed.
      * @return True when the closeable was added to the list.
      */
+    @Override
     public boolean addCloseable(final Closeable _closeable) {
         if (startedClosing())
-            throw new ReactorClosedException("call to addCloseable when reactor already started closing: " +
-                    reason);
+            throw new ReactorClosedException(
+                    "call to addCloseable when reactor already started closing: "
+                            + reason);
         if (this == _closeable)
             return false;
         if (!getCloseableSet().add(_closeable))
@@ -458,6 +484,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @param _closeable The closeable to be removed.
      * @return True when the closeable was removed.
      */
+    @Override
     public boolean removeCloseable(final Closeable _closeable) {
         if (closeables == null)
             return false;
@@ -468,10 +495,12 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         return true;
     }
 
+    @Override
     public boolean isSlow() {
         return false;
     }
 
+    @Override
     public boolean isCommonReactor() {
         return asReactor() instanceof CommonReactor;
     }
@@ -483,7 +512,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         return recovery;
     }
 
-    public void setRecovery(Recovery recovery) {
+    public void setRecovery(final Recovery recovery) {
         this.recovery = recovery;
     }
 
@@ -494,18 +523,20 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         return plantScheduler;
     }
 
-    public void setPlantScheduler(PlantScheduler plantScheduler) {
+    public void setPlantScheduler(final PlantScheduler plantScheduler) {
         this.plantScheduler = plantScheduler;
     }
 
     /**
      * The time when processing began on the current message.
      */
-    public long getMessageStartTimeMillis() {
+    @Override
+    public double getMessageStartTimeMillis() {
         throw new UnsupportedOperationException();
     }
 
-    public void setMessageStartTimeMillis(long messageStartTimeMillis) {
+    @Override
+    public void setMessageStartTimeMillis(final double messageStartTimeMillis) {
         throw new UnsupportedOperationException();
     }
 
@@ -514,7 +545,8 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @param msg the message string to be logged
      */
-    public void warn(String msg) {
+    @Override
+    public void warn(final String msg) {
         plantConfiguration.warn(msg);
     }
 
@@ -525,7 +557,8 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @param msg the message accompanying the exception
      * @param t the exception (throwable) to log
      */
-    public void warn(String msg, Throwable t) {
+    @Override
+    public void warn(final String msg, final Throwable t) {
         plantConfiguration.warn(msg, t);
     }
 
@@ -534,7 +567,8 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @param msg the message string to be logged
      */
-    public void error(String msg) {
+    @Override
+    public void error(final String msg) {
         plantConfiguration.error(msg);
     }
 
@@ -545,7 +579,8 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @param msg the message accompanying the exception
      * @param t the exception (throwable) to log
      */
-    public void error(String msg, Throwable t) {
+    @Override
+    public void error(final String msg, final Throwable t) {
         plantConfiguration.error(msg, t);
     }
 }

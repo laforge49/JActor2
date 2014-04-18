@@ -29,7 +29,7 @@ public class Delay extends BlockingBladeBase {
      * @param _delay The duration of the delay in milliseconds.
      * @return The delay request.
      */
-    public SyncRequest<Void> sleepSReq(final long _delay) {
+    public SyncRequest<Void> sleepSReq(final int _delay) {
         return new SyncBladeRequest<Void>() {
             @Override
             public Void processSyncRequest() throws Exception {

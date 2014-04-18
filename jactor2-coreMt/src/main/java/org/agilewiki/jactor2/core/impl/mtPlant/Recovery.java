@@ -14,7 +14,7 @@ public class Recovery {
      *
      * @return The number of milliseconds between polls. Default = 500.
      */
-    public long getReactorPollMillis() {
+    public int getReactorPollMillis() {
         return 500;
     }
 
@@ -26,7 +26,7 @@ public class Recovery {
      * @param _reactorImpl  The reactor which may have a timed-out message.
      * @return Number of milliseconds.
      */
-    public long getMessageTimeoutMillis(final ReactorImpl _reactorImpl) {
+    public int getMessageTimeoutMillis(final ReactorImpl _reactorImpl) {
         if (_reactorImpl.isSlow())
             return 300000;
         return 1000;
@@ -38,7 +38,8 @@ public class Recovery {
      *
      * @param _reactorImpl    The reactor with the timed-out message
      */
-    public void onMessageTimeout(final ReactorImpl _reactorImpl) throws Exception {
+    public void onMessageTimeout(final ReactorImpl _reactorImpl)
+            throws Exception {
         _reactorImpl.error("message timeout -> reactor close");
         _reactorImpl.fail("message timeout");
     }
@@ -50,7 +51,7 @@ public class Recovery {
      * @param _reactorImpl    The reactor whose thread is being interrupted.
      * @return Number of milliseconds.
      */
-    public long getThreadInterruptMillis(final ReactorImpl _reactorImpl) {
+    public int getThreadInterruptMillis(final ReactorImpl _reactorImpl) {
         return 1000;
     }
 
@@ -63,7 +64,8 @@ public class Recovery {
         _reactorImpl.error("hung thread -> plant exit");
         try {
             PlantBase.close();
-        } catch (Exception ex) {}
+        } catch (final Exception ex) {
+        }
         System.exit(10);
     }
 
@@ -73,7 +75,7 @@ public class Recovery {
      * @param _requestImpl    The reactor with the hung request.
      */
     public void onHungRequest(final RequestImpl _requestImpl) throws Exception {
-        ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
+        final ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.error("request hung -> reactor close");
         reactor.fail("hung request");
     }
@@ -84,12 +86,13 @@ public class Recovery {
      * @param _requestImpl    The reactor with the hung request.
      * @param _error          The StackOverflowError.
      */
-    public void onStackOverflowError(final RequestImpl _requestImpl, final StackOverflowError _error) {
-        ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
+    public void onStackOverflowError(final RequestImpl _requestImpl,
+            final StackOverflowError _error) {
+        final ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.error("stack overflow error -> reactor close", _error);
         try {
             reactor.fail("stack overflow");
-        } catch (Exception e) {
+        } catch (final Exception e) {
 
         }
     }
@@ -100,12 +103,13 @@ public class Recovery {
      * @param _requestImpl    The reactor with the hung request.
      * @param _exception      The runtime exception
      */
-    public void onRuntimeException(final RequestImpl _requestImpl, final RuntimeException _exception) {
-        ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
+    public void onRuntimeException(final RequestImpl _requestImpl,
+            final RuntimeException _exception) {
+        final ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.error("runtime exception -> reactor close", _exception);
         try {
             reactor.fail("runtime exception");
-        } catch (Exception e) {
+        } catch (final Exception e) {
 
         }
     }

@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
  * Builds on PlantScheduler.
  */
 public class DelayAReq extends AsyncRequest<Void> {
-    private final long millisecondDelay;
+    private final int millisecondDelay;
     private Object scheduledFuture;
     private final AsyncResponseProcessor<Void> dis = this;
 
@@ -18,7 +18,7 @@ public class DelayAReq extends AsyncRequest<Void> {
      *
      * @param _millisecondDelay    How long to wait before responding.
      */
-    public DelayAReq(final long _millisecondDelay) {
+    public DelayAReq(final int _millisecondDelay) {
         super(PlantBase.getInternalReactor());
         millisecondDelay = _millisecondDelay;
     }

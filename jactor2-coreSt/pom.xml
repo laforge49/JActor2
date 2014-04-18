@@ -71,26 +71,26 @@
         <dependency>
             <groupId>com.blockwithme</groupId>
             <artifactId>UtilShared</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.blockwithme</groupId>
             <artifactId>UtilShared</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
             <classifier>sources</classifier>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.blockwithme</groupId>
             <artifactId>UtilClient</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.blockwithme</groupId>
             <artifactId>UtilClient</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
             <classifier>sources</classifier>
             <scope>provided</scope>
         </dependency>

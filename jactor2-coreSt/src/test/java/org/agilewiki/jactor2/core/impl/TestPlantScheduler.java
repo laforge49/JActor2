@@ -1,17 +1,18 @@
 package org.agilewiki.jactor2.core.impl;
 
-import com.blockwithme.util.shared.SystemUtils;
-
 import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.blockwithme.util.shared.SystemUtils;
+
 /**
  * A scheduler for Plant, created by PlantConfiguration.
  */
-public class TestPlantScheduler implements org.agilewiki.jactor2.core.plant.PlantScheduler {
+public class TestPlantScheduler implements
+        org.agilewiki.jactor2.core.plant.PlantScheduler {
 
     @SuppressWarnings("rawtypes")
     private class MyTimerTask extends MyAbstractTimerTask {
@@ -146,13 +147,13 @@ public class TestPlantScheduler implements org.agilewiki.jactor2.core.plant.Plan
     }
 
     @Override
-    public long currentTimeMillis() {
+    public double currentTimeMillis() {
         return currentTimeMillis;
     }
 
     @Override
     public ScheduledFuture<?> schedule(final Runnable runnable,
-            final long _millisecondDelay) {
+            final int _millisecondDelay) {
         final MyTimerTask result = new MyTimerTask(runnable, true);
         timer.schedule(result, _millisecondDelay);
         return result;
@@ -160,7 +161,7 @@ public class TestPlantScheduler implements org.agilewiki.jactor2.core.plant.Plan
 
     @Override
     public ScheduledFuture<?> scheduleAtFixedRate(final Runnable runnable,
-            final long _millisecondDelay) {
+            final int _millisecondDelay) {
         final MyTimerTask result = new MyTimerTask(runnable, false);
         timer.scheduleAtFixedRate(result, _millisecondDelay, _millisecondDelay);
         return result;

@@ -43,19 +43,19 @@ public class JVMPlantScheduler implements PlantScheduler {
         Runnable task;
 
         /** When are we running again? */
-        private long nextRun;
+        private double nextRun;
 
         /** Delay in MS. Only for repeating tasks. */
-        private final long delay;
+        private final int delay;
 
         /** Creates a Task */
-        public Task(final Runnable task, final long delay) {
+        public Task(final Runnable task, final int delay) {
             this.delay = delay;
             this.task = task;
         }
 
         /** Executes the task. Returns true if it must be called again. */
-        public boolean execute(final long now) {
+        public boolean execute(final double now) {
             if (!cancelled) {
                 task.run();
                 if (onceOnly) {
@@ -68,7 +68,7 @@ public class JVMPlantScheduler implements PlantScheduler {
         }
 
         /** Updates the next run. */
-        public void updateNextRun(final long now) {
+        public void updateNextRun(final double now) {
             nextRun = now + delay;
         }
 
@@ -93,7 +93,7 @@ public class JVMPlantScheduler implements PlantScheduler {
      */
     @Override
     public Task scheduleAtFixedRate(final Runnable _runnable,
-            final long _millisecondDelay) {
+            final int _millisecondDelay) {
         if (closed) {
             throw new IllegalStateException("Closed!");
         }
@@ -114,7 +114,7 @@ public class JVMPlantScheduler implements PlantScheduler {
      * @see org.agilewiki.jactor2.core.plant.PlantScheduler#schedule(java.lang.Runnable, long)
      */
     @Override
-    public Task schedule(final Runnable _runnable, final long _millisecondDelay) {
+    public Task schedule(final Runnable _runnable, final int _millisecondDelay) {
         final Task result = scheduleAtFixedRate(_runnable, _millisecondDelay);
         result.onceOnly = true;
         return result;
@@ -144,7 +144,7 @@ public class JVMPlantScheduler implements PlantScheduler {
      * @see org.agilewiki.jactor2.core.plant.PlantScheduler#currentTimeMillis()
      */
     @Override
-    public long currentTimeMillis() {
+    public double currentTimeMillis() {
         return SystemUtils.currentTimeMillis();
     }
 
@@ -169,13 +169,13 @@ public class JVMPlantScheduler implements PlantScheduler {
      * @param now the current time.
      * @return the next time it should be called. 0 for "nothing else to do".
      */
-    public long update(final long now) {
+    public double update(final double now) {
         if (closed) {
             throw new IllegalStateException("Closed!");
         }
-        long result = 0;
+        double result = 0;
         if (!tasks.isEmpty()) {
-            final long nextRun = tasks.first().nextRun;
+            final double nextRun = tasks.first().nextRun;
             if (nextRun <= now) {
                 ArrayList<Task> readd = null;
                 final Task[] array = tasks.toArray(new Task[tasks.size()]);

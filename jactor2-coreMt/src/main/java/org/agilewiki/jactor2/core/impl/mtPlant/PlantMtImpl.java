@@ -1,6 +1,12 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import org.agilewiki.jactor2.core.impl.mtReactors.*;
+import org.agilewiki.jactor2.core.impl.mtReactors.BlockingReactorMtImpl;
+import org.agilewiki.jactor2.core.impl.mtReactors.IsolationReactorMtImpl;
+import org.agilewiki.jactor2.core.impl.mtReactors.NonBlockingReactorMtImpl;
+import org.agilewiki.jactor2.core.impl.mtReactors.PoolThreadReactorMtImpl;
+import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
+import org.agilewiki.jactor2.core.impl.mtReactors.SwingBoundReactorMtImpl;
+import org.agilewiki.jactor2.core.impl.mtReactors.ThreadBoundReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
@@ -32,9 +38,9 @@ public class PlantMtImpl extends PlantImpl {
 
     private PlantConfiguration plantConfiguration;
 
-    private NonBlockingReactor internalReactor;
+    private final NonBlockingReactor internalReactor;
 
-    private ReactorPoolThreadManager reactorPoolThreadManager;
+    private final ReactorPoolThreadManager reactorPoolThreadManager;
 
     /**
      * Create the singleton with a default configuration.
@@ -62,29 +68,37 @@ public class PlantMtImpl extends PlantImpl {
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
         }
-        String configurationClassName = System.getProperty("jactor.configurationClass");
+        final String configurationClassName = System
+                .getProperty("jactor.configurationClass");
         if (configurationClassName != null) {
-            ClassLoader classLoader = getClass().getClassLoader();
+            final ClassLoader classLoader = getClass().getClassLoader();
             Class configurationClass = null;
             try {
-                configurationClass = classLoader.loadClass(configurationClassName);
-            } catch (ClassNotFoundException e) {
-                throw new IllegalArgumentException("unable to load class " + configurationClassName, e);
+                configurationClass = classLoader
+                        .loadClass(configurationClassName);
+            } catch (final ClassNotFoundException e) {
+                throw new IllegalArgumentException("unable to load class "
+                        + configurationClassName, e);
             }
             try {
-                plantConfiguration = (PlantConfiguration) configurationClass.newInstance();
-            } catch (InstantiationException e) {
-                throw new IllegalArgumentException("unable to instantiate " + configurationClassName, e);
-            } catch (IllegalAccessException e) {
-                throw new IllegalArgumentException("unable to instantiate " + configurationClassName, e);
+                plantConfiguration = (PlantConfiguration) configurationClass
+                        .newInstance();
+            } catch (final InstantiationException e) {
+                throw new IllegalArgumentException("unable to instantiate "
+                        + configurationClassName, e);
+            } catch (final IllegalAccessException e) {
+                throw new IllegalArgumentException("unable to instantiate "
+                        + configurationClassName, e);
             }
         } else
             plantConfiguration = _plantConfiguration;
-        reactorPoolThreadManager = plantConfiguration.createReactorPoolThreadManager();
-        long reactorPollMillis = _plantConfiguration.getRecovery().getReactorPollMillis();
+        reactorPoolThreadManager = plantConfiguration
+                .createReactorPoolThreadManager();
+        final int reactorPollMillis = _plantConfiguration.getRecovery()
+                .getReactorPollMillis();
         internalReactor = createInternalReactor();
-        _plantConfiguration.getPlantScheduler().scheduleAtFixedRate(plantPoll(),
-                reactorPollMillis);
+        _plantConfiguration.getPlantScheduler().scheduleAtFixedRate(
+                plantPoll(), reactorPollMillis);
     }
 
     public void removeThreadBoundReactor() {
@@ -93,7 +107,7 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public ReactorImpl getCurrentReactorImpl() {
-        Thread thread = Thread.currentThread();
+        final Thread thread = Thread.currentThread();
         if (thread instanceof ReactorPoolThread)
             return ((ReactorPoolThread) thread).getCurrentReactorImpl();
         return ThreadBoundReactorMtImpl.threadReactor();
@@ -105,49 +119,66 @@ public class PlantMtImpl extends PlantImpl {
                     "Use of call on a ReactorPoolThread can result in a deadlock");
         } else if (ThreadBoundReactorMtImpl.threadReactor() != null)
             throw new UnsupportedOperationException(
-                    "Use of call on a Thread bound to a reactor can result in a deadlock " + ThreadBoundReactorMtImpl.threadReactor());
+                    "Use of call on a Thread bound to a reactor can result in a deadlock "
+                            + ThreadBoundReactorMtImpl.threadReactor());
 
     }
 
     @Override
-    public ReactorImpl createNonBlockingReactorImpl(final NonBlockingReactor _parentReactor,
-                                                    final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new NonBlockingReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    public ReactorImpl createNonBlockingReactorImpl(
+            final NonBlockingReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return new NonBlockingReactorMtImpl(_parentReactor, _initialOutboxSize,
+                _initialLocalQueueSize);
     }
 
     @Override
-    public ReactorImpl createBlockingReactorImpl(final NonBlockingReactor _parentReactor,
-                                                 final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new BlockingReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    public ReactorImpl createBlockingReactorImpl(
+            final NonBlockingReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return new BlockingReactorMtImpl(_parentReactor, _initialOutboxSize,
+                _initialLocalQueueSize);
     }
 
     @Override
-    public ReactorImpl createIsolationReactorImpl(final NonBlockingReactor _parentReactor,
-                                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new IsolationReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    public ReactorImpl createIsolationReactorImpl(
+            final NonBlockingReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return new IsolationReactorMtImpl(_parentReactor, _initialOutboxSize,
+                _initialLocalQueueSize);
     }
 
     @Override
-    public ReactorImpl createSwingBoundReactorImpl(final NonBlockingReactor _parentReactor,
-                                                   final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return new SwingBoundReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    public ReactorImpl createSwingBoundReactorImpl(
+            final NonBlockingReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return new SwingBoundReactorMtImpl(_parentReactor, _initialOutboxSize,
+                _initialLocalQueueSize);
     }
 
     @Override
-    public ReactorImpl createThreadBoundReactorImpl(final NonBlockingReactor _parentReactor,
-                                                    final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                                    final Runnable _boundProcessor) {
-        return new ThreadBoundReactorMtImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+    public ReactorImpl createThreadBoundReactorImpl(
+            final NonBlockingReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize,
+            final Runnable _boundProcessor) {
+        return new ThreadBoundReactorMtImpl(_parentReactor, _initialOutboxSize,
+                _initialLocalQueueSize, _boundProcessor);
     }
 
     @Override
-    public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(SyncRequest<RESPONSE_TYPE> _syncRequest, Reactor _targetReactor) {
-        return new SyncRequestMtImpl<RESPONSE_TYPE>(_syncRequest, _targetReactor);
+    public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(
+            final SyncRequest<RESPONSE_TYPE> _syncRequest,
+            final Reactor _targetReactor) {
+        return new SyncRequestMtImpl<RESPONSE_TYPE>(_syncRequest,
+                _targetReactor);
     }
 
     @Override
-    public <RESPONSE_TYPE> AsyncRequestImpl<RESPONSE_TYPE> createAsyncRequestImpl(AsyncRequest<RESPONSE_TYPE> _asyncRequest, Reactor _targetReactor) {
-        return new AsyncRequestMtImpl<RESPONSE_TYPE>(_asyncRequest, _targetReactor);
+    public <RESPONSE_TYPE> AsyncRequestImpl<RESPONSE_TYPE> createAsyncRequestImpl(
+            final AsyncRequest<RESPONSE_TYPE> _asyncRequest,
+            final Reactor _targetReactor) {
+        return new AsyncRequestMtImpl<RESPONSE_TYPE>(_asyncRequest,
+                _targetReactor);
     }
 
     /**
@@ -181,6 +212,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @return The scheduler.
      */
+    @Override
     public PlantScheduler getPlantScheduler() {
         return plantConfiguration.getPlantScheduler();
     }
@@ -191,9 +223,10 @@ public class PlantMtImpl extends PlantImpl {
      * @param _millisecondDelay Milliseconds until the semaphore times out.
      * @return A new SchedulableSemaphore.
      */
-    public SchedulableSemaphore schedulableSemaphore(final long _millisecondDelay) {
-        SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
-        plantConfiguration.getPlantScheduler().schedule(schedulableSemaphore.runnable, _millisecondDelay);
+    public SchedulableSemaphore schedulableSemaphore(final int _millisecondDelay) {
+        final SchedulableSemaphore schedulableSemaphore = new SchedulableSemaphore();
+        plantConfiguration.getPlantScheduler().schedule(
+                schedulableSemaphore.runnable, _millisecondDelay);
         return schedulableSemaphore;
     }
 
@@ -203,7 +236,8 @@ public class PlantMtImpl extends PlantImpl {
      * @return The reactor belonging to the singleton.
      */
     protected NonBlockingReactor createInternalReactor() {
-        return new NonBlockingReactor(null, plantConfiguration.getInitialBufferSize(),
+        return new NonBlockingReactor(null,
+                plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize());
     }
 
@@ -214,10 +248,12 @@ public class PlantMtImpl extends PlantImpl {
      */
     private Runnable plantPoll() {
         return new Runnable() {
+            @Override
             public void run() {
                 try {
-                    ((ReactorMtImpl) getInternalReactor().asReactorImpl()).reactorPoll();
-                } catch (Exception x) {
+                    ((ReactorMtImpl) getInternalReactor().asReactorImpl())
+                            .reactorPoll();
+                } catch (final Exception x) {
                     x.printStackTrace();
                 }
             }
