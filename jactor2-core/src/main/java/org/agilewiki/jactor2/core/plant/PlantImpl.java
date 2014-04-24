@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.plant;
 
+import org.agilewiki.jactor2.core.closeable.Closeable;
+import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
@@ -71,6 +73,8 @@ abstract public class PlantImpl {
 
     abstract public <RESPONSE_TYPE> AsyncRequestImpl<RESPONSE_TYPE> createAsyncRequestImpl(
             AsyncRequest<RESPONSE_TYPE> _asyncRequest, Reactor _targetReactor);
+
+    abstract public CloseableImpl createCloseableImpl(Closeable _closeable);
 
     /**
      * Returns 16.
