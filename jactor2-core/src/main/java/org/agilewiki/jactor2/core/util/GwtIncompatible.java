@@ -28,36 +28,32 @@ import java.lang.annotation.*;
  *
  * For example:
  *
- * {@code
  * class A {
  *
  *   int field;
  *
- *   @GwtIncompatible("incompatible class")
+ *   {@literal @}GwtIncompatible("incompatible class")
  *   class Inner {
  *     ....
  *   }
  *
- *   @GwtIncompatible("incompatible field")
+ *   {@literal @}GwtIncompatible("incompatible field")
  *   int field2 = methodThatisNotSupportedbyGwt();
  *
  *   void method1() { }
  *
- *   @GwtIncompatible("incompatbile method")
+ *   {@literal @}GwtIncompatible("incompatbile method")
  *   void method2() {}
- * }
  * }
  *
  * is seen by the Gwt compiler as
  *
- * {@code
  * class A {
  *
  *   int field;
  *
  *   void method1() { }
  *
- * }
  * }
  *
  * Warning: this may have surprising effects when combined with method overloading or inheritance.

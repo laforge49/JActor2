@@ -793,7 +793,8 @@ Links
 
 - [Core Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html)
 - [Modeling Actors with Locks](http://www.agilewiki.org/docs/tutorials/actors/index.html)
-- [API](http://www.agilewiki.org/docs/api/index.html)
+- [JActor2-Core API](http://www.agilewiki.org/docs/api/core/index.html)
+- [JActor2-CoreMt API](http://www.agilewiki.org/docs/api/core/index.html)
 - [Downloads](http://www.agilewiki.org/downloads)
 - Dependencies: [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
