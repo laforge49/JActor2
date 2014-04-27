@@ -10,15 +10,15 @@
 <p>
 A SyncRequest must operate within the confines of a single reactor/thread.
 In contrast, an
-<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>
 can interact with blades which do not have the same reactor via its
-<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html#send-org.agilewiki.jactor2.core.requests.Request-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">send</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html#send-org.agilewiki.jactor2.core.requests.Request-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">send</a>
 method.
 This is illustrated by the <a href="java7/ForeignPing.java">ForeignPing</a> program:
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -218,7 +218,7 @@ The default constructor of NonBlockingBladeBase, used by both Ponger and Foreign
 creates a NonBlockingReactor for those blades.
 </p>
 <h2>
-<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>
 </h2>
 <pre>
     public AsyncRequest&lt;Void&gt; pingAReq() {
@@ -231,7 +231,7 @@ it is not safe for a request in ForeignPing to directly call a method in Ponger.
 This is why a request in ForeignPing must use the send method in AsyncRequest.
 </p>
 <h2>
-<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html">AsyncBladeRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html">AsyncBladeRequest</a>
 </h2>
 <pre>
         return new AsyncBladeRequest&lt;Void&gt;() {
@@ -243,14 +243,14 @@ The pingAReq returns an AsyncRequest&lt;Void&gt; created using AsyncBladeRequest
 which is an AsyncRequest that uses the blade's own reactor.
 </p>
 <h2>
-<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html">AsyncResponseProcessor</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html">AsyncResponseProcessor</a>
 </h2>
 <pre>
             AsyncRequest&lt;Void&gt; dis = this;
 </pre>
 <p>
 The AsyncRequest interface extends AsyncResponseProcessor, which provides the
-<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html#processAsyncResponse-RESPONSE_TYPE-">processAsyncResponse</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html#processAsyncResponse-RESPONSE_TYPE-">processAsyncResponse</a>
 method.
 This method is used to pass back the result of the AsyncRequest to the code that invoked it.
 </p>
@@ -267,7 +267,7 @@ The AsyncResponseProcessor, pongerResponseProcessor, is used to process the Long
 from Ponger's pingSReq.
 </p>
 <h2>
-<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html#processAsyncResponse-RESPONSE_TYPE-">processAsyncRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html#processAsyncResponse-RESPONSE_TYPE-">processAsyncRequest</a>
 </h2>
 <pre>
             public void processAsyncRequest() {
@@ -297,7 +297,7 @@ main
     }
 </pre>
 <p>
-The <a href="../../api/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
+The <a href="../../api/core/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
 method is defined for both SyncRequest and AsyncRequest.
 It blocks the thread until a response is returned and <strong>can not be used when processing a request</strong>.
 </p>
