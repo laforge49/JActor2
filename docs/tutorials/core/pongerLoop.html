@@ -40,7 +40,7 @@ public class PongerLoop extends SyncRequest&lt;Void&gt; {
 }
 </pre>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>
 </h3>
 <pre>
 public class PongerLoop extends SyncRequest&lt;Void&gt; {
@@ -74,7 +74,7 @@ Unlike call, no messages are passed between threads and no threads are blocked.
 DirectSpeedReport is a small program that times the Ponger request and creates a speed report:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
@@ -102,10 +102,10 @@ for it to use a NonBlockingReactor.
 </p>
 <pre>
 Direct Timings
-Test duration in nanoseconds: 4083868524
+Test duration in nanoseconds: 3997018431
 Number of exchanges: 2000000000
-Exchanges per second: 489731730
-Latency in seconds: 2.041934262E-9
+Exchanges per second: 500372974
+Latency in seconds: 1.9985092155E-9
 </pre>
 </body>
 </html>
