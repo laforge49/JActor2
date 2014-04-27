@@ -1,8 +1,8 @@
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.impl.mtCloseable.CloseableMtImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
-import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
 
 public class SampleCloseable implements Closeable {
     public static void main(final String[] _args) throws Exception {
@@ -26,7 +26,7 @@ public class SampleCloseable implements Closeable {
     private final CloseableImpl closeableImpl;
     
     public SampleCloseable() {
-        closeableImpl = new CloseableImpl1(this);
+        closeableImpl = new CloseableMtImpl(this);
     }
     
     @Override

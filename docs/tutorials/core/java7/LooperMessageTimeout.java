@@ -1,4 +1,4 @@
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 
 public class LooperMessageTimeout {
     static public void main(final String[] _args) throws Exception {
