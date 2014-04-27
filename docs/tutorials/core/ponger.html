@@ -9,41 +9,41 @@
 <p>
 JActor is a framework for ensuring thread safety without locks.
 JActor supports the use of multiple
-<a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html">Reactor</a>s
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/Reactor.html">Reactor</a>s
 which serve as light-weight threads, and which are sometimes called 
 <a href="http://en.wikipedia.org/wiki/Fiber_(computer_science)">fibers</a> or 
 <a href="http://en.wikipedia.org/wiki/E_(programming_language)">vats</a>.
 (JActor actually uses a 
 <a href="http://en.wikipedia.org/wiki/Thread_(computer_science)#Models">M:N threading model</a>.)
 Each reactor, in turn, can have any number of
-<a href="../../api/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>s,
+<a href="../../api/core/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>s,
 with each blade having some state that is accessed in a thread-safe way via one or more
-<a href="../../api/org/agilewiki/jactor2/core/requests/Request.html">Request</a>s.
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/Request.html">Request</a>s.
 </p>
 <p>
 There are 5 types of reactors:
-<a href="../../api/org/agilewiki/jactor2/core/reactors/BlockingReactor.html">BlockingReactor</a>,
-<a href="../../api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>,
-<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>,
-<a href="../../api/org/agilewiki/jactor2/core/reactors/SwingBoundReactor.html">SwingBoundReactor</a> and
-<a href="../../api/org/agilewiki/jactor2/core/reactors/ThreadBoundReactor.html">ThreadBoundReactor</a>.
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/BlockingReactor.html">BlockingReactor</a>,
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>,
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>,
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/SwingBoundReactor.html">SwingBoundReactor</a> and
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/ThreadBoundReactor.html">ThreadBoundReactor</a>.
 The most common type of reactor is the NonBlockingReactor, which will be our starting point.
 Non-blocking reactors operate under the assumption that they will not block threads, through locking, I/O
 or long computations.
 </p>
 <p>
 Most blades are specialized and will work with only one type of reactor.
-<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBlade.html">NonBlockingBlade</a>,
+<a href="../../api/core/org/agilewiki/jactor2/core/blades/NonBlockingBlade.html">NonBlockingBlade</a>,
 for example, is a type of blade that only works with a NonBlockingReactor. And
-<a href="../../api/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html">NonBlockingBladeBase</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/blades/NonBlockingBladeBase.html">NonBlockingBladeBase</a>
 is a convenience class used to implement a non-blocking blade.
 Multiple blades can share the same reactor, which introduces an aspect of composition. Such blades
 can safely access each other's state either directly or via simple methods.
 </p>
 <p>
 There are two types of requests:
-<a href="../../api/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>s and
-<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>s.
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>s and
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>s.
 Directly callable methods on a blade are also supported,
 but for now we will focus mostly on synchronous requests. 
 Synchronous requests are a lock-free alternative to Java's synchronized.
@@ -135,11 +135,11 @@ Directly Callable Methods
 <p>
 A request can safely call a method on another blade directly if the calling request and the blade being
 called use the same reactor. A call to the
-<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.html#directCheck-org.agilewiki.jactor2.core.reactors.Reactor-">directCheck</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/blades/BladeBase.html#directCheck-org.agilewiki.jactor2.core.reactors.Reactor-">directCheck</a>
 method by the method being directly called ensures that the reactor of the calling request is the same and that the reactor is active.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest</a>
 </h3>
 <pre>
     public SyncRequest&lt;Long&gt; pingSReq() {
@@ -158,7 +158,7 @@ SyncBladeRequest is a BladeBase nested class that extends SyncRequest.
 Alternatively, we could use "new SyncRequest&lt;Long&gt;(getReactor())".
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/messages/SyncRequest.html#processSyncRequest--">processSyncRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/SyncRequest.html#processSyncRequest--">processSyncRequest</a>
 </h3>
 <pre>
             @Override
@@ -178,7 +178,7 @@ regardless of which thread was used to invoke the SyncRequest, making it thread 
 PongerTest is a simple program that exercises Ponger:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class PongerTest {
@@ -309,7 +309,7 @@ close Plant
 </tr>
 </table>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html">Plant</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/Plant.html">Plant</a>
 </h3>
 <pre>
         new Plant();
@@ -321,9 +321,8 @@ close Plant
 </pre>
 <p>
 Every program must have a Plant, which provides a threadpool for the reactors to use.
-But a program will not normally exit until the threadpool is closed. This is done when either
-<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#close--">Plant.close</a> or
-<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#exit--">Plant.exit</a>
+But a program will not normally exit until the threadpool is closed. This is done when
+<a href="../../api/core/org/agilewiki/jactor2/core/plant/PlantBase.html#close--">Plant.close</a>
 is called.
 </p>
 <p>
@@ -332,7 +331,7 @@ This allows you to change the size of the thread pool, the recovery logic, and m
 by using an alternate constructor.
 </p>
 <h3>
-<a href="../../api/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
 </h3>
 <pre>
             long j = ponger.pingSReq().call();
