@@ -8,7 +8,7 @@
 <h1>CallSpeedReport - Call Methods per Second</h1>
 <p>
 The 
-<a href="../../api/org/agilewiki/jactor2/core/messages/Request.html#call--">call</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
 method is quite slow as it blocks the originating thread, 
 allocates a thread to the target reactor,
 creates a message and adds it to the concurrent linked queue of that reactor.
@@ -21,7 +21,7 @@ Fortunately the call method is not used very often!
 is a small program that will tell us just how fast the call method is.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 
 public class CallSpeedReport {
     public static void main(final String[] _args) throws Exception {
