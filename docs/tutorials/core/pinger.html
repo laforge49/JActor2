@@ -135,7 +135,7 @@ In this case, the local method should be used if the request being sent is a Syn
 it is known that the blades share a reactor. But this is not always the case.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
@@ -162,20 +162,20 @@ public class NativeSendSpeedReport {
 Output:
 
 Native Send Timings
-Test duration in nanoseconds: 25610810971
+Test duration in nanoseconds: 13110429155
 Number of exchanges: 100000000
-Exchanges per second: 3904601
-Latency in seconds: 2.5610810971E-7
+Exchanges per second: 7627515
+Latency in seconds: 1.3110429155E-7
 </pre>
 <p>
 This is about 200 times slower than when using direct method calls, but then requests have a lot more overhead:
 </p>
 <pre>
 Direct Timings
-Test duration in nanoseconds: 4083868524
+Test duration in nanoseconds: 3997018431
 Number of exchanges: 2000000000
-Exchanges per second: 489731730
-Latency in seconds: 2.041934262E-9
+Exchanges per second: 500372974
+Latency in seconds: 1.9985092155E-9
 </pre>
 <h2>
 <a href="java7/ForeignSendSpeedReport.java">ForeignSendSpeedReport</a>
@@ -184,7 +184,7 @@ Latency in seconds: 2.041934262E-9
 A very common case is sending a request between two blades which have different reactors:
 </p>
 <pre>
-import org.agilewiki.jactor2.core.facilities.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
@@ -212,10 +212,10 @@ In this case the send is roughly twice as slow as when the two blades use a comm
 </p>
 <pre>
 Foreign Send Timings
-Test duration in nanoseconds: 5414567417
+Test duration in nanoseconds: 7951983198
 Number of exchanges: 10000000
-Exchanges per second: 1846869
-Latency in seconds: 5.414567417E-7
+Exchanges per second: 1257547
+Latency in seconds: 7.951983198E-7
 </pre>
 <p>
 Even so, a send between two blades with different reactors is
@@ -223,10 +223,10 @@ still about 10 times faster than when using a call method:
 </p>
 <pre>
 Call Timings
-Test duration in nanoseconds: 6162933014
+Test duration in nanoseconds: 5943797021
 Number of exchanges: 1000000
-Exchanges per second: 162260
-Latency in seconds: 6.162933014E-6
+Exchanges per second: 168242
+Latency in seconds: 5.943797021E-6
 </pre>
 </body>
 </html>
