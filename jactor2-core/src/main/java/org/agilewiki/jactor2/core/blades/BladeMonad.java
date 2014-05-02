@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class BladeMonad<Immutable> extends BladeBase {
@@ -20,16 +21,27 @@ public class BladeMonad<Immutable> extends BladeBase {
         return new SyncBladeRequest<Immutable>() {
             @Override
             public Immutable processSyncRequest() throws Exception {
-                return _bladeMonad.eval(getSourceReactor());
+                immutable = _bladeMonad.eval(getSourceReactor());
+                return immutable;
             }
         };
     }
 
-    public AsyncRequest<BladeMonad<Immutable>> evalAReq(final BladeMonad<Immutable> _bladeMonad) {
-        return new AsyncBladeRequest<BladeMonad<Immutable>>() {
+    public AsyncRequest<Immutable> evalAReq(final BladeMonad<Immutable> _bladeMonad) {
+        return new AsyncBladeRequest<Immutable>() {
+            AsyncRequest<Immutable> dis = this;
+
+            AsyncResponseProcessor<Immutable> evalResponseProcessor = new AsyncResponseProcessor<Immutable>() {
+                @Override
+                public void processAsyncResponse(Immutable _response) throws Exception {
+                    immutable = _response;
+                    dis.processAsyncResponse(immutable);
+                }
+            };
+
             @Override
             public void processAsyncRequest() throws Exception {
-                send(_bladeMonad.evalAReq(BladeMonad.this), this);
+                send(_bladeMonad.evalAReq(BladeMonad.this), evalResponseProcessor);
             }
         };
     }
