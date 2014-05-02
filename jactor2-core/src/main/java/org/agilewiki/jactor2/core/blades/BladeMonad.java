@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class BladeMonad<Immutable> extends BladeBase {
@@ -20,6 +21,15 @@ public class BladeMonad<Immutable> extends BladeBase {
             @Override
             public Immutable processSyncRequest() throws Exception {
                 return _bladeMonad.eval(getSourceReactor());
+            }
+        };
+    }
+
+    public AsyncRequest<BladeMonad<Immutable>> evalAReq(final BladeMonad<Immutable> _bladeMonad) {
+        return new AsyncBladeRequest<BladeMonad<Immutable>>() {
+            @Override
+            public void processAsyncRequest() throws Exception {
+                processAsyncResponse(BladeMonad.this);
             }
         };
     }
