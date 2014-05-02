@@ -29,7 +29,7 @@ public class BladeMonad<Immutable> extends BladeBase {
         return new AsyncBladeRequest<BladeMonad<Immutable>>() {
             @Override
             public void processAsyncRequest() throws Exception {
-                processAsyncResponse(BladeMonad.this);
+                send(_bladeMonad.evalAReq(BladeMonad.this), this);
             }
         };
     }
