@@ -53,7 +53,7 @@ public class BladeMonad<Immutable> extends BladeBase {
         return new AsyncBladeRequest<Immutable>() {
             AsyncRequest<Immutable> dis = this;
 
-            private AsyncResponseProcessor<Immutable> transformResponseProcessor = new AsyncResponseProcessor<Immutable>() {
+            private AsyncResponseProcessor<Immutable> _evalResponseProcessor = new AsyncResponseProcessor<Immutable>() {
                 @Override
                 public void processAsyncResponse(Immutable _response) throws Exception {
                     root.immutable = _response;
@@ -61,30 +61,29 @@ public class BladeMonad<Immutable> extends BladeBase {
                 }
             };
 
-            private AsyncResponseProcessor<Immutable> evalResponseProcessor = new AsyncResponseProcessor<Immutable>() {
-                @Override
-                public void processAsyncResponse(Immutable _response) throws Exception {
-                    if (transform != null) {
-                        transform.t(_response, transformResponseProcessor);
-                    } else if (function != null) {
-                        immutable = function.f(_response);
-                        root.immutable = _response;
-                        dis.processAsyncResponse(_response);
-                    } else {
-                        root.immutable = _response;
-                        dis.processAsyncResponse(_response);
-                    }
-                }
-            };
-
             @Override
             public void processAsyncRequest() throws Exception {
-                if (parent == null) {
-                    dis.processAsyncResponse(immutable);
-                    return;
-                }
-                send(parent.evalAReq(), evalResponseProcessor);
+                _eval(_evalResponseProcessor);
             }
         };
+    }
+
+    protected void _eval(final AsyncResponseProcessor<Immutable> _dis) throws Exception {
+        if (parent == null) {
+            _dis.processAsyncResponse(immutable);
+            return;
+        }
+        parent._eval(new AsyncResponseProcessor<Immutable>() {
+            @Override
+            public void processAsyncResponse(Immutable _response) throws Exception {
+                if (transform != null) {
+                    transform.t(_response, _dis);
+                } else if (function != null) {
+                    _dis.processAsyncResponse(function.f(_response));
+                } else {
+                    _dis.processAsyncResponse(_response);
+                }
+            }
+        });
     }
 }
