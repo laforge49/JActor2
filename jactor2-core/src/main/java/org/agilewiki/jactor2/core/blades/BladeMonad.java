@@ -77,11 +77,19 @@ public class BladeMonad<Immutable> extends BladeBase {
             @Override
             public void processAsyncResponse(Immutable _response) throws Exception {
                 if (transform != null) {
-                    transform.t(_response, _dis);
+                    transform.t(parent, BladeMonad.this, _dis);
+                    transform.t(parent, BladeMonad.this, new AsyncResponseProcessor<Immutable>() {
+                        @Override
+                        public void processAsyncResponse(Immutable _response) throws Exception {
+                            immutable = _response;
+                            _dis.processAsyncResponse(immutable);
+                        }
+                    });
                 } else if (function != null) {
-                    _dis.processAsyncResponse(function.f(_response));
+                    immutable = function.f(parent, BladeMonad.this);
+                    _dis.processAsyncResponse(immutable);
                 } else {
-                    _dis.processAsyncResponse(_response);
+                    throw new IllegalStateException();
                 }
             }
         });
