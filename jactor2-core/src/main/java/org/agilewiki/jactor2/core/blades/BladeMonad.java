@@ -36,8 +36,7 @@ public class BladeMonad<Immutable> extends BladeBase {
         root = parent.root;
     }
 
-    public Immutable getImmutable(final Reactor _sourceReactor) {
-        directCheck(_sourceReactor);
+    public Immutable getImmutable() {
         return immutable;
     }
 
