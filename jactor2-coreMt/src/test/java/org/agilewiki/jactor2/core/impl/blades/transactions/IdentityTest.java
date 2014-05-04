@@ -32,7 +32,7 @@ public class IdentityTest extends TestCase {
             m = new ImmutableReference<String>("grapes");
             System.out.println(m.getImmutable()); // grapes
             addMoreGood.applyAReq(m).call();
-            System.out.println(m.getImmutable()); // more grapes
+            System.out.println(m.getImmutable()); // more good grapes
         } finally {
             Plant.close();
         }
