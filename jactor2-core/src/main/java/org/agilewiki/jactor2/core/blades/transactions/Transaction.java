@@ -67,6 +67,8 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
             @Override
             public Object processException(Exception e) throws Exception {
                 System.err.println(trace);
+                if (e instanceof RuntimeException)
+                    e = new RuntimeWrapperException((RuntimeException) e);
                 throw e;
             }
         };
@@ -88,11 +90,7 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
         } else if (syncUpdate != null) {
             trace = "TRACE: " + syncUpdate.getClass().getName() + oldTrace;
             getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
-            try {
-                immutable = syncUpdate.update(_source, Transaction.this);
-            } catch (RuntimeException e) {
-                throw new RuntimeWrapperException(e);
-            }
+            immutable = syncUpdate.update(_source, Transaction.this);
             _dis.processAsyncResponse(null);
         } else {
             throw new IllegalStateException();
