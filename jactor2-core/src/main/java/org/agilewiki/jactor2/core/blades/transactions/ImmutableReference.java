@@ -29,14 +29,4 @@ public class ImmutableReference<Immutable> implements IsolationBlade {
     public Immutable getImmutable() {
         return immutable;
     }
-
-    /**
-     * Send a two-way message using the blade's reactor as the source.
-     *
-     * @param _request        The request to be passed.
-     */
-    protected <RESPONSE_TYPE> void send(
-            final Request<RESPONSE_TYPE> _request) {
-        _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
-    }
 }

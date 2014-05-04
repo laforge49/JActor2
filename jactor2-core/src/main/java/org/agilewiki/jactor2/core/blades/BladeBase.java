@@ -52,7 +52,7 @@ public abstract class BladeBase implements Blade {
     }
 
     /**
-     * Send a two-way message using the blade's reactor as the source.
+     * Send a one-way message using the blade's reactor as the source.
      *
      * @param _request        The request to be passed.
      */
