@@ -29,7 +29,7 @@ public class IdentityTest extends TestCase {
         Transaction<String> bogus = new Transaction(addGood, new SyncUpdate<String>() {
             @Override
             public String update(ImmutableReference<String> source, ImmutableReference<String> target) throws Exception {
-                throw new IOException("force trace");
+                throw new NullPointerException();
             }
         });
 

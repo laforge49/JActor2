@@ -72,15 +72,27 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
         };
     }
 
-    protected void _apply(final ImmutableReference<IMMUTABLE> _source, final String oldTrace, final AsyncResponseProcessor<Void> _dis)
+    protected void _apply(final ImmutableReference<IMMUTABLE> _source,
+                          final String oldTrace,
+                          final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         if (asyncUpdate != null) {
             trace = "TRACE: " + asyncUpdate.getClass().getName() + oldTrace;
             getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
+            asyncUpdate.update(_source, Transaction.this, new AsyncResponseProcessor<IMMUTABLE>() {
+                @Override
+                public void processAsyncResponse(IMMUTABLE _response) throws Exception {
+                    immutable = _response;
+                }
+            });
         } else if (syncUpdate != null) {
             trace = "TRACE: " + syncUpdate.getClass().getName() + oldTrace;
             getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
-            immutable = syncUpdate.update(_source, Transaction.this);
+            try {
+                immutable = syncUpdate.update(_source, Transaction.this);
+            } catch (RuntimeException e) {
+                throw new RuntimeWrapperException(e);
+            }
             _dis.processAsyncResponse(null);
         } else {
             throw new IllegalStateException();
