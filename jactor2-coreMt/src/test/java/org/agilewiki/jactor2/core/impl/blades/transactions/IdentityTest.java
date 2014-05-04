@@ -6,6 +6,8 @@ import org.agilewiki.jactor2.core.blades.transactions.SyncUpdate;
 import org.agilewiki.jactor2.core.blades.transactions.Transaction;
 import org.agilewiki.jactor2.core.impl.Plant;
 
+import java.io.IOException;
+
 public class IdentityTest extends TestCase {
     public void testI() throws Exception {
         new Plant();
@@ -24,6 +26,13 @@ public class IdentityTest extends TestCase {
             }
         });
 
+        Transaction<String> bogus = new Transaction(addGood, new SyncUpdate<String>() {
+            @Override
+            public String update(ImmutableReference<String> source, ImmutableReference<String> target) throws Exception {
+                throw new IOException("force trace");
+            }
+        });
+
         try {
             ImmutableReference m = new ImmutableReference<String>("fun");
             System.out.println(m.getImmutable()); // fun
@@ -33,6 +42,14 @@ public class IdentityTest extends TestCase {
             System.out.println(m.getImmutable()); // grapes
             addMoreGood.applyAReq(m).call();
             System.out.println(m.getImmutable()); // more good grapes
+            m = new ImmutableReference<String>("times");
+            System.out.println(m.getImmutable()); // times
+            try {
+                bogus.applyAReq(m).call();
+            } catch(Exception e) {
+                System.err.println(e.getMessage());
+            }
+            System.out.println(m.getImmutable()); // times
         } finally {
             Plant.close();
         }

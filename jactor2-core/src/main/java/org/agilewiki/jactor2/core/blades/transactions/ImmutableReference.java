@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class ImmutableReference<IMMUTABLE> implements IsolationBlade {
-    private IsolationReactor reactor;
+    protected IsolationReactor reactor;
     protected IMMUTABLE immutable = null;
 
     public ImmutableReference(final IMMUTABLE _immutable) {
