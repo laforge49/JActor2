@@ -3,18 +3,17 @@ package org.agilewiki.jactor2.core.blades.transactions;
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.Request;
 
-public class ImmutableReference<Immutable> implements IsolationBlade {
+public class ImmutableReference<IMMUTABLE> implements IsolationBlade {
     private IsolationReactor reactor;
-    protected Immutable immutable = null;
+    protected IMMUTABLE immutable = null;
 
-    public ImmutableReference(final Immutable _immutable) {
+    public ImmutableReference(final IMMUTABLE _immutable) {
         reactor = new IsolationReactor();
         immutable = _immutable;
     }
 
-    public ImmutableReference(final Immutable _immutable, final NonBlockingReactor _parentReactor) {
+    public ImmutableReference(final IMMUTABLE _immutable, final NonBlockingReactor _parentReactor) {
         reactor = new IsolationReactor(_parentReactor);
         immutable = _immutable;
     }
@@ -26,7 +25,7 @@ public class ImmutableReference<Immutable> implements IsolationBlade {
         return reactor;
     }
 
-    public Immutable getImmutable() {
+    public IMMUTABLE getImmutable() {
         return immutable;
     }
 }

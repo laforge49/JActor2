@@ -3,10 +3,10 @@ package org.agilewiki.jactor2.core.blades.transactions;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
-public class Transaction<Immutable> extends ImmutableReference<Immutable> {
-    private final Transaction<Immutable> parent;
-    private final SyncUpdate<Immutable> syncUpdate;
-    private final AsyncUpdate<Immutable> asyncUpdate;
+public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
+    private final Transaction<IMMUTABLE> parent;
+    private final SyncUpdate<IMMUTABLE> syncUpdate;
+    private final AsyncUpdate<IMMUTABLE> asyncUpdate;
 
     public Transaction(final SyncUpdate _syncUpdate) {
         super();
@@ -22,21 +22,21 @@ public class Transaction<Immutable> extends ImmutableReference<Immutable> {
         asyncUpdate = _asyncUpdate;
     }
 
-    public Transaction(final Transaction<Immutable> _parent, final SyncUpdate _syncUpdate) {
+    public Transaction(final Transaction<IMMUTABLE> _parent, final SyncUpdate _syncUpdate) {
         super(null);
         parent = _parent;
         syncUpdate = _syncUpdate;
         asyncUpdate = null;
     }
 
-    public Transaction(final Transaction<Immutable> _parent, final AsyncUpdate _asyncUpdate) {
+    public Transaction(final Transaction<IMMUTABLE> _parent, final AsyncUpdate _asyncUpdate) {
         super(null);
         parent = _parent;
         syncUpdate = null;
         asyncUpdate = _asyncUpdate;
     }
 
-    public AsyncRequest<Void> applyAReq(final ImmutableReference<Immutable> _immutableReference) {
+    public AsyncRequest<Void> applyAReq(final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AsyncRequest<Void>(_immutableReference.getReactor()) {
             AsyncRequest<Void> dis = this;
 
@@ -55,12 +55,12 @@ public class Transaction<Immutable> extends ImmutableReference<Immutable> {
         };
     }
 
-    protected void _apply(final ImmutableReference<Immutable> _source, final AsyncResponseProcessor<Void> _dis)
+    protected void _apply(final ImmutableReference<IMMUTABLE> _source, final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         if (asyncUpdate != null) {
-            asyncUpdate.update(_source, Transaction.this, new AsyncResponseProcessor<Immutable>() {
+            asyncUpdate.update(_source, Transaction.this, new AsyncResponseProcessor<IMMUTABLE>() {
                 @Override
-                public void processAsyncResponse(Immutable _response) throws Exception {
+                public void processAsyncResponse(IMMUTABLE _response) throws Exception {
                     immutable = _response;
                     _dis.processAsyncResponse(null);
                 }
@@ -73,7 +73,7 @@ public class Transaction<Immutable> extends ImmutableReference<Immutable> {
         }
     }
 
-    protected void _eval(final ImmutableReference<Immutable> _root, final AsyncResponseProcessor<Void> _dis)
+    protected void _eval(final ImmutableReference<IMMUTABLE> _root, final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         if (parent == null)
             _apply(_root, _dis);
