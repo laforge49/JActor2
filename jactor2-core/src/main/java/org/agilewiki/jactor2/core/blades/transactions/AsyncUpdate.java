@@ -9,6 +9,7 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
  */
 public interface AsyncUpdate<IMMUTABLE> {
     /**
+     * Updates the immutable data structure.
      *
      * @param source    The Transaction or ImmutableReference holding the immutable to be operated on.
      * @param target    The transaction where the updates will be saved.
