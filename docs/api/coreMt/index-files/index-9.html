@@ -67,138 +67,113 @@
 <!--   -->
 </a></div>
 <!-- ========= END OF TOP NAVBAR ========= -->
-<div class="contentContainer"><a href="index-1.html">A</a>&nbsp;<a href="index-2.html">B</a>&nbsp;<a href="index-3.html">C</a>&nbsp;<a href="index-4.html">D</a>&nbsp;<a href="index-5.html">E</a>&nbsp;<a href="index-6.html">F</a>&nbsp;<a href="index-7.html">G</a>&nbsp;<a href="index-8.html">H</a>&nbsp;<a href="index-9.html">I</a>&nbsp;<a href="index-10.html">N</a>&nbsp;<a href="index-11.html">O</a>&nbsp;<a href="index-12.html">P</a>&nbsp;<a href="index-13.html">R</a>&nbsp;<a href="index-14.html">S</a>&nbsp;<a href="index-15.html">T</a>&nbsp;<a href="index-16.html">U</a>&nbsp;<a href="index-17.html">W</a>&nbsp;<a href="index-18.html">_</a>&nbsp;<a name="I:I">
+<div class="contentContainer"><a href="index-1.html">A</a>&nbsp;<a href="index-2.html">B</a>&nbsp;<a href="index-3.html">C</a>&nbsp;<a href="index-4.html">D</a>&nbsp;<a href="index-5.html">E</a>&nbsp;<a href="index-6.html">F</a>&nbsp;<a href="index-7.html">G</a>&nbsp;<a href="index-8.html">H</a>&nbsp;<a href="index-9.html">I</a>&nbsp;<a href="index-10.html">L</a>&nbsp;<a href="index-11.html">M</a>&nbsp;<a href="index-12.html">N</a>&nbsp;<a href="index-13.html">O</a>&nbsp;<a href="index-14.html">P</a>&nbsp;<a href="index-15.html">R</a>&nbsp;<a href="index-16.html">S</a>&nbsp;<a href="index-17.html">T</a>&nbsp;<a href="index-18.html">U</a>&nbsp;<a href="index-19.html">V</a>&nbsp;<a href="index-20.html">W</a>&nbsp;<a href="index-21.html">_</a>&nbsp;<a name="I:I">
 <!--   -->
 </a>
 <h2 class="title">I</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html#immutable">immutable</a></span> - Variable in class org.agilewiki.jactor2.core.blades.transactions.<a href="../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a></dt>
+<dt><a href="../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors"><span class="typeNameLink">Inbox</span></a> - Class in <a href="../org/agilewiki/jactor2/core/impl/mtReactors/package-summary.html">org.agilewiki.jactor2.core.impl.mtReactors</a></dt>
 <dd>
-<div class="block">The immutable data structure to be operated on.</div>
+<div class="block">Provides at least two queues for a targetReactor's incoming messages, where the first queue is a
+ concurrent linked queue for messages passed from other reactors and the other(s) are
+ local queues for messages that are passed using the targetReactor's own thread.</div>
 </dd>
-<dt><a href="../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions"><span class="typeNameLink">ImmutableReference</span></a>&lt;<a href="../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="type parameter in ImmutableReference">IMMUTABLE</a>&gt; - Class in <a href="../org/agilewiki/jactor2/core/blades/transactions/package-summary.html">org.agilewiki.jactor2.core.blades.transactions</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#Inbox--">Inbox()</a></span> - Constructor for class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">Inbox</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#inbox">inbox</a></span> - Variable in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
 <dd>
-<div class="block">An IsolationBlade to which transactions can be applied.</div>
+<div class="block">The inbox of this ReactorImpl.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html#ImmutableReference-IMMUTABLE-">ImmutableReference(IMMUTABLE)</a></span> - Constructor for class org.agilewiki.jactor2.core.blades.transactions.<a href="../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#incomingResponse-org.agilewiki.jactor2.core.requests.RequestImpl-org.agilewiki.jactor2.core.reactors.ReactorImpl-">incomingResponse(RequestImpl, ReactorImpl)</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestSource.html#incomingResponse-org.agilewiki.jactor2.core.requests.RequestImpl-org.agilewiki.jactor2.core.reactors.ReactorImpl-">incomingResponse(RequestImpl, ReactorImpl)</a></span> - Method in interface org.agilewiki.jactor2.core.impl.mtRequests.<a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestSource.html" title="interface in org.agilewiki.jactor2.core.impl.mtRequests">RequestSource</a></dt>
 <dd>
-<div class="block">Create an ImmutableReference blade.</div>
+<div class="block">Process an incoming response.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html#ImmutableReference-IMMUTABLE-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">ImmutableReference(IMMUTABLE, NonBlockingReactor)</a></span> - Constructor for class org.agilewiki.jactor2.core.blades.transactions.<a href="../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#incomplete">incomplete</a></span> - Variable in class org.agilewiki.jactor2.core.impl.mtRequests.<a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></dt>
 <dd>
-<div class="block">Create an ImmutableReference blade.</div>
+<div class="block">True when a response to this message has not yet been determined.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorBase.html#initialize-org.agilewiki.jactor2.core.reactors.ReactorImpl-">initialize(ReactorImpl)</a></span> - Method in class org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorBase.html" title="class in org.agilewiki.jactor2.core.reactors">ReactorBase</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#initialBufferSize">initialBufferSize</a></span> - Variable in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
 <dd>
-<div class="block">Initialize the reactor.</div>
+<div class="block">The initial size of a send buffer.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html#initialize-org.agilewiki.jactor2.core.reactors.Reactor-">initialize(Reactor)</a></span> - Method in interface org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#initialize-org.agilewiki.jactor2.core.reactors.Reactor-">initialize(Reactor)</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
 <dd>
 <div class="block">Initialize the ReactorImpl.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/AsyncRequest.html#isCanceled--">isCanceled()</a></span> - Method in class org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#initialLocalQueueSize">initialLocalQueueSize</a></span> - Variable in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
+<dd>
+<div class="block">The initial size of the local queue.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isCanceled--">isCanceled()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtRequests.<a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/Request.html#isCanceled--">isCanceled()</a></span> - Method in interface org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/Request.html" title="interface in org.agilewiki.jactor2.core.requests">Request</a></dt>
-<dd>
-<div class="block">
- Returns true if the request has been canceled.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html#isCanceled--">isCanceled()</a></span> - Method in interface org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a></dt>
-<dd>
-<div class="block">Returns true if the request has been canceled.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/SyncRequest.html#isCanceled--">isCanceled()</a></span> - Method in class org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/SyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">SyncRequest</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isClosing--">isClosing()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html#isClosing--">isClosing()</a></span> - Method in interface org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isCommonReactor--">isCommonReactor()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html#isCommonReactor--">isCommonReactor()</a></span> - Method in interface org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isComplete--">isComplete()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtRequests.<a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html#isComplete--">isComplete()</a></span> - Method in interface org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a></dt>
-<dd>
-<div class="block">Returns true when a response has been assigned to the request.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html#isForeign--">isForeign()</a></span> - Method in interface org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a></dt>
-<dd>
-<div class="block">Returns true when the target reactor is not the request source.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html#isIdler--">isIdler()</a></span> - Method in interface org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></dt>
-<dd>
-<div class="block">Returns true when there is code to be executed when the inbox is emptied.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/Reactor.html#isInboxEmpty--">isInboxEmpty()</a></span> - Method in interface org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a></dt>
-<dd>
-<div class="block">Returns true when there are no more messages in the inbox.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorBase.html#isInboxEmpty--">isInboxEmpty()</a></span> - Method in class org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorBase.html" title="class in org.agilewiki.jactor2.core.reactors">ReactorBase</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/CommonInbox.html#isEmpty--">isEmpty()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/CommonInbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">CommonInbox</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html#isInboxEmpty--">isInboxEmpty()</a></span> - Method in interface org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#isEmpty--">isEmpty()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">Inbox</a></dt>
+<dd>
+<div class="block">Returns true when all the queues are empty.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationInbox.html#isEmpty--">isEmpty()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationInbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">IsolationInbox</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isForeign--">isForeign()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtRequests.<a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/CommonInbox.html#isIdle--">isIdle()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/CommonInbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">CommonInbox</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#isIdle--">isIdle()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">Inbox</a></dt>
+<dd>
+<div class="block">Returns true when the inbox is empty and no request messages are being processed
+ in isolation.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationInbox.html#isIdle--">isIdle()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationInbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">IsolationInbox</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/PoolThreadReactorMtImpl.html#isIdler--">isIdler()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/PoolThreadReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">PoolThreadReactorMtImpl</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ThreadBoundReactorMtImpl.html#isIdler--">isIdler()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ThreadBoundReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ThreadBoundReactorMtImpl</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isInboxEmpty--">isInboxEmpty()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
 <dd>
 <div class="block">Returns true when the inbox is not empty.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/blades/BladeBase.html#isInitialized--">isInitialized()</a></span> - Method in class org.agilewiki.jactor2.core.blades.<a href="../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isIsolated--">isIsolated()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtRequests.<a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationInbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors"><span class="typeNameLink">IsolationInbox</span></a> - Class in <a href="../org/agilewiki/jactor2/core/impl/mtReactors/package-summary.html">org.agilewiki.jactor2.core.impl.mtReactors</a></dt>
 <dd>
-<div class="block">Returns true when the blade has been initialized.</div>
+<div class="block">The inbox used by IsolationReactor, the next request is not made available for processing
+ until a result is assigned to the previous request.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html#isIsolated--">isIsolated()</a></span> - Method in interface org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationInbox.html#IsolationInbox-int-">IsolationInbox(int)</a></span> - Constructor for class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationInbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">IsolationInbox</a></dt>
 <dd>
-<div class="block">Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.</div>
+<div class="block">Creates an IsolationInbox.</div>
 </dd>
-<dt><a href="../org/agilewiki/jactor2/core/blades/IsolationBlade.html" title="interface in org.agilewiki.jactor2.core.blades"><span class="typeNameLink">IsolationBlade</span></a> - Interface in <a href="../org/agilewiki/jactor2/core/blades/package-summary.html">org.agilewiki.jactor2.core.blades</a></dt>
+<dt><a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors"><span class="typeNameLink">IsolationReactorMtImpl</span></a> - Class in <a href="../org/agilewiki/jactor2/core/impl/mtReactors/package-summary.html">org.agilewiki.jactor2.core.impl.mtReactors</a></dt>
 <dd>
-<div class="block">
-     An isolation blade does not process a request until the response for the previous
-     request is returned.</div>
+<div class="block">Internal implementation of UnboundReactor.</div>
 </dd>
-<dt><a href="../org/agilewiki/jactor2/core/blades/IsolationBladeBase.html" title="class in org.agilewiki.jactor2.core.blades"><span class="typeNameLink">IsolationBladeBase</span></a> - Class in <a href="../org/agilewiki/jactor2/core/blades/package-summary.html">org.agilewiki.jactor2.core.blades</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationReactorMtImpl.html#IsolationReactorMtImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-">IsolationReactorMtImpl(NonBlockingReactor, int, int)</a></span> - Constructor for class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/IsolationReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">IsolationReactorMtImpl</a></dt>
 <dd>
-<div class="block">
-     An isolation blade does not process a request until the response for the previous
-     request is returned.</div>
+<div class="block">Create an IsolationReactorMtImpl.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/blades/IsolationBladeBase.html#IsolationBladeBase--">IsolationBladeBase()</a></span> - Constructor for class org.agilewiki.jactor2.core.blades.<a href="../org/agilewiki/jactor2/core/blades/IsolationBladeBase.html" title="class in org.agilewiki.jactor2.core.blades">IsolationBladeBase</a></dt>
-<dd>
-<div class="block">Create an Isolation blade and an Isolation reactor whose parent is the internal reactor of Plant.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/blades/IsolationBladeBase.html#IsolationBladeBase-org.agilewiki.jactor2.core.reactors.IsolationReactor-">IsolationBladeBase(IsolationReactor)</a></span> - Constructor for class org.agilewiki.jactor2.core.blades.<a href="../org/agilewiki/jactor2/core/blades/IsolationBladeBase.html" title="class in org.agilewiki.jactor2.core.blades">IsolationBladeBase</a></dt>
-<dd>
-<div class="block">Create an Isolation blade.</div>
-</dd>
-<dt><a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html" title="class in org.agilewiki.jactor2.core.reactors"><span class="typeNameLink">IsolationReactor</span></a> - Class in <a href="../org/agilewiki/jactor2/core/reactors/package-summary.html">org.agilewiki.jactor2.core.reactors</a></dt>
-<dd>
-<div class="block">Processes each request until completion, processing responses and 1-way messages (e.g.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html#IsolationReactor--">IsolationReactor()</a></span> - Constructor for class org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html" title="class in org.agilewiki.jactor2.core.reactors">IsolationReactor</a></dt>
-<dd>
-<div class="block">Create an isolation reactor with the Plant internal reactor as the parent.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html#IsolationReactor-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">IsolationReactor(NonBlockingReactor)</a></span> - Constructor for class org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html" title="class in org.agilewiki.jactor2.core.reactors">IsolationReactor</a></dt>
-<dd>
-<div class="block">Create an isolation reactor.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html#IsolationReactor-int-int-">IsolationReactor(int, int)</a></span> - Constructor for class org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html" title="class in org.agilewiki.jactor2.core.reactors">IsolationReactor</a></dt>
-<dd>
-<div class="block">Create an isolation reactor with the Plant internal reactor as the parent.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html#IsolationReactor-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-">IsolationReactor(NonBlockingReactor, int, int)</a></span> - Constructor for class org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/IsolationReactor.html" title="class in org.agilewiki.jactor2.core.reactors">IsolationReactor</a></dt>
-<dd>
-<div class="block">Create an isolation reactor.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html#isOneWay--">isOneWay()</a></span> - Method in interface org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a></dt>
-<dd>
-<div class="block">Returns true when the request does not pass back a result.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html#isRunning--">isRunning()</a></span> - Method in interface org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isOneWay--">isOneWay()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtRequests.<a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isRunning--">isRunning()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
 <dd>
 <div class="block">Returns true, if this ReactorImpl is actively processing messages.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html#isSignal--">isSignal()</a></span> - Method in interface org.agilewiki.jactor2.core.requests.<a href="../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a></dt>
-<dd>
-<div class="block">Returns true when the request was passed using the signal method.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html#isSlow--">isSlow()</a></span> - Method in interface org.agilewiki.jactor2.core.reactors.<a href="../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></dt>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isSignal--">isSignal()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtRequests.<a href="../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/BlockingReactorMtImpl.html#isSlow--">isSlow()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/BlockingReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">BlockingReactorMtImpl</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isSlow--">isSlow()</a></span> - Method in class org.agilewiki.jactor2.core.impl.mtReactors.<a href="../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a></dt>
 <dd>&nbsp;</dd>
 </dl>
-<a href="index-1.html">A</a>&nbsp;<a href="index-2.html">B</a>&nbsp;<a href="index-3.html">C</a>&nbsp;<a href="index-4.html">D</a>&nbsp;<a href="index-5.html">E</a>&nbsp;<a href="index-6.html">F</a>&nbsp;<a href="index-7.html">G</a>&nbsp;<a href="index-8.html">H</a>&nbsp;<a href="index-9.html">I</a>&nbsp;<a href="index-10.html">N</a>&nbsp;<a href="index-11.html">O</a>&nbsp;<a href="index-12.html">P</a>&nbsp;<a href="index-13.html">R</a>&nbsp;<a href="index-14.html">S</a>&nbsp;<a href="index-15.html">T</a>&nbsp;<a href="index-16.html">U</a>&nbsp;<a href="index-17.html">W</a>&nbsp;<a href="index-18.html">_</a>&nbsp;</div>
+<a href="index-1.html">A</a>&nbsp;<a href="index-2.html">B</a>&nbsp;<a href="index-3.html">C</a>&nbsp;<a href="index-4.html">D</a>&nbsp;<a href="index-5.html">E</a>&nbsp;<a href="index-6.html">F</a>&nbsp;<a href="index-7.html">G</a>&nbsp;<a href="index-8.html">H</a>&nbsp;<a href="index-9.html">I</a>&nbsp;<a href="index-10.html">L</a>&nbsp;<a href="index-11.html">M</a>&nbsp;<a href="index-12.html">N</a>&nbsp;<a href="index-13.html">O</a>&nbsp;<a href="index-14.html">P</a>&nbsp;<a href="index-15.html">R</a>&nbsp;<a href="index-16.html">S</a>&nbsp;<a href="index-17.html">T</a>&nbsp;<a href="index-18.html">U</a>&nbsp;<a href="index-19.html">V</a>&nbsp;<a href="index-20.html">W</a>&nbsp;<a href="index-21.html">_</a>&nbsp;</div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->
 <div class="bottomNav"><a name="navbar.bottom">
 <!--   -->
