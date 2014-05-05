@@ -16,6 +16,6 @@ public interface AsyncUpdate<IMMUTABLE> {
      * @param asyncResponseProcessor    Updates the immutable in the target transaction.
      */
     void update(ImmutableReference<IMMUTABLE> source,
-                ImmutableReference<IMMUTABLE> target,
+                Transaction<IMMUTABLE> target,
                 AsyncResponseProcessor<IMMUTABLE> asyncResponseProcessor) throws Exception;
 }

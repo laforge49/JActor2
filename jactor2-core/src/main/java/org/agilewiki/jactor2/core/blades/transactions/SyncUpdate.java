@@ -13,5 +13,5 @@ public interface SyncUpdate<IMMUTABLE> {
      * @param target    The transaction where the updates will be saved.
      * @return The updated immutable.
      */
-    IMMUTABLE update(ImmutableReference<IMMUTABLE> source, ImmutableReference<IMMUTABLE> target) throws Exception;
+    IMMUTABLE update(ImmutableReference<IMMUTABLE> source, Transaction<IMMUTABLE> target) throws Exception;
 }

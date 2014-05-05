@@ -14,21 +14,21 @@ public class IdentityTest extends TestCase {
 
         Transaction<String> addGood = new Transaction(new SyncUpdate<String>() {
             @Override
-            public String update(ImmutableReference<String> source, ImmutableReference<String> target) {
+            public String update(ImmutableReference<String> source, Transaction<String> target) {
                 return "good " + source.getImmutable();
             }
         });
 
         Transaction<String> addMoreGood = new Transaction(addGood, new SyncUpdate<String>() {
             @Override
-            public String update(ImmutableReference<String> source, ImmutableReference<String> target) {
+            public String update(ImmutableReference<String> source, Transaction<String> target) {
                 return "more " + source.getImmutable();
             }
         });
 
         Transaction<String> bogus = new Transaction(addGood, new SyncUpdate<String>() {
             @Override
-            public String update(ImmutableReference<String> source, ImmutableReference<String> target) throws Exception {
+            public String update(ImmutableReference<String> source, Transaction<String> target) throws Exception {
                 throw new NullPointerException();
             }
         });
