@@ -4,12 +4,22 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
+/**
+ * A composable transation for updating an ImmutableReference.
+ *
+ * @param <IMMUTABLE>    The type of immutable data structure.
+ */
 public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
     private final Transaction<IMMUTABLE> parent;
     private final SyncUpdate<IMMUTABLE> syncUpdate;
     private final AsyncUpdate<IMMUTABLE> asyncUpdate;
-    public String trace;
+    private String trace;
 
+    /**
+     * Create a Transaction.
+     *
+     * @param _syncUpdate    A synchronous update operation applied by the transaction.
+     */
     public Transaction(final SyncUpdate<IMMUTABLE> _syncUpdate) {
         super();
         parent = null;
@@ -17,6 +27,11 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
         asyncUpdate = null;
     }
 
+    /**
+     * Create a Transaction.
+     *
+     * @param _asyncUpdate    An asynchronous update operation applied by the transaction.
+     */
     public Transaction(final AsyncUpdate<IMMUTABLE> _asyncUpdate) {
         super();
         parent = null;
@@ -24,6 +39,12 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
         asyncUpdate = _asyncUpdate;
     }
 
+    /**
+     * Compose a Transaction.
+     *
+     * @param _parent        The transaction to be applied first.
+     * @param _syncUpdate    A synchronous update operation applied by the transaction.
+     */
     public Transaction(final Transaction<IMMUTABLE> _parent, final SyncUpdate<IMMUTABLE> _syncUpdate) {
         super(null);
         parent = _parent;
@@ -31,6 +52,12 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
         asyncUpdate = null;
     }
 
+    /**
+     * Compose a Transaction.
+     *
+     * @param _parent        The transaction to be applied first.
+     * @param _asyncUpdate    An asynchronous update operation applied by the transaction.
+     */
     public Transaction(final Transaction<IMMUTABLE> _parent, final AsyncUpdate<IMMUTABLE> _asyncUpdate) {
         super(null);
         parent = _parent;
@@ -38,6 +65,12 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
         asyncUpdate = _asyncUpdate;
     }
 
+    /**
+     * Create a request to apply the transaction.
+     *
+     * @param _immutableReference    The ImmutableReference to which the transaction is to be applied.
+     * @return The new request.
+     */
     public AsyncRequest<Void> applyAReq(final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AsyncRequest<Void>(_immutableReference.getReactor()) {
             AsyncRequest<Void> dis = this;
@@ -72,6 +105,13 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
         };
     }
 
+    /**
+     * Apply the update.
+     *
+     * @param _source     The source transaction or immutable reference.
+     * @param oldTrace    The trace to date.
+     * @param _dis        Signals completion of the update.
+     */
     protected void _apply(final ImmutableReference<IMMUTABLE> _source,
                           final String oldTrace,
                           final AsyncResponseProcessor<Void> _dis)
@@ -95,7 +135,7 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
         }
     }
 
-    protected void _eval(final ImmutableReference<IMMUTABLE> _root, final AsyncResponseProcessor<Void> _dis)
+    private void _eval(final ImmutableReference<IMMUTABLE> _root, final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         reactor = _root.reactor;
         if (parent == null)
