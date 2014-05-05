@@ -10,28 +10,28 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
     private final AsyncUpdate<IMMUTABLE> asyncUpdate;
     public String trace;
 
-    public Transaction(final SyncUpdate _syncUpdate) {
+    public Transaction(final SyncUpdate<IMMUTABLE> _syncUpdate) {
         super();
         parent = null;
         syncUpdate = _syncUpdate;
         asyncUpdate = null;
     }
 
-    public Transaction(final AsyncUpdate _asyncUpdate) {
+    public Transaction(final AsyncUpdate<IMMUTABLE> _asyncUpdate) {
         super();
         parent = null;
         syncUpdate = null;
         asyncUpdate = _asyncUpdate;
     }
 
-    public Transaction(final Transaction<IMMUTABLE> _parent, final SyncUpdate _syncUpdate) {
+    public Transaction(final Transaction<IMMUTABLE> _parent, final SyncUpdate<IMMUTABLE> _syncUpdate) {
         super(null);
         parent = _parent;
         syncUpdate = _syncUpdate;
         asyncUpdate = null;
     }
 
-    public Transaction(final Transaction<IMMUTABLE> _parent, final AsyncUpdate _asyncUpdate) {
+    public Transaction(final Transaction<IMMUTABLE> _parent, final AsyncUpdate<IMMUTABLE> _asyncUpdate) {
         super(null);
         parent = _parent;
         syncUpdate = null;
@@ -58,17 +58,15 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
     }
 
     private ExceptionHandler<IMMUTABLE> exceptionHandler() {
-        return new ExceptionHandler() {
+        return new ExceptionHandler<IMMUTABLE>() {
             /**
              * Process an exception or rethrow it.
              *
              * @param e The exception to be processed.
              */
             @Override
-            public Object processException(Exception e) throws Exception {
-                System.err.println(trace);
-                if (e instanceof RuntimeException)
-                    e = new RuntimeWrapperException((RuntimeException) e);
+            public IMMUTABLE processException(Exception e) throws Exception {
+                getReactor().error(trace);
                 throw e;
             }
         };
@@ -79,7 +77,7 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
                           final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         if (asyncUpdate != null) {
-            trace = "TRACE: " + asyncUpdate.getClass().getName() + oldTrace;
+            trace = "\nTRACE: " + asyncUpdate.getClass().getName() + oldTrace;
             getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
             asyncUpdate.update(_source, Transaction.this, new AsyncResponseProcessor<IMMUTABLE>() {
                 @Override
@@ -88,7 +86,7 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
                 }
             });
         } else if (syncUpdate != null) {
-            trace = "TRACE: " + syncUpdate.getClass().getName() + oldTrace;
+            trace = "\nTRACE: " + syncUpdate.getClass().getName() + oldTrace;
             getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
             immutable = syncUpdate.update(_source, Transaction.this);
             _dis.processAsyncResponse(null);
@@ -106,7 +104,7 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
             parent._eval(_root, new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
-                    _apply(parent, "\n" + parent.trace, _dis);
+                    _apply(parent, parent.trace, _dis);
                 }
             });
     }
