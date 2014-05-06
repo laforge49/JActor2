@@ -1,37 +1,36 @@
 package org.agilewiki.jactor2.core.impl.blades.transactions;
 
+import com.sun.corba.se.impl.orbutil.concurrent.Sync;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableReference;
-import org.agilewiki.jactor2.core.blades.transactions.SyncUpdate;
+import org.agilewiki.jactor2.core.blades.transactions.SyncTransaction;
 import org.agilewiki.jactor2.core.blades.transactions.Transaction;
 import org.agilewiki.jactor2.core.impl.Plant;
-
-import java.io.IOException;
 
 public class IdentityTest extends TestCase {
     public void testI() throws Exception {
         new Plant();
 
-        Transaction<String> addGood = new Transaction(new SyncUpdate<String>() {
+        Transaction<String> addGood = new SyncTransaction<String>() {
             @Override
-            public String update(ImmutableReference<String> source, Transaction<String> target) {
-                return "good " + source.getImmutable();
+            protected void update(ImmutableReference<String> source) throws Exception {
+                immutable = "good " + source.getImmutable();
             }
-        });
+        };
 
-        Transaction<String> addMoreGood = new Transaction(addGood, new SyncUpdate<String>() {
+        Transaction<String> addMoreGood = new SyncTransaction<String>(addGood) {
             @Override
-            public String update(ImmutableReference<String> source, Transaction<String> target) {
-                return "more " + source.getImmutable();
+            public void update(ImmutableReference<String> source) {
+                immutable = "more " + source.getImmutable();
             }
-        });
+        };
 
-        Transaction<String> bogus = new Transaction(addGood, new SyncUpdate<String>() {
+        Transaction<String> bogus = new SyncTransaction<String>(addGood) {
             @Override
-            public String update(ImmutableReference<String> source, Transaction<String> target) throws Exception {
+            public void update(ImmutableReference<String> source) throws Exception {
                 throw new NullPointerException();
             }
-        });
+        };
 
         try {
             ImmutableReference m = new ImmutableReference<String>("fun");

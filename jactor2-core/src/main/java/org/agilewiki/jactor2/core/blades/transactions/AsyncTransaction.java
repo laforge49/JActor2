@@ -1,0 +1,54 @@
+package org.agilewiki.jactor2.core.blades.transactions;
+
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+
+/**
+ * An asynchronous operation to be applied to an ImmutableReference.
+ *
+ * @param <IMMUTABLE> The type of immutable data structure.
+ */
+abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE> {
+    /**
+     * Create a Transaction.
+     */
+    public AsyncTransaction() {
+        super(null);
+    }
+
+    /**
+     * Compose a Transaction.
+     *
+     * @param _parent The transaction to be applied before this one.
+     */
+    public AsyncTransaction(Transaction<IMMUTABLE> _parent) {
+        super(_parent);
+    }
+
+    /**
+     * Updates the immutable data structure.
+     *
+     * @param source                 The Transaction or ImmutableReference holding the immutable to be operated on.
+     * @param asyncResponseProcessor Updates the immutable in the target transaction.
+     */
+    abstract protected void update(ImmutableReference<IMMUTABLE> source,
+                         AsyncResponseProcessor<Void> asyncResponseProcessor) throws Exception;
+
+    /**
+     * Apply the update.
+     *
+     * @param _source The source transaction or immutable reference.
+     * @param _dis    Signals completion of the update.
+     */
+    protected void _apply(final ImmutableReference<IMMUTABLE> _source,
+                          final AsyncResponseProcessor<Void> _dis)
+            throws Exception {
+        trace.insert(0, "\nTRACE: " + getClass().getName());
+        getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
+        update(_source, new AsyncResponseProcessor<Void>() {
+            @Override
+            public void processAsyncResponse(Void _response) throws Exception {
+                _dis.processAsyncResponse(null);
+            }
+        });
+    }
+}
