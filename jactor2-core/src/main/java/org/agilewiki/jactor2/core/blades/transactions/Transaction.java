@@ -12,6 +12,7 @@ import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
     private final Transaction<IMMUTABLE> parent;
     protected StringBuffer trace;
+    protected AsyncRequest<Void> applyAReq;
 
     /**
      * Compose a Transaction.
@@ -30,19 +31,17 @@ abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABL
      */
     public AsyncRequest<Void> applyAReq(final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AsyncRequest<Void>(_immutableReference.getReactor()) {
-            AsyncRequest<Void> dis = this;
-
             private AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
                     _immutableReference.immutable = immutable;
-                    dis.processAsyncResponse(null);
+                    applyAReq.processAsyncResponse(null);
                 }
             };
 
             @Override
             public void processAsyncRequest() throws Exception {
-                _eval(_immutableReference, _evalResponseProcessor);
+                _eval(_immutableReference, this, _evalResponseProcessor);
             }
         };
     }
@@ -72,15 +71,16 @@ abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABL
                           final AsyncResponseProcessor<Void> _dis)
             throws Exception;
 
-    private void _eval(final ImmutableReference<IMMUTABLE> _root, final AsyncResponseProcessor<Void> _dis)
+    private void _eval(final ImmutableReference<IMMUTABLE> _root,
+                       final AsyncRequest<Void> _applyAReq,
+                       final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         reactor = _root.reactor;
+        applyAReq = _applyAReq;
         if (parent == null) {
-            trace = new StringBuffer("");
             _apply(_root, _dis);
         } else {
-            trace = parent.trace;
-            parent._eval(_root, new AsyncResponseProcessor<Void>() {
+            parent._eval(_root, applyAReq, new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
                     _apply(parent, _dis);

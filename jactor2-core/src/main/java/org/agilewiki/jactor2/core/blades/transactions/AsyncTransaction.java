@@ -42,6 +42,12 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
     protected void _apply(final ImmutableReference<IMMUTABLE> _source,
                           final AsyncResponseProcessor<Void> _dis)
             throws Exception {
+        if (_source instanceof Transaction) {
+            Transaction<IMMUTABLE> transaction = (Transaction<IMMUTABLE>) _source;
+            trace = transaction.trace;
+        } else {
+            trace = new StringBuffer("");
+        }
         trace.insert(0, "\nTRACE: " + getClass().getName());
         getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
         update(_source, new AsyncResponseProcessor<Void>() {
