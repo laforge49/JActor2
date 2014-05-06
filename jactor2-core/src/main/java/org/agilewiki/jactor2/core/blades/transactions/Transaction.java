@@ -13,7 +13,7 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
     private final Transaction<IMMUTABLE> parent;
     private final SyncUpdate<IMMUTABLE> syncUpdate;
     private final AsyncUpdate<IMMUTABLE> asyncUpdate;
-    private String trace;
+    private StringBuffer trace;
 
     /**
      * Create a Transaction.
@@ -99,7 +99,7 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
              */
             @Override
             public IMMUTABLE processException(Exception e) throws Exception {
-                getReactor().error(trace);
+                getReactor().error(trace.toString());
                 throw e;
             }
         };
@@ -109,15 +109,13 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
      * Apply the update.
      *
      * @param _source     The source transaction or immutable reference.
-     * @param oldTrace    The trace to date.
      * @param _dis        Signals completion of the update.
      */
     protected void _apply(final ImmutableReference<IMMUTABLE> _source,
-                          final String oldTrace,
                           final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         if (asyncUpdate != null) {
-            trace = "\nTRACE: " + asyncUpdate.getClass().getName() + oldTrace;
+            trace.insert(0,"\nTRACE: " + asyncUpdate.getClass().getName());
             getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
             asyncUpdate.update(_source, Transaction.this, new AsyncResponseProcessor<IMMUTABLE>() {
                 @Override
@@ -126,7 +124,7 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
                 }
             });
         } else if (syncUpdate != null) {
-            trace = "\nTRACE: " + syncUpdate.getClass().getName() + oldTrace;
+            trace.insert(0,"\nTRACE: " + syncUpdate.getClass().getName());
             getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
             immutable = syncUpdate.update(_source, Transaction.this);
             _dis.processAsyncResponse(null);
@@ -138,14 +136,17 @@ public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
     private void _eval(final ImmutableReference<IMMUTABLE> _root, final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         reactor = _root.reactor;
-        if (parent == null)
-            _apply(_root, "", _dis);
-        else
+        if (parent == null) {
+            trace = new StringBuffer("");
+            _apply(_root, _dis);
+        } else {
+            trace = parent.trace;
             parent._eval(_root, new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
-                    _apply(parent, parent.trace, _dis);
+                    _apply(parent, _dis);
                 }
             });
+        }
     }
 }
