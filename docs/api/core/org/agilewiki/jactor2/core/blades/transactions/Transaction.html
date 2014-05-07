@@ -126,7 +126,8 @@ var activeTableTab = "activeTableTab";
 <br>
 <pre>public abstract class <span class="typeNameLabel">Transaction&lt;IMMUTABLE&gt;</span>
 extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;IMMUTABLE&gt;</pre>
-<div class="block">A composable transation for updating an ImmutableReference.</div>
+<div class="block">A composable transation for updating an ImmutableReference.
+ Transactions are serially reusable, but not thread safe.</div>
 </li>
 </ul>
 </div>
@@ -146,8 +147,16 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>protected <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;java.lang.Void&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#applyAReq">applyAReq</a></span></code>
+<div class="block">The request which updates operate under.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>protected java.lang.StringBuffer</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#trace">trace</a></span></code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#trace">trace</a></span></code>
+<div class="block">Holds the trace in reverse chronological order.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -220,10 +229,21 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 <a name="trace">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>trace</h4>
 <pre>protected&nbsp;java.lang.StringBuffer trace</pre>
+<div class="block">Holds the trace in reverse chronological order.</div>
+</li>
+</ul>
+<a name="applyAReq">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>applyAReq</h4>
+<pre>protected&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;java.lang.Void&gt; applyAReq</pre>
+<div class="block">The request which updates operate under.</div>
 </li>
 </ul>
 </li>
