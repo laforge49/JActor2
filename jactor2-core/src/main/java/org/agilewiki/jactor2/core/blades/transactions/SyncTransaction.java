@@ -4,6 +4,8 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
 /**
  * A synchronous operation to be applied to an ImmutableReference.
+ * The new immutable reference resulting from the update should be stored
+ * in this.immutable.
  *
  * @param <IMMUTABLE> The type of immutable data structure.
  */
