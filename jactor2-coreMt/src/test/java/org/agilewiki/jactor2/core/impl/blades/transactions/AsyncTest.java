@@ -16,7 +16,6 @@ public class AsyncTest extends TestCase {
             @Override
             protected void update(final ImmutableReference<String> source,
                                   final AsyncResponseProcessor<Void> asyncResponseProcessor) throws Exception {
-                DelayAReq delay = new DelayAReq(1000);
                 applyAReq.send(new DelayAReq(1000), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(Void _response) throws Exception {
