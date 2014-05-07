@@ -6,12 +6,21 @@ import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
 /**
  * A composable transation for updating an ImmutableReference.
+ * Transactions are serially reusable, but not thread safe.
  *
  * @param <IMMUTABLE>    The type of immutable data structure.
  */
 abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
     private final Transaction<IMMUTABLE> parent;
+
+    /**
+     * Holds the trace in reverse chronological order.
+     */
     protected StringBuffer trace;
+
+    /**
+     * The request which updates operate under.
+     */
     protected AsyncRequest<Void> applyAReq;
 
     /**
@@ -36,6 +45,7 @@ abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABL
                 public void processAsyncResponse(Void _response) throws Exception {
                     _immutableReference.immutable = immutable;
                     applyAReq.processAsyncResponse(null);
+                    applyAReq = null;
                 }
             };
 
