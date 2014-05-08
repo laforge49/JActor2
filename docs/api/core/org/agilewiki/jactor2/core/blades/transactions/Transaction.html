@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":10,"i2":10};
+var methods = {"i0":6,"i1":10,"i2":10,"i3":10,"i4":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -147,7 +147,7 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;java.lang.Void&gt;</code></td>
+<td class="colFirst"><code>protected <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#applyAReq">applyAReq</a></span></code>
 <div class="block">The request which updates operate under.</div>
 </td>
@@ -188,12 +188,25 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;java.lang.Void&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#applyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-">applyAReq</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</code>
-<div class="block">Create a request to apply the transaction.</div>
+<div class="block">Create a request to apply the transaction to an ImmutableReference.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#atomicApplyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-IMMUTABLE-">atomicApplyAReq</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference,
+               <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&nbsp;expected)</code>
+<div class="block">Create a request to apply the transaction to an ImmutableReference if it has not changed.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#evalAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-">evalAReq</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</code>
+<div class="block">Create a request to evaluate the transaction against an ImmutableReference without changing the ImmutableReference.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>protected <a href="../../../../../../org/agilewiki/jactor2/core/requests/ExceptionHandler.html" title="class in org.agilewiki.jactor2.core.requests">ExceptionHandler</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#exceptionHandler--">exceptionHandler</a></span>()</code>&nbsp;</td>
 </tr>
@@ -242,7 +255,7 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 <ul class="blockListLast">
 <li class="blockList">
 <h4>applyAReq</h4>
-<pre>protected&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;java.lang.Void&gt; applyAReq</pre>
+<pre>protected&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt; applyAReq</pre>
 <div class="block">The request which updates operate under.</div>
 </li>
 </ul>
@@ -260,8 +273,45 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 <ul class="blockList">
 <li class="blockList">
 <h4>applyAReq</h4>
-<pre>public&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;java.lang.Void&gt;&nbsp;applyAReq(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</pre>
-<div class="block">Create a request to apply the transaction.</div>
+<pre>public&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;applyAReq(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</pre>
+<div class="block">Create a request to apply the transaction to an ImmutableReference.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>_immutableReference</code> - The ImmutableReference to which the transaction is to be applied.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The new request.</dd>
+</dl>
+</li>
+</ul>
+<a name="atomicApplyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-java.lang.Object-">
+<!--   -->
+</a><a name="atomicApplyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-IMMUTABLE-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>atomicApplyAReq</h4>
+<pre>public&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;atomicApplyAReq(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference,
+                                               <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&nbsp;expected)</pre>
+<div class="block">Create a request to apply the transaction to an ImmutableReference if it has not changed.
+ The request returns null if the ImmutableReference changed, otherwise a reference
+ to the new immutable is returned.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>_immutableReference</code> - The ImmutableReference to which the transaction is to be applied.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The new request.</dd>
+</dl>
+</li>
+</ul>
+<a name="evalAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>evalAReq</h4>
+<pre>public&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;evalAReq(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</pre>
+<div class="block">Create a request to evaluate the transaction against an ImmutableReference without changing the ImmutableReference.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_immutableReference</code> - The ImmutableReference to which the transaction is to be applied.</dd>
