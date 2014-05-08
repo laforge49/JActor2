@@ -12,17 +12,17 @@ but it does not work so well with send.
 The reason is that the scope of a try/catch clause is determined by control flow, rather than data flow.
 So there is no way to catch an exception that was raised while processing a request on another thread.
 But this is covered through the use of an 
-<a href="../../api/org/agilewiki/jactor2/core/requests/ExceptionHandler.html">ExceptionHandler</a>.
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/ExceptionHandler.html">ExceptionHandler</a>.
 </p>
 <p>
 An ExceptionHandler can be assigned while processing a asynchronous request by calling the
-<a href="../../api/org/agilewiki/jactor2/core/requests/AsyncRequest.html#setExceptionHandler-org.agilewiki.jactor2.core.requests.ExceptionHandler-">setExceptionHandler</a> 
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html#setExceptionHandler-org.agilewiki.jactor2.core.requests.ExceptionHandler-">setExceptionHandler</a> 
 method.
 This is illustrated by the <a href="java7/ExceptionHandlerSample.java">ExceptionHandlerSample</a> program.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;

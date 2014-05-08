@@ -10,22 +10,22 @@
 <p>
 In <a href="gettingStarted.html">Getting Started</a> we saw how we could change the plant configuration using a system property
 to specify a subclass of
-<a href="../../api/org/agilewiki/jactor2/core/plant/PlantConfiguration.html">PlantConfiguration</a>.
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/PlantConfiguration.html">PlantConfiguration</a>.
 Alternatively, you can use a
-<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#Plant-org.agilewiki.jactor2.core.plant.PlantConfiguration-">Plant constructor</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/Plant.html#Plant-org.agilewiki.jactor2.core.plant.PlantConfiguration-">Plant constructor</a>
 to specify the desired subclass of PlantConfiguration.
 </p>
 <p>
-The <a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html">Recovery</a> class
+The <a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html">Recovery</a> class
 is included in PlantConfiguration. Recovery defines both failure detection and recovery.
 Changing the Recovery class is done by overriding the 
-<a href="../../api/org/agilewiki/jactor2/core/plant/PlantConfiguration.html#createRecovery--">createRecovery</a> method
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/PlantConfiguration.html#createRecovery--">createRecovery</a> method
 in a subclass of PlantConfiguration.
 </p>
 When the
-<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html">Plant</a> singleton is created,
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/Plant.html">Plant</a> singleton is created,
 it creates a reactor for internal use and assigns the Recovery object found in its PlantConfiguration using the
-<a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html#setRecovery-org.agilewiki.jactor2.core.plant.Recovery-">setRecovery</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#setRecovery-org.agilewiki.jactor2.core.impl.mtPlant.Recovery-">setRecovery</a>
 method. When subsequent reactors are created, they are assigned the same recovery object as their parent reactor--which is,
 by default, the internal reactor of the plant.
 <p>
@@ -38,22 +38,22 @@ processing the message that caused the failure.
 When there are millions of messages processed each second, adding a timer to each one can slow things down considerably.
 So instead of timing each message, the reactor tracks when processing began on each message and the reactors are polled
 to see if any reactor has been processing the same message for too long. The Recovery method
-<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#getReactorPollMillis--">getReactorPollMillis</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getReactorPollMillis--">getReactorPollMillis</a>
 is used to determine how often the reactors are to be polled. The default value is 500 milliseconds.
 </p>
 <p>
 The Recovery method
-<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#getMessageTimeoutMillis-org.agilewiki.jactor2.core.impl.ReactorImpl-">getMessageTimeoutMillis</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getMessageTimeoutMillis-org.agilewiki.jactor2.core.reactors.ReactorImpl-">getMessageTimeoutMillis</a>
 is used to determine how long a message can be processed before being timed out. The default value is
 300,000 milliseconds for blocking reactors and 1,000 milliseconds for all other types of reactors.
 </p>
 <p>
 Once a message has timed out, then the Recovery method
-<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#onMessageTimeout-org.agilewiki.jactor2.core.impl.ReactorImpl-">onMessageTimeout</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onMessageTimeout-org.agilewiki.jactor2.core.reactors.ReactorImpl-">onMessageTimeout</a>
 handles the recovery. The default action is to close the Reactor, which results in an interrupt being passed to the thread processing the message. 
 The application then has a limited
 time to detect and throw an InterruptedException. How long it has is determined by the Recovery method
-<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#getThreadInterruptMillis-org.agilewiki.jactor2.core.impl.ReactorImpl-">getThreadInterruptMillis</a>.
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getThreadInterruptMillis-org.agilewiki.jactor2.core.reactors.ReactorImpl-">getThreadInterruptMillis</a>.
 The default value is 1,000 milliseconds.
 </p>
 <p>
@@ -105,7 +105,7 @@ As you can see below, the Hanger's reactor is closed and the result of the call 
 sleeper is that a ServiceClosedException is thrown.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 
 public class SleeperMessageTimeout {
     static public void main(final String[] _args) throws Exception {
@@ -163,11 +163,11 @@ java:1142)
 <p>
 When there is no response to an interrupt, the thread is considered hung and the
 Recovery method
-<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#onHungThread-org.agilewiki.jactor2.core.impl.ReactorImpl-">onHungThread</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onHungThread-org.agilewiki.jactor2.core.reactors.ReactorImpl-">onHungThread</a>
 is called to handle the recovery.
 The default action is to call the 
-<a href="../../api/org/agilewiki/jactor2/core/plant/Plant.html#exit--">exit</a> method on Plant.
-This method closes all reactors and their closeables before calling System.exit.
+<a href="../../api/core/org/agilewiki/jactor2/core/plant/PlantBase.html#close--">close</a> method on Plant
+before calling System.exit.
 </p>
 <p>
 The <a href="java7/LooperMessageTimeout.java">LooperMessageTimeout</a> program
@@ -213,14 +213,14 @@ So when a message is done processing, there is no response yet for the
 current request and there are no pending responses, it is quite likely that
 there is a bug and the request has been hung.
 This is when the recovery method
-<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#onHungRequest-org.agilewiki.jactor2.core.impl.RequestImpl-">onHungRequest</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onHungRequest-org.agilewiki.jactor2.core.requests.RequestImpl-">onHungRequest</a>
 is called.
 The default action is to close the reactor.
 </p>
 <p>
 Of course, things are often not that simple. A blade may save a request and respond to it later.
 In this case we need to call
-<a href="../../api/org/agilewiki/jactor2/core/plant/Recovery.html#setNoHungRequestCheck--">setNoHungRequestCheck</a>.
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html#setNoHungRequestCheck--">setNoHungRequestCheck</a>.
 Fortunately this is an unusual case, so most of the time we are assured that the request will not hang
 and we can focus our code reviews on code that uses the setNoHungRequestCheck method.
 </p>

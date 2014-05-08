@@ -21,7 +21,7 @@ Reactor Class
 </th>
 <th style="padding: 5px;" bgcolor="lightyellow">
 Implements<br>
-<a href="../../api/org/agilewiki/jactor2/core/reactors/CommonReactor.html">CommonReactor</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/CommonReactor.html">CommonReactor</a>
 </th>
 <th style="padding: 5px;" bgcolor="lightyellow">
 Usage
@@ -33,7 +33,7 @@ Buffered Messages
 
 <tr>
 <td style="padding: 5px;" bgcolor="lightyellow">
-<a href="../../api/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html">NonBlockingReactor</a>
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 True
@@ -48,7 +48,7 @@ Disbursed when there are no more messages to be processed.
 
 <tr>
 <td style="padding: 5px;" bgcolor="lightyellow">
-<a href="../../api/org/agilewiki/jactor2/core/reactors/BlockingReactor.html">BlockingReactor</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/BlockingReactor.html">BlockingReactor</a>
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 True
@@ -63,7 +63,7 @@ Disbursed after processing each message.
 
 <tr>
 <td style="padding: 5px;" bgcolor="lightyellow">
-<a href="../../api/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/IsolationReactor.html">IsolationReactor</a>
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 False
@@ -79,7 +79,7 @@ Disbursed after processing each message.
 
 <tr>
 <td style="padding: 5px;" bgcolor="lightyellow">
-<a href="../../api/org/agilewiki/jactor2/core/reactors/ThreadBoundReactor.html">ThreadBoundReactor</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/ThreadBoundReactor.html">ThreadBoundReactor</a>
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 True
@@ -94,7 +94,7 @@ Disbursed when there are no more messages to be processed.
 
 <tr>
 <td style="padding: 5px;" bgcolor="lightyellow">
-<a href="../../api/org/agilewiki/jactor2/core/reactors/SwingBoundReactor.html">SwingBoundReactor</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/SwingBoundReactor.html">SwingBoundReactor</a>
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
 True
@@ -120,9 +120,9 @@ This is illustrated by the <a href="java7/Isolation.java">Isolation</a> program:
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.Delay;
+import org.agilewiki.jactor2.core.impl.Delay;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;

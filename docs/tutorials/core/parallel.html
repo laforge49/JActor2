@@ -11,14 +11,14 @@ Parallel processing can be as simple as sending multiple requests to multiple re
 In the <a href="java7/Parallel.java">Parallel</a> program,
 a facility is created with 10 threads and
 10 sleep requests of 100 milliseconds each are sent to 10 different 
-<a href="../../api/org/agilewiki/jactor2/core/blades/Delay.html">Delay</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/Delay.html">Delay</a>
 blades,
 each running in a different reactor. And the total processing time is just over 100 milliseconds.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.blades.Delay;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Delay;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 

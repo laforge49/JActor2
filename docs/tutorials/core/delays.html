@@ -9,16 +9,16 @@
 <p>
 Using sleep to create a delay is fine for simulating I/O, but it blocks the thread.
 So it does not scale very well when you need a lot of timers.
-<a href="../../api/org/agilewiki/jactor2/core/plant/DelayAReq.html">DelayAReq</a>,
+<a href="../../api/core/org/agilewiki/jactor2/core/plant/DelayAReq.html">DelayAReq</a>,
 on the other hand, is a light-weight request that scales nicely, as it uses the
-<a href="../../api/org/agilewiki/jactor2/core/plant/PlantScheduler.html#schedule-java.lang.Runnable-long-">schedule</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/plant/PlantScheduler.html#schedule-java.lang.Runnable-long-">schedule</a>
 method in PlantScheduler.
 The <a href="java7/Delays.java">Delays</a> program demonstrates the scalability of DelayAReq by running 10,000 timers in parallel.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.plant.DelayAReq;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 

@@ -9,8 +9,8 @@
 <p>
 Some types of objects, like Sockets, need to be closed.
 This type of assurance is supported by classes which implement
-<a href="../../api/org/agilewiki/jactor2/core/closeable/Closeable.html">Closeable</a>.
-The Reactor method <a href="../../api/org/agilewiki/jactor2/core/reactors/Reactor.html#addCloseable-org.agilewiki.jactor2.core.closeable.Closeable-">addCloseable</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/closeable/Closeable.html">Closeable</a>.
+The Reactor method <a href="../../api/core/org/agilewiki/jactor2/core/reactors/Reactor.html#addCloseable-org.agilewiki.jactor2.core.closeable.Closeable-">addCloseable</a>
 can then be used to ensure that the Closeable is closed when any Reactor it has been added to is closed.
 But note that weak references are used to track closeables, 
 and there is no assurance that close will be called on an object that has been garbage collected.
@@ -20,15 +20,15 @@ is closed.
 <p>
 The <a href="java7/SampleCloseable.java">SampleCloseable</a> class uses composition to implement the Closeable interface.
 But this is not a requirement, as the 
-<a href="../../api/org/agilewiki/jactor2/core/closeable/CloseableImpl.html">CloseableImpl</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/closeable/CloseableImpl.html">CloseableImpl</a>
 interface can easily be implemented by the same class that implements Closeable.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
-import org.agilewiki.jactor2.core.closeable.CloseableImpl1;
+import org.agilewiki.jactor2.core.impl.mtCloseable.CloseableMtImpl;
 
 public class SampleCloseable implements Closeable {
     public static void main(final String[] _args) throws Exception {

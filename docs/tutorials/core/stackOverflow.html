@@ -9,13 +9,13 @@
 <h1>StackOverflow - The StackOverflow<i>Exception</i></h1>
 <p>
 When an uncaught StackOverflowError occurs while processing a request, a
-<a href="../../api/org/agilewiki/jactor2/core/requests/StackOverflowException.html">StackOverflow<i>Exception</i></a>
+<a href="../../api/core/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html">ReactorClosedException</a>
 is created and passed back to the source of the request.
 This is demonstrated in the <a href="java7/StackOverflow.java">StackOverflow</a> program.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
@@ -49,17 +49,19 @@ public class StackOverflow extends NonBlockingBladeBase {
 
     Output:
     
+[Thread-0] ERROR org.agilewiki.jactor2.core.reactors.Reactor - stack overflow er
+ror -> reactor close
 Caught org.agilewiki.jactor2.core.reactors.ReactorClosedException
-[Thread-0] ERROR org.agilewiki.jactor2.core.reactors.Reactor - stack overflow ->
- reactor close
+
 
 java.lang.StackOverflowError
-        at StackOverflow.recur(StackOverflow.java:10)
-        at StackOverflow.recur(StackOverflow.java:10)
-        at StackOverflow.recur(StackOverflow.java:10)
-        at StackOverflow.recur(StackOverflow.java:10)
-        at StackOverflow.recur(StackOverflow.java:10)
-        at StackOverflow.recur(StackOverflow.java:10)
+        at StackOverflow.recur(StackOverflow.java:9)
+        at StackOverflow.recur(StackOverflow.java:9)
+        at StackOverflow.recur(StackOverflow.java:9)
+        at StackOverflow.recur(StackOverflow.java:9)
+        at StackOverflow.recur(StackOverflow.java:9)
+        at StackOverflow.recur(StackOverflow.java:9)
+        at StackOverflow.recur(StackOverflow.java:9)
         ...
 </pre>
 </body>

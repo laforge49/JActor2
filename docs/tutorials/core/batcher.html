@@ -14,7 +14,7 @@ This is illustrated by <a href="java7/Batcher.java">Batcher</a>.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -77,10 +77,10 @@ public class Batcher extends NonBlockingBladeBase {
 Output:
 
 Batch Timings
-Test duration in nanoseconds: 803136046
+Test duration in nanoseconds: 830473407
 Number of exchanges: 1000000
-Exchanges per second: 1245119
-Latency in seconds: 8.03136046E-7
+Exchanges per second: 1204132
+Latency in seconds: 8.30473407E-7
 </pre>
 <p>
 The code that drives this is fairly simple. We put the send invocation in a simple loop,
