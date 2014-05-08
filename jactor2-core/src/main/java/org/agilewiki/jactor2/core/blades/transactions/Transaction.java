@@ -21,7 +21,7 @@ abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABL
     /**
      * The request which updates operate under.
      */
-    protected AsyncRequest<Void> applyAReq;
+    protected AsyncRequest<IMMUTABLE> applyAReq;
 
     /**
      * Compose a Transaction.
@@ -33,18 +33,72 @@ abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABL
     }
 
     /**
-     * Create a request to apply the transaction.
+     * Create a request to apply the transaction to an ImmutableReference.
      *
      * @param _immutableReference    The ImmutableReference to which the transaction is to be applied.
      * @return The new request.
      */
-    public AsyncRequest<Void> applyAReq(final ImmutableReference<IMMUTABLE> _immutableReference) {
-        return new AsyncRequest<Void>(_immutableReference.getReactor()) {
+    public AsyncRequest<IMMUTABLE> applyAReq(final ImmutableReference<IMMUTABLE> _immutableReference) {
+        return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
             private AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
                     _immutableReference.immutable = immutable;
-                    applyAReq.processAsyncResponse(null);
+                    applyAReq.processAsyncResponse(immutable);
+                    applyAReq = null;
+                }
+            };
+
+            @Override
+            public void processAsyncRequest() throws Exception {
+                _eval(_immutableReference, this, _evalResponseProcessor);
+            }
+        };
+    }
+
+    /**
+     * Create a request to apply the transaction to an ImmutableReference if it has not changed.
+     * The request returns null if the ImmutableReference changed, otherwise a reference
+     * to the new immutable is returned.
+     *
+     * @param _immutableReference    The ImmutableReference to which the transaction is to be applied.
+     * @return The new request.
+     */
+    public AsyncRequest<IMMUTABLE> atomicApplyAReq(final ImmutableReference<IMMUTABLE> _immutableReference,
+                                                   final IMMUTABLE expected) {
+        return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
+            private AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(Void _response) throws Exception {
+                    _immutableReference.immutable = immutable;
+                    applyAReq.processAsyncResponse(immutable);
+                    applyAReq = null;
+                }
+            };
+
+            @Override
+            public void processAsyncRequest() throws Exception {
+                if (_immutableReference.getImmutable() != expected) {
+                    processAsyncResponse(null);
+                    return;
+                }
+                _eval(_immutableReference, this, _evalResponseProcessor);
+            }
+        };
+    }
+
+    /**
+     * Create a request to evaluate the transaction against an ImmutableReference without changing the ImmutableReference.
+     *
+     * @param _immutableReference    The ImmutableReference to which the transaction is to be applied.
+     * @return The new request.
+     */
+    public AsyncRequest<IMMUTABLE> evalAReq(final ImmutableReference<IMMUTABLE> _immutableReference) {
+        return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
+            private AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(Void _response) throws Exception {
+                    applyAReq.processAsyncResponse(immutable);
                     applyAReq = null;
                 }
             };
@@ -82,7 +136,7 @@ abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABL
             throws Exception;
 
     private void _eval(final ImmutableReference<IMMUTABLE> _root,
-                       final AsyncRequest<Void> _applyAReq,
+                       final AsyncRequest<IMMUTABLE> _applyAReq,
                        final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         reactor = _root.reactor;
