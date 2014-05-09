@@ -274,14 +274,15 @@ public class PlantMtImpl extends PlantImpl {
      * @param _reactor The targetReactor to be run.
      */
     public final void submit(final PoolThreadReactorMtImpl _reactor) {
+        ReactorMtImpl internalReactorImpl = (ReactorMtImpl) internalReactor.asReactorImpl();
         try {
             reactorPoolThreadManager.execute(_reactor);
         } catch (final Exception e) {
-            if (!internalReactor.asReactorImpl().isClosing()) {
+            if (!internalReactorImpl.isClosing()) {
                 throw e;
             }
         } catch (final Error e) {
-            if (!internalReactor.asReactorImpl().isClosing()) {
+            if (!internalReactorImpl.isClosing()) {
                 throw e;
             }
         }

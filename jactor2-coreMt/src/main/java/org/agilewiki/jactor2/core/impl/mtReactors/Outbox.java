@@ -52,7 +52,7 @@ public class Outbox implements AutoCloseable {
      * @param _target  The reactor that should eventually receive this message.
      * @return True if the message was successfully buffered.
      */
-    public boolean buffer(final RequestImpl _message, final ReactorImpl _target) {
+    public boolean buffer(final RequestImpl _message, final ReactorMtImpl _target) {
         if (_target.isClosing())
             return false;
         ArrayDeque<RequestImpl> buffer = null;

@@ -167,7 +167,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         return startClosing;
     }
 
-    @Override
     public final boolean isClosing() {
         return shuttingDown;
     }
@@ -182,7 +181,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         fail(null);
     }
 
-    @Override
     public String getReasonForFailure() {
         return reason;
     }

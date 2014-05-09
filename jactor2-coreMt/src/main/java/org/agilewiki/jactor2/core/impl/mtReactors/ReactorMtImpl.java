@@ -233,7 +233,6 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         return startClosing;
     }
 
-    @Override
     public final boolean isClosing() {
         return shuttingDown;
     }
@@ -248,7 +247,6 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         fail(null);
     }
 
-    @Override
     public String getReasonForFailure() {
         return reason;
     }
@@ -480,7 +478,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _target  The reactor that should eventually receive this message
      * @return True if the message was buffered.
      */
-    public boolean buffer(final RequestImpl _message, final ReactorImpl _target) {
+    public boolean buffer(final RequestMtImpl _message, final ReactorMtImpl _target) {
         return outbox.buffer(_message, _target);
     }
 
@@ -501,16 +499,16 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      */
     abstract protected void notBusy() throws Exception;
 
-    @Override
     public final void incomingResponse(final RequestImpl _message,
             final ReactorImpl _responseSource) {
+        RequestMtImpl message = (RequestMtImpl) _message;
         try {
             final ReactorMtImpl responseSource = _responseSource == null ? null
                     : (ReactorMtImpl) _responseSource;
             final boolean local = this == _responseSource;
             if (local || (_responseSource == null)
-                    || !responseSource.buffer(_message, this)) {
-                unbufferedAddMessage(_message, local);
+                    || !responseSource.buffer(message, this)) {
+                unbufferedAddMessage(message, local);
             }
         } catch (final Throwable t) {
             logger.error("unable to add response message", t);

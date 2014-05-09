@@ -53,10 +53,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      */
     boolean isRunning();
 
-    boolean isClosing();
-
-    String getReasonForFailure();
-
     /**
      * Close the reactor;
      *
