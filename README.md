@@ -159,7 +159,7 @@ reactor. But when an exception is passed back, it is thrown.
 
 ```java
 
-    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.impl.Plant;
 
     public class M {
         public static void main(final String[] _args) throws Exception {
@@ -341,7 +341,7 @@ But by introducing request factory methods we can then use interfaces to decoupl
 ```java
 
     import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.impl.Plant;
     import org.agilewiki.jactor2.core.requests.AsyncRequest;
     import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
@@ -407,7 +407,7 @@ a pre-determined order. But doing things in parallel is as simple as having mult
 
 ```java
 
-    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.impl.Plant;
     import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
     import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
@@ -540,7 +540,7 @@ Here then is the rest of the program and its output:
 
 ```java
 
-    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.impl.Plant;
     import org.agilewiki.jactor2.core.reactors.BlockingReactor;
     import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
     import org.agilewiki.jactor2.core.requests.AsyncRequest;
