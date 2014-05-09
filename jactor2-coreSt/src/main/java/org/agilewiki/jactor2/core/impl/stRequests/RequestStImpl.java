@@ -280,7 +280,6 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         return canceled;
     }
 
-    @Override
     public boolean isComplete() {
         return !incomplete;
     }

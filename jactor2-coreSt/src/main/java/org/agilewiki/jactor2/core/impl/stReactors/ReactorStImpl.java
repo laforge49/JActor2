@@ -11,6 +11,7 @@ import org.agilewiki.jactor2.core.impl.stCloseable.CloseableStImpl;
 import org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration;
 import org.agilewiki.jactor2.core.impl.stPlant.PlantStImpl;
 import org.agilewiki.jactor2.core.impl.stPlant.Recovery;
+import org.agilewiki.jactor2.core.impl.stRequests.RequestStImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -321,8 +322,9 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     @Override
     public void unbufferedAddMessage(final RequestImpl _message,
             final boolean _local) {
+        RequestStImpl message = (RequestStImpl) _message;
         if (isClosing()) {
-            if (!_message.isComplete()) {
+            if (!message.isComplete()) {
                 try {
                     _message.close();
                 } catch (final Throwable t) {
@@ -330,7 +332,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
             }
             return;
         }
-        inbox.offerLocal(_message);
+        inbox.offerLocal(message);
         afterAdd();
     }
 
@@ -355,7 +357,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @param _message The message to be processed.
      */
-    protected void processMessage(final RequestImpl _message) {
+    protected void processMessage(final RequestStImpl _message) {
         _message.eval();
         if (!_message.isComplete() && !startClosing && !_message.isOneWay()) {
             inProcessRequests.add(_message);
@@ -367,7 +369,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      */
     abstract protected void notBusy() throws Exception;
 
-    public final void incomingResponse(final RequestImpl _message,
+    public final void incomingResponse(final RequestStImpl _message,
             final ReactorImpl _responseSource) {
         try {
             final boolean local = this == _responseSource;
@@ -382,7 +384,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      */
     @Override
     public void requestBegin(final RequestImpl _requestImpl) {
-        inbox.requestBegin(_requestImpl);
+        inbox.requestBegin((RequestStImpl) _requestImpl);
     }
 
     /**
@@ -392,10 +394,11 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      */
     @Override
     public void requestEnd(final RequestImpl _message) {
-        if (_message.isForeign()) {
-            final boolean b = inProcessRequests.remove(_message);
+        RequestStImpl message = (RequestStImpl) _message;
+        if (message.isForeign()) {
+            final boolean b = inProcessRequests.remove(message);
         }
-        inbox.requestEnd(_message);
+        inbox.requestEnd(message);
     }
 
     /**
@@ -409,7 +412,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
                 if (Thread.interrupted()) {
                     return;
                 }
-                RequestImpl request = inbox.poll();
+                RequestStImpl request = inbox.poll();
                 while (request != null && request._isCanceled()) {
                     request = inbox.poll();
                 }

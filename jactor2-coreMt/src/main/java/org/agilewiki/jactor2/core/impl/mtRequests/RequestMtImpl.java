@@ -297,7 +297,6 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         return canceled;
     }
 
-    @Override
     public boolean isComplete() {
         return !incomplete;
     }

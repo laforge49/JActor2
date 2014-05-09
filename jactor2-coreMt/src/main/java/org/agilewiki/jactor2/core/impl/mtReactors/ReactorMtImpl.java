@@ -16,6 +16,7 @@ import org.agilewiki.jactor2.core.impl.mtPlant.PlantConfiguration;
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.impl.mtPlant.Recovery;
 import org.agilewiki.jactor2.core.impl.mtPlant.SchedulableSemaphore;
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestSource;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
@@ -83,7 +84,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     /**
      * The request or signal message being processed.
      */
-    private RequestImpl currentRequest;
+    private RequestMtImpl currentRequest;
 
     /**
      * Set when the reactor reaches end-of-life.
@@ -359,7 +360,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      */
     @Override
     public final void setCurrentRequest(final RequestImpl _message) {
-        currentRequest = _message;
+        currentRequest = (RequestMtImpl) _message;
     }
 
     /**
@@ -429,16 +430,17 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     @Override
     public void unbufferedAddMessage(final RequestImpl _message,
             final boolean _local) {
+        RequestMtImpl message = (RequestMtImpl) _message;
         if (isClosing()) {
-            if (!_message.isComplete()) {
+            if (!message.isComplete()) {
                 try {
-                    _message.close();
+                    message.close();
                 } catch (final Throwable t) {
                 }
             }
             return;
         }
-        inbox.offer(_local, _message);
+        inbox.offer(_local, message);
         afterAdd();
     }
 
@@ -452,7 +454,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         if (isClosing()) {
             final Iterator<RequestImpl> itm = _messages.iterator();
             while (itm.hasNext()) {
-                final RequestImpl message = itm.next();
+                final RequestMtImpl message = (RequestMtImpl) itm.next();
                 if (!message.isComplete()) {
                     try {
                         message.close();
@@ -487,7 +489,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @param _message The message to be processed.
      */
-    protected void processMessage(final RequestImpl _message) {
+    protected void processMessage(final RequestMtImpl _message) {
         _message.eval();
         if (!_message.isComplete() && !startClosing && !_message.isOneWay()) {
             inProcessRequests.add(_message);
@@ -520,7 +522,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      */
     @Override
     public void requestBegin(final RequestImpl _requestImpl) {
-        inbox.requestBegin(_requestImpl);
+        inbox.requestBegin((RequestMtImpl) _requestImpl);
     }
 
     /**
@@ -533,7 +535,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         if (_message.isForeign()) {
             final boolean b = inProcessRequests.remove(_message);
         }
-        inbox.requestEnd(_message);
+        inbox.requestEnd((RequestMtImpl) _message);
     }
 
     /**
@@ -550,7 +552,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
                 if (timeoutSemaphore != null) {
                     return;
                 }
-                RequestImpl request = inbox.poll();
+                RequestMtImpl request = inbox.poll();
                 while (request != null && request._isCanceled()) {
                     request = inbox.poll();
                 }

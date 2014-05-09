@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 import java.util.ArrayDeque;
@@ -48,12 +49,12 @@ public class CommonInbox extends Inbox {
     }
 
     @Override
-    protected void offerLocal(final RequestImpl msg) {
+    protected void offerLocal(final RequestMtImpl msg) {
         localQueue.offer(msg);
     }
 
     @Override
-    public RequestImpl poll() {
+    public RequestMtImpl poll() {
         Object obj = localQueue.peek();
         if (obj == null) {
             obj = concurrentQueue.poll();
@@ -61,11 +62,11 @@ public class CommonInbox extends Inbox {
                 return null;
             } else {
                 if (obj instanceof RequestImpl) {
-                    return (RequestImpl) obj;
+                    return (RequestMtImpl) obj;
                 } else {
                     @SuppressWarnings("unchecked")
-                    final Queue<RequestImpl> msgs = (Queue<RequestImpl>) obj;
-                    final RequestImpl result = msgs.poll();
+                    final Queue<RequestMtImpl> msgs = (Queue<RequestMtImpl>) obj;
+                    final RequestMtImpl result = msgs.poll();
                     if (!msgs.isEmpty()) {
                         // msgs is not empty so save it in localQueue
                         localQueue.offer(msgs);
@@ -75,11 +76,11 @@ public class CommonInbox extends Inbox {
             }
         } else {
             if (obj instanceof RequestImpl) {
-                return (RequestImpl) localQueue.poll();
+                return (RequestMtImpl) localQueue.poll();
             } else {
                 @SuppressWarnings("unchecked")
-                final Queue<RequestImpl> msgs = (Queue<RequestImpl>) obj;
-                final RequestImpl result = msgs.poll();
+                final Queue<RequestMtImpl> msgs = (Queue<RequestMtImpl>) obj;
+                final RequestMtImpl result = msgs.poll();
                 if (msgs.isEmpty()) {
                     // msgs is empty, so remove msgs from localQueue
                     localQueue.poll();

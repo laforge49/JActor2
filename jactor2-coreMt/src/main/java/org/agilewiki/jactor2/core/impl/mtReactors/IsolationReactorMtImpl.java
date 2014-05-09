@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
@@ -32,7 +33,7 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
     }
 
     @Override
-    protected void processMessage(final RequestImpl _message) {
+    protected void processMessage(final RequestMtImpl _message) {
         super.processMessage(_message);
         try {
             flush(true);

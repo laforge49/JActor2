@@ -37,13 +37,6 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
             final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor);
 
     /**
-     * Returns true when a response has been assigned to the request.
-     *
-     * @return True when a response has not been assigned to the request.
-     */
-    boolean isComplete();
-
-    /**
      * Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
      *
      * @return True whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.
