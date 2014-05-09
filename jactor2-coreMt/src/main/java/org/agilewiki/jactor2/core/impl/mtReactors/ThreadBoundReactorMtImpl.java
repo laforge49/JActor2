@@ -73,7 +73,11 @@ public class ThreadBoundReactorMtImpl extends ReactorMtImpl {
         flush();
     }
 
-    @Override
+    /**
+     * Returns true when there is code to be executed when the inbox is emptied.
+     *
+     * @return True when there is code to be executed when the inbox is emptied.
+     */
     public boolean isIdler() {
         throw new UnsupportedOperationException();
     }

@@ -374,7 +374,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     /**
      * Signals the start of a request.
      */
-    @Override
     public void requestBegin(final RequestImpl _requestImpl) {
         inbox.requestBegin((RequestStImpl) _requestImpl);
     }
@@ -384,7 +383,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @param _message The request that has completed
      */
-    @Override
     public void requestEnd(final RequestImpl _message) {
         RequestStImpl message = (RequestStImpl) _message;
         if (message.isForeign()) {
@@ -490,12 +488,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
         return true;
     }
 
-    @Override
-    public boolean isSlow() {
-        return false;
-    }
-
-    @Override
     public boolean isCommonReactor() {
         return asReactor() instanceof CommonReactor;
     }
@@ -520,19 +512,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
 
     public void setPlantScheduler(final PlantScheduler plantScheduler) {
         this.plantScheduler = plantScheduler;
-    }
-
-    /**
-     * The time when processing began on the current message.
-     */
-    @Override
-    public double getMessageStartTimeMillis() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setMessageStartTimeMillis(final double messageStartTimeMillis) {
-        throw new UnsupportedOperationException();
     }
 
     /**

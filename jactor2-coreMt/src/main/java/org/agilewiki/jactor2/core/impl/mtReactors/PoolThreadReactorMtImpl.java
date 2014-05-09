@@ -27,7 +27,11 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    @Override
+    /**
+     * Returns true when there is code to be executed when the inbox is emptied.
+     *
+     * @return True when there is code to be executed when the inbox is emptied.
+     */
     public boolean isIdler() {
         return onIdle != null;
     }

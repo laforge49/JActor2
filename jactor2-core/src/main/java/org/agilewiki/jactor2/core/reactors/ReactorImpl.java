@@ -77,25 +77,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     ExceptionHandler setExceptionHandler(final ExceptionHandler _handler);
 
     /**
-     * Signals the start of a request.
-     */
-    void requestBegin(final RequestImpl _requestImpl);
-
-    /**
-     * Signals that a request has completed.
-     *
-     * @param _message The request that has completed
-     */
-    void requestEnd(final RequestImpl _message);
-
-    /**
-     * Returns true when there is code to be executed when the inbox is emptied.
-     *
-     * @return True when there is code to be executed when the inbox is emptied.
-     */
-    boolean isIdler();
-
-    /**
      * A noop request used for synchronizing state.
      *
      * @return null.
@@ -117,17 +98,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @return True when the closeable was removed.
      */
     boolean removeCloseable(final Closeable _closeable);
-
-    boolean isSlow();
-
-    boolean isCommonReactor();
-
-    /**
-     * The time when processing began on the current message.
-     */
-    double getMessageStartTimeMillis();
-
-    void setMessageStartTimeMillis(double messageStartTimeMillis);
 
     /**
      * Log a message at the WARN level.

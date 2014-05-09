@@ -18,11 +18,6 @@ abstract public class PoolThreadReactorStImpl extends ReactorStImpl implements P
     }
 
     @Override
-    public boolean isIdler() {
-        return onIdle != null;
-    }
-
-    @Override
     protected void notBusy() throws Exception {
         if ((onIdle != null) && inbox.isIdle()) {
             onIdle.run();

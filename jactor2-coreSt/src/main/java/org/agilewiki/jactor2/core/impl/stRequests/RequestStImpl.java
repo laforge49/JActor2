@@ -243,7 +243,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @param _activeReactor The responding reactor.
      */
     protected void setResponse(final Object _response,
-                               final ReactorImpl _activeReactor) {
+                               final ReactorStImpl _activeReactor) {
         _activeReactor.requestEnd(this);
         incomplete = false;
         response = _response;

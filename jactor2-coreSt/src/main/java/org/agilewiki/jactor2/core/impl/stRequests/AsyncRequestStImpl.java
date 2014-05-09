@@ -235,7 +235,7 @@ public class AsyncRequestStImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void setResponse(final Object _response,
-                               final ReactorImpl _activeReactor) {
+                               final ReactorStImpl _activeReactor) {
         if (_response instanceof Throwable || targetReactor instanceof CommonReactor)
             cancelAll();
         super.setResponse(_response, _activeReactor);

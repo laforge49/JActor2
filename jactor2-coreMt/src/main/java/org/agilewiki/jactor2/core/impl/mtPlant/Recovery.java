@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
+import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
@@ -27,7 +28,7 @@ public class Recovery {
      * @param _reactorImpl  The reactor which may have a timed-out message.
      * @return Number of milliseconds.
      */
-    public int getMessageTimeoutMillis(final ReactorImpl _reactorImpl) {
+    public int getMessageTimeoutMillis(final ReactorMtImpl _reactorImpl) {
         if (_reactorImpl.isSlow())
             return 300000;
         return 1000;
