@@ -37,13 +37,6 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
             final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor);
 
     /**
-     * Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
-     *
-     * @return True whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.
-     */
-    boolean isIsolated();
-
-    /**
      * Execute the AsyncRequest.processAsyncRequest method
      * of the request held by the message. This method is always called on the
      * target reactor's own thread.

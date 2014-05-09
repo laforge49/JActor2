@@ -50,7 +50,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * The request targeted to the source reactor which, when processed,
      * resulted in this message.
      */
-    protected RequestImpl oldMessage;
+    protected RequestStImpl oldMessage;
 
     /**
      * The exception handler that was active in the source reactor
@@ -284,7 +284,6 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         return !incomplete;
     }
 
-    @Override
     public boolean isIsolated() {
         return isolated;
     }

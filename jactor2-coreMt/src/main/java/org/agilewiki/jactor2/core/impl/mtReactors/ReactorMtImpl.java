@@ -349,7 +349,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @return The message currently being processed, or null.
      */
     @Override
-    public final RequestImpl getCurrentRequest() {
+    public final RequestMtImpl getCurrentRequest() {
         return currentRequest;
     }
 

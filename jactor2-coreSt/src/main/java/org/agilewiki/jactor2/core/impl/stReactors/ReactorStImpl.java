@@ -52,7 +52,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
     /**
      * The request or signal message being processed.
      */
-    private RequestImpl currentRequest;
+    private RequestStImpl currentRequest;
 
     /**
      * Set when the reactor reaches end-of-life.
@@ -250,7 +250,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @return The message currently being processed, or null.
      */
     @Override
-    public final RequestImpl getCurrentRequest() {
+    public final RequestStImpl getCurrentRequest() {
         return currentRequest;
     }
 
@@ -261,7 +261,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      */
     @Override
     public final void setCurrentRequest(final RequestImpl _message) {
-        currentRequest = _message;
+        currentRequest = (RequestStImpl) _message;
     }
 
     /**
