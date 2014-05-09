@@ -144,9 +144,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
 
     @Override
     public Reactor getSourceReactor() {
-        if (requestSource instanceof ReactorImpl)
-            return ((ReactorImpl) requestSource).asReactor();
-        return null;
+        return requestSource.asReactor();
     }
 
     public ReactorStImpl getRequestSource() {
@@ -367,7 +365,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      */
     protected void processResponseMessage() {
         oldMessage.responseReceived(this);
-        final ReactorImpl sourceMessageProcessor = (ReactorImpl) requestSource;
+        final ReactorStImpl sourceMessageProcessor = (ReactorStImpl) requestSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentRequest(oldMessage);
         if (response instanceof Exception) {
@@ -390,9 +388,9 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @param _activeReactor The reactor providing the facility for processing the throwable.
      * @param _e             The exception to be processed.
      */
-    public void processException(final ReactorImpl _activeReactor,
+    public void processException(final ReactorStImpl _activeReactor,
                                  final Exception _e) {
-        final ReactorImpl activeMessageProcessor = _activeReactor;
+        final ReactorStImpl activeMessageProcessor = _activeReactor;
         final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
                 .getExceptionHandler();
         if (exceptionHandler != null) {

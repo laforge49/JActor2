@@ -71,7 +71,7 @@ public abstract class Inbox implements AutoCloseable {
      *
      * @param _msgs The new messages.
      */
-    public void offer(final Queue<RequestImpl> _msgs) {
+    public void offer(final Queue<RequestMtImpl> _msgs) {
         if (!_msgs.isEmpty()) {
             concurrentQueue.add(_msgs);
         }

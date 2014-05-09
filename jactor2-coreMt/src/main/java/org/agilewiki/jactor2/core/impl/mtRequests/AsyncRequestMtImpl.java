@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
+import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
@@ -101,7 +102,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         try {
             pendingCheck();
         } catch (Exception e) {
-            processException((ReactorImpl) requestSource, e);
+            processException((ReactorMtImpl) requestSource, e);
         }
     }
 

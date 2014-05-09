@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 
@@ -22,7 +23,7 @@ public class Outbox implements AutoCloseable {
     /**
      * A table of outboxes, one for each unique message destination.
      */
-    private Map<ReactorImpl, ArrayDeque<RequestImpl>> sendBuffer;
+    private Map<ReactorMtImpl, ArrayDeque<RequestMtImpl>> sendBuffer;
 
     /**
      * Create an Outbox
@@ -38,7 +39,7 @@ public class Outbox implements AutoCloseable {
      *
      * @return An iterator of the send buffers held by the outbox.
      */
-    public Iterator<Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>>> getIterator() {
+    public Iterator<Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>>> getIterator() {
         if (sendBuffer == null) {
             return null;
         }
@@ -52,17 +53,17 @@ public class Outbox implements AutoCloseable {
      * @param _target  The reactor that should eventually receive this message.
      * @return True if the message was successfully buffered.
      */
-    public boolean buffer(final RequestImpl _message, final ReactorMtImpl _target) {
+    public boolean buffer(final RequestMtImpl _message, final ReactorMtImpl _target) {
         if (_target.isClosing())
             return false;
-        ArrayDeque<RequestImpl> buffer = null;
+        ArrayDeque<RequestMtImpl> buffer = null;
         if (sendBuffer == null) {
-            sendBuffer = new IdentityHashMap<ReactorImpl, ArrayDeque<RequestImpl>>();
+            sendBuffer = new IdentityHashMap<ReactorMtImpl, ArrayDeque<RequestMtImpl>>();
         } else {
             buffer = sendBuffer.get(_target);
         }
         if (buffer == null) {
-            buffer = new ArrayDeque<RequestImpl>(initialBufferSize);
+            buffer = new ArrayDeque<RequestMtImpl>(initialBufferSize);
             sendBuffer.put(_target, buffer);
         }
         buffer.add(_message);
@@ -74,13 +75,13 @@ public class Outbox implements AutoCloseable {
      */
     @Override
     public void close() {
-        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>>> iter = getIterator();
+        final Iterator<Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>>> iter = getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
-                final Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>> entry = iter
+                final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>> entry = iter
                         .next();
                 final ReactorMtImpl target = (ReactorMtImpl) entry.getKey();
-                final ArrayDeque<RequestImpl> messages = entry.getValue();
+                final ArrayDeque<RequestMtImpl> messages = entry.getValue();
                 iter.remove();
                 try {
                     target.unbufferedAddMessages(messages);

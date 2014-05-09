@@ -346,7 +346,6 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @return The message currently being processed, or null.
      */
-    @Override
     public final RequestMtImpl getCurrentRequest() {
         return currentRequest;
     }
@@ -356,9 +355,8 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @param _message The message currently being processed.
      */
-    @Override
-    public final void setCurrentRequest(final RequestImpl _message) {
-        currentRequest = (RequestMtImpl) _message;
+    public final void setCurrentRequest(final RequestMtImpl _message) {
+        currentRequest = _message;
     }
 
     /**
@@ -367,7 +365,6 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @return True if there is a message in the inbox that can be processed.
      */
-    @Override
     public final boolean hasWork() {
         return inbox.hasWork();
     }
@@ -414,7 +411,6 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @return The current exception handler, or null.
      */
-    @Override
     public final ExceptionHandler getExceptionHandler() {
         return exceptionHandler;
     }
@@ -425,20 +421,18 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _message A message.
      * @param _local   True when the current thread is assigned to the targetReactor.
      */
-    @Override
-    public void unbufferedAddMessage(final RequestImpl _message,
+    public void unbufferedAddMessage(final RequestMtImpl _message,
             final boolean _local) {
-        RequestMtImpl message = (RequestMtImpl) _message;
         if (isClosing()) {
-            if (!message.isComplete()) {
+            if (!_message.isComplete()) {
                 try {
-                    message.close();
+                    _message.close();
                 } catch (final Throwable t) {
                 }
             }
             return;
         }
-        inbox.offer(_local, message);
+        inbox.offer(_local, _message);
         afterAdd();
     }
 
@@ -447,10 +441,10 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @param _messages Previously buffered messages.
      */
-    public void unbufferedAddMessages(final Queue<RequestImpl> _messages)
+    public void unbufferedAddMessages(final Queue<RequestMtImpl> _messages)
             throws Exception {
         if (isClosing()) {
-            final Iterator<RequestImpl> itm = _messages.iterator();
+            final Iterator<RequestMtImpl> itm = _messages.iterator();
             while (itm.hasNext()) {
                 final RequestMtImpl message = (RequestMtImpl) itm.next();
                 if (!message.isComplete()) {

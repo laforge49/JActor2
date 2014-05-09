@@ -102,7 +102,7 @@ public class AsyncRequestStImpl<RESPONSE_TYPE> extends
         try {
             pendingCheck();
         } catch (Exception e) {
-            processException((ReactorImpl) requestSource, e);
+            processException((ReactorStImpl) requestSource, e);
         }
     }
 

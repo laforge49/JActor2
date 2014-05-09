@@ -391,7 +391,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      */
     protected void processResponseMessage() {
         oldMessage.responseReceived(this);
-        final ReactorImpl sourceMessageProcessor = (ReactorImpl) requestSource;
+        final ReactorMtImpl sourceMessageProcessor = (ReactorMtImpl) requestSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentRequest(oldMessage);
         if (response instanceof Exception) {
@@ -414,9 +414,9 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @param _activeReactor The reactor providing the facility for processing the throwable.
      * @param _e             The exception to be processed.
      */
-    public void processException(final ReactorImpl _activeReactor,
+    public void processException(final ReactorMtImpl _activeReactor,
                                  final Exception _e) {
-        final ReactorImpl activeMessageProcessor = _activeReactor;
+        final ReactorMtImpl activeMessageProcessor = _activeReactor;
         final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
                 .getExceptionHandler();
         if (exceptionHandler != null) {

@@ -62,28 +62,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     void fail(final String _reason) throws Exception;
 
     /**
-     * Returns the message currently being processed.
-     *
-     * @return The message currently being processed, or null.
-     */
-    RequestImpl getCurrentRequest();
-
-    /**
-     * Assigns the message currently being processed.
-     *
-     * @param _message The message currently being processed.
-     */
-    void setCurrentRequest(final RequestImpl _message);
-
-    /**
-     * Returns true when there is a message in the inbox that can be processed.
-     * (This method is not thread safe and must be called on the targetReactor's thread.)
-     *
-     * @return True if there is a message in the inbox that can be processed.
-     */
-    boolean hasWork();
-
-    /**
      * Returns true when the inbox is not empty.
      *
      * @return True when the inbox is not empty.
@@ -97,21 +75,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @return The old exception handler, or null.
      */
     ExceptionHandler setExceptionHandler(final ExceptionHandler _handler);
-
-    /**
-     * Returns the current exception handler.
-     *
-     * @return The current exception handler, or null.
-     */
-    ExceptionHandler getExceptionHandler();
-
-    /**
-     * Add a message directly to the input queue of a Reactor.
-     *
-     * @param _message A message.
-     * @param _local   True when the current thread is assigned to the targetReactor.
-     */
-    void unbufferedAddMessage(final RequestImpl _message, final boolean _local);
 
     /**
      * Signals the start of a request.

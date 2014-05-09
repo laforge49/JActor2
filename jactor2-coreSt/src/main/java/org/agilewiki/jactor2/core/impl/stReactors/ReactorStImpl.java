@@ -247,7 +247,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return The message currently being processed, or null.
      */
-    @Override
     public final RequestStImpl getCurrentRequest() {
         return currentRequest;
     }
@@ -257,9 +256,8 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @param _message The message currently being processed.
      */
-    @Override
-    public final void setCurrentRequest(final RequestImpl _message) {
-        currentRequest = (RequestStImpl) _message;
+    public final void setCurrentRequest(final RequestStImpl _message) {
+        currentRequest = _message;
     }
 
     /**
@@ -268,7 +266,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return True if there is a message in the inbox that can be processed.
      */
-    @Override
     public final boolean hasWork() {
         return inbox.hasWork();
     }
@@ -306,7 +303,6 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      *
      * @return The current exception handler, or null.
      */
-    @Override
     public final ExceptionHandler getExceptionHandler() {
         return exceptionHandler;
     }
@@ -317,12 +313,10 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
      * @param _message A message.
      * @param _local   True when the current thread is assigned to the targetReactor.
      */
-    @Override
-    public void unbufferedAddMessage(final RequestImpl _message,
+    public void unbufferedAddMessage(final RequestStImpl _message,
             final boolean _local) {
-        RequestStImpl message = (RequestStImpl) _message;
         if (isClosing()) {
-            if (!message.isComplete()) {
+            if (!_message.isComplete()) {
                 try {
                     _message.close();
                 } catch (final Throwable t) {
@@ -330,7 +324,7 @@ abstract public class ReactorStImpl extends BladeBase implements ReactorImpl {
             }
             return;
         }
-        inbox.offerLocal(message);
+        inbox.offerLocal(_message);
         afterAdd();
     }
 
