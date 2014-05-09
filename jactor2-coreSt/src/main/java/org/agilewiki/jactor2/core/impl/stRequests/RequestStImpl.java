@@ -134,7 +134,6 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      *
      * @return The target Reactor.
      */
-    @Override
     public ReactorImpl getTargetReactorImpl() {
         return targetReactorImpl;
     }
@@ -350,11 +349,16 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      */
     abstract protected void processRequestMessage() throws Exception;
 
-    @Override
+    /**
+     * A response has been received for a subordinate request.
+     * @param request    A subordinate request.
+     */
     public void responseReceived(RequestImpl request) {
     }
 
-    @Override
+    /**
+     * A response value from a subordinate request has been processed.
+     */
     public void responseProcessed() {
     }
 

@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
+import org.agilewiki.jactor2.core.impl.stRequests.RequestStImpl;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 
@@ -14,7 +15,7 @@ public class Recovery {
      *
      * @param _requestImpl The reactor with the hung request.
      */
-    public void onHungRequest(final RequestImpl _requestImpl) throws Exception {
+    public void onHungRequest(final RequestStImpl _requestImpl) throws Exception {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.error("request hung -> reactor close");
         reactor.fail("hung request");
@@ -26,7 +27,7 @@ public class Recovery {
      * @param _requestImpl The reactor with the hung request.
      * @param _error       The StackOverflowError.
      */
-    public void onStackOverflowError(final RequestImpl _requestImpl, final StackOverflowError _error) {
+    public void onStackOverflowError(final RequestStImpl _requestImpl, final StackOverflowError _error) {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.error("stack overflow error -> reactor close", _error);
         try {
@@ -42,7 +43,7 @@ public class Recovery {
      * @param _requestImpl The reactor with the hung request.
      * @param _exception   The runtime exception
      */
-    public void onRuntimeException(final RequestImpl _requestImpl, final RuntimeException _exception) {
+    public void onRuntimeException(final RequestStImpl _requestImpl, final RuntimeException _exception) {
         ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.error("runtime exception -> reactor close", _exception);
         try {

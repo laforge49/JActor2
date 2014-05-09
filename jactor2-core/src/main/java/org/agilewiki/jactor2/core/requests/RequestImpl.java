@@ -45,12 +45,6 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
     boolean isCanceled() throws ReactorClosedException;
 
     /**
-     * Returns the target ReactorImpl.
-     * @return The target ReactorImpl.
-     */
-    ReactorImpl getTargetReactorImpl();
-
-    /**
      * Returns the target Reactor.
      * @return The target Reactor.
      */
@@ -63,17 +57,6 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      * @return The source reactor or null.
      */
     Reactor getSourceReactor();
-
-    /**
-     * A response has been received for a subordinate request.
-     * @param request    A subordinate request.
-     */
-    void responseReceived(RequestImpl request);
-
-    /**
-     * A response value from a subordinate request has been processed.
-     */
-    void responseProcessed();
 
     /**
      * Passes this Request to the target Reactor without any result being passed back.
