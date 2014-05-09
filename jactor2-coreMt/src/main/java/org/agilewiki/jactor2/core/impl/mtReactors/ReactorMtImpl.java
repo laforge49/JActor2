@@ -532,10 +532,11 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      */
     @Override
     public void requestEnd(final RequestImpl _message) {
-        if (_message.isForeign()) {
+        RequestMtImpl message = (RequestMtImpl) _message;
+        if (message.isForeign()) {
             final boolean b = inProcessRequests.remove(_message);
         }
-        inbox.requestEnd((RequestMtImpl) _message);
+        inbox.requestEnd(message);
     }
 
     /**

@@ -37,62 +37,12 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
             final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor);
 
     /**
-     * Execute the AsyncRequest.processAsyncRequest method
-     * of the request held by the message. This method is always called on the
-     * target reactor's own thread.
-     */
-    void eval();
-
-    /**
-     * Process the exception on the current thread in the facility of the active reactor.
-     *
-     * @param _activeReactor The reactor providing the facility for processing the throwable.
-     * @param _e             The exception to be processed.
-     */
-    void processException(final ReactorImpl _activeReactor, final Exception _e);
-
-    @Override
-    void close();
-
-    /**
-     * Cancel this request.
-     */
-    void cancel();
-
-    /**
      * Returns true if the request has been canceled.
      *
      * @return True if the request has been canceled.
      * @throws ReactorClosedException when the request has been closed.
      */
     boolean isCanceled() throws ReactorClosedException;
-
-    /**
-     * Returns true if the request has been canceled.
-     *
-     * @return True if the request has been canceled.
-     */
-    boolean _isCanceled();
-
-    /**
-     * Returns true when the target reactor is not the request source.
-     *
-     * @return True when the target reactor is not the request source.
-     */
-    boolean isForeign();
-
-    /**
-     * Returns true when the request does not pass back a result.
-     *
-     * @return True when the request does not pass back a result.
-     */
-    boolean isOneWay();
-
-    /**
-     * Returns true when the request was passed using the signal method.
-     * @return True when the request was passed using the signal method.
-     */
-    boolean isSignal();
 
     /**
      * Returns the target ReactorImpl.

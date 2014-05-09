@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.stRequests;
 
+import org.agilewiki.jactor2.core.impl.stReactors.ReactorStImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
@@ -17,7 +18,7 @@ import java.util.Set;
 public class AsyncRequestStImpl<RESPONSE_TYPE> extends
         RequestStImpl<RESPONSE_TYPE> implements AsyncRequestImpl<RESPONSE_TYPE> {
 
-    private Set<RequestImpl> pendingRequests = new HashSet<RequestImpl>();
+    private Set<RequestStImpl> pendingRequests = new HashSet<RequestStImpl>();
 
     private boolean noHungRequestCheck;
 
@@ -118,7 +119,7 @@ public class AsyncRequestStImpl<RESPONSE_TYPE> extends
             return;
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
-        RequestImpl<RT> requestImpl = _request.asRequestImpl();
+        RequestStImpl<RT> requestImpl = (RequestStImpl<RT>) _request.asRequestImpl();
         if (_responseProcessor != OneWayResponseProcessor.SINGLETON)
             pendingRequests.add(requestImpl);
         requestImpl.doSend(targetReactorImpl, _responseProcessor);
@@ -140,7 +141,7 @@ public class AsyncRequestStImpl<RESPONSE_TYPE> extends
             return;
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
-        RequestImpl<RT> requestImpl = _request.asRequestImpl();
+        RequestStImpl<RT> requestImpl = (RequestStImpl<RT>) _request.asRequestImpl();
         pendingRequests.add(requestImpl);
         requestImpl.doSend(targetReactorImpl,
                 new AsyncResponseProcessor<RT>() {
@@ -188,8 +189,8 @@ public class AsyncRequestStImpl<RESPONSE_TYPE> extends
         if (!incomplete) {
             return;
         }
-        HashSet<RequestImpl> pr = new HashSet<RequestImpl>(pendingRequests);
-        Iterator<RequestImpl> it = pr.iterator();
+        HashSet<RequestStImpl> pr = new HashSet<RequestStImpl>(pendingRequests);
+        Iterator<RequestStImpl> it = pr.iterator();
         while (it.hasNext()) {
             it.next().cancel();
         }
@@ -204,9 +205,10 @@ public class AsyncRequestStImpl<RESPONSE_TYPE> extends
      * @return True if the subordinate RequestImpl was canceled.
      */
     public boolean cancel(RequestImpl _requestImpl) {
-        if (!pendingRequests.remove(_requestImpl))
+        RequestStImpl requestImpl = (RequestStImpl) _requestImpl;
+        if (!pendingRequests.remove(requestImpl))
             return false;
-        _requestImpl.cancel();
+        requestImpl.cancel();
         return true;
     }
 

@@ -103,18 +103,29 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         targetReactorImpl = (ReactorMtImpl) targetReactor.asReactorImpl();
     }
 
-    @Override
+    /**
+     * Returns true when the target reactor is not the request source.
+     *
+     * @return True when the target reactor is not the request source.
+     */
     public boolean isForeign() {
         return targetReactor != requestSource;
     }
 
-    @Override
+    /**
+     * Returns true when the request does not pass back a result.
+     *
+     * @return True when the request does not pass back a result.
+     */
     public boolean isOneWay() {
         return responseProcessor == OneWayResponseProcessor.SINGLETON ||
                 responseProcessor == SignalResponseProcessor.SINGLETON;
     }
 
-    @Override
+    /**
+     * Returns true when the request was passed using the signal method.
+     * @return True when the request was passed using the signal method.
+     */
     public boolean isSignal() {
         return responseProcessor == SignalResponseProcessor.SINGLETON;
     }
@@ -292,7 +303,11 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         return canceled;
     }
 
-    @Override
+    /**
+     * Returns true if the request has been canceled.
+     *
+     * @return True if the request has been canceled.
+     */
     public boolean _isCanceled() {
         return canceled;
     }
@@ -329,7 +344,6 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
     /**
      * Process a request or the response.
      */
-    @Override
     public void eval() {
         if (incomplete) {
             targetReactorImpl.setExceptionHandler(null);
@@ -390,7 +404,12 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         oldMessage.responseProcessed();
     }
 
-    @Override
+    /**
+     * Process the exception on the current thread in the facility of the active reactor.
+     *
+     * @param _activeReactor The reactor providing the facility for processing the throwable.
+     * @param _e             The exception to be processed.
+     */
     public void processException(final ReactorImpl _activeReactor,
                                  final Exception _e) {
         final ReactorImpl activeMessageProcessor = _activeReactor;

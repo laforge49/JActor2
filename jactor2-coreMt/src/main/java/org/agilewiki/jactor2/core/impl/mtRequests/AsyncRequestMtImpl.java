@@ -17,7 +17,7 @@ import java.util.Set;
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> implements AsyncRequestImpl<RESPONSE_TYPE> {
 
-    private Set<RequestImpl> pendingRequests = new HashSet<RequestImpl>();
+    private Set<RequestMtImpl> pendingRequests = new HashSet<RequestMtImpl>();
 
     private boolean noHungRequestCheck;
 
@@ -118,7 +118,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             return;
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
-        RequestImpl<RT> requestImpl = _request.asRequestImpl();
+        RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _request.asRequestImpl();
         if (_responseProcessor != OneWayResponseProcessor.SINGLETON)
             pendingRequests.add(requestImpl);
         requestImpl.doSend(targetReactorImpl, _responseProcessor);
@@ -140,7 +140,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             return;
         if (targetReactorImpl.getCurrentRequest() != this)
             throw new UnsupportedOperationException("send called on inactive request");
-        RequestImpl<RT> requestImpl = _request.asRequestImpl();
+        RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _request.asRequestImpl();
         pendingRequests.add(requestImpl);
         requestImpl.doSend(targetReactorImpl,
                 new AsyncResponseProcessor<RT>() {
@@ -188,8 +188,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         if (!incomplete) {
             return;
         }
-        HashSet<RequestImpl> pr = new HashSet<RequestImpl>(pendingRequests);
-        Iterator<RequestImpl> it = pr.iterator();
+        HashSet<RequestMtImpl> pr = new HashSet<RequestMtImpl>(pendingRequests);
+        Iterator<RequestMtImpl> it = pr.iterator();
         while (it.hasNext()) {
             it.next().cancel();
         }
@@ -204,9 +204,10 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      * @return True if the subordinate RequestImpl was canceled.
      */
     public boolean cancel(RequestImpl _requestImpl) {
-        if (!pendingRequests.remove(_requestImpl))
+        RequestMtImpl requestImpl = (RequestMtImpl) _requestImpl;
+        if (!pendingRequests.remove(requestImpl))
             return false;
-        _requestImpl.cancel();
+        requestImpl.cancel();
         return true;
     }
 
