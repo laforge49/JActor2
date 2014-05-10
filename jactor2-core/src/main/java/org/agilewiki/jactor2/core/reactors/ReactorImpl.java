@@ -53,10 +53,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      */
     boolean isRunning();
 
-    boolean isClosing();
-
-    String getReasonForFailure();
-
     /**
      * Close the reactor;
      *
@@ -64,28 +60,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      *                   or null if not a failure.
      */
     void fail(final String _reason) throws Exception;
-
-    /**
-     * Returns the message currently being processed.
-     *
-     * @return The message currently being processed, or null.
-     */
-    RequestImpl getCurrentRequest();
-
-    /**
-     * Assigns the message currently being processed.
-     *
-     * @param _message The message currently being processed.
-     */
-    void setCurrentRequest(final RequestImpl _message);
-
-    /**
-     * Returns true when there is a message in the inbox that can be processed.
-     * (This method is not thread safe and must be called on the targetReactor's thread.)
-     *
-     * @return True if there is a message in the inbox that can be processed.
-     */
-    boolean hasWork();
 
     /**
      * Returns true when the inbox is not empty.
@@ -101,40 +75,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @return The old exception handler, or null.
      */
     ExceptionHandler setExceptionHandler(final ExceptionHandler _handler);
-
-    /**
-     * Returns the current exception handler.
-     *
-     * @return The current exception handler, or null.
-     */
-    ExceptionHandler getExceptionHandler();
-
-    /**
-     * Add a message directly to the input queue of a Reactor.
-     *
-     * @param _message A message.
-     * @param _local   True when the current thread is assigned to the targetReactor.
-     */
-    void unbufferedAddMessage(final RequestImpl _message, final boolean _local);
-
-    /**
-     * Signals the start of a request.
-     */
-    void requestBegin(final RequestImpl _requestImpl);
-
-    /**
-     * Signals that a request has completed.
-     *
-     * @param _message The request that has completed
-     */
-    void requestEnd(final RequestImpl _message);
-
-    /**
-     * Returns true when there is code to be executed when the inbox is emptied.
-     *
-     * @return True when there is code to be executed when the inbox is emptied.
-     */
-    boolean isIdler();
 
     /**
      * A noop request used for synchronizing state.
@@ -158,17 +98,6 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @return True when the closeable was removed.
      */
     boolean removeCloseable(final Closeable _closeable);
-
-    boolean isSlow();
-
-    boolean isCommonReactor();
-
-    /**
-     * The time when processing began on the current message.
-     */
-    double getMessageStartTimeMillis();
-
-    void setMessageStartTimeMillis(double messageStartTimeMillis);
 
     /**
      * Log a message at the WARN level.

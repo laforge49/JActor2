@@ -159,7 +159,7 @@ reactor. But when an exception is passed back, it is thrown.
 
 ```java
 
-    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.impl.Plant;
 
     public class M {
         public static void main(final String[] _args) throws Exception {
@@ -341,7 +341,7 @@ But by introducing request factory methods we can then use interfaces to decoupl
 ```java
 
     import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.impl.Plant;
     import org.agilewiki.jactor2.core.requests.AsyncRequest;
     import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
@@ -407,7 +407,7 @@ a pre-determined order. But doing things in parallel is as simple as having mult
 
 ```java
 
-    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.impl.Plant;
     import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
     import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
@@ -540,7 +540,7 @@ Here then is the rest of the program and its output:
 
 ```java
 
-    import org.agilewiki.jactor2.core.plant.Plant;
+    import org.agilewiki.jactor2.core.impl.Plant;
     import org.agilewiki.jactor2.core.reactors.BlockingReactor;
     import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
     import org.agilewiki.jactor2.core.requests.AsyncRequest;
@@ -791,14 +791,18 @@ Upcoming Projects
 Links
 -----
 
-- [Core Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html)
-- [Modeling Actors with Locks](http://www.agilewiki.org/docs/tutorials/actors/index.html)
-- [API](http://www.agilewiki.org/docs/api/index.html)
+- core (JActor2 API)
+    - [JActor2-Core Javadoc pages](http://www.agilewiki.org/docs/api/core/index.html)
+    - Dependencies: [slf4j](http://www.slf4j.org/)
+- coreMt (Multi-threaded Implementation)
+    - [Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html)
+    - [JActor2-CoreMt Javadoc pages](http://www.agilewiki.org/docs/api/coreMt/index.html)
+    - Dependencies: core, [guava](https://code.google.com/p/guava-libraries/)
+    - benchmark: [repository](https://github.com/skunkiferous/PingPong), [results](http://skunkiferous.github.io/PingPong/)
 - [Downloads](http://www.agilewiki.org/downloads)
-- Dependencies: [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-- [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
-- benchmark: [repository](https://github.com/skunkiferous/PingPong), [results](http://skunkiferous.github.io/PingPong/)
 - [JActor2 Logback Appender](https://github.com/cp149/jactor-logger) by Champion
+- [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
+- [Modeling Actors with Locks](http://www.agilewiki.org/docs/tutorials/actors/index.html)
 - [Avoiding Actor Deadlock](http://lambda-the-ultimate.org/node/4908)

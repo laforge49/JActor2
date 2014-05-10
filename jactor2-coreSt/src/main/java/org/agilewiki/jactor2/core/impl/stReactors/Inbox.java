@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.stReactors;
 
+import org.agilewiki.jactor2.core.impl.stRequests.RequestStImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 /**
@@ -38,7 +39,7 @@ public abstract class Inbox implements AutoCloseable {
      *
      * @param msg The message to be added.
      */
-    protected abstract void offerLocal(final RequestImpl msg);
+    protected abstract void offerLocal(final RequestStImpl msg);
 
     /**
      * Retrieves and removes from the inbox the next message to be processed, or returns
@@ -47,19 +48,19 @@ public abstract class Inbox implements AutoCloseable {
      * @return The next message to be processed, or null if there are no messages to be
      * processed.
      */
-    abstract public RequestImpl poll();
+    abstract public RequestStImpl poll();
 
     /**
      * Signals the start of a request.
      */
-    public void requestBegin(final RequestImpl _requestImpl) {
+    public void requestBegin(final RequestStImpl _requestImpl) {
 
     }
 
     /**
      * Signals that the result of a request has been assigned.
      */
-    public void requestEnd(final RequestImpl _message) {
+    public void requestEnd(final RequestStImpl _message) {
 
     }
 
@@ -69,7 +70,7 @@ public abstract class Inbox implements AutoCloseable {
     @Override
     public void close() {
         while (true) {
-            final RequestImpl message = poll();
+            final RequestStImpl message = poll();
             if (message == null) {
                 return;
             }

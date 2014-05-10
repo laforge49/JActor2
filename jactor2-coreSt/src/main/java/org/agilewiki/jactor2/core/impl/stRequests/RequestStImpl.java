@@ -50,7 +50,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * The request targeted to the source reactor which, when processed,
      * resulted in this message.
      */
-    protected RequestImpl oldMessage;
+    protected RequestStImpl oldMessage;
 
     /**
      * The exception handler that was active in the source reactor
@@ -102,18 +102,29 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         targetReactorImpl = (ReactorStImpl) targetReactor.asReactorImpl();
     }
 
-    @Override
+    /**
+     * Returns true when the target reactor is not the request source.
+     *
+     * @return True when the target reactor is not the request source.
+     */
     public boolean isForeign() {
         return targetReactor != requestSource;
     }
 
-    @Override
+    /**
+     * Returns true when the request does not pass back a result.
+     *
+     * @return True when the request does not pass back a result.
+     */
     public boolean isOneWay() {
         return responseProcessor == OneWayResponseProcessor.SINGLETON ||
                 responseProcessor == SignalResponseProcessor.SINGLETON;
     }
 
-    @Override
+    /**
+     * Returns true when the request was passed using the signal method.
+     * @return True when the request was passed using the signal method.
+     */
     public boolean isSignal() {
         return responseProcessor == SignalResponseProcessor.SINGLETON;
     }
@@ -123,7 +134,6 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      *
      * @return The target Reactor.
      */
-    @Override
     public ReactorImpl getTargetReactorImpl() {
         return targetReactorImpl;
     }
@@ -134,9 +144,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
 
     @Override
     public Reactor getSourceReactor() {
-        if (requestSource instanceof ReactorImpl)
-            return ((ReactorImpl) requestSource).asReactor();
-        return null;
+        return requestSource.asReactor();
     }
 
     public ReactorStImpl getRequestSource() {
@@ -235,7 +243,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @param _activeReactor The responding reactor.
      */
     protected void setResponse(final Object _response,
-                               final ReactorImpl _activeReactor) {
+                               final ReactorStImpl _activeReactor) {
         _activeReactor.requestEnd(this);
         incomplete = false;
         response = _response;
@@ -275,17 +283,14 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         return canceled;
     }
 
-    @Override
     public boolean _isCanceled() {
         return canceled;
     }
 
-    @Override
     public boolean isComplete() {
         return !incomplete;
     }
 
-    @Override
     public boolean isIsolated() {
         return isolated;
     }
@@ -314,7 +319,6 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
     /**
      * Process a request or the response.
      */
-    @Override
     public void eval() {
         if (incomplete) {
             targetReactorImpl.setExceptionHandler(null);
@@ -343,11 +347,16 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      */
     abstract protected void processRequestMessage() throws Exception;
 
-    @Override
+    /**
+     * A response has been received for a subordinate request.
+     * @param request    A subordinate request.
+     */
     public void responseReceived(RequestImpl request) {
     }
 
-    @Override
+    /**
+     * A response value from a subordinate request has been processed.
+     */
     public void responseProcessed() {
     }
 
@@ -356,7 +365,7 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      */
     protected void processResponseMessage() {
         oldMessage.responseReceived(this);
-        final ReactorImpl sourceMessageProcessor = (ReactorImpl) requestSource;
+        final ReactorStImpl sourceMessageProcessor = (ReactorStImpl) requestSource;
         sourceMessageProcessor.setExceptionHandler(sourceExceptionHandler);
         sourceMessageProcessor.setCurrentRequest(oldMessage);
         if (response instanceof Exception) {
@@ -373,10 +382,15 @@ public abstract class RequestStImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         oldMessage.responseProcessed();
     }
 
-    @Override
-    public void processException(final ReactorImpl _activeReactor,
+    /**
+     * Process the exception on the current thread in the facility of the active reactor.
+     *
+     * @param _activeReactor The reactor providing the facility for processing the throwable.
+     * @param _e             The exception to be processed.
+     */
+    public void processException(final ReactorStImpl _activeReactor,
                                  final Exception _e) {
-        final ReactorImpl activeMessageProcessor = _activeReactor;
+        final ReactorStImpl activeMessageProcessor = _activeReactor;
         final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
                 .getExceptionHandler();
         if (exceptionHandler != null) {

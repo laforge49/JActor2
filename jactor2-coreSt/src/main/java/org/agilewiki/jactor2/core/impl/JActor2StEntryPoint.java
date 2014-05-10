@@ -17,9 +17,9 @@ package org.agilewiki.jactor2.core.impl;
 
 /**
  * JActor2-Core-St EntryPoint.
- * <p/>
+ * <p>
  * Basically does nothing, except make sure JActor2-Core is compilable with GWT.
- *
+ * </p>
  * @author monster
  */
 public class JActor2StEntryPoint implements com.google.gwt.core.client.EntryPoint {

@@ -37,82 +37,12 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
             final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor);
 
     /**
-     * Returns true when a response has been assigned to the request.
-     *
-     * @return True when a response has not been assigned to the request.
-     */
-    boolean isComplete();
-
-    /**
-     * Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
-     *
-     * @return True whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.
-     */
-    boolean isIsolated();
-
-    /**
-     * Execute the AsyncRequest.processAsyncRequest method
-     * of the request held by the message. This method is always called on the
-     * target reactor's own thread.
-     */
-    void eval();
-
-    /**
-     * Process the exception on the current thread in the facility of the active reactor.
-     *
-     * @param _activeReactor The reactor providing the facility for processing the throwable.
-     * @param _e             The exception to be processed.
-     */
-    void processException(final ReactorImpl _activeReactor, final Exception _e);
-
-    @Override
-    void close();
-
-    /**
-     * Cancel this request.
-     */
-    void cancel();
-
-    /**
      * Returns true if the request has been canceled.
      *
      * @return True if the request has been canceled.
      * @throws ReactorClosedException when the request has been closed.
      */
     boolean isCanceled() throws ReactorClosedException;
-
-    /**
-     * Returns true if the request has been canceled.
-     *
-     * @return True if the request has been canceled.
-     */
-    boolean _isCanceled();
-
-    /**
-     * Returns true when the target reactor is not the request source.
-     *
-     * @return True when the target reactor is not the request source.
-     */
-    boolean isForeign();
-
-    /**
-     * Returns true when the request does not pass back a result.
-     *
-     * @return True when the request does not pass back a result.
-     */
-    boolean isOneWay();
-
-    /**
-     * Returns true when the request was passed using the signal method.
-     * @return True when the request was passed using the signal method.
-     */
-    boolean isSignal();
-
-    /**
-     * Returns the target ReactorImpl.
-     * @return The target ReactorImpl.
-     */
-    ReactorImpl getTargetReactorImpl();
 
     /**
      * Returns the target Reactor.
@@ -127,17 +57,6 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      * @return The source reactor or null.
      */
     Reactor getSourceReactor();
-
-    /**
-     * A response has been received for a subordinate request.
-     * @param request    A subordinate request.
-     */
-    void responseReceived(RequestImpl request);
-
-    /**
-     * A response value from a subordinate request has been processed.
-     */
-    void responseProcessed();
 
     /**
      * Passes this Request to the target Reactor without any result being passed back.

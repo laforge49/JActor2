@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
@@ -26,7 +27,11 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
-    @Override
+    /**
+     * Returns true when there is code to be executed when the inbox is emptied.
+     *
+     * @return True when there is code to be executed when the inbox is emptied.
+     */
     public boolean isIdler() {
         return onIdle != null;
     }
@@ -66,15 +71,15 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
      */
     protected boolean flush(final boolean _mayMigrate) throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>>> iter = outbox
+        final Iterator<Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>>> iter = outbox
                 .getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<ReactorImpl, ArrayDeque<RequestImpl>> entry = iter
+                final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>> entry = iter
                         .next();
                 final ReactorMtImpl target = (ReactorMtImpl) entry.getKey();
-                final ArrayDeque<RequestImpl> messages = entry.getValue();
+                final ArrayDeque<RequestMtImpl> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
                         && (target instanceof PoolThreadReactorImpl)) {
@@ -87,7 +92,7 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
                                 && targetThreadReference.compareAndSet(null,
                                 currentThread)) {
                             while (!messages.isEmpty()) {
-                                final RequestImpl m = messages.poll();
+                                final RequestMtImpl m = messages.poll();
                                 targ.unbufferedAddMessage(m, true);
                             }
                             throw new MigrationException(targ);

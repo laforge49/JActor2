@@ -29,7 +29,7 @@ public interface PlantScheduler {
      * Cancels a task, that was scheduled with either schedule(java.lang.Runnable, long)
      * or scheduleAtFixedRate(java.lang.Runnable, long).
      *
-     * @param _task The scheduled task.
+     * @param task The scheduled task.
      *
      * @throws java.lang.NullPointerException If the task is null.
      * @throws java.lang.IllegalArgumentException If the task was not created by either schedule(java.lang.Runnable, long) or scheduleAtFixedRate(java.lang.Runnable, long).

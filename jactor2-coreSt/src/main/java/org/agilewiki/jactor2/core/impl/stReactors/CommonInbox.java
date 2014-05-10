@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.stReactors;
 
+import org.agilewiki.jactor2.core.impl.stRequests.RequestStImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -41,12 +42,12 @@ public class CommonInbox extends Inbox {
     }
 
     @Override
-    protected void offerLocal(final RequestImpl msg) {
+    protected void offerLocal(final RequestStImpl msg) {
         localQueue.offer(msg);
     }
 
     @Override
-    public RequestImpl poll() {
-        return (RequestImpl) localQueue.poll();
+    public RequestStImpl poll() {
+        return (RequestStImpl) localQueue.poll();
     }
 }

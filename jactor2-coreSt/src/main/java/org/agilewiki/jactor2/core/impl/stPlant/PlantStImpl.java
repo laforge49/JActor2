@@ -1,5 +1,8 @@
 package org.agilewiki.jactor2.core.impl.stPlant;
 
+import org.agilewiki.jactor2.core.closeable.Closeable;
+import org.agilewiki.jactor2.core.closeable.CloseableImpl;
+import org.agilewiki.jactor2.core.impl.stCloseable.CloseableStImpl;
 import org.agilewiki.jactor2.core.impl.stReactors.IsolationReactorStImpl;
 import org.agilewiki.jactor2.core.impl.stReactors.NonBlockingReactorStImpl;
 import org.agilewiki.jactor2.core.impl.stRequests.AsyncRequestStImpl;
@@ -109,6 +112,11 @@ public class PlantStImpl extends PlantImpl {
             final AsyncRequest<RESPONSE_TYPE> _asyncRequest,
             final Reactor _targetReactor) {
         return new AsyncRequestStImpl<RESPONSE_TYPE>(_asyncRequest, _targetReactor);
+    }
+
+    @Override
+    public CloseableImpl createCloseableImpl(Closeable _closeable) {
+        return new CloseableStImpl(_closeable);
     }
 
     /**

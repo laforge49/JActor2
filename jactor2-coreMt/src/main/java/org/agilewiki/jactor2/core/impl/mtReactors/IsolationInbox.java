@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 import java.util.ArrayDeque;
@@ -22,12 +23,12 @@ public class IsolationInbox extends Inbox {
     /**
      * Local response-pending (requests) queue for same-thread exchanges.
      */
-    private final ArrayDeque<RequestImpl> localResponsePendingQueue;
+    private final ArrayDeque<RequestMtImpl> localResponsePendingQueue;
 
     /**
      * Local no-response-pending (events and responses) queue for same-thread exchanges.
      */
-    private final ArrayDeque<RequestImpl> localNoResponsePendingQueue;
+    private final ArrayDeque<RequestMtImpl> localNoResponsePendingQueue;
 
     /**
      * Creates an IsolationInbox.
@@ -36,9 +37,9 @@ public class IsolationInbox extends Inbox {
      */
     public IsolationInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
-        localResponsePendingQueue = new ArrayDeque<RequestImpl>(
+        localResponsePendingQueue = new ArrayDeque<RequestMtImpl>(
                 initialLocalQueueSize);
-        localNoResponsePendingQueue = new ArrayDeque<RequestImpl>(
+        localNoResponsePendingQueue = new ArrayDeque<RequestMtImpl>(
                 initialLocalQueueSize);
     }
 
@@ -47,15 +48,15 @@ public class IsolationInbox extends Inbox {
      *
      * @param _msgs The message to be added.
      */
-    private void offerLocal(final Queue<RequestImpl> _msgs) {
+    private void offerLocal(final Queue<RequestMtImpl> _msgs) {
         while (!_msgs.isEmpty()) {
-            final RequestImpl msg = _msgs.poll();
+            final RequestMtImpl msg = _msgs.poll();
             offerLocal(msg);
         }
     }
 
     @Override
-    protected void offerLocal(final RequestImpl msg) {
+    protected void offerLocal(final RequestMtImpl msg) {
         if (!msg.isComplete() && !msg.isSignal()) {
             localResponsePendingQueue.offer(msg);
         } else {
@@ -84,10 +85,10 @@ public class IsolationInbox extends Inbox {
                 return false;
             }
             if (obj instanceof RequestImpl) {
-                final RequestImpl msg = (RequestImpl) obj;
+                final RequestMtImpl msg = (RequestMtImpl) obj;
                 offerLocal(msg);
             } else {
-                final Queue<RequestImpl> msgs = (Queue<RequestImpl>) obj;
+                final Queue<RequestMtImpl> msgs = (Queue<RequestMtImpl>) obj;
                 offerLocal(msgs);
             }
         }
@@ -95,11 +96,11 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public RequestImpl poll() {
+    public RequestMtImpl poll() {
         if (!hasWork()) {
             return null;
         }
-        final RequestImpl msg = localNoResponsePendingQueue.poll();
+        final RequestMtImpl msg = localNoResponsePendingQueue.poll();
         if (msg != null) {
             return msg;
         } else {
@@ -108,7 +109,7 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public void requestBegin(final RequestImpl _requestImpl) {
+    public void requestBegin(final RequestMtImpl _requestImpl) {
         if (_requestImpl.isSignal())
             return;
         if (processingRequest) {
@@ -118,7 +119,7 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public void requestEnd(final RequestImpl _message) {
+    public void requestEnd(final RequestMtImpl _message) {
         if (_message.isSignal())
             return;
         if (!processingRequest) {

@@ -1,5 +1,8 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
+import org.agilewiki.jactor2.core.closeable.Closeable;
+import org.agilewiki.jactor2.core.closeable.CloseableImpl;
+import org.agilewiki.jactor2.core.impl.mtCloseable.CloseableMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.BlockingReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.IsolationReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.NonBlockingReactorMtImpl;
@@ -181,6 +184,11 @@ public class PlantMtImpl extends PlantImpl {
                 _targetReactor);
     }
 
+    @Override
+    public CloseableImpl createCloseableImpl(Closeable _closeable) {
+        return new CloseableMtImpl(_closeable);
+    }
+
     /**
      * Close the Plant.
      */
@@ -266,14 +274,15 @@ public class PlantMtImpl extends PlantImpl {
      * @param _reactor The targetReactor to be run.
      */
     public final void submit(final PoolThreadReactorMtImpl _reactor) {
+        ReactorMtImpl internalReactorImpl = (ReactorMtImpl) internalReactor.asReactorImpl();
         try {
             reactorPoolThreadManager.execute(_reactor);
         } catch (final Exception e) {
-            if (!internalReactor.asReactorImpl().isClosing()) {
+            if (!internalReactorImpl.isClosing()) {
                 throw e;
             }
         } catch (final Error e) {
-            if (!internalReactor.asReactorImpl().isClosing()) {
+            if (!internalReactorImpl.isClosing()) {
                 throw e;
             }
         }
