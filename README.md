@@ -802,7 +802,7 @@ Links
 - [Downloads](http://www.agilewiki.org/downloads)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-- [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
 - [JActor2 Logback Appender](https://github.com/cp149/jactor-logger) by Champion
+- [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
 - [Modeling Actors with Locks](http://www.agilewiki.org/docs/tutorials/actors/index.html)
 - [Avoiding Actor Deadlock](http://lambda-the-ultimate.org/node/4908)
