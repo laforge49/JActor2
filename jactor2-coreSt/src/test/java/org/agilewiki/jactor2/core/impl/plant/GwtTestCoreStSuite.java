@@ -23,7 +23,7 @@ import com.google.gwt.junit.tools.GWTTestSuite;
  * @author monster
  *
  */
-public class GWTTestCoreStSuite extends GWTTestSuite {
+public class GwtTestCoreStSuite extends GWTTestSuite {
     public static TestSuite suite() {
         final TestSuite suite = new GWTTestSuite("All the CoreSt GWT tests");
         suite.addTestSuite(GwtTestAsyncTest.class);
