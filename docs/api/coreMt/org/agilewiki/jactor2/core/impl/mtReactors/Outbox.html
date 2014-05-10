@@ -155,8 +155,8 @@ implements java.lang.AutoCloseable</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Outbox.html#buffer-org.agilewiki.jactor2.core.requests.RequestImpl-org.agilewiki.jactor2.core.reactors.ReactorImpl-">buffer</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message,
-      org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_target)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Outbox.html#buffer-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">buffer</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message,
+      <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_target)</code>
 <div class="block">Buffers a message in the sending reactor for sending later.</div>
 </td>
 </tr>
@@ -167,7 +167,7 @@ implements java.lang.AutoCloseable</pre>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.Iterator&lt;java.util.Map.Entry&lt;org.agilewiki.jactor2.core.reactors.ReactorImpl,java.util.ArrayDeque&lt;org.agilewiki.jactor2.core.requests.RequestImpl&gt;&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.Iterator&lt;java.util.Map.Entry&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>,java.util.ArrayDeque&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&gt;&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Outbox.html#getIterator--">getIterator</a></span>()</code>
 <div class="block">Returns an iterator of the send buffers held by the outbox.</div>
 </td>
@@ -222,7 +222,7 @@ implements java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getIterator</h4>
-<pre>public&nbsp;java.util.Iterator&lt;java.util.Map.Entry&lt;org.agilewiki.jactor2.core.reactors.ReactorImpl,java.util.ArrayDeque&lt;org.agilewiki.jactor2.core.requests.RequestImpl&gt;&gt;&gt;&nbsp;getIterator()</pre>
+<pre>public&nbsp;java.util.Iterator&lt;java.util.Map.Entry&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>,java.util.ArrayDeque&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&gt;&gt;&gt;&nbsp;getIterator()</pre>
 <div class="block">Returns an iterator of the send buffers held by the outbox.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -230,14 +230,14 @@ implements java.lang.AutoCloseable</pre>
 </dl>
 </li>
 </ul>
-<a name="buffer-org.agilewiki.jactor2.core.requests.RequestImpl-org.agilewiki.jactor2.core.reactors.ReactorImpl-">
+<a name="buffer-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>buffer</h4>
-<pre>public&nbsp;boolean&nbsp;buffer(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message,
-                      org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_target)</pre>
+<pre>public&nbsp;boolean&nbsp;buffer(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message,
+                      <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_target)</pre>
 <div class="block">Buffers a message in the sending reactor for sending later.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

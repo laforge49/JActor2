@@ -193,12 +193,12 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/In
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/CommonInbox.html#offerLocal-org.agilewiki.jactor2.core.requests.RequestImpl-">offerLocal</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;msg)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/CommonInbox.html#offerLocal-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">offerLocal</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;msg)</code>
 <div class="block">Add a message to the appropriate doLocal queue.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>org.agilewiki.jactor2.core.requests.RequestImpl</code></td>
+<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/CommonInbox.html#poll--">poll</a></span>()</code>
 <div class="block">Retrieves and removes from the inbox the next message to be processed, or returns
  null if there are no messages that can be processed.</div>
@@ -210,7 +210,7 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/In
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.agilewiki.jactor2.core.impl.mtReactors.<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">Inbox</a></h3>
-<code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#close--">close</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#hasConcurrent--">hasConcurrent</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offer-boolean-org.agilewiki.jactor2.core.requests.RequestImpl-">offer</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offer-java.util.Queue-">offer</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#requestBegin-org.agilewiki.jactor2.core.requests.RequestImpl-">requestBegin</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#requestEnd-org.agilewiki.jactor2.core.requests.RequestImpl-">requestEnd</a></code></li>
+<code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#close--">close</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#hasConcurrent--">hasConcurrent</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offer-boolean-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">offer</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offer-java.util.Queue-">offer</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#requestBegin-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">requestBegin</a>, <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#requestEnd-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">requestEnd</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -308,18 +308,18 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/In
 </dl>
 </li>
 </ul>
-<a name="offerLocal-org.agilewiki.jactor2.core.requests.RequestImpl-">
+<a name="offerLocal-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>offerLocal</h4>
-<pre>protected&nbsp;void&nbsp;offerLocal(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;msg)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offerLocal-org.agilewiki.jactor2.core.requests.RequestImpl-">Inbox</a></code></span></div>
+<pre>protected&nbsp;void&nbsp;offerLocal(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;msg)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offerLocal-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">Inbox</a></code></span></div>
 <div class="block">Add a message to the appropriate doLocal queue.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offerLocal-org.agilewiki.jactor2.core.requests.RequestImpl-">offerLocal</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">Inbox</a></code></dd>
+<dd><code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offerLocal-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">offerLocal</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">Inbox</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>msg</code> - The message to be added.</dd>
 </dl>
@@ -331,7 +331,7 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/In
 <ul class="blockListLast">
 <li class="blockList">
 <h4>poll</h4>
-<pre>public&nbsp;org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;poll()</pre>
+<pre>public&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;poll()</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#poll--">Inbox</a></code></span></div>
 <div class="block">Retrieves and removes from the inbox the next message to be processed, or returns
  null if there are no messages that can be processed.</div>

@@ -210,25 +210,25 @@ implements java.lang.AutoCloseable</pre>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offer-boolean-org.agilewiki.jactor2.core.requests.RequestImpl-">offer</a></span>(boolean&nbsp;_local,
-     org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_msg)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offer-boolean-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">offer</a></span>(boolean&nbsp;_local,
+     <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_msg)</code>
 <div class="block">Inserts a new message in the queue.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offer-java.util.Queue-">offer</a></span>(java.util.Queue&lt;org.agilewiki.jactor2.core.requests.RequestImpl&gt;&nbsp;_msgs)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offer-java.util.Queue-">offer</a></span>(java.util.Queue&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&gt;&nbsp;_msgs)</code>
 <div class="block">Thread-safe message insertion.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>protected abstract void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offerLocal-org.agilewiki.jactor2.core.requests.RequestImpl-">offerLocal</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;msg)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#offerLocal-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">offerLocal</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;msg)</code>
 <div class="block">Add a message to the appropriate doLocal queue.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
-<td class="colFirst"><code>abstract org.agilewiki.jactor2.core.requests.RequestImpl</code></td>
+<td class="colFirst"><code>abstract <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#poll--">poll</a></span>()</code>
 <div class="block">Retrieves and removes from the inbox the next message to be processed, or returns
  null if there are no messages that can be processed.</div>
@@ -236,13 +236,13 @@ implements java.lang.AutoCloseable</pre>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#requestBegin-org.agilewiki.jactor2.core.requests.RequestImpl-">requestBegin</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#requestBegin-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">requestBegin</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_requestImpl)</code>
 <div class="block">Signals the start of a request.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#requestEnd-org.agilewiki.jactor2.core.requests.RequestImpl-">requestEnd</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/Inbox.html#requestEnd-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">requestEnd</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message)</code>
 <div class="block">Signals that the result of a request has been assigned.</div>
 </td>
 </tr>
@@ -361,14 +361,14 @@ implements java.lang.AutoCloseable</pre>
 </dl>
 </li>
 </ul>
-<a name="offer-boolean-org.agilewiki.jactor2.core.requests.RequestImpl-">
+<a name="offer-boolean-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>offer</h4>
 <pre>public&nbsp;void&nbsp;offer(boolean&nbsp;_local,
-                  org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_msg)</pre>
+                  <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_msg)</pre>
 <div class="block">Inserts a new message in the queue.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -383,7 +383,7 @@ implements java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>offer</h4>
-<pre>public&nbsp;void&nbsp;offer(java.util.Queue&lt;org.agilewiki.jactor2.core.requests.RequestImpl&gt;&nbsp;_msgs)</pre>
+<pre>public&nbsp;void&nbsp;offer(java.util.Queue&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&gt;&nbsp;_msgs)</pre>
 <div class="block">Thread-safe message insertion.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -391,13 +391,13 @@ implements java.lang.AutoCloseable</pre>
 </dl>
 </li>
 </ul>
-<a name="offerLocal-org.agilewiki.jactor2.core.requests.RequestImpl-">
+<a name="offerLocal-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>offerLocal</h4>
-<pre>protected abstract&nbsp;void&nbsp;offerLocal(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;msg)</pre>
+<pre>protected abstract&nbsp;void&nbsp;offerLocal(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;msg)</pre>
 <div class="block">Add a message to the appropriate doLocal queue.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -411,7 +411,7 @@ implements java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>poll</h4>
-<pre>public abstract&nbsp;org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;poll()</pre>
+<pre>public abstract&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;poll()</pre>
 <div class="block">Retrieves and removes from the inbox the next message to be processed, or returns
  null if there are no messages that can be processed.</div>
 <dl>
@@ -421,23 +421,23 @@ implements java.lang.AutoCloseable</pre>
 </dl>
 </li>
 </ul>
-<a name="requestBegin-org.agilewiki.jactor2.core.requests.RequestImpl-">
+<a name="requestBegin-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>requestBegin</h4>
-<pre>public&nbsp;void&nbsp;requestBegin(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl)</pre>
+<pre>public&nbsp;void&nbsp;requestBegin(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_requestImpl)</pre>
 <div class="block">Signals the start of a request.</div>
 </li>
 </ul>
-<a name="requestEnd-org.agilewiki.jactor2.core.requests.RequestImpl-">
+<a name="requestEnd-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>requestEnd</h4>
-<pre>public&nbsp;void&nbsp;requestEnd(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message)</pre>
+<pre>public&nbsp;void&nbsp;requestEnd(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message)</pre>
 <div class="block">Signals that the result of a request has been assigned.</div>
 </li>
 </ul>

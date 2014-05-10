@@ -148,7 +148,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>int</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getMessageTimeoutMillis-org.agilewiki.jactor2.core.reactors.ReactorImpl-">getMessageTimeoutMillis</a></span>(org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_reactorImpl)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getMessageTimeoutMillis-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">getMessageTimeoutMillis</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_reactorImpl)</code>
 <div class="block">Determines how long a message can be processed before timing out.</div>
 </td>
 </tr>
@@ -167,7 +167,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onHungRequest-org.agilewiki.jactor2.core.requests.RequestImpl-">onHungRequest</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onHungRequest-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">onHungRequest</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_requestImpl)</code>
 <div class="block">Handles hung request.</div>
 </td>
 </tr>
@@ -185,14 +185,14 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onRuntimeException-org.agilewiki.jactor2.core.requests.RequestImpl-java.lang.RuntimeException-">onRuntimeException</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onRuntimeException-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-java.lang.RuntimeException-">onRuntimeException</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_requestImpl,
                   java.lang.RuntimeException&nbsp;_exception)</code>
 <div class="block">Handles RuntimeException.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onStackOverflowError-org.agilewiki.jactor2.core.requests.RequestImpl-java.lang.StackOverflowError-">onStackOverflowError</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onStackOverflowError-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-java.lang.StackOverflowError-">onStackOverflowError</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_requestImpl,
                     java.lang.StackOverflowError&nbsp;_error)</code>
 <div class="block">Handles StackOverflowError.</div>
 </td>
@@ -250,13 +250,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a name="getMessageTimeoutMillis-org.agilewiki.jactor2.core.reactors.ReactorImpl-">
+<a name="getMessageTimeoutMillis-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getMessageTimeoutMillis</h4>
-<pre>public&nbsp;int&nbsp;getMessageTimeoutMillis(org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_reactorImpl)</pre>
+<pre>public&nbsp;int&nbsp;getMessageTimeoutMillis(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_reactorImpl)</pre>
 <div class="block">Determines how long a message can be processed before timing out.
  Default for Blocking reactors: 5 minutes.
  Default for all other reactors: 1 second.</div>
@@ -317,13 +317,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a name="onHungRequest-org.agilewiki.jactor2.core.requests.RequestImpl-">
+<a name="onHungRequest-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>onHungRequest</h4>
-<pre>public&nbsp;void&nbsp;onHungRequest(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl)
+<pre>public&nbsp;void&nbsp;onHungRequest(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_requestImpl)
                    throws java.lang.Exception</pre>
 <div class="block">Handles hung request. Default action: close the reactor.</div>
 <dl>
@@ -334,13 +334,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a name="onStackOverflowError-org.agilewiki.jactor2.core.requests.RequestImpl-java.lang.StackOverflowError-">
+<a name="onStackOverflowError-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-java.lang.StackOverflowError-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>onStackOverflowError</h4>
-<pre>public&nbsp;void&nbsp;onStackOverflowError(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl,
+<pre>public&nbsp;void&nbsp;onStackOverflowError(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_requestImpl,
                                  java.lang.StackOverflowError&nbsp;_error)</pre>
 <div class="block">Handles StackOverflowError. Default action: close the reactor.</div>
 <dl>
@@ -350,13 +350,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a name="onRuntimeException-org.agilewiki.jactor2.core.requests.RequestImpl-java.lang.RuntimeException-">
+<a name="onRuntimeException-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-java.lang.RuntimeException-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>onRuntimeException</h4>
-<pre>public&nbsp;void&nbsp;onRuntimeException(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl,
+<pre>public&nbsp;void&nbsp;onRuntimeException(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_requestImpl,
                                java.lang.RuntimeException&nbsp;_exception)</pre>
 <div class="block">Handles RuntimeException. Default action: close the reactor.</div>
 <dl>

@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6};
+var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -133,128 +133,57 @@ extends java.lang.AutoCloseable</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#Z:Z_isCanceled--">_isCanceled</a></span>()</code>
-<div class="block">Returns true if the request has been canceled.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html" title="interface in org.agilewiki.jactor2.core.requests">Request</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#asRequest--">asRequest</a></span>()</code>
 <div class="block">Returns the Request implemented by this RequestImpl.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="type parameter in RequestImpl">RESPONSE_TYPE</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#call--">call</a></span>()</code>
 <div class="block">Passes this Request to the target Reactor and blocks the current thread until
  a result is returned.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#cancel--">cancel</a></span>()</code>
-<div class="block">Cancel this request.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#close--">close</a></span>()</code>&nbsp;</td>
-</tr>
-<tr id="i5" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#doSend-org.agilewiki.jactor2.core.reactors.ReactorImpl-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">doSend</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a>&nbsp;_source,
       <a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html" title="interface in org.agilewiki.jactor2.core.requests">AsyncResponseProcessor</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="type parameter in RequestImpl">RESPONSE_TYPE</a>&gt;&nbsp;_responseProcessor)</code>
 <div class="block">Passes this Request together with the AsyncResponseProcessor to the target Reactor.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#eval--">eval</a></span>()</code>
-<div class="block">Execute the AsyncRequest.processAsyncRequest method
- of the request held by the message.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#getSourceReactor--">getSourceReactor</a></span>()</code>
 <div class="block">Returns the source reactor, or null.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#getTargetReactor--">getTargetReactor</a></span>()</code>
 <div class="block">Returns the target Reactor.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#getTargetReactorImpl--">getTargetReactorImpl</a></span>()</code>
-<div class="block">Returns the target ReactorImpl.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#isCanceled--">isCanceled</a></span>()</code>
 <div class="block">Returns true if the request has been canceled.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#isComplete--">isComplete</a></span>()</code>
-<div class="block">Returns true when a response has been assigned to the request.</div>
-</td>
-</tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#isForeign--">isForeign</a></span>()</code>
-<div class="block">Returns true when the target reactor is not the request source.</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#isIsolated--">isIsolated</a></span>()</code>
-<div class="block">Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.</div>
-</td>
-</tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#isOneWay--">isOneWay</a></span>()</code>
-<div class="block">Returns true when the request does not pass back a result.</div>
-</td>
-</tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#isSignal--">isSignal</a></span>()</code>
-<div class="block">Returns true when the request was passed using the signal method.</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#processException-org.agilewiki.jactor2.core.reactors.ReactorImpl-java.lang.Exception-">processException</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a>&nbsp;_activeReactor,
-                java.lang.Exception&nbsp;_e)</code>
-<div class="block">Process the exception on the current thread in the facility of the active reactor.</div>
-</td>
-</tr>
-<tr id="i17" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#responseProcessed--">responseProcessed</a></span>()</code>
-<div class="block">A response value from a subordinate request has been processed.</div>
-</td>
-</tr>
-<tr id="i18" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#responseReceived-org.agilewiki.jactor2.core.requests.RequestImpl-">responseReceived</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a>&nbsp;request)</code>
-<div class="block">A response has been received for a subordinate request.</div>
-</td>
-</tr>
-<tr id="i19" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html#signal--">signal</a></span>()</code>
 <div class="block">Passes this Request to the target Reactor without any result being passed back.</div>
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.java.lang.AutoCloseable">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;java.lang.AutoCloseable</h3>
+<code>close</code></li>
+</ul>
 </li>
 </ul>
 </li>
@@ -307,85 +236,6 @@ extends java.lang.AutoCloseable</pre>
 </dl>
 </li>
 </ul>
-<a name="isComplete--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isComplete</h4>
-<pre>boolean&nbsp;isComplete()</pre>
-<div class="block">Returns true when a response has been assigned to the request.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>True when a response has not been assigned to the request.</dd>
-</dl>
-</li>
-</ul>
-<a name="isIsolated--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isIsolated</h4>
-<pre>boolean&nbsp;isIsolated()</pre>
-<div class="block">Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>True whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.</dd>
-</dl>
-</li>
-</ul>
-<a name="eval--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>eval</h4>
-<pre>void&nbsp;eval()</pre>
-<div class="block">Execute the AsyncRequest.processAsyncRequest method
- of the request held by the message. This method is always called on the
- target reactor's own thread.</div>
-</li>
-</ul>
-<a name="processException-org.agilewiki.jactor2.core.reactors.ReactorImpl-java.lang.Exception-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>processException</h4>
-<pre>void&nbsp;processException(<a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a>&nbsp;_activeReactor,
-                      java.lang.Exception&nbsp;_e)</pre>
-<div class="block">Process the exception on the current thread in the facility of the active reactor.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>_activeReactor</code> - The reactor providing the facility for processing the throwable.</dd>
-<dd><code>_e</code> - The exception to be processed.</dd>
-</dl>
-</li>
-</ul>
-<a name="close--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>close</h4>
-<pre>void&nbsp;close()</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>close</code>&nbsp;in interface&nbsp;<code>java.lang.AutoCloseable</code></dd>
-</dl>
-</li>
-</ul>
-<a name="cancel--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>cancel</h4>
-<pre>void&nbsp;cancel()</pre>
-<div class="block">Cancel this request.</div>
-</li>
-</ul>
 <a name="isCanceled--">
 <!--   -->
 </a>
@@ -400,76 +250,6 @@ extends java.lang.AutoCloseable</pre>
 <dd>True if the request has been canceled.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorClosedException.html" title="class in org.agilewiki.jactor2.core.reactors">ReactorClosedException</a></code> - when the request has been closed.</dd>
-</dl>
-</li>
-</ul>
-<a name="Z:Z_isCanceled--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>_isCanceled</h4>
-<pre>boolean&nbsp;_isCanceled()</pre>
-<div class="block">Returns true if the request has been canceled.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>True if the request has been canceled.</dd>
-</dl>
-</li>
-</ul>
-<a name="isForeign--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isForeign</h4>
-<pre>boolean&nbsp;isForeign()</pre>
-<div class="block">Returns true when the target reactor is not the request source.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>True when the target reactor is not the request source.</dd>
-</dl>
-</li>
-</ul>
-<a name="isOneWay--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isOneWay</h4>
-<pre>boolean&nbsp;isOneWay()</pre>
-<div class="block">Returns true when the request does not pass back a result.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>True when the request does not pass back a result.</dd>
-</dl>
-</li>
-</ul>
-<a name="isSignal--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isSignal</h4>
-<pre>boolean&nbsp;isSignal()</pre>
-<div class="block">Returns true when the request was passed using the signal method.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>True when the request was passed using the signal method.</dd>
-</dl>
-</li>
-</ul>
-<a name="getTargetReactorImpl--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getTargetReactorImpl</h4>
-<pre><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a>&nbsp;getTargetReactorImpl()</pre>
-<div class="block">Returns the target ReactorImpl.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>The target ReactorImpl.</dd>
 </dl>
 </li>
 </ul>
@@ -500,30 +280,6 @@ extends java.lang.AutoCloseable</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The source reactor or null.</dd>
 </dl>
-</li>
-</ul>
-<a name="responseReceived-org.agilewiki.jactor2.core.requests.RequestImpl-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>responseReceived</h4>
-<pre>void&nbsp;responseReceived(<a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a>&nbsp;request)</pre>
-<div class="block">A response has been received for a subordinate request.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>request</code> - A subordinate request.</dd>
-</dl>
-</li>
-</ul>
-<a name="responseProcessed--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>responseProcessed</h4>
-<pre>void&nbsp;responseProcessed()</pre>
-<div class="block">A response value from a subordinate request has been processed.</div>
 </li>
 </ul>
 <a name="signal--">

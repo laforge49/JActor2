@@ -160,7 +160,7 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>protected org.agilewiki.jactor2.core.requests.RequestImpl</code></td>
+<td class="colFirst"><code>protected <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#oldMessage">oldMessage</a></span></code>
 <div class="block">The request targeted to the source reactor which, when processed,
  resulted in this message.</div>
@@ -309,9 +309,7 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isComplete--">isComplete</a></span>()</code>
-<div class="block">Returns true when a response has been assigned to the request.</div>
-</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isComplete--">isComplete</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
@@ -321,9 +319,7 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isIsolated--">isIsolated</a></span>()</code>
-<div class="block">Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.</div>
-</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#isIsolated--">isIsolated</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
@@ -339,7 +335,7 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#processException-org.agilewiki.jactor2.core.reactors.ReactorImpl-java.lang.Exception-">processException</a></span>(org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_activeReactor,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#processException-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-java.lang.Exception-">processException</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_activeReactor,
                 java.lang.Exception&nbsp;_e)</code>
 <div class="block">Process the exception on the current thread in the facility of the active reactor.</div>
 </td>
@@ -376,8 +372,8 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#setResponse-java.lang.Object-org.agilewiki.jactor2.core.reactors.ReactorImpl-">setResponse</a></span>(java.lang.Object&nbsp;_response,
-           org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_activeReactor)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html#setResponse-java.lang.Object-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">setResponse</a></span>(java.lang.Object&nbsp;_response,
+           <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_activeReactor)</code>
 <div class="block">Assigns a response value.</div>
 </td>
 </tr>
@@ -475,7 +471,7 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <ul class="blockList">
 <li class="blockList">
 <h4>oldMessage</h4>
-<pre>protected&nbsp;org.agilewiki.jactor2.core.requests.RequestImpl oldMessage</pre>
+<pre>protected&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a> oldMessage</pre>
 <div class="block">The request targeted to the source reactor which, when processed,
  resulted in this message.</div>
 </li>
@@ -579,11 +575,8 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <li class="blockList">
 <h4>isForeign</h4>
 <pre>public&nbsp;boolean&nbsp;isForeign()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
 <div class="block">Returns true when the target reactor is not the request source.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isForeign</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>True when the target reactor is not the request source.</dd>
 </dl>
@@ -596,11 +589,8 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <li class="blockList">
 <h4>isOneWay</h4>
 <pre>public&nbsp;boolean&nbsp;isOneWay()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
 <div class="block">Returns true when the request does not pass back a result.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isOneWay</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>True when the request does not pass back a result.</dd>
 </dl>
@@ -613,11 +603,8 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <li class="blockList">
 <h4>isSignal</h4>
 <pre>public&nbsp;boolean&nbsp;isSignal()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
 <div class="block">Returns true when the request was passed using the signal method.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isSignal</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>True when the request was passed using the signal method.</dd>
 </dl>
@@ -632,8 +619,6 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <pre>public&nbsp;org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;getTargetReactorImpl()</pre>
 <div class="block">Returns the Reactor to which this Request is bound and to which this Request is to be passed.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getTargetReactorImpl</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The target Reactor.</dd>
 </dl>
@@ -759,14 +744,14 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 </dl>
 </li>
 </ul>
-<a name="setResponse-java.lang.Object-org.agilewiki.jactor2.core.reactors.ReactorImpl-">
+<a name="setResponse-java.lang.Object-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setResponse</h4>
 <pre>protected&nbsp;void&nbsp;setResponse(java.lang.Object&nbsp;_response,
-                           org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_activeReactor)</pre>
+                           <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_activeReactor)</pre>
 <div class="block">Assigns a response value.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -823,11 +808,8 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <li class="blockList">
 <h4>_isCanceled</h4>
 <pre>public&nbsp;boolean&nbsp;_isCanceled()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
 <div class="block">Returns true if the request has been canceled.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>_isCanceled</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>True if the request has been canceled.</dd>
 </dl>
@@ -840,14 +822,6 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <li class="blockList">
 <h4>isComplete</h4>
 <pre>public&nbsp;boolean&nbsp;isComplete()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
-<div class="block">Returns true when a response has been assigned to the request.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isComplete</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>True when a response has not been assigned to the request.</dd>
-</dl>
 </li>
 </ul>
 <a name="isIsolated--">
@@ -857,14 +831,6 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <li class="blockList">
 <h4>isIsolated</h4>
 <pre>public&nbsp;boolean&nbsp;isIsolated()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
-<div class="block">Returns true when the request is, directly or indirectly, from an IsolationReactor that awaits a response.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isIsolated</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>True whhe request is, directly or indirectly, from an IsolationReactor that awaits a response.</dd>
-</dl>
 </li>
 </ul>
 <a name="close--">
@@ -877,8 +843,6 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>close</code>&nbsp;in interface&nbsp;<code>java.lang.AutoCloseable</code></dd>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>close</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -890,10 +854,6 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <h4>cancel</h4>
 <pre>public&nbsp;void&nbsp;cancel()</pre>
 <div class="block">Cancel this request.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>cancel</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
-</dl>
 </li>
 </ul>
 <a name="eval--">
@@ -904,10 +864,6 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <h4>eval</h4>
 <pre>public&nbsp;void&nbsp;eval()</pre>
 <div class="block">Process a request or the response.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>eval</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
-</dl>
 </li>
 </ul>
 <a name="processRequestMessage--">
@@ -932,11 +888,8 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <li class="blockList">
 <h4>responseReceived</h4>
 <pre>public&nbsp;void&nbsp;responseReceived(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;request)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
 <div class="block">A response has been received for a subordinate request.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>responseReceived</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>request</code> - A subordinate request.</dd>
 </dl>
@@ -949,12 +902,7 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <li class="blockList">
 <h4>responseProcessed</h4>
 <pre>public&nbsp;void&nbsp;responseProcessed()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
 <div class="block">A response value from a subordinate request has been processed.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>responseProcessed</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
-</dl>
 </li>
 </ul>
 <a name="processResponseMessage--">
@@ -967,19 +915,16 @@ implements org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;<
 <div class="block">Process a response.</div>
 </li>
 </ul>
-<a name="processException-org.agilewiki.jactor2.core.reactors.ReactorImpl-java.lang.Exception-">
+<a name="processException-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-java.lang.Exception-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>processException</h4>
-<pre>public&nbsp;void&nbsp;processException(org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_activeReactor,
+<pre>public&nbsp;void&nbsp;processException(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_activeReactor,
                              java.lang.Exception&nbsp;_e)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl</code></span></div>
 <div class="block">Process the exception on the current thread in the facility of the active reactor.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>processException</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.requests.RequestImpl&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="type parameter in RequestMtImpl">RESPONSE_TYPE</a>&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_activeReactor</code> - The reactor providing the facility for processing the throwable.</dd>
 <dd><code>_e</code> - The exception to be processed.</dd>

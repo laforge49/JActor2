@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":6,"i2":10,"i3":10,"i4":10,"i5":10,"i6":6,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":6,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10};
+var methods = {"i0":10,"i1":6,"i2":10,"i3":10,"i4":10,"i5":10,"i6":6,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":6,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -261,8 +261,8 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#buffer-org.agilewiki.jactor2.core.requests.RequestImpl-org.agilewiki.jactor2.core.reactors.ReactorImpl-">buffer</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message,
-      org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_target)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#buffer-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">buffer</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message,
+      <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_target)</code>
 <div class="block">Buffers a message in the sending targetReactor for sending later.</div>
 </td>
 </tr>
@@ -307,7 +307,7 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 </td>
 </tr>
 <tr id="i11" class="rowColor">
-<td class="colFirst"><code>org.agilewiki.jactor2.core.requests.RequestImpl</code></td>
+<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#getCurrentRequest--">getCurrentRequest</a></span>()</code>
 <div class="block">Returns the message currently being processed.</div>
 </td>
@@ -337,186 +337,176 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 </td>
 </tr>
 <tr id="i16" class="altColor">
-<td class="colFirst"><code>double</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#getMessageStartTimeMillis--">getMessageStartTimeMillis</a></span>()</code>
-<div class="block">The time when processing began on the current message.</div>
-</td>
-</tr>
-<tr id="i17" class="rowColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.reactors.NonBlockingReactor</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#getParentReactor--">getParentReactor</a></span>()</code>
 <div class="block">Returns the parent reactor.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.plant.PlantScheduler</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#getPlantScheduler--">getPlantScheduler</a></span>()</code>
 <div class="block">The PlantScheduler object used by this ReactorImpl.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#getReasonForFailure--">getReasonForFailure</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">Recovery</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#getRecovery--">getRecovery</a></span>()</code>
 <div class="block">The Recovery object used by this ReactorImpl.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>java.util.concurrent.atomic.AtomicReference&lt;java.lang.Thread&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#getThreadReference--">getThreadReference</a></span>()</code>
 <div class="block">Returns the atomic reference to the reactor's thread.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#hasConcurrent--">hasConcurrent</a></span>()</code>
 <div class="block">Returns true when a message has been passed from another thread.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#hasWork--">hasWork</a></span>()</code>
 <div class="block">Returns true when there is a message in the inbox that can be processed.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#incomingResponse-org.agilewiki.jactor2.core.requests.RequestImpl-org.agilewiki.jactor2.core.reactors.ReactorImpl-">incomingResponse</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message,
                 org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_responseSource)</code>
 <div class="block">Process an incoming response.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#initialize-org.agilewiki.jactor2.core.reactors.Reactor-">initialize</a></span>(org.agilewiki.jactor2.core.reactors.Reactor&nbsp;_reactor)</code>
 <div class="block">Initialize the ReactorImpl.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isClosing--">isClosing</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isCommonReactor--">isCommonReactor</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isInboxEmpty--">isInboxEmpty</a></span>()</code>
 <div class="block">Returns true when the inbox is not empty.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isRunning--">isRunning</a></span>()</code>
 <div class="block">Returns true, if this ReactorImpl is actively processing messages.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#isSlow--">isSlow</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>protected abstract void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#notBusy--">notBusy</a></span>()</code>
 <div class="block">Called when all pending messages that can be processed have been processed.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.requests.SyncRequest&lt;java.lang.Void&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#nullSReq--">nullSReq</a></span>()</code>
 <div class="block">A noop request used for synchronizing state.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#processMessage-org.agilewiki.jactor2.core.requests.RequestImpl-">processMessage</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#processMessage-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">processMessage</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message)</code>
 <div class="block">Process the event/request/response message by calling its eval method.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#reactorPoll--">reactorPoll</a></span>()</code>
 <div class="block">Check if the current message has timed out and poll any child reactors for same.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#removeCloseable-org.agilewiki.jactor2.core.closeable.Closeable-">removeCloseable</a></span>(org.agilewiki.jactor2.core.closeable.Closeable&nbsp;_closeable)</code>
 <div class="block">Remove a closeable from the list of closeables.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#requestBegin-org.agilewiki.jactor2.core.requests.RequestImpl-">requestBegin</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl)</code>
 <div class="block">Signals the start of a request.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#requestEnd-org.agilewiki.jactor2.core.requests.RequestImpl-">requestEnd</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message)</code>
 <div class="block">Signals that a request has completed.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#run--">run</a></span>()</code>
 <div class="block">Process any pending messages that can be processed.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#setCurrentRequest-org.agilewiki.jactor2.core.requests.RequestImpl-">setCurrentRequest</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#setCurrentRequest-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">setCurrentRequest</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message)</code>
 <div class="block">Assigns the message currently being processed.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.requests.ExceptionHandler</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#setExceptionHandler-org.agilewiki.jactor2.core.requests.ExceptionHandler-">setExceptionHandler</a></span>(org.agilewiki.jactor2.core.requests.ExceptionHandler&nbsp;_handler)</code>
 <div class="block">Assign an exception handler.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#setMessageStartTimeMillis-double-">setMessageStartTimeMillis</a></span>(double&nbsp;messageStartTimeMillis)</code>&nbsp;</td>
-</tr>
-<tr id="i42" class="altColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#setPlantScheduler-org.agilewiki.jactor2.core.plant.PlantScheduler-">setPlantScheduler</a></span>(org.agilewiki.jactor2.core.plant.PlantScheduler&nbsp;plantScheduler)</code>&nbsp;</td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#setRecovery-org.agilewiki.jactor2.core.impl.mtPlant.Recovery-">setRecovery</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">Recovery</a>&nbsp;recovery)</code>&nbsp;</td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>protected boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#startedClosing--">startedClosing</a></span>()</code>
 <div class="block">Returns true when the first phase of closing has begun.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#unbufferedAddMessage-org.agilewiki.jactor2.core.requests.RequestImpl-boolean-">unbufferedAddMessage</a></span>(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#unbufferedAddMessage-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-boolean-">unbufferedAddMessage</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message,
                     boolean&nbsp;_local)</code>
 <div class="block">Add a message directly to the input queue of a Reactor.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#unbufferedAddMessages-java.util.Queue-">unbufferedAddMessages</a></span>(java.util.Queue&lt;org.agilewiki.jactor2.core.requests.RequestImpl&gt;&nbsp;_messages)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#unbufferedAddMessages-java.util.Queue-">unbufferedAddMessages</a></span>(java.util.Queue&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&gt;&nbsp;_messages)</code>
 <div class="block">Adds messages directly to the queue.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#warn-java.lang.String-">warn</a></span>(java.lang.String&nbsp;msg)</code>
 <div class="block">Log a message at the WARN level.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#warn-java.lang.String-java.lang.Throwable-">warn</a></span>(java.lang.String&nbsp;msg,
     java.lang.Throwable&nbsp;t)</code>
@@ -538,13 +528,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
 <code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.org.agilewiki.jactor2.core.reactors.ReactorImpl">
-<!--   -->
-</a>
-<h3>Methods inherited from interface&nbsp;org.agilewiki.jactor2.core.reactors.ReactorImpl</h3>
-<code>isIdler</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.org.agilewiki.jactor2.core.blades.Blade">
@@ -834,10 +817,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <li class="blockList">
 <h4>isClosing</h4>
 <pre>public final&nbsp;boolean&nbsp;isClosing()</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isClosing</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
-</dl>
 </li>
 </ul>
 <a name="close--">
@@ -866,10 +845,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <li class="blockList">
 <h4>getReasonForFailure</h4>
 <pre>public&nbsp;java.lang.String&nbsp;getReasonForFailure()</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getReasonForFailure</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
-</dl>
 </li>
 </ul>
 <a name="fail-java.lang.String-">
@@ -914,27 +889,23 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <ul class="blockList">
 <li class="blockList">
 <h4>getCurrentRequest</h4>
-<pre>public final&nbsp;org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;getCurrentRequest()</pre>
+<pre>public final&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;getCurrentRequest()</pre>
 <div class="block">Returns the message currently being processed.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getCurrentRequest</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The message currently being processed, or null.</dd>
 </dl>
 </li>
 </ul>
-<a name="setCurrentRequest-org.agilewiki.jactor2.core.requests.RequestImpl-">
+<a name="setCurrentRequest-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setCurrentRequest</h4>
-<pre>public final&nbsp;void&nbsp;setCurrentRequest(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message)</pre>
+<pre>public final&nbsp;void&nbsp;setCurrentRequest(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message)</pre>
 <div class="block">Assigns the message currently being processed.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>setCurrentRequest</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_message</code> - The message currently being processed.</dd>
 </dl>
@@ -950,8 +921,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <div class="block">Returns true when there is a message in the inbox that can be processed.
  (This method is not thread safe and must be called on the targetReactor's thread.)</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>hasWork</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>True if there is a message in the inbox that can be processed.</dd>
 </dl>
@@ -1014,25 +983,21 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <pre>public final&nbsp;org.agilewiki.jactor2.core.requests.ExceptionHandler&nbsp;getExceptionHandler()</pre>
 <div class="block">Returns the current exception handler.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getExceptionHandler</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The current exception handler, or null.</dd>
 </dl>
 </li>
 </ul>
-<a name="unbufferedAddMessage-org.agilewiki.jactor2.core.requests.RequestImpl-boolean-">
+<a name="unbufferedAddMessage-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-boolean-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>unbufferedAddMessage</h4>
-<pre>public&nbsp;void&nbsp;unbufferedAddMessage(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message,
+<pre>public&nbsp;void&nbsp;unbufferedAddMessage(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message,
                                  boolean&nbsp;_local)</pre>
 <div class="block">Add a message directly to the input queue of a Reactor.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>unbufferedAddMessage</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_message</code> - A message.</dd>
 <dd><code>_local</code> - True when the current thread is assigned to the targetReactor.</dd>
@@ -1045,7 +1010,7 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <ul class="blockList">
 <li class="blockList">
 <h4>unbufferedAddMessages</h4>
-<pre>public&nbsp;void&nbsp;unbufferedAddMessages(java.util.Queue&lt;org.agilewiki.jactor2.core.requests.RequestImpl&gt;&nbsp;_messages)
+<pre>public&nbsp;void&nbsp;unbufferedAddMessages(java.util.Queue&lt;<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&gt;&nbsp;_messages)
                            throws java.lang.Exception</pre>
 <div class="block">Adds messages directly to the queue.</div>
 <dl>
@@ -1066,14 +1031,14 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <div class="block">Called after adding some message(s) to the inbox.</div>
 </li>
 </ul>
-<a name="buffer-org.agilewiki.jactor2.core.requests.RequestImpl-org.agilewiki.jactor2.core.reactors.ReactorImpl-">
+<a name="buffer-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>buffer</h4>
-<pre>public&nbsp;boolean&nbsp;buffer(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message,
-                      org.agilewiki.jactor2.core.reactors.ReactorImpl&nbsp;_target)</pre>
+<pre>public&nbsp;boolean&nbsp;buffer(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message,
+                      <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">ReactorMtImpl</a>&nbsp;_target)</pre>
 <div class="block">Buffers a message in the sending targetReactor for sending later.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1084,13 +1049,13 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 </dl>
 </li>
 </ul>
-<a name="processMessage-org.agilewiki.jactor2.core.requests.RequestImpl-">
+<a name="processMessage-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>processMessage</h4>
-<pre>protected&nbsp;void&nbsp;processMessage(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message)</pre>
+<pre>protected&nbsp;void&nbsp;processMessage(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtRequests/RequestMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtRequests">RequestMtImpl</a>&nbsp;_message)</pre>
 <div class="block">Process the event/request/response message by calling its eval method.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1140,10 +1105,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <h4>requestBegin</h4>
 <pre>public&nbsp;void&nbsp;requestBegin(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_requestImpl)</pre>
 <div class="block">Signals the start of a request.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>requestBegin</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
-</dl>
 </li>
 </ul>
 <a name="requestEnd-org.agilewiki.jactor2.core.requests.RequestImpl-">
@@ -1155,8 +1116,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <pre>public&nbsp;void&nbsp;requestEnd(org.agilewiki.jactor2.core.requests.RequestImpl&nbsp;_message)</pre>
 <div class="block">Signals that a request has completed.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>requestEnd</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_message</code> - The request that has completed</dd>
 </dl>
@@ -1264,10 +1223,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <li class="blockList">
 <h4>isSlow</h4>
 <pre>public&nbsp;boolean&nbsp;isSlow()</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isSlow</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
-</dl>
 </li>
 </ul>
 <a name="isCommonReactor--">
@@ -1277,10 +1232,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <li class="blockList">
 <h4>isCommonReactor</h4>
 <pre>public&nbsp;boolean&nbsp;isCommonReactor()</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isCommonReactor</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
-</dl>
 </li>
 </ul>
 <a name="getRecovery--">
@@ -1319,33 +1270,6 @@ implements org.agilewiki.jactor2.core.reactors.ReactorImpl, <a href="../../../..
 <li class="blockList">
 <h4>setPlantScheduler</h4>
 <pre>public&nbsp;void&nbsp;setPlantScheduler(org.agilewiki.jactor2.core.plant.PlantScheduler&nbsp;plantScheduler)</pre>
-</li>
-</ul>
-<a name="getMessageStartTimeMillis--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getMessageStartTimeMillis</h4>
-<pre>public&nbsp;double&nbsp;getMessageStartTimeMillis()</pre>
-<div class="block">The time when processing began on the current message.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getMessageStartTimeMillis</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
-</dl>
-</li>
-</ul>
-<a name="setMessageStartTimeMillis-double-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setMessageStartTimeMillis</h4>
-<pre>public&nbsp;void&nbsp;setMessageStartTimeMillis(double&nbsp;messageStartTimeMillis)</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>setMessageStartTimeMillis</code>&nbsp;in interface&nbsp;<code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></dd>
-</dl>
 </li>
 </ul>
 <a name="warn-java.lang.String-">
