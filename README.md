@@ -791,7 +791,6 @@ Upcoming Projects
 Links
 -----
 
-- [Modeling Actors with Locks](http://www.agilewiki.org/docs/tutorials/actors/index.html)
 - core
     - [JActor2-Core API](http://www.agilewiki.org/docs/api/core/index.html)
     - Dependencies: [slf4j](http://www.slf4j.org/)
@@ -805,4 +804,5 @@ Links
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 - [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
 - [JActor2 Logback Appender](https://github.com/cp149/jactor-logger) by Champion
+- [Modeling Actors with Locks](http://www.agilewiki.org/docs/tutorials/actors/index.html)
 - [Avoiding Actor Deadlock](http://lambda-the-ultimate.org/node/4908)
