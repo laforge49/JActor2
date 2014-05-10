@@ -6,12 +6,12 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import com.blockwithme.util.shared.SystemUtils;
+import com.blockwithme.util.base.SystemUtils;
 
 /**
  * A scheduler for Plant, created by PlantConfiguration.
  */
-public class TestPlantScheduler implements
+public class JActorStTestPlantScheduler implements
         org.agilewiki.jactor2.core.plant.PlantScheduler {
 
     @SuppressWarnings("rawtypes")
@@ -117,7 +117,7 @@ public class TestPlantScheduler implements
     /**
      * Creates the default plantScheduler.
      */
-    public TestPlantScheduler() {
+    public JActorStTestPlantScheduler() {
         timer = SystemUtils.getTimer();
         currentTimeMillis = System.currentTimeMillis();
         timer.scheduleAtFixedRate(new MyTimerTask(new Runnable() {

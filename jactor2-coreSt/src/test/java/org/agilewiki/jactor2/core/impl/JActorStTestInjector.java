@@ -13,23 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.agilewiki.jactor2.core.impl.gwt;
+package org.agilewiki.jactor2.core.impl;
 
-import org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration;
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
+import com.google.gwt.inject.client.GinModules;
+import com.google.gwt.inject.client.Ginjector;
 
 /**
- * Implementation of PlantConfiguration for GWT.
+ * The TEST GIN Ginjector.
  *
  * @author monster
  */
-public class GWTPlantConfiguration extends PlantConfiguration {
-
-    /* (non-Javadoc)
-     * @see org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration#createPlantScheduler()
-     */
-    @Override
-    protected PlantScheduler createPlantScheduler() {
-        return new GWTPlantScheduler();
-    }
+@GinModules(JActorStTestModule.class)
+public interface JActorStTestInjector extends Ginjector {
+    // Since so far we only do static injection in SystemUtils, this can be left empty.
 }

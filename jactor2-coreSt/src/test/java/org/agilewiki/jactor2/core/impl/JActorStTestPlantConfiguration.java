@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.impl;
 import org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 
-public class TestPlantConfiguration extends PlantConfiguration {
+public class JActorStTestPlantConfiguration extends PlantConfiguration {
     /**
      * Create the plant scheduler.
      *
@@ -11,6 +11,6 @@ public class TestPlantConfiguration extends PlantConfiguration {
      */
     @Override
     protected PlantScheduler createPlantScheduler() {
-        return new TestPlantScheduler();
+        return new JActorStTestPlantScheduler();
     }
 }

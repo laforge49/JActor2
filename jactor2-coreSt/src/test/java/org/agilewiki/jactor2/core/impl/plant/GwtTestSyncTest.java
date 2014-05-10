@@ -1,18 +1,17 @@
 package org.agilewiki.jactor2.core.impl.plant;
 
-import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.impl.TestPlantConfiguration;
+import org.agilewiki.jactor2.core.impl.JActorStTestPlantConfiguration;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
-public class SyncTest extends TestCase {
+public class GwtTestSyncTest extends BaseGWTTestCase {
     public void testa() throws Exception {
-        TestPlantConfiguration config = new TestPlantConfiguration();
-        new Plant(new TestPlantConfiguration());
+        final JActorStTestPlantConfiguration config = new JActorStTestPlantConfiguration();
+        new Plant(new JActorStTestPlantConfiguration());
         try {
-            Sync1 sync1 = new Sync1();
+            final Sync1 sync1 = new Sync1();
             sync1.startSReq().signal();
         } finally {
             Plant.close();

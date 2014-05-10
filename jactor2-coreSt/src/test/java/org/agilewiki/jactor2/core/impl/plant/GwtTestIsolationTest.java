@@ -1,23 +1,21 @@
 package org.agilewiki.jactor2.core.impl.plant;
 
-import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.impl.TestPlantConfiguration;
+import org.agilewiki.jactor2.core.impl.JActorStTestPlantConfiguration;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
-public class IsolationTest extends TestCase {
+public class GwtTestIsolationTest extends BaseGWTTestCase {
     public void testa() throws Exception {
-        TestPlantConfiguration config = new TestPlantConfiguration();
-        new Plant(new TestPlantConfiguration());
+        final JActorStTestPlantConfiguration config = new JActorStTestPlantConfiguration();
+        new Plant(new JActorStTestPlantConfiguration());
         try {
-            Iso1 iso1 = new Iso1();
+            final Iso1 iso1 = new Iso1();
             iso1.startAReq().signal();
         } finally {
             Plant.close();
@@ -36,7 +34,8 @@ class Iso1 extends NonBlockingBladeBase {
 
             AsyncResponseProcessor<Void> doResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
                     if (getPendingResponseCount() == 0)
                         dis.processAsyncResponse(null);
                 }
@@ -50,7 +49,7 @@ class Iso1 extends NonBlockingBladeBase {
                 send(iso2.fooAReq(), doResponseProcessor);
                 send(iso2.fooAReq(), doResponseProcessor);
                 */
-                Iso2 iso2 = new Iso2(new IsolationReactor());
+                final Iso2 iso2 = new Iso2(new IsolationReactor());
                 send(iso2.fooAReq(), doResponseProcessor);
                 send(iso2.fooAReq(), doResponseProcessor);
                 send(iso2.fooAReq(), doResponseProcessor);
@@ -60,7 +59,7 @@ class Iso1 extends NonBlockingBladeBase {
 }
 
 class Iso2 extends BladeBase {
-    Iso2(Reactor reactor) {
+    Iso2(final Reactor reactor) {
         _initialize(reactor);
     }
 
@@ -70,11 +69,12 @@ class Iso2 extends BladeBase {
 
             @Override
             public void processAsyncRequest() throws Exception {
-                Iso3 iso3 = new Iso3();
+                final Iso3 iso3 = new Iso3();
                 System.out.println("begin");
                 send(iso3.barAReq(), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(Void _response) throws Exception {
+                    public void processAsyncResponse(final Void _response)
+                            throws Exception {
                         System.out.println("end");
                         dis.processAsyncResponse(null);
                     }

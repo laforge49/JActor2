@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.agilewiki.jactor2.core.impl.jvm;
+package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
-import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
- * The JVM (non-GWT) single-threaded PlantConfiguration implementation.
+ * Implementation of PlantConfiguration for coreSt.
  *
  * @author monster
  */
-@GwtIncompatible
-public class JVMPlantConfiguration extends PlantConfiguration {
+public class DefaultPlantConfiguration extends PlantConfiguration {
 
     /* (non-Javadoc)
      * @see org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration#createPlantScheduler()
      */
     @Override
     protected PlantScheduler createPlantScheduler() {
-        return new JVMPlantScheduler();
+        return new DefaultPlantScheduler();
     }
 }
