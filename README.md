@@ -791,15 +791,18 @@ Upcoming Projects
 Links
 -----
 
-- [Core Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html)
 - [Modeling Actors with Locks](http://www.agilewiki.org/docs/tutorials/actors/index.html)
-- [JActor2-Core API](http://www.agilewiki.org/docs/api/core/index.html)
-- [JActor2-CoreMt API](http://www.agilewiki.org/docs/api/coreMt/index.html)
+- core
+    - [JActor2-Core API](http://www.agilewiki.org/docs/api/core/index.html)
+    - Dependencies: [slf4j](http://www.slf4j.org/)
+- coreMt
+    - [Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html)
+    - [JActor2-CoreMt API](http://www.agilewiki.org/docs/api/coreMt/index.html)
+    - Dependencies: core, [guava](https://code.google.com/p/guava-libraries/)
+    - benchmark: [repository](https://github.com/skunkiferous/PingPong), [results](http://skunkiferous.github.io/PingPong/)
 - [Downloads](http://www.agilewiki.org/downloads)
-- Dependencies: [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 - [JActor](https://github.com/laforge49/JActor) - the predecessor to JActor2
-- benchmark: [repository](https://github.com/skunkiferous/PingPong), [results](http://skunkiferous.github.io/PingPong/)
 - [JActor2 Logback Appender](https://github.com/cp149/jactor-logger) by Champion
 - [Avoiding Actor Deadlock](http://lambda-the-ultimate.org/node/4908)
