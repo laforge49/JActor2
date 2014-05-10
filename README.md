@@ -791,12 +791,12 @@ Upcoming Projects
 Links
 -----
 
-- core
-    - [JActor2-Core API](http://www.agilewiki.org/docs/api/core/index.html)
+- core (JActor2 API)
+    - [JActor2-Core Javadoc pages](http://www.agilewiki.org/docs/api/core/index.html)
     - Dependencies: [slf4j](http://www.slf4j.org/)
-- coreMt
+- coreMt (Multi-threaded Implementation)
     - [Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html)
-    - [JActor2-CoreMt API](http://www.agilewiki.org/docs/api/coreMt/index.html)
+    - [JActor2-CoreMt Javadoc pages](http://www.agilewiki.org/docs/api/coreMt/index.html)
     - Dependencies: core, [guava](https://code.google.com/p/guava-libraries/)
     - benchmark: [repository](https://github.com/skunkiferous/PingPong), [results](http://skunkiferous.github.io/PingPong/)
 - [Downloads](http://www.agilewiki.org/downloads)
