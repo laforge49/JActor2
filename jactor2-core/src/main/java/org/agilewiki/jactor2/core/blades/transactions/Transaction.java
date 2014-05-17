@@ -55,6 +55,11 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
         return immutable;
     }
 
+    /**
+     * Updates the reference in the ImmutableReference.
+     *
+     * @param _immutableReference    The ImmutableReference to which the transaction is applied.
+     */
     protected void updateImmutableReference(final ImmutableReference<IMMUTABLE> _immutableReference) {
         _immutableReference.immutable = immutable;
     }
