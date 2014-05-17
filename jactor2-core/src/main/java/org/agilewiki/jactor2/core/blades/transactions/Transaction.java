@@ -55,6 +55,10 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
         return immutable;
     }
 
+    protected void updateImmutableReference(final ImmutableReference<IMMUTABLE> _immutableReference) {
+        _immutableReference.immutable = immutable;
+    }
+
     /**
      * Create a request to apply the transaction to an ImmutableReference.
      *
@@ -66,7 +70,7 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
             private AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
-                    _immutableReference.immutable = immutable;
+                    updateImmutableReference(_immutableReference);
                     applyAReq.processAsyncResponse(immutable);
                     applyAReq = null;
                 }
@@ -93,7 +97,7 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
             private AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
-                    _immutableReference.immutable = immutable;
+                    updateImmutableReference(_immutableReference);
                     applyAReq.processAsyncResponse(immutable);
                     applyAReq = null;
                 }
