@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.impl.blades.transactions;
 
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableReference;
+import org.agilewiki.jactor2.core.blades.transactions.ImmutableSource;
 import org.agilewiki.jactor2.core.blades.transactions.SyncTransaction;
 import org.agilewiki.jactor2.core.impl.Plant;
 
@@ -11,21 +12,21 @@ public class SyncTest extends TestCase {
 
         SyncTransaction<String> addGood = new SyncTransaction<String>() {
             @Override
-            protected void update(ImmutableReference<String> source) throws Exception {
+            protected void update(ImmutableSource<String> source) throws Exception {
                 immutable = "good " + source.getImmutable();
             }
         };
 
         SyncTransaction<String> addMoreGood = new SyncTransaction<String>(addGood) {
             @Override
-            public void update(ImmutableReference<String> source) {
+            public void update(ImmutableSource<String> source) {
                 immutable = "more " + source.getImmutable();
             }
         };
 
         SyncTransaction<String> bogus = new SyncTransaction<String>(addGood) {
             @Override
-            public void update(ImmutableReference<String> source) throws Exception {
+            public void update(ImmutableSource<String> source) throws Exception {
                 throw new NullPointerException();
             }
         };

@@ -9,7 +9,8 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
  *
  * @param <IMMUTABLE> The type of immutable to be operated on.
  */
-public class ImmutableReference<IMMUTABLE> implements IsolationBlade {
+public class ImmutableReference<IMMUTABLE> implements IsolationBlade, ImmutableSource<IMMUTABLE> {
+
     /**
      * The blade's reactor.
      */
@@ -52,18 +53,12 @@ public class ImmutableReference<IMMUTABLE> implements IsolationBlade {
         immutable = _immutable;
     }
 
-    ImmutableReference() {
-    }
-
+    @Override
     public IsolationReactor getReactor() {
         return reactor;
     }
 
-    /**
-     * Returns the blade's immutable data structure.
-     *
-     * @return The Blade's immutable data structure.
-     */
+    @Override
     public IMMUTABLE getImmutable() {
         return immutable;
     }

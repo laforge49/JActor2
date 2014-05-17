@@ -31,7 +31,7 @@ abstract public class SyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE> 
      *
      * @param source The Transaction or ImmutableReference holding the immutable to be operated on.
      */
-    abstract protected void update(ImmutableReference<IMMUTABLE> source) throws Exception;
+    abstract protected void update(ImmutableSource<IMMUTABLE> source) throws Exception;
 
     /**
      * Apply the update.
@@ -39,7 +39,7 @@ abstract public class SyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE> 
      * @param _source The source transaction or immutable reference.
      * @param _dis    Signals completion of the update.
      */
-    protected void _apply(final ImmutableReference<IMMUTABLE> _source,
+    protected void _apply(final ImmutableSource<IMMUTABLE> _source,
                           final AsyncResponseProcessor<Void> _dis)
             throws Exception {
         if (_source instanceof Transaction) {

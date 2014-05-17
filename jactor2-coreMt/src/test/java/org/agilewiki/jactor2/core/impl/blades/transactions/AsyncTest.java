@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.impl.blades.transactions;
 import junit.framework.TestCase;
 import org.agilewiki.jactor2.core.blades.transactions.AsyncTransaction;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableReference;
+import org.agilewiki.jactor2.core.blades.transactions.ImmutableSource;
 import org.agilewiki.jactor2.core.blades.transactions.SyncTransaction;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.plant.DelayAReq;
@@ -14,7 +15,7 @@ public class AsyncTest extends TestCase {
 
         AsyncTransaction<String> addGood = new AsyncTransaction<String>() {
             @Override
-            protected void update(final ImmutableReference<String> source,
+            protected void update(final ImmutableSource<String> source,
                                   final AsyncResponseProcessor<Void> asyncResponseProcessor) throws Exception {
                 applyAReq.send(new DelayAReq(1000), new AsyncResponseProcessor<Void>() {
                     @Override
@@ -28,7 +29,7 @@ public class AsyncTest extends TestCase {
 
         SyncTransaction<String> addMoreGood = new SyncTransaction<String>(addGood) {
             @Override
-            public void update(ImmutableReference<String> source) {
+            public void update(ImmutableSource<String> source) {
                 immutable = "more " + source.getImmutable();
             }
         };

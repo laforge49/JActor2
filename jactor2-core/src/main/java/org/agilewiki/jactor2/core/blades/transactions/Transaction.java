@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
+import org.agilewiki.jactor2.core.blades.IsolationBlade;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
@@ -10,8 +12,19 @@ import org.agilewiki.jactor2.core.requests.ExceptionHandler;
  *
  * @param <IMMUTABLE>    The type of immutable data structure.
  */
-abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABLE> {
+abstract public class Transaction<IMMUTABLE> implements IsolationBlade, ImmutableSource<IMMUTABLE> {
+
+    /**
+     * The blade's reactor.
+     */
+    protected IsolationReactor reactor;
+
     private final Transaction<IMMUTABLE> parent;
+
+    /**
+     * The immutable data structure to be operated on.
+     */
+    protected IMMUTABLE immutable;
 
     /**
      * Holds the trace in reverse chronological order.
@@ -30,6 +43,16 @@ abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABL
      */
     Transaction(final Transaction<IMMUTABLE> _parent) {
         parent = _parent;
+    }
+
+    @Override
+    public IsolationReactor getReactor() {
+        return reactor;
+    }
+
+    @Override
+    public IMMUTABLE getImmutable() {
+        return immutable;
     }
 
     /**
@@ -131,7 +154,7 @@ abstract public class Transaction<IMMUTABLE> extends ImmutableReference<IMMUTABL
      * @param _source     The source transaction or immutable reference.
      * @param _dis        Signals completion of the update.
      */
-    abstract protected void _apply(final ImmutableReference<IMMUTABLE> _source,
+    abstract protected void _apply(final ImmutableSource<IMMUTABLE> _source,
                           final AsyncResponseProcessor<Void> _dis)
             throws Exception;
 
