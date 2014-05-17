@@ -22,7 +22,7 @@ abstract public class SyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE> 
      *
      * @param _parent The transaction to be applied before this one.
      */
-    public SyncTransaction(Transaction<IMMUTABLE> _parent) {
+    public SyncTransaction(final Transaction<IMMUTABLE> _parent) {
         super(_parent);
     }
 
@@ -48,9 +48,16 @@ abstract public class SyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE> 
         } else {
             trace = new StringBuffer("");
         }
-        trace.insert(0, "\nTRACE: " + getClass().getName());
+        updateTrace();
         getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
         update(_source);
         _dis.processAsyncResponse(null);
+    }
+
+    /**
+     * Update the trace.
+     */
+    protected void updateTrace() {
+        trace.insert(0, "\nTRACE: " + getClass().getName());
     }
 }

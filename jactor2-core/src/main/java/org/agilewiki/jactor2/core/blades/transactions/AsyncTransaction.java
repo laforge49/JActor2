@@ -50,7 +50,7 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
         } else {
             trace = new StringBuffer("");
         }
-        trace.insert(0, "\nTRACE: " + getClass().getName());
+        updateTrace();
         getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
         update(_source, new AsyncResponseProcessor<Void>() {
             @Override
@@ -58,5 +58,12 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
                 _dis.processAsyncResponse(null);
             }
         });
+    }
+
+    /**
+     * Update the trace.
+     */
+    protected void updateTrace() {
+        trace.insert(0, "\nTRACE: " + getClass().getName());
     }
 }

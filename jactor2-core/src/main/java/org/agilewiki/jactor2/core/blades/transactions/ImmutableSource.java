@@ -6,7 +6,7 @@ package org.agilewiki.jactor2.core.blades.transactions;
 public interface ImmutableSource<IMMUTABLE> {
 
     /**
-     * Returns AN immutable data structure.
+     * Returns an immutable data structure.
      *
      * @return The immutable data structure.
      */
