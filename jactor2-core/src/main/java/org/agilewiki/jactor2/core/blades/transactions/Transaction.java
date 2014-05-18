@@ -103,41 +103,6 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
         };
     }
 
-    protected void evalAtomic(final ImmutableReference<IMMUTABLE> _immutableReference,
-                              final IMMUTABLE expected,
-                              final AsyncRequest<IMMUTABLE> request,
-                              final AsyncResponseProcessor<IMMUTABLE> dis)
-            throws Exception {
-        if (_immutableReference.getImmutable() != expected) {
-            dis.processAsyncResponse(null);
-            return;
-        }
-        _eval(_immutableReference, request, evalResponseProcessor(_immutableReference, new AsyncResponseProcessor<IMMUTABLE>() {
-            @Override
-            public void processAsyncResponse(IMMUTABLE _response) throws Exception {
-                evalResponseProcessor(_immutableReference, dis).processAsyncResponse(null);
-            }
-        }));
-    }
-
-    /**
-     * Create a request to apply the transaction to an ImmutableReference if it has not changed.
-     * The request returns null if the ImmutableReference changed, otherwise a reference
-     * to the new immutable is returned.
-     *
-     * @param _immutableReference The ImmutableReference to which the transaction is to be applied.
-     * @return The new request.
-     */
-    public AsyncRequest<IMMUTABLE> atomicApplyAReq(final ImmutableReference<IMMUTABLE> _immutableReference,
-                                                   final IMMUTABLE expected) {
-        return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
-            @Override
-            public void processAsyncRequest() throws Exception {
-                evalAtomic(_immutableReference, expected, this, this);
-            }
-        };
-    }
-
     /**
      * Create a request to evaluate the transaction against an ImmutableReference without changing the ImmutableReference.
      *
