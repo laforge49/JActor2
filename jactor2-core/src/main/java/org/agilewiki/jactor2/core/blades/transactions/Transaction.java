@@ -201,10 +201,11 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
     }
 
     /**
-     * Throws an exception if an unexpected value is encountered.
+     * Returns true if the precheck passes.
      *
      * @param _immutable    The immutable prior to the update being applied.
      */
-    protected void precheck(final IMMUTABLE _immutable) throws Exception {
+    protected boolean precheck(final IMMUTABLE _immutable) throws Exception {
+        return true;
     }
 }
