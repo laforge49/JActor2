@@ -174,12 +174,20 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
         reactor = _root.reactor;
         applyAReq = _applyAReq;
         if (parent == null) {
-            _apply(_root, _dis);
+            if (_root.getImmutable() == null) {
+                immutable = null;
+                _dis.processAsyncResponse(null);
+            } else
+                _apply(_root, _dis);
         } else {
             parent._eval(_root, applyAReq, new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
-                    _apply(parent, _dis);
+                    if (parent.getImmutable() == null) {
+                        immutable = null;
+                        _dis.processAsyncResponse(null);
+                    } else
+                        _apply(parent, _dis);
                 }
             });
         }
