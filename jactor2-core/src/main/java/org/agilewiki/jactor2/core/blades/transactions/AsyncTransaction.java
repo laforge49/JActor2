@@ -52,18 +52,12 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
         }
         updateTrace();
         getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
+        precheck(_source.getImmutable());
         update(_source, new AsyncResponseProcessor<Void>() {
             @Override
             public void processAsyncResponse(Void _response) throws Exception {
                 _dis.processAsyncResponse(null);
             }
         });
-    }
-
-    /**
-     * Update the trace.
-     */
-    protected void updateTrace() {
-        trace.insert(0, "\nTRACE: " + getClass().getName());
     }
 }

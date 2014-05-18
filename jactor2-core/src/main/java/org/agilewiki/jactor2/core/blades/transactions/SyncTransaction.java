@@ -50,14 +50,8 @@ abstract public class SyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE> 
         }
         updateTrace();
         getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
+        precheck(_source.getImmutable());
         update(_source);
         _dis.processAsyncResponse(null);
-    }
-
-    /**
-     * Update the trace.
-     */
-    protected void updateTrace() {
-        trace.insert(0, "\nTRACE: " + getClass().getName());
     }
 }
