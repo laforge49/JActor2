@@ -174,14 +174,19 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
         reactor = _root.reactor;
         applyAReq = _applyAReq;
         if (parent == null) {
+            precheck(_root.immutable);
             _apply(_root, _dis);
         } else {
             parent._eval(_root, applyAReq, new AsyncResponseProcessor<Void>() {
                 @Override
                 public void processAsyncResponse(Void _response) throws Exception {
+                    precheck(parent.immutable);
                     _apply(parent, _dis);
                 }
             });
         }
+    }
+
+    protected void precheck(final IMMUTABLE _immutable) throws Exception {
     }
 }
