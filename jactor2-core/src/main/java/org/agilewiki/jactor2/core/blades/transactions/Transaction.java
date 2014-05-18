@@ -186,6 +186,22 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
                                    final AsyncResponseProcessor<Void> _dis)
             throws Exception;
 
+    /**
+     * Update applied with a source of ImmutableReference.
+     */
+    protected void applySourceReference() {
+        trace = new StringBuffer("");
+    }
+
+    /**
+     * Update applied with a source of another transaction.
+     *
+     * @param _transaction The other transaction.
+     */
+    protected void applySourceTransaction(final Transaction _transaction) {
+        trace = _transaction.trace;
+    }
+
     private void _eval(final ImmutableReference<IMMUTABLE> _root,
                        final AsyncRequest<IMMUTABLE> _applyAReq,
                        final AsyncResponseProcessor<Void> _dis)
