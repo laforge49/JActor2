@@ -48,7 +48,7 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
             Transaction<IMMUTABLE> transaction = (Transaction<IMMUTABLE>) _source;
             applySourceTransaction(transaction);
         } else {
-            applySourceReference();
+            applySourceReference((ImmutableReference<IMMUTABLE>) _source);
         }
         updateTrace();
         getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());

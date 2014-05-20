@@ -154,7 +154,7 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
     /**
      * Update applied with a source of ImmutableReference.
      */
-    protected void applySourceReference() {
+    protected void applySourceReference(final ImmutableReference<IMMUTABLE> _reference) {
         trace = new StringBuffer("");
     }
 
