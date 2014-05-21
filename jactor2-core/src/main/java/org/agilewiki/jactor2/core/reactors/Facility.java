@@ -15,7 +15,7 @@ public class Facility extends NonBlockingReactor {
      *
      * @param _parentReactor The parent reactor.
      */
-    public Facility(NonBlockingReactor _parentReactor) {
+    public Facility(Facility _parentReactor) {
         super(_parentReactor);
     }
 
@@ -36,7 +36,7 @@ public class Facility extends NonBlockingReactor {
      * @param _initialOutboxSize     Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize Initial size of the local input queue.
      */
-    public Facility(NonBlockingReactor _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) {
+    public Facility(Facility _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 }
