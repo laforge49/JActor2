@@ -21,7 +21,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * Create a non-blocking reactor with the Plant internal reactor as the parent.
      */
     public NonBlockingReactor() {
-        this(PlantBase.getInternalReactor());
+        this(PlantBase.getInternalFacility());
     }
 
     /**
@@ -33,13 +33,13 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
         this(_parentReactor,
                 _parentReactor != null ?
                         _parentReactor.asReactorImpl().getInitialBufferSize() :
-                        PlantImpl.getSingleton().getInternalReactor() != null ?
-                                PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialBufferSize() :
+                        PlantImpl.getSingleton().getInternalFacility() != null ?
+                                PlantImpl.getSingleton().getInternalFacility().asReactorImpl().getInitialBufferSize() :
                                 PlantImpl.getSingleton().getInitialBufferSize(),
                 _parentReactor != null ?
                         _parentReactor.asReactorImpl().getInitialLocalQueueSize() :
-                        PlantImpl.getSingleton().getInternalReactor() != null ?
-                                PlantImpl.getSingleton().getInternalReactor().asReactorImpl().getInitialLocalQueueSize() :
+                        PlantImpl.getSingleton().getInternalFacility() != null ?
+                                PlantImpl.getSingleton().getInternalFacility().asReactorImpl().getInitialLocalQueueSize() :
                                 PlantImpl.getSingleton().getInitialLocalMessageQueueSize());
     }
 
@@ -50,7 +50,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(PlantBase.getInternalFacility(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

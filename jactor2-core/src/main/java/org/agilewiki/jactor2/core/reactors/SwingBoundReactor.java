@@ -27,7 +27,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      * Create a swing-bound reactor with the Plant internal reactor as the parent.
      */
     public SwingBoundReactor() {
-        super(PlantBase.getInternalReactor());
+        super(PlantBase.getInternalFacility());
     }
 
     /**
@@ -49,7 +49,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      */
     public SwingBoundReactor(final int _initialOutboxSize,
             final int _initialLocalQueueSize) {
-        this(PlantBase.getInternalReactor(), _initialOutboxSize,
+        this(PlantBase.getInternalFacility(), _initialOutboxSize,
                 _initialLocalQueueSize);
     }
 

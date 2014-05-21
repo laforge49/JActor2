@@ -18,7 +18,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * Create an isolation reactor with the Plant internal reactor as the parent.
      */
     public IsolationReactor() {
-        this(PlantBase.getInternalReactor());
+        this(PlantBase.getInternalFacility());
     }
 
     /**
@@ -38,7 +38,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(PlantBase.getInternalFacility(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

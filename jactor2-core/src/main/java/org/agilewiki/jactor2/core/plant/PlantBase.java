@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.reactors.Facility;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.util.Map;
 
@@ -28,8 +27,8 @@ abstract public class PlantBase {
      *
      * @return The internal reactor.
      */
-    public static Facility getInternalReactor() {
-        return PlantImpl.getSingleton().getInternalReactor();
+    public static Facility getInternalFacility() {
+        return PlantImpl.getSingleton().getInternalFacility();
     }
 
     /**

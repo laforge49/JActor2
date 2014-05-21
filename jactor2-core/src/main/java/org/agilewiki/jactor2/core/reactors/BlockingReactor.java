@@ -21,7 +21,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * Create a blocking reactor with the Plant internal reactor as the parent.
      */
     public BlockingReactor() {
-        this(PlantBase.getInternalReactor());
+        this(PlantBase.getInternalFacility());
     }
 
     /**
@@ -41,7 +41,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize);
+        this(PlantBase.getInternalFacility(), _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

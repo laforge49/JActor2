@@ -45,7 +45,7 @@ public class PlantMtImpl extends PlantImpl {
 
     private PlantConfiguration plantConfiguration;
 
-    private final Facility internalReactor;
+    private final Facility internalFacility;
 
     private final ReactorPoolThreadManager reactorPoolThreadManager;
 
@@ -103,7 +103,7 @@ public class PlantMtImpl extends PlantImpl {
                 .createReactorPoolThreadManager();
         final int reactorPollMillis = _plantConfiguration.getRecovery()
                 .getReactorPollMillis();
-        internalReactor = createInternalReactor();
+        internalFacility = createInternalFacility();
         _plantConfiguration.getPlantScheduler().scheduleAtFixedRate(
                 plantPoll(), reactorPollMillis);
     }
@@ -202,7 +202,7 @@ public class PlantMtImpl extends PlantImpl {
             return;
         }
         try {
-            getInternalReactor().close();
+            getInternalFacility().close();
         } finally {
             getPlantScheduler().close();
             super.close();
@@ -247,7 +247,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @return The reactor belonging to the singleton.
      */
-    protected Facility createInternalReactor() {
+    protected Facility createInternalFacility() {
         return new Facility(null,
                 plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize());
@@ -263,7 +263,7 @@ public class PlantMtImpl extends PlantImpl {
             @Override
             public void run() {
                 try {
-                    ((ReactorMtImpl) getInternalReactor().asReactorImpl())
+                    ((ReactorMtImpl) getInternalFacility().asReactorImpl())
                             .reactorPoll();
                 } catch (final Exception x) {
                     x.printStackTrace();
@@ -278,15 +278,15 @@ public class PlantMtImpl extends PlantImpl {
      * @param _reactor The targetReactor to be run.
      */
     public final void submit(final PoolThreadReactorMtImpl _reactor) {
-        ReactorMtImpl internalReactorImpl = (ReactorMtImpl) internalReactor.asReactorImpl();
+        ReactorMtImpl internalFacilityImpl = (ReactorMtImpl) internalFacility.asReactorImpl();
         try {
             reactorPoolThreadManager.execute(_reactor);
         } catch (final Exception e) {
-            if (!internalReactorImpl.isClosing()) {
+            if (!internalFacilityImpl.isClosing()) {
                 throw e;
             }
         } catch (final Error e) {
-            if (!internalReactorImpl.isClosing()) {
+            if (!internalFacilityImpl.isClosing()) {
                 throw e;
             }
         }
@@ -298,8 +298,8 @@ public class PlantMtImpl extends PlantImpl {
      * @return The reactor belonging to the singleton.
      */
     @Override
-    public Facility getInternalReactor() {
-        return internalReactor;
+    public Facility getInternalFacility() {
+        return internalFacility;
     }
 
     /**

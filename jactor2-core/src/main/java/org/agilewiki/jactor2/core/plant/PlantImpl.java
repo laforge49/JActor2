@@ -45,7 +45,7 @@ abstract public class PlantImpl {
      *
      * @return The reactor belonging to the singleton.
      */
-    abstract public Facility getInternalReactor();
+    abstract public Facility getInternalFacility();
 
     /**
      * Close the Plant.

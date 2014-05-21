@@ -22,7 +22,7 @@ public class ThreadBoundReactor extends ReactorBase
      * Create a thread-bound reactor with the Plant internal reactor as the parent.
      */
     public ThreadBoundReactor() {
-        this(PlantBase.getInternalReactor());
+        this(PlantBase.getInternalFacility());
     }
 
     /**
@@ -42,7 +42,7 @@ public class ThreadBoundReactor extends ReactorBase
      *                                  to be processed.
      */
     public ThreadBoundReactor(final Runnable _boundProcessor) {
-        this(PlantBase.getInternalReactor(), _boundProcessor);
+        this(PlantBase.getInternalFacility(), _boundProcessor);
     }
 
     /**
@@ -67,7 +67,7 @@ public class ThreadBoundReactor extends ReactorBase
      */
     public ThreadBoundReactor(final int _initialOutboxSize, final int _initialLocalQueueSize,
                            final Runnable _boundProcessor) {
-        this(PlantBase.getInternalReactor(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
+        this(PlantBase.getInternalFacility(), _initialOutboxSize, _initialLocalQueueSize, _boundProcessor);
     }
 
     /**
