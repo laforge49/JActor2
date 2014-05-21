@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.plant;
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
+import org.agilewiki.jactor2.core.reactors.Facility;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
@@ -44,7 +45,7 @@ abstract public class PlantImpl {
      *
      * @return The reactor belonging to the singleton.
      */
-    abstract public NonBlockingReactor getInternalReactor();
+    abstract public Facility getInternalReactor();
 
     /**
      * Close the Plant.
