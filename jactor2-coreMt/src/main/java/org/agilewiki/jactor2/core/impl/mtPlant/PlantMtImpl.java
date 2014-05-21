@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
+import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.impl.mtCloseable.CloseableMtImpl;
@@ -21,6 +22,8 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+
+import java.util.Map;
 
 public class PlantMtImpl extends PlantImpl {
 
@@ -316,5 +319,20 @@ public class PlantMtImpl extends PlantImpl {
     @Override
     public int getInitialBufferSize() {
         return plantConfiguration.getInitialBufferSize();
+    }
+
+    @Override
+    public <V> ISMap<V> createISMap() {
+        return ISMapImpl.empty();
+    }
+
+    @Override
+    public <V> ISMap<V> createISMap(String key, V value) {
+        return ISMapImpl.singleton(key, value);
+    }
+
+    @Override
+    public <V> ISMap<V> createISMap(Map<String, V> m) {
+        return ISMapImpl.from(m);
     }
 }
