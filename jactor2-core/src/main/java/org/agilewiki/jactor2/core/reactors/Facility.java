@@ -56,8 +56,8 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _initialOutboxSize     Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize Initial size of the local input queue.
      */
-    public Facility(final String _name, Facility _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
-        super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    public Facility(final String _name, Void _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
+        super(null, _initialOutboxSize, _initialLocalQueueSize);
         validateName(_name);
         name = _name;
     }
