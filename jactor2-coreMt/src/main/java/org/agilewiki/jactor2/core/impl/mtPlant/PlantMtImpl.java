@@ -54,7 +54,7 @@ public class PlantMtImpl extends PlantImpl {
     /**
      * Create the singleton with a default configuration.
      */
-    public PlantMtImpl() {
+    public PlantMtImpl() throws Exception {
         this(new PlantConfiguration());
     }
 
@@ -63,7 +63,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @param _threadCount The size of the thread pool.
      */
-    public PlantMtImpl(final int _threadCount) {
+    public PlantMtImpl(final int _threadCount) throws Exception {
         this(new PlantConfiguration(_threadCount));
     }
 
@@ -72,7 +72,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @param _plantConfiguration The configuration to be used by the singleton.
      */
-    public PlantMtImpl(final PlantConfiguration _plantConfiguration) {
+    public PlantMtImpl(final PlantConfiguration _plantConfiguration) throws Exception {
         removeThreadBoundReactor();
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
@@ -249,7 +249,7 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @return The reactor belonging to the singleton.
      */
-    protected Facility createInternalFacility() {
+    protected Facility createInternalFacility() throws Exception {
         return new Facility(PLANT_INTERNAL_FACILITY_NAME, null,
                 plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize());

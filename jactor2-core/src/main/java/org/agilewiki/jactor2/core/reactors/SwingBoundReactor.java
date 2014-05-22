@@ -26,7 +26,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
     /**
      * Create a swing-bound reactor with the Plant internal reactor as the parent.
      */
-    public SwingBoundReactor() {
+    public SwingBoundReactor() throws Exception {
         super(PlantBase.getInternalFacility());
     }
 
@@ -35,7 +35,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      *
      * @param _parentReactor            The parent reactor.
      */
-    public SwingBoundReactor(final NonBlockingReactor _parentReactor) {
+    public SwingBoundReactor(final NonBlockingReactor _parentReactor) throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl()
                 .getInitialBufferSize(), _parentReactor.asReactorImpl()
                 .getInitialLocalQueueSize());
@@ -48,7 +48,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public SwingBoundReactor(final int _initialOutboxSize,
-            final int _initialLocalQueueSize) {
+            final int _initialLocalQueueSize) throws Exception {
         this(PlantBase.getInternalFacility(), _initialOutboxSize,
                 _initialLocalQueueSize);
     }
@@ -61,7 +61,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public SwingBoundReactor(final NonBlockingReactor _parentReactor,
-            final int _initialOutboxSize, final int _initialLocalQueueSize) {
+            final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 

@@ -16,7 +16,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      *
      * @param _reactor    The Reactor of this ReactorImpl.
      */
-    void initialize(final Reactor _reactor);
+    void initialize(final Reactor _reactor) throws Exception;
 
     /**
      * Returns the Reactor of this ReactorImpl.

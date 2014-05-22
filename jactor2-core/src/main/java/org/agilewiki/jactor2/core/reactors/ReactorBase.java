@@ -25,7 +25,7 @@ abstract public class ReactorBase implements Reactor {
      *
      * @param _reactorImpl    The object used to implement the reactor.
      */
-    public void initialize(final ReactorImpl _reactorImpl) {
+    public void initialize(final ReactorImpl _reactorImpl) throws Exception{
         if (_reactorImpl != null)
             reactorImpl = _reactorImpl;
         _reactorImpl.initialize(this);

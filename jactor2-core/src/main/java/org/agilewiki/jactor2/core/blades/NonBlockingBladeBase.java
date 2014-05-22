@@ -11,7 +11,7 @@ public class NonBlockingBladeBase extends BladeBase implements NonBlockingBlade 
     /**
      * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
      */
-    public NonBlockingBladeBase() {
+    public NonBlockingBladeBase()throws Exception  {
         _initialize(new NonBlockingReactor());
     }
 

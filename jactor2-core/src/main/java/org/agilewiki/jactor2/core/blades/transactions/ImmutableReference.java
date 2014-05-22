@@ -26,7 +26,7 @@ public class ImmutableReference<IMMUTABLE> implements IsolationBlade, ImmutableS
      *
      * @param _immutable    The immutable data structure to be operated on.
      */
-    public ImmutableReference(final IMMUTABLE _immutable) {
+    public ImmutableReference(final IMMUTABLE _immutable) throws Exception {
         reactor = new IsolationReactor();
         immutable = _immutable;
     }
@@ -48,7 +48,7 @@ public class ImmutableReference<IMMUTABLE> implements IsolationBlade, ImmutableS
      * @param _immutable    The immutable data structure to be operated on.
      * @param _parentReactor    The parent of the blade's reactor.
      */
-    public ImmutableReference(final IMMUTABLE _immutable, final NonBlockingReactor _parentReactor) {
+    public ImmutableReference(final IMMUTABLE _immutable, final NonBlockingReactor _parentReactor) throws Exception {
         reactor = new IsolationReactor(_parentReactor);
         immutable = _immutable;
     }

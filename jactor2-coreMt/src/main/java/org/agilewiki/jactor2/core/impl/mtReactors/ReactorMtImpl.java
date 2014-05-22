@@ -145,7 +145,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _reactor The Reactor of this ReactorImpl.
      */
     @Override
-    public void initialize(final Reactor _reactor) {
+    public void initialize(final Reactor _reactor) throws Exception {
         super._initialize(_reactor);
         inbox = createInbox(initialLocalQueueSize);
         outbox = new Outbox(initialBufferSize);

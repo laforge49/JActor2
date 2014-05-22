@@ -12,7 +12,7 @@ public class IsolationBladeBase extends BladeBase implements IsolationBlade {
     /**
      * Create an Isolation blade and an Isolation reactor whose parent is the internal reactor of Plant.
      */
-    public IsolationBladeBase() {
+    public IsolationBladeBase() throws Exception {
         _initialize(new IsolationReactor());
     }
 
