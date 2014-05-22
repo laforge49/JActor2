@@ -11,25 +11,27 @@ public class SyncTest extends TestCase {
     public void testI() throws Exception {
         new Plant();
 
-        SyncTransaction<String> addGood = new SyncTransaction<String>() {
+        final SyncTransaction<String> addGood = new SyncTransaction<String>() {
             @Override
-            protected void update(ImmutableSource<String> source)
+            protected void update(final ImmutableSource<String> source)
                     throws Exception {
                 immutable = "good " + source.getImmutable();
             }
         };
 
-        SyncTransaction<String> addMoreGood = new SyncTransaction<String>(
+        final SyncTransaction<String> addMoreGood = new SyncTransaction<String>(
                 addGood) {
             @Override
-            public void update(ImmutableSource<String> source) {
+            public void update(final ImmutableSource<String> source) {
                 immutable = "more " + source.getImmutable();
             }
         };
 
-        SyncTransaction<String> bogus = new SyncTransaction<String>(addGood) {
+        final SyncTransaction<String> bogus = new SyncTransaction<String>(
+                addGood) {
             @Override
-            public void update(ImmutableSource<String> source) throws Exception {
+            public void update(final ImmutableSource<String> source)
+                    throws Exception {
                 throw new NullPointerException();
             }
         };
@@ -47,7 +49,7 @@ public class SyncTest extends TestCase {
             System.out.println(m.getImmutable()); // times
             try {
                 bogus.applyAReq(m).call();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 System.err.println(e.getMessage());
             }
             System.out.println(m.getImmutable()); // times

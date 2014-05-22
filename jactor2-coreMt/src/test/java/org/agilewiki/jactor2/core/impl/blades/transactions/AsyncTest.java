@@ -14,7 +14,7 @@ public class AsyncTest extends TestCase {
     public void testI() throws Exception {
         new Plant();
 
-        AsyncTransaction<String> addGood = new AsyncTransaction<String>() {
+        final AsyncTransaction<String> addGood = new AsyncTransaction<String>() {
             @Override
             protected void update(final ImmutableSource<String> source,
                     final AsyncResponseProcessor<Void> asyncResponseProcessor)
@@ -22,8 +22,8 @@ public class AsyncTest extends TestCase {
                 applyAReq.send(new DelayAReq(1000),
                         new AsyncResponseProcessor<Void>() {
                             @Override
-                            public void processAsyncResponse(Void _response)
-                                    throws Exception {
+                            public void processAsyncResponse(
+                                    final Void _response) throws Exception {
                                 immutable = "good " + source.getImmutable();
                                 asyncResponseProcessor
                                         .processAsyncResponse(null);
@@ -32,10 +32,10 @@ public class AsyncTest extends TestCase {
             }
         };
 
-        SyncTransaction<String> addMoreGood = new SyncTransaction<String>(
+        final SyncTransaction<String> addMoreGood = new SyncTransaction<String>(
                 addGood) {
             @Override
-            public void update(ImmutableSource<String> source) {
+            public void update(final ImmutableSource<String> source) {
                 immutable = "more " + source.getImmutable();
             }
         };

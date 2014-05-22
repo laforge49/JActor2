@@ -15,13 +15,13 @@ public class HungRequestTest extends TestCase {
             final Hanger blade1 = new Hanger(new NonBlockingReactor());
             try {
                 blade1.hiAReq().call();
-            } catch (ReactorClosedException sce) {
+            } catch (final ReactorClosedException sce) {
             }
             final Hung blade2 = new Hung(new NonBlockingReactor(), new Hanger(
                     new NonBlockingReactor()));
             try {
                 blade2.hoAReq().call();
-            } catch (ReactorClosedException sce) {
+            } catch (final ReactorClosedException sce) {
             }
         } finally {
             Plant.close();
@@ -47,9 +47,10 @@ class Hanger extends NonBlockingBladeBase {
 
 class Hung extends NonBlockingBladeBase {
 
-    private Hanger hanger;
+    private final Hanger hanger;
 
-    public Hung(final NonBlockingReactor mbox, Hanger _hanger) throws Exception {
+    public Hung(final NonBlockingReactor mbox, final Hanger _hanger)
+            throws Exception {
         super(mbox);
         hanger = _hanger;
     }
