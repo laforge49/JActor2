@@ -28,8 +28,6 @@ import java.util.Map;
 
 public class PlantMtImpl extends PlantImpl {
 
-    public static final String PLANT_INTERNAL_FACILITY_NAME = "PlantInternalFacility";
-
     /**
      * Returns this singleton.
      *

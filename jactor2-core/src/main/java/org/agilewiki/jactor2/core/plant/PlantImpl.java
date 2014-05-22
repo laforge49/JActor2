@@ -19,6 +19,8 @@ import java.util.Map;
  */
 abstract public class PlantImpl {
 
+    public static final String PLANT_INTERNAL_FACILITY_NAME = "PlantInternalFacility";
+
     private static volatile PlantImpl singleton;
 
     /**
