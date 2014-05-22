@@ -19,7 +19,6 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _name    The name of the facility.
      */
     public Facility(final String _name) throws Exception {
-        validateName(_name);
         name = _name;
     }
 
@@ -31,7 +30,6 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      */
     public Facility(final String _name, Facility _parentReactor) throws Exception {
         super(_parentReactor);
-        validateName(_name);
         name = _name;
     }
 
@@ -44,7 +42,6 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      */
     public Facility(final String _name, int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
         super(_initialOutboxSize, _initialLocalQueueSize);
-        validateName(_name);
         name = _name;
     }
 
@@ -58,7 +55,6 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      */
     public Facility(final String _name, Void _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
         super(null, _initialOutboxSize, _initialLocalQueueSize);
-        validateName(_name);
         name = _name;
     }
 
@@ -67,7 +63,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         return name;
     }
 
-    protected void validateName(final String _name) throws Exception {
+    protected void validateName(final String _name) {
         if (_name == null) {
             throw new IllegalArgumentException("name may not be null");
         }
@@ -85,8 +81,6 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         if (_name.equals(PlantImpl.PLANT_INTERNAL_FACILITY_NAME)) {
             if (getParentReactor() != null)
                 throw new IllegalArgumentException("name may not be " + PlantImpl.PLANT_INTERNAL_FACILITY_NAME);
-        //} else if (MPlant.getFacility(_name) != null) {
-        //    throw new IllegalStateException("facility by that name already exists");
         }
     }
 
@@ -132,11 +126,14 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * A request to register a blade. The request throws an IllegalStateException
      * if the name is a duplicate.
      *
+     * An IllegalArgumentException is thrown if the name is invalid.
+     *
      * @param _name     The name used to register the blade.
      * @param _blade    The blade being registered.
      * @return The request to register.
      */
     public SyncRequest<Void> registerNamedBlade(final String _name, final NamedBlade _blade) {
+        validateName(_name);
         return new SyncRequest<Void>(Facility.this) {
             @Override
             public Void processSyncRequest() throws Exception {
