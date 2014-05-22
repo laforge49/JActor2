@@ -1,9 +1,13 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.blades.NamedBlade;
+
 /**
  * A reactor parent, facilities are named and registered with Plant.
  */
-public class Facility extends NonBlockingReactor {
+public class Facility extends NonBlockingReactor implements NamedBlade {
+    private String name;
+
     /**
      * Create a facility with the Plant internal reactor as the parent.
      */
@@ -38,5 +42,10 @@ public class Facility extends NonBlockingReactor {
      */
     public Facility(Facility _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
