@@ -1,13 +1,18 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NamedBlade;
+import org.agilewiki.jactor2.core.blades.transactions.ISMap;
+import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
  * A reactor parent, facilities are named and registered with Plant.
  */
 public class Facility extends NonBlockingReactor implements NamedBlade {
     public final String name;
+
+    private ISMap<NamedBlade> namedBlades = PlantBase.createISMap();
 
     /**
      * Create a facility with the Plant internal reactor as the parent.
@@ -83,5 +88,64 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         //} else if (MPlant.getFacility(_name) != null) {
         //    throw new IllegalStateException("facility by that name already exists");
         }
+    }
+
+    /**
+     * Returns the ISMap of named blades.
+     *
+     * @return The ISMap.
+     */
+    public ISMap<NamedBlade> getNamedBlades() {
+        return namedBlades;
+    }
+
+    /**
+     * Returns the named blade.
+     *
+     * @param _name    The name of the blade.
+     * @return The Blade, or null.
+     */
+    public NamedBlade getNamedBlade(final String _name) {
+        return namedBlades.get(_name);
+    }
+
+    /**
+     * A request to unregister the named blade. The result of the request is
+     * the unregistered blade, or null.
+     *
+     * @param _name    The name of the blade.
+     * @return The request to unregister.
+     */
+    public SyncRequest<NamedBlade> unregisterNamedBlade(final String _name) {
+        return new SyncRequest<NamedBlade>(Facility.this) {
+            @Override
+            public NamedBlade processSyncRequest() throws Exception {
+                NamedBlade removed = namedBlades.get(_name);
+                if (removed != null)
+                    namedBlades = namedBlades.minus(_name);
+                return removed;
+            }
+        };
+    }
+
+    /**
+     * A request to register a blade. The request throws an IllegalStateException
+     * if the name is a duplicate.
+     *
+     * @param _name     The name used to register the blade.
+     * @param _blade    The blade being registered.
+     * @return The request to register.
+     */
+    public SyncRequest<Void> registerNamedBlade(final String _name, final NamedBlade _blade) {
+        return new SyncRequest<Void>(Facility.this) {
+            @Override
+            public Void processSyncRequest() throws Exception {
+                NamedBlade oldBlade = namedBlades.get(_name);
+                if (oldBlade != null)
+                    throw new IllegalArgumentException("duplicate blade name");
+                namedBlades = namedBlades.plus(_name, _blade);
+                return null;
+            }
+        };
     }
 }
