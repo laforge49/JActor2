@@ -14,7 +14,7 @@ final public class Plant extends PlantBase {
     /**
      * Create a plant with the default configuration.
      */
-    public Plant() {
+    public Plant() throws Exception {
         new PlantMtImpl();
     }
 
@@ -25,7 +25,7 @@ final public class Plant extends PlantBase {
      * @param _reactorThreadPoolSize The number of threads to be created for the
      *                               reactor thread pool.
      */
-    public Plant(final int _reactorThreadPoolSize) {
+    public Plant(final int _reactorThreadPoolSize) throws Exception {
         new PlantMtImpl(_reactorThreadPoolSize);
     }
 
@@ -34,7 +34,7 @@ final public class Plant extends PlantBase {
      *
      * @param _plantConfiguration The configuration to be used by the plant.
      */
-    public Plant(final PlantConfiguration _plantConfiguration) {
+    public Plant(final PlantConfiguration _plantConfiguration) throws Exception {
         new PlantMtImpl(_plantConfiguration);
     }
 }
