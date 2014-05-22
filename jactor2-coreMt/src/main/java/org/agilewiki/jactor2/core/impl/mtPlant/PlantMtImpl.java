@@ -28,6 +28,8 @@ import java.util.Map;
 
 public class PlantMtImpl extends PlantImpl {
 
+    public static final String PLANT_INTERNAL_FACILITY_NAME = "PlantInternalFacility";
+
     /**
      * Returns this singleton.
      *
@@ -248,7 +250,7 @@ public class PlantMtImpl extends PlantImpl {
      * @return The reactor belonging to the singleton.
      */
     protected Facility createInternalFacility() {
-        return new Facility(null,
+        return new Facility(PLANT_INTERNAL_FACILITY_NAME, null,
                 plantConfiguration.getInitialBufferSize(),
                 plantConfiguration.getInitialLocalMessageQueueSize());
     }

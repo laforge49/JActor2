@@ -6,42 +6,50 @@ import org.agilewiki.jactor2.core.blades.NamedBlade;
  * A reactor parent, facilities are named and registered with Plant.
  */
 public class Facility extends NonBlockingReactor implements NamedBlade {
-    private String name;
+    public final String name;
 
     /**
      * Create a facility with the Plant internal reactor as the parent.
+     * @param _name    The name of the facility.
      */
-    public Facility() {
+    public Facility(final String _name) {
+        name = _name;
     }
 
     /**
      * Create a facility.
      *
+     * @param _name    The name of the facility.
      * @param _parentReactor The parent reactor.
      */
-    public Facility(Facility _parentReactor) {
+    public Facility(final String _name, Facility _parentReactor) {
         super(_parentReactor);
+        name = _name;
     }
 
     /**
      * Create a facility with the Plant internal reactor as the parent.
      *
+     * @param _name    The name of the facility.
      * @param _initialOutboxSize     Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize Initial size of the local input queue.
      */
-    public Facility(int _initialOutboxSize, int _initialLocalQueueSize) {
+    public Facility(final String _name, int _initialOutboxSize, int _initialLocalQueueSize) {
         super(_initialOutboxSize, _initialLocalQueueSize);
+        name = _name;
     }
 
     /**
      * Create a facility.
      *
+     * @param _name    The name of the facility.
      * @param _parentReactor         The parent reactor.
      * @param _initialOutboxSize     Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize Initial size of the local input queue.
      */
-    public Facility(Facility _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) {
+    public Facility(final String _name, Facility _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+        name = _name;
     }
 
     @Override
