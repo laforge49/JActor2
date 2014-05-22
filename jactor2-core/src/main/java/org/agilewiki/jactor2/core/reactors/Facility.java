@@ -12,7 +12,7 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 public class Facility extends NonBlockingReactor implements NamedBlade {
     public final String name;
 
-    private ISMap<NamedBlade> namedBlades = PlantBase.createISMap();
+    protected ISMap<NamedBlade> namedBlades = PlantBase.createISMap();
 
     /**
      * Create a facility with the Plant internal reactor as the parent.
