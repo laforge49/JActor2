@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.impl.blades;
 
+import java.io.IOException;
+
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-
-import java.io.IOException;
 
 public class BladeC {
     private final Reactor reactor;

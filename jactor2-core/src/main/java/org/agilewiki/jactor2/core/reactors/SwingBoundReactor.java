@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import org.agilewiki.jactor2.core.blades.SwingBoundBlade;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
-
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 /**
  * A reactor which processes requests/responses on the Swing UI thread.
@@ -35,7 +35,8 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      *
      * @param _parentReactor            The parent reactor.
      */
-    public SwingBoundReactor(final NonBlockingReactor _parentReactor) throws Exception {
+    public SwingBoundReactor(final NonBlockingReactor _parentReactor)
+            throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl()
                 .getInitialBufferSize(), _parentReactor.asReactorImpl()
                 .getInitialLocalQueueSize());
@@ -61,7 +62,8 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public SwingBoundReactor(final NonBlockingReactor _parentReactor,
-            final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+            final int _initialOutboxSize, final int _initialLocalQueueSize)
+            throws Exception {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, null);
     }
 

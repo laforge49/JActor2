@@ -15,7 +15,7 @@ public class NonBlockingReactorMtImpl extends PoolThreadReactorMtImpl {
      * @param _initialLocalQueueSize The initial local queue size.
      */
     public NonBlockingReactorMtImpl(final NonBlockingReactor _parentReactor,
-                                    final int _initialOutboxSize, final int _initialLocalQueueSize) {
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
@@ -25,7 +25,7 @@ public class NonBlockingReactorMtImpl extends PoolThreadReactorMtImpl {
     }
 
     @Override
-    protected Inbox createInbox(int _initialLocalQueueSize) {
+    protected Inbox createInbox(final int _initialLocalQueueSize) {
         return new CommonInbox(_initialLocalQueueSize);
     }
 }

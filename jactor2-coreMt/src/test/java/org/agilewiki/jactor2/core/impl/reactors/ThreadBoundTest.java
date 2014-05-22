@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.reactors;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
@@ -24,7 +25,7 @@ public class ThreadBoundTest extends TestCase {
                 }
             });
             final Blade11 blade1 = new Blade11(reactor);
-            String response = blade1.hiSReq().call();
+            final String response = blade1.hiSReq().call();
             System.out.println(response);
             assertEquals("Hello world!", response);
         } finally {

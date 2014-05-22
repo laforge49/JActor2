@@ -79,12 +79,13 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     public void onCancel() {
         cancelAll();
         final Reactor targetReactor = getTargetReactor();
-        if (!(targetReactor instanceof CommonReactor))
+        if (!(targetReactor instanceof CommonReactor)) {
             try {
                 new BoundResponseProcessor<RESPONSE_TYPE>(targetReactor, this)
                         .processAsyncResponse(null);
             } catch (final Exception e) {
             }
+        }
     }
 
     /**

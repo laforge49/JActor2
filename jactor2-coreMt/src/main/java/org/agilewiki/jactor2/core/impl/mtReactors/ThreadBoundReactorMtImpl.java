@@ -1,22 +1,19 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
-
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 /**
  * A reactor bound to a thread.
  */
 public class ThreadBoundReactorMtImpl extends ReactorMtImpl {
 
-    private static final ThreadLocal<ThreadBoundReactorMtImpl> threadReactor =
-            new ThreadLocal<ThreadBoundReactorMtImpl>();
+    private static final ThreadLocal<ThreadBoundReactorMtImpl> threadReactor = new ThreadLocal<ThreadBoundReactorMtImpl>();
 
     /**
      * Returns the ThreadBoundReactorMtImpl bound to the current thread.
@@ -48,8 +45,8 @@ public class ThreadBoundReactorMtImpl extends ReactorMtImpl {
      * @param _boundProcessor        The Runnable used when there are messages to be processed.
      */
     public ThreadBoundReactorMtImpl(final NonBlockingReactor _parentReactor,
-                                    final int _initialOutboxSize, final int _initialLocalQueueSize,
-                                    final Runnable _boundProcessor) {
+            final int _initialOutboxSize, final int _initialLocalQueueSize,
+            final Runnable _boundProcessor) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
         boundProcessor = _boundProcessor;
     }
@@ -111,7 +108,7 @@ public class ThreadBoundReactorMtImpl extends ReactorMtImpl {
                 result = true;
                 final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>> entry = iter
                         .next();
-                final ReactorMtImpl target = (ReactorMtImpl) entry.getKey();
+                final ReactorMtImpl target = entry.getKey();
                 final ArrayDeque<RequestMtImpl> messages = entry.getValue();
                 iter.remove();
                 target.unbufferedAddMessages(messages);

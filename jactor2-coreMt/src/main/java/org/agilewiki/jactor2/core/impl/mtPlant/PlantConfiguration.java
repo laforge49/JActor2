@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
-
 import java.util.concurrent.ThreadFactory;
+
+import org.agilewiki.jactor2.core.plant.PlantScheduler;
 
 /**
  * Base class for configuring the Plant.
@@ -49,8 +49,9 @@ public class PlantConfiguration {
      * @return The default Recovery instance.
      */
     public Recovery getRecovery() {
-        if (recovery == null)
+        if (recovery == null) {
             recovery = createRecovery();
+        }
         return recovery;
     }
 
@@ -67,8 +68,9 @@ public class PlantConfiguration {
      * @return The plant scheduler.
      */
     public PlantScheduler getPlantScheduler() {
-        if (plantScheduler == null)
+        if (plantScheduler == null) {
             plantScheduler = createPlantScheduler();
+        }
         return plantScheduler;
     }
 
@@ -87,7 +89,8 @@ public class PlantConfiguration {
      * @return The reactor pool thread manager.
      */
     public ReactorPoolThreadManager createReactorPoolThreadManager() {
-        return new ReactorPoolThreadManager(reactorThreadPoolSize, createReactorPoolThreadFactory());
+        return new ReactorPoolThreadManager(reactorThreadPoolSize,
+                createReactorPoolThreadFactory());
     }
 
     /**

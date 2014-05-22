@@ -51,18 +51,21 @@ public interface ISMap<VALUE> extends Map<String, VALUE> {
     /**
      * An incompatible operation.
      */
+    @Override
     @Deprecated
     public void clear();
 
     /**
      * An incompatible operation.
      */
+    @Override
     @Deprecated
     public VALUE put(String key, VALUE value);
 
     /**
      * An incompatible operation.
      */
+    @Override
     @Deprecated
     public VALUE remove(Object key);
 }

@@ -4,7 +4,6 @@ import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 /**
  * Base class for managing failure detection and recovery.
@@ -29,8 +28,9 @@ public class Recovery {
      * @return Number of milliseconds.
      */
     public int getMessageTimeoutMillis(final ReactorMtImpl _reactorImpl) {
-        if (_reactorImpl.isSlow())
+        if (_reactorImpl.isSlow()) {
             return 300000;
+        }
         return 1000;
     }
 
@@ -76,7 +76,8 @@ public class Recovery {
      *
      * @param _requestImpl    The reactor with the hung request.
      */
-    public void onHungRequest(final RequestMtImpl _requestImpl) throws Exception {
+    public void onHungRequest(final RequestMtImpl _requestImpl)
+            throws Exception {
         final ReactorImpl reactor = _requestImpl.getTargetReactorImpl();
         reactor.error("request hung -> reactor close");
         reactor.fail("hung request");

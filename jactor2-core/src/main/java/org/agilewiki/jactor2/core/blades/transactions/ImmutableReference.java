@@ -9,7 +9,8 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
  *
  * @param <IMMUTABLE> The type of immutable to be operated on.
  */
-public class ImmutableReference<IMMUTABLE> implements IsolationBlade, ImmutableSource<IMMUTABLE> {
+public class ImmutableReference<IMMUTABLE> implements IsolationBlade,
+        ImmutableSource<IMMUTABLE> {
 
     /**
      * The blade's reactor.
@@ -37,7 +38,8 @@ public class ImmutableReference<IMMUTABLE> implements IsolationBlade, ImmutableS
      * @param _immutable    The immutable data structure to be operated on.
      * @param _reactor      The blade's reactor.
      */
-    public ImmutableReference(final IMMUTABLE _immutable, final IsolationReactor _reactor) {
+    public ImmutableReference(final IMMUTABLE _immutable,
+            final IsolationReactor _reactor) {
         reactor = _reactor;
         immutable = _immutable;
     }
@@ -48,7 +50,8 @@ public class ImmutableReference<IMMUTABLE> implements IsolationBlade, ImmutableS
      * @param _immutable    The immutable data structure to be operated on.
      * @param _parentReactor    The parent of the blade's reactor.
      */
-    public ImmutableReference(final IMMUTABLE _immutable, final NonBlockingReactor _parentReactor) throws Exception {
+    public ImmutableReference(final IMMUTABLE _immutable,
+            final NonBlockingReactor _parentReactor) throws Exception {
         reactor = new IsolationReactor(_parentReactor);
         immutable = _immutable;
     }

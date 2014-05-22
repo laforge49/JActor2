@@ -1,10 +1,9 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
-
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 
 /**
  * Provides at least two queues for a targetReactor's incoming messages, where the first queue is a

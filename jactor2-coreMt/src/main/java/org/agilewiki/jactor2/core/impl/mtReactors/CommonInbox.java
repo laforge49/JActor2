@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 /**
  * The inbox used by NonBlockingReactor, ThreadBoundReactor

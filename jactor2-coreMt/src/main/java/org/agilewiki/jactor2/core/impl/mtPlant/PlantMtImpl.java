@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
+import java.util.Map;
+
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
@@ -23,8 +25,6 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-
-import java.util.Map;
 
 public class PlantMtImpl extends PlantImpl {
 
@@ -70,7 +70,8 @@ public class PlantMtImpl extends PlantImpl {
      *
      * @param _plantConfiguration The configuration to be used by the singleton.
      */
-    public PlantMtImpl(final PlantConfiguration _plantConfiguration) throws Exception {
+    public PlantMtImpl(final PlantConfiguration _plantConfiguration)
+            throws Exception {
         removeThreadBoundReactor();
         if (DEBUG) {
             System.out.println("\n*** jactor.debug = true ***\n");
@@ -97,8 +98,9 @@ public class PlantMtImpl extends PlantImpl {
                 throw new IllegalArgumentException("unable to instantiate "
                         + configurationClassName, e);
             }
-        } else
+        } else {
             plantConfiguration = _plantConfiguration;
+        }
         reactorPoolThreadManager = plantConfiguration
                 .createReactorPoolThreadManager();
         final int reactorPollMillis = _plantConfiguration.getRecovery()
@@ -115,8 +117,9 @@ public class PlantMtImpl extends PlantImpl {
     @Override
     public ReactorImpl getCurrentReactorImpl() {
         final Thread thread = Thread.currentThread();
-        if (thread instanceof ReactorPoolThread)
+        if (thread instanceof ReactorPoolThread) {
             return ((ReactorPoolThread) thread).getCurrentReactorImpl();
+        }
         return ThreadBoundReactorMtImpl.threadReactor();
     }
 
@@ -124,10 +127,11 @@ public class PlantMtImpl extends PlantImpl {
         if (Thread.currentThread() instanceof ReactorPoolThread) {
             throw new UnsupportedOperationException(
                     "Use of call on a ReactorPoolThread can result in a deadlock");
-        } else if (ThreadBoundReactorMtImpl.threadReactor() != null)
+        } else if (ThreadBoundReactorMtImpl.threadReactor() != null) {
             throw new UnsupportedOperationException(
                     "Use of call on a Thread bound to a reactor can result in a deadlock "
                             + ThreadBoundReactorMtImpl.threadReactor());
+        }
 
     }
 
@@ -189,7 +193,7 @@ public class PlantMtImpl extends PlantImpl {
     }
 
     @Override
-    public CloseableImpl createCloseableImpl(Closeable _closeable) {
+    public CloseableImpl createCloseableImpl(final Closeable _closeable) {
         return new CloseableMtImpl(_closeable);
     }
 
@@ -278,7 +282,8 @@ public class PlantMtImpl extends PlantImpl {
      * @param _reactor The targetReactor to be run.
      */
     public final void submit(final PoolThreadReactorMtImpl _reactor) {
-        ReactorMtImpl internalFacilityImpl = (ReactorMtImpl) internalFacility.asReactorImpl();
+        final ReactorMtImpl internalFacilityImpl = (ReactorMtImpl) internalFacility
+                .asReactorImpl();
         try {
             reactorPoolThreadManager.execute(_reactor);
         } catch (final Exception e) {
@@ -328,12 +333,12 @@ public class PlantMtImpl extends PlantImpl {
     }
 
     @Override
-    public <V> ISMap<V> createISMap(String key, V value) {
+    public <V> ISMap<V> createISMap(final String key, final V value) {
         return ISMapImpl.singleton(key, value);
     }
 
     @Override
-    public <V> ISMap<V> createISMap(Map<String, V> m) {
+    public <V> ISMap<V> createISMap(final Map<String, V> m) {
         return ISMapImpl.from(m);
     }
 }

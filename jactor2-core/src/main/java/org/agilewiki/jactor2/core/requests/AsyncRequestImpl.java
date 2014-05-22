@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.requests;
 
-public interface AsyncRequestImpl<RESPONSE_TYPE> extends RequestImpl<RESPONSE_TYPE> {
+public interface AsyncRequestImpl<RESPONSE_TYPE> extends
+        RequestImpl<RESPONSE_TYPE> {
     /**
      * Process the response to this request.
      *
@@ -55,7 +56,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends RequestImpl<RESPONSE_TY
      * @param <RT>                  The type of result value.
      */
     <RT> void send(final Request<RT> _request,
-                          final AsyncResponseProcessor<RT> _responseProcessor);
+            final AsyncResponseProcessor<RT> _responseProcessor);
 
     /**
      * Send a subordinate request, providing the originating request is not canceled.
@@ -68,7 +69,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends RequestImpl<RESPONSE_TY
      * @param <RT2>                 The fixed response type.
      */
     <RT, RT2> void send(final Request<RT> _request,
-                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
      * Cancel a subordinate RequestImpl.

@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.reactors;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
@@ -37,7 +38,7 @@ class IHang extends BlockingBladeBase {
                 send(iHung.getReactor().nullSReq(), dis);
                 send(new DelayAReq(50), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(Void _response) {
+                    public void processAsyncResponse(final Void _response) {
                         cancel(noRspAReq);
                     }
                 });

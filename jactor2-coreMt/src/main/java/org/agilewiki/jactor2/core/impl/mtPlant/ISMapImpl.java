@@ -1,10 +1,17 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.pcollections.HashPMap;
 import org.pcollections.HashTreePMap;
-
-import java.util.*;
 
 /**
  * Implements ISMap.
@@ -27,7 +34,7 @@ public class ISMapImpl<VALUE> implements ISMap<VALUE> {
      * @param value The value to be included.
      * @return The instance with one key/value pair.
      */
-    public static <V> ISMapImpl<V> singleton(String key, V value) {
+    public static <V> ISMapImpl<V> singleton(final String key, final V value) {
         return new ISMapImpl<V>(key, value);
     }
 
@@ -38,68 +45,70 @@ public class ISMapImpl<VALUE> implements ISMap<VALUE> {
      * @param <V>    The type of value.
      * @return The instance that includes the map.
      */
-    public static <V> ISMapImpl<V> from(Map<String, V> m) {
+    public static <V> ISMapImpl<V> from(final Map<String, V> m) {
         return new ISMapImpl<V>(m);
     }
 
-    private HashPMap<String, VALUE> base;
+    private final HashPMap<String, VALUE> base;
 
     private ISMapImpl() {
         base = HashTreePMap.empty();
     }
 
-    private ISMapImpl(String _key, VALUE _value) {
+    private ISMapImpl(final String _key, final VALUE _value) {
         base = HashTreePMap.singleton(_key, _value);
     }
 
-    private ISMapImpl(Map<String, VALUE> _m) {
+    private ISMapImpl(final Map<String, VALUE> _m) {
         base = HashTreePMap.from(_m);
     }
 
-    private ISMapImpl(HashPMap<String, VALUE> immutableMap) {
+    private ISMapImpl(final HashPMap<String, VALUE> immutableMap) {
         base = immutableMap;
     }
 
     @Override
-    public ISMapImpl minus(String key) {
+    public ISMapImpl minus(final String key) {
         return new ISMapImpl(base.minus(key));
     }
 
     @Override
-    public ISMapImpl plus(String key, VALUE value) {
+    public ISMapImpl plus(final String key, final VALUE value) {
         return new ISMapImpl(base.plus(key, value));
     }
 
     @Override
-    public ISMapImpl plusAll(Map<String, VALUE> m) {
+    public ISMapImpl plusAll(final Map<String, VALUE> m) {
         return new ISMapImpl(base.plusAll(m));
     }
 
     @Override
-    public ISMapImpl subMap(String keyPrefix) {
+    public ISMapImpl subMap(final String keyPrefix) {
         HashPMap<String, VALUE> hpm = HashTreePMap.empty();
-        Iterator<Entry<String, VALUE>> it = base.entrySet().iterator();
+        final Iterator<Entry<String, VALUE>> it = base.entrySet().iterator();
         while (it.hasNext()) {
-            Entry<String, VALUE> e = it.next();
-            if (e.getKey().startsWith(keyPrefix))
+            final Entry<String, VALUE> e = it.next();
+            if (e.getKey().startsWith(keyPrefix)) {
                 hpm = hpm.plus(e.getKey(), e.getValue());
+            }
         }
         return new ISMapImpl(hpm);
     }
 
     @Override
-    public VALUE get(Object key) {
+    public VALUE get(final Object key) {
         return base.get(key);
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(final Object key) {
         return base.containsKey(key);
     }
 
     @Override
     public SortedSet<String> sortedKeySet() {
-        return Collections.unmodifiableSortedSet(new TreeSet<String>(base.keySet()));
+        return Collections.unmodifiableSortedSet(new TreeSet<String>(base
+                .keySet()));
     }
 
     @Override
@@ -118,7 +127,7 @@ public class ISMapImpl<VALUE> implements ISMap<VALUE> {
     }
 
     @Override
-    public boolean containsValue(Object value) {
+    public boolean containsValue(final Object value) {
         return base.containsValue(value);
     }
 
@@ -137,21 +146,25 @@ public class ISMapImpl<VALUE> implements ISMap<VALUE> {
         return base.entrySet();
     }
 
+    @Override
     @Deprecated
-    public VALUE put(String key, VALUE value) {
+    public VALUE put(final String key, final VALUE value) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     @Deprecated
-    public VALUE remove(Object key) {
+    public VALUE remove(final Object key) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     @Deprecated
-    public void putAll(Map<? extends String, ? extends VALUE> m) {
+    public void putAll(final Map<? extends String, ? extends VALUE> m) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     @Deprecated
     public void clear() {
         throw new UnsupportedOperationException();

@@ -19,7 +19,8 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
      * @param _syncRequest   The request being implemented.
      * @param _targetReactor The target reactor.
      */
-    public SyncRequestMtImpl(final SyncRequest _syncRequest, final Reactor _targetReactor) {
+    public SyncRequestMtImpl(final SyncRequest _syncRequest,
+            final Reactor _targetReactor) {
         super(_targetReactor);
         syncRequest = _syncRequest;
     }

@@ -262,8 +262,9 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         reason = _reason;
         closeableImpl.close();
 
-        if (startClosing)
+        if (startClosing) {
             return;
+        }
         startClosing = true;
 
         if (closeables != null) {
@@ -274,7 +275,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
                 try {
                     closeable.close();
                 } catch (final Throwable t) {
-                    if (closeable != null && PlantMtImpl.DEBUG) {
+                    if ((closeable != null) && PlantMtImpl.DEBUG) {
                         getLogger().warn(
                                 "Error closing a "
                                         + closeable.getClass().getName(), t);
@@ -291,8 +292,8 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         shuttingDown = true;
 
         final PlantMtImpl plantImpl = PlantMtImpl.getSingleton();
-        if (plantImpl != null && isRunning()
-                && (currentRequest == null || !currentRequest.isComplete())) {
+        if ((plantImpl != null) && isRunning()
+                && ((currentRequest == null) || !currentRequest.isComplete())) {
             timeoutSemaphore = plantImpl.schedulableSemaphore(recovery
                     .getThreadInterruptMillis(this));
             final Thread thread = getThreadReference().get();
@@ -300,11 +301,12 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
                 thread.interrupt();
                 final boolean timeout = timeoutSemaphore.acquire();
                 currentRequest.close();
-                if (timeout && isRunning() & PlantImpl.getSingleton() != null) {
+                if (timeout
+                        && (isRunning() & (PlantImpl.getSingleton() != null))) {
                     try {
-                        if (currentRequest == null)
+                        if (currentRequest == null) {
                             logger.error("hung thread");
-                        else {
+                        } else {
                             logger.error("hung thread\n"
                                     + currentRequest.toString());
                         }
@@ -446,7 +448,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         if (isClosing()) {
             final Iterator<RequestMtImpl> itm = _messages.iterator();
             while (itm.hasNext()) {
-                final RequestMtImpl message = (RequestMtImpl) itm.next();
+                final RequestMtImpl message = itm.next();
                 if (!message.isComplete()) {
                     try {
                         message.close();
@@ -472,7 +474,8 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _target  The reactor that should eventually receive this message
      * @return True if the message was buffered.
      */
-    public boolean buffer(final RequestMtImpl _message, final ReactorMtImpl _target) {
+    public boolean buffer(final RequestMtImpl _message,
+            final ReactorMtImpl _target) {
         return outbox.buffer(_message, _target);
     }
 
@@ -493,9 +496,10 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      */
     abstract protected void notBusy() throws Exception;
 
+    @Override
     public final void incomingResponse(final RequestImpl _message,
             final ReactorImpl _responseSource) {
-        RequestMtImpl message = (RequestMtImpl) _message;
+        final RequestMtImpl message = (RequestMtImpl) _message;
         try {
             final ReactorMtImpl responseSource = _responseSource == null ? null
                     : (ReactorMtImpl) _responseSource;
@@ -522,7 +526,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _message The request that has completed
      */
     public void requestEnd(final RequestImpl _message) {
-        RequestMtImpl message = (RequestMtImpl) _message;
+        final RequestMtImpl message = (RequestMtImpl) _message;
         if (message.isForeign()) {
             final boolean b = inProcessRequests.remove(_message);
         }
@@ -544,7 +548,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
                     return;
                 }
                 RequestMtImpl request = inbox.poll();
-                while (request != null && request._isCanceled()) {
+                while ((request != null) && request._isCanceled()) {
                     request = inbox.poll();
                 }
                 if (request == null) {
@@ -573,14 +577,15 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
                 messageStartTimeMillis = 0;
             }
         } catch (final InterruptedException ie) {
-            if (timeoutSemaphore == null)
+            if (timeoutSemaphore == null) {
                 Thread.currentThread().interrupt();
-            else if (!isClosing())
+            } else if (!isClosing()) {
                 logger.warn("message running too long "
                         + currentRequest.toString());
-            else if (!currentRequest.isComplete())
+            } else if (!currentRequest.isComplete()) {
                 logger.warn("message interrupted on close "
                         + currentRequest.toString());
+            }
         } catch (final Exception ex) {
             throw ex;
         } finally {
@@ -614,15 +619,16 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         final double currentTimeMillis = plantScheduler.currentTimeMillis();
         final double mst = messageStartTimeMillis;
         if (mst > 0) {
-            if (mst + recovery.getMessageTimeoutMillis(this) < currentTimeMillis) {
+            if ((mst + recovery.getMessageTimeoutMillis(this)) < currentTimeMillis) {
                 recovery.onMessageTimeout(this);
             }
         }
         final Iterator<Closeable> it = getCloseableSet().iterator();
         while (it.hasNext()) {
             final Closeable closeable = it.next();
-            if (!(closeable instanceof ReactorMtImpl))
+            if (!(closeable instanceof ReactorMtImpl)) {
                 continue;
+            }
             final ReactorMtImpl reactor = (ReactorMtImpl) closeable;
             reactor.reactorPoll();
         }
@@ -649,14 +655,17 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      */
     @Override
     public boolean addCloseable(final Closeable _closeable) {
-        if (startedClosing())
+        if (startedClosing()) {
             throw new ReactorClosedException(
                     "call to addCloseable when reactor already started closing: "
                             + reason);
-        if (this == _closeable)
+        }
+        if (this == _closeable) {
             return false;
-        if (!getCloseableSet().add(_closeable))
+        }
+        if (!getCloseableSet().add(_closeable)) {
             return false;
+        }
         _closeable.asCloseableImpl().addReactor(this);
         return true;
     }
@@ -669,8 +678,9 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      */
     @Override
     public boolean removeCloseable(final Closeable _closeable) {
-        if (closeables == null)
+        if (closeables == null) {
             return false;
+        }
         if (!closeables.remove(_closeable)) {
             return false;
         }
@@ -707,7 +717,6 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     public void setPlantScheduler(final PlantScheduler plantScheduler) {
         this.plantScheduler = plantScheduler;
     }
-
 
     /**
      * Log a message at the WARN level.

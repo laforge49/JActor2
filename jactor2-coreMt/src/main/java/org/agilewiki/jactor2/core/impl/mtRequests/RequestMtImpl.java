@@ -1,5 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
+import java.util.concurrent.Semaphore;
+
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
@@ -11,14 +13,13 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
 
-import java.util.concurrent.Semaphore;
-
 /**
  * Base class for internal reactor implementations.
  *
  * @param <RESPONSE_TYPE>
  */
-public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPONSE_TYPE> {
+public abstract class RequestMtImpl<RESPONSE_TYPE> implements
+        RequestImpl<RESPONSE_TYPE> {
 
     /**
      * Assigned to current time when Facility.DEBUG.
@@ -118,8 +119,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @return True when the request does not pass back a result.
      */
     public boolean isOneWay() {
-        return responseProcessor == OneWayResponseProcessor.SINGLETON ||
-                responseProcessor == SignalResponseProcessor.SINGLETON;
+        return (responseProcessor == OneWayResponseProcessor.SINGLETON)
+                || (responseProcessor == SignalResponseProcessor.SINGLETON);
     }
 
     /**
@@ -139,22 +140,23 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         return targetReactorImpl;
     }
 
+    @Override
     public Reactor getTargetReactor() {
         return targetReactor;
     }
 
     @Override
     public Reactor getSourceReactor() {
-        RequestSource requestSource = getRequestSource();
-        if (requestSource instanceof ReactorImpl)
+        final RequestSource requestSource = getRequestSource();
+        if (requestSource instanceof ReactorImpl) {
             return ((ReactorImpl) requestSource).asReactor();
+        }
         return null;
     }
 
     public RequestSource getRequestSource() {
         return requestSource;
     }
-
 
     /**
      * Marks the request as having been used, or throws an
@@ -173,6 +175,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * If an exception is thrown while processing this Request,
      * that exception is simply logged as a warning.
      */
+    @Override
     public void signal() {
         use();
         responseProcessor = SignalResponseProcessor.SINGLETON;
@@ -193,10 +196,12 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      *                           AsyncResponseProcessor is used to process the result on the same thread
      *                           that originally invoked this method. If null, then no response is returned.
      */
+    @Override
     public void doSend(final ReactorImpl _source,
-                       final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
+            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
         final ReactorMtImpl source = (ReactorMtImpl) _source;
-        if (PlantMtImpl.DEBUG && source.getThreadReference().get() != Thread.currentThread()) {
+        if (PlantMtImpl.DEBUG
+                && (source.getThreadReference().get() != Thread.currentThread())) {
             throw new IllegalStateException("send from wrong thread");
         }
         if (!source.isRunning()) {
@@ -238,6 +243,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @return The response value from applying this Request to the target reactor.
      * @throws Exception If the result is an exception, it is thrown rather than being returned.
      */
+    @Override
     public RESPONSE_TYPE call() throws Exception {
         use();
         PlantMtImpl.getSingleton().validateCall();
@@ -254,7 +260,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @param _activeReactor The responding reactor.
      */
     protected void setResponse(final Object _response,
-                               final ReactorMtImpl _activeReactor) {
+            final ReactorMtImpl _activeReactor) {
         _activeReactor.requestEnd(this);
         incomplete = false;
         response = _response;
@@ -272,12 +278,13 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @return True when this is the first response.
      */
     protected boolean processObjectResponse(final Object _response) {
-        if (PlantMtImpl.DEBUG && targetReactorImpl.getThreadReference().get() != Thread
-                .currentThread()) {
+        if (PlantMtImpl.DEBUG
+                && (targetReactorImpl.getThreadReference().get() != Thread
+                        .currentThread())) {
             final IllegalStateException ex = new IllegalStateException(
                     "response from wrong thread");
-            targetReactor.asReactorImpl().error(
-                    "response from wrong thread", ex);
+            targetReactor.asReactorImpl().error("response from wrong thread",
+                    ex);
             throw ex;
         }
         if (!incomplete) {
@@ -285,7 +292,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         }
         setResponse(_response, targetReactorImpl);
         if (!isOneWay()) {
-            requestSource.incomingResponse(RequestMtImpl.this, targetReactorImpl);
+            requestSource.incomingResponse(RequestMtImpl.this,
+                    targetReactorImpl);
         } else {
             if (_response instanceof Throwable) {
                 targetReactor.asReactorImpl().warn("Uncaught throwable",
@@ -297,8 +305,9 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
 
     @Override
     public boolean isCanceled() throws ReactorClosedException {
-        if (closed)
+        if (closed) {
             throw new ReactorClosedException();
+        }
         return canceled;
     }
 
@@ -327,16 +336,18 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
         incomplete = false;
         closed = true;
         response = new ReactorClosedException();
-        if (requestSource != null)
+        if (requestSource != null) {
             requestSource.incomingResponse(this, null);
+        }
     }
 
     /**
      * Cancel this request.
      */
     public void cancel() {
-        if (canceled)
+        if (canceled) {
             return;
+        }
         canceled = true;
     }
 
@@ -350,17 +361,19 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
             targetReactorImpl.requestBegin(this);
             try {
                 processRequestMessage();
-            } catch (MigrationException _me) {
+            } catch (final MigrationException _me) {
                 throw _me;
-            } catch (InterruptedException ex) {
+            } catch (final InterruptedException ex) {
                 Thread.currentThread().interrupt();
             } catch (final RuntimeException re) {
-                processException(targetReactorImpl, new ReactorClosedException());
+                processException(targetReactorImpl,
+                        new ReactorClosedException());
                 targetReactorImpl.getRecovery().onRuntimeException(this, re);
             } catch (final Exception e) {
                 processException(targetReactorImpl, e);
             } catch (final StackOverflowError soe) {
-                processException(targetReactorImpl, new ReactorClosedException());
+                processException(targetReactorImpl,
+                        new ReactorClosedException());
                 targetReactorImpl.getRecovery().onStackOverflowError(this, soe);
             }
         } else {
@@ -377,7 +390,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * A response has been received for a subordinate request.
      * @param request    A subordinate request.
      */
-    public void responseReceived(RequestImpl request) {
+    public void responseReceived(final RequestImpl request) {
     }
 
     /**
@@ -415,18 +428,20 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
      * @param _e             The exception to be processed.
      */
     public void processException(final ReactorMtImpl _activeReactor,
-                                 final Exception _e) {
+            final Exception _e) {
         final ReactorMtImpl activeMessageProcessor = _activeReactor;
         final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
                 .getExceptionHandler();
         if (exceptionHandler != null) {
             try {
-                exceptionHandler.processException(_e, new AsyncResponseProcessor() {
-                    @Override
-                    public void processAsyncResponse(Object _response) {
-                        processObjectResponse(_response);
-                    }
-                });
+                exceptionHandler.processException(_e,
+                        new AsyncResponseProcessor() {
+                            @Override
+                            public void processAsyncResponse(
+                                    final Object _response) {
+                                processObjectResponse(_response);
+                            }
+                        });
             } catch (final Throwable u) {
                 if (!isOneWay()) {
                     if (!incomplete) {
@@ -449,21 +464,19 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
             if (!isOneWay()) {
                 requestSource.incomingResponse(this, activeMessageProcessor);
             } else {
-                activeMessageProcessor.warn("Uncaught throwable",
-                        _e);
+                activeMessageProcessor.warn("Uncaught throwable", _e);
             }
         }
     }
 
     @Override
     public String toString() {
-        return "message=" + asRequest() +
-                ", isComplete=" + isComplete() +
-                ", isOneWay=" + isOneWay() +
-                ", source=" + (requestSource == null ? "null" : requestSource) +
-                ", target=" + getTargetReactor().asReactorImpl() +
-                ", this=" + super.toString() +
-                (oldMessage == null ? "" : "\n" + oldMessage.toString());
+        return "message=" + asRequest() + ", isComplete=" + isComplete()
+                + ", isOneWay=" + isOneWay() + ", source="
+                + (requestSource == null ? "null" : requestSource)
+                + ", target=" + getTargetReactor().asReactorImpl() + ", this="
+                + super.toString()
+                + (oldMessage == null ? "" : "\n" + oldMessage.toString());
     }
 
     /**
@@ -502,7 +515,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements RequestImpl<RESPON
 
         @Override
         public void incomingResponse(final RequestImpl _message,
-                                     final ReactorImpl _responseSource) {
+                final ReactorImpl _responseSource) {
             result = ((RequestMtImpl) _message).response;
             done.release();
         }

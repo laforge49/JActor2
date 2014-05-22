@@ -6,7 +6,7 @@ import java.util.concurrent.Semaphore;
  * A semaphore that can be marked as timed out.
  */
 public class SchedulableSemaphore {
-    private Semaphore semaphore = new Semaphore(0);
+    private final Semaphore semaphore = new Semaphore(0);
     private boolean timeout;
 
     /**

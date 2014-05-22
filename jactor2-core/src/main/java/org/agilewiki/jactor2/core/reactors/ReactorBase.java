@@ -25,9 +25,10 @@ abstract public class ReactorBase implements Reactor {
      *
      * @param _reactorImpl    The object used to implement the reactor.
      */
-    public void initialize(final ReactorImpl _reactorImpl) throws Exception{
-        if (_reactorImpl != null)
+    public void initialize(final ReactorImpl _reactorImpl) throws Exception {
+        if (_reactorImpl != null) {
             reactorImpl = _reactorImpl;
+        }
         _reactorImpl.initialize(this);
     }
 
@@ -52,12 +53,12 @@ abstract public class ReactorBase implements Reactor {
     }
 
     @Override
-    public boolean addCloseable(Closeable _closeable) {
+    public boolean addCloseable(final Closeable _closeable) {
         return reactorImpl.addCloseable(_closeable);
     }
 
     @Override
-    public boolean removeCloseable(Closeable _closeable) {
+    public boolean removeCloseable(final Closeable _closeable) {
         return reactorImpl.removeCloseable(_closeable);
     }
 
@@ -86,7 +87,8 @@ abstract public class ReactorBase implements Reactor {
      *
      * @param msg the message string to be logged
      */
-    public void warn(String msg) {
+    @Override
+    public void warn(final String msg) {
         asReactorImpl().warn(msg);
     }
 
@@ -97,7 +99,8 @@ abstract public class ReactorBase implements Reactor {
      * @param msg the message accompanying the exception
      * @param t the exception (throwable) to log
      */
-    public void warn(String msg, Throwable t) {
+    @Override
+    public void warn(final String msg, final Throwable t) {
         asReactorImpl().warn(msg, t);
     }
 
@@ -106,7 +109,8 @@ abstract public class ReactorBase implements Reactor {
      *
      * @param msg the message string to be logged
      */
-    public void error(String msg) {
+    @Override
+    public void error(final String msg) {
         asReactorImpl().error(msg);
     }
 
@@ -117,7 +121,8 @@ abstract public class ReactorBase implements Reactor {
      * @param msg the message accompanying the exception
      * @param t the exception (throwable) to log
      */
-    public void error(String msg, Throwable t) {
+    @Override
+    public void error(final String msg, final Throwable t) {
         asReactorImpl().error(msg, t);
     }
 }

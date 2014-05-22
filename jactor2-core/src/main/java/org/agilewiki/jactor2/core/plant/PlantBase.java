@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.plant;
 
+import java.util.Map;
+
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.reactors.Facility;
-
-import java.util.Map;
 
 /**
  * Plant is a singleton and is the top-level object.
@@ -17,9 +17,10 @@ abstract public class PlantBase {
      * reactor thread pool.
      */
     public static void close() throws Exception {
-        PlantImpl plantImpl = PlantImpl.getSingleton();
-        if (plantImpl != null)
+        final PlantImpl plantImpl = PlantImpl.getSingleton();
+        if (plantImpl != null) {
             plantImpl.close();
+        }
     }
 
     /**
@@ -58,7 +59,7 @@ abstract public class PlantBase {
      * @param <V>      The type of value.
      * @return A new ISMap
      */
-    public static <V> ISMap<V> createISMap(String key, V value) {
+    public static <V> ISMap<V> createISMap(final String key, final V value) {
         return PlantImpl.getSingleton().createISMap(key, value);
     }
 
@@ -69,7 +70,7 @@ abstract public class PlantBase {
      * @param <V>    The type of value.
      * @return A new ISMap.
      */
-    public static <V> ISMap<V> createISMap(Map<String, V> m) {
+    public static <V> ISMap<V> createISMap(final Map<String, V> m) {
         return PlantImpl.getSingleton().createISMap(m);
     }
 }

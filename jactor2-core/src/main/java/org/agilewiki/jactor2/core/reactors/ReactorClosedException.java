@@ -7,6 +7,9 @@ package org.agilewiki.jactor2.core.reactors;
  * response is an exception.
  */
 public class ReactorClosedException extends RuntimeException {
+    /**  */
+    private static final long serialVersionUID = 1L;
+
     /**
      * Constructs a new runtime exception with {@code null} as its
      * detail message.  The cause is not initialized, and may subsequently be
@@ -23,7 +26,7 @@ public class ReactorClosedException extends RuntimeException {
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public ReactorClosedException(String message) {
+    public ReactorClosedException(final String message) {
         super(message);
     }
 
@@ -40,7 +43,7 @@ public class ReactorClosedException extends RuntimeException {
      *                permitted, and indicates that the cause is nonexistent or
      *                unknown.)
      */
-    public ReactorClosedException(String message, Throwable cause) {
+    public ReactorClosedException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -56,7 +59,7 @@ public class ReactorClosedException extends RuntimeException {
      *              permitted, and indicates that the cause is nonexistent or
      *              unknown.)
      */
-    public ReactorClosedException(Throwable cause) {
+    public ReactorClosedException(final Throwable cause) {
         super(cause);
     }
 
@@ -73,7 +76,8 @@ public class ReactorClosedException extends RuntimeException {
      * @param writableStackTrace whether or not the stack trace should
      *                           be writable
      */
-    public ReactorClosedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public ReactorClosedException(final String message, final Throwable cause,
+            final boolean enableSuppression, final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -1,13 +1,11 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
-
 import java.util.ArrayDeque;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 
 /**
  * An outbox holds a collection of send buffers.
@@ -53,9 +51,11 @@ public class Outbox implements AutoCloseable {
      * @param _target  The reactor that should eventually receive this message.
      * @return True if the message was successfully buffered.
      */
-    public boolean buffer(final RequestMtImpl _message, final ReactorMtImpl _target) {
-        if (_target.isClosing())
+    public boolean buffer(final RequestMtImpl _message,
+            final ReactorMtImpl _target) {
+        if (_target.isClosing()) {
             return false;
+        }
         ArrayDeque<RequestMtImpl> buffer = null;
         if (sendBuffer == null) {
             sendBuffer = new IdentityHashMap<ReactorMtImpl, ArrayDeque<RequestMtImpl>>();
@@ -80,7 +80,7 @@ public class Outbox implements AutoCloseable {
             while (iter.hasNext()) {
                 final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>> entry = iter
                         .next();
-                final ReactorMtImpl target = (ReactorMtImpl) entry.getKey();
+                final ReactorMtImpl target = entry.getKey();
                 final ArrayDeque<RequestMtImpl> messages = entry.getValue();
                 iter.remove();
                 try {

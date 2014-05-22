@@ -12,7 +12,8 @@ import org.agilewiki.jactor2.core.requests.ExceptionHandler;
  *
  * @param <IMMUTABLE> The type of immutable data structure.
  */
-abstract public class Transaction<IMMUTABLE> implements IsolationBlade, ImmutableSource<IMMUTABLE> {
+abstract public class Transaction<IMMUTABLE> implements IsolationBlade,
+        ImmutableSource<IMMUTABLE> {
 
     /**
      * The blade's reactor.
@@ -60,15 +61,18 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
      *
      * @param _immutableReference The ImmutableReference to which the transaction is applied.
      */
-    protected void updateImmutableReference(final ImmutableReference<IMMUTABLE> _immutableReference) {
+    protected void updateImmutableReference(
+            final ImmutableReference<IMMUTABLE> _immutableReference) {
         _immutableReference.immutable = immutable;
     }
 
-    protected AsyncResponseProcessor<Void> evalResponseProcessor(final ImmutableReference<IMMUTABLE> _immutableReference,
-                                                                 final AsyncResponseProcessor<IMMUTABLE> dis) {
+    protected AsyncResponseProcessor<Void> evalResponseProcessor(
+            final ImmutableReference<IMMUTABLE> _immutableReference,
+            final AsyncResponseProcessor<IMMUTABLE> dis) {
         return new AsyncResponseProcessor<Void>() {
             @Override
-            public void processAsyncResponse(Void _response) throws Exception {
+            public void processAsyncResponse(final Void _response)
+                    throws Exception {
                 updateImmutableReference(_immutableReference);
                 dis.processAsyncResponse(immutable);
                 applyAReq = null;
@@ -76,16 +80,21 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
         };
     }
 
-    protected void eval(final ImmutableReference<IMMUTABLE> _immutableReference,
-                        final AsyncRequest<IMMUTABLE> request,
-                        final AsyncResponseProcessor<IMMUTABLE> dis)
-            throws Exception {
-        _eval(_immutableReference, request, evalResponseProcessor(_immutableReference, new AsyncResponseProcessor<IMMUTABLE>() {
-            @Override
-            public void processAsyncResponse(IMMUTABLE _response) throws Exception {
-                evalResponseProcessor(_immutableReference, dis).processAsyncResponse(null);
-            }
-        }));
+    protected void eval(
+            final ImmutableReference<IMMUTABLE> _immutableReference,
+            final AsyncRequest<IMMUTABLE> request,
+            final AsyncResponseProcessor<IMMUTABLE> dis) throws Exception {
+        _eval(_immutableReference,
+                request,
+                evalResponseProcessor(_immutableReference,
+                        new AsyncResponseProcessor<IMMUTABLE>() {
+                            @Override
+                            public void processAsyncResponse(
+                                    final IMMUTABLE _response) throws Exception {
+                                evalResponseProcessor(_immutableReference, dis)
+                                        .processAsyncResponse(null);
+                            }
+                        }));
     }
 
     /**
@@ -94,7 +103,8 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
      * @param _immutableReference The ImmutableReference to which the transaction is to be applied.
      * @return The new request.
      */
-    public AsyncRequest<IMMUTABLE> applyAReq(final ImmutableReference<IMMUTABLE> _immutableReference) {
+    public AsyncRequest<IMMUTABLE> applyAReq(
+            final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
@@ -109,11 +119,13 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
      * @param _immutableReference The ImmutableReference to which the transaction is to be applied.
      * @return The new request.
      */
-    public AsyncRequest<IMMUTABLE> evalAReq(final ImmutableReference<IMMUTABLE> _immutableReference) {
+    public AsyncRequest<IMMUTABLE> evalAReq(
+            final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
-            private AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
+            private final AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
                     applyAReq.processAsyncResponse(immutable);
                     applyAReq = null;
                 }
@@ -134,7 +146,8 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
              * @param e The exception to be processed.
              */
             @Override
-            public IMMUTABLE processException(Exception e) throws Exception {
+            public IMMUTABLE processException(final Exception e)
+                    throws Exception {
                 getReactor().error(trace.toString());
                 throw e;
             }
@@ -148,13 +161,13 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
      * @param _dis    Signals completion of the update.
      */
     abstract protected void _apply(final ImmutableSource<IMMUTABLE> _source,
-                                   final AsyncResponseProcessor<Void> _dis)
-            throws Exception;
+            final AsyncResponseProcessor<Void> _dis) throws Exception;
 
     /**
      * Update applied with a source of ImmutableReference.
      */
-    protected void applySourceReference(final ImmutableReference<IMMUTABLE> _reference) {
+    protected void applySourceReference(
+            final ImmutableReference<IMMUTABLE> _reference) {
         trace = new StringBuffer("");
     }
 
@@ -168,26 +181,28 @@ abstract public class Transaction<IMMUTABLE> implements IsolationBlade, Immutabl
     }
 
     private void _eval(final ImmutableReference<IMMUTABLE> _root,
-                       final AsyncRequest<IMMUTABLE> _applyAReq,
-                       final AsyncResponseProcessor<Void> _dis)
-            throws Exception {
+            final AsyncRequest<IMMUTABLE> _applyAReq,
+            final AsyncResponseProcessor<Void> _dis) throws Exception {
         reactor = _root.reactor;
         applyAReq = _applyAReq;
         if (parent == null) {
             if (_root.getImmutable() == null) {
                 immutable = null;
                 _dis.processAsyncResponse(null);
-            } else
+            } else {
                 _apply(_root, _dis);
+            }
         } else {
             parent._eval(_root, applyAReq, new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
                     if (parent.getImmutable() == null) {
                         immutable = null;
                         _dis.processAsyncResponse(null);
-                    } else
+                    } else {
                         _apply(parent, _dis);
+                    }
                 }
             });
         }

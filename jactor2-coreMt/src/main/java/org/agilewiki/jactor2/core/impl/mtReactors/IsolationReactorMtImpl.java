@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.impl.mtReactors;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 /**
  * Internal implementation of UnboundReactor.
@@ -18,7 +17,7 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
      * @param _initialLocalQueueSize The initial local queue size.
      */
     public IsolationReactorMtImpl(final NonBlockingReactor _parentReactor,
-                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 

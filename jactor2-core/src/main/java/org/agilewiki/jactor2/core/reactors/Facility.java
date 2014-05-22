@@ -28,7 +28,8 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _name    The name of the facility.
      * @param _parentReactor The parent reactor.
      */
-    public Facility(final String _name, Facility _parentReactor) throws Exception {
+    public Facility(final String _name, final Facility _parentReactor)
+            throws Exception {
         super(_parentReactor);
         name = _name;
     }
@@ -40,7 +41,8 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _initialOutboxSize     Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize Initial size of the local input queue.
      */
-    public Facility(final String _name, int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
+    public Facility(final String _name, final int _initialOutboxSize,
+            final int _initialLocalQueueSize) throws Exception {
         super(_initialOutboxSize, _initialLocalQueueSize);
         name = _name;
     }
@@ -53,7 +55,9 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _initialOutboxSize     Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize Initial size of the local input queue.
      */
-    public Facility(final String _name, Void _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) throws Exception {
+    public Facility(final String _name, final Void _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize)
+            throws Exception {
         super(null, _initialOutboxSize, _initialLocalQueueSize);
         name = _name;
     }
@@ -79,8 +83,10 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
                     + _name);
         }
         if (_name.equals(PlantImpl.PLANT_INTERNAL_FACILITY_NAME)) {
-            if (getParentReactor() != null)
-                throw new IllegalArgumentException("name may not be " + PlantImpl.PLANT_INTERNAL_FACILITY_NAME);
+            if (getParentReactor() != null) {
+                throw new IllegalArgumentException("name may not be "
+                        + PlantImpl.PLANT_INTERNAL_FACILITY_NAME);
+            }
         }
     }
 
@@ -114,9 +120,10 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         return new SyncRequest<NamedBlade>(Facility.this) {
             @Override
             public NamedBlade processSyncRequest() throws Exception {
-                NamedBlade removed = namedBlades.get(_name);
-                if (removed != null)
+                final NamedBlade removed = namedBlades.get(_name);
+                if (removed != null) {
                     namedBlades = namedBlades.minus(_name);
+                }
                 return removed;
             }
         };
@@ -132,14 +139,16 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _blade    The blade being registered.
      * @return The request to register.
      */
-    public SyncRequest<Void> registerNamedBlade(final String _name, final NamedBlade _blade) {
+    public SyncRequest<Void> registerNamedBlade(final String _name,
+            final NamedBlade _blade) {
         validateName(_name);
         return new SyncRequest<Void>(Facility.this) {
             @Override
             public Void processSyncRequest() throws Exception {
-                NamedBlade oldBlade = namedBlades.get(_name);
-                if (oldBlade != null)
+                final NamedBlade oldBlade = namedBlades.get(_name);
+                if (oldBlade != null) {
                     throw new IllegalArgumentException("duplicate blade name");
+                }
                 namedBlades = namedBlades.plus(_name, _blade);
                 return null;
             }

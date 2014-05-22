@@ -9,7 +9,8 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
  *
  * @param <IMMUTABLE> The type of immutable data structure.
  */
-abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE> {
+abstract public class AsyncTransaction<IMMUTABLE> extends
+        Transaction<IMMUTABLE> {
     /**
      * Create a Transaction.
      */
@@ -22,7 +23,7 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
      *
      * @param _parent The transaction to be applied before this one.
      */
-    public AsyncTransaction(Transaction<IMMUTABLE> _parent) {
+    public AsyncTransaction(final Transaction<IMMUTABLE> _parent) {
         super(_parent);
     }
 
@@ -33,7 +34,8 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
      * @param asyncResponseProcessor Updates the immutable in the target transaction.
      */
     abstract protected void update(ImmutableSource<IMMUTABLE> source,
-                         AsyncResponseProcessor<Void> asyncResponseProcessor) throws Exception;
+            AsyncResponseProcessor<Void> asyncResponseProcessor)
+            throws Exception;
 
     /**
      * Apply the update.
@@ -41,11 +43,11 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
      * @param _source The source transaction or immutable reference.
      * @param _dis    Signals completion of the update.
      */
+    @Override
     protected void _apply(final ImmutableSource<IMMUTABLE> _source,
-                          final AsyncResponseProcessor<Void> _dis)
-            throws Exception {
+            final AsyncResponseProcessor<Void> _dis) throws Exception {
         if (_source instanceof Transaction) {
-            Transaction<IMMUTABLE> transaction = (Transaction<IMMUTABLE>) _source;
+            final Transaction<IMMUTABLE> transaction = (Transaction<IMMUTABLE>) _source;
             applySourceTransaction(transaction);
         } else {
             applySourceReference((ImmutableReference<IMMUTABLE>) _source);
@@ -59,7 +61,8 @@ abstract public class AsyncTransaction<IMMUTABLE> extends Transaction<IMMUTABLE>
         }
         update(_source, new AsyncResponseProcessor<Void>() {
             @Override
-            public void processAsyncResponse(Void _response) throws Exception {
+            public void processAsyncResponse(final Void _response)
+                    throws Exception {
                 _dis.processAsyncResponse(null);
             }
         });

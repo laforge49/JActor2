@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.impl.requests;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
@@ -20,7 +21,7 @@ public class BoundResponseProcessorTest extends TestCase {
 }
 
 class Driver extends NonBlockingBladeBase {
-    private AsyncRequest<String> doitReq;
+    private final AsyncRequest<String> doitReq;
 
     public Driver() throws Exception {
         doitReq = new AsyncBladeRequest<String>() {

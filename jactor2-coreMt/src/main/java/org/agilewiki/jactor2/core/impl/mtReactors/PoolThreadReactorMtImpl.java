@@ -1,18 +1,17 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
-
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements PoolThreadReactorImpl {
+import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
+
+abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
+        PoolThreadReactorImpl {
     private Runnable onIdle;
 
     /**
@@ -22,8 +21,8 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      */
-    public PoolThreadReactorMtImpl(
-            NonBlockingReactor _parentReactor, int _initialOutboxSize, int _initialLocalQueueSize) {
+    public PoolThreadReactorMtImpl(final NonBlockingReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
@@ -48,13 +47,19 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
     @Override
     protected void afterAdd() {
         if (threadReference == null) {
-            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err
+                    .println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err
+                    .println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err
+                    .println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             System.err.println("this=" + this);
-            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err
+                    .println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err
+                    .println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.err
+                    .println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             throw new NullPointerException();
         }
         if (threadReference.get() == null) {
@@ -78,7 +83,7 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
                 result = true;
                 final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>> entry = iter
                         .next();
-                final ReactorMtImpl target = (ReactorMtImpl) entry.getKey();
+                final ReactorMtImpl target = entry.getKey();
                 final ArrayDeque<RequestMtImpl> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
@@ -90,7 +95,7 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
                                 .getThreadReference();
                         if ((targetThreadReference.get() == null)
                                 && targetThreadReference.compareAndSet(null,
-                                currentThread)) {
+                                        currentThread)) {
                             while (!messages.isEmpty()) {
                                 final RequestMtImpl m = messages.poll();
                                 targ.unbufferedAddMessage(m, true);
@@ -108,11 +113,13 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements P
     /**
      * The object to be run when the inbox is emptied and before the threadReference is cleared.
      */
+    @Override
     public Runnable getOnIdle() {
         return onIdle;
     }
 
-    public void setOnIdle(Runnable onIdle) {
+    @Override
+    public void setOnIdle(final Runnable onIdle) {
         this.onIdle = onIdle;
     }
 }

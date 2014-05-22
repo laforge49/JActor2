@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.impl.blades.firehose;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FirstStage extends IsolationBladeBase implements Runnable {
 
@@ -32,8 +32,8 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
 
     long t0;
 
-    public FirstStage(final DataProcessor _next,
-            final long _count, final int _maxWindowSize) throws Exception {
+    public FirstStage(final DataProcessor _next, final long _count,
+            final int _maxWindowSize) throws Exception {
         super(new IsolationReactor());
         getReactor().setIdle(this);
         mainThread = Thread.currentThread();

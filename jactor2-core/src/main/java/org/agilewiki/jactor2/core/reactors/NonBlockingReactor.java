@@ -15,12 +15,13 @@ import org.agilewiki.jactor2.core.plant.PlantImpl;
  * incoming messages have been processed.
  * </p>
  */
-public class NonBlockingReactor extends ReactorBase implements CommonReactor, NonBlockingBlade {
+public class NonBlockingReactor extends ReactorBase implements CommonReactor,
+        NonBlockingBlade {
 
     /**
      * Create a non-blocking reactor with the Plant internal reactor as the parent.
      */
-    public NonBlockingReactor() throws Exception{
+    public NonBlockingReactor() throws Exception {
         this(PlantBase.getInternalFacility());
     }
 
@@ -29,18 +30,20 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      *
      * @param _parentReactor            The parent reactor.
      */
-    public NonBlockingReactor(final NonBlockingReactor _parentReactor) throws Exception{
-        this(_parentReactor,
-                _parentReactor != null ?
-                        _parentReactor.asReactorImpl().getInitialBufferSize() :
-                        PlantImpl.getSingleton().getInternalFacility() != null ?
-                                PlantImpl.getSingleton().getInternalFacility().asReactorImpl().getInitialBufferSize() :
-                                PlantImpl.getSingleton().getInitialBufferSize(),
-                _parentReactor != null ?
-                        _parentReactor.asReactorImpl().getInitialLocalQueueSize() :
-                        PlantImpl.getSingleton().getInternalFacility() != null ?
-                                PlantImpl.getSingleton().getInternalFacility().asReactorImpl().getInitialLocalQueueSize() :
-                                PlantImpl.getSingleton().getInitialLocalMessageQueueSize());
+    public NonBlockingReactor(final NonBlockingReactor _parentReactor)
+            throws Exception {
+        this(_parentReactor, _parentReactor != null ? _parentReactor
+                .asReactorImpl().getInitialBufferSize() : PlantImpl
+                .getSingleton().getInternalFacility() != null ? PlantImpl
+                .getSingleton().getInternalFacility().asReactorImpl()
+                .getInitialBufferSize() : PlantImpl.getSingleton()
+                .getInitialBufferSize(),
+                _parentReactor != null ? _parentReactor.asReactorImpl()
+                        .getInitialLocalQueueSize() : PlantImpl.getSingleton()
+                        .getInternalFacility() != null ? PlantImpl
+                        .getSingleton().getInternalFacility().asReactorImpl()
+                        .getInitialLocalQueueSize() : PlantImpl.getSingleton()
+                        .getInitialLocalMessageQueueSize());
     }
 
     /**
@@ -49,8 +52,10 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public NonBlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(PlantBase.getInternalFacility(), _initialOutboxSize, _initialLocalQueueSize);
+    public NonBlockingReactor(final int _initialOutboxSize,
+            final int _initialLocalQueueSize) throws Exception {
+        this(PlantBase.getInternalFacility(), _initialOutboxSize,
+                _initialLocalQueueSize);
     }
 
     /**
@@ -61,9 +66,10 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public NonBlockingReactor(final NonBlockingReactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        initialize(createReactorImpl(_parentReactor,
-                _initialOutboxSize, _initialLocalQueueSize));
+            final int _initialOutboxSize, final int _initialLocalQueueSize)
+            throws Exception {
+        initialize(createReactorImpl(_parentReactor, _initialOutboxSize,
+                _initialLocalQueueSize));
     }
 
     /**
@@ -74,9 +80,11 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor, No
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      * @return The object used to implement the reactor.
      */
-    protected ReactorImpl createReactorImpl(final NonBlockingReactor _parentReactor,
-                                                       final int _initialOutboxSize, final int _initialLocalQueueSize) {
-        return PlantImpl.getSingleton().createNonBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    protected ReactorImpl createReactorImpl(
+            final NonBlockingReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return PlantImpl.getSingleton().createNonBlockingReactorImpl(
+                _parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

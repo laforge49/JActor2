@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
-import org.agilewiki.jactor2.core.impl.mtReactors.PoolThreadReactorMtImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
+import org.agilewiki.jactor2.core.impl.mtReactors.PoolThreadReactorMtImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The ReactorPoolThreadManager is used to process a queue of Reactor's
@@ -19,7 +19,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * when a Reactor is run.
  */
 public final class ReactorPoolThreadManager {
-    final Logger logger = LoggerFactory.getLogger(ReactorPoolThreadManager.class);
+    final Logger logger = LoggerFactory
+            .getLogger(ReactorPoolThreadManager.class);
 
     /**
      * The taskRequest semaphore is used to wake up a thread
@@ -54,7 +55,7 @@ public final class ReactorPoolThreadManager {
      * @param _threadFactory Used to create the threads.
      */
     public ReactorPoolThreadManager(final int _threadCount,
-                                    final ThreadFactory _threadFactory) {
+            final ThreadFactory _threadFactory) {
         this.threadCount = _threadCount;
         final Runnable runnable = new Runnable() {
             @Override

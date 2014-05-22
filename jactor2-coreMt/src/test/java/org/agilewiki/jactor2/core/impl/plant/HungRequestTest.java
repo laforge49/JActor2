@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.plant;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -16,7 +17,8 @@ public class HungRequestTest extends TestCase {
                 blade1.hiAReq().call();
             } catch (ReactorClosedException sce) {
             }
-            final Hung blade2 = new Hung(new NonBlockingReactor(), new Hanger(new NonBlockingReactor()));
+            final Hung blade2 = new Hung(new NonBlockingReactor(), new Hanger(
+                    new NonBlockingReactor()));
             try {
                 blade2.hoAReq().call();
             } catch (ReactorClosedException sce) {

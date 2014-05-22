@@ -15,7 +15,8 @@ import org.agilewiki.jactor2.core.plant.PlantImpl;
  * for each incoming request/response.
  * </p>
  */
-public class BlockingReactor extends ReactorBase implements CommonReactor, BlockingBlade {
+public class BlockingReactor extends ReactorBase implements CommonReactor,
+        BlockingBlade {
 
     /**
      * Create a blocking reactor with the Plant internal reactor as the parent.
@@ -29,9 +30,11 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      *
      * @param _parentReactor            The parent reactor.
      */
-    public BlockingReactor(final NonBlockingReactor _parentReactor) throws Exception {
-        this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
-                _parentReactor.asReactorImpl().getInitialLocalQueueSize());
+    public BlockingReactor(final NonBlockingReactor _parentReactor)
+            throws Exception {
+        this(_parentReactor, _parentReactor.asReactorImpl()
+                .getInitialBufferSize(), _parentReactor.asReactorImpl()
+                .getInitialLocalQueueSize());
     }
 
     /**
@@ -40,8 +43,10 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public BlockingReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(PlantBase.getInternalFacility(), _initialOutboxSize, _initialLocalQueueSize);
+    public BlockingReactor(final int _initialOutboxSize,
+            final int _initialLocalQueueSize) throws Exception {
+        this(PlantBase.getInternalFacility(), _initialOutboxSize,
+                _initialLocalQueueSize);
     }
 
     /**
@@ -52,8 +57,10 @@ public class BlockingReactor extends ReactorBase implements CommonReactor, Block
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public BlockingReactor(final NonBlockingReactor _parentReactor,
-                              final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        initialize(PlantImpl.getSingleton().createBlockingReactorImpl(_parentReactor, _initialOutboxSize, _initialLocalQueueSize));
+            final int _initialOutboxSize, final int _initialLocalQueueSize)
+            throws Exception {
+        initialize(PlantImpl.getSingleton().createBlockingReactorImpl(
+                _parentReactor, _initialOutboxSize, _initialLocalQueueSize));
     }
 
     /**

@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.blades.transactions;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.blades.transactions.AsyncTransaction;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableReference;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableSource;
@@ -16,18 +17,23 @@ public class AsyncTest extends TestCase {
         AsyncTransaction<String> addGood = new AsyncTransaction<String>() {
             @Override
             protected void update(final ImmutableSource<String> source,
-                                  final AsyncResponseProcessor<Void> asyncResponseProcessor) throws Exception {
-                applyAReq.send(new DelayAReq(1000), new AsyncResponseProcessor<Void>() {
-                    @Override
-                    public void processAsyncResponse(Void _response) throws Exception {
-                        immutable = "good " + source.getImmutable();
-                        asyncResponseProcessor.processAsyncResponse(null);
-                    }
-                });
+                    final AsyncResponseProcessor<Void> asyncResponseProcessor)
+                    throws Exception {
+                applyAReq.send(new DelayAReq(1000),
+                        new AsyncResponseProcessor<Void>() {
+                            @Override
+                            public void processAsyncResponse(Void _response)
+                                    throws Exception {
+                                immutable = "good " + source.getImmutable();
+                                asyncResponseProcessor
+                                        .processAsyncResponse(null);
+                            }
+                        });
             }
         };
 
-        SyncTransaction<String> addMoreGood = new SyncTransaction<String>(addGood) {
+        SyncTransaction<String> addMoreGood = new SyncTransaction<String>(
+                addGood) {
             @Override
             public void update(ImmutableSource<String> source) {
                 immutable = "more " + source.getImmutable();

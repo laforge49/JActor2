@@ -50,8 +50,9 @@ public class DelayAReq extends AsyncRequest<Void> {
                     new SyncRequest<Void>(PlantBase.getInternalFacility()) {
                         @Override
                         public Void processSyncRequest() throws Exception {
-                            if (!isCanceled())
+                            if (!isCanceled()) {
                                 dis.processAsyncResponse(null);
+                            }
                             return null;
                         }
                     }.signal();

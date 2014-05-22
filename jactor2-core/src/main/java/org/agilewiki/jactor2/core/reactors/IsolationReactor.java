@@ -26,9 +26,11 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      *
      * @param _parentReactor            The parent reactor.
      */
-    public IsolationReactor(final NonBlockingReactor _parentReactor) throws Exception {
-        this(_parentReactor, _parentReactor.asReactorImpl().getInitialBufferSize(),
-                _parentReactor.asReactorImpl().getInitialLocalQueueSize());
+    public IsolationReactor(final NonBlockingReactor _parentReactor)
+            throws Exception {
+        this(_parentReactor, _parentReactor.asReactorImpl()
+                .getInitialBufferSize(), _parentReactor.asReactorImpl()
+                .getInitialLocalQueueSize());
     }
 
     /**
@@ -37,8 +39,10 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public IsolationReactor(final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
-        this(PlantBase.getInternalFacility(), _initialOutboxSize, _initialLocalQueueSize);
+    public IsolationReactor(final int _initialOutboxSize,
+            final int _initialLocalQueueSize) throws Exception {
+        this(PlantBase.getInternalFacility(), _initialOutboxSize,
+                _initialLocalQueueSize);
     }
 
     /**
@@ -49,7 +53,8 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
     public IsolationReactor(final NonBlockingReactor _parentReactor,
-                           final int _initialOutboxSize, final int _initialLocalQueueSize) throws Exception {
+            final int _initialOutboxSize, final int _initialLocalQueueSize)
+            throws Exception {
         initialize(PlantImpl.getSingleton().createIsolationReactorImpl(
                 _parentReactor, _initialOutboxSize, _initialLocalQueueSize));
     }

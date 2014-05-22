@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.reactors;
 
 import junit.framework.TestCase;
+
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.impl.Plant;

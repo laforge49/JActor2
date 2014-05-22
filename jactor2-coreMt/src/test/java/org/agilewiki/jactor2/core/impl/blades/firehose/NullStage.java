@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.impl.blades.firehose;
 
+import java.util.List;
+
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
-
-import java.util.List;
 
 public class NullStage extends IsolationBladeBase implements DataProcessor {
 
@@ -11,8 +11,7 @@ public class NullStage extends IsolationBladeBase implements DataProcessor {
 
     public long total;
 
-    public NullStage(final DataProcessor _next)
-            throws Exception {
+    public NullStage(final DataProcessor _next) throws Exception {
         next = _next;
     }
 

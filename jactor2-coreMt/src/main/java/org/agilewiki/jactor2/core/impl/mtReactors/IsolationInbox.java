@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+import org.agilewiki.jactor2.core.requests.RequestImpl;
 
 /**
  * The inbox used by IsolationReactor, the next request is not made available for processing
@@ -110,8 +110,9 @@ public class IsolationInbox extends Inbox {
 
     @Override
     public void requestBegin(final RequestMtImpl _requestImpl) {
-        if (_requestImpl.isSignal())
+        if (_requestImpl.isSignal()) {
             return;
+        }
         if (processingRequest) {
             throw new IllegalStateException("already processing a request");
         }
@@ -120,8 +121,9 @@ public class IsolationInbox extends Inbox {
 
     @Override
     public void requestEnd(final RequestMtImpl _message) {
-        if (_message.isSignal())
+        if (_message.isSignal()) {
             return;
+        }
         if (!processingRequest) {
             throw new IllegalStateException("not processing a request");
         }
