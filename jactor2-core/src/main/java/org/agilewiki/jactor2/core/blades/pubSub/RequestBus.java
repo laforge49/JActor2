@@ -28,6 +28,29 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
         super(_reactor);
     }
 
+    private void signalContent(final CONTENT _content) {
+        final Iterator<Subscription<CONTENT>> it = subscriptions
+                .iterator();
+        while (it.hasNext()) {
+            final Subscription<CONTENT> subscription = it.next();
+            final Filter<CONTENT> filter = subscription.filter;
+            if (filter.match(_content)) {
+                subscription.publicationAReq(_content).signal();
+            }
+        }
+    }
+
+    /**
+     * Sends some content to all the interested subscribers via a signal.
+     *
+     * @param _content
+     * @param _sourceReactor
+     */
+    public void signalContent(final CONTENT _content, final NonBlockingReactor _sourceReactor) {
+        directCheck(_sourceReactor);
+        signalContent(_content);
+    }
+
     /**
      * Returns a request to send some content to all the interested subscribers
      * without waiting for those subscribers to process the content.
@@ -39,15 +62,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
         return new SyncBladeRequest<Void>() {
             @Override
             public Void processSyncRequest() throws Exception {
-                final Iterator<Subscription<CONTENT>> it = subscriptions
-                        .iterator();
-                while (it.hasNext()) {
-                    final Subscription<CONTENT> subscription = it.next();
-                    final Filter<CONTENT> filter = subscription.filter;
-                    if (filter.match(_content)) {
-                        subscription.publicationAReq(_content).signal();
-                    }
-                }
+                signalContent(_content);
                 return null;
             }
         };

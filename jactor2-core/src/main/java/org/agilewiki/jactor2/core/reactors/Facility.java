@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NamedBlade;
+import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
@@ -14,6 +15,8 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
 
     protected ISMap<NamedBlade> namedBlades = PlantBase.createISMap();
 
+    private final RequestBus<RegistrationNotification> registrationNotifier;
+
     /**
      * Create a facility with the Plant internal reactor as the parent.
      *
@@ -21,6 +24,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      */
     public Facility(final String _name) throws Exception {
         name = _name;
+        registrationNotifier = new RequestBus<RegistrationNotification>(this);
     }
 
     /**
@@ -33,6 +37,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
             throws Exception {
         super(_parentReactor);
         name = _name;
+        registrationNotifier = new RequestBus<RegistrationNotification>(this);
     }
 
     /**
@@ -46,6 +51,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
                     final int _initialLocalQueueSize) throws Exception {
         super(_initialOutboxSize, _initialLocalQueueSize);
         name = _name;
+        registrationNotifier = new RequestBus<RegistrationNotification>(this);
     }
 
     /**
@@ -61,6 +67,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
             throws Exception {
         super(null, _initialOutboxSize, _initialLocalQueueSize);
         name = _name;
+        registrationNotifier = new RequestBus<RegistrationNotification>(this);
     }
 
     @Override
@@ -125,6 +132,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         if (removed != null) {
             namedBlades = namedBlades.minus(_name);
         }
+        registrationNotifier.signalContent(new RegistrationNotification(this, _name, null), this);
         return removed;
     }
 
@@ -162,6 +170,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
             throw new IllegalArgumentException("duplicate blade name");
         }
         namedBlades = namedBlades.plus(_name, _blade);
+        registrationNotifier.signalContent(new RegistrationNotification(this, _name, _blade), this);
     }
 
     /**
