@@ -16,7 +16,8 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
 
     /**
      * Create a facility with the Plant internal reactor as the parent.
-     * @param _name    The name of the facility.
+     *
+     * @param _name The name of the facility.
      */
     public Facility(final String _name) throws Exception {
         name = _name;
@@ -25,7 +26,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
     /**
      * Create a facility.
      *
-     * @param _name    The name of the facility.
+     * @param _name          The name of the facility.
      * @param _parentReactor The parent reactor.
      */
     public Facility(final String _name, final Facility _parentReactor)
@@ -37,12 +38,12 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
     /**
      * Create a facility with the Plant internal reactor as the parent.
      *
-     * @param _name    The name of the facility.
+     * @param _name                  The name of the facility.
      * @param _initialOutboxSize     Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize Initial size of the local input queue.
      */
     public Facility(final String _name, final int _initialOutboxSize,
-            final int _initialLocalQueueSize) throws Exception {
+                    final int _initialLocalQueueSize) throws Exception {
         super(_initialOutboxSize, _initialLocalQueueSize);
         name = _name;
     }
@@ -50,13 +51,13 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
     /**
      * Create a facility.
      *
-     * @param _name    The name of the facility.
+     * @param _name                  The name of the facility.
      * @param _parentReactor         The parent reactor.
      * @param _initialOutboxSize     Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize Initial size of the local input queue.
      */
     public Facility(final String _name, final Void _parentReactor,
-            final int _initialOutboxSize, final int _initialLocalQueueSize)
+                    final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         super(null, _initialOutboxSize, _initialLocalQueueSize);
         name = _name;
@@ -95,61 +96,93 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      *
      * @return The ISMap.
      */
-    public ISMap<NamedBlade> getNamedBlades() {
+    public ISMap<NamedBlade> getBlades() {
         return namedBlades;
     }
 
     /**
      * Returns the named blade.
      *
-     * @param _name    The name of the blade.
+     * @param _name The name of the blade.
      * @return The Blade, or null.
      */
-    public NamedBlade getNamedBlade(final String _name) {
+    public NamedBlade getBlade(final String _name) {
         return namedBlades.get(_name);
+    }
+
+    private NamedBlade _unregisterBlade(final String _name) {
+        final NamedBlade removed = namedBlades.get(_name);
+        if (removed != null) {
+            namedBlades = namedBlades.minus(_name);
+        }
+        return removed;
+    }
+
+    /**
+     * A direct method to unregister a named blade.
+     *
+     * @param _name     The name of the blade.
+     * @param _facility The calling facility.
+     * @return The unregistered blade.
+     */
+    public NamedBlade unregisterBlade(final String _name, final Facility _facility) {
+        directCheck(_facility);
+        return _unregisterBlade(_name);
     }
 
     /**
      * A request to unregister the named blade. The result of the request is
      * the unregistered blade, or null.
      *
-     * @param _name    The name of the blade.
+     * @param _name The name of the blade.
      * @return The request to unregister.
      */
-    public SyncRequest<NamedBlade> unregisterNamedBlade(final String _name) {
+    public SyncRequest<NamedBlade> unregisterBladeSReq(final String _name) {
         return new SyncRequest<NamedBlade>(Facility.this) {
             @Override
             public NamedBlade processSyncRequest() throws Exception {
-                final NamedBlade removed = namedBlades.get(_name);
-                if (removed != null) {
-                    namedBlades = namedBlades.minus(_name);
-                }
-                return removed;
+                return _unregisterBlade(_name);
             }
         };
+    }
+
+    private void _registerBlade(final String _name, final NamedBlade _blade) {
+        final NamedBlade oldBlade = namedBlades.get(_name);
+        if (oldBlade != null) {
+            throw new IllegalArgumentException("duplicate blade name");
+        }
+        namedBlades = namedBlades.plus(_name, _blade);
+    }
+
+    /**
+     * A direct method to register a named blade.
+     *
+     * @param _name     The name of the blade.
+     * @param _blade    The blade being registered.
+     * @param _facility The calling facility.
+     */
+    public void registerBlade(final String _name, final NamedBlade _blade, final Facility _facility) {
+        directCheck(_facility);
+        _registerBlade(_name, _blade);
     }
 
     /**
      * A request to register a blade. The request throws an IllegalStateException
      * if the name is a duplicate.
-     *
+     * <p/>
      * An IllegalArgumentException is thrown if the name is invalid.
      *
-     * @param _name     The name used to register the blade.
-     * @param _blade    The blade being registered.
+     * @param _name  The name used to register the blade.
+     * @param _blade The blade being registered.
      * @return The request to register.
      */
-    public SyncRequest<Void> registerNamedBlade(final String _name,
-            final NamedBlade _blade) {
+    public SyncRequest<Void> registerBlade(final String _name,
+                                           final NamedBlade _blade) {
         validateName(_name);
-        return new SyncRequest<Void>(Facility.this) {
+        return new SyncBladeRequest<Void>() {
             @Override
             public Void processSyncRequest() throws Exception {
-                final NamedBlade oldBlade = namedBlades.get(_name);
-                if (oldBlade != null) {
-                    throw new IllegalArgumentException("duplicate blade name");
-                }
-                namedBlades = namedBlades.plus(_name, _blade);
+                _registerBlade(_name, _blade);
                 return null;
             }
         };
