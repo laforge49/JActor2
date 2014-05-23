@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.reactors;
 
+import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
@@ -8,7 +9,7 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 /**
  * Base class for reactors.
  */
-abstract public class ReactorBase implements Reactor {
+abstract public class ReactorBase extends BladeBase implements Reactor {
     /**
      * Returns the reactor of the current thread.
      *
@@ -30,6 +31,7 @@ abstract public class ReactorBase implements Reactor {
             reactorImpl = _reactorImpl;
         }
         _reactorImpl.initialize(this);
+        _initialize(this);
     }
 
     @Override
@@ -40,11 +42,6 @@ abstract public class ReactorBase implements Reactor {
     @Override
     public CloseableImpl asCloseableImpl() {
         return reactorImpl.asCloseableImpl();
-    }
-
-    @Override
-    public Reactor getReactor() {
-        return this;
     }
 
     @Override
