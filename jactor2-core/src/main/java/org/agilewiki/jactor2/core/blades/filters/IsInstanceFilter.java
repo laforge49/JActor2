@@ -1,10 +1,13 @@
 package org.agilewiki.jactor2.core.blades.filters;
 
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
+
 /**
  * Used to select content of a particular class.
  *
  * @param <CONTENT> The content class of interest.
  */
+@GwtIncompatible
 public class IsInstanceFilter<CONTENT> implements Filter<CONTENT> {
     private final Class<? extends CONTENT> clazz;
 

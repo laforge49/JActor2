@@ -1,5 +1,9 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.filters.Filter;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
@@ -7,19 +11,13 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * A blade that publishes content to interested subscribers, using either signals or sends.
  *
  * @param <CONTENT> The type of content.
  */
 public class RequestBus<CONTENT> extends NonBlockingBladeBase {
-    final Set<Subscription<CONTENT>> subscriptions =
-            Collections.newSetFromMap(new ConcurrentHashMap<Subscription<CONTENT>, Boolean>());
+    final Map<Subscription<CONTENT>, Boolean> subscriptions = new ConcurrentHashMap<Subscription<CONTENT>, Boolean>();
 
     public RequestBus() throws Exception {
     }
@@ -29,7 +27,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
     }
 
     private void signalContent(final CONTENT _content) {
-        final Iterator<Subscription<CONTENT>> it = subscriptions
+        final Iterator<Subscription<CONTENT>> it = subscriptions.keySet()
                 .iterator();
         while (it.hasNext()) {
             final Subscription<CONTENT> subscription = it.next();
@@ -46,7 +44,8 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
      * @param _content
      * @param _sourceReactor
      */
-    public void signalContent(final CONTENT _content, final NonBlockingReactor _sourceReactor) {
+    public void signalContent(final CONTENT _content,
+            final NonBlockingReactor _sourceReactor) {
         directCheck(_sourceReactor);
         signalContent(_content);
     }
@@ -83,7 +82,8 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
 
             final AsyncResponseProcessor<Void> sendResponse = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(final Void _response) throws Exception {
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
                     i++;
                     if (i == count) {
                         dis.processAsyncResponse(null);
@@ -96,7 +96,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
                 setNoHungRequestCheck();
                 count = subscriptions.size();
                 final Iterator<Subscription<CONTENT>> it = subscriptions
-                        .iterator();
+                        .keySet().iterator();
                 while (it.hasNext()) {
                     final Subscription<CONTENT> subscription = it.next();
                     final Filter<CONTENT> filter = subscription.filter;

@@ -26,7 +26,7 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
      * @param _subscriberReactor The reactor of the subscriber blade.
      */
     public SubscribeAReq(final RequestBus<CONTENT> _requestBus,
-                         final CommonReactor _subscriberReactor) {
+            final CommonReactor _subscriberReactor) {
         this(_requestBus, _subscriberReactor, null);
     }
 
@@ -38,8 +38,8 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
      * @param _filter            A Filter that selects content of interest.
      */
     public SubscribeAReq(final RequestBus<CONTENT> _requestBus,
-                         final CommonReactor _subscriberReactor,
-                         final Filter<CONTENT> _filter) {
+            final CommonReactor _subscriberReactor,
+            final Filter<CONTENT> _filter) {
         super(_subscriberReactor);
         requestBus = _requestBus;
         subscriberReactor = _subscriberReactor;
@@ -49,16 +49,14 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
     @Override
     public void processAsyncRequest() throws Exception {
         final Subscription<CONTENT> subscription = new Subscription<CONTENT>(
-                requestBus, (CommonReactor) subscriberReactor, filter) {
+                requestBus, subscriberReactor, filter) {
             @Override
             protected void processContent(final CONTENT _content,
-                                          final AsyncRequest<Void> _asyncRequest)
-                    throws Exception {
-                SubscribeAReq.this.processContent(_content,
-                        _asyncRequest);
+                    final AsyncRequest<Void> _asyncRequest) throws Exception {
+                SubscribeAReq.this.processContent(_content, _asyncRequest);
             }
         };
-        requestBus.subscriptions.add(subscription);
+        requestBus.subscriptions.put(subscription, Boolean.TRUE);
         subscriberReactor.addCloseable(subscription);
         dis.processAsyncResponse(subscription);
     }
@@ -80,8 +78,7 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
      * @param _asyncRequest Used to indicate when processing is complete.
      */
     protected void processContent(final CONTENT _content,
-                                  final AsyncRequest<Void> _asyncRequest)
-            throws Exception {
+            final AsyncRequest<Void> _asyncRequest) throws Exception {
         processContent(_content);
         _asyncRequest.processAsyncResponse(null);
     }
