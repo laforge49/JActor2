@@ -164,25 +164,25 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         };
     }
 
-    private void _registerBlade(final String _name, final NamedBlade _blade) {
-        final NamedBlade oldBlade = namedBlades.get(_name);
+    private void _registerBlade(final NamedBlade _blade) {
+        String name = _blade.getName();
+        final NamedBlade oldBlade = namedBlades.get(name);
         if (oldBlade != null) {
             throw new IllegalArgumentException("duplicate blade name");
         }
-        namedBlades = namedBlades.plus(_name, _blade);
-        registrationNotifier.signalContent(new RegistrationNotification(this, _name, _blade), this);
+        namedBlades = namedBlades.plus(name, _blade);
+        registrationNotifier.signalContent(new RegistrationNotification(this, name, _blade), this);
     }
 
     /**
      * A direct method to register a named blade.
      *
-     * @param _name     The name of the blade.
      * @param _blade    The blade being registered.
      * @param _facility The calling facility.
      */
-    public void registerBlade(final String _name, final NamedBlade _blade, final Facility _facility) {
+    public void registerBlade(final NamedBlade _blade, final Facility _facility) {
         directCheck(_facility);
-        _registerBlade(_name, _blade);
+        _registerBlade(_blade);
     }
 
     /**
@@ -191,17 +191,16 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * <p/>
      * An IllegalArgumentException is thrown if the name is invalid.
      *
-     * @param _name  The name used to register the blade.
      * @param _blade The blade being registered.
      * @return The request to register.
      */
-    public SyncRequest<Void> registerBladeSReq(final String _name,
-                                           final NamedBlade _blade) {
-        validateName(_name);
+    public SyncRequest<Void> registerBladeSReq(final NamedBlade _blade) {
+        String name = _blade.getName();
+        validateName(name);
         return new SyncBladeRequest<Void>() {
             @Override
             public Void processSyncRequest() throws Exception {
-                _registerBlade(_name, _blade);
+                _registerBlade(_blade);
                 return null;
             }
         };
