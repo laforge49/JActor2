@@ -34,7 +34,7 @@ public class AnyMain {
 class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
     final AsyncRequest<RESPONSE_TYPE>[] requests;
 
-    public Any(final AsyncRequest<RESPONSE_TYPE>... _requests) {
+    public Any(final AsyncRequest<RESPONSE_TYPE>... _requests) throws Exception {
         super(new NonBlockingReactor());
         requests = _requests;
     }
@@ -64,7 +64,7 @@ class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
 class A2 extends AsyncRequest<Long> {
     final long delay;
 
-    A2(final long _delay) {
+    A2(final long _delay) throws Exception {
         super(new NonBlockingReactor());
         delay = _delay;
     }
@@ -83,7 +83,7 @@ class ForcedException extends Exception {
 class A3 extends AsyncRequest<Long> {
     final long delay;
 
-    A3(final long _delay) {
+    A3(final long _delay) throws Exception {
         super(new BlockingReactor());
         delay = _delay;
     }

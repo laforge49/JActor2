@@ -10,6 +10,12 @@ interface BBB {
 }
 
 class BImpl extends NonBlockingBladeBase implements BBB {
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public BImpl() throws Exception {
+    }
+
     @Override
     public AsyncRequest<Void> newAdd1() {
         return new AsyncBladeRequest<Void>() {
@@ -25,6 +31,12 @@ class BImpl extends NonBlockingBladeBase implements BBB {
 }
 
 class AAA extends NonBlockingBladeBase {
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public AAA() throws Exception {
+    }
+
     public AsyncRequest<Void> newStart(final BBB _b) {
         return new AsyncBladeRequest<Void>() {
             AsyncRequest<Void> dis = this;

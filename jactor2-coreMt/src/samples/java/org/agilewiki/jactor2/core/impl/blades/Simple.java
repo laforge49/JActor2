@@ -17,8 +17,14 @@ public class Simple {
 }
 
 class A extends NonBlockingBladeBase {
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public A() throws Exception {
+    }
+
     class Start extends AsyncBladeRequest<Void> {
-        B b = new B();
+        B b;
 
         AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
             @Override
@@ -27,6 +33,10 @@ class A extends NonBlockingBladeBase {
                 Start.this.processAsyncResponse(null);
             }
         };
+
+        Start() throws Exception {
+            b = new B();
+        }
 
         @Override
         public void processAsyncRequest() {
@@ -37,6 +47,12 @@ class A extends NonBlockingBladeBase {
 
 class B extends NonBlockingBladeBase {
     private int count;
+
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public B() throws Exception {
+    }
 
     class Add1 extends AsyncBladeRequest<Void> {
 

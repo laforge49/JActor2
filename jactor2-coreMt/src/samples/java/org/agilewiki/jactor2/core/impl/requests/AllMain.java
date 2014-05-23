@@ -19,7 +19,7 @@ public class AllMain {
 class All extends AsyncRequest<Void> {
     final AsyncRequest<Void>[] requests;
 
-    All(final AsyncRequest<Void> ... _requests) {
+    All(final AsyncRequest<Void> ... _requests) throws Exception {
         super(new NonBlockingReactor());
         requests = _requests;
     }
@@ -44,7 +44,7 @@ class All extends AsyncRequest<Void> {
 }
 
 class A1 extends AsyncRequest<Void> {
-    A1() {
+    A1() throws Exception {
         super(new NonBlockingReactor());
     }
 

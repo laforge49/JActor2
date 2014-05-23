@@ -17,8 +17,14 @@ public class Compound {
 }
 
 class AA extends NonBlockingBladeBase {
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public AA() throws Exception {
+    }
+
     class Start extends AsyncBladeRequest<Void> {
-        BB b = new BB();
+        BB b;
 
         AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
             @Override
@@ -27,6 +33,10 @@ class AA extends NonBlockingBladeBase {
                 Start.this.processAsyncResponse(null);
             }
         };
+
+        Start() throws Exception {
+            b = new BB();
+        }
 
         @Override
         public void processAsyncRequest() {
@@ -38,6 +48,12 @@ class AA extends NonBlockingBladeBase {
 class BB extends NonBlockingBladeBase {
     private CC c = new CC();
     private int count;
+
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public BB() throws Exception {
+    }
 
     class AddValue extends AsyncBladeRequest<Void> {
 
@@ -57,6 +73,12 @@ class BB extends NonBlockingBladeBase {
 }
 
 class CC extends NonBlockingBladeBase {
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public CC() throws Exception {
+    }
+
     class Value extends AsyncBladeRequest<Integer> {
         @Override
         public void processAsyncRequest() {

@@ -20,8 +20,14 @@ public class ExceptionSample {
 }
 
 class A extends NonBlockingBladeBase {
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public A() throws Exception {
+    }
+
     class Start extends AsyncBladeRequest<Void> {
-        B b = new B();
+        B b;
 
         AsyncResponseProcessor<Void> woopsResponse = new AsyncResponseProcessor<Void>() {
             @Override
@@ -44,6 +50,10 @@ class A extends NonBlockingBladeBase {
             }
         };
 
+        Start() throws Exception {
+            b = new B();
+        }
+
         @Override
         public void processAsyncRequest() {
             setExceptionHandler(exceptionHandler);
@@ -53,6 +63,12 @@ class A extends NonBlockingBladeBase {
 }
 
 class B extends NonBlockingBladeBase {
+    /**
+     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
+     */
+    public B() throws Exception {
+    }
+
     class Woops extends AsyncBladeRequest<Void> {
 
         @Override
