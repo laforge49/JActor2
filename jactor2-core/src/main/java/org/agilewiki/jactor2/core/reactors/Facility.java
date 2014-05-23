@@ -176,7 +176,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _blade The blade being registered.
      * @return The request to register.
      */
-    public SyncRequest<Void> registerBlade(final String _name,
+    public SyncRequest<Void> registerBladeSReq(final String _name,
                                            final NamedBlade _blade) {
         validateName(_name);
         return new SyncBladeRequest<Void>() {
