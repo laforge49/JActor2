@@ -110,6 +110,16 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         return namedBlades.get(_name);
     }
 
+    /**
+     * Returns true if the blade is registered.
+     *
+     * @param _name The name of the blade.
+     * @return True when the blade is registered.
+     */
+    public boolean isRegisteredBlade(final String _name) {
+        return namedBlades.containsKey(_name);
+    }
+
     private NamedBlade _unregisterBlade(final String _name) {
         final NamedBlade removed = namedBlades.get(_name);
         if (removed != null) {
