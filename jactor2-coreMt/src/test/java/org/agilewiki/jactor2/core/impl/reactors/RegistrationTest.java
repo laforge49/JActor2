@@ -29,8 +29,8 @@ public class RegistrationTest extends TestCase {
             }.call();
             facility.registerBladeSReq(namedBlade).call();
             facility.unregisterBladeSReq("TestFacility").call();
-            Thread.sleep(1000);
-        } catch (Exception ex) {
+            facility.unregisterBladeSReq("FooBar").call();
+        } finally {
             Plant.close();
         }
     }

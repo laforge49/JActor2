@@ -131,8 +131,8 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         final NamedBlade removed = namedBlades.get(_name);
         if (removed != null) {
             namedBlades = namedBlades.minus(_name);
+            registrationNotifier.signalContent(new RegistrationNotification(this, _name, null), this);
         }
-        registrationNotifier.signalContent(new RegistrationNotification(this, _name, null), this);
         return removed;
     }
 
