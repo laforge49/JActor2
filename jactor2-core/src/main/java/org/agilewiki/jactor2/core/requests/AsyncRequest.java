@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
+import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * An async request separates data flow from control flow and its effect can span multiple reactors.
@@ -185,5 +186,11 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public void cancelAll() {
         asyncRequestImpl.cancelAll();
+    }
+
+    /** Returns the default Timer. */
+    @Override
+    public Timer getTimer() {
+        return Timer.DEFAULT;
     }
 }

@@ -13,6 +13,7 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.Request;
 import org.agilewiki.jactor2.core.requests.RequestImpl;
+import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * Internal implementation of AsyncRequest.
@@ -27,6 +28,9 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     private boolean noHungRequestCheck;
 
     private final AsyncRequest<RESPONSE_TYPE> asyncRequest;
+
+    /** Used by the Timer. */
+    private volatile long start;
 
     /**
      * Create an AsyncRequestMtImpl and bind it to its target targetReactor.
@@ -72,6 +76,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE _response) {
+        final Timer timer = asyncRequest.getTimer();
+        timer.updateNanos(timer.nanos() - start, true);
         processObjectResponse(_response);
     }
 
@@ -84,6 +90,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void processAsyncException(final Exception _response) {
+        final Timer timer = asyncRequest.getTimer();
+        timer.updateNanos(timer.nanos() - start, false);
         processObjectResponse(_response);
     }
 
@@ -98,6 +106,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void processRequestMessage() throws Exception {
+        start = asyncRequest.getTimer().nanos();
         asyncRequest.processAsyncRequest();
         pendingCheck();
     }

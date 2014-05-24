@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
+import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * A request is a single-use object for performing an operation safely and to optionally be passed back with a response
@@ -68,4 +69,13 @@ public interface Request<RESPONSE_TYPE> {
      * @throws ReactorClosedException Thrown when the request is closed.
      */
     boolean isCanceled() throws ReactorClosedException;
+
+    /**
+     * Returns the Timer used to track the performance of this Request instance.
+     *
+     * Null is not allowed are return value, but Timer.NOP can be used to disable tracking.
+     *
+     * @return the Timer used to track the performance of this Request instance.
+     */
+    Timer getTimer();
 }

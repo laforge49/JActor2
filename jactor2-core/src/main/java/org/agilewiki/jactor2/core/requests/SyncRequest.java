@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
+import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * A sync request performs an operation safely within the thread context of the target reactor.
@@ -62,5 +63,11 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements
     @Override
     public boolean isCanceled() throws ReactorClosedException {
         return requestImpl.isCanceled();
+    }
+
+    /** Returns the default Timer. */
+    @Override
+    public Timer getTimer() {
+        return Timer.DEFAULT;
     }
 }

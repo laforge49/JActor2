@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * Internal implementation of a SyncRequest.
@@ -32,6 +33,17 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void processRequestMessage() throws Exception {
-        processObjectResponse(syncRequest.processSyncRequest());
+        final Timer timer = syncRequest.getTimer();
+        final long start = timer.nanos();
+        boolean success = false;
+        final RESPONSE_TYPE result;
+        try {
+            result = syncRequest.processSyncRequest();
+            success = true;
+        } finally {
+            timer.updateNanos(timer.nanos() - start, success);
+        }
+
+        processObjectResponse(result);
     }
 }
