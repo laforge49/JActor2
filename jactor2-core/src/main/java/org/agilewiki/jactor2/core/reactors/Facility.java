@@ -15,7 +15,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
 
     protected ISMap<NamedBlade> namedBlades = PlantBase.createISMap();
 
-    private final RequestBus<RegistrationNotification> registrationNotifier;
+    public final RequestBus<RegistrationNotification> registrationNotifier;
 
     /**
      * Create a facility with the Plant internal reactor as the parent.
