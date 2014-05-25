@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
  * @param <IMMUTABLE> The type of immutable data structure.
  */
 abstract public class AsyncTransaction<IMMUTABLE> extends
-        Transaction<IMMUTABLE> {
+        TransactionBase<IMMUTABLE> {
     /**
      * Create a Transaction.
      */
@@ -23,7 +23,7 @@ abstract public class AsyncTransaction<IMMUTABLE> extends
      *
      * @param _parent The transaction to be applied before this one.
      */
-    public AsyncTransaction(final Transaction<IMMUTABLE> _parent) {
+    public AsyncTransaction(final TransactionBase<IMMUTABLE> _parent) {
         super(_parent);
     }
 
@@ -46,8 +46,8 @@ abstract public class AsyncTransaction<IMMUTABLE> extends
     @Override
     protected void _apply(final ImmutableSource<IMMUTABLE> _source,
             final AsyncResponseProcessor<Void> _dis) throws Exception {
-        if (_source instanceof Transaction) {
-            final Transaction<IMMUTABLE> transaction = (Transaction<IMMUTABLE>) _source;
+        if (_source instanceof TransactionBase) {
+            final TransactionBase<IMMUTABLE> transaction = (TransactionBase<IMMUTABLE>) _source;
             applySourceTransaction(transaction);
         } else {
             applySourceReference((ImmutableReference<IMMUTABLE>) _source);
