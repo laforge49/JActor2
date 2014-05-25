@@ -119,7 +119,7 @@ public class Timer extends com.codahale.metrics.Timer {
     /**
      * Adds a recorded duration in nanoseconds.
      *
-     * @param duration the length of the duration in nanoseconds
+     * @param nanos the length of the duration in nanoseconds
      * @param success True, if the execution succeeded.
      */
     public final void updateNanos(final long nanos, final boolean success) {
@@ -134,7 +134,7 @@ public class Timer extends com.codahale.metrics.Timer {
     /**
      * Adds a recorded duration in nanoseconds.
      *
-     * @param duration the length of the duration in nanoseconds
+     * @param nanos the length of the duration in nanoseconds
      * @param success True, if the execution succeeded.
      */
     public final void updateNanos(final double nanos, final boolean success) {
@@ -144,7 +144,7 @@ public class Timer extends com.codahale.metrics.Timer {
     /**
      * Adds a recorded duration in milliseconds.
      *
-     * @param duration the length of the duration in milliseconds
+     * @param millis the length of the duration in milliseconds
      * @param success True, if the execution succeeded.
      */
     public final void updateMillis(final long millis, final boolean success) {
@@ -154,7 +154,7 @@ public class Timer extends com.codahale.metrics.Timer {
     /**
      * Adds a recorded duration in milliseconds.
      *
-     * @param duration the length of the duration in milliseconds
+     * @param millis the length of the duration in milliseconds
      * @param success True, if the execution succeeded.
      */
     public final void updateMillis(final double millis, final boolean success) {
@@ -186,9 +186,8 @@ public class Timer extends com.codahale.metrics.Timer {
     /**
      * Times and records the duration of event.
      *
-     * @param event a {@link Runnable} whose {@link Runnable#call()} method implements a process
+     * @param event a {@link Runnable} whose {@link Runnable#run()} method implements a process
      *              whose duration should be timed
-     * @param <T>   the type of the value returned by {@code event}
      * @return the value returned by {@code event}
      * @throws Exception if {@code event} throws an {@link Exception}
      */
