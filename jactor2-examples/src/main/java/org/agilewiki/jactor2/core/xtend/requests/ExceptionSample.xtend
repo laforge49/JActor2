@@ -7,13 +7,14 @@ import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.AsyncRequest
+import org.agilewiki.jactor2.core.xtend.codegen.AReq
 
 class ExceptionSample {
     def static void main(String[] _args) throws Exception {
         new Plant();
         try {
             val a = new A();
-            a.newStart().call();
+            a.startAReq().call();
         } finally {
             Plant.close();
         }
@@ -27,16 +28,9 @@ class A extends NonBlockingBladeBase {
     new() throws Exception {
     }
 
-    static class Start extends AsyncRequest<Void> {
-        val b = new B();
-
-        val woopsResponse = new AsyncResponseProcessor<Void>() {
-            override void processAsyncResponse(Void _response) {
-                System.out.println("can not get here!");
-                Start.this.processAsyncResponse(null);
-            }
-        };
-
+	@AReq
+    private def start(AsyncRequest<Void> ar) {
+    	val b = new B();
         val exceptionHandler = new ExceptionHandler<Void>() {
             override void processException(Exception _e,
                     AsyncResponseProcessor<Void> _asyncResponseProcessor)
@@ -48,19 +42,9 @@ class A extends NonBlockingBladeBase {
                     throw _e;
             }
         };
-
-        new(A a) throws Exception {
-            super(a);
-        }
-
-        override void processAsyncRequest() {
-            setExceptionHandler(exceptionHandler);
-            send(b.newWoops(), woopsResponse);
-        }
-    }
-
-    def newStart() {
-    	new Start(this)
+        ar.setExceptionHandler(exceptionHandler);
+        ar.send(b.woopsAReq(),
+        	[System.out.println("can not get here!"); ar.processAsyncResponse(null)]);
     }
 }
 
@@ -71,17 +55,8 @@ class B extends NonBlockingBladeBase {
     new() throws Exception {
     }
 
-    static class Woops extends AsyncRequest<Void> {
-		new(B b) {
-			super(b)
-		}
-
-        override void processAsyncRequest() throws IOException {
-            throw new IOException();
-        }
-    }
-
-    def newWoops() {
-    	new Woops(this)
+    @AReq
+    private def woops(AsyncRequest<Void> ar) throws IOException {
+    	throw new IOException();
     }
 }

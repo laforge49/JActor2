@@ -15,6 +15,7 @@ import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.agilewiki.jactor2.core.requests.SyncRequest
 import org.eclipse.xtend.lib.macro.declaration.MutableParameterDeclaration
 import org.agilewiki.jactor2.core.requests.AsyncRequest
+import org.agilewiki.jactor2.core.reactors.Reactor
 
 /** Marks an instance method that should be wrapped in a SyncRequest */
 @Active(typeof(SReqProcessor))
@@ -58,6 +59,9 @@ annotation AReq {
  */
 class SReqProcessor
       implements TransformationParticipant<MutableMethodDeclaration> {
+
+      	var TypeReference reactor
+
   override doTransform(List<? extends MutableMethodDeclaration> methods,
                        extension TransformationContext context) {
     for (m : methods) {
@@ -108,6 +112,41 @@ return new SyncBladeRequest<«retTypeObj»>() {
 			        ]
 				}
 		        docComment = "SyncRequest for "+fqName+"("+params3+")"
+    		])
+    		if (reactor == null) {
+    			reactor = context.newTypeReference(Reactor)
+    		}
+    		type.addMethod("_"+name, [
+		        visibility = Visibility.PUBLIC
+		        final = true
+		        static = false
+		        returnType = retType
+		        var params2 = ""
+		        for (p : params) {
+		        	addParameter(p.simpleName, p.type)
+		        	if (!params2.empty) {
+		        		params2 += ", "
+		        	}
+		        	params2 += p.simpleName
+	        	}
+		        val params3 = params2
+	        	addParameter("sourceReactor", reactor)
+				if (retType.void) {
+			        body = [
+'''
+directCheck(sourceReactor);
+«name»(«params3»);
+'''
+			        ]
+				} else {
+			        body = [
+'''
+directCheck(sourceReactor);
+return «name»(«params3»);
+'''
+			        ]
+				}
+		        docComment = "direct-call for "+fqName+"("+params3+")"
     		])
     	} else {
     		context.addWarning(m, "Type of method annotated with @SReq ("+fqName+") must be a class")
@@ -186,11 +225,12 @@ class AReqProcessor
 			        returnType = p0Type
 			        var params2 = ""
 			        for (p : params) {
-			        	addParameter(p.simpleName, p.type)
 			        	if (!params2.empty) {
-			        		params2 += ", "
+				        	addParameter(p.simpleName, p.type)
+			        		params2 += ", " + p.simpleName
+			        	} else {
+			        		params2 = "this"
 			        	}
-			        	params2 += p.simpleName
 		        	}
 			        val params3 = params2
 			        body = [

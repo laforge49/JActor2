@@ -3,9 +3,8 @@ package org.agilewiki.jactor2.core.xtend.blades
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase
 import org.agilewiki.jactor2.core.impl.Plant
 import org.agilewiki.jactor2.core.requests.AsyncRequest
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor
 import org.agilewiki.jactor2.core.requests.ExceptionHandler
-import org.agilewiki.jactor2.core.requests.SyncRequest
+import org.agilewiki.jactor2.core.xtend.codegen.SReq
 
 class Account extends NonBlockingBladeBase {
     var int balance;
@@ -14,13 +13,9 @@ class Account extends NonBlockingBladeBase {
     new() throws Exception {
     }
 
-    def SyncRequest<Void> depositSReq(int _amount) {
-        return new SyncRequest<Void>(this) {
-            override Void processSyncRequest() {
-                balance = balance + _amount;
-                return null;
-            }
-        }
+	@SReq
+    private def void deposit(int _amount) {
+        balance = balance + _amount;
     }
 
     def AsyncRequest<Boolean> transferAReq(int _amount, Account _account) {
@@ -35,21 +30,14 @@ class Account extends NonBlockingBladeBase {
                 }
             };
 
-            val depositResponseProcessor = new AsyncResponseProcessor<Void>() {
-                override void processAsyncResponse(Void _response) {
-                    hold = hold - _amount;
-                    dis.processAsyncResponse(true);
-                }
-            };
-
             override void processAsyncRequest() {
                 if (_amount > balance)
                     dis.processAsyncResponse(false);
                 balance = balance - _amount;
                 hold = hold + _amount;
                 setExceptionHandler(depositExceptionHandler);
-
-                send(_account.depositSReq(_amount), depositResponseProcessor);
+                send(_account.depositSReq(_amount),
+                	[hold = hold - _amount; dis.processAsyncResponse(true)]);
             }
         };
     }

@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.xtend.codegen.AReq
 
 class SwingBoundReactorSample {
     def static void main(String[] _args) throws Exception {
@@ -22,28 +23,25 @@ class HelloWorld extends SwingBoundBladeBase {
         super(_reactor);
     }
 
-    def AsyncRequest<Void> createAndShowAReq() {
-        return new AsyncRequest<Void>(this) {
-            override void processAsyncRequest() {
-                //Create and set up the window.
-                val frame = new JFrame("HelloWorld");
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
+	@AReq
+	private def createAndShow(AsyncRequest<Void> ar) {
+        //Create and set up the window.
+        val frame = new JFrame("HelloWorld");
+        //no exit until all threads are closed.
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-                //Close plant when window is closed.
-                frame.addWindowListener(getReactor());
+        //Close plant when window is closed.
+        frame.addWindowListener(getReactor());
 
-                //Add the "Hello World!" label.
-                val label = new JLabel("Hello World!");
-                frame.getContentPane().add(label);
+        //Add the "Hello World!" label.
+        val label = new JLabel("Hello World!");
+        frame.getContentPane().add(label);
 
-                //Display the window.
-                frame.pack();
-                frame.setVisible(true);
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
 
-                //return the result.
-                processAsyncResponse(null);
-            }
-        };
-    }
-
+        //return the result.
+        ar.processAsyncResponse(null);
+	}
 }

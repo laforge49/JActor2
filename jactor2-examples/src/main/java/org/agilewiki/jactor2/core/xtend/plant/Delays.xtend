@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.plant.DelayAReq;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.xtend.codegen.AReq
 
 class Delays extends NonBlockingBladeBase {
     val long count;
@@ -13,26 +14,20 @@ class Delays extends NonBlockingBladeBase {
         count = _count;
     }
 
-    def AsyncRequest<Void> runAReq() {
-        return new AsyncRequest<Void>(this) {
-            val dis = this;
-
-            val delayResponseProcessor = new AsyncResponseProcessor<Void>() {
-                override void processAsyncResponse(Void _response) {
-                    if (dis.getPendingResponseCount() == 0)
-                        dis.processAsyncResponse(null);
-                }
-            };
-
-            override void processAsyncRequest() {
-                var j = 0L;
-                while (j < count) {
-                    j++;
-                    val delay = new DelayAReq(100);
-                    send(delay, delayResponseProcessor);
-                }
+	@AReq
+    private def run(AsyncRequest<Void> ar) {
+        val delayResponseProcessor = new AsyncResponseProcessor<Void>() {
+            override void processAsyncResponse(Void _response) {
+                if (ar.getPendingResponseCount() == 0)
+                    ar.processAsyncResponse(null);
             }
         };
+        var j = 0L;
+        while (j < count) {
+            j++;
+            val delay = new DelayAReq(100);
+            ar.send(delay, delayResponseProcessor);
+        }
     }
 
     def static void main(String[] _args) throws Exception {

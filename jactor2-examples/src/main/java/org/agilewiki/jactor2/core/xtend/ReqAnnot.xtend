@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.xtend.blades
+package org.agilewiki.jactor2.core.xtend
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase
 import org.agilewiki.jactor2.core.xtend.codegen.SReq

@@ -1,15 +1,15 @@
 package org.agilewiki.jactor2.core.xtend.blades;
 
-import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase
+import org.agilewiki.jactor2.core.impl.Plant
 import org.agilewiki.jactor2.core.requests.AsyncRequest
+import org.agilewiki.jactor2.core.xtend.codegen.AReq
 
 class Compound {
     def static void main(String[] _args) throws Exception {
         new Plant();
         try {
-            new AA().newStart().call();
+            new AA().startAReq().call();
         } finally {
             Plant.close();
         }
@@ -23,27 +23,11 @@ class AA extends NonBlockingBladeBase {
     new() throws Exception {
     }
 
-    static class Start extends AsyncRequest<Void> {
-        val b = new BB();
-
-        val startResponse = new AsyncResponseProcessor<Void>() {
-            override void processAsyncResponse(Void _response) {
-                System.out.println("added value");
-                Start.this.processAsyncResponse(null);
-            }
-        };
-
-        new(AA aa) throws Exception {
-        	super(aa);
-        }
-
-        override void processAsyncRequest() {
-            send(b.newAddValue(), startResponse);
-        }
-    }
-
-    def newStart() {
-    	new Start(this)
+	@AReq
+    private def start(AsyncRequest<Void> ar) {
+    	val b = new BB();
+    	ar.send(b.addValueAReq(b),
+    		[System.out.println("added value"); ar.processAsyncResponse(null)]);
     }
 }
 
@@ -57,28 +41,10 @@ class BB extends NonBlockingBladeBase {
     new() throws Exception {
     }
 
-    static class AddValue extends AsyncRequest<Void> {
-    	val BB bb;
-
-		new (BB bb) {
-			super(bb)
-			this.bb = bb;
-		}
-
-        val valueResponse = new AsyncResponseProcessor<Integer>() {
-            override void processAsyncResponse(Integer _response) {
-                bb.count = bb.count + _response;
-                AddValue.this.processAsyncResponse(null);
-            }
-        };
-
-        override void processAsyncRequest() {
-            send(bb.c.newValue(), valueResponse);
-        }
-    }
-
-    def newAddValue() {
-    	new AddValue(this)
+	@AReq
+    private def addValue(AsyncRequest<Void> ar, BB bb) {
+        ar.send(bb.c.valueAReq(),
+        	[r|bb.count = bb.count + r; ar.processAsyncResponse(null)]);
     }
 }
 
@@ -89,16 +55,8 @@ class CC extends NonBlockingBladeBase {
     new() throws Exception {
     }
 
-    static class Value extends AsyncRequest<Integer> {
-    	new (CC cc) {
-    		super(cc)
-    	}
-        override void processAsyncRequest() {
-            processAsyncResponse(42);
-        }
-    }
-
-    def newValue() {
-    	new Value(this)
+	@AReq
+    private def value(AsyncRequest<Integer> ar) {
+    	ar.processAsyncResponse(42);
     }
 }
