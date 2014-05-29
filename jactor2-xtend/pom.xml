@@ -9,8 +9,8 @@
         <version>0.10.0</version>
     </parent>
 
-    <artifactId>jactor2-examples</artifactId>
-    <name>JActor2-Examples</name>
+    <artifactId>jactor2-xtend</artifactId>
+    <name>JActor2-Xtend</name>
     <packaging>jar</packaging>
 
 	<build>
@@ -66,7 +66,6 @@
 					</execution>
 				</executions>
 			</plugin>
-<!--
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
@@ -86,7 +85,6 @@
 					</execution>
 				</executions>
 			</plugin>
- -->
 		</plugins>
 	</build>
 
@@ -96,26 +94,6 @@
             <groupId>org.agilewiki.jactor2</groupId>
             <artifactId>jactor2-core</artifactId>
             <version>0.10.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.agilewiki.jactor2</groupId>
-            <artifactId>jactor2-coreMt</artifactId>
-            <version>0.10.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.agilewiki.jactor2</groupId>
-            <artifactId>jactor2-xtend</artifactId>
-            <version>0.10.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>15.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.pcollections</groupId>
-            <artifactId>pcollections</artifactId>
-            <version>2.1.2</version>
         </dependency>
 	<dependency>
 		<groupId>org.eclipse.xtend</groupId>
@@ -127,17 +105,6 @@
 		<artifactId>org.eclipse.xtend.core</artifactId>
 		<version>2.6.0</version>
 	</dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.5</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
