@@ -1,39 +1,39 @@
-package org.agilewiki.jactor2.core.examples.reactors;
+package org.agilewiki.jactor2.core.xtend.reactors;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
-import javax.swing.*;
-
-public class SwingBoundReactorSample {
-    public static void main(final String[] _args) throws Exception {
+class SwingBoundReactorSample {
+    def static void main(String[] _args) throws Exception {
         //Create a plant with 5 threads.
-        Plant plant = new Plant(5);
+        val plant = new Plant(5);
 
         new HelloWorld(new SwingBoundReactor()).createAndShowAReq().signal();
     }
 }
 
 class HelloWorld extends SwingBoundBladeBase {
-    HelloWorld(final SwingBoundReactor _reactor) throws Exception {
+    new(SwingBoundReactor _reactor) throws Exception {
         super(_reactor);
     }
 
-    AsyncRequest<Void> createAndShowAReq() {
-        return new AsyncBladeRequest<Void>() {
-            @Override
-            public void processAsyncRequest() {
+    def AsyncRequest<Void> createAndShowAReq() {
+        return new AsyncRequest<Void>(this) {
+            override void processAsyncRequest() {
                 //Create and set up the window.
-                JFrame frame = new JFrame("HelloWorld");
+                val frame = new JFrame("HelloWorld");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
 
                 //Close plant when window is closed.
-                frame.addWindowListener((SwingBoundReactor) getReactor());
+                frame.addWindowListener(getReactor());
 
                 //Add the "Hello World!" label.
-                JLabel label = new JLabel("Hello World!");
+                val label = new JLabel("Hello World!");
                 frame.getContentPane().add(label);
 
                 //Display the window.

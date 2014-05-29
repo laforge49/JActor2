@@ -1,10 +1,13 @@
-package org.agilewiki.jactor2.core.examples.blades;
+package org.agilewiki.jactor2.core.readme.requests;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
-public class Simple {
+import java.io.IOException;
+
+public class ExceptionSample {
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
@@ -26,11 +29,24 @@ class A extends NonBlockingBladeBase {
     class Start extends AsyncBladeRequest<Void> {
         B b;
 
-        AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
+        AsyncResponseProcessor<Void> woopsResponse = new AsyncResponseProcessor<Void>() {
             @Override
             public void processAsyncResponse(Void _response) {
-                System.out.println("added 1");
+                System.out.println("can not get here!");
                 Start.this.processAsyncResponse(null);
+            }
+        };
+
+        ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
+            @Override
+            public void processException(final Exception _e,
+                                         final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+                if (_e instanceof IOException) {
+                    System.out.println("got IOException");
+                    _asyncResponseProcessor.processAsyncResponse(null);
+                } else
+                    throw _e;
             }
         };
 
@@ -40,26 +56,24 @@ class A extends NonBlockingBladeBase {
 
         @Override
         public void processAsyncRequest() {
-            send(b.new Add1(), startResponse);
+            setExceptionHandler(exceptionHandler);
+            send(b.new Woops(), woopsResponse);
         }
     }
 }
 
 class B extends NonBlockingBladeBase {
-    private int count;
-
     /**
      * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
      */
     public B() throws Exception {
     }
 
-    class Add1 extends AsyncBladeRequest<Void> {
+    class Woops extends AsyncBladeRequest<Void> {
 
         @Override
-        public void processAsyncRequest() {
-            count += 1;
-            processAsyncResponse(null);
+        public void processAsyncRequest() throws IOException {
+            throw new IOException();
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.examples.requests;
+package org.agilewiki.jactor2.core.readme.requests;
 
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;

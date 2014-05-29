@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.examples.plant;
+package org.agilewiki.jactor2.core.readme.plant;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;

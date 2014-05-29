@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.examples.requests;
+package org.agilewiki.jactor2.core.xtend.requests;
 
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
@@ -7,12 +7,12 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
-public class AnyMain {
-    public static void main(final String[] _args) throws Exception {
+class AnyMain {
+    def static void main(String[] _args) throws Exception {
         new Plant();
         try {
             System.out.println("\ntest 1");
-            long x = new Any<Long>(new A2(1), new A2(2), new A2(3)).call();
+            var x = new Any<Long>(new A2(1), new A2(2), new A2(3)).call();
             System.out.println("got " + x);
 
             System.out.println("\ntest 2");
@@ -32,19 +32,17 @@ public class AnyMain {
 }
 
 class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
-    final AsyncRequest<RESPONSE_TYPE>[] requests;
+    val AsyncRequest<RESPONSE_TYPE>[] requests;
 
-    public Any(final AsyncRequest<RESPONSE_TYPE>... _requests) throws Exception {
+    new(AsyncRequest<RESPONSE_TYPE>... _requests) throws Exception {
         super(new NonBlockingReactor());
         requests = _requests;
     }
 
-    @Override
-    public void processAsyncRequest() throws Exception {
+    override void processAsyncRequest() throws Exception {
 
         setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
-            @Override
-            public void processException(
+            override void processException(
                     Exception e,
                     AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
                     throws Exception {
@@ -53,25 +51,22 @@ class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
             }
         });
 
-        int i = 0;
-        while (i < requests.length) {
-            send(requests[i], this); //Send the requests and pass back the first result received
-            i += 1;
-        }
+		for (r : requests) {
+            send(r, this); //Send the requests and pass back the first result received
+		}
     }
 }
 
 class A2 extends AsyncRequest<Long> {
-    final long delay;
+    val long delay;
 
-    A2(final long _delay) throws Exception {
+    new(long _delay) throws Exception {
         super(new NonBlockingReactor());
         delay = _delay;
     }
 
-    @Override
-    public void processAsyncRequest() {
-        for (long i = 0; i < delay * 100000; i++)
+    override void processAsyncRequest() {
+        for (var i = 0L; i < delay * 100000; i++)
             Thread.yield();
         processAsyncResponse(delay);
     }
@@ -81,18 +76,17 @@ class ForcedException extends Exception {
 }
 
 class A3 extends AsyncRequest<Long> {
-    final long delay;
+    val long delay;
 
-    A3(final long _delay) throws Exception {
+    new(long _delay) throws Exception {
         super(new BlockingReactor());
         delay = _delay;
     }
 
-    @Override
-    public void processAsyncRequest() throws ForcedException {
+    override void processAsyncRequest() throws ForcedException {
         if (delay == 0)
             throw new ForcedException();
-        for (long i = 0; i < delay * 10000000; i++) {
+        for (var i = 0L; i < delay * 10000000; i++) {
             if (i % 1000 == 0 && isCanceled())
                 return;
             Thread.yield();

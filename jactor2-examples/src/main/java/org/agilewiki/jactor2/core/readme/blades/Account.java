@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.examples.blades;
+package org.agilewiki.jactor2.core.readme.blades;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
@@ -24,13 +24,15 @@ public class Account extends NonBlockingBladeBase {
         };
     }
 
-    public AsyncRequest<Boolean> transferAReq(final int _amount, final Account _account) {
+    public AsyncRequest<Boolean> transferAReq(final int _amount,
+            final Account _account) {
         return new AsyncBladeRequest<Boolean>() {
             AsyncRequest<Boolean> dis = this;
 
             ExceptionHandler<Boolean> depositExceptionHandler = new ExceptionHandler<Boolean>() {
                 @Override
-                public Boolean processException(Exception e) throws Exception {
+                public Boolean processException(final Exception e)
+                        throws Exception {
                     hold -= _amount;
                     balance += _amount;
                     return false;
@@ -39,7 +41,7 @@ public class Account extends NonBlockingBladeBase {
 
             AsyncResponseProcessor<Void> depositResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) {
+                public void processAsyncResponse(final Void _response) {
                     hold -= _amount;
                     dis.processAsyncResponse(true);
                 }
@@ -60,9 +62,9 @@ public class Account extends NonBlockingBladeBase {
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
-            Account account1 = new Account();
+            final Account account1 = new Account();
             account1.depositSReq(1000).call();
-            Account account2 = new Account();
+            final Account account2 = new Account();
             System.out.println(account1.transferAReq(500, account2).call());
         } finally {
             Plant.close();

@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
@@ -26,6 +27,16 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     public AsyncRequest(final Reactor _targetReactor) {
         asyncRequestImpl = PlantImpl.getSingleton().createAsyncRequestImpl(
                 this, _targetReactor);
+    }
+
+    /**
+     * Create an AsyncRequest and bind it to its target targetReactor.
+     *
+     * @param _targetBlade Provides the targetReactor where this AsyncRequest Objects is passed for processing.
+     *                       The thread owned by this targetReactor will process this AsyncRequest.
+     */
+    public AsyncRequest(final Blade _targetBlade) {
+        this(_targetBlade.getReactor());
     }
 
     @Override

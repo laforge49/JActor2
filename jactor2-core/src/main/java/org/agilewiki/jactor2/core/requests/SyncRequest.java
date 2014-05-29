@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
@@ -25,6 +26,16 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements
     public SyncRequest(final Reactor _targetReactor) {
         requestImpl = PlantImpl.getSingleton().createSyncRequestImpl(this,
                 _targetReactor);
+    }
+
+    /**
+     * Create a SyncRequest.
+     *
+     * @param _targetBlade Provides the targetReactor where this SyncRequest object is passed for processing.
+     *                       The thread owned by this targetReactor will process this SyncRequest.
+     */
+    public SyncRequest(final Blade _targetBlade) {
+        this(_targetBlade.getReactor());
     }
 
     /**

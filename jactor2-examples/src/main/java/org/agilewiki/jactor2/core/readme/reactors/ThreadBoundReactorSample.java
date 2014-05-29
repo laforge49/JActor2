@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.examples.reactors;
+package org.agilewiki.jactor2.core.readme.reactors;
 
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;

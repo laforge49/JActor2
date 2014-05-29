@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.examples.immutable;
+package org.agilewiki.jactor2.core.readme.immutable;
 
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.impl.mtPlant.ISMapImpl;
