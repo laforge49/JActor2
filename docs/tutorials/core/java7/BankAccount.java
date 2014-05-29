@@ -8,6 +8,8 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 public class BankAccount extends NonBlockingBladeBase {
     private int balance;
     private int hold;
+    
+    public BankAccount() throws Exception {}
 
     public SyncRequest<Void> depositSReq(final int _amount) {
         return new SyncBladeRequest<Void>() {

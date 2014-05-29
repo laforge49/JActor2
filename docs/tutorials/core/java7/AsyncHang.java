@@ -4,6 +4,9 @@ import org.agilewiki.jactor2.core.requests.AsyncRequest;
 
 public class AsyncHang extends NonBlockingBladeBase {
 
+    public AsyncHang() throws Exception {
+    }
+
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
