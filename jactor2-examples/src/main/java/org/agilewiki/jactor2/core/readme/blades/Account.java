@@ -21,14 +21,14 @@ public class Account extends NonBlockingBladeBase {
 
     public void deposit(final int _amount, final Reactor sourceReactor) {
         directCheck(sourceReactor);
-        _deposit(_amount);
+        deposit(_amount);
     }
 
     public SyncRequest<Void> depositSReq(final int _amount) {
         return new SyncBladeRequest<Void>() {
             @Override
             public Void processSyncRequest() throws Exception {
-                _deposit(_amount);
+                deposit(_amount);
                 return null;
             }
         };
