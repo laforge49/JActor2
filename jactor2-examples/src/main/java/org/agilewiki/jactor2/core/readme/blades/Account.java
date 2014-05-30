@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.readme.blades;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
@@ -14,11 +15,20 @@ public class Account extends NonBlockingBladeBase {
     public Account() throws Exception {
     }
 
+    private void _deposit(final int _amount) {
+        balance += _amount;
+    }
+
+    public void deposit(final int _amount, final Reactor sourceReactor) {
+        directCheck(sourceReactor);
+        _deposit(_amount);
+    }
+
     public SyncRequest<Void> depositSReq(final int _amount) {
         return new SyncBladeRequest<Void>() {
             @Override
             public Void processSyncRequest() throws Exception {
-                balance += _amount;
+                _deposit(_amount);
                 return null;
             }
         };
