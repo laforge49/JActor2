@@ -15,7 +15,7 @@ public class Account extends NonBlockingBladeBase {
     public Account() throws Exception {
     }
 
-    private void _deposit(final int _amount) {
+    private void deposit(final int _amount) {
         balance += _amount;
     }
 
