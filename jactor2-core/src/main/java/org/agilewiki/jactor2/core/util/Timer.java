@@ -188,7 +188,6 @@ public class Timer extends com.codahale.metrics.Timer {
      *
      * @param event a {@link Runnable} whose {@link Runnable#run()} method implements a process
      *              whose duration should be timed
-     * @return the value returned by {@code event}
      * @throws Exception if {@code event} throws an {@link Exception}
      */
     public final void time(final Runnable event) throws Exception {

@@ -188,7 +188,6 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
     /**
      * A request to register a blade. The request throws an IllegalStateException
      * if the name is a duplicate.
-     * <p/>
      * An IllegalArgumentException is thrown if the name is invalid.
      *
      * @param _blade The blade being registered.
