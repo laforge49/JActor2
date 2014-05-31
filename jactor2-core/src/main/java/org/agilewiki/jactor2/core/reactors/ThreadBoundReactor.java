@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.ThreadBoundBlade;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * A reactor bound to a pre-existing thread.
@@ -15,6 +16,7 @@ import org.agilewiki.jactor2.core.plant.PlantImpl;
  * incoming messages have been processed.
  * </p>
  */
+@GwtIncompatible
 public class ThreadBoundReactor extends ReactorBase implements CommonReactor,
         Runnable, ThreadBoundBlade {
 

@@ -1,19 +1,19 @@
 package org.agilewiki.jactor2.core.impl.requests;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
 
-public class BoundResponseProcessorTest extends TestCase {
+public class BoundResponseProcessorTest extends CallTestBase {
     public void test() throws Exception {
         new Plant();
         try {
             final Driver driver = new Driver();
-            Assert.assertEquals("Hello world!", driver.doitAReq().call());
+            Assert.assertEquals("Hello world!", call(driver.doitAReq()));
         } finally {
             Plant.close();
         }

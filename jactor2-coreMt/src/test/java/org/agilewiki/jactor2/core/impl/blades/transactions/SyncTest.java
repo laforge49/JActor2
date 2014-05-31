@@ -1,13 +1,12 @@
 package org.agilewiki.jactor2.core.impl.blades.transactions;
 
-import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableReference;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableSource;
 import org.agilewiki.jactor2.core.blades.transactions.SyncTransaction;
+import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 
-public class SyncTest extends TestCase {
+public class SyncTest extends CallTestBase {
     public void testI() throws Exception {
         new Plant();
 
@@ -39,16 +38,16 @@ public class SyncTest extends TestCase {
         try {
             ImmutableReference m = new ImmutableReference<String>("fun");
             System.out.println(m.getImmutable()); // fun
-            addGood.applyAReq(m).call();
+            call(addGood.applyAReq(m));
             System.out.println(m.getImmutable()); // good fun
             m = new ImmutableReference<String>("grapes");
             System.out.println(m.getImmutable()); // grapes
-            addMoreGood.applyAReq(m).call();
+            call(addMoreGood.applyAReq(m));
             System.out.println(m.getImmutable()); // more good grapes
             m = new ImmutableReference<String>("times");
             System.out.println(m.getImmutable()); // times
             try {
-                bogus.applyAReq(m).call();
+                call(bogus.applyAReq(m));
             } catch (final Exception e) {
                 System.err.println(e.getMessage());
             }

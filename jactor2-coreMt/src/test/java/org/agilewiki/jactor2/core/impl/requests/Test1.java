@@ -1,19 +1,18 @@
 package org.agilewiki.jactor2.core.impl.requests;
 
-import junit.framework.TestCase;
-
+import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 /**
  * Test code.
  */
-public class Test1 extends TestCase {
+public class Test1 extends CallTestBase {
     public void testa() throws Exception {
         new Plant();
         final IsolationReactor reactor = new IsolationReactor();
         final Blade11 blade1 = new Blade11(reactor);
-        final String result = blade1.hiSReq().call();
+        final String result = call(blade1.hiSReq());
         assertEquals("Hello world!", result);
         Plant.close();
     }

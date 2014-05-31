@@ -1,12 +1,14 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * <p>
  * A blocking blade performs long computations, I/O or otherwise may block the thread.
  * </p>
  */
+@GwtIncompatible
 public class BlockingBladeBase extends BladeBase implements BlockingBlade {
     /**
      * Create a Blocking blade and a Blocking reactor whose parent is the internal reactor of Plant.

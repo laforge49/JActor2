@@ -116,7 +116,7 @@ return new SyncBladeRequest<«retTypeObj»>() {
     		if (reactor == null) {
     			reactor = context.newTypeReference(Reactor)
     		}
-    		type.addMethod("_"+name, [
+    		type.addMethod(name, [
 		        visibility = Visibility.PUBLIC
 		        final = true
 		        static = false

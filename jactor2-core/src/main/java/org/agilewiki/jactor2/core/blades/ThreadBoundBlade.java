@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * <p>
@@ -8,6 +9,7 @@ import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
  *     are processed on the single thread to which the reactor is bound.
  * </p>
  */
+@GwtIncompatible
 public interface ThreadBoundBlade extends Blade {
     /**
      * Returns the thread-bound reactor used by this blade.

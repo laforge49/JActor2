@@ -2,22 +2,23 @@ package org.agilewiki.jactor2.core.impl.blades;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
+import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * Test code.
  */
-public class Test1 extends TestCase {
+@GwtIncompatible
+public class Test1 extends CallTestBase {
     public void testI() throws Exception {
         new Plant();
         final Reactor reactor = new IsolationReactor();
         final BladeA bladeA = new BladeA(reactor);
         try {
-            bladeA.throwRequest.call();
+            call(bladeA.throwRequest);
         } catch (final IOException se) {
             Plant.close();
             return;

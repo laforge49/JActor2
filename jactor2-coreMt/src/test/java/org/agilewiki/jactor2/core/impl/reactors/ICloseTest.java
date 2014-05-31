@@ -1,19 +1,18 @@
 package org.agilewiki.jactor2.core.impl.reactors;
 
-import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
+import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.plant.DelayAReq;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
-public class ICloseTest extends TestCase {
+public class ICloseTest extends CallTestBase {
     public void testa() throws Exception {
         new Plant();
         try {
-            new IHang().goAReq().call();
+            call(new IHang().goAReq());
         } finally {
             Plant.close();
         }

@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.BlockingBlade;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * Process requests/responses which may block the thread or tie it up with a long computation.
@@ -15,6 +16,7 @@ import org.agilewiki.jactor2.core.plant.PlantImpl;
  * for each incoming request/response.
  * </p>
  */
+@GwtIncompatible
 public class BlockingReactor extends ReactorBase implements CommonReactor,
         BlockingBlade {
 

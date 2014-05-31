@@ -1,14 +1,13 @@
 package org.agilewiki.jactor2.core.impl.reactors;
 
-import junit.framework.TestCase;
-
+import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
 /**
  * Test code.
  */
-public class ThreadBoundTest extends TestCase {
+public class ThreadBoundTest extends CallTestBase {
     ThreadBoundReactor reactor;
 
     public void testa() throws Exception {

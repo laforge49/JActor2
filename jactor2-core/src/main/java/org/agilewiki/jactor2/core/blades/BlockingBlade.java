@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
  * <p>
@@ -9,6 +10,7 @@ import org.agilewiki.jactor2.core.reactors.BlockingReactor;
  *     reactor are blocked from processing any requests or responses.
  * </p>
  */
+@GwtIncompatible
 public interface BlockingBlade extends Blade {
     /**
      * Returns the blocking reactor used by this blade.

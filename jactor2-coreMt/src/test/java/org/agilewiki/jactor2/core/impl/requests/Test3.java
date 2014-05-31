@@ -1,17 +1,16 @@
 package org.agilewiki.jactor2.core.impl.requests;
 
-import junit.framework.TestCase;
-
+import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 
 /**
  * Test code.
  */
-public class Test3 extends TestCase {
+public class Test3 extends CallTestBase {
     public void testb() throws Exception {
         new Plant();
         final Blade3 blade3 = new Blade3();
-        blade3.hi3SReq().call();
+        call(blade3.hi3SReq());
         Plant.close();
     }
 }
