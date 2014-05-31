@@ -47,7 +47,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../org/agilewiki/jactor2/core/reactors/CommonReactor.html" title="interface in org.agilewiki.jactor2.core.reactors"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../org/agilewiki/jactor2/core/reactors/Facility.html" title="class in org.agilewiki.jactor2.core.reactors"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -72,7 +72,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.org.agilewiki.jactor2.core.blades.BladeBase">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
@@ -98,10 +98,15 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">org.agilewiki.jactor2.core.blades.BladeBase</a></li>
+<li>
+<ul class="inheritance">
 <li><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html" title="class in org.agilewiki.jactor2.core.reactors">org.agilewiki.jactor2.core.reactors.ReactorBase</a></li>
 <li>
 <ul class="inheritance">
 <li>org.agilewiki.jactor2.core.reactors.IsolationReactor</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -131,6 +136,21 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="nested.class.summary">
+<!--   -->
+</a>
+<h3>Nested Class Summary</h3>
+<ul class="blockList">
+<li class="blockList"><a name="nested.classes.inherited.from.class.org.agilewiki.jactor2.core.blades.BladeBase">
+<!--   -->
+</a>
+<h3>Nested classes/interfaces inherited from class&nbsp;org.agilewiki.jactor2.core.blades.<a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase</a></h3>
+<code><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.AsyncBladeRequest</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html" title="type parameter in BladeBase.AsyncBladeRequest">RESPONSE_TYPE</a>&gt;, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.SyncBladeRequest</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html" title="type parameter in BladeBase.SyncBladeRequest">RESPONSE_TYPE</a>&gt;</code></li>
+</ul>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -183,7 +203,7 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/IsolationReactor.html" title="class in org.agilewiki.jactor2.core.reactors">IsolationReactor</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/reactors/IsolationReactor.html#getReactor--">getReactor</a></span>()</code>
-<div class="block">As a blade, the reactor of a reactor is itself.</div>
+<div class="block">Returns the reactor used by the requests of this blade.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -199,6 +219,13 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 </a>
 <h3>Methods inherited from class&nbsp;org.agilewiki.jactor2.core.reactors.<a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html" title="class in org.agilewiki.jactor2.core.reactors">ReactorBase</a></h3>
 <code><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#addCloseable-org.agilewiki.jactor2.core.closeable.Closeable-">addCloseable</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#asCloseableImpl--">asCloseableImpl</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#asReactorImpl--">asReactorImpl</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#close--">close</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#error-java.lang.String-">error</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#error-java.lang.String-java.lang.Throwable-">error</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#fail-java.lang.String-">fail</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#getCurrentReactor--">getCurrentReactor</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#getParentReactor--">getParentReactor</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#initialize-org.agilewiki.jactor2.core.reactors.ReactorImpl-">initialize</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#isInboxEmpty--">isInboxEmpty</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#nullSReq--">nullSReq</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#removeCloseable-org.agilewiki.jactor2.core.closeable.Closeable-">removeCloseable</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#warn-java.lang.String-">warn</a>, <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#warn-java.lang.String-java.lang.Throwable-">warn</a></code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.org.agilewiki.jactor2.core.blades.BladeBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.agilewiki.jactor2.core.blades.<a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase</a></h3>
+<code><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#Z:Z_initialize-org.agilewiki.jactor2.core.reactors.Reactor-">_initialize</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#directCheck-org.agilewiki.jactor2.core.reactors.Reactor-">directCheck</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#isInitialized--">isInitialized</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#send-org.agilewiki.jactor2.core.requests.Request-">send</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -227,8 +254,13 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <ul class="blockList">
 <li class="blockList">
 <h4>IsolationReactor</h4>
-<pre>public&nbsp;IsolationReactor()</pre>
+<pre>public&nbsp;IsolationReactor()
+                 throws java.lang.Exception</pre>
 <div class="block">Create an isolation reactor with the Plant internal reactor as the parent.</div>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
+</dl>
 </li>
 </ul>
 <a name="IsolationReactor-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">
@@ -237,11 +269,14 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <ul class="blockList">
 <li class="blockList">
 <h4>IsolationReactor</h4>
-<pre>public&nbsp;IsolationReactor(<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;_parentReactor)</pre>
+<pre>public&nbsp;IsolationReactor(<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;_parentReactor)
+                 throws java.lang.Exception</pre>
 <div class="block">Create an isolation reactor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_parentReactor</code> - The parent reactor.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
 </dl>
 </li>
 </ul>
@@ -252,12 +287,15 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <li class="blockList">
 <h4>IsolationReactor</h4>
 <pre>public&nbsp;IsolationReactor(int&nbsp;_initialOutboxSize,
-                        int&nbsp;_initialLocalQueueSize)</pre>
+                        int&nbsp;_initialLocalQueueSize)
+                 throws java.lang.Exception</pre>
 <div class="block">Create an isolation reactor with the Plant internal reactor as the parent.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_initialOutboxSize</code> - Initial size of the list of requests/responses for each destination.</dd>
 <dd><code>_initialLocalQueueSize</code> - Initial size of the local input queue.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
 </dl>
 </li>
 </ul>
@@ -269,13 +307,16 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <h4>IsolationReactor</h4>
 <pre>public&nbsp;IsolationReactor(<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;_parentReactor,
                         int&nbsp;_initialOutboxSize,
-                        int&nbsp;_initialLocalQueueSize)</pre>
+                        int&nbsp;_initialLocalQueueSize)
+                 throws java.lang.Exception</pre>
 <div class="block">Create an isolation reactor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_parentReactor</code> - The parent reactor.</dd>
 <dd><code>_initialOutboxSize</code> - Initial size of the list of requests/responses for each destination.</dd>
 <dd><code>_initialLocalQueueSize</code> - Initial size of the local input queue.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
 </dl>
 </li>
 </ul>
@@ -309,8 +350,8 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <li class="blockList">
 <h4>getReactor</h4>
 <pre>public&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/reactors/IsolationReactor.html" title="class in org.agilewiki.jactor2.core.reactors">IsolationReactor</a>&nbsp;getReactor()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html#getReactor--">Reactor</a></code></span></div>
-<div class="block">As a blade, the reactor of a reactor is itself.</div>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html#getReactor--">Blade</a></code></span></div>
+<div class="block">Returns the reactor used by the requests of this blade.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html#getReactor--">getReactor</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a></code></dd>
@@ -319,9 +360,9 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html#getReactor--">getReactor</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#getReactor--">getReactor</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html" title="class in org.agilewiki.jactor2.core.reactors">ReactorBase</a></code></dd>
+<dd><code><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#getReactor--">getReactor</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>this</dd>
+<dd>The Reactor.</dd>
 </dl>
 </li>
 </ul>
@@ -352,7 +393,7 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../org/agilewiki/jactor2/core/reactors/CommonReactor.html" title="interface in org.agilewiki.jactor2.core.reactors"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../org/agilewiki/jactor2/core/reactors/Facility.html" title="class in org.agilewiki.jactor2.core.reactors"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -377,7 +418,7 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/IsolationBl
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.org.agilewiki.jactor2.core.blades.BladeBase">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>

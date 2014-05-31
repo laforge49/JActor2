@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6};
+var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -103,7 +103,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <dl>
 <dt>All Known Implementing Classes:</dt>
-<dd><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.AsyncBladeRequest</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.SyncBladeRequest</a>, <a href="../../../../../org/agilewiki/jactor2/core/plant/DelayAReq.html" title="class in org.agilewiki.jactor2.core.plant">DelayAReq</a>, <a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">SyncRequest</a></dd>
+<dd><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.AsyncBladeRequest</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.SyncBladeRequest</a>, <a href="../../../../../org/agilewiki/jactor2/core/plant/DelayAReq.html" title="class in org.agilewiki.jactor2.core.plant">DelayAReq</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/pubSub/SubscribeAReq.html" title="class in org.agilewiki.jactor2.core.blades.pubSub">SubscribeAReq</a>, <a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">SyncRequest</a></dd>
 </dl>
 <hr>
 <br>
@@ -154,13 +154,19 @@ var activeTableTab = "activeTableTab";
 </td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/util/Timer.html" title="class in org.agilewiki.jactor2.core.util">Timer</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html#getTimer--">getTimer</a></span>()</code>
+<div class="block">Returns the Timer used to track the performance of this Request instance.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html#isCanceled--">isCanceled</a></span>()</code>
 <div class="block">
  Returns true if the request has been canceled.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html#signal--">signal</a></span>()</code>
 <div class="block">Passes this Request to the target Reactor without any result being passed back.</div>
@@ -260,7 +266,7 @@ var activeTableTab = "activeTableTab";
 <a name="isCanceled--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>isCanceled</h4>
 <pre>boolean&nbsp;isCanceled()
@@ -281,6 +287,22 @@ var activeTableTab = "activeTableTab";
 <dd>True if the request has been canceled.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorClosedException.html" title="class in org.agilewiki.jactor2.core.reactors">ReactorClosedException</a></code> - Thrown when the request is closed.</dd>
+</dl>
+</li>
+</ul>
+<a name="getTimer--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getTimer</h4>
+<pre><a href="../../../../../org/agilewiki/jactor2/core/util/Timer.html" title="class in org.agilewiki.jactor2.core.util">Timer</a>&nbsp;getTimer()</pre>
+<div class="block">Returns the Timer used to track the performance of this Request instance.
+
+ Null is not allowed are return value, but Timer.NOP can be used to disable tracking.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the Timer used to track the performance of this Request instance.</dd>
 </dl>
 </li>
 </ul>

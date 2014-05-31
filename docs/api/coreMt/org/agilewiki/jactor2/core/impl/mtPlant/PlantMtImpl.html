@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":9,"i17":10,"i18":10,"i19":10,"i20":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":9,"i20":10,"i21":10,"i22":10,"i23":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -139,6 +139,13 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a name="fields.inherited.from.class.org.agilewiki.jactor2.core.plant.PlantImpl">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.agilewiki.jactor2.core.plant.PlantImpl</h3>
+<code>PLANT_INTERNAL_FACILITY_NAME</code></li>
+</ul>
 </li>
 </ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -204,98 +211,117 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createCloseableImpl-org.agilewiki.jactor2.core.closeable.Closeable-">createCloseableImpl</a></span>(org.agilewiki.jactor2.core.closeable.Closeable&nbsp;_closeable)</code>&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>protected org.agilewiki.jactor2.core.reactors.NonBlockingReactor</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createInternalReactor--">createInternalReactor</a></span>()</code>
+<td class="colFirst"><code>protected org.agilewiki.jactor2.core.reactors.Facility</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createInternalFacility--">createInternalFacility</a></span>()</code>
 <div class="block">Create the Plant's internal reactor.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
+<td class="colFirst"><code>&lt;V&gt;&nbsp;org.agilewiki.jactor2.core.blades.transactions.ISMap&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createISMap--">createISMap</a></span>()</code>
+<div class="block">Create an ISMap.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code>&lt;V&gt;&nbsp;org.agilewiki.jactor2.core.blades.transactions.ISMap&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createISMap-java.util.Map-">createISMap</a></span>(java.util.Map&lt;java.lang.String,V&gt;&nbsp;m)</code>
+<div class="block">Create an ISMap</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>&lt;V&gt;&nbsp;org.agilewiki.jactor2.core.blades.transactions.ISMap&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createISMap-java.lang.String-V-">createISMap</a></span>(java.lang.String&nbsp;key,
+           V&nbsp;value)</code>
+<div class="block">Create an ISMap</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createIsolationReactorImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-">createIsolationReactorImpl</a></span>(org.agilewiki.jactor2.core.reactors.NonBlockingReactor&nbsp;_parentReactor,
                           int&nbsp;_initialOutboxSize,
                           int&nbsp;_initialLocalQueueSize)</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createNonBlockingReactorImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-">createNonBlockingReactorImpl</a></span>(org.agilewiki.jactor2.core.reactors.NonBlockingReactor&nbsp;_parentReactor,
                             int&nbsp;_initialOutboxSize,
                             int&nbsp;_initialLocalQueueSize)</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createSwingBoundReactorImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-">createSwingBoundReactorImpl</a></span>(org.agilewiki.jactor2.core.reactors.NonBlockingReactor&nbsp;_parentReactor,
                            int&nbsp;_initialOutboxSize,
                            int&nbsp;_initialLocalQueueSize)</code>&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>&lt;RESPONSE_TYPE&gt;<br>org.agilewiki.jactor2.core.requests.RequestImpl&lt;RESPONSE_TYPE&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createSyncRequestImpl-org.agilewiki.jactor2.core.requests.SyncRequest-org.agilewiki.jactor2.core.reactors.Reactor-">createSyncRequestImpl</a></span>(org.agilewiki.jactor2.core.requests.SyncRequest&lt;RESPONSE_TYPE&gt;&nbsp;_syncRequest,
                      org.agilewiki.jactor2.core.reactors.Reactor&nbsp;_targetReactor)</code>&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#createThreadBoundReactorImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-java.lang.Runnable-">createThreadBoundReactorImpl</a></span>(org.agilewiki.jactor2.core.reactors.NonBlockingReactor&nbsp;_parentReactor,
                             int&nbsp;_initialOutboxSize,
                             int&nbsp;_initialLocalQueueSize,
                             java.lang.Runnable&nbsp;_boundProcessor)</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.reactors.ReactorImpl</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#getCurrentReactorImpl--">getCurrentReactorImpl</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#getInitialBufferSize--">getInitialBufferSize</a></span>()</code>
 <div class="block">Returns 16.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#getInitialLocalMessageQueueSize--">getInitialLocalMessageQueueSize</a></span>()</code>
 <div class="block">Returns 16.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>org.agilewiki.jactor2.core.reactors.NonBlockingReactor</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#getInternalReactor--">getInternalReactor</a></span>()</code>
+<tr id="i16" class="altColor">
+<td class="colFirst"><code>org.agilewiki.jactor2.core.reactors.Facility</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#getInternalFacility--">getInternalFacility</a></span>()</code>
 <div class="block">Returns the Plant's internal reactor.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantConfiguration.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">PlantConfiguration</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#getPlantConfiguration--">getPlantConfiguration</a></span>()</code>
 <div class="block">Returns the Plant's configuration.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>org.agilewiki.jactor2.core.plant.PlantScheduler</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#getPlantScheduler--">getPlantScheduler</a></span>()</code>
 <div class="block">Return the scheduler that is a part of the Plant's configuration.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">PlantMtImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#getSingleton--">getSingleton</a></span>()</code>
 <div class="block">Returns this singleton.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#removeThreadBoundReactor--">removeThreadBoundReactor</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/SchedulableSemaphore.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">SchedulableSemaphore</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#schedulableSemaphore-int-">schedulableSemaphore</a></span>(int&nbsp;_millisecondDelay)</code>
 <div class="block">Create a SchedulableSemaphore.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#submit-org.agilewiki.jactor2.core.impl.mtReactors.PoolThreadReactorMtImpl-">submit</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtReactors/PoolThreadReactorMtImpl.html" title="class in org.agilewiki.jactor2.core.impl.mtReactors">PoolThreadReactorMtImpl</a>&nbsp;_reactor)</code>
 <div class="block">Submit a Reactor for subsequent execution.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantMtImpl.html#validateCall--">validateCall</a></span>()</code>&nbsp;</td>
 </tr>
@@ -345,8 +371,13 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>PlantMtImpl</h4>
-<pre>public&nbsp;PlantMtImpl()</pre>
+<pre>public&nbsp;PlantMtImpl()
+            throws java.lang.Exception</pre>
 <div class="block">Create the singleton with a default configuration.</div>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
+</dl>
 </li>
 </ul>
 <a name="PlantMtImpl-int-">
@@ -355,11 +386,14 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>PlantMtImpl</h4>
-<pre>public&nbsp;PlantMtImpl(int&nbsp;_threadCount)</pre>
+<pre>public&nbsp;PlantMtImpl(int&nbsp;_threadCount)
+            throws java.lang.Exception</pre>
 <div class="block">Create the singleton with the given thread pool size.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_threadCount</code> - The size of the thread pool.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
 </dl>
 </li>
 </ul>
@@ -369,11 +403,14 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>PlantMtImpl</h4>
-<pre>public&nbsp;PlantMtImpl(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantConfiguration.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">PlantConfiguration</a>&nbsp;_plantConfiguration)</pre>
+<pre>public&nbsp;PlantMtImpl(<a href="../../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantConfiguration.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">PlantConfiguration</a>&nbsp;_plantConfiguration)
+            throws java.lang.Exception</pre>
 <div class="block">Create the singleton with the given configuration.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_plantConfiguration</code> - The configuration to be used by the singleton.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
 </dl>
 </li>
 </ul>
@@ -610,17 +647,20 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 </dl>
 </li>
 </ul>
-<a name="createInternalReactor--">
+<a name="createInternalFacility--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>createInternalReactor</h4>
-<pre>protected&nbsp;org.agilewiki.jactor2.core.reactors.NonBlockingReactor&nbsp;createInternalReactor()</pre>
+<h4>createInternalFacility</h4>
+<pre>protected&nbsp;org.agilewiki.jactor2.core.reactors.Facility&nbsp;createInternalFacility()
+                                                                       throws java.lang.Exception</pre>
 <div class="block">Create the Plant's internal reactor.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The reactor belonging to the singleton.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
 </dl>
 </li>
 </ul>
@@ -638,17 +678,17 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 </dl>
 </li>
 </ul>
-<a name="getInternalReactor--">
+<a name="getInternalFacility--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getInternalReactor</h4>
-<pre>public&nbsp;org.agilewiki.jactor2.core.reactors.NonBlockingReactor&nbsp;getInternalReactor()</pre>
+<h4>getInternalFacility</h4>
+<pre>public&nbsp;org.agilewiki.jactor2.core.reactors.Facility&nbsp;getInternalFacility()</pre>
 <div class="block">Returns the Plant's internal reactor.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getInternalReactor</code>&nbsp;in class&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></dd>
+<dd><code>getInternalFacility</code>&nbsp;in class&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The reactor belonging to the singleton.</dd>
 </dl>
@@ -673,7 +713,7 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 <a name="getInitialBufferSize--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getInitialBufferSize</h4>
 <pre>public&nbsp;int&nbsp;getInitialBufferSize()</pre>
@@ -683,6 +723,71 @@ extends org.agilewiki.jactor2.core.plant.PlantImpl</pre>
 <dd><code>getInitialBufferSize</code>&nbsp;in class&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The reactor default initial buffer size.</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public&nbsp;&lt;V&gt;&nbsp;org.agilewiki.jactor2.core.blades.transactions.ISMap&lt;V&gt;&nbsp;createISMap()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></span></div>
+<div class="block">Create an ISMap.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>createISMap</code>&nbsp;in class&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></dd>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap.</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap-java.lang.String-java.lang.Object-">
+<!--   -->
+</a><a name="createISMap-java.lang.String-V-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public&nbsp;&lt;V&gt;&nbsp;org.agilewiki.jactor2.core.blades.transactions.ISMap&lt;V&gt;&nbsp;createISMap(java.lang.String&nbsp;key,
+                                                                               V&nbsp;value)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></span></div>
+<div class="block">Create an ISMap</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>createISMap</code>&nbsp;in class&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></dd>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>key</code> - Key.</dd>
+<dd><code>value</code> - Value</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap-java.util.Map-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public&nbsp;&lt;V&gt;&nbsp;org.agilewiki.jactor2.core.blades.transactions.ISMap&lt;V&gt;&nbsp;createISMap(java.util.Map&lt;java.lang.String,V&gt;&nbsp;m)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></span></div>
+<div class="block">Create an ISMap</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>createISMap</code>&nbsp;in class&nbsp;<code>org.agilewiki.jactor2.core.plant.PlantImpl</code></dd>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>m</code> - Content.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap.</dd>
 </dl>
 </li>
 </ul>

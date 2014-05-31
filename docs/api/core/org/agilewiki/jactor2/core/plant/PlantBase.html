@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":9,"i2":9};
+var methods = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -155,12 +155,31 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>static <a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantBase.html#getInternalReactor--">getInternalReactor</a></span>()</code>
-<div class="block">Returns the internal reactor.</div>
+<td class="colFirst"><code>static &lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantBase.html#createISMap--">createISMap</a></span>()</code>
+<div class="block">Create an ISMap.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>static &lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantBase.html#createISMap-java.util.Map-">createISMap</a></span>(java.util.Map&lt;java.lang.String,V&gt;&nbsp;m)</code>
+<div class="block">Create an ISMap</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>static &lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantBase.html#createISMap-java.lang.String-V-">createISMap</a></span>(java.lang.String&nbsp;key,
+           V&nbsp;value)</code>
+<div class="block">Create an ISMap</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>static <a href="../../../../../org/agilewiki/jactor2/core/reactors/Facility.html" title="class in org.agilewiki.jactor2.core.reactors">Facility</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantBase.html#getInternalFacility--">getInternalFacility</a></span>()</code>
+<div class="block">Returns the internal reactor.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../../org/agilewiki/jactor2/core/plant/PlantScheduler.html" title="interface in org.agilewiki.jactor2.core.plant">PlantScheduler</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantBase.html#getPlantScheduler--">getPlantScheduler</a></span>()</code>
 <div class="block">Returns the plant scheduler.</div>
@@ -221,13 +240,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a name="getInternalReactor--">
+<a name="getInternalFacility--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getInternalReactor</h4>
-<pre>public static&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;getInternalReactor()</pre>
+<h4>getInternalFacility</h4>
+<pre>public static&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/reactors/Facility.html" title="class in org.agilewiki.jactor2.core.reactors">Facility</a>&nbsp;getInternalFacility()</pre>
 <div class="block">Returns the internal reactor.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -238,7 +257,7 @@ extends java.lang.Object</pre>
 <a name="getPlantScheduler--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getPlantScheduler</h4>
 <pre>public static&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/plant/PlantScheduler.html" title="interface in org.agilewiki.jactor2.core.plant">PlantScheduler</a>&nbsp;getPlantScheduler()</pre>
@@ -246,6 +265,62 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The plant scheduler.</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public static&nbsp;&lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;&nbsp;createISMap()</pre>
+<div class="block">Create an ISMap.</div>
+<dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap.</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap-java.lang.String-java.lang.Object-">
+<!--   -->
+</a><a name="createISMap-java.lang.String-V-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public static&nbsp;&lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;&nbsp;createISMap(java.lang.String&nbsp;key,
+                                       V&nbsp;value)</pre>
+<div class="block">Create an ISMap</div>
+<dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>key</code> - Key.</dd>
+<dd><code>value</code> - Value</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap-java.util.Map-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public static&nbsp;&lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;&nbsp;createISMap(java.util.Map&lt;java.lang.String,V&gt;&nbsp;m)</pre>
+<div class="block">Create an ISMap</div>
+<dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>m</code> - Content.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap.</dd>
 </dl>
 </li>
 </ul>

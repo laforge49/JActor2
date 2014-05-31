@@ -17,8 +17,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":10,"i2":10,"i3":10,"i4":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
+var methods = {"i0":6};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -48,7 +48,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/SyncTransaction.html" title="class in org.agilewiki.jactor2.core.blades.transactions"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li>Next&nbsp;Class</li>
+<li><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/TransactionBase.html" title="class in org.agilewiki.jactor2.core.blades.transactions"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../../index.html?org/agilewiki/jactor2/core/blades/transactions/Transaction.html" target="_top">Frames</a></li>
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -91,83 +91,35 @@ var activeTableTab = "activeTableTab";
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">org.agilewiki.jactor2.core.blades.transactions</div>
-<h2 title="Class Transaction" class="title">Class Transaction&lt;IMMUTABLE&gt;</h2>
+<h2 title="Interface Transaction" class="title">Interface Transaction&lt;IMMUTABLE&gt;</h2>
 </div>
 <div class="contentContainer">
-<ul class="inheritance">
-<li>java.lang.Object</li>
-<li>
-<ul class="inheritance">
-<li><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">org.agilewiki.jactor2.core.blades.transactions.ImmutableReference</a>&lt;IMMUTABLE&gt;</li>
-<li>
-<ul class="inheritance">
-<li>org.agilewiki.jactor2.core.blades.transactions.Transaction&lt;IMMUTABLE&gt;</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
 <dl>
-<dt><span class="paramLabel">Type Parameters:</span></dt>
-<dd><code>IMMUTABLE</code> - The type of immutable data structure.</dd>
+<dt>All Superinterfaces:</dt>
+<dd><a href="../../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableSource.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ImmutableSource</a>&lt;IMMUTABLE&gt;, <a href="../../../../../../org/agilewiki/jactor2/core/blades/IsolationBlade.html" title="interface in org.agilewiki.jactor2.core.blades">IsolationBlade</a></dd>
 </dl>
 <dl>
-<dt>All Implemented Interfaces:</dt>
-<dd><a href="../../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/IsolationBlade.html" title="interface in org.agilewiki.jactor2.core.blades">IsolationBlade</a></dd>
+<dt>All Known Subinterfaces:</dt>
+<dd><a href="../../../../../../org/agilewiki/jactor2/core/blades/ismTransactions/ISMTransaction.html" title="interface in org.agilewiki.jactor2.core.blades.ismTransactions">ISMTransaction</a>&lt;VALUE&gt;</dd>
 </dl>
 <dl>
-<dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/AsyncTransaction.html" title="class in org.agilewiki.jactor2.core.blades.transactions">AsyncTransaction</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/SyncTransaction.html" title="class in org.agilewiki.jactor2.core.blades.transactions">SyncTransaction</a></dd>
+<dt>All Known Implementing Classes:</dt>
+<dd><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/AsyncTransaction.html" title="class in org.agilewiki.jactor2.core.blades.transactions">AsyncTransaction</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/ismTransactions/ISMRemoveTransaction.html" title="class in org.agilewiki.jactor2.core.blades.ismTransactions">ISMRemoveTransaction</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/ismTransactions/ISMSyncTransaction.html" title="class in org.agilewiki.jactor2.core.blades.ismTransactions">ISMSyncTransaction</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/ismTransactions/ISMUpdateTransaction.html" title="class in org.agilewiki.jactor2.core.blades.ismTransactions">ISMUpdateTransaction</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/SyncTransaction.html" title="class in org.agilewiki.jactor2.core.blades.transactions">SyncTransaction</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/TransactionBase.html" title="class in org.agilewiki.jactor2.core.blades.transactions">TransactionBase</a></dd>
 </dl>
 <hr>
 <br>
-<pre>public abstract class <span class="typeNameLabel">Transaction&lt;IMMUTABLE&gt;</span>
-extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;IMMUTABLE&gt;</pre>
-<div class="block">A composable transation for updating an ImmutableReference.
- Transactions are serially reusable, but not thread safe.</div>
+<pre>public interface <span class="typeNameLabel">Transaction&lt;IMMUTABLE&gt;</span>
+extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/IsolationBlade.html" title="interface in org.agilewiki.jactor2.core.blades">IsolationBlade</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableSource.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ImmutableSource</a>&lt;IMMUTABLE&gt;</pre>
+<div class="block">A Transaction.</div>
 </li>
 </ul>
 </div>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- =========== FIELD SUMMARY =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.summary">
-<!--   -->
-</a>
-<h3>Field Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
-<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Field and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#applyAReq">applyAReq</a></span></code>
-<div class="block">The request which updates operate under.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>protected java.lang.StringBuffer</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#trace">trace</a></span></code>
-<div class="block">Holds the trace in reverse chronological order.</div>
-</td>
-</tr>
-</table>
-<ul class="blockList">
-<li class="blockList"><a name="fields.inherited.from.class.org.agilewiki.jactor2.core.blades.transactions.ImmutableReference">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.agilewiki.jactor2.core.blades.transactions.<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a></h3>
-<code><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html#immutable">immutable</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html#reactor">reactor</a></code></li>
-</ul>
-</li>
-</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
@@ -175,55 +127,31 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>protected abstract void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#Z:Z_apply-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">_apply</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_source,
-      <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html" title="interface in org.agilewiki.jactor2.core.requests">AsyncResponseProcessor</a>&lt;java.lang.Void&gt;&nbsp;_dis)</code>
-<div class="block">Apply the update.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#applyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-">applyAReq</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</code>
-<div class="block">Create a request to apply the transaction to an ImmutableReference.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#atomicApplyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-IMMUTABLE-">atomicApplyAReq</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference,
-               <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&nbsp;expected)</code>
-<div class="block">Create a request to apply the transaction to an ImmutableReference if it has not changed.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#evalAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-">evalAReq</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</code>
-<div class="block">Create a request to evaluate the transaction against an ImmutableReference without changing the ImmutableReference.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>protected <a href="../../../../../../org/agilewiki/jactor2/core/requests/ExceptionHandler.html" title="class in org.agilewiki.jactor2.core.requests">ExceptionHandler</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#exceptionHandler--">exceptionHandler</a></span>()</code>&nbsp;</td>
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html#Z:Z_eval-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-org.agilewiki.jactor2.core.requests.AsyncRequest-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">_eval</a></span>(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_root,
+     <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_applyAReq,
+     <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html" title="interface in org.agilewiki.jactor2.core.requests">AsyncResponseProcessor</a>&lt;java.lang.Void&gt;&nbsp;_dis)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.org.agilewiki.jactor2.core.blades.transactions.ImmutableReference">
+<li class="blockList"><a name="methods.inherited.from.class.org.agilewiki.jactor2.core.blades.IsolationBlade">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.agilewiki.jactor2.core.blades.transactions.<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a></h3>
-<code><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html#getImmutable--">getImmutable</a>, <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html#getReactor--">getReactor</a></code></li>
+<h3>Methods inherited from interface&nbsp;org.agilewiki.jactor2.core.blades.<a href="../../../../../../org/agilewiki/jactor2/core/blades/IsolationBlade.html" title="interface in org.agilewiki.jactor2.core.blades">IsolationBlade</a></h3>
+<code><a href="../../../../../../org/agilewiki/jactor2/core/blades/IsolationBlade.html#getReactor--">getReactor</a></code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
+<li class="blockList"><a name="methods.inherited.from.class.org.agilewiki.jactor2.core.blades.transactions.ImmutableSource">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
-<code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
+<h3>Methods inherited from interface&nbsp;org.agilewiki.jactor2.core.blades.transactions.<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableSource.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ImmutableSource</a></h3>
+<code><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableSource.html#getImmutable--">getImmutable</a></code></li>
 </ul>
 </li>
 </ul>
@@ -233,116 +161,23 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ============ FIELD DETAIL =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.detail">
-<!--   -->
-</a>
-<h3>Field Detail</h3>
-<a name="trace">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>trace</h4>
-<pre>protected&nbsp;java.lang.StringBuffer trace</pre>
-<div class="block">Holds the trace in reverse chronological order.</div>
-</li>
-</ul>
-<a name="applyAReq">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>applyAReq</h4>
-<pre>protected&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt; applyAReq</pre>
-<div class="block">The request which updates operate under.</div>
-</li>
-</ul>
-</li>
-</ul>
 <!-- ============ METHOD DETAIL ========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.detail">
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="applyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>applyAReq</h4>
-<pre>public&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;applyAReq(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</pre>
-<div class="block">Create a request to apply the transaction to an ImmutableReference.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>_immutableReference</code> - The ImmutableReference to which the transaction is to be applied.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>The new request.</dd>
-</dl>
-</li>
-</ul>
-<a name="atomicApplyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-java.lang.Object-">
-<!--   -->
-</a><a name="atomicApplyAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-IMMUTABLE-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>atomicApplyAReq</h4>
-<pre>public&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;atomicApplyAReq(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference,
-                                               <a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&nbsp;expected)</pre>
-<div class="block">Create a request to apply the transaction to an ImmutableReference if it has not changed.
- The request returns null if the ImmutableReference changed, otherwise a reference
- to the new immutable is returned.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>_immutableReference</code> - The ImmutableReference to which the transaction is to be applied.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>The new request.</dd>
-</dl>
-</li>
-</ul>
-<a name="evalAReq-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>evalAReq</h4>
-<pre>public&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;evalAReq(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_immutableReference)</pre>
-<div class="block">Create a request to evaluate the transaction against an ImmutableReference without changing the ImmutableReference.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>_immutableReference</code> - The ImmutableReference to which the transaction is to be applied.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>The new request.</dd>
-</dl>
-</li>
-</ul>
-<a name="exceptionHandler--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>exceptionHandler</h4>
-<pre>protected&nbsp;<a href="../../../../../../org/agilewiki/jactor2/core/requests/ExceptionHandler.html" title="class in org.agilewiki.jactor2.core.requests">ExceptionHandler</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;exceptionHandler()</pre>
-</li>
-</ul>
-<a name="Z:Z_apply-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">
+<a name="Z:Z_eval-org.agilewiki.jactor2.core.blades.transactions.ImmutableReference-org.agilewiki.jactor2.core.requests.AsyncRequest-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>_apply</h4>
-<pre>protected abstract&nbsp;void&nbsp;_apply(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_source,
-                               <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html" title="interface in org.agilewiki.jactor2.core.requests">AsyncResponseProcessor</a>&lt;java.lang.Void&gt;&nbsp;_dis)
-                        throws java.lang.Exception</pre>
-<div class="block">Apply the update.</div>
+<h4>_eval</h4>
+<pre>void&nbsp;_eval(<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/ImmutableReference.html" title="class in org.agilewiki.jactor2.core.blades.transactions">ImmutableReference</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_root,
+           <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">AsyncRequest</a>&lt;<a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/Transaction.html" title="type parameter in Transaction">IMMUTABLE</a>&gt;&nbsp;_applyAReq,
+           <a href="../../../../../../org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html" title="interface in org.agilewiki.jactor2.core.requests">AsyncResponseProcessor</a>&lt;java.lang.Void&gt;&nbsp;_dis)
+    throws java.lang.Exception</pre>
 <dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>_source</code> - The source transaction or immutable reference.</dd>
-<dd><code>_dis</code> - Signals completion of the update.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.Exception</code></dd>
 </dl>
@@ -376,7 +211,7 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/SyncTransaction.html" title="class in org.agilewiki.jactor2.core.blades.transactions"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li>Next&nbsp;Class</li>
+<li><a href="../../../../../../org/agilewiki/jactor2/core/blades/transactions/TransactionBase.html" title="class in org.agilewiki.jactor2.core.blades.transactions"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../../index.html?org/agilewiki/jactor2/core/blades/transactions/Transaction.html" target="_top">Frames</a></li>
@@ -401,13 +236,13 @@ extends <a href="../../../../../../org/agilewiki/jactor2/core/blades/transaction
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

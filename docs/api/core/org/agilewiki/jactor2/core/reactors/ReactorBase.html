@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":9,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":9,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -72,7 +72,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.org.agilewiki.jactor2.core.blades.BladeBase">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
@@ -98,7 +98,12 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">org.agilewiki.jactor2.core.blades.BladeBase</a></li>
+<li>
+<ul class="inheritance">
 <li>org.agilewiki.jactor2.core.reactors.ReactorBase</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -116,7 +121,7 @@ var activeTableTab = "activeTableTab";
 <hr>
 <br>
 <pre>public abstract class <span class="typeNameLabel">ReactorBase</span>
-extends java.lang.Object
+extends <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase</a>
 implements <a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a></pre>
 <div class="block">Base class for reactors.</div>
 </li>
@@ -125,6 +130,21 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.h
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="nested.class.summary">
+<!--   -->
+</a>
+<h3>Nested Class Summary</h3>
+<ul class="blockList">
+<li class="blockList"><a name="nested.classes.inherited.from.class.org.agilewiki.jactor2.core.blades.BladeBase">
+<!--   -->
+</a>
+<h3>Nested classes/interfaces inherited from class&nbsp;org.agilewiki.jactor2.core.blades.<a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase</a></h3>
+<code><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.AsyncBladeRequest</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html" title="type parameter in BladeBase.AsyncBladeRequest">RESPONSE_TYPE</a>&gt;, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.SyncBladeRequest</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html" title="type parameter in BladeBase.SyncBladeRequest">RESPONSE_TYPE</a>&gt;</code></li>
+</ul>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -214,42 +234,36 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.h
 </td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#getReactor--">getReactor</a></span>()</code>
-<div class="block">As a blade, the reactor of a reactor is itself.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#initialize-org.agilewiki.jactor2.core.reactors.ReactorImpl-">initialize</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a>&nbsp;_reactorImpl)</code>
 <div class="block">Initialize the reactor.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#isInboxEmpty--">isInboxEmpty</a></span>()</code>
 <div class="block">Returns true when there are no more messages in the inbox.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">SyncRequest</a>&lt;java.lang.Void&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#nullSReq--">nullSReq</a></span>()</code>
 <div class="block">Returns a request targeted to the reactor that does nothing.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#removeCloseable-org.agilewiki.jactor2.core.closeable.Closeable-">removeCloseable</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/closeable/Closeable.html" title="interface in org.agilewiki.jactor2.core.closeable">Closeable</a>&nbsp;_closeable)</code>
 <div class="block">Unregister a Closeable.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#warn-java.lang.String-">warn</a></span>(java.lang.String&nbsp;msg)</code>
 <div class="block">Log a message at the WARN level.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorBase.html#warn-java.lang.String-java.lang.Throwable-">warn</a></span>(java.lang.String&nbsp;msg,
     java.lang.Throwable&nbsp;t)</code>
@@ -259,11 +273,25 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.h
 </tr>
 </table>
 <ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.org.agilewiki.jactor2.core.blades.BladeBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.agilewiki.jactor2.core.blades.<a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase</a></h3>
+<code><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#Z:Z_initialize-org.agilewiki.jactor2.core.reactors.Reactor-">_initialize</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#directCheck-org.agilewiki.jactor2.core.reactors.Reactor-">directCheck</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#getReactor--">getReactor</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#isInitialized--">isInitialized</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.html#send-org.agilewiki.jactor2.core.requests.Request-">send</a></code></li>
+</ul>
+<ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
 <code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.org.agilewiki.jactor2.core.reactors.Reactor">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;org.agilewiki.jactor2.core.reactors.<a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a></h3>
+<code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html#getReactor--">getReactor</a></code></li>
 </ul>
 </li>
 </ul>
@@ -316,11 +344,14 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.h
 <ul class="blockList">
 <li class="blockList">
 <h4>initialize</h4>
-<pre>public&nbsp;void&nbsp;initialize(<a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a>&nbsp;_reactorImpl)</pre>
+<pre>public&nbsp;void&nbsp;initialize(<a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a>&nbsp;_reactorImpl)
+                throws java.lang.Exception</pre>
 <div class="block">Initialize the reactor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_reactorImpl</code> - The object used to implement the reactor.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
 </dl>
 </li>
 </ul>
@@ -355,25 +386,6 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.h
 <dd><code><a href="../../../../../org/agilewiki/jactor2/core/closeable/Closeable.html#asCloseableImpl--">asCloseableImpl</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/closeable/Closeable.html" title="interface in org.agilewiki.jactor2.core.closeable">Closeable</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The closeableImpl.</dd>
-</dl>
-</li>
-</ul>
-<a name="getReactor--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getReactor</h4>
-<pre>public&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a>&nbsp;getReactor()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html#getReactor--">Reactor</a></code></span></div>
-<div class="block">As a blade, the reactor of a reactor is itself.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html#getReactor--">getReactor</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a></code></dd>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html#getReactor--">getReactor</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a></code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>this</dd>
 </dl>
 </li>
 </ul>
@@ -653,7 +665,7 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.h
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.org.agilewiki.jactor2.core.blades.BladeBase">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>

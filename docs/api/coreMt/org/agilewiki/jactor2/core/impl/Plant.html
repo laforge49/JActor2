@@ -41,7 +41,7 @@
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../org/agilewiki/jactor2/core/impl/EntryPoint.html" title="class in org.agilewiki.jactor2.core.impl"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../org/agilewiki/jactor2/core/impl/Delay.html" title="class in org.agilewiki.jactor2.core.impl"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li>Next&nbsp;Class</li>
 </ul>
 <ul class="navList">
@@ -129,7 +129,18 @@ extends org.agilewiki.jactor2.core.plant.PlantBase</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/impl/Plant.html#Plant-org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration-">Plant</a></span>(org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration&nbsp;_plantConfiguration)</code>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/impl/Plant.html#Plant--">Plant</a></span>()</code>
+<div class="block">Create a plant with the default configuration.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/impl/Plant.html#Plant-int-">Plant</a></span>(int&nbsp;_reactorThreadPoolSize)</code>
+<div class="block">Create a plant with the default configuration,
+ but with the given reactor thread pool size.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/impl/Plant.html#Plant-org.agilewiki.jactor2.core.impl.mtPlant.PlantConfiguration-">Plant</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantConfiguration.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">PlantConfiguration</a>&nbsp;_plantConfiguration)</code>
 <div class="block">Create a plant with the given configuration.</div>
 </td>
 </tr>
@@ -147,7 +158,7 @@ extends org.agilewiki.jactor2.core.plant.PlantBase</pre>
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.agilewiki.jactor2.core.plant.PlantBase</h3>
-<code>close, getInternalReactor, getPlantScheduler</code></li>
+<code>close, createISMap, createISMap, createISMap, getInternalFacility, getPlantScheduler</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -170,17 +181,54 @@ extends org.agilewiki.jactor2.core.plant.PlantBase</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="Plant-org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration-">
+<a name="Plant--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>Plant</h4>
+<pre>public&nbsp;Plant()
+      throws java.lang.Exception</pre>
+<div class="block">Create a plant with the default configuration.</div>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
+</dl>
+</li>
+</ul>
+<a name="Plant-int-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>Plant</h4>
+<pre>public&nbsp;Plant(int&nbsp;_reactorThreadPoolSize)
+      throws java.lang.Exception</pre>
+<div class="block">Create a plant with the default configuration,
+ but with the given reactor thread pool size.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>_reactorThreadPoolSize</code> - The number of threads to be created for the
+                               reactor thread pool.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
+</dl>
+</li>
+</ul>
+<a name="Plant-org.agilewiki.jactor2.core.impl.mtPlant.PlantConfiguration-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>Plant</h4>
-<pre>public&nbsp;Plant(org.agilewiki.jactor2.core.impl.stPlant.PlantConfiguration&nbsp;_plantConfiguration)</pre>
+<pre>public&nbsp;Plant(<a href="../../../../../org/agilewiki/jactor2/core/impl/mtPlant/PlantConfiguration.html" title="class in org.agilewiki.jactor2.core.impl.mtPlant">PlantConfiguration</a>&nbsp;_plantConfiguration)
+      throws java.lang.Exception</pre>
 <div class="block">Create a plant with the given configuration.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_plantConfiguration</code> - The configuration to be used by the plant.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
 </dl>
 </li>
 </ul>
@@ -211,7 +259,7 @@ extends org.agilewiki.jactor2.core.plant.PlantBase</pre>
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../org/agilewiki/jactor2/core/impl/EntryPoint.html" title="class in org.agilewiki.jactor2.core.impl"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../org/agilewiki/jactor2/core/impl/Delay.html" title="class in org.agilewiki.jactor2.core.impl"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li>Next&nbsp;Class</li>
 </ul>
 <ul class="navList">

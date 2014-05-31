@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":6,"i6":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":6,"i7":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -141,6 +141,11 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html#SyncRequest-org.agilewiki.jactor2.core.blades.Blade-">SyncRequest</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a>&nbsp;_targetBlade)</code>
+<div class="block">Create a SyncRequest.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html#SyncRequest-org.agilewiki.jactor2.core.reactors.Reactor-">SyncRequest</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a>&nbsp;_targetReactor)</code>
 <div class="block">Create a SyncRequest.</div>
 </td>
@@ -186,19 +191,25 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
 </td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/util/Timer.html" title="class in org.agilewiki.jactor2.core.util">Timer</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html#getTimer--">getTimer</a></span>()</code>
+<div class="block">Returns the default Timer.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html#isCanceled--">isCanceled</a></span>()</code>
 <div class="block">
  Returns true if the request has been canceled.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html" title="type parameter in SyncRequest">RESPONSE_TYPE</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html#processSyncRequest--">processSyncRequest</a></span>()</code>
 <div class="block">The processSyncRequest method will be invoked by the target Reactor on its own thread.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html#signal--">signal</a></span>()</code>
 <div class="block">Passes this Request to the target Reactor without any result being passed back.</div>
@@ -229,7 +240,7 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
 <a name="SyncRequest-org.agilewiki.jactor2.core.reactors.Reactor-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>SyncRequest</h4>
 <pre>public&nbsp;SyncRequest(<a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a>&nbsp;_targetReactor)</pre>
@@ -237,6 +248,21 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_targetReactor</code> - The targetReactor where this SyncRequest object is passed for processing.
+                       The thread owned by this targetReactor will process this SyncRequest.</dd>
+</dl>
+</li>
+</ul>
+<a name="SyncRequest-org.agilewiki.jactor2.core.blades.Blade-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>SyncRequest</h4>
+<pre>public&nbsp;SyncRequest(<a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a>&nbsp;_targetBlade)</pre>
+<div class="block">Create a SyncRequest.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>_targetBlade</code> - Provides the targetReactor where this SyncRequest object is passed for processing.
                        The thread owned by this targetReactor will process this SyncRequest.</dd>
 </dl>
 </li>
@@ -362,7 +388,7 @@ public&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequ
 <a name="isCanceled--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>isCanceled</h4>
 <pre>public&nbsp;boolean&nbsp;isCanceled()
@@ -386,6 +412,22 @@ public&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequ
 <dd>True if the request has been canceled.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorClosedException.html" title="class in org.agilewiki.jactor2.core.reactors">ReactorClosedException</a></code> - Thrown when the request is closed.</dd>
+</dl>
+</li>
+</ul>
+<a name="getTimer--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getTimer</h4>
+<pre>public&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/util/Timer.html" title="class in org.agilewiki.jactor2.core.util">Timer</a>&nbsp;getTimer()</pre>
+<div class="block">Returns the default Timer.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html#getTimer--">getTimer</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html" title="interface in org.agilewiki.jactor2.core.requests">Request</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html" title="type parameter in SyncRequest">RESPONSE_TYPE</a>&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the Timer used to track the performance of this Request instance.</dd>
 </dl>
 </li>
 </ul>

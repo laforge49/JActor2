@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":9};
+var methods = {"i0":10,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -116,6 +116,25 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#PLANT_INTERNAL_FACILITY_NAME">PLANT_INTERNAL_FACILITY_NAME</a></span></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -169,64 +188,83 @@ extends java.lang.Object</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createCloseableImpl-org.agilewiki.jactor2.core.closeable.Closeable-">createCloseableImpl</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/closeable/Closeable.html" title="interface in org.agilewiki.jactor2.core.closeable">Closeable</a>&nbsp;_closeable)</code>&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code>abstract &lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createISMap--">createISMap</a></span>()</code>
+<div class="block">Create an ISMap.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>abstract &lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createISMap-java.util.Map-">createISMap</a></span>(java.util.Map&lt;java.lang.String,V&gt;&nbsp;m)</code>
+<div class="block">Create an ISMap</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code>abstract &lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createISMap-java.lang.String-V-">createISMap</a></span>(java.lang.String&nbsp;key,
+           V&nbsp;value)</code>
+<div class="block">Create an ISMap</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createIsolationReactorImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-">createIsolationReactorImpl</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;_parentReactor,
                           int&nbsp;_initialOutboxSize,
                           int&nbsp;_initialLocalQueueSize)</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createNonBlockingReactorImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-">createNonBlockingReactorImpl</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;_parentReactor,
                             int&nbsp;_initialOutboxSize,
                             int&nbsp;_initialLocalQueueSize)</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createSwingBoundReactorImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-">createSwingBoundReactorImpl</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;_parentReactor,
                            int&nbsp;_initialOutboxSize,
                            int&nbsp;_initialLocalQueueSize)</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>abstract &lt;RESPONSE_TYPE&gt;<br><a href="../../../../../org/agilewiki/jactor2/core/requests/RequestImpl.html" title="interface in org.agilewiki.jactor2.core.requests">RequestImpl</a>&lt;RESPONSE_TYPE&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createSyncRequestImpl-org.agilewiki.jactor2.core.requests.SyncRequest-org.agilewiki.jactor2.core.reactors.Reactor-">createSyncRequestImpl</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/requests/SyncRequest.html" title="class in org.agilewiki.jactor2.core.requests">SyncRequest</a>&lt;RESPONSE_TYPE&gt;&nbsp;_syncRequest,
                      <a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a>&nbsp;_targetReactor)</code>&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#createThreadBoundReactorImpl-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-int-int-java.lang.Runnable-">createThreadBoundReactorImpl</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;_parentReactor,
                             int&nbsp;_initialOutboxSize,
                             int&nbsp;_initialLocalQueueSize,
                             java.lang.Runnable&nbsp;_boundProcessor)</code>&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/reactors/ReactorImpl.html" title="interface in org.agilewiki.jactor2.core.reactors">ReactorImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#getCurrentReactorImpl--">getCurrentReactorImpl</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>abstract int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#getInitialBufferSize--">getInitialBufferSize</a></span>()</code>
 <div class="block">Returns 16.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>abstract int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#getInitialLocalMessageQueueSize--">getInitialLocalMessageQueueSize</a></span>()</code>
 <div class="block">Returns 16.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#getInternalReactor--">getInternalReactor</a></span>()</code>
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/reactors/Facility.html" title="class in org.agilewiki.jactor2.core.reactors">Facility</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#getInternalFacility--">getInternalFacility</a></span>()</code>
 <div class="block">Returns the Plant's internal reactor.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>abstract <a href="../../../../../org/agilewiki/jactor2/core/plant/PlantScheduler.html" title="interface in org.agilewiki.jactor2.core.plant">PlantScheduler</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#getPlantScheduler--">getPlantScheduler</a></span>()</code>
 <div class="block">Return the scheduler that is a part of the Plant's configuration.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html" title="class in org.agilewiki.jactor2.core.plant">PlantImpl</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/plant/PlantImpl.html#getSingleton--">getSingleton</a></span>()</code>
 <div class="block">Returns this singleton.</div>
@@ -248,6 +286,27 @@ extends java.lang.Object</pre>
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="PLANT_INTERNAL_FACILITY_NAME">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>PLANT_INTERNAL_FACILITY_NAME</h4>
+<pre>public static final&nbsp;java.lang.String PLANT_INTERNAL_FACILITY_NAME</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../../../constant-values.html#org.agilewiki.jactor2.core.plant.PlantImpl.PLANT_INTERNAL_FACILITY_NAME">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -286,13 +345,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a name="getInternalReactor--">
+<a name="getInternalFacility--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getInternalReactor</h4>
-<pre>public abstract&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/reactors/NonBlockingReactor.html" title="class in org.agilewiki.jactor2.core.reactors">NonBlockingReactor</a>&nbsp;getInternalReactor()</pre>
+<h4>getInternalFacility</h4>
+<pre>public abstract&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/reactors/Facility.html" title="class in org.agilewiki.jactor2.core.reactors">Facility</a>&nbsp;getInternalFacility()</pre>
 <div class="block">Returns the Plant's internal reactor.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -440,7 +499,7 @@ extends java.lang.Object</pre>
 <a name="getPlantScheduler--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getPlantScheduler</h4>
 <pre>public abstract&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/plant/PlantScheduler.html" title="interface in org.agilewiki.jactor2.core.plant">PlantScheduler</a>&nbsp;getPlantScheduler()</pre>
@@ -448,6 +507,62 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The scheduler.</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public abstract&nbsp;&lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;&nbsp;createISMap()</pre>
+<div class="block">Create an ISMap.</div>
+<dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap.</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap-java.lang.String-java.lang.Object-">
+<!--   -->
+</a><a name="createISMap-java.lang.String-V-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public abstract&nbsp;&lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;&nbsp;createISMap(java.lang.String&nbsp;key,
+                                         V&nbsp;value)</pre>
+<div class="block">Create an ISMap</div>
+<dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>key</code> - Key.</dd>
+<dd><code>value</code> - Value</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap</dd>
+</dl>
+</li>
+</ul>
+<a name="createISMap-java.util.Map-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>createISMap</h4>
+<pre>public abstract&nbsp;&lt;V&gt;&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/blades/transactions/ISMap.html" title="interface in org.agilewiki.jactor2.core.blades.transactions">ISMap</a>&lt;V&gt;&nbsp;createISMap(java.util.Map&lt;java.lang.String,V&gt;&nbsp;m)</pre>
+<div class="block">Create an ISMap</div>
+<dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>V</code> - The type of value.</dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>m</code> - Content.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new ISMap.</dd>
 </dl>
 </li>
 </ul>
@@ -504,13 +619,13 @@ extends java.lang.Object</pre>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

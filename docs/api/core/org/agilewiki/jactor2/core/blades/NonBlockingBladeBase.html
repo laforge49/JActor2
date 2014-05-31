@@ -114,6 +114,10 @@ var activeTableTab = "activeTableTab";
 <dt>All Implemented Interfaces:</dt>
 <dd><a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/NonBlockingBlade.html" title="interface in org.agilewiki.jactor2.core.blades">NonBlockingBlade</a></dd>
 </dl>
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><a href="../../../../../org/agilewiki/jactor2/core/blades/pubSub/RequestBus.html" title="class in org.agilewiki.jactor2.core.blades.pubSub">RequestBus</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/pubSub/Subscription.html" title="class in org.agilewiki.jactor2.core.blades.pubSub">Subscription</a></dd>
+</dl>
 <hr>
 <br>
 <pre>public class <span class="typeNameLabel">NonBlockingBladeBase</span>
@@ -220,8 +224,13 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/blades/NonBlocking
 <ul class="blockList">
 <li class="blockList">
 <h4>NonBlockingBladeBase</h4>
-<pre>public&nbsp;NonBlockingBladeBase()</pre>
+<pre>public&nbsp;NonBlockingBladeBase()
+                     throws java.lang.Exception</pre>
 <div class="block">Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.</div>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.Exception</code></dd>
+</dl>
 </li>
 </ul>
 <a name="NonBlockingBladeBase-org.agilewiki.jactor2.core.reactors.NonBlockingReactor-">

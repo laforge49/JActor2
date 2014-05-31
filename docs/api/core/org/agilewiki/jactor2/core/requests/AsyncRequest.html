@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":6,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":6,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -115,7 +115,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.AsyncBladeRequest</a>, <a href="../../../../../org/agilewiki/jactor2/core/plant/DelayAReq.html" title="class in org.agilewiki.jactor2.core.plant">DelayAReq</a></dd>
+<dd><a href="../../../../../org/agilewiki/jactor2/core/blades/BladeBase.AsyncBladeRequest.html" title="class in org.agilewiki.jactor2.core.blades">BladeBase.AsyncBladeRequest</a>, <a href="../../../../../org/agilewiki/jactor2/core/plant/DelayAReq.html" title="class in org.agilewiki.jactor2.core.plant">DelayAReq</a>, <a href="../../../../../org/agilewiki/jactor2/core/blades/pubSub/SubscribeAReq.html" title="class in org.agilewiki.jactor2.core.blades.pubSub">SubscribeAReq</a></dd>
 </dl>
 <hr>
 <br>
@@ -141,6 +141,11 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#AsyncRequest-org.agilewiki.jactor2.core.blades.Blade-">AsyncRequest</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a>&nbsp;_targetBlade)</code>
+<div class="block">Create an AsyncRequest and bind it to its target targetReactor.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#AsyncRequest-org.agilewiki.jactor2.core.reactors.Reactor-">AsyncRequest</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a>&nbsp;_targetReactor)</code>
 <div class="block">Create an AsyncRequest and bind it to its target targetReactor.</div>
 </td>
@@ -204,50 +209,56 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
 </td>
 </tr>
 <tr id="i7" class="rowColor">
+<td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/util/Timer.html" title="class in org.agilewiki.jactor2.core.util">Timer</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#getTimer--">getTimer</a></span>()</code>
+<div class="block">Returns the default Timer.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#isCanceled--">isCanceled</a></span>()</code>
 <div class="block">
  Returns true if the request has been canceled.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#onCancel--">onCancel</a></span>()</code>
 <div class="block">An optional callback used to signal that the request has been canceled.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#onClose--">onClose</a></span>()</code>
 <div class="block">An optional callback used to signal that the request has been closed.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#processAsyncException-java.lang.Exception-">processAsyncException</a></span>(java.lang.Exception&nbsp;_response)</code>
 <div class="block">Passes back an exception as a response instead of throwing it.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>abstract void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#processAsyncRequest--">processAsyncRequest</a></span>()</code>
 <div class="block">The processAsyncRequest method will be invoked by the target Reactor on its own thread.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#processAsyncResponse-RESPONSE_TYPE-">processAsyncResponse</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="type parameter in AsyncRequest">RESPONSE_TYPE</a>&nbsp;_response)</code>
 <div class="block">The processAsyncResponse method accepts the response of a request.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>&lt;RT&gt;&nbsp;void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#send-org.agilewiki.jactor2.core.requests.Request-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">send</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html" title="interface in org.agilewiki.jactor2.core.requests">Request</a>&lt;RT&gt;&nbsp;_request,
     <a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html" title="interface in org.agilewiki.jactor2.core.requests">AsyncResponseProcessor</a>&lt;RT&gt;&nbsp;_responseProcessor)</code>
 <div class="block">Pass a request to its target reactor, providing the originating request is not canceled.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>&lt;RT,RT2&gt;&nbsp;void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#send-org.agilewiki.jactor2.core.requests.Request-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-RT2-">send</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html" title="interface in org.agilewiki.jactor2.core.requests">Request</a>&lt;RT&gt;&nbsp;_request,
     <a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html" title="interface in org.agilewiki.jactor2.core.requests">AsyncResponseProcessor</a>&lt;RT2&gt;&nbsp;_dis,
@@ -256,20 +267,20 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
  providing the originating request is not canceled.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../../../../../org/agilewiki/jactor2/core/requests/ExceptionHandler.html" title="class in org.agilewiki.jactor2.core.requests">ExceptionHandler</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="type parameter in AsyncRequest">RESPONSE_TYPE</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#setExceptionHandler-org.agilewiki.jactor2.core.requests.ExceptionHandler-">setExceptionHandler</a></span>(<a href="../../../../../org/agilewiki/jactor2/core/requests/ExceptionHandler.html" title="class in org.agilewiki.jactor2.core.requests">ExceptionHandler</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="type parameter in AsyncRequest">RESPONSE_TYPE</a>&gt;&nbsp;_exceptionHandler)</code>
 <div class="block">Replace the current ExceptionHandler with another.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#setNoHungRequestCheck--">setNoHungRequestCheck</a></span>()</code>
 <div class="block">Disables the hung request check, which is necessary when a response to a request
  is not passed back until another request is received.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html#signal--">signal</a></span>()</code>
 <div class="block">Passes this Request to the target Reactor without any result being passed back.</div>
@@ -300,7 +311,7 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
 <a name="AsyncRequest-org.agilewiki.jactor2.core.reactors.Reactor-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>AsyncRequest</h4>
 <pre>public&nbsp;AsyncRequest(<a href="../../../../../org/agilewiki/jactor2/core/reactors/Reactor.html" title="interface in org.agilewiki.jactor2.core.reactors">Reactor</a>&nbsp;_targetReactor)</pre>
@@ -308,6 +319,21 @@ implements <a href="../../../../../org/agilewiki/jactor2/core/requests/Request.h
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>_targetReactor</code> - The targetReactor where this AsyncRequest Objects is passed for processing.
+                       The thread owned by this targetReactor will process this AsyncRequest.</dd>
+</dl>
+</li>
+</ul>
+<a name="AsyncRequest-org.agilewiki.jactor2.core.blades.Blade-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>AsyncRequest</h4>
+<pre>public&nbsp;AsyncRequest(<a href="../../../../../org/agilewiki/jactor2/core/blades/Blade.html" title="interface in org.agilewiki.jactor2.core.blades">Blade</a>&nbsp;_targetBlade)</pre>
+<div class="block">Create an AsyncRequest and bind it to its target targetReactor.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>_targetBlade</code> - Provides the targetReactor where this AsyncRequest Objects is passed for processing.
                        The thread owned by this targetReactor will process this AsyncRequest.</dd>
 </dl>
 </li>
@@ -634,12 +660,28 @@ public&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncReq
 <a name="cancelAll--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>cancelAll</h4>
 <pre>public&nbsp;void&nbsp;cancelAll()</pre>
 <div class="block">Cancels all outstanding requests.
  This method is thread safe, so it can be called from any thread.</div>
+</li>
+</ul>
+<a name="getTimer--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getTimer</h4>
+<pre>public&nbsp;<a href="../../../../../org/agilewiki/jactor2/core/util/Timer.html" title="class in org.agilewiki.jactor2.core.util">Timer</a>&nbsp;getTimer()</pre>
+<div class="block">Returns the default Timer.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html#getTimer--">getTimer</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/agilewiki/jactor2/core/requests/Request.html" title="interface in org.agilewiki.jactor2.core.requests">Request</a>&lt;<a href="../../../../../org/agilewiki/jactor2/core/requests/AsyncRequest.html" title="type parameter in AsyncRequest">RESPONSE_TYPE</a>&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the Timer used to track the performance of this Request instance.</dd>
+</dl>
 </li>
 </ul>
 </li>
