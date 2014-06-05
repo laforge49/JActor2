@@ -77,7 +77,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param _requestImpl The subordinate RequestImpl.
      * @return True if the subordinate RequestImpl was canceled.
      */
-    public boolean cancel(RequestImpl _requestImpl);
+    public boolean cancel(RequestImpl<?> _requestImpl);
 
     /**
      * Cancel all subordinate RequestImpl's.

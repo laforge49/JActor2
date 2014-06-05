@@ -52,7 +52,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      */
     private Set<Closeable> closeables;
 
-    private final Set<RequestImpl> inProcessRequests = new HashSet<RequestImpl>();
+    private final Set<RequestImpl<?>> inProcessRequests = new HashSet<RequestImpl<?>>();
 
     private volatile boolean running;
 
@@ -79,12 +79,12 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     /**
      * The currently active exception handler.
      */
-    private ExceptionHandler exceptionHandler;
+    private ExceptionHandler<?> exceptionHandler;
 
     /**
      * The request or signal message being processed.
      */
-    private RequestMtImpl currentRequest;
+    private RequestMtImpl<?> currentRequest;
 
     /**
      * Set when the reactor reaches end-of-life.
@@ -123,6 +123,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         closeableImpl = new CloseableMtImpl(this);
         final PlantConfiguration plantConfiguration = PlantMtImpl
                 .getSingleton().getPlantConfiguration();
+        @SuppressWarnings("resource")
         final NonBlockingReactorMtImpl parentReactorImpl = _parentReactor == null ? null
                 : (NonBlockingReactorMtImpl) _parentReactor.asReactorImpl();
         recovery = _parentReactor == null ? plantConfiguration.getRecovery()
@@ -318,10 +319,9 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
             }
         }
 
-        final Iterator<RequestImpl> mit = inProcessRequests.iterator();
+        final Iterator<RequestImpl<?>> mit = inProcessRequests.iterator();
         while (mit.hasNext()) {
-            final RequestImpl requestImpl = mit.next();
-            requestImpl.close();
+            mit.next().close();
         }
 
         try {
@@ -348,7 +348,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @return The message currently being processed, or null.
      */
-    public final RequestMtImpl getCurrentRequest() {
+    public final RequestMtImpl<?> getCurrentRequest() {
         return currentRequest;
     }
 
@@ -357,7 +357,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @param _message The message currently being processed.
      */
-    public final void setCurrentRequest(final RequestMtImpl _message) {
+    public final void setCurrentRequest(final RequestMtImpl<?> _message) {
         currentRequest = _message;
     }
 
@@ -397,13 +397,13 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @return The old exception handler, or null.
      */
     @Override
-    public final ExceptionHandler setExceptionHandler(
-            final ExceptionHandler _handler) {
+    public final ExceptionHandler<?> setExceptionHandler(
+            final ExceptionHandler<?> _handler) {
         if (!isRunning()) {
             throw new IllegalStateException(
                     "Attempt to set an exception handler on an idle targetReactor");
         }
-        final ExceptionHandler rv = this.exceptionHandler;
+        final ExceptionHandler<?> rv = this.exceptionHandler;
         this.exceptionHandler = _handler;
         return rv;
     }
@@ -413,7 +413,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @return The current exception handler, or null.
      */
-    public final ExceptionHandler getExceptionHandler() {
+    public final ExceptionHandler<?> getExceptionHandler() {
         return exceptionHandler;
     }
 
@@ -423,7 +423,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _message A message.
      * @param _local   True when the current thread is assigned to the targetReactor.
      */
-    public void unbufferedAddMessage(final RequestMtImpl _message,
+    public void unbufferedAddMessage(final RequestMtImpl<?> _message,
             final boolean _local) {
         if (isClosing()) {
             if (!_message.isComplete()) {
@@ -443,12 +443,12 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @param _messages Previously buffered messages.
      */
-    public void unbufferedAddMessages(final Queue<RequestMtImpl> _messages)
+    public void unbufferedAddMessages(final Queue<RequestMtImpl<?>> _messages)
             throws Exception {
         if (isClosing()) {
-            final Iterator<RequestMtImpl> itm = _messages.iterator();
+            final Iterator<RequestMtImpl<?>> itm = _messages.iterator();
             while (itm.hasNext()) {
-                final RequestMtImpl message = itm.next();
+                final RequestMtImpl<?> message = itm.next();
                 if (!message.isComplete()) {
                     try {
                         message.close();
@@ -474,7 +474,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _target  The reactor that should eventually receive this message
      * @return True if the message was buffered.
      */
-    public boolean buffer(final RequestMtImpl _message,
+    public boolean buffer(final RequestMtImpl<?> _message,
             final ReactorMtImpl _target) {
         return outbox.buffer(_message, _target);
     }
@@ -484,7 +484,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @param _message The message to be processed.
      */
-    protected void processMessage(final RequestMtImpl _message) {
+    protected void processMessage(final RequestMtImpl<?> _message) {
         _message.eval();
         if (!_message.isComplete() && !startClosing && !_message.isOneWay()) {
             inProcessRequests.add(_message);
@@ -497,10 +497,11 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     abstract protected void notBusy() throws Exception;
 
     @Override
-    public final void incomingResponse(final RequestImpl _message,
+    public final void incomingResponse(final RequestImpl<?> _message,
             final ReactorImpl _responseSource) {
-        final RequestMtImpl message = (RequestMtImpl) _message;
+        final RequestMtImpl<?> message = (RequestMtImpl<?>) _message;
         try {
+            @SuppressWarnings("resource")
             final ReactorMtImpl responseSource = _responseSource == null ? null
                     : (ReactorMtImpl) _responseSource;
             final boolean local = this == _responseSource;
@@ -516,8 +517,8 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     /**
      * Signals the start of a request.
      */
-    public void requestBegin(final RequestImpl _requestImpl) {
-        inbox.requestBegin((RequestMtImpl) _requestImpl);
+    public void requestBegin(final RequestImpl<?> _requestImpl) {
+        inbox.requestBegin((RequestMtImpl<?>) _requestImpl);
     }
 
     /**
@@ -525,10 +526,10 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @param _message The request that has completed
      */
-    public void requestEnd(final RequestImpl _message) {
-        final RequestMtImpl message = (RequestMtImpl) _message;
+    public void requestEnd(final RequestImpl<?> _message) {
+        final RequestMtImpl<?> message = (RequestMtImpl<?>) _message;
         if (message.isForeign()) {
-            final boolean b = inProcessRequests.remove(_message);
+            inProcessRequests.remove(_message);
         }
         inbox.requestEnd(message);
     }
@@ -547,7 +548,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
                 if (timeoutSemaphore != null) {
                     return;
                 }
-                RequestMtImpl request = inbox.poll();
+                RequestMtImpl<?> request = inbox.poll();
                 while ((request != null) && request._isCanceled()) {
                     request = inbox.poll();
                 }
@@ -639,6 +640,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @return The CloseableSet.
      */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected final Set<Closeable> getCloseableSet() {
         if (closeables == null) {
             closeables = Collections.newSetFromMap((Map) new MapMaker()

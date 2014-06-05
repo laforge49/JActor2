@@ -80,7 +80,7 @@ public class PlantMtImpl extends PlantImpl {
                 .getProperty("jactor.configurationClass");
         if (configurationClassName != null) {
             final ClassLoader classLoader = getClass().getClassLoader();
-            Class configurationClass = null;
+            Class<?> configurationClass = null;
             try {
                 configurationClass = classLoader
                         .loadClass(configurationClassName);

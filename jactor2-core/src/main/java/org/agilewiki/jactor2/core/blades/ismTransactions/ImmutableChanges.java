@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.blades.ismTransactions;
 
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
-
 import java.util.SortedMap;
+
+import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 
 /**
  * The content passed to subscribers of the validation and change RequestBus instances.
@@ -19,7 +19,8 @@ public class ImmutableChanges<VALUE> {
      */
     public final SortedMap<String, ImmutableChange<VALUE>> readOnlyChanges;
 
-    public ImmutableChanges(final ImmutableChangeManager immutableChangeManager) {
+    public ImmutableChanges(
+            final ImmutableChangeManager<VALUE> immutableChangeManager) {
         isMap = immutableChangeManager.getISMap();
         readOnlyChanges = immutableChangeManager.readOnlyChanges;
     }

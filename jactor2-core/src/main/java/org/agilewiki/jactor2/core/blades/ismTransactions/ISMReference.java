@@ -1,13 +1,13 @@
 package org.agilewiki.jactor2.core.blades.ismTransactions;
 
+import java.util.Map;
+
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableReference;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-
-import java.util.Map;
 
 /**
  * Supports validation and notifications of changes to an ISMap.
@@ -18,11 +18,11 @@ public class ISMReference<VALUE> extends ImmutableReference<ISMap<VALUE>> {
         return PlantBase.createISMap();
     }
 
-    public static <V> ISMap<V> singleton(String key, V value) {
+    public static <V> ISMap<V> singleton(final String key, final V value) {
         return PlantBase.createISMap(key, value);
     }
 
-    public static <V> ISMap<V> from(Map<String, V> m) {
+    public static <V> ISMap<V> from(final Map<String, V> m) {
         return PlantBase.createISMap(m);
     }
 
@@ -36,6 +36,7 @@ public class ISMReference<VALUE> extends ImmutableReference<ISMap<VALUE>> {
      */
     public final RequestBus<ImmutableChanges<VALUE>> changeBus;
 
+    @SuppressWarnings("unchecked")
     public ISMReference() throws Exception {
         this((ISMap<VALUE>) empty());
     }
@@ -47,7 +48,8 @@ public class ISMReference<VALUE> extends ImmutableReference<ISMap<VALUE>> {
      */
     public ISMReference(final ISMap<VALUE> _immutable) throws Exception {
         super(_immutable);
-        NonBlockingReactor parentReactor = (NonBlockingReactor) getReactor().getParentReactor();
+        final NonBlockingReactor parentReactor = (NonBlockingReactor) getReactor()
+                .getParentReactor();
         validationBus = new RequestBus<ImmutableChanges<VALUE>>(parentReactor);
         changeBus = new RequestBus<ImmutableChanges<VALUE>>(parentReactor);
     }
@@ -57,6 +59,7 @@ public class ISMReference<VALUE> extends ImmutableReference<ISMap<VALUE>> {
      *
      * @param _reactor      The blade's reactor.
      */
+    @SuppressWarnings("unchecked")
     public ISMReference(final IsolationReactor _reactor) {
         this((ISMap<VALUE>) empty(), _reactor);
     }
@@ -67,9 +70,11 @@ public class ISMReference<VALUE> extends ImmutableReference<ISMap<VALUE>> {
      * @param _immutable    The immutable data structure to be operated on.
      * @param _reactor      The blade's reactor.
      */
-    public ISMReference(final ISMap<VALUE> _immutable, final IsolationReactor _reactor) {
+    public ISMReference(final ISMap<VALUE> _immutable,
+            final IsolationReactor _reactor) {
         super(_immutable, _reactor);
-        NonBlockingReactor parentReactor = (NonBlockingReactor) _reactor.getParentReactor();
+        final NonBlockingReactor parentReactor = (NonBlockingReactor) _reactor
+                .getParentReactor();
         validationBus = new RequestBus<ImmutableChanges<VALUE>>(parentReactor);
         changeBus = new RequestBus<ImmutableChanges<VALUE>>(parentReactor);
     }
@@ -79,7 +84,9 @@ public class ISMReference<VALUE> extends ImmutableReference<ISMap<VALUE>> {
      *
      * @param _parentReactor    The parent of the blade's reactor.
      */
-    public ISMReference(final NonBlockingReactor _parentReactor) throws Exception {
+    @SuppressWarnings("unchecked")
+    public ISMReference(final NonBlockingReactor _parentReactor)
+            throws Exception {
         this((ISMap<VALUE>) empty(), _parentReactor);
     }
 
@@ -89,7 +96,8 @@ public class ISMReference<VALUE> extends ImmutableReference<ISMap<VALUE>> {
      * @param _immutable    The immutable data structure to be operated on.
      * @param _parentReactor    The parent of the blade's reactor.
      */
-    public ISMReference(final ISMap<VALUE> _immutable, final NonBlockingReactor _parentReactor) throws Exception {
+    public ISMReference(final ISMap<VALUE> _immutable,
+            final NonBlockingReactor _parentReactor) throws Exception {
         super(_immutable, _parentReactor);
         validationBus = new RequestBus<ImmutableChanges<VALUE>>(_parentReactor);
         changeBus = new RequestBus<ImmutableChanges<VALUE>>(_parentReactor);

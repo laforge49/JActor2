@@ -187,7 +187,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * @param _request A subordinate request.
      * @return True if the request was canceled.
      */
-    public boolean cancel(final Request _request) {
+    public boolean cancel(final Request<?> _request) {
         return asyncRequestImpl.cancel(_request.asRequestImpl());
     }
 

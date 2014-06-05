@@ -68,22 +68,22 @@ public class ISMapImpl<VALUE> implements ISMap<VALUE> {
     }
 
     @Override
-    public ISMapImpl minus(final String key) {
-        return new ISMapImpl(base.minus(key));
+    public ISMapImpl<VALUE> minus(final String key) {
+        return new ISMapImpl<VALUE>(base.minus(key));
     }
 
     @Override
-    public ISMapImpl plus(final String key, final VALUE value) {
-        return new ISMapImpl(base.plus(key, value));
+    public ISMapImpl<VALUE> plus(final String key, final VALUE value) {
+        return new ISMapImpl<VALUE>(base.plus(key, value));
     }
 
     @Override
-    public ISMapImpl plusAll(final Map<String, VALUE> m) {
-        return new ISMapImpl(base.plusAll(m));
+    public ISMapImpl<VALUE> plusAll(final Map<String, VALUE> m) {
+        return new ISMapImpl<VALUE>(base.plusAll(m));
     }
 
     @Override
-    public ISMapImpl subMap(final String keyPrefix) {
+    public ISMapImpl<VALUE> subMap(final String keyPrefix) {
         HashPMap<String, VALUE> hpm = HashTreePMap.empty();
         final Iterator<Entry<String, VALUE>> it = base.entrySet().iterator();
         while (it.hasNext()) {
@@ -92,7 +92,7 @@ public class ISMapImpl<VALUE> implements ISMap<VALUE> {
                 hpm = hpm.plus(e.getKey(), e.getValue());
             }
         }
-        return new ISMapImpl(hpm);
+        return new ISMapImpl<VALUE>(hpm);
     }
 
     @Override

@@ -23,7 +23,7 @@ import org.agilewiki.jactor2.core.util.Timer;
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> implements AsyncRequestImpl<RESPONSE_TYPE> {
 
-    private final Set<RequestMtImpl> pendingRequests = new HashSet<RequestMtImpl>();
+    private final Set<RequestMtImpl<?>> pendingRequests = new HashSet<RequestMtImpl<?>>();
 
     private boolean noHungRequestCheck;
 
@@ -46,7 +46,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
-    public AsyncRequest asRequest() {
+    public AsyncRequest<RESPONSE_TYPE> asRequest() {
         return asyncRequest;
     }
 
@@ -112,7 +112,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
-    public void responseReceived(final RequestImpl request) {
+    public void responseReceived(final RequestImpl<?> request) {
         pendingRequests.remove(request);
     }
 
@@ -199,7 +199,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     @Override
     public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(
             final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler) {
-        final ExceptionHandler<RESPONSE_TYPE> old = targetReactorImpl
+        @SuppressWarnings("unchecked")
+        final ExceptionHandler<RESPONSE_TYPE> old = (ExceptionHandler<RESPONSE_TYPE>) targetReactorImpl
                 .getExceptionHandler();
         targetReactorImpl.setExceptionHandler(_exceptionHandler);
         return old;
@@ -210,8 +211,10 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      *
      * @return The current exception handler, or null.
      */
+    @SuppressWarnings("unchecked")
     public ExceptionHandler<RESPONSE_TYPE> getExceptionHandler() {
-        return targetReactorImpl.getExceptionHandler();
+        return (ExceptionHandler<RESPONSE_TYPE>) targetReactorImpl
+                .getExceptionHandler();
     }
 
     @Override
@@ -219,9 +222,9 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         if (!incomplete) {
             return;
         }
-        final HashSet<RequestMtImpl> pr = new HashSet<RequestMtImpl>(
+        final HashSet<RequestMtImpl<?>> pr = new HashSet<RequestMtImpl<?>>(
                 pendingRequests);
-        final Iterator<RequestMtImpl> it = pr.iterator();
+        final Iterator<RequestMtImpl<?>> it = pr.iterator();
         while (it.hasNext()) {
             it.next().cancel();
         }
@@ -236,8 +239,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      * @return True if the subordinate RequestImpl was canceled.
      */
     @Override
-    public boolean cancel(final RequestImpl _requestImpl) {
-        final RequestMtImpl requestImpl = (RequestMtImpl) _requestImpl;
+    public boolean cancel(final RequestImpl<?> _requestImpl) {
+        final RequestMtImpl<?> requestImpl = (RequestMtImpl<?>) _requestImpl;
         if (!pendingRequests.remove(requestImpl)) {
             return false;
         }
@@ -250,8 +253,9 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void cancelAll() {
-        final Set<RequestImpl> all = new HashSet<RequestImpl>(pendingRequests);
-        final Iterator<RequestImpl> it = all.iterator();
+        final Set<RequestImpl<?>> all = new HashSet<RequestImpl<?>>(
+                pendingRequests);
+        final Iterator<RequestImpl<?>> it = all.iterator();
         while (it.hasNext()) {
             cancel(it.next());
         }

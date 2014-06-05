@@ -23,12 +23,12 @@ public class IsolationInbox extends Inbox {
     /**
      * Local response-pending (requests) queue for same-thread exchanges.
      */
-    private final ArrayDeque<RequestMtImpl> localResponsePendingQueue;
+    private final ArrayDeque<RequestMtImpl<?>> localResponsePendingQueue;
 
     /**
      * Local no-response-pending (events and responses) queue for same-thread exchanges.
      */
-    private final ArrayDeque<RequestMtImpl> localNoResponsePendingQueue;
+    private final ArrayDeque<RequestMtImpl<?>> localNoResponsePendingQueue;
 
     /**
      * Creates an IsolationInbox.
@@ -37,9 +37,9 @@ public class IsolationInbox extends Inbox {
      */
     public IsolationInbox(final int initialLocalQueueSize) {
         concurrentQueue = new ConcurrentLinkedQueue<Object>();
-        localResponsePendingQueue = new ArrayDeque<RequestMtImpl>(
+        localResponsePendingQueue = new ArrayDeque<RequestMtImpl<?>>(
                 initialLocalQueueSize);
-        localNoResponsePendingQueue = new ArrayDeque<RequestMtImpl>(
+        localNoResponsePendingQueue = new ArrayDeque<RequestMtImpl<?>>(
                 initialLocalQueueSize);
     }
 
@@ -48,15 +48,15 @@ public class IsolationInbox extends Inbox {
      *
      * @param _msgs The message to be added.
      */
-    private void offerLocal(final Queue<RequestMtImpl> _msgs) {
+    private void offerLocal(final Queue<RequestMtImpl<?>> _msgs) {
         while (!_msgs.isEmpty()) {
-            final RequestMtImpl msg = _msgs.poll();
+            final RequestMtImpl<?> msg = _msgs.poll();
             offerLocal(msg);
         }
     }
 
     @Override
-    protected void offerLocal(final RequestMtImpl msg) {
+    protected void offerLocal(final RequestMtImpl<?> msg) {
         if (!msg.isComplete() && !msg.isSignal()) {
             localResponsePendingQueue.offer(msg);
         } else {
@@ -85,10 +85,11 @@ public class IsolationInbox extends Inbox {
                 return false;
             }
             if (obj instanceof RequestImpl) {
-                final RequestMtImpl msg = (RequestMtImpl) obj;
+                final RequestMtImpl<?> msg = (RequestMtImpl<?>) obj;
                 offerLocal(msg);
             } else {
-                final Queue<RequestMtImpl> msgs = (Queue<RequestMtImpl>) obj;
+                @SuppressWarnings("unchecked")
+                final Queue<RequestMtImpl<?>> msgs = (Queue<RequestMtImpl<?>>) obj;
                 offerLocal(msgs);
             }
         }
@@ -96,11 +97,11 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public RequestMtImpl poll() {
+    public RequestMtImpl<?> poll() {
         if (!hasWork()) {
             return null;
         }
-        final RequestMtImpl msg = localNoResponsePendingQueue.poll();
+        final RequestMtImpl<?> msg = localNoResponsePendingQueue.poll();
         if (msg != null) {
             return msg;
         } else {
@@ -109,7 +110,7 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public void requestBegin(final RequestMtImpl _requestImpl) {
+    public void requestBegin(final RequestMtImpl<?> _requestImpl) {
         if (_requestImpl.isSignal()) {
             return;
         }
@@ -120,7 +121,7 @@ public class IsolationInbox extends Inbox {
     }
 
     @Override
-    public void requestEnd(final RequestMtImpl _message) {
+    public void requestEnd(final RequestMtImpl<?> _message) {
         if (_message.isSignal()) {
             return;
         }

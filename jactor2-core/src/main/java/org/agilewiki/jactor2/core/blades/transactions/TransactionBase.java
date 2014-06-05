@@ -1,18 +1,18 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
-import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 
 /**
- * A composable transation for updating an ImmutableReference.
+ * A composable transaction for updating an ImmutableReference.
  * Transactions are serially reusable, but not thread safe.
  *
  * @param <IMMUTABLE> The type of immutable data structure.
  */
-abstract public class TransactionBase<IMMUTABLE> implements Transaction<IMMUTABLE> {
+abstract public class TransactionBase<IMMUTABLE> implements
+        Transaction<IMMUTABLE> {
 
     /**
      * The blade's reactor.
@@ -175,7 +175,8 @@ abstract public class TransactionBase<IMMUTABLE> implements Transaction<IMMUTABL
      *
      * @param _transaction The other transaction.
      */
-    protected void applySourceTransaction(final TransactionBase _transaction) {
+    protected void applySourceTransaction(
+            final TransactionBase<IMMUTABLE> _transaction) {
         trace = _transaction.trace;
     }
 

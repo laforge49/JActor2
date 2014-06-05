@@ -101,15 +101,15 @@ public class ThreadBoundReactorMtImpl extends ReactorMtImpl {
      */
     public final boolean flush() throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>>> iter = outbox
+        final Iterator<Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl<?>>>> iter = outbox
                 .getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>> entry = iter
+                final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl<?>>> entry = iter
                         .next();
                 final ReactorMtImpl target = entry.getKey();
-                final ArrayDeque<RequestMtImpl> messages = entry.getValue();
+                final ArrayDeque<RequestMtImpl<?>> messages = entry.getValue();
                 iter.remove();
                 target.unbufferedAddMessages(messages);
             }

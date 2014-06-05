@@ -49,12 +49,12 @@ public class CommonInbox extends Inbox {
     }
 
     @Override
-    protected void offerLocal(final RequestMtImpl msg) {
+    protected void offerLocal(final RequestMtImpl<?> msg) {
         localQueue.offer(msg);
     }
 
     @Override
-    public RequestMtImpl poll() {
+    public RequestMtImpl<?> poll() {
         Object obj = localQueue.peek();
         if (obj == null) {
             obj = concurrentQueue.poll();
@@ -62,11 +62,11 @@ public class CommonInbox extends Inbox {
                 return null;
             } else {
                 if (obj instanceof RequestImpl) {
-                    return (RequestMtImpl) obj;
+                    return (RequestMtImpl<?>) obj;
                 } else {
                     @SuppressWarnings("unchecked")
-                    final Queue<RequestMtImpl> msgs = (Queue<RequestMtImpl>) obj;
-                    final RequestMtImpl result = msgs.poll();
+                    final Queue<RequestMtImpl<?>> msgs = (Queue<RequestMtImpl<?>>) obj;
+                    final RequestMtImpl<?> result = msgs.poll();
                     if (!msgs.isEmpty()) {
                         // msgs is not empty so save it in localQueue
                         localQueue.offer(msgs);
@@ -76,11 +76,11 @@ public class CommonInbox extends Inbox {
             }
         } else {
             if (obj instanceof RequestImpl) {
-                return (RequestMtImpl) localQueue.poll();
+                return (RequestMtImpl<?>) localQueue.poll();
             } else {
                 @SuppressWarnings("unchecked")
-                final Queue<RequestMtImpl> msgs = (Queue<RequestMtImpl>) obj;
-                final RequestMtImpl result = msgs.poll();
+                final Queue<RequestMtImpl<?>> msgs = (Queue<RequestMtImpl<?>>) obj;
+                final RequestMtImpl<?> result = msgs.poll();
                 if (msgs.isEmpty()) {
                     // msgs is empty, so remove msgs from localQueue
                     localQueue.poll();

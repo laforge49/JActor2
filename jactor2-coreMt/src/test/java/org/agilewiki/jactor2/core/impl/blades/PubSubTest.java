@@ -48,8 +48,7 @@ public class PubSubTest extends CallTestBase {
             final RequestBus<Void> requestBus = new RequestBus<Void>(busReactor);
             call(requestBus.sendsContentAReq(null));
             assertEquals(counter.get(), 0);
-            final Subscription<Void> s1 = call(new SubscribeAReq<Void>(
-                    requestBus, subscriberReactor) {
+            call(new SubscribeAReq<Void>(requestBus, subscriberReactor) {
                 @Override
                 protected void processContent(final Void _content,
                         final AsyncRequest<Void> _asyncRequest) {

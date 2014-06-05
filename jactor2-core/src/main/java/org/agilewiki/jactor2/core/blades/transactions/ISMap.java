@@ -14,7 +14,7 @@ public interface ISMap<VALUE> extends Map<String, VALUE> {
      * @param key The key to be removed.
      * @return A virtual copy.
      */
-    ISMap minus(String key);
+    ISMap<VALUE> minus(String key);
 
     /**
      * Make a virtual copy but with the addition of a key/value pair.
@@ -23,7 +23,7 @@ public interface ISMap<VALUE> extends Map<String, VALUE> {
      * @param value The value to be added.
      * @return The virtual copy.
      */
-    ISMap plus(String key, VALUE value);
+    ISMap<VALUE> plus(String key, VALUE value);
 
     /**
      * Make a virtual copy that includes the key/value pairs of another map.
@@ -31,7 +31,7 @@ public interface ISMap<VALUE> extends Map<String, VALUE> {
      * @param m    The map to be included.
      * @return The virtual copy.
      */
-    ISMap plusAll(Map<String, VALUE> m);
+    ISMap<VALUE> plusAll(Map<String, VALUE> m);
 
     /**
      * Make an immutable subMap.
@@ -39,7 +39,7 @@ public interface ISMap<VALUE> extends Map<String, VALUE> {
      * @param keyPrefix The keys in the submap all start with this prefix.
      * @return An immutable subMap.
      */
-    ISMap subMap(String keyPrefix);
+    ISMap<VALUE> subMap(String keyPrefix);
 
     /**
      * Make an unmodifiable SortedSet of the keys.

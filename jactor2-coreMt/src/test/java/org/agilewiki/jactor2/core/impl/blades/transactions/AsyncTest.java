@@ -40,7 +40,7 @@ public class AsyncTest extends CallTestBase {
         };
 
         try {
-            ImmutableReference m = new ImmutableReference<String>("fun");
+            ImmutableReference<String> m = new ImmutableReference<String>("fun");
             System.out.println(m.getImmutable()); // fun
             call(addGood.applyAReq(m));
             System.out.println(m.getImmutable()); // good fun

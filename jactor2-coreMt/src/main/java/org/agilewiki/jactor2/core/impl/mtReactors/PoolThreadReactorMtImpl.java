@@ -76,15 +76,15 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
      */
     protected boolean flush(final boolean _mayMigrate) throws Exception {
         boolean result = false;
-        final Iterator<Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>>> iter = outbox
+        final Iterator<Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl<?>>>> iter = outbox
                 .getIterator();
         if (iter != null) {
             while (iter.hasNext()) {
                 result = true;
-                final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl>> entry = iter
+                final Map.Entry<ReactorMtImpl, ArrayDeque<RequestMtImpl<?>>> entry = iter
                         .next();
                 final ReactorMtImpl target = entry.getKey();
-                final ArrayDeque<RequestMtImpl> messages = entry.getValue();
+                final ArrayDeque<RequestMtImpl<?>> messages = entry.getValue();
                 iter.remove();
                 if (!iter.hasNext() && _mayMigrate
                         && (target instanceof PoolThreadReactorImpl)) {
@@ -97,7 +97,7 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
                                 && targetThreadReference.compareAndSet(null,
                                         currentThread)) {
                             while (!messages.isEmpty()) {
-                                final RequestMtImpl m = messages.poll();
+                                final RequestMtImpl<?> m = messages.poll();
                                 targ.unbufferedAddMessage(m, true);
                             }
                             throw new MigrationException(targ);

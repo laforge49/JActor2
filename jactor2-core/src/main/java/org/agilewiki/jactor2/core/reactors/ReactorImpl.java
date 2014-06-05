@@ -73,7 +73,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @param _handler The new exception handler, or null.
      * @return The old exception handler, or null.
      */
-    ExceptionHandler setExceptionHandler(final ExceptionHandler _handler);
+    ExceptionHandler<?> setExceptionHandler(final ExceptionHandler<?> _handler);
 
     /**
      * A noop request used for synchronizing state.

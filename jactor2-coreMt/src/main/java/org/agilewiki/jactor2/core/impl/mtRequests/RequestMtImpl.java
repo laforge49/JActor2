@@ -24,6 +24,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
     /**
      * Assigned to current time when Facility.DEBUG.
      */
+    @SuppressWarnings("unused")
     private Long debugTimestamp;
 
     /**
@@ -52,18 +53,18 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
      * The request targeted to the source reactor which, when processed,
      * resulted in this message.
      */
-    protected RequestMtImpl oldMessage;
+    protected RequestMtImpl<?> oldMessage;
 
     /**
      * The exception handler that was active in the source reactor
      * when this message was created.
      */
-    protected ExceptionHandler sourceExceptionHandler;
+    protected ExceptionHandler<RESPONSE_TYPE> sourceExceptionHandler;
 
     /**
      * The application object that will process the results.
      */
-    protected AsyncResponseProcessor responseProcessor;
+    protected AsyncResponseProcessor<RESPONSE_TYPE> responseProcessor;
 
     /**
      * True when a response to this message has not yet been determined.
@@ -175,10 +176,11 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
      * If an exception is thrown while processing this Request,
      * that exception is simply logged as a warning.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void signal() {
         use();
-        responseProcessor = SignalResponseProcessor.SINGLETON;
+        responseProcessor = (AsyncResponseProcessor<RESPONSE_TYPE>) SignalResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
     }
 
@@ -196,6 +198,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
      *                           AsyncResponseProcessor is used to process the result on the same thread
      *                           that originally invoked this method. If null, then no response is returned.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void doSend(final ReactorImpl _source,
             final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
@@ -226,7 +229,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
         }
         requestSource = source;
         oldMessage = source.getCurrentRequest();
-        sourceExceptionHandler = source.getExceptionHandler();
+        sourceExceptionHandler = (ExceptionHandler<RESPONSE_TYPE>) source
+                .getExceptionHandler();
         responseProcessor = rp;
         final boolean local = targetReactor == source.asReactor();
         if (local || !source.buffer(this, targetReactorImpl)) {
@@ -243,12 +247,13 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
      * @return The response value from applying this Request to the target reactor.
      * @throws Exception If the result is an exception, it is thrown rather than being returned.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public RESPONSE_TYPE call() throws Exception {
         use();
         PlantMtImpl.getSingleton().validateCall();
         requestSource = new Pender();
-        responseProcessor = CallResponseProcessor.SINGLETON;
+        responseProcessor = (AsyncResponseProcessor<RESPONSE_TYPE>) CallResponseProcessor.SINGLETON;
         targetReactorImpl.unbufferedAddMessage(this, false);
         return (RESPONSE_TYPE) ((Pender) requestSource).pend();
     }
@@ -390,7 +395,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
      * A response has been received for a subordinate request.
      * @param request    A subordinate request.
      */
-    public void responseReceived(final RequestImpl request) {
+    public void responseReceived(final RequestImpl<?> request) {
     }
 
     /**
@@ -402,6 +407,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
     /**
      * Process a response.
      */
+    @SuppressWarnings("unchecked")
     protected void processResponseMessage() {
         oldMessage.responseReceived(this);
         final ReactorMtImpl sourceMessageProcessor = (ReactorMtImpl) requestSource;
@@ -414,7 +420,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
             return;
         }
         try {
-            responseProcessor.processAsyncResponse(response);
+            responseProcessor.processAsyncResponse((RESPONSE_TYPE) response);
         } catch (final Exception e) {
             oldMessage.processException(sourceMessageProcessor, e);
         }
@@ -430,12 +436,13 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
     public void processException(final ReactorMtImpl _activeReactor,
             final Exception _e) {
         final ReactorMtImpl activeMessageProcessor = _activeReactor;
-        final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = activeMessageProcessor
+        @SuppressWarnings("unchecked")
+        final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = (ExceptionHandler<RESPONSE_TYPE>) activeMessageProcessor
                 .getExceptionHandler();
         if (exceptionHandler != null) {
             try {
                 exceptionHandler.processException(_e,
-                        new AsyncResponseProcessor() {
+                        new AsyncResponseProcessor<RESPONSE_TYPE>() {
                             @Override
                             public void processAsyncResponse(
                                     final Object _response) {
@@ -513,6 +520,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
             return result;
         }
 
+        @SuppressWarnings("rawtypes")
         @Override
         public void incomingResponse(final RequestImpl _message,
                 final ReactorImpl _responseSource) {

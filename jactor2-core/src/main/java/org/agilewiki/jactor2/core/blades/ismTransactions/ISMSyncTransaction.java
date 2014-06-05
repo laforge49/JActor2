@@ -10,8 +10,9 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 /**
  * Base class for isMap sync transactions.
  */
-abstract public class ISMSyncTransaction<VALUE> extends SyncTransaction<ISMap<VALUE>>
-        implements ISMSource<VALUE>, ISMTransaction<VALUE> {
+abstract public class ISMSyncTransaction<VALUE> extends
+        SyncTransaction<ISMap<VALUE>> implements ISMSource<VALUE>,
+        ISMTransaction<VALUE> {
 
     protected ImmutableChangeManager<VALUE> immutableChangeManager;
 
@@ -39,54 +40,66 @@ abstract public class ISMSyncTransaction<VALUE> extends SyncTransaction<ISMap<VA
     }
 
     @Override
-    protected void updateImmutableReference(final ImmutableReference<ISMap<VALUE>> _immutableReference) {
+    protected void updateImmutableReference(
+            final ImmutableReference<ISMap<VALUE>> _immutableReference) {
     }
 
-    public AsyncRequest<ISMap<VALUE>> applyAReq(final ImmutableReference<ISMap<VALUE>> _immutableReference) {
+    @Override
+    public AsyncRequest<ISMap<VALUE>> applyAReq(
+            final ImmutableReference<ISMap<VALUE>> _immutableReference) {
         return new AsyncRequest<ISMap<VALUE>>(_immutableReference.getReactor()) {
-            private AsyncResponseProcessor<ISMap<VALUE>> dis = this;
+            private final AsyncResponseProcessor<ISMap<VALUE>> dis = this;
 
-            private ISMReference<VALUE> ismReference = (ISMReference<VALUE>) _immutableReference;
+            private final ISMReference<VALUE> ismReference = (ISMReference<VALUE>) _immutableReference;
 
-            private AsyncResponseProcessor<Void> validationResponseProcessor =
-                    new AsyncResponseProcessor<Void>() {
+            private final AsyncResponseProcessor<Void> validationResponseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
-                    ISMSyncTransaction.super.updateImmutableReference(_immutableReference);
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
+                    ISMSyncTransaction.super
+                            .updateImmutableReference(_immutableReference);
                     immutableChangeManager.close();
-                    send(ismReference.changeBus.sendsContentAReq(immutableChanges),
+                    send(ismReference.changeBus
+                            .sendsContentAReq(immutableChanges),
                             dis, immutable);
                 }
             };
 
-            private AsyncResponseProcessor<ISMap<VALUE>> superResponseProcessor =
-                    new AsyncResponseProcessor<ISMap<VALUE>>() {
+            private final AsyncResponseProcessor<ISMap<VALUE>> superResponseProcessor = new AsyncResponseProcessor<ISMap<VALUE>>() {
                 @Override
-                public void processAsyncResponse(ISMap<VALUE> _response) throws Exception {
-                    immutableChanges = new ImmutableChanges<VALUE>(immutableChangeManager);
-                    send(ismReference.validationBus.sendsContentAReq(immutableChanges),
+                public void processAsyncResponse(final ISMap<VALUE> _response)
+                        throws Exception {
+                    immutableChanges = new ImmutableChanges<VALUE>(
+                            immutableChangeManager);
+                    send(ismReference.validationBus
+                            .sendsContentAReq(immutableChanges),
                             validationResponseProcessor);
                 }
             };
 
             @Override
             public void processAsyncRequest() throws Exception {
-                immutableChangeManager = new ImmutableChangeManager<VALUE>(ismReference.getImmutable());
+                immutableChangeManager = new ImmutableChangeManager<VALUE>(
+                        ismReference.getImmutable());
                 eval(_immutableReference, this, superResponseProcessor);
             }
         };
     }
 
     @Override
-    protected void applySourceReference(final ImmutableReference<ISMap<VALUE>> _immutableReference) {
+    protected void applySourceReference(
+            final ImmutableReference<ISMap<VALUE>> _immutableReference) {
         super.applySourceReference(_immutableReference);
-        immutableChangeManager = new ImmutableChangeManager<VALUE>(_immutableReference.getImmutable());
+        immutableChangeManager = new ImmutableChangeManager<VALUE>(
+                _immutableReference.getImmutable());
     }
 
     @Override
-    protected void applySourceTransaction(final TransactionBase _transaction) {
+    protected void applySourceTransaction(
+            final TransactionBase<ISMap<VALUE>> _transaction) {
         super.applySourceTransaction(_transaction);
-        ISMTransaction<VALUE> ismTransaction = (ISMTransaction<VALUE>) _transaction;
+        @SuppressWarnings("unchecked")
+        final ISMTransaction<VALUE> ismTransaction = (ISMTransaction<VALUE>) _transaction;
         immutableChangeManager = ismTransaction.getImmutableChangeManager();
     }
 }

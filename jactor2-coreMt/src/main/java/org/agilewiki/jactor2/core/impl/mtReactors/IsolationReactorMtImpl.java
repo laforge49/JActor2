@@ -32,7 +32,7 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
     }
 
     @Override
-    protected void processMessage(final RequestMtImpl _message) {
+    protected void processMessage(final RequestMtImpl<?> _message) {
         super.processMessage(_message);
         try {
             flush(true);

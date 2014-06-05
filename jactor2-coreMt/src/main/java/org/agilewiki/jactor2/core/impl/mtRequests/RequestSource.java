@@ -14,6 +14,6 @@ public interface RequestSource {
      * @param message        The response.
      * @param responseSource The targetReactor returning the response.
      */
-    void incomingResponse(final RequestImpl message,
+    void incomingResponse(final RequestImpl<?> message,
             final ReactorImpl responseSource);
 }

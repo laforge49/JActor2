@@ -17,7 +17,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      *
      * @return The Request implemented by this RequestImpl.
      */
-    Request asRequest();
+    Request<RESPONSE_TYPE> asRequest();
 
     /**
      * Passes this Request together with the AsyncResponseProcessor to the target Reactor.

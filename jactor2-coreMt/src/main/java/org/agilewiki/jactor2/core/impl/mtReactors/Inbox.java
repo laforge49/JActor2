@@ -57,7 +57,7 @@ public abstract class Inbox implements AutoCloseable {
      * @param _local True when the message is being inserted using the targetReactor's own thread.
      * @param _msg   The new message.
      */
-    public void offer(final boolean _local, final RequestMtImpl _msg) {
+    public void offer(final boolean _local, final RequestMtImpl<?> _msg) {
         if (_local) {
             offerLocal(_msg);
         } else {
@@ -70,7 +70,7 @@ public abstract class Inbox implements AutoCloseable {
      *
      * @param _msgs The new messages.
      */
-    public void offer(final Queue<RequestMtImpl> _msgs) {
+    public void offer(final Queue<RequestMtImpl<?>> _msgs) {
         if (!_msgs.isEmpty()) {
             concurrentQueue.add(_msgs);
         }
@@ -81,7 +81,7 @@ public abstract class Inbox implements AutoCloseable {
      *
      * @param msg The message to be added.
      */
-    protected abstract void offerLocal(final RequestMtImpl msg);
+    protected abstract void offerLocal(final RequestMtImpl<?> msg);
 
     /**
      * Retrieves and removes from the inbox the next message to be processed, or returns
@@ -90,19 +90,19 @@ public abstract class Inbox implements AutoCloseable {
      * @return The next message to be processed, or null if there are no messages to be
      * processed.
      */
-    abstract public RequestMtImpl poll();
+    abstract public RequestMtImpl<?> poll();
 
     /**
      * Signals the start of a request.
      */
-    public void requestBegin(final RequestMtImpl _requestImpl) {
+    public void requestBegin(final RequestMtImpl<?> _requestImpl) {
 
     }
 
     /**
      * Signals that the result of a request has been assigned.
      */
-    public void requestEnd(final RequestMtImpl _message) {
+    public void requestEnd(final RequestMtImpl<?> _message) {
 
     }
 
@@ -112,7 +112,7 @@ public abstract class Inbox implements AutoCloseable {
     @Override
     public void close() {
         while (true) {
-            final RequestMtImpl message = poll();
+            final RequestMtImpl<?> message = poll();
             if (message == null) {
                 return;
             }
