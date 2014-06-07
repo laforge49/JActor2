@@ -20,7 +20,7 @@ public class ImmutableReference<IMMUTABLE> implements IsolationBlade,
     /**
      * The immutable data structure to be operated on.
      */
-    protected IMMUTABLE immutable;
+    protected volatile IMMUTABLE immutable;
 
     /**
      * Create an ImmutableReference blade.
