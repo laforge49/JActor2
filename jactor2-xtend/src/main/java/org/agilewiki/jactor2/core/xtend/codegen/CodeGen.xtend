@@ -53,6 +53,10 @@ annotation AReq {
             }
         };
     }
+    public long ping(final Reactor sourceReactor) {
+        directCheck(sourceReactor);
+        return ping();
+    }
     </code>
  *
  * @author monster
