@@ -14,7 +14,7 @@ class Account extends NonBlockingBladeBase {
     }
 
 	@SReq
-    private def void deposit(int _amount) {
+    private def void _deposit(int _amount) {
         balance = balance + _amount;
     }
 

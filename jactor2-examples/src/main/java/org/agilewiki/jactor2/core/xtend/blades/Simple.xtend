@@ -25,7 +25,7 @@ class A extends NonBlockingBladeBase {
     }
 
     @AReq
-    private def start(AsyncRequest<Void> ar) {
+    private def _start(AsyncRequest<Void> ar) {
     	val b = new B();
     	ar.send(b.add1AReq(),
     		[System.out.println("added 1"); ar.processAsyncResponse(null)]);
@@ -42,7 +42,7 @@ class B extends NonBlockingBladeBase {
     }
 
     @AReq
-    private def add1(AsyncRequest<Void> ar) {
+    private def _add1(AsyncRequest<Void> ar) {
     	count = count + 1;
     	ar.processAsyncResponse(null);
     }

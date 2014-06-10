@@ -29,7 +29,7 @@ class A extends NonBlockingBladeBase {
     }
 
 	@AReq
-    private def start(AsyncRequest<Void> ar) {
+    private def _start(AsyncRequest<Void> ar) {
     	val b = new B();
         val exceptionHandler = new ExceptionHandler<Void>() {
             override void processException(Exception _e,
@@ -56,7 +56,7 @@ class B extends NonBlockingBladeBase {
     }
 
     @AReq
-    private def woops(AsyncRequest<Void> ar) throws IOException {
+    private def _woops(AsyncRequest<Void> ar) throws IOException {
     	throw new IOException();
     }
 }

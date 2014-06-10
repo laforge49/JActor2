@@ -11,32 +11,32 @@ class ReqAnnot extends NonBlockingBladeBase {
     }
 
 	@SReq
-	private def String hello(String yourName) {
+	private def String _hello(String yourName) {
 		"hello, "+yourName+"!"
 	}
 
 	@SReq
-	private def void nop() {
+	private def void _nop() {
 
 	}
 
 	@SReq
-	private def int meaning() {
+	private def int _meaning() {
 		42
 	}
 
 	@AReq
-	private def void hello(AsyncRequest<String> ar, String yourName) {
+	private def void _hello(AsyncRequest<String> ar, String yourName) {
 		ar.processAsyncResponse("hello, "+yourName+"!")
 	}
 
 	@AReq
-	private def void nop(AsyncRequest<Void> ar) {
+	private def void _nop(AsyncRequest<Void> ar) {
 		ar.processAsyncResponse(null)
 	}
 
 	@AReq
-	private def void meaning(AsyncRequest<Integer> ar) {
+	private def void _meaning(AsyncRequest<Integer> ar) {
 		ar.processAsyncResponse(42)
 	}
 }

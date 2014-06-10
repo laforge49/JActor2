@@ -15,7 +15,7 @@ class Delays extends NonBlockingBladeBase {
     }
 
 	@AReq
-    private def run(AsyncRequest<Void> ar) {
+    private def _run(AsyncRequest<Void> ar) {
         val delayResponseProcessor = new AsyncResponseProcessor<Void>() {
             override void processAsyncResponse(Void _response) {
                 if (ar.getPendingResponseCount() == 0)

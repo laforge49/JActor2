@@ -26,8 +26,8 @@ class BImpl extends NonBlockingBladeBase implements BBB {
             }
         };
     }
-    
-    
+
+
 }
 
 class AAA extends NonBlockingBladeBase {
@@ -38,7 +38,7 @@ class AAA extends NonBlockingBladeBase {
     }
 
     @AReq
-    private def start(AsyncRequest<Void> ar, BBB _b) {
+    private def _start(AsyncRequest<Void> ar, BBB _b) {
     	ar.send(_b.newAdd1(),
     		[System.out.println("added 1"); ar.processAsyncResponse(null)]);
     }

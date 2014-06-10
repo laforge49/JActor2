@@ -39,7 +39,7 @@ annotation AReq {
  * <code>
     // User written
     @SReq
-    private long ping() {
+    private long _ping() {
         count += 1;
         return count;
     }
@@ -49,13 +49,13 @@ annotation AReq {
         return new SyncBladeRequest<Long>() {
             @Override
             public Long processSyncRequest() {
-                return ping();
+                return _ping();
             }
         };
     }
     public long ping(final Reactor sourceReactor) {
         directCheck(sourceReactor);
-        return ping();
+        return _ping();
     }
     </code>
  *
@@ -66,6 +66,14 @@ class SReqProcessor
 
 	var TypeReference reactor
 
+  private def String checkMethod(TransformationContext context, String name, String fqName) {
+  	if (!name.startsWith("_")) {
+  		return "Name of method "+fqName+"(), annotated with @SReq, must start with '_'"
+  	}
+  	null
+  }
+
+
   override doTransform(List<? extends MutableMethodDeclaration> methods,
                        extension TransformationContext context) {
     for (m : methods) {
@@ -73,87 +81,92 @@ class SReqProcessor
     	val name = m.simpleName
     	val fqName = type.qualifiedName+"."+name
     	if (type instanceof MutableClassDeclaration) {
-	    	val params = m.parameters
-	    	val retType = m.returnType
-	    	val genName = name+"SReq"
-	    	val TypeReference retTypeObj = retType.wrapperIfPrimitive;
-    		type.addMethod(genName, [
-		        visibility = Visibility.PUBLIC
-		        final = true
-		        static = false
-		        returnType = context.newTypeReference(SyncRequest, retTypeObj)
-		        var params2 = ""
-		        for (p : params) {
-		        	addParameter(p.simpleName, p.type)
-		        	if (!params2.empty) {
-		        		params2 += ", "
+	    	val error = checkMethod(context, name, fqName)
+	    	if (error != null) {
+    			context.addError(m, error)
+	    	} else {
+		    	val params = m.parameters
+		    	val retType = m.returnType
+		    	val genName = name.substring(1)+"SReq"
+		    	val TypeReference retTypeObj = retType.wrapperIfPrimitive;
+	    		type.addMethod(genName, [
+			        visibility = Visibility.PUBLIC
+			        final = true
+			        static = false
+			        returnType = context.newTypeReference(SyncRequest, retTypeObj)
+			        var params2 = ""
+			        for (p : params) {
+			        	addParameter(p.simpleName, p.type)
+			        	if (!params2.empty) {
+			        		params2 += ", "
+			        	}
+			        	params2 += p.simpleName
 		        	}
-		        	params2 += p.simpleName
-	        	}
-		        val params3 = params2
-				if (retType.void) {
-			        body = [
-'''
-return new SyncBladeRequest<Void>() {
-    @Override
-    public Void processSyncRequest() throws Exception {
-        «name»(«params3»);
-        return null;
-    }
-};
-'''
-			        ]
-				} else {
-			        body = [
-'''
-return new SyncBladeRequest<«retTypeObj»>() {
-    @Override
-    public «retTypeObj» processSyncRequest() throws Exception {
-        return «name»(«params3»);
-    }
-};
-'''
-			        ]
-				}
-		        docComment = "SyncRequest for "+fqName+"("+params3+")"
-    		])
-    		if (reactor == null) {
-    			reactor = context.newTypeReference(Reactor)
+			        val params3 = params2
+					if (retType.void) {
+				        body = [
+	'''
+	return new SyncBladeRequest<Void>() {
+	    @Override
+	    public Void processSyncRequest() throws Exception {
+	        «name»(«params3»);
+	        return null;
+	    }
+	};
+	'''
+				        ]
+					} else {
+				        body = [
+	'''
+	return new SyncBladeRequest<«retTypeObj»>() {
+	    @Override
+	    public «retTypeObj» processSyncRequest() throws Exception {
+	        return «name»(«params3»);
+	    }
+	};
+	'''
+				        ]
+					}
+			        docComment = "SyncRequest for "+fqName+"("+params3+")"
+	    		])
+	    		if (reactor == null) {
+	    			reactor = context.newTypeReference(Reactor)
+	    		}
+	    		type.addMethod(name.substring(1), [
+			        visibility = Visibility.PUBLIC
+			        final = true
+			        static = false
+			        returnType = retType
+			        var params2 = ""
+			        for (p : params) {
+			        	addParameter(p.simpleName, p.type)
+			        	if (!params2.empty) {
+			        		params2 += ", "
+			        	}
+			        	params2 += p.simpleName
+		        	}
+			        val params3 = params2
+		        	addParameter("sourceReactor", reactor)
+					if (retType.void) {
+				        body = [
+	'''
+	directCheck(sourceReactor);
+	«name»(«params3»);
+	'''
+				        ]
+					} else {
+				        body = [
+	'''
+	directCheck(sourceReactor);
+	return «name»(«params3»);
+	'''
+				        ]
+					}
+			        docComment = "direct-call for "+fqName+"("+params3+")"
+	    		])
     		}
-    		type.addMethod(name, [
-		        visibility = Visibility.PUBLIC
-		        final = true
-		        static = false
-		        returnType = retType
-		        var params2 = ""
-		        for (p : params) {
-		        	addParameter(p.simpleName, p.type)
-		        	if (!params2.empty) {
-		        		params2 += ", "
-		        	}
-		        	params2 += p.simpleName
-	        	}
-		        val params3 = params2
-	        	addParameter("sourceReactor", reactor)
-				if (retType.void) {
-			        body = [
-'''
-directCheck(sourceReactor);
-«name»(«params3»);
-'''
-			        ]
-				} else {
-			        body = [
-'''
-directCheck(sourceReactor);
-return «name»(«params3»);
-'''
-			        ]
-				}
-		        docComment = "direct-call for "+fqName+"("+params3+")"
-    		])
     	} else {
-    		context.addWarning(m, "Type of method annotated with @SReq ("+fqName+") must be a class")
+    		context.addError(m, "Type of method annotated with @SReq ("+fqName+") must be a class")
     	}
     }
   }
@@ -168,7 +181,7 @@ return «name»(«params3»);
  * <code>
     // User written
     @AReq
-    private void hang(AsyncRequest<Void> ar) {
+    private void _hang(AsyncRequest<Void> ar) {
         // NOP
     }
 
@@ -177,13 +190,14 @@ return «name»(«params3»);
         return new AsyncBladeRequest<Void>() {
             @Override
             public void processAsyncRequest() throws Exception {
-                hang(this);
+                _hang(this);
             }
         };
     }
-    public long hang(final AsyncRequest<Void> ar, final Reactor sourceReactor) {
-        directCheck(sourceReactor);
-        return hang(ar);
+    public long hang(final AsyncRequest<Void> ar) {
+        // Might get NPE here ...
+        directCheck(ar.getTargetReactor());
+        return _hang(ar);
     }
     </code>
  *
@@ -196,8 +210,11 @@ class AReqProcessor
 
     var TypeReference asyncRequest
 
-  private def String checkFirstParam(TransformationContext context, String fqName,
+  private def String checkMethod(TransformationContext context, String name, String fqName,
   	Iterable<? extends MutableParameterDeclaration> params) {
+  	if (!name.startsWith("_")) {
+  		return "Name of method "+fqName+"(), annotated with @AReq, must start with '_'"
+  	}
   	if (params.empty) {
   		return "Method "+fqName+"(), annotated with @AReq, must receive AsyncRequest<*> as first parameter"
   	}
@@ -222,11 +239,11 @@ class AReqProcessor
     	val fqName = type.qualifiedName+"."+name
     	if (type instanceof MutableClassDeclaration) {
 	    	val params = m.parameters
-	    	val error = checkFirstParam(context, fqName, params)
+	    	val error = checkMethod(context, name, fqName, params)
 	    	if (error != null) {
-    			context.addWarning(m, error)
+    			context.addError(m, error)
 	    	} else {
-		    	val genName = name+"AReq"
+		    	val genName = name.substring(1)+"AReq"
 		    	val p0Type = params.get(0).type
 	    		type.addMethod(genName, [
 			        visibility = Visibility.PUBLIC
@@ -255,36 +272,34 @@ return new AsyncBladeRequest<«p0Type.actualTypeArguments.get(0)»>() {
 			        ]
 			        docComment = "AsyncRequest for "+fqName+"("+params3+")"
 	    		])
-    		}
-
-    		if (reactor == null) {
-    			reactor = context.newTypeReference(Reactor)
-    		}
-    		type.addMethod(name, [
-		        visibility = Visibility.PUBLIC
-		        final = true
-		        static = false
-		        returnType = context.primitiveVoid
-		        var params2 = ""
-		        for (p : params) {
-		        	addParameter(p.simpleName, p.type)
-		        	if (!params2.empty) {
-		        		params2 += ", "
+	    		if (reactor == null) {
+	    			reactor = context.newTypeReference(Reactor)
+	    		}
+	    		type.addMethod(name.substring(1), [
+			        visibility = Visibility.PUBLIC
+			        final = true
+			        static = false
+			        returnType = context.primitiveVoid
+			        var params2 = ""
+			        for (p : params) {
+			        	addParameter(p.simpleName, p.type)
+			        	if (!params2.empty) {
+			        		params2 += ", "
+			        	}
+			        	params2 += p.simpleName
 		        	}
-		        	params2 += p.simpleName
-	        	}
-		        val params3 = params2
-	        	addParameter("sourceReactor", reactor)
-			        body = [
-'''
-directCheck(sourceReactor);
-«name»(«params3»);
-'''
-			        ]
-		        docComment = "direct-call for "+fqName+"("+params3+")"
-    		])
+			        val params3 = params2
+				    body = [
+	'''
+	directCheck(ar.getTargetReactor());
+	«name»(«params3»);
+	'''
+				    ]
+			        docComment = "direct-call for "+fqName+"("+params3+")"
+	    		])
+    		}
     	} else {
-    		context.addWarning(m, "Type of method annotated with @AReq ("+fqName+") must be a class")
+    		context.addError(m, "Type of method annotated with @AReq ("+fqName+") must be a class")
     	}
     }
   }

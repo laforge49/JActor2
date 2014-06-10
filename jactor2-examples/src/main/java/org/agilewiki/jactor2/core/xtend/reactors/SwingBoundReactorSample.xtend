@@ -24,7 +24,7 @@ class HelloWorld extends SwingBoundBladeBase {
     }
 
 	@AReq
-	private def createAndShow(AsyncRequest<Void> ar) {
+	private def _createAndShow(AsyncRequest<Void> ar) {
         //Create and set up the window.
         val frame = new JFrame("HelloWorld");
         //no exit until all threads are closed.

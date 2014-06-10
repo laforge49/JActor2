@@ -24,7 +24,7 @@ class AA extends NonBlockingBladeBase {
     }
 
 	@AReq
-    private def start(AsyncRequest<Void> ar) {
+    private def _start(AsyncRequest<Void> ar) {
     	val b = new BB();
     	ar.send(b.addValueAReq(b),
     		[System.out.println("added value"); ar.processAsyncResponse(null)]);
@@ -42,7 +42,7 @@ class BB extends NonBlockingBladeBase {
     }
 
 	@AReq
-    private def addValue(AsyncRequest<Void> ar, BB bb) {
+    private def _addValue(AsyncRequest<Void> ar, BB bb) {
         ar.send(bb.c.valueAReq(),
         	[r|bb.count = bb.count + r; ar.processAsyncResponse(null)]);
     }
@@ -56,7 +56,7 @@ class CC extends NonBlockingBladeBase {
     }
 
 	@AReq
-    private def value(AsyncRequest<Integer> ar) {
+    private def _value(AsyncRequest<Integer> ar) {
     	ar.processAsyncResponse(42);
     }
 }
