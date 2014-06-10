@@ -64,7 +64,7 @@ annotation AReq {
 class SReqProcessor
       implements TransformationParticipant<MutableMethodDeclaration> {
 
-      	var TypeReference reactor
+	var TypeReference reactor
 
   override doTransform(List<? extends MutableMethodDeclaration> methods,
                        extension TransformationContext context) {
@@ -168,7 +168,7 @@ return «name»(«params3»);
  * <code>
     // User written
     @AReq
-    private void ping(AsyncRequest<Void> ar) {
+    private void hang(AsyncRequest<Void> ar) {
         // NOP
     }
 
@@ -181,6 +181,10 @@ return «name»(«params3»);
             }
         };
     }
+    public long hang(final AsyncRequest<Void> ar, final Reactor sourceReactor) {
+        directCheck(sourceReactor);
+        return hang(ar);
+    }
     </code>
  *
  * @author monster
@@ -188,7 +192,9 @@ return «name»(«params3»);
 class AReqProcessor
       implements TransformationParticipant<MutableMethodDeclaration> {
 
-  var TypeReference asyncRequest
+	var TypeReference reactor
+
+    var TypeReference asyncRequest
 
   private def String checkFirstParam(TransformationContext context, String fqName,
   	Iterable<? extends MutableParameterDeclaration> params) {
@@ -250,6 +256,33 @@ return new AsyncBladeRequest<«p0Type.actualTypeArguments.get(0)»>() {
 			        docComment = "AsyncRequest for "+fqName+"("+params3+")"
 	    		])
     		}
+
+    		if (reactor == null) {
+    			reactor = context.newTypeReference(Reactor)
+    		}
+    		type.addMethod(name, [
+		        visibility = Visibility.PUBLIC
+		        final = true
+		        static = false
+		        returnType = context.primitiveVoid
+		        var params2 = ""
+		        for (p : params) {
+		        	addParameter(p.simpleName, p.type)
+		        	if (!params2.empty) {
+		        		params2 += ", "
+		        	}
+		        	params2 += p.simpleName
+	        	}
+		        val params3 = params2
+	        	addParameter("sourceReactor", reactor)
+			        body = [
+'''
+directCheck(sourceReactor);
+«name»(«params3»);
+'''
+			        ]
+		        docComment = "direct-call for "+fqName+"("+params3+")"
+    		])
     	} else {
     		context.addWarning(m, "Type of method annotated with @AReq ("+fqName+") must be a class")
     	}
