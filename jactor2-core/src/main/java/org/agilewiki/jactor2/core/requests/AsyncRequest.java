@@ -113,7 +113,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * Disables the hung request check, which is necessary when a response to a request
      * is not passed back until another request is received.
      */
-    protected void setNoHungRequestCheck() {
+    public void setNoHungRequestCheck() {
         asyncRequestImpl.setNoHungRequestCheck();
     }
 
