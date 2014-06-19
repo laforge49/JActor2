@@ -98,14 +98,11 @@ JActor2 differs from other actor frameworks in several ways:
 as a nested or anonymous class, so when
 they are evaluated they can operate on that state. This is in contrast to other frameworks where
 the request is little more than a name and a set of parameters.
-2. Requests are single-use objects, which makes them a good place to store intermediate state.
-And when processing responses to subordinate requests send by a given request,
-the state of that request can be safely accessed and updated.
-3. Uncaught exceptions and responses are passed back to the context from which a request originated,
+2. Uncaught exceptions and responses are passed back to the context from which a request originated,
 modeling the way exceptions and return values are handled with Java method calls.
-4. For every request that is sent to another actor, there is every assurance that a response or exception
+3. For every request that is sent to another actor, there is every assurance that a response or exception
 will be passed back.
-5. Messages (requests/responses) are processed in the order they are received by an actor.
+4. Messages (requests/responses) are processed in the order they are received by an actor.
 
 There are three things of particular note here:
 
@@ -159,14 +156,12 @@ reactor. But when an exception is passed back, it is thrown.
 
 ```java
 
-    import org.agilewiki.jactor2.core.impl.Plant;
-
-    public class M {
+    public class Simple {
         public static void main(final String[] _args) throws Exception {
             new Plant();
             try {
                 A a = new A();
-                a.new Start().call();
+                a.start().call();
             } finally {
                 Plant.close();
             }
@@ -200,42 +195,57 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
 ```java
 
     import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+    import org.agilewiki.jactor2.core.requests.AReq;
+    import org.agilewiki.jactor2.core.requests.AsyncRequest;
     import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
     class A extends NonBlockingBladeBase {
-        class Start extends AsyncBladeRequest<Void> {
-            B b = new B();
+        final B b;
 
-            AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
+        public A() throws Exception {
+            b = new B();
+        }
+
+        AReq<Void> start() {
+            return new AReq<Void>(getReactor()) {
                 @Override
-                public void processAsyncResponse(Void _response) throws Exception {
-                    System.out.println("added 1");
-                    Start.this.processAsyncResponse(null);
+                protected void processAsyncRequest(AsyncRequest _asyncRequest,
+                                                   final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        throws Exception {
+                    AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
+                        @Override
+                        public void processAsyncResponse(Void _response) throws Exception {
+                            System.out.println("added 1");
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                        }
+                    };
+                    _asyncRequest.send(b.add1Areq(), startResponse);
                 }
             };
-
-            @Override
-            public void processAsyncRequest() {
-                send(b.new Add1(), startResponse);
-            }
         }
     }
 
     class B extends NonBlockingBladeBase {
         private int count;
 
-        class Add1 extends AsyncBladeRequest<Void> {
+        public B() throws Exception {
+        }
 
-            @Override
-            public void processAsyncRequest() {
-                count += 1;
-                processAsyncResponse(null);
-            }
+        AReq<Void> add1Areq() {
+            return new AReq<Void>(getReactor()) {
+                @Override
+                protected void processAsyncRequest(AsyncRequest _asyncRequest,
+                                                   AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        throws Exception {
+                    count += 1;
+                    _asyncResponseProcessor.processAsyncResponse(null);
+                }
+            };
         }
     }
 ```
 
-1. Blade B is created in the constructor of the Start request.
+1. Blade B is created in the constructor of A.
 2. The startResponse is created.
 2. The startResponse is assigned to the Start request and the Start request is added to the inbox of blade A's reactor.
 3. Blade A's reactor evaluates the Start request. The Start request creates the Add1 request.
