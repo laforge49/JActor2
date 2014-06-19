@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
 /**
  * The boilerplate-free alternative to AsyncRequest.
  */
-public abstract class AReq<RESPONSE_TYPE> {
+public abstract class AReq<RESPONSE_TYPE> implements Req<RESPONSE_TYPE> {
     public final ReactorBase targetReactor;
 
     public AReq(final Reactor _targetReactor) {
@@ -23,6 +23,7 @@ public abstract class AReq<RESPONSE_TYPE> {
                                                                          final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception;
 
+    @Override
     public void signal() {
         AsyncRequest<RESPONSE_TYPE> asyncRequest = new AsyncRequest<RESPONSE_TYPE>(targetReactor) {
             @Override
@@ -33,6 +34,7 @@ public abstract class AReq<RESPONSE_TYPE> {
         asyncRequest.signal();
     }
 
+    @Override
     public RESPONSE_TYPE call() throws Exception {
         AsyncRequest<RESPONSE_TYPE> asyncRequest = new AsyncRequest<RESPONSE_TYPE>(targetReactor) {
             @Override

@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.reactors.ReactorBase;
 /**
  * The boilerplate-free alternative to AsyncRequest.
  */
-public abstract class SReq<RESPONSE_TYPE> {
+public abstract class SReq<RESPONSE_TYPE> implements Req<RESPONSE_TYPE> {
     public final ReactorBase targetReactor;
 
     public SReq(final Reactor _targetReactor) {
@@ -21,6 +21,7 @@ public abstract class SReq<RESPONSE_TYPE> {
     abstract protected RESPONSE_TYPE processSyncRequest(final Request _request)
             throws Exception;
 
+    @Override
     public void signal() {
         SyncRequest<RESPONSE_TYPE> syncRequest = new SyncRequest<RESPONSE_TYPE>(targetReactor) {
             @Override
@@ -31,6 +32,7 @@ public abstract class SReq<RESPONSE_TYPE> {
         syncRequest.signal();
     }
 
+    @Override
     public RESPONSE_TYPE call() throws Exception {
         SyncRequest<RESPONSE_TYPE> syncRequest = new SyncRequest<RESPONSE_TYPE>(targetReactor) {
             @Override
