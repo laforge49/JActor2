@@ -205,12 +205,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         return Timer.DEFAULT;
     }
 
-    /**
-     * Do a direct method call on a SReq.
-     *
-     * @param _sReq                      The boilerplate-free alternative to SyncRequest.
-     * @param <RT>                       The type of response returned.
-     */
+    @Override
     public <RT> RT syncDirect(final SReq<RT> _sReq)
             throws Exception {
         _sReq.targetReactor.directCheck(getTargetReactor());
