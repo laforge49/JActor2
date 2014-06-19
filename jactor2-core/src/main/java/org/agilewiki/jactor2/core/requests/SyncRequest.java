@@ -81,4 +81,16 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements
     public Timer getTimer() {
         return Timer.DEFAULT;
     }
+
+    /**
+     * Do a direct method call on a SReq.
+     *
+     * @param _sReq                      The boilerplate-free alternative to SyncRequest.
+     * @param <RT>                       The type of response returned.
+     */
+    public <RT> RT syncDirect(final SReq<RT> _sReq)
+            throws Exception {
+        _sReq.targetReactor.directCheck(getTargetReactor());
+        return _sReq.processSyncRequest(this);
+    }
 }
