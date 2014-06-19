@@ -16,11 +16,11 @@ public abstract class AReq<RESPONSE_TYPE> implements Req<RESPONSE_TYPE> {
     /**
      * The processAsyncRequest method will be invoked by the target Reactor on its own thread.
      *
-     * @param _asyncRequest              The request context--may be of a different RESPONSE_TYPE.
-     * @param _asyncResponseProcessor    Handles the response.
+     * @param _asyncRequest           The request context--may be of a different RESPONSE_TYPE.
+     * @param _asyncResponseProcessor Handles the response.
      */
     abstract protected void processAsyncRequest(final AsyncRequest _asyncRequest,
-                                                                         final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                                                final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception;
 
     @Override

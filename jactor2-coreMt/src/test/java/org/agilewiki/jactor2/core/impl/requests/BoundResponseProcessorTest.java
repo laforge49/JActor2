@@ -5,7 +5,9 @@ import junit.framework.Assert;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.requests.AReq;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
 
 public class BoundResponseProcessorTest extends CallTestBase {
@@ -21,17 +23,17 @@ public class BoundResponseProcessorTest extends CallTestBase {
 }
 
 class Driver extends NonBlockingBladeBase {
-    private final AsyncRequest<String> doitReq;
+    private final AReq<String> doitReq;
 
     public Driver() throws Exception {
-        doitReq = new AsyncBladeRequest<String>() {
-            AsyncRequest<String> dis = this;
-
+        doitReq = new AReq<String>(getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                setNoHungRequestCheck();
+            protected void processAsyncRequest(final AsyncRequest _asyncRequest,
+                                               final AsyncResponseProcessor<String> _asyncResponseProcessor)
+                    throws Exception {
+                _asyncRequest.setNoHungRequestCheck();
                 final BoundResponseProcessor<String> boundResponseProcessor = new BoundResponseProcessor<String>(
-                        Driver.this, dis);
+                        Driver.this, _asyncResponseProcessor);
                 final Application application = new Application(
                         boundResponseProcessor);
                 application.start();
@@ -39,7 +41,7 @@ class Driver extends NonBlockingBladeBase {
         };
     }
 
-    public AsyncRequest<String> doitAReq() {
+    public AReq<String> doitAReq() {
         return doitReq;
     }
 }
