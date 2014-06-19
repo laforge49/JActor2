@@ -65,7 +65,7 @@ public abstract class BladeBase implements Blade {
      *
      * @param _sourceReactor    The source reactor.
      */
-    protected void directCheck(final Reactor _sourceReactor) {
+    public void directCheck(final Reactor _sourceReactor) {
         if (reactor != _sourceReactor) {
             throw new UnsupportedOperationException(
                     "Not thread safe: source reactor is not the same");
