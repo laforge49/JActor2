@@ -11,7 +11,7 @@ public class Simple {
         new Plant();
         try {
             A a = new A();
-            a.start().call();
+            a.startAReq().call();
         } finally {
             Plant.close();
         }
@@ -25,7 +25,7 @@ class A extends NonBlockingBladeBase {
         b = new B();
     }
 
-    AReq<Void> start() {
+    AReq<Void> startAReq() {
         return new AReq<Void>(getReactor()) {
             @Override
             protected void processAsyncRequest(AsyncRequest _asyncRequest,
@@ -38,7 +38,7 @@ class A extends NonBlockingBladeBase {
                         _asyncResponseProcessor.processAsyncResponse(null);
                     }
                 };
-                _asyncRequest.send(b.add1Areq(), startResponse);
+                _asyncRequest.send(b.add1AReq(), startResponse);
             }
         };
     }
@@ -50,7 +50,7 @@ class B extends NonBlockingBladeBase {
     public B() throws Exception {
     }
 
-    AReq<Void> add1Areq() {
+    AReq<Void> add1AReq() {
         return new AReq<Void>(getReactor()) {
             @Override
             protected void processAsyncRequest(AsyncRequest _asyncRequest,

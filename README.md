@@ -161,7 +161,7 @@ reactor. But when an exception is passed back, it is thrown.
             new Plant();
             try {
                 A a = new A();
-                a.start().call();
+                a.startAReq().call();
             } finally {
                 Plant.close();
             }
@@ -206,7 +206,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
             b = new B();
         }
 
-        AReq<Void> start() {
+        AReq<Void> startAReq() {
             return new AReq<Void>(getReactor()) {
                 @Override
                 protected void processAsyncRequest(AsyncRequest _asyncRequest,
@@ -219,7 +219,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
                             _asyncResponseProcessor.processAsyncResponse(null);
                         }
                     };
-                    _asyncRequest.send(b.add1Areq(), startResponse);
+                    _asyncRequest.send(b.add1AReq(), startResponse);
                 }
             };
         }
@@ -231,7 +231,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
         public B() throws Exception {
         }
 
-        AReq<Void> add1Areq() {
+        AReq<Void> add1AReq() {
             return new AReq<Void>(getReactor()) {
                 @Override
                 protected void processAsyncRequest(AsyncRequest _asyncRequest,
