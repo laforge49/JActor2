@@ -20,7 +20,7 @@ public abstract class AReq<RESPONSE_TYPE> {
      * @param _asyncResponseProcessor    Handles the response.
      */
     abstract protected void processAsyncRequest(final AsyncRequest _asyncRequest,
-                                                final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                                                                         final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception;
 
     public void signal() {
