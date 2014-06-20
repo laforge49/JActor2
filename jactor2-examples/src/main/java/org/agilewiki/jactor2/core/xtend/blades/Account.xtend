@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase
 import org.agilewiki.jactor2.core.impl.Plant
 import org.agilewiki.jactor2.core.requests.AsyncRequest
 import org.agilewiki.jactor2.core.requests.ExceptionHandler
-import org.agilewiki.jactor2.core.xtend.codegen.SReq
+import org.agilewiki.jactor2.annotations.xtend.SReq
 
 class Account extends NonBlockingBladeBase {
     var int balance;

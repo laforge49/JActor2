@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.AsyncRequest
-import org.agilewiki.jactor2.core.xtend.codegen.AReq
+import org.agilewiki.jactor2.annotations.xtend.AReq
 
 class ExceptionSample {
     def static void main(String[] _args) throws Exception {

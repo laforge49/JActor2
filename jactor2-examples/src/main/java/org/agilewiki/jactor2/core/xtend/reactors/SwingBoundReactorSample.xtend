@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.xtend.codegen.AReq
+import org.agilewiki.jactor2.annotations.xtend.AReq
 
 class SwingBoundReactorSample {
     def static void main(String[] _args) throws Exception {

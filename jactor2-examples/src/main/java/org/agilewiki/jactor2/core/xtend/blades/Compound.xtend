@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.xtend.blades;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase
 import org.agilewiki.jactor2.core.impl.Plant
 import org.agilewiki.jactor2.core.requests.AsyncRequest
-import org.agilewiki.jactor2.core.xtend.codegen.AReq
+import org.agilewiki.jactor2.annotations.xtend.AReq
 
 class Compound {
     def static void main(String[] _args) throws Exception {

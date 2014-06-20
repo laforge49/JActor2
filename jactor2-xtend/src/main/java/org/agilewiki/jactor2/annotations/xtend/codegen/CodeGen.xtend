@@ -1,35 +1,16 @@
-package org.agilewiki.jactor2.core.xtend.codegen
+package org.agilewiki.jactor2.annotations.xtend.codegen
 
-import org.eclipse.xtend.lib.macro.Active
+import java.util.List
+import org.agilewiki.jactor2.core.reactors.Reactor
+import org.agilewiki.jactor2.core.requests.AsyncRequest
+import org.agilewiki.jactor2.core.requests.SyncRequest
+import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.TransformationParticipant
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
-import org.eclipse.xtend.lib.macro.TransformationContext
-import java.util.List
-import java.lang.annotation.Target
-import java.lang.annotation.ElementType
 import org.eclipse.xtend.lib.macro.declaration.MutableMethodDeclaration
-import org.eclipse.xtend.lib.macro.declaration.TypeReference
-import java.lang.annotation.RetentionPolicy
-import java.lang.annotation.Retention
-import org.eclipse.xtend.lib.macro.declaration.Visibility
-import org.agilewiki.jactor2.core.requests.SyncRequest
 import org.eclipse.xtend.lib.macro.declaration.MutableParameterDeclaration
-import org.agilewiki.jactor2.core.requests.AsyncRequest
-import org.agilewiki.jactor2.core.reactors.Reactor
-
-/** Marks an instance method that should be wrapped in a SyncRequest */
-@Active(typeof(SReqProcessor))
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.CLASS)
-annotation SReq {
-}
-
-/** Marks an instance method that should be wrapped in a AsyncRequest */
-@Active(typeof(AReqProcessor))
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.CLASS)
-annotation AReq {
-}
+import org.eclipse.xtend.lib.macro.declaration.TypeReference
+import org.eclipse.xtend.lib.macro.declaration.Visibility
 
 /**
  * Generate the method returning a SyncRequest for an instance method.
@@ -147,6 +128,7 @@ class SReqProcessor
 		        	}
 			        val params3 = params2
 		        	addParameter("sourceReactor", reactor)
+		        	exceptions = m.exceptions
 					if (retType.void) {
 				        body = [
 	'''
@@ -289,6 +271,7 @@ return new AsyncBladeRequest<«p0Type.actualTypeArguments.get(0)»>() {
 			        	params2 += p.simpleName
 		        	}
 			        val params3 = params2
+		        	exceptions = m.exceptions
 				    body = [
 	'''
 	directCheck(ar.getTargetReactor());

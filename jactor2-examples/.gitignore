@@ -19,3 +19,5 @@ target
 *.jnl
 *.db
 .idea/*
+/main
+/test

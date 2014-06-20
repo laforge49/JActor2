@@ -19,4 +19,5 @@ target
 *.jnl
 *.db
 .idea/*
-xtend-gen
+/main
+/test

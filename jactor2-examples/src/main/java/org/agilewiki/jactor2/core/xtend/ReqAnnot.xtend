@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.xtend
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase
-import org.agilewiki.jactor2.core.xtend.codegen.SReq
+import org.agilewiki.jactor2.annotations.xtend.SReq
 import org.agilewiki.jactor2.core.requests.AsyncRequest
-import org.agilewiki.jactor2.core.xtend.codegen.AReq
+import org.agilewiki.jactor2.annotations.xtend.AReq
 
 class ReqAnnot extends NonBlockingBladeBase {
 
