@@ -204,4 +204,105 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     public Timer getTimer() {
         return Timer.DEFAULT;
     }
+
+    @Override
+    public <RT> RT syncDirect(final SReq<RT> _sReq)
+            throws Exception {
+        _sReq.targetReactor.directCheck(getTargetReactor());
+        return _sReq.processSyncRequest(this);
+    }
+
+    /**
+     * Do a direct method call on an AReq.
+     *
+     * @param _aReq                      The boilerplate-free alternative to AsyncRequest.
+     * @param _asyncResponseProcessor    Handles the response.
+     * @param <RT>                       The type of response returned.
+     */
+    public <RT> void asyncDirect(final AReq<RT> _aReq,
+                                 final AsyncResponseProcessor<RT> _asyncResponseProcessor)
+            throws Exception {
+        _aReq.targetReactor.directCheck(getTargetReactor());
+        _aReq.processAsyncRequest(this, _asyncResponseProcessor);
+    }
+
+    /**
+     * Pass a request to its target reactor, providing the originating request is not canceled.
+     *
+     * @param _sReq                      The boilerplate-free alternative to AsyncRequest.
+     * @param _asyncResponseProcessor    Handles the response.
+     * @param <RT>                       The type of response returned.
+     */
+    public <RT> void send(final SReq<RT> _sReq,
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+        SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sReq.targetReactor) {
+            @Override
+            public RT processSyncRequest() throws Exception {
+                return _sReq.processSyncRequest(this);
+            }
+        };
+        asyncRequestImpl.send(syncRequest, _asyncResponseProcessor);
+    }
+
+    /**
+     * Pass a request to its target reactor, providing the originating request is not canceled.
+     *
+     * @param _aReq                      The boilerplate-free alternative to AsyncRequest.
+     * @param _asyncResponseProcessor    Handles the response.
+     * @param <RT>                       The type of response returned.
+     */
+    public <RT> void send(final AReq<RT> _aReq,
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+        AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aReq.targetReactor) {
+            @Override
+            public void processAsyncRequest() throws Exception {
+                _aReq.processAsyncRequest(this, this);
+            }
+        };
+        asyncRequestImpl.send(asyncRequest, _asyncResponseProcessor);
+    }
+
+    /**
+     * Pass a request to its target and then replace its response value,
+     * providing the originating request is not canceled.
+     * Useful when you do not care about the actual response being passed back.
+     *
+     * @param _sReq          The boilerplate-free alternative to SyncRequest.
+     * @param _dis           The callback to be invoked when a response value is received.
+     * @param _fixedResponse The replacement value.
+     * @param <RT>           The response value type.
+     * @param <RT2>          The replacement value type.
+     */
+    public <RT, RT2> void send(final SReq<RT> _sReq,
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+        SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sReq.targetReactor) {
+            @Override
+            public RT processSyncRequest() throws Exception {
+                return _sReq.processSyncRequest(this);
+            }
+        };
+        asyncRequestImpl.send(syncRequest, _dis, _fixedResponse);
+    }
+
+    /**
+     * Pass a request to its target and then replace its response value,
+     * providing the originating request is not canceled.
+     * Useful when you do not care about the actual response being passed back.
+     *
+     * @param _aReq          The boilerplate-free alternative to AsyncRequest.
+     * @param _dis           The callback to be invoked when a response value is received.
+     * @param _fixedResponse The replacement value.
+     * @param <RT>           The response value type.
+     * @param <RT2>          The replacement value type.
+     */
+    public <RT, RT2> void send(final AReq<RT> _aReq,
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+        AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aReq.targetReactor) {
+            @Override
+            public void processAsyncRequest() throws Exception {
+                _aReq.processAsyncRequest(this, this);
+            }
+        };
+        asyncRequestImpl.send(asyncRequest, _dis, _fixedResponse);
+    }
 }

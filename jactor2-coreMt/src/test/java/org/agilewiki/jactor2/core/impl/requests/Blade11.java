@@ -2,6 +2,8 @@ package org.agilewiki.jactor2.core.impl.requests;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.requests.Request;
+import org.agilewiki.jactor2.core.requests.SReq;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
@@ -13,10 +15,10 @@ public class Blade11 extends IsolationBladeBase {
         super(mbox);
     }
 
-    public SyncRequest<String> hiSReq() {
-        return new SyncBladeRequest<String>() {
+    public SReq<String> hiSReq() {
+        return new SReq<String>(getReactor()) {
             @Override
-            public String processSyncRequest() throws Exception {
+            protected String processSyncRequest(final Request _request) throws Exception {
                 return "Hello world!";
             }
         };

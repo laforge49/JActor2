@@ -81,4 +81,11 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements
     public Timer getTimer() {
         return Timer.DEFAULT;
     }
+
+    @Override
+    public <RT> RT syncDirect(final SReq<RT> _sReq)
+            throws Exception {
+        _sReq.targetReactor.directCheck(getTargetReactor());
+        return _sReq.processSyncRequest(this);
+    }
 }

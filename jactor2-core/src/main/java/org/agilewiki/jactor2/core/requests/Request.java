@@ -78,4 +78,13 @@ public interface Request<RESPONSE_TYPE> {
      * @return the Timer used to track the performance of this Request instance.
      */
     Timer getTimer();
+
+    /**
+     * Do a direct method call on a SReq.
+     *
+     * @param _sReq                      The boilerplate-free alternative to SyncRequest.
+     * @param <RT>                       The type of response returned.
+     */
+    <RT> RT syncDirect(final SReq<RT> _sReq)
+            throws Exception;
 }
