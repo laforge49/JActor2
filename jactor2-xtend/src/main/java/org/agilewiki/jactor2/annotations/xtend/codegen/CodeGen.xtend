@@ -13,33 +13,8 @@ import org.eclipse.xtend.lib.macro.declaration.TypeReference
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 
 /**
- * Generate the method returning a SyncRequest for an instance method.
- *
- * Example:
- *
- * <code>
-    // User written
-    @SReq
-    private long _ping() {
-        count += 1;
-        return count;
-    }
-
-    // Generated!
-    public SyncRequest<Long> pingSReq() {
-        return new SyncBladeRequest<Long>() {
-            @Override
-            public Long processSyncRequest() {
-                return _ping();
-            }
-        };
-    }
-    public long ping(final Reactor sourceReactor) {
-        directCheck(sourceReactor);
-        return _ping();
-    }
-    </code>
- *
+ * Generates the method returning a SyncRequest for an instance method, as
+ * well as a "direct call" public method.
  * @author monster
  */
 class SReqProcessor
@@ -156,33 +131,8 @@ class SReqProcessor
 
 
 /**
- * Generate the method returning a AsyncRequest for an instance method.
- *
- * Example:
- *
- * <code>
-    // User written
-    @AReq
-    private void _hang(AsyncRequest<Void> ar) {
-        // NOP
-    }
-
-    // Generated!
-    public AsyncRequest<Void> hangAReq() {
-        return new AsyncBladeRequest<Void>() {
-            @Override
-            public void processAsyncRequest() throws Exception {
-                _hang(this);
-            }
-        };
-    }
-    public long hang(final AsyncRequest<Void> ar) {
-        // Might get NPE here ...
-        directCheck(ar.getTargetReactor());
-        return _hang(ar);
-    }
-    </code>
- *
+ * Generates the method returning a AsyncRequest for an instance method, as
+ * well as a "direct call" public method.
  * @author monster
  */
 class AReqProcessor
