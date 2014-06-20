@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
 
 abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
         PoolThreadReactorImpl {

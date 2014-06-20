@@ -8,11 +8,12 @@ import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.Request;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.requests.impl.OneWayResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**

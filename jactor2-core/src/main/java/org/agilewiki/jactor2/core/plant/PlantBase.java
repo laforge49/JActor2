@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.plant;
 import java.util.Map;
 
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
+import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Facility;
 
 /**

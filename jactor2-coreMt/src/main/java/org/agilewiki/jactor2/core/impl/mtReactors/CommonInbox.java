@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * The inbox used by NonBlockingReactor, ThreadBoundReactor

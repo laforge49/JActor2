@@ -1,4 +1,8 @@
-package org.agilewiki.jactor2.core.requests;
+package org.agilewiki.jactor2.core.requests.impl;
+
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.Request;
 
 public interface AsyncRequestImpl<RESPONSE_TYPE> extends
         RequestImpl<RESPONSE_TYPE> {

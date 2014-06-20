@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.closeable.Closeable;
-import org.agilewiki.jactor2.core.closeable.CloseableImpl;
-import org.agilewiki.jactor2.core.impl.mtCloseable.CloseableMtImpl;
+import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
+import org.agilewiki.jactor2.core.closeable.impl.CloseableImplImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.BlockingReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.IsolationReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.NonBlockingReactorMtImpl;
@@ -15,16 +15,16 @@ import org.agilewiki.jactor2.core.impl.mtReactors.SwingBoundReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.ThreadBoundReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.SyncRequestMtImpl;
-import org.agilewiki.jactor2.core.plant.PlantImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
+import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Facility;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.requests.RequestImpl;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class PlantMtImpl extends PlantImpl {
 
@@ -194,7 +194,7 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public CloseableImpl createCloseableImpl(final Closeable _closeable) {
-        return new CloseableMtImpl(_closeable);
+        return new CloseableImplImpl(_closeable);
     }
 
     /**

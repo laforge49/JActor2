@@ -5,7 +5,8 @@ import java.awt.event.WindowListener;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBlade;
 import org.agilewiki.jactor2.core.plant.PlantBase;
-import org.agilewiki.jactor2.core.plant.PlantImpl;
+import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**

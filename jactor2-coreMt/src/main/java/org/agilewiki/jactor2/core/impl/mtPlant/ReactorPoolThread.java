@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import org.agilewiki.jactor2.core.reactors.PoolThreadReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
 
 /**
  * Base class for pool threads used by reactors.

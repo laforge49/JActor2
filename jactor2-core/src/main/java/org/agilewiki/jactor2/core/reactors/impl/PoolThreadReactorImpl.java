@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.reactors;
+package org.agilewiki.jactor2.core.reactors.impl;
 
 /**
  * Common code for BlockingReactor, NonBlockingReactor and IsolationReactor, which are not bound to a thread.

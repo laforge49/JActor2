@@ -1,24 +1,19 @@
-package org.agilewiki.jactor2.core.impl.mtCloseable;
+package org.agilewiki.jactor2.core.closeable.impl;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.agilewiki.jactor2.core.closeable.Closeable;
-import org.agilewiki.jactor2.core.closeable.CloseableImpl;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.reactors.ReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 
 /**
  * Implements multiple dependencies.
  */
-public class CloseableMtImpl implements CloseableImpl {
+public class CloseableImplImpl implements CloseableImpl {
     private final Closeable closeable;
 
-    private final Set<ReactorImpl> closers = Collections
-            .newSetFromMap(new ConcurrentHashMap<ReactorImpl, Boolean>(8, 0.9f,
-                    1));
+    private final ConcurrentHashMap<ReactorImpl, Boolean> closers = new ConcurrentHashMap<ReactorImpl, Boolean>(
+            8, 0.9f, 1);
 
     private volatile boolean closing;
 
@@ -26,7 +21,7 @@ public class CloseableMtImpl implements CloseableImpl {
      * Create a closeableImpl for a closeable.
      * @param _closeable    The closeable that will hold a reference to this implementation.
      */
-    public CloseableMtImpl(final Closeable _closeable) {
+    public CloseableImplImpl(final Closeable _closeable) {
         closeable = _closeable;
     }
 
@@ -35,7 +30,7 @@ public class CloseableMtImpl implements CloseableImpl {
         if (closing) {
             throw new ReactorClosedException("Closeable is closed");
         }
-        closers.add(_reactorImpl);
+        closers.put(_reactorImpl, Boolean.TRUE);
     }
 
     @Override
@@ -49,9 +44,7 @@ public class CloseableMtImpl implements CloseableImpl {
     @Override
     public void close() throws Exception {
         closing = true;
-        final Iterator<ReactorImpl> it = closers.iterator();
-        while (it.hasNext()) {
-            final ReactorImpl reactorImpl = it.next();
+        for (final ReactorImpl reactorImpl : closers.keySet()) {
             reactorImpl.removeCloseable(closeable);
         }
     }
