@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.readme.blades;
 
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.requests.AReq;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
@@ -11,7 +11,7 @@ public class Simple {
         new Plant();
         try {
             A a = new A();
-            a.startAReq().call();
+            a.startAOp().call();
         } finally {
             Plant.close();
         }
@@ -25,8 +25,8 @@ class A extends NonBlockingBladeBase {
         b = new B();
     }
 
-    AReq<Void> startAReq() {
-        return new AReq<Void>(getReactor()) {
+    AOp<Void> startAOp() {
+        return new AOp<Void>(getReactor()) {
             @Override
             protected void processAsyncRequest(AsyncRequest _asyncRequest,
                                                final AsyncResponseProcessor<Void> _asyncResponseProcessor)
@@ -38,7 +38,7 @@ class A extends NonBlockingBladeBase {
                         _asyncResponseProcessor.processAsyncResponse(null);
                     }
                 };
-                _asyncRequest.send(b.add1AReq(), startResponse);
+                _asyncRequest.send(b.add1AOp(), startResponse);
             }
         };
     }
@@ -50,8 +50,8 @@ class B extends NonBlockingBladeBase {
     public B() throws Exception {
     }
 
-    AReq<Void> add1AReq() {
-        return new AReq<Void>(getReactor()) {
+    AOp<Void> add1AOp() {
+        return new AOp<Void>(getReactor()) {
             @Override
             protected void processAsyncRequest(AsyncRequest _asyncRequest,
                                                AsyncResponseProcessor<Void> _asyncResponseProcessor)

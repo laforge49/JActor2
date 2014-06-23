@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AReq;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
@@ -15,7 +15,7 @@ public class BoundResponseProcessorTest extends CallTestBase {
         new Plant();
         try {
             final Driver driver = new Driver();
-            Assert.assertEquals("Hello world!", call(driver.doitAReq()));
+            Assert.assertEquals("Hello world!", call(driver.doitAOp()));
         } finally {
             Plant.close();
         }
@@ -23,10 +23,10 @@ public class BoundResponseProcessorTest extends CallTestBase {
 }
 
 class Driver extends NonBlockingBladeBase {
-    private final AReq<String> doitReq;
+    private final AOp<String> doitAOp;
 
     public Driver() throws Exception {
-        doitReq = new AReq<String>(getReactor()) {
+        doitAOp = new AOp<String>(getReactor()) {
             @Override
             protected void processAsyncRequest(final AsyncRequest _asyncRequest,
                                                final AsyncResponseProcessor<String> _asyncResponseProcessor)
@@ -41,8 +41,8 @@ class Driver extends NonBlockingBladeBase {
         };
     }
 
-    public AReq<String> doitAReq() {
-        return doitReq;
+    public AOp<String> doitAOp() {
+        return doitAOp;
     }
 }
 
