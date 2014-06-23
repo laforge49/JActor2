@@ -84,9 +84,9 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements
     }
 
     @Override
-    public <RT> RT syncDirect(final SReq<RT> _sReq)
+    public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
-        _sReq.targetReactor.directCheck(getTargetReactor());
-        return _sReq.processSyncRequest(this);
+        _sOp.targetReactor.directCheck(getTargetReactor());
+        return _sOp.processSyncRequest(this);
     }
 }

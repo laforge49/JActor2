@@ -83,9 +83,9 @@ public interface Request<RESPONSE_TYPE> {
     /**
      * Do a direct method call on a SReq.
      *
-     * @param _sReq                      The boilerplate-free alternative to SyncRequest.
+     * @param _sOp                      The boilerplate-free alternative to SyncRequest.
      * @param <RT>                       The type of response returned.
      */
-    <RT> RT syncDirect(final SReq<RT> _sReq)
+    <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception;
 }

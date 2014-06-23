@@ -4,9 +4,9 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 
 /**
- * The boilerplate-free alternative to AsyncRequest.
+ * An asynchronous operation, optionally used to define an AsyncRequest.
  */
-public abstract class AReq<RESPONSE_TYPE> implements Req<RESPONSE_TYPE> {
+public abstract class AReq<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
     public final ReactorBase targetReactor;
 
     public AReq(final Reactor _targetReactor) {

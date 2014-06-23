@@ -34,7 +34,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * Create an AsyncRequest and bind it to its target targetReactor.
      *
      * @param _targetBlade Provides the targetReactor where this AsyncRequest Objects is passed for processing.
-     *                       The thread owned by this targetReactor will process this AsyncRequest.
+     *                     The thread owned by this targetReactor will process this AsyncRequest.
      */
     public AsyncRequest(final Blade _targetBlade) {
         this(_targetBlade.getReactor());
@@ -148,7 +148,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * @param <RT>               The response value type.
      */
     public <RT> void send(final Request<RT> _request,
-            final AsyncResponseProcessor<RT> _responseProcessor) {
+                          final AsyncResponseProcessor<RT> _responseProcessor) {
         asyncRequestImpl.send(_request, _responseProcessor);
     }
 
@@ -164,7 +164,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * @param <RT2>          The replacement value type.
      */
     public <RT, RT2> void send(final Request<RT> _request,
-            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         asyncRequestImpl.send(_request, _dis, _fixedResponse);
     }
 
@@ -200,25 +200,27 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         asyncRequestImpl.cancelAll();
     }
 
-    /** Returns the default Timer. */
+    /**
+     * Returns the default Timer.
+     */
     @Override
     public Timer getTimer() {
         return Timer.DEFAULT;
     }
 
     @Override
-    public <RT> RT syncDirect(final SReq<RT> _sReq)
+    public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
-        _sReq.targetReactor.directCheck(getTargetReactor());
-        return _sReq.processSyncRequest(this);
+        _sOp.targetReactor.directCheck(getTargetReactor());
+        return _sOp.processSyncRequest(this);
     }
 
     /**
      * Do a direct method call on an AReq.
      *
-     * @param _aReq                      The boilerplate-free alternative to AsyncRequest.
-     * @param _asyncResponseProcessor    Handles the response.
-     * @param <RT>                       The type of response returned.
+     * @param _aReq                   The boilerplate-free alternative to AsyncRequest.
+     * @param _asyncResponseProcessor Handles the response.
+     * @param <RT>                    The type of response returned.
      */
     public <RT> void asyncDirect(final AReq<RT> _aReq,
                                  final AsyncResponseProcessor<RT> _asyncResponseProcessor)
@@ -230,16 +232,16 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     /**
      * Pass a request to its target reactor, providing the originating request is not canceled.
      *
-     * @param _sReq                      The boilerplate-free alternative to AsyncRequest.
-     * @param _asyncResponseProcessor    Handles the response.
-     * @param <RT>                       The type of response returned.
+     * @param _sOp                    A synchronous operation, optionally used to define a SyncRequest.
+     * @param _asyncResponseProcessor Handles the response.
+     * @param <RT>                    The type of response returned.
      */
-    public <RT> void send(final SReq<RT> _sReq,
+    public <RT> void send(final SOp<RT> _sOp,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
-        SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sReq.targetReactor) {
+        SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sOp.targetReactor) {
             @Override
             public RT processSyncRequest() throws Exception {
-                return _sReq.processSyncRequest(this);
+                return _sOp.processSyncRequest(this);
             }
         };
         asyncRequestImpl.send(syncRequest, _asyncResponseProcessor);
@@ -248,9 +250,9 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     /**
      * Pass a request to its target reactor, providing the originating request is not canceled.
      *
-     * @param _aReq                      The boilerplate-free alternative to AsyncRequest.
-     * @param _asyncResponseProcessor    Handles the response.
-     * @param <RT>                       The type of response returned.
+     * @param _aReq                   An asynchronous operation, optionally used to define an AsyncRequest.
+     * @param _asyncResponseProcessor Handles the response.
+     * @param <RT>                    The type of response returned.
      */
     public <RT> void send(final AReq<RT> _aReq,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
@@ -268,18 +270,18 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * providing the originating request is not canceled.
      * Useful when you do not care about the actual response being passed back.
      *
-     * @param _sReq          The boilerplate-free alternative to SyncRequest.
+     * @param _sOp           A synchronous operation, optionally used to define a SyncRequest.
      * @param _dis           The callback to be invoked when a response value is received.
      * @param _fixedResponse The replacement value.
      * @param <RT>           The response value type.
      * @param <RT2>          The replacement value type.
      */
-    public <RT, RT2> void send(final SReq<RT> _sReq,
+    public <RT, RT2> void send(final SOp<RT> _sOp,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
-        SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sReq.targetReactor) {
+        SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sOp.targetReactor) {
             @Override
             public RT processSyncRequest() throws Exception {
-                return _sReq.processSyncRequest(this);
+                return _sOp.processSyncRequest(this);
             }
         };
         asyncRequestImpl.send(syncRequest, _dis, _fixedResponse);
@@ -290,7 +292,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * providing the originating request is not canceled.
      * Useful when you do not care about the actual response being passed back.
      *
-     * @param _aReq          The boilerplate-free alternative to AsyncRequest.
+     * @param _aReq          An asynchronous operation, optionally used to define an AsyncRequest.
      * @param _dis           The callback to be invoked when a response value is received.
      * @param _fixedResponse The replacement value.
      * @param <RT>           The response value type.
