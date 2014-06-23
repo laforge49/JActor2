@@ -212,7 +212,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
         _sOp.targetReactor.directCheck(getTargetReactor());
-        return _sOp.processSyncRequest(this);
+        return _sOp.processSyncOperation(this);
     }
 
     /**
@@ -226,7 +226,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
                                  final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception {
         _aOp.targetReactor.directCheck(getTargetReactor());
-        _aOp.processAsyncRequest(this, _asyncResponseProcessor);
+        _aOp.processAsyncOperation(this, _asyncResponseProcessor);
     }
 
     /**
@@ -241,7 +241,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sOp.targetReactor) {
             @Override
             public RT processSyncRequest() throws Exception {
-                return _sOp.processSyncRequest(this);
+                return _sOp.processSyncOperation(this);
             }
         };
         asyncRequestImpl.send(syncRequest, _asyncResponseProcessor);
@@ -259,7 +259,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aOp.targetReactor) {
             @Override
             public void processAsyncRequest() throws Exception {
-                _aOp.processAsyncRequest(this, this);
+                _aOp.processAsyncOperation(this, this);
             }
         };
         asyncRequestImpl.send(asyncRequest, _asyncResponseProcessor);
@@ -281,7 +281,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sOp.targetReactor) {
             @Override
             public RT processSyncRequest() throws Exception {
-                return _sOp.processSyncRequest(this);
+                return _sOp.processSyncOperation(this);
             }
         };
         asyncRequestImpl.send(syncRequest, _dis, _fixedResponse);
@@ -303,7 +303,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aOp.targetReactor) {
             @Override
             public void processAsyncRequest() throws Exception {
-                _aOp.processAsyncRequest(this, this);
+                _aOp.processAsyncOperation(this, this);
             }
         };
         asyncRequestImpl.send(asyncRequest, _dis, _fixedResponse);

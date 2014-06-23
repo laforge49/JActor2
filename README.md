@@ -209,7 +209,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
         }
 
         AReq<Void> startAOp() {
-            return new AOp<Void>(getReactor()) {
+            return new AOp<Void>("start", getReactor()) {
                 @Override
                 protected void processAsyncRequest(AsyncRequest _asyncRequest,
                                                    final AsyncResponseProcessor<Void> _asyncResponseProcessor)
@@ -234,7 +234,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
         }
 
         AReq<Void> add1AOp() {
-            return new AOp<Void>(getReactor()) {
+            return new AOp<Void>("add1", getReactor()) {
                 @Override
                 protected void processAsyncRequest(AsyncRequest _asyncRequest,
                                                    AsyncResponseProcessor<Void> _asyncResponseProcessor)

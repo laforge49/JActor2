@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.readme.blades;
 
-import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -26,10 +26,10 @@ class A extends NonBlockingBladeBase {
     }
 
     AOp<Void> startAOp() {
-        return new AOp<Void>(getReactor()) {
+        return new AOp<Void>("start", getReactor()) {
             @Override
-            protected void processAsyncRequest(AsyncRequest _asyncRequest,
-                                               final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+            protected void processAsyncOperation(AsyncRequest _asyncRequest,
+                                                 final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
                     @Override
@@ -51,10 +51,10 @@ class B extends NonBlockingBladeBase {
     }
 
     AOp<Void> add1AOp() {
-        return new AOp<Void>(getReactor()) {
+        return new AOp<Void>("add1", getReactor()) {
             @Override
-            protected void processAsyncRequest(AsyncRequest _asyncRequest,
-                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)
+            protected void processAsyncOperation(AsyncRequest _asyncRequest,
+                                                 AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 count += 1;
                 _asyncResponseProcessor.processAsyncResponse(null);

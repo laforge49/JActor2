@@ -87,6 +87,6 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements
     public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
         _sOp.targetReactor.directCheck(getTargetReactor());
-        return _sOp.processSyncRequest(this);
+        return _sOp.processSyncOperation(this);
     }
 }
