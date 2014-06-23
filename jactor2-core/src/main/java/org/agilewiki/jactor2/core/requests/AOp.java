@@ -38,6 +38,11 @@ public abstract class AOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
             public void processAsyncRequest() throws Exception {
                 AOp.this.processAsyncOperation(this, this);
             }
+
+            @Override
+            public String toString() {
+                return AOp.this.toString();
+            }
         };
         asyncRequest.signal();
     }
@@ -48,6 +53,11 @@ public abstract class AOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
             @Override
             public void processAsyncRequest() throws Exception {
                 AOp.this.processAsyncOperation(this, this);
+            }
+
+            @Override
+            public String toString() {
+                return AOp.this.toString();
             }
         };
         return asyncRequest.call();

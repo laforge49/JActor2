@@ -261,6 +261,11 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
             public void processAsyncRequest() throws Exception {
                 _aOp.processAsyncOperation(this, this);
             }
+
+            @Override
+            public String toString() {
+                return _aOp.toString();
+            }
         };
         asyncRequestImpl.send(asyncRequest, _asyncResponseProcessor);
     }
@@ -283,6 +288,11 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
             public RT processSyncRequest() throws Exception {
                 return _sOp.processSyncOperation(this);
             }
+
+            @Override
+            public String toString() {
+                return _sOp.toString();
+            }
         };
         asyncRequestImpl.send(syncRequest, _dis, _fixedResponse);
     }
@@ -304,6 +314,11 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
             @Override
             public void processAsyncRequest() throws Exception {
                 _aOp.processAsyncOperation(this, this);
+            }
+
+            @Override
+            public String toString() {
+                return _aOp.toString();
             }
         };
         asyncRequestImpl.send(asyncRequest, _dis, _fixedResponse);

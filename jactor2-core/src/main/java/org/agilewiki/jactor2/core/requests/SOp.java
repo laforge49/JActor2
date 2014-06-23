@@ -36,6 +36,11 @@ public abstract class SOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
             public RESPONSE_TYPE processSyncRequest() throws Exception {
                 return SOp.this.processSyncOperation(this);
             }
+
+            @Override
+            public String toString() {
+                return SOp.this.toString();
+            }
         };
         syncRequest.signal();
     }
@@ -46,6 +51,11 @@ public abstract class SOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
             @Override
             public RESPONSE_TYPE processSyncRequest() throws Exception {
                 return SOp.this.processSyncOperation(this);
+            }
+
+            @Override
+            public String toString() {
+                return SOp.this.toString();
             }
         };
         return syncRequest.call();
