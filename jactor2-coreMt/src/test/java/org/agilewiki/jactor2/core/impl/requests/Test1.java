@@ -12,7 +12,7 @@ public class Test1 extends CallTestBase {
         new Plant();
         final IsolationReactor reactor = new IsolationReactor();
         final Blade11 blade1 = new Blade11(reactor);
-        final String result = call(blade1.hiSReq());
+        final String result = call(blade1.hiSOp());
         assertEquals("Hello world!", result);
         Plant.close();
     }

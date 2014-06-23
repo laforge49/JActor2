@@ -156,12 +156,14 @@ reactor. But when an exception is passed back, it is thrown.
 
 ```java
 
+    import org.agilewiki.jactor2.core.impl.Plant;
+
     public class Simple {
         public static void main(final String[] _args) throws Exception {
             new Plant();
             try {
                 A a = new A();
-                a.startAReq().call();
+                a.startAOp().call();
             } finally {
                 Plant.close();
             }
@@ -188,14 +190,14 @@ using the send method on the AsyncRequest class. And the two arguments to send a
 (1) the request to be invoked on the target reactor and (2) the callback to be executed
 on completion of that request.
 
-A request/response exchange between actors does not block
+A request/response exchange between actors does not block.
 
 Let use say that a Start request in blade A is to send an Add1 request to blade B.
 
 ```java
 
     import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-    import org.agilewiki.jactor2.core.requests.AReq;
+    import org.agilewiki.jactor2.core.requests.AOp;
     import org.agilewiki.jactor2.core.requests.AsyncRequest;
     import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
@@ -206,8 +208,8 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
             b = new B();
         }
 
-        AReq<Void> startAReq() {
-            return new AReq<Void>(getReactor()) {
+        AReq<Void> startAOp() {
+            return new AOp<Void>(getReactor()) {
                 @Override
                 protected void processAsyncRequest(AsyncRequest _asyncRequest,
                                                    final AsyncResponseProcessor<Void> _asyncResponseProcessor)
@@ -219,7 +221,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
                             _asyncResponseProcessor.processAsyncResponse(null);
                         }
                     };
-                    _asyncRequest.send(b.add1AReq(), startResponse);
+                    _asyncRequest.send(b.add1AOp(), startResponse);
                 }
             };
         }
@@ -231,8 +233,8 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
         public B() throws Exception {
         }
 
-        AReq<Void> add1AReq() {
-            return new AReq<Void>(getReactor()) {
+        AReq<Void> add1AOp() {
+            return new AOp<Void>(getReactor()) {
                 @Override
                 protected void processAsyncRequest(AsyncRequest _asyncRequest,
                                                    AsyncResponseProcessor<Void> _asyncResponseProcessor)

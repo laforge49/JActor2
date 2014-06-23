@@ -12,7 +12,7 @@ public class Blade3 extends IsolationBladeBase {
     public Blade3() throws Exception {
     }
 
-    public SOp<Void> hi3SReq() {
+    public SOp<Void> hi3SOp() {
         return new SOp<Void>(getReactor()) {
             @Override
             protected Void processSyncRequest(final Request _request) throws Exception {

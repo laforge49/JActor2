@@ -14,7 +14,7 @@ public class Blade11 extends IsolationBladeBase {
         super(mbox);
     }
 
-    public SOp<String> hiSReq() {
+    public SOp<String> hiSOp() {
         return new SOp<String>(getReactor()) {
             @Override
             protected String processSyncRequest(final Request _request) throws Exception {
