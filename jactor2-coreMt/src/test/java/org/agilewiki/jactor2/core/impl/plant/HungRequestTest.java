@@ -5,7 +5,9 @@ import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
 public class HungRequestTest extends CallTestBase {
     public void testa() throws Exception {
@@ -13,13 +15,13 @@ public class HungRequestTest extends CallTestBase {
         try {
             final Hanger blade1 = new Hanger(new NonBlockingReactor());
             try {
-                call(blade1.hiAReq());
+                call(blade1.hiAOp());
             } catch (final ReactorClosedException sce) {
             }
             final Hung blade2 = new Hung(new NonBlockingReactor(), new Hanger(
                     new NonBlockingReactor()));
             try {
-                call(blade2.hoAReq());
+                call(blade2.hoAOp());
             } catch (final ReactorClosedException sce) {
             }
         } finally {
@@ -34,10 +36,12 @@ class Hanger extends NonBlockingBladeBase {
         super(mbox);
     }
 
-    public AsyncRequest<String> hiAReq() {
-        return new AsyncBladeRequest<String>() {
+    public AOp<String> hiAOp() {
+        return new AOp<String>("hi", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncOperation(final AsyncRequest _asyncRequest,
+                                              final AsyncResponseProcessor<String> _asyncResponseProcessor)
+                    throws Exception {
                 System.out.println("    hang");
             }
         };
@@ -54,11 +58,13 @@ class Hung extends NonBlockingBladeBase {
         hanger = _hanger;
     }
 
-    public AsyncRequest<String> hoAReq() {
-        return new AsyncBladeRequest<String>() {
+    public AOp<String> hoAOp() {
+        return new AOp<String>("ho", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                send(hanger.hiAReq(), this);
+            public void processAsyncOperation(final AsyncRequest _asyncRequest,
+                                              final AsyncResponseProcessor<String> _asyncResponseProcessor)
+                    throws Exception {
+                _asyncRequest.send(hanger.hiAOp(), _asyncResponseProcessor);
             }
         };
     }
