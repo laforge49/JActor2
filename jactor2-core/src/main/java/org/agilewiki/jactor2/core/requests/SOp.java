@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.requests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * A synchronous operation, optionally used to define a SyncRequest.
@@ -64,5 +65,10 @@ public abstract class SOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
     @Override
     public String toString() {
         return opName;
+    }
+
+    @Override
+    public Timer getTimer() {
+        return Timer.DEFAULT;
     }
 }

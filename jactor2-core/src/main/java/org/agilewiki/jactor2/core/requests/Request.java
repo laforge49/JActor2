@@ -12,7 +12,7 @@ import org.agilewiki.jactor2.core.util.Timer;
  *
  * @param <RESPONSE_TYPE>    The type response value.
  */
-public interface Request<RESPONSE_TYPE> {
+public interface Request<RESPONSE_TYPE> extends Op<RESPONSE_TYPE> {
     /**
      * Returns the object used to implement the request.
      *
@@ -26,24 +26,6 @@ public interface Request<RESPONSE_TYPE> {
      * @return The target Reactor.
      */
     Reactor getTargetReactor();
-
-    /**
-     * Passes this request and then blocks the source thread until the request has been returned
-     * with a response value.
-     * This method can not be called within the thread context of a reactor.
-     *
-     * @return The result value.
-     */
-    @GwtIncompatible
-    RESPONSE_TYPE call() throws Exception;
-
-    /**
-     * Passes this Request to the target Reactor without any result being passed back.
-     * I.E. The signal method results in a 1-way message being passed.
-     * If an exception is thrown while processing this Request,
-     * that exception is simply logged as a warning.
-     */
-    void signal();
 
     /**
      * Returns the source reactor, or null.
@@ -70,22 +52,4 @@ public interface Request<RESPONSE_TYPE> {
      * @throws ReactorClosedException Thrown when the request is closed.
      */
     boolean isCanceled() throws ReactorClosedException;
-
-    /**
-     * Returns the Timer used to track the performance of this Request instance.
-     *
-     * Null is not allowed are return value, but Timer.NOP can be used to disable tracking.
-     *
-     * @return the Timer used to track the performance of this Request instance.
-     */
-    Timer getTimer();
-
-    /**
-     * Do a direct method call on a SReq.
-     *
-     * @param _sOp                      The boilerplate-free alternative to SyncRequest.
-     * @param <RT>                       The type of response returned.
-     */
-    <RT> RT syncDirect(final SOp<RT> _sOp)
-            throws Exception;
 }

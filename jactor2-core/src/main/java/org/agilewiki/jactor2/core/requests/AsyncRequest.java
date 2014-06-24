@@ -200,15 +200,11 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         asyncRequestImpl.cancelAll();
     }
 
-    /**
-     * Returns the default Timer.
-     */
     @Override
     public Timer getTimer() {
         return Timer.DEFAULT;
     }
 
-    @Override
     public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
         _sOp.targetReactor.directCheck(getTargetReactor());

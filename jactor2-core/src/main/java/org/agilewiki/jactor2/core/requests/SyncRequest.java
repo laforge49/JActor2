@@ -83,7 +83,6 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements
         return Timer.DEFAULT;
     }
 
-    @Override
     public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
         _sOp.targetReactor.directCheck(getTargetReactor());
