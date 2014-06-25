@@ -2,14 +2,13 @@ package org.agilewiki.jactor2.core.requests.impl;
 
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.Request;
 
 public interface AsyncRequestImpl<RESPONSE_TYPE> extends
         RequestImpl<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
     /**
      * Process the response to this request.
      *
-     * @param _response    The response to this request.
+     * @param _response The response to this request.
      */
     void processAsyncResponse(final RESPONSE_TYPE _response);
 
@@ -55,25 +54,25 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
     /**
      * Send a subordinate request, providing the originating request is not canceled.
      *
-     * @param _request              The subordinate request.
-     * @param _responseProcessor    A callback to handle the result value from the subordinate request.
-     * @param <RT>                  The type of result value.
+     * @param _requestImpl       The subordinate request.
+     * @param _responseProcessor A callback to handle the result value from the subordinate request.
+     * @param <RT>               The type of result value.
      */
-    <RT> void send(final Request<RT> _request,
-            final AsyncResponseProcessor<RT> _responseProcessor);
+    <RT> void send(final RequestImpl<RT> _requestImpl,
+                   final AsyncResponseProcessor<RT> _responseProcessor);
 
     /**
      * Send a subordinate request, providing the originating request is not canceled.
      *
-     * @param _request              The subordinate request.
-     * @param _dis                  The callback to handle a fixed response when the result of
-     *                              the subordinate request is received.
-     * @param _fixedResponse        The fixed response to be used.
-     * @param <RT>                  The response value type of the subordinate request.
-     * @param <RT2>                 The fixed response type.
+     * @param _requestImpl   The subordinate request.
+     * @param _dis           The callback to handle a fixed response when the result of
+     *                       the subordinate request is received.
+     * @param _fixedResponse The fixed response to be used.
+     * @param <RT>           The response value type of the subordinate request.
+     * @param <RT2>          The fixed response type.
      */
-    <RT, RT2> void send(final Request<RT> _request,
-            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+    <RT, RT2> void send(final RequestImpl<RT> _requestImpl,
+                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
      * Cancel a subordinate RequestImpl.

@@ -126,15 +126,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         }
     }
 
-    /**
-     * Send a subordinate request, providing the originating request is not canceled.
-     *
-     * @param _request           The subordinate request.
-     * @param _responseProcessor A callback to handle the result value from the subordinate request.
-     * @param <RT>               The type of result value.
-     */
     @Override
-    public <RT> void send(final Request<RT> _request,
+    public <RT> void send(final RequestImpl<RT> _requestImpl,
             final AsyncResponseProcessor<RT> _responseProcessor) {
         if (canceled && (_responseProcessor != null)) {
             return;
@@ -143,26 +136,15 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             throw new UnsupportedOperationException(
                     "send called on inactive request");
         }
-        final RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _request
-                .asRequestImpl();
+        final RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _requestImpl;
         if (_responseProcessor != OneWayResponseProcessor.SINGLETON) {
             pendingRequests.add(requestImpl);
         }
         requestImpl.doSend(targetReactorImpl, _responseProcessor);
     }
 
-    /**
-     * Send a subordinate request, providing the originating request is not canceled.
-     *
-     * @param _request       The subordinate request.
-     * @param _dis           The callback to handle a fixed response when the result of
-     *                       the subordinate request is received.
-     * @param _fixedResponse The fixed response to be used.
-     * @param <RT>           The response value type of the subordinate request.
-     * @param <RT2>          The fixed response type.
-     */
     @Override
-    public <RT, RT2> void send(final Request<RT> _request,
+    public <RT, RT2> void send(final RequestImpl<RT> _requestImpl,
             final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         if (canceled) {
             return;
@@ -171,8 +153,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             throw new UnsupportedOperationException(
                     "send called on inactive request");
         }
-        final RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _request
-                .asRequestImpl();
+        final RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _requestImpl;
         pendingRequests.add(requestImpl);
         requestImpl.doSend(targetReactorImpl, new AsyncResponseProcessor<RT>() {
             @Override

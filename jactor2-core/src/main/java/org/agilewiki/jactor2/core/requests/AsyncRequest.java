@@ -166,7 +166,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public <RT> void send(final Request<RT> _request,
                           final AsyncResponseProcessor<RT> _responseProcessor) {
-        asyncRequestImpl.send(_request, _responseProcessor);
+        asyncRequestImpl.send(_request.asRequestImpl(), _responseProcessor);
     }
 
     /**
@@ -182,7 +182,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public <RT, RT2> void send(final Request<RT> _request,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
-        asyncRequestImpl.send(_request, _dis, _fixedResponse);
+        asyncRequestImpl.send(_request.asRequestImpl(), _dis, _fixedResponse);
     }
 
     /**
@@ -257,7 +257,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
                 return _sOp.processSyncOperation(asRequestImpl());
             }
         };
-        asyncRequestImpl.send(syncRequest, _asyncResponseProcessor);
+        asyncRequestImpl.send(syncRequest.asRequestImpl(), _asyncResponseProcessor);
     }
 
     /**
@@ -280,7 +280,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
                 return _aOp.toString();
             }
         };
-        asyncRequestImpl.send(asyncRequest, _asyncResponseProcessor);
+        asyncRequestImpl.send(asyncRequest.asRequestImpl(), _asyncResponseProcessor);
     }
 
     /**
@@ -307,7 +307,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
                 return _sOp.toString();
             }
         };
-        asyncRequestImpl.send(syncRequest, _dis, _fixedResponse);
+        asyncRequestImpl.send(syncRequest.asRequestImpl(), _dis, _fixedResponse);
     }
 
     /**
@@ -334,6 +334,6 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
                 return _aOp.toString();
             }
         };
-        asyncRequestImpl.send(asyncRequest, _dis, _fixedResponse);
+        asyncRequestImpl.send(asyncRequest.asRequestImpl(), _dis, _fixedResponse);
     }
 }
