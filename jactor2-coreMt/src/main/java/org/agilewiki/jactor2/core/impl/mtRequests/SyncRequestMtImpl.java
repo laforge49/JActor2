@@ -38,7 +38,7 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
         boolean success = false;
         final RESPONSE_TYPE result;
         try {
-            result = syncRequest.processSyncRequest();
+            result = syncRequest.processSyncOperation(this);
             success = true;
         } finally {
             timer.updateNanos(timer.nanos() - start, success);
