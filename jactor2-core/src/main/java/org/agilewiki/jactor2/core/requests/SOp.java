@@ -24,30 +24,12 @@ public abstract class SOp<RESPONSE_TYPE> implements SyncOperation<RESPONSE_TYPE>
         targetReactor = (ReactorBase) _targetReactor;
     }
 
-    /**
-     * The processSyncRequest method will be invoked by the target Reactor on its own thread.
-     *
-     * @param _requestImpl              The request context.
-     */
-    public RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl)
-            throws Exception {
-        return processSyncOperation(_requestImpl.asRequest());
-    }
-
-    /**
-     * The processSyncRequest method will be invoked by the target Reactor on its own thread.
-     *
-     * @param _request              The request context.
-     */
-    abstract protected RESPONSE_TYPE processSyncOperation(final Request _request)
-            throws Exception;
-
     @Override
     public void signal() {
         SyncRequest<RESPONSE_TYPE> syncRequest = new SyncRequest<RESPONSE_TYPE>(targetReactor) {
             @Override
             public RESPONSE_TYPE processSyncRequest() throws Exception {
-                return SOp.this.processSyncOperation(this);
+                return SOp.this.processSyncOperation(asRequestImpl());
             }
 
             @Override
@@ -64,7 +46,7 @@ public abstract class SOp<RESPONSE_TYPE> implements SyncOperation<RESPONSE_TYPE>
         SyncRequest<RESPONSE_TYPE> syncRequest = new SyncRequest<RESPONSE_TYPE>(targetReactor) {
             @Override
             public RESPONSE_TYPE processSyncRequest() throws Exception {
-                return SOp.this.processSyncOperation(this);
+                return SOp.this.processSyncOperation(asRequestImpl());
             }
 
             @Override

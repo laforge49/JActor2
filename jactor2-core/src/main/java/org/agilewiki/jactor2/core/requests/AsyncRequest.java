@@ -224,7 +224,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
         _sOp.targetReactor.directCheck(getTargetReactor());
-        return _sOp.processSyncOperation(this);
+        return _sOp.processSyncOperation(asRequestImpl());
     }
 
     /**
@@ -253,7 +253,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sOp.targetReactor) {
             @Override
             public RT processSyncRequest() throws Exception {
-                return _sOp.processSyncOperation(this);
+                return _sOp.processSyncOperation(asRequestImpl());
             }
         };
         asyncRequestImpl.send(syncRequest, _asyncResponseProcessor);
@@ -298,7 +298,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sOp.targetReactor) {
             @Override
             public RT processSyncRequest() throws Exception {
-                return _sOp.processSyncOperation(this);
+                return _sOp.processSyncOperation(asRequestImpl());
             }
 
             @Override

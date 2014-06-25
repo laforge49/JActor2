@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.Request;
 import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * Test code.
@@ -17,7 +18,7 @@ public class Blade11 extends IsolationBladeBase {
     public SOp<String> hiSOp() {
         return new SOp<String>("hi", getReactor()) {
             @Override
-            protected String processSyncOperation(final Request _request) throws Exception {
+            public String processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 return "Hello world!";
             }
         };

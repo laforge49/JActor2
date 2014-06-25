@@ -39,11 +39,6 @@ abstract public class SyncRequest<RESPONSE_TYPE> implements
         this(_targetBlade.getReactor());
     }
 
-    /**
-     * The processSyncRequest method will be invoked by the target Reactor on its own thread.
-     *
-     * @return The value returned by the target blades.
-     */
     public RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception {
         return processSyncRequest();
     }
