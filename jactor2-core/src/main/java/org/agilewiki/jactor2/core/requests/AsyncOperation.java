@@ -8,4 +8,11 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
  * An asynchronous operation.
  */
 public interface AsyncOperation<RESPONSE_TYPE> extends Operation<RESPONSE_TYPE> {
+    /**
+     * An optional callback used to signal that the request has been closed.
+     * This method must be thread-safe, as there is no constraint on which
+     * thread is used to call it.
+     * By default, onClose does nothing.
+     */
+    void onClose(final AsyncRequestImpl _asyncRequestImpl);
 }

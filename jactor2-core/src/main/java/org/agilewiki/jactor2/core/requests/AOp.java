@@ -77,4 +77,8 @@ public abstract class AOp<RESPONSE_TYPE> implements AsyncOperation<RESPONSE_TYPE
     public Timer getTimer() {
         return Timer.DEFAULT;
     }
+
+    @Override
+    public void onClose(final AsyncRequestImpl _asyncRequestImpl) {
+    }
 }

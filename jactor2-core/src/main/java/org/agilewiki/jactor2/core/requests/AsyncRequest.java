@@ -105,6 +105,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         }
     }
 
+    @Override
     public void onClose(final AsyncRequestImpl _asyncRequestImpl) {
         onClose();
     }
