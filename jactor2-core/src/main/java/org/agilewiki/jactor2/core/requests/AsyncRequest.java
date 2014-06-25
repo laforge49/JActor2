@@ -251,13 +251,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public <RT> void send(final SOp<RT> _sOp,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
-        SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sOp.targetReactor) {
-            @Override
-            public RT processSyncRequest() throws Exception {
-                return _sOp.processSyncOperation(asRequestImpl());
-            }
-        };
-        asyncRequestImpl.send(syncRequest.asRequestImpl(), _asyncResponseProcessor);
+        asyncRequestImpl.send(PlantImpl.getSingleton().createSyncRequestImpl(_sOp, _sOp.targetReactor), _asyncResponseProcessor);
     }
 
     /**
@@ -296,18 +290,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public <RT, RT2> void send(final SOp<RT> _sOp,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
-        SyncRequest<RT> syncRequest = new SyncRequest<RT>(_sOp.targetReactor) {
-            @Override
-            public RT processSyncRequest() throws Exception {
-                return _sOp.processSyncOperation(asRequestImpl());
-            }
-
-            @Override
-            public String toString() {
-                return _sOp.toString();
-            }
-        };
-        asyncRequestImpl.send(syncRequest.asRequestImpl(), _dis, _fixedResponse);
+        asyncRequestImpl.send(PlantImpl.getSingleton().createSyncRequestImpl(_sOp, _sOp.targetReactor), _dis, _fixedResponse);
     }
 
     /**
