@@ -78,6 +78,27 @@ public abstract class AOp<RESPONSE_TYPE> implements AsyncOperation<RESPONSE_TYPE
         return Timer.DEFAULT;
     }
 
+    /**
+     * Cancels all outstanding requests.
+     * This method is thread safe, so it can be called from any thread.
+     */
+    public void cancelAll(final AsyncRequestImpl _asyncRequestImpl) {
+        _asyncRequestImpl.cancelAll();
+    }
+
+    @Override
+    public void onCancel(final AsyncRequestImpl _asyncRequestImpl) {
+        cancelAll(_asyncRequestImpl);
+        final Reactor targetReactor = _asyncRequestImpl.getTargetReactor();
+        if (!(targetReactor instanceof CommonReactor)) {
+            try {
+                new BoundResponseProcessor<RESPONSE_TYPE>(targetReactor, _asyncRequestImpl)
+                        .processAsyncResponse(null);
+            } catch (final Exception e) {
+            }
+        }
+    }
+
     @Override
     public void onClose(final AsyncRequestImpl _asyncRequestImpl) {
     }

@@ -81,6 +81,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     abstract public void processAsyncRequest() throws Exception;
 
+    @Override
     public void onCancel(final AsyncRequestImpl _asyncRequestImpl) {
         onCancel();
     }
