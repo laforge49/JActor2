@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.Request;
 
 public interface AsyncRequestImpl<RESPONSE_TYPE> extends
-        RequestImpl<RESPONSE_TYPE> {
+        RequestImpl<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
     /**
      * Process the response to this request.
      *
