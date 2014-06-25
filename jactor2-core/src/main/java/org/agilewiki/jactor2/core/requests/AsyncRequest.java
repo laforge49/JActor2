@@ -76,6 +76,12 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         return asyncRequestImpl.isCanceled();
     }
 
+    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                      final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            throws Exception {
+        processAsyncRequest();
+    }
+
     /**
      * The processAsyncRequest method will be invoked by the target Reactor on its own thread.
      */

@@ -108,7 +108,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     @Override
     protected void processRequestMessage() throws Exception {
         start = asyncRequest.getTimer().nanos();
-        asyncRequest.processAsyncRequest();
+        asyncRequest.processAsyncOperation(this, this);
         pendingCheck();
     }
 
