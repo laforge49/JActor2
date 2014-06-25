@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.requests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**
@@ -46,6 +47,7 @@ public abstract class SOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
         syncRequest.signal();
     }
 
+    @GwtIncompatible
     @Override
     public RESPONSE_TYPE call() throws Exception {
         SyncRequest<RESPONSE_TYPE> syncRequest = new SyncRequest<RESPONSE_TYPE>(targetReactor) {

@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.requests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.util.GwtIncompatible;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**
@@ -48,6 +49,7 @@ public abstract class AOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
         asyncRequest.signal();
     }
 
+    @GwtIncompatible
     @Override
     public RESPONSE_TYPE call() throws Exception {
         AsyncRequest<RESPONSE_TYPE> asyncRequest = new AsyncRequest<RESPONSE_TYPE>(targetReactor) {
