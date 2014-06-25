@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.Request;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
 
 /**
@@ -79,4 +80,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      */
     @GwtIncompatible
     RESPONSE_TYPE call() throws Exception;
+
+    <RT> RT syncDirect(final SOp<RT> _sOp)
+            throws Exception;
 }
