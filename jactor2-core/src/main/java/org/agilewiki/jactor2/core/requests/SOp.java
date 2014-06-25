@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
@@ -26,35 +27,13 @@ public abstract class SOp<RESPONSE_TYPE> implements SyncOperation<RESPONSE_TYPE>
 
     @Override
     public void signal() {
-        SyncRequest<RESPONSE_TYPE> syncRequest = new SyncRequest<RESPONSE_TYPE>(targetReactor) {
-            @Override
-            public RESPONSE_TYPE processSyncRequest() throws Exception {
-                return SOp.this.processSyncOperation(asRequestImpl());
-            }
-
-            @Override
-            public String toString() {
-                return SOp.this.toString();
-            }
-        };
-        syncRequest.signal();
+        PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor).signal();
     }
 
     @GwtIncompatible
     @Override
     public RESPONSE_TYPE call() throws Exception {
-        SyncRequest<RESPONSE_TYPE> syncRequest = new SyncRequest<RESPONSE_TYPE>(targetReactor) {
-            @Override
-            public RESPONSE_TYPE processSyncRequest() throws Exception {
-                return SOp.this.processSyncOperation(asRequestImpl());
-            }
-
-            @Override
-            public String toString() {
-                return SOp.this.toString();
-            }
-        };
-        return syncRequest.call();
+        return PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor).call();
     }
 
     @Override
