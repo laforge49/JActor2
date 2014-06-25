@@ -230,7 +230,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             it.next().cancel();
         }
         super.close();
-        asRequest().onClose();
+        asRequest().onClose(this);
     }
 
     /**
@@ -271,7 +271,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             return;
         }
         canceled = true;
-        asRequest().onCancel();
+        asRequest().onCancel(this);
     }
 
     @Override

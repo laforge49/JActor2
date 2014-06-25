@@ -81,6 +81,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     abstract public void processAsyncRequest() throws Exception;
 
+    public void onCancel(final AsyncRequestImpl _asyncRequestImpl) {
+        onCancel();
+    }
+
     /**
      * An optional callback used to signal that the request has been canceled.
      * This method must be thread-safe, as there is no constraint on which
@@ -99,6 +103,10 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
             } catch (final Exception e) {
             }
         }
+    }
+
+    public void onClose(final AsyncRequestImpl _asyncRequestImpl) {
+        onClose();
     }
 
     /**
