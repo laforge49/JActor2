@@ -3,8 +3,6 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
-import org.agilewiki.jactor2.core.util.GwtIncompatible;
-import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * A request is a single-use object for performing an operation safely and to optionally be passed back with a response
@@ -12,7 +10,7 @@ import org.agilewiki.jactor2.core.util.Timer;
  *
  * @param <RESPONSE_TYPE>    The type response value.
  */
-public interface Request<RESPONSE_TYPE> extends Op<RESPONSE_TYPE> {
+public interface Request<RESPONSE_TYPE> extends Operation<RESPONSE_TYPE> {
     /**
      * Returns the object used to implement the request.
      *

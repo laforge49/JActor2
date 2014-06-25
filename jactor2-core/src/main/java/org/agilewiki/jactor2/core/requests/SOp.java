@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.util.Timer;
 /**
  * A synchronous operation, optionally used to define a SyncRequest.
  */
-public abstract class SOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
+public abstract class SOp<RESPONSE_TYPE> implements SyncOperation<RESPONSE_TYPE> {
     public final String opName;
     public final ReactorBase targetReactor;
 

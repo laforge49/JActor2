@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.impl;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.jactor2.core.requests.Op;
+import org.agilewiki.jactor2.core.requests.Operation;
 import org.agilewiki.jactor2.core.requests.Request;
 
 /**
@@ -16,7 +16,7 @@ public class CallTestBase extends TestCase {
     }
 
     protected <RESPONSE_TYPE> RESPONSE_TYPE call(
-            final Op<RESPONSE_TYPE> op) throws Exception {
-        return op.call();
+            final Operation<RESPONSE_TYPE> operation) throws Exception {
+        return operation.call();
     }
 }

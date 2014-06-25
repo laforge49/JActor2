@@ -15,7 +15,7 @@ import org.agilewiki.jactor2.core.util.Timer;
  * @param <RESPONSE_TYPE> The type of response value.
  */
 public abstract class AsyncRequest<RESPONSE_TYPE> implements
-        Request<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
+        AsyncOperation<RESPONSE_TYPE>, Request<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
 
     private final AsyncRequestImpl<RESPONSE_TYPE> asyncRequestImpl;
 
@@ -214,7 +214,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     /**
      * Do a direct method call on an AReq.
      *
-     * @param _aOp                   The boilerplate-free alternative to AsyncRequest.
+     * @param _aOp                    The boilerplate-free alternative to AsyncRequest.
      * @param _asyncResponseProcessor Handles the response.
      * @param <RT>                    The type of response returned.
      */
@@ -246,7 +246,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     /**
      * Pass a request to its target reactor, providing the originating request is not canceled.
      *
-     * @param _aOp                   An asynchronous operation, optionally used to define an AsyncRequest.
+     * @param _aOp                    An asynchronous operation, optionally used to define an AsyncRequest.
      * @param _asyncResponseProcessor Handles the response.
      * @param <RT>                    The type of response returned.
      */
@@ -298,7 +298,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * providing the originating request is not canceled.
      * Useful when you do not care about the actual response being passed back.
      *
-     * @param _aOp          An asynchronous operation, optionally used to define an AsyncRequest.
+     * @param _aOp           An asynchronous operation, optionally used to define an AsyncRequest.
      * @param _dis           The callback to be invoked when a response value is received.
      * @param _fixedResponse The replacement value.
      * @param <RT>           The response value type.

@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.util.Timer;
 /**
  * An asynchronous operation, optionally used to define an AsyncRequest.
  */
-public abstract class AOp<RESPONSE_TYPE> implements Op<RESPONSE_TYPE> {
+public abstract class AOp<RESPONSE_TYPE> implements AsyncOperation<RESPONSE_TYPE> {
     public final String opName;
     public final ReactorBase targetReactor;
 

@@ -14,7 +14,7 @@ import org.agilewiki.jactor2.core.util.Timer;
  * @param <RESPONSE_TYPE> The type of response value.
  */
 abstract public class SyncRequest<RESPONSE_TYPE> implements
-        Request<RESPONSE_TYPE> {
+        Request<RESPONSE_TYPE>, SyncOperation<RESPONSE_TYPE> {
 
     private final RequestImpl<RESPONSE_TYPE> requestImpl;
 
