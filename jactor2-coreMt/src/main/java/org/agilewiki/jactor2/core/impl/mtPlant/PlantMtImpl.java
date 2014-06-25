@@ -22,6 +22,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.SyncOperation;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
@@ -178,9 +179,9 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(
-            final SyncRequest<RESPONSE_TYPE> _syncRequest,
+            final SyncOperation<RESPONSE_TYPE> _syncOperation,
             final Reactor _targetReactor) {
-        return new SyncRequestMtImpl<RESPONSE_TYPE>(_syncRequest,
+        return new SyncRequestMtImpl<RESPONSE_TYPE>(_syncOperation,
                 _targetReactor);
     }
 

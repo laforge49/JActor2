@@ -481,7 +481,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
 
     @Override
     public String toString() {
-        return "message=" + asRequest() + ", isComplete=" + isComplete()
+        return "message=" + asOperation() + ", isComplete=" + isComplete()
                 + ", isOneWay=" + isOneWay() + ", source="
                 + (requestSource == null ? "null" : requestSource)
                 + ", target=" + getTargetReactor().asReactorImpl() + ", this="

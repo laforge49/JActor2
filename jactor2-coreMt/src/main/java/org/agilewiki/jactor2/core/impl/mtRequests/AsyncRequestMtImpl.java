@@ -47,7 +47,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
-    public AsyncRequest<RESPONSE_TYPE> asRequest() {
+    public AsyncRequest<RESPONSE_TYPE> asOperation() {
         return asyncRequest;
     }
 
@@ -230,7 +230,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             it.next().cancel();
         }
         super.close();
-        asRequest().onClose(this);
+        asOperation().onClose(this);
     }
 
     /**
@@ -271,7 +271,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             return;
         }
         canceled = true;
-        asRequest().onCancel(this);
+        asOperation().onCancel(this);
     }
 
     @Override

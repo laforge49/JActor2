@@ -11,6 +11,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.SyncOperation;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
@@ -80,7 +81,7 @@ abstract public class PlantImpl {
             int _initialLocalQueueSize, Runnable _boundProcessor);
 
     abstract public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(
-            SyncRequest<RESPONSE_TYPE> _syncRequest, Reactor _targetReactor);
+            SyncOperation<RESPONSE_TYPE> _syncOperation, Reactor _targetReactor);
 
     abstract public <RESPONSE_TYPE> AsyncRequestImpl<RESPONSE_TYPE> createAsyncRequestImpl(
             AsyncRequest<RESPONSE_TYPE> _asyncRequest, Reactor _targetReactor);

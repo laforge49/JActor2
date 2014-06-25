@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.SyncOperation;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.util.Timer;
 
@@ -12,33 +13,33 @@ import org.agilewiki.jactor2.core.util.Timer;
 public class SyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> {
 
-    private final SyncRequest<RESPONSE_TYPE> syncRequest;
+    private final SyncOperation<RESPONSE_TYPE> syncOperation;
 
     /**
      * Create a SyncRequestMtImpl and bind it to its target reactor.
      *
-     * @param _syncRequest   The request being implemented.
+     * @param _syncOperation   The request being implemented.
      * @param _targetReactor The target reactor.
      */
-    public SyncRequestMtImpl(final SyncRequest<RESPONSE_TYPE> _syncRequest,
+    public SyncRequestMtImpl(final SyncOperation<RESPONSE_TYPE> _syncOperation,
             final Reactor _targetReactor) {
         super(_targetReactor);
-        syncRequest = _syncRequest;
+        syncOperation = _syncOperation;
     }
 
     @Override
-    public SyncRequest<RESPONSE_TYPE> asRequest() {
-        return syncRequest;
+    public SyncOperation<RESPONSE_TYPE> asOperation() {
+        return syncOperation;
     }
 
     @Override
     protected void processRequestMessage() throws Exception {
-        final Timer timer = syncRequest.getTimer();
+        final Timer timer = syncOperation.getTimer();
         final long start = timer.nanos();
         boolean success = false;
         final RESPONSE_TYPE result;
         try {
-            result = syncRequest.processSyncOperation(this);
+            result = syncOperation.processSyncOperation(this);
             success = true;
         } finally {
             timer.updateNanos(timer.nanos() - start, success);

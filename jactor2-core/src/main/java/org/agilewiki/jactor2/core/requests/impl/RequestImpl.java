@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.Operation;
 import org.agilewiki.jactor2.core.requests.Request;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
@@ -20,7 +21,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
      *
      * @return The Request implemented by this RequestImpl.
      */
-    Request<RESPONSE_TYPE> asRequest();
+    Operation<RESPONSE_TYPE> asOperation();
 
     /**
      * Passes this Request together with the AsyncResponseProcessor to the target Reactor.
