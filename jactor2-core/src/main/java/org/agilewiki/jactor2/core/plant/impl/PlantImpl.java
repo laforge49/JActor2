@@ -10,6 +10,7 @@ import org.agilewiki.jactor2.core.reactors.Facility;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.AsyncOperation;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
@@ -84,7 +85,7 @@ abstract public class PlantImpl {
             SyncOperation<RESPONSE_TYPE> _syncOperation, Reactor _targetReactor);
 
     abstract public <RESPONSE_TYPE> AsyncRequestImpl<RESPONSE_TYPE> createAsyncRequestImpl(
-            AsyncRequest<RESPONSE_TYPE> _asyncRequest, Reactor _targetReactor);
+            AsyncOperation<RESPONSE_TYPE> _asyncOperation, Reactor _targetReactor);
 
     abstract public CloseableImpl createCloseableImpl(Closeable _closeable);
 

@@ -77,6 +77,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
         return asyncRequestImpl.isCanceled();
     }
 
+    @Override
     public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                       final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
@@ -238,7 +239,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
                                  final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception {
         _aOp.targetReactor.directCheck(getTargetReactor());
-        _aOp.processAsyncOperation(this, _asyncResponseProcessor);
+        _aOp.processAsyncOperation(asRequestImpl(), _asyncResponseProcessor);
     }
 
     /**
@@ -262,18 +263,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public <RT> void send(final AOp<RT> _aOp,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
-        AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aOp.targetReactor) {
-            @Override
-            public void processAsyncRequest() throws Exception {
-                _aOp.processAsyncOperation(this, this);
-            }
-
-            @Override
-            public String toString() {
-                return _aOp.toString();
-            }
-        };
-        asyncRequestImpl.send(asyncRequest.asRequestImpl(), _asyncResponseProcessor);
+        asyncRequestImpl.send(_aOp, _asyncResponseProcessor);
     }
 
     /**
@@ -305,17 +295,6 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public <RT, RT2> void send(final AOp<RT> _aOp,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
-        AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aOp.targetReactor) {
-            @Override
-            public void processAsyncRequest() throws Exception {
-                _aOp.processAsyncOperation(this, this);
-            }
-
-            @Override
-            public String toString() {
-                return _aOp.toString();
-            }
-        };
-        asyncRequestImpl.send(asyncRequest.asRequestImpl(), _dis, _fixedResponse);
+        asyncRequestImpl.send(_aOp, _dis, _fixedResponse);
     }
 }

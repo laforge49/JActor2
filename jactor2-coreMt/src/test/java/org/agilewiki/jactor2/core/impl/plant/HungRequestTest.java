@@ -40,7 +40,7 @@ class Hanger extends NonBlockingBladeBase {
     public AOp<String> hiAOp() {
         return new AOp<String>("hi", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequest _asyncRequest,
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<String> _asyncResponseProcessor)
                     throws Exception {
                 System.out.println("    hang");
@@ -62,10 +62,10 @@ class Hung extends NonBlockingBladeBase {
     public AOp<String> hoAOp() {
         return new AOp<String>("ho", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequest _asyncRequest,
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<String> _asyncResponseProcessor)
                     throws Exception {
-                _asyncRequest.send(hanger.hiAOp(), _asyncResponseProcessor);
+                _asyncRequestImpl.send(hanger.hiAOp(), _asyncResponseProcessor);
             }
         };
     }

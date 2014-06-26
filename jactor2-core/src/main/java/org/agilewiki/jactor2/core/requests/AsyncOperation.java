@@ -26,4 +26,14 @@ public interface AsyncOperation<RESPONSE_TYPE> extends Operation<RESPONSE_TYPE> 
      * By default, onClose does nothing.
      */
     void onClose(final AsyncRequestImpl _asyncRequestImpl);
+
+    /**
+     * The processAsyncOperation method will be invoked by the target Reactor on its own thread.
+     *
+     * @param _asyncRequestImpl       The request context--may be of a different RESPONSE_TYPE.
+     * @param _asyncResponseProcessor Handles the response.
+     */
+    void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                                  final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            throws Exception;
 }

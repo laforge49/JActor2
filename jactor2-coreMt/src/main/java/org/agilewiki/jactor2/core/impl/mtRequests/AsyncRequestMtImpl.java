@@ -26,7 +26,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     private boolean noHungRequestCheck;
 
-    private final AsyncRequest<RESPONSE_TYPE> asyncRequest;
+    private final AsyncOperation<RESPONSE_TYPE> asyncOperation;
 
     /**
      * Used by the Timer.
@@ -36,19 +36,19 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     /**
      * Create an AsyncRequestMtImpl and bind it to its target targetReactor.
      *
-     * @param _asyncRequest  The request being implemented.
+     * @param _asyncOperation  The request being implemented.
      * @param _targetReactor The targetReactor where this AsyncRequest Objects is passed for processing.
      *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
-    public AsyncRequestMtImpl(final AsyncRequest<RESPONSE_TYPE> _asyncRequest,
+    public AsyncRequestMtImpl(final AsyncOperation<RESPONSE_TYPE> _asyncOperation,
                               final Reactor _targetReactor) {
         super(_targetReactor);
-        asyncRequest = _asyncRequest;
+        asyncOperation = _asyncOperation;
     }
 
     @Override
-    public AsyncRequest<RESPONSE_TYPE> asOperation() {
-        return asyncRequest;
+    public AsyncOperation<RESPONSE_TYPE> asOperation() {
+        return asyncOperation;
     }
 
     /**
@@ -77,7 +77,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE _response) {
-        final Timer timer = asyncRequest.getTimer();
+        final Timer timer = asyncOperation.getTimer();
         timer.updateNanos(timer.nanos() - start, true);
         processObjectResponse(_response);
     }
@@ -91,7 +91,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void processAsyncException(final Exception _response) {
-        final Timer timer = asyncRequest.getTimer();
+        final Timer timer = asyncOperation.getTimer();
         timer.updateNanos(timer.nanos() - start, false);
         processObjectResponse(_response);
     }
@@ -107,8 +107,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void processRequestMessage() throws Exception {
-        start = asyncRequest.getTimer().nanos();
-        asyncRequest.processAsyncOperation(this, this);
+        start = asyncOperation.getTimer().nanos();
+        asyncOperation.processAsyncOperation(this, this);
         pendingCheck();
     }
 
@@ -275,5 +275,39 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     public <RT, RT2> void send(final SOp<RT> _sOp,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         send(PlantImpl.getSingleton().createSyncRequestImpl(_sOp, _sOp.targetReactor), _dis, _fixedResponse);
+    }
+
+    @Override
+    public <RT> void send(final AOp<RT> _aOp,
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+        AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aOp.targetReactor) {
+            @Override
+            public void processAsyncRequest() throws Exception {
+                _aOp.processAsyncOperation(asRequestImpl(), this);
+            }
+
+            @Override
+            public String toString() {
+                return _aOp.toString();
+            }
+        };
+        send(asyncRequest.asRequestImpl(), _asyncResponseProcessor);
+    }
+
+    @Override
+    public <RT, RT2> void send(final AOp<RT> _aOp,
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+        AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aOp.targetReactor) {
+            @Override
+            public void processAsyncRequest() throws Exception {
+                _aOp.processAsyncOperation(asRequestImpl(), this);
+            }
+
+            @Override
+            public String toString() {
+                return _aOp.toString();
+            }
+        };
+        send(asyncRequest.asRequestImpl(), _dis, _fixedResponse);
     }
 }

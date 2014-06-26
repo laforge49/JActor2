@@ -25,22 +25,12 @@ public abstract class AOp<RESPONSE_TYPE> implements AsyncOperation<RESPONSE_TYPE
         targetReactor = (ReactorBase) _targetReactor;
     }
 
-    /**
-     * The processAsyncOperation method will be invoked by the target Reactor on its own thread.
-     *
-     * @param _asyncRequest           The request context--may be of a different RESPONSE_TYPE.
-     * @param _asyncResponseProcessor Handles the response.
-     */
-    abstract protected void processAsyncOperation(final AsyncRequest _asyncRequest,
-                                                final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
-            throws Exception;
-
     @Override
     public void signal() {
         AsyncRequest<RESPONSE_TYPE> asyncRequest = new AsyncRequest<RESPONSE_TYPE>(targetReactor) {
             @Override
             public void processAsyncRequest() throws Exception {
-                AOp.this.processAsyncOperation(this, this);
+                AOp.this.processAsyncOperation(asRequestImpl(), this);
             }
 
             @Override
@@ -57,7 +47,7 @@ public abstract class AOp<RESPONSE_TYPE> implements AsyncOperation<RESPONSE_TYPE
         AsyncRequest<RESPONSE_TYPE> asyncRequest = new AsyncRequest<RESPONSE_TYPE>(targetReactor) {
             @Override
             public void processAsyncRequest() throws Exception {
-                AOp.this.processAsyncOperation(this, this);
+                AOp.this.processAsyncOperation(asRequestImpl(), this);
             }
 
             @Override
