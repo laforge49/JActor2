@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class HungRequestTest extends CallTestBase {
     public void testa() throws Exception {

@@ -264,5 +264,4 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         }
         super.setResponse(_response, _activeReactor);
     }
-
 }

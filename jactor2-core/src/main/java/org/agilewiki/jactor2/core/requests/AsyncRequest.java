@@ -224,8 +224,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
 
     public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
-        _sOp.targetReactor.directCheck(getTargetReactor());
-        return _sOp.processSyncOperation(asRequestImpl());
+        return asRequestImpl().syncDirect(_sOp);
     }
 
     /**
