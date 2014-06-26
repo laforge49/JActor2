@@ -280,35 +280,13 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     @Override
     public <RT> void send(final AOp<RT> _aOp,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
-        AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aOp.targetReactor) {
-            @Override
-            public void processAsyncRequest() throws Exception {
-                _aOp.processAsyncOperation(asRequestImpl(), this);
-            }
-
-            @Override
-            public String toString() {
-                return _aOp.toString();
-            }
-        };
-        send(asyncRequest.asRequestImpl(), _asyncResponseProcessor);
+        send(PlantImpl.getSingleton().createAsyncRequestImpl(_aOp, _aOp.targetReactor), _asyncResponseProcessor);
     }
 
     @Override
     public <RT, RT2> void send(final AOp<RT> _aOp,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
-        AsyncRequest<RT> asyncRequest = new AsyncRequest<RT>(_aOp.targetReactor) {
-            @Override
-            public void processAsyncRequest() throws Exception {
-                _aOp.processAsyncOperation(asRequestImpl(), this);
-            }
-
-            @Override
-            public String toString() {
-                return _aOp.toString();
-            }
-        };
-        send(asyncRequest.asRequestImpl(), _dis, _fixedResponse);
+        send(PlantImpl.getSingleton().createAsyncRequestImpl(_aOp, _aOp.targetReactor), _dis, _fixedResponse);
     }
 
     @Override

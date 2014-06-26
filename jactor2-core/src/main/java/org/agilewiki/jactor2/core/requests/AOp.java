@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
@@ -27,35 +28,13 @@ public abstract class AOp<RESPONSE_TYPE> implements AsyncOperation<RESPONSE_TYPE
 
     @Override
     public void signal() {
-        AsyncRequest<RESPONSE_TYPE> asyncRequest = new AsyncRequest<RESPONSE_TYPE>(targetReactor) {
-            @Override
-            public void processAsyncRequest() throws Exception {
-                AOp.this.processAsyncOperation(asRequestImpl(), this);
-            }
-
-            @Override
-            public String toString() {
-                return AOp.this.toString();
-            }
-        };
-        asyncRequest.signal();
+        PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor).signal();
     }
 
     @GwtIncompatible
     @Override
     public RESPONSE_TYPE call() throws Exception {
-        AsyncRequest<RESPONSE_TYPE> asyncRequest = new AsyncRequest<RESPONSE_TYPE>(targetReactor) {
-            @Override
-            public void processAsyncRequest() throws Exception {
-                AOp.this.processAsyncOperation(asRequestImpl(), this);
-            }
-
-            @Override
-            public String toString() {
-                return AOp.this.toString();
-            }
-        };
-        return asyncRequest.call();
+        return PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor).call();
     }
 
     @Override
