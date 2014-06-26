@@ -5,12 +5,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
+import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.Request;
+import org.agilewiki.jactor2.core.requests.*;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
@@ -30,7 +28,9 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     private final AsyncRequest<RESPONSE_TYPE> asyncRequest;
 
-    /** Used by the Timer. */
+    /**
+     * Used by the Timer.
+     */
     private volatile long start;
 
     /**
@@ -41,7 +41,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      *                       The thread owned by this targetReactor will process this AsyncRequest.
      */
     public AsyncRequestMtImpl(final AsyncRequest<RESPONSE_TYPE> _asyncRequest,
-            final Reactor _targetReactor) {
+                              final Reactor _targetReactor) {
         super(_targetReactor);
         asyncRequest = _asyncRequest;
     }
@@ -128,7 +128,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT> void send(final RequestImpl<RT> _requestImpl,
-            final AsyncResponseProcessor<RT> _responseProcessor) {
+                          final AsyncResponseProcessor<RT> _responseProcessor) {
         if (canceled && (_responseProcessor != null)) {
             return;
         }
@@ -145,7 +145,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT, RT2> void send(final RequestImpl<RT> _requestImpl,
-            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         if (canceled) {
             return;
         }
@@ -257,11 +257,23 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void setResponse(final Object _response,
-            final ReactorMtImpl _activeReactor) {
+                               final ReactorMtImpl _activeReactor) {
         if ((_response instanceof Throwable)
                 || (targetReactor instanceof CommonReactor)) {
             cancelAll();
         }
         super.setResponse(_response, _activeReactor);
+    }
+
+    @Override
+    public <RT> void send(final SOp<RT> _sOp,
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+        send(PlantImpl.getSingleton().createSyncRequestImpl(_sOp, _sOp.targetReactor), _asyncResponseProcessor);
+    }
+
+    @Override
+    public <RT, RT2> void send(final SOp<RT> _sOp,
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+        send(PlantImpl.getSingleton().createSyncRequestImpl(_sOp, _sOp.targetReactor), _dis, _fixedResponse);
     }
 }

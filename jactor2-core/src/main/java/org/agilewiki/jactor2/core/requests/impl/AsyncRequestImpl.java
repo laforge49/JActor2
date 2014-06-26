@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.requests.impl;
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 public interface AsyncRequestImpl<RESPONSE_TYPE> extends
         RequestImpl<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
@@ -87,4 +88,28 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * Cancel all subordinate RequestImpl's.
      */
     public void cancelAll();
+
+    /**
+     * Pass a request to its target reactor, providing the originating request is not canceled.
+     *
+     * @param _sOp                    A synchronous operation, optionally used to define a SyncRequest.
+     * @param _asyncResponseProcessor Handles the response.
+     * @param <RT>                    The type of response returned.
+     */
+    public <RT> void send(final SOp<RT> _sOp,
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+
+    /**
+     * Pass a request to its target and then replace its response value,
+     * providing the originating request is not canceled.
+     * Useful when you do not care about the actual response being passed back.
+     *
+     * @param _sOp           A synchronous operation, optionally used to define a SyncRequest.
+     * @param _dis           The callback to be invoked when a response value is received.
+     * @param _fixedResponse The replacement value.
+     * @param <RT>           The response value type.
+     * @param <RT2>          The replacement value type.
+     */
+    public <RT, RT2> void send(final SOp<RT> _sOp,
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 }

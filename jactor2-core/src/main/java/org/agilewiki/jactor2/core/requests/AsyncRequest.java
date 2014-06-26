@@ -250,7 +250,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public <RT> void send(final SOp<RT> _sOp,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
-        asyncRequestImpl.send(PlantImpl.getSingleton().createSyncRequestImpl(_sOp, _sOp.targetReactor), _asyncResponseProcessor);
+        asyncRequestImpl.send(_sOp, _asyncResponseProcessor);
     }
 
     /**
@@ -289,7 +289,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      */
     public <RT, RT2> void send(final SOp<RT> _sOp,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
-        asyncRequestImpl.send(PlantImpl.getSingleton().createSyncRequestImpl(_sOp, _sOp.targetReactor), _dis, _fixedResponse);
+        asyncRequestImpl.send(_sOp, _dis, _fixedResponse);
     }
 
     /**
