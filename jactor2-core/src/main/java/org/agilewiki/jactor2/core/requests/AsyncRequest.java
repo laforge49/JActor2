@@ -238,8 +238,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
     public <RT> void asyncDirect(final AOp<RT> _aOp,
                                  final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception {
-        _aOp.targetReactor.directCheck(getTargetReactor());
-        _aOp.processAsyncOperation(asRequestImpl(), _asyncResponseProcessor);
+        asRequestImpl().asyncDirect(_aOp, _asyncResponseProcessor);
     }
 
     /**

@@ -489,6 +489,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
                 + (oldMessage == null ? "" : "\n" + oldMessage.toString());
     }
 
+    @Override
     public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
         _sOp.targetReactor.directCheck(getTargetReactor());

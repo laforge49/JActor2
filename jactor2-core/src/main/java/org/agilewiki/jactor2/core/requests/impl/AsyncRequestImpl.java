@@ -136,4 +136,15 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      */
     public <RT, RT2> void send(final AOp<RT> _aOp,
                                final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+
+    /**
+     * Do a direct method call on an AReq.
+     *
+     * @param _aOp                    The boilerplate-free alternative to AsyncRequest.
+     * @param _asyncResponseProcessor Handles the response.
+     * @param <RT>                    The type of response returned.
+     */
+    public <RT> void asyncDirect(final AOp<RT> _aOp,
+                                 final AsyncResponseProcessor<RT> _asyncResponseProcessor)
+            throws Exception;
 }
