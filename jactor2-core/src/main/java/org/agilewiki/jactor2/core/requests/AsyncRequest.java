@@ -103,15 +103,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * a bound response processor.
      */
     public void onCancel() {
-        cancelAll();
-        final Reactor targetReactor = getTargetReactor();
-        if (!(targetReactor instanceof CommonReactor)) {
-            try {
-                new BoundResponseProcessor<RESPONSE_TYPE>(targetReactor, this)
-                        .processAsyncResponse(null);
-            } catch (final Exception e) {
-            }
-        }
+        asRequestImpl().onCancel(asRequestImpl());
     }
 
     @Override
@@ -126,6 +118,7 @@ public abstract class AsyncRequest<RESPONSE_TYPE> implements
      * By default, onClose does nothing.
      */
     public void onClose() {
+        asRequestImpl().onClose(asRequestImpl());
     }
 
     /**

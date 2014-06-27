@@ -20,7 +20,7 @@ import org.agilewiki.jactor2.core.util.Timer;
  * @param <RESPONSE_TYPE> The type of response.
  */
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
-        RequestMtImpl<RESPONSE_TYPE> implements AsyncRequestImpl<RESPONSE_TYPE> {
+        RequestMtImpl<RESPONSE_TYPE> implements AsyncRequestImpl<RESPONSE_TYPE>, AsyncOperation<RESPONSE_TYPE> {
 
     private final Set<RequestMtImpl<?>> pendingRequests = new HashSet<RequestMtImpl<?>>();
 
@@ -34,7 +34,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     private volatile long start;
 
     /**
-     * Create an AsyncRequestMtImpl and bind it to its target targetReactor.
+     * Create an AsyncRequestMtImpl and bind it to its operation and target targetReactor.
      *
      * @param _asyncOperation  The request being implemented.
      * @param _targetReactor The targetReactor where this AsyncRequest Objects is passed for processing.
@@ -44,6 +44,11 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
                               final Reactor _targetReactor) {
         super(_targetReactor);
         asyncOperation = _asyncOperation;
+    }
+
+    public AsyncRequestMtImpl(final Reactor _targetReactor) {
+        super(_targetReactor);
+        asyncOperation = this;
     }
 
     @Override
@@ -295,5 +300,53 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             throws Exception {
         _aOp.targetReactor.directCheck(getTargetReactor());
         _aOp.processAsyncOperation(this, _asyncResponseProcessor);
+    }
+
+    @Override
+    public void onCancel(final AsyncRequestImpl _asyncRequestImpl) {
+        onCancel();
+    }
+
+    /**
+     * An optional callback used to signal that the request has been canceled.
+     * This method must be thread-safe, as there is no constraint on which
+     * thread is used to call it.
+     * The default action of onCancel is to call cancelAll and,
+     * if the reactor is not a common reactor, sends a response of null via
+     * a bound response processor.
+     */
+    public void onCancel() {
+        cancelAll();
+        final Reactor targetReactor = getTargetReactor();
+        if (!(targetReactor instanceof CommonReactor)) {
+            try {
+                new BoundResponseProcessor<RESPONSE_TYPE>(targetReactor, this)
+                        .processAsyncResponse(null);
+            } catch (final Exception e) {
+            }
+        }
+    }
+
+    @Override
+    public void onClose(final AsyncRequestImpl _asyncRequestImpl) {
+        onClose();
+    }
+
+    /**
+     * An optional callback used to signal that the request has been closed.
+     * This method must be thread-safe, as there is no constraint on which
+     * thread is used to call it.
+     * By default, onClose does nothing.
+     */
+    public void onClose() {
+    }
+
+    @Override
+    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                      final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            throws Exception {
+        if (this == asyncOperation)
+            throw new IllegalStateException();
+        asyncOperation.processAsyncOperation(_asyncRequestImpl, _asyncResponseProcessor);
     }
 }

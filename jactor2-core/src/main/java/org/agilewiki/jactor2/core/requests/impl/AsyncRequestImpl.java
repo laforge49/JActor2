@@ -50,7 +50,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @return The exception handler that was previously in effect, or null if the
      * default exception handler was in effect.
      */
-    public ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(
+    ExceptionHandler<RESPONSE_TYPE> setExceptionHandler(
             final ExceptionHandler<RESPONSE_TYPE> _exceptionHandler);
 
     /**
@@ -82,12 +82,12 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param _requestImpl The subordinate RequestImpl.
      * @return True if the subordinate RequestImpl was canceled.
      */
-    public boolean cancel(RequestImpl<?> _requestImpl);
+    boolean cancel(RequestImpl<?> _requestImpl);
 
     /**
      * Cancel all subordinate RequestImpl's.
      */
-    public void cancelAll();
+    void cancelAll();
 
     /**
      * Pass a request to its target reactor, providing the originating request is not canceled.
@@ -96,8 +96,8 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param _asyncResponseProcessor Handles the response.
      * @param <RT>                    The type of response returned.
      */
-    public <RT> void send(final SOp<RT> _sOp,
-                          final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+    <RT> void send(final SOp<RT> _sOp,
+                   final AsyncResponseProcessor<RT> _asyncResponseProcessor);
 
     /**
      * Pass a request to its target and then replace its response value,
@@ -110,8 +110,8 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT>           The response value type.
      * @param <RT2>          The replacement value type.
      */
-    public <RT, RT2> void send(final SOp<RT> _sOp,
-                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+    <RT, RT2> void send(final SOp<RT> _sOp,
+                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
      * Pass a request to its target reactor, providing the originating request is not canceled.
@@ -120,8 +120,8 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param _asyncResponseProcessor Handles the response.
      * @param <RT>                    The type of response returned.
      */
-    public <RT> void send(final AOp<RT> _aOp,
-                          final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+    <RT> void send(final AOp<RT> _aOp,
+                   final AsyncResponseProcessor<RT> _asyncResponseProcessor);
 
     /**
      * Pass a request to its target and then replace its response value,
@@ -134,8 +134,8 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT>           The response value type.
      * @param <RT2>          The replacement value type.
      */
-    public <RT, RT2> void send(final AOp<RT> _aOp,
-                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+    <RT, RT2> void send(final AOp<RT> _aOp,
+                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
      * Do a direct method call on an AReq.
@@ -144,7 +144,25 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param _asyncResponseProcessor Handles the response.
      * @param <RT>                    The type of response returned.
      */
-    public <RT> void asyncDirect(final AOp<RT> _aOp,
-                                 final AsyncResponseProcessor<RT> _asyncResponseProcessor)
+    <RT> void asyncDirect(final AOp<RT> _aOp,
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception;
+
+    /**
+     * An optional callback used to signal that the request has been canceled.
+     * This method must be thread-safe, as there is no constraint on which
+     * thread is used to call it.
+     * The default action of onCancel is to call cancelAll and,
+     * if the reactor is not a common reactor, sends a response of null via
+     * a bound response processor.
+     */
+    void onCancel(final AsyncRequestImpl _asyncRequestImpl);
+
+    /**
+     * An optional callback used to signal that the request has been closed.
+     * This method must be thread-safe, as there is no constraint on which
+     * thread is used to call it.
+     * By default, onClose does nothing.
+     */
+    void onClose(final AsyncRequestImpl _asyncRequestImpl);
 }
