@@ -2,8 +2,10 @@ package org.agilewiki.jactor2.core.readme.requests;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 import java.io.IOException;
 
@@ -12,7 +14,7 @@ public class ExceptionSample {
         new Plant();
         try {
             A a = new A();
-            a.new Start().call();
+            a.startAOp().call();
         } finally {
             Plant.close();
         }
@@ -26,39 +28,39 @@ class A extends NonBlockingBladeBase {
     public A() throws Exception {
     }
 
-    class Start extends AsyncBladeRequest<Void> {
-        B b;
-
-        AsyncResponseProcessor<Void> woopsResponse = new AsyncResponseProcessor<Void>() {
+    AOp<Void> startAOp() {
+        return new AOp<Void>("start", getReactor()) {
             @Override
-            public void processAsyncResponse(Void _response) {
-                System.out.println("can not get here!");
-                Start.this.processAsyncResponse(null);
-            }
-        };
-
-        ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
-            @Override
-            public void processException(final Exception _e,
-                                         final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                              final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
-                if (_e instanceof IOException) {
-                    System.out.println("got IOException");
-                    _asyncResponseProcessor.processAsyncResponse(null);
-                } else
-                    throw _e;
+                B b = new B();
+
+                AsyncResponseProcessor<Void> woopsResponse = new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(Void _response) throws Exception {
+                        System.out.println("can not get here!");
+                        _asyncResponseProcessor.processAsyncResponse(null);
+                    }
+                };
+
+                ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
+                    @Override
+                    public void processException(final Exception _e,
+                                                 final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                            throws Exception {
+                        if (_e instanceof IOException) {
+                            System.out.println("got IOException");
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                        } else
+                            throw _e;
+                    }
+                };
+
+                _asyncRequestImpl.setExceptionHandler(exceptionHandler);
+                _asyncRequestImpl.send(b.woopsAOp(), woopsResponse);
             }
         };
-
-        Start() throws Exception {
-            b = new B();
-        }
-
-        @Override
-        public void processAsyncRequest() {
-            setExceptionHandler(exceptionHandler);
-            send(b.new Woops(), woopsResponse);
-        }
     }
 }
 
@@ -69,11 +71,14 @@ class B extends NonBlockingBladeBase {
     public B() throws Exception {
     }
 
-    class Woops extends AsyncBladeRequest<Void> {
-
-        @Override
-        public void processAsyncRequest() throws IOException {
-            throw new IOException();
-        }
+    AOp<Void> woopsAOp() {
+        return new AOp<Void>("woops", getReactor()) {
+            @Override
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+                throw new IOException();
+            }
+        };
     }
 }

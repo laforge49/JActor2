@@ -272,49 +272,64 @@ instead.
 ```java
 
     import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+    import org.agilewiki.jactor2.core.requests.AOp;
     import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
     import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+    import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
     class A extends NonBlockingBladeBase {
-        class Start extends AsyncBladeRequest<Void> {
-            B b = new B();
+        public A() throws Exception {
+        }
 
-            AsyncResponseProcessor<Void> woopsResponse = new AsyncResponseProcessor<Void>() {
+        AOp<Void> startAOp() {
+            return new AOp<Void>("start", getReactor()) {
                 @Override
-                public void processAsyncResponse(Void _response) {
-                    System.out.println("can not get here!");
-                    Start.this.processAsyncResponse(null);
-                }
-            };
-
-            ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
-                @Override
-                public void processException(final Exception _e,
-                                             final AsyncResponseProcessor<Void> _arp)
+                public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                         throws Exception {
-                    if (_e instanceof IOException) {
-                        System.out.println("got IOException");
-                        _arp.processAsyncResponse(null);
-                    } else
-                        throw _e;
+                    B b = new B();
+
+                    AsyncResponseProcessor<Void> woopsResponse = new AsyncResponseProcessor<Void>() {
+                        @Override
+                        public void processAsyncResponse(Void _response) throws Exception {
+                            System.out.println("can not get here!");
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                        }
+                    };
+
+                    ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
+                        @Override
+                        public void processException(final Exception _e,
+                                                     final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                                throws Exception {
+                            if (_e instanceof IOException) {
+                                System.out.println("got IOException");
+                                _asyncResponseProcessor.processAsyncResponse(null);
+                            } else
+                                throw _e;
+                        }
+                    };
+
+                    _asyncRequestImpl.setExceptionHandler(exceptionHandler);
+                    _asyncRequestImpl.send(b.woopsAOp(), woopsResponse);
                 }
             };
-
-            @Override
-            public void processAsyncRequest() {
-                setExceptionHandler(exceptionHandler);
-                send(b.new Woops(), woopsResponse);
-            }
         }
     }
 
     class B extends NonBlockingBladeBase {
-        class Woops extends AsyncBladeRequest<Void> {
+        public B() throws Exception {
+        }
 
-            @Override
-            public void processAsyncRequest() throws IOException {
-                throw new IOException();
-            }
+        AOp<Void> woopsAOp() {
+            return new AOp<Void>("woops", getReactor()) {
+                @Override
+                public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                                  AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        throws Exception {
+                    throw new IOException();
+                }
+            };
         }
     }
 ```
