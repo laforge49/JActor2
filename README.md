@@ -198,8 +198,8 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
 
     import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
     import org.agilewiki.jactor2.core.requests.AOp;
-    import org.agilewiki.jactor2.core.requests.AsyncRequest;
     import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+    import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
     class A extends NonBlockingBladeBase {
         final B b;
@@ -211,7 +211,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
         AReq<Void> startAOp() {
             return new AOp<Void>("start", getReactor()) {
                 @Override
-                protected void processAsyncRequest(AsyncRequest _asyncRequest,
+                protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                                    final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                         throws Exception {
                     AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
@@ -221,7 +221,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
                             _asyncResponseProcessor.processAsyncResponse(null);
                         }
                     };
-                    _asyncRequest.send(b.add1AOp(), startResponse);
+                    _asyncRequestImpl.send(b.add1AOp(), startResponse);
                 }
             };
         }
@@ -236,7 +236,7 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
         AReq<Void> add1AOp() {
             return new AOp<Void>("add1", getReactor()) {
                 @Override
-                protected void processAsyncRequest(AsyncRequest _asyncRequest,
+                protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                                    AsyncResponseProcessor<Void> _asyncResponseProcessor)
                         throws Exception {
                     count += 1;
