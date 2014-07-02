@@ -345,13 +345,6 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                       final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
-        processAsyncRequest(_asyncResponseProcessor);
-    }
-
-    /**
-     * The processAsyncRequest method will be invoked by the target Reactor on its own thread.
-     */
-    public void processAsyncRequest(final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor) throws Exception{
         throw new IllegalStateException();
     }
 }

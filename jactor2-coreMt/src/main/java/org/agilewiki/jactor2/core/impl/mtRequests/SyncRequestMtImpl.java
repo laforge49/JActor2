@@ -56,15 +56,6 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception {
-        return processSyncRequest();
-    }
-
-    /**
-     * The processSyncRequest method will be invoked by the target Reactor on its own thread.
-     *
-     * @return The value returned by the target blades.
-     */
-    public RESPONSE_TYPE processSyncRequest() throws Exception {
         throw new IllegalStateException();
     }
 }
