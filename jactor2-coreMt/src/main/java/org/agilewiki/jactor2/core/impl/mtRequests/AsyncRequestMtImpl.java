@@ -303,6 +303,15 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
+    public <RT> void asyncDirect(final AsyncNativeRequest<RT> _asyncNativeRequest,
+                               final AsyncResponseProcessor<RT> _asyncResponseProcessor)
+            throws Exception {
+        ReactorMtImpl reactorMtImpl = (ReactorMtImpl) _asyncNativeRequest.getTargetReactor();
+        reactorMtImpl.directCheck(getTargetReactor());
+        _asyncNativeRequest.processAsyncOperation(this, _asyncResponseProcessor);
+    }
+
+    @Override
     public void onCancel(final AsyncRequestImpl _asyncRequestImpl) {
         onCancel();
     }
