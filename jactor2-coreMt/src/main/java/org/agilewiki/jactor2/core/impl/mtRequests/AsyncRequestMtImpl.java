@@ -20,7 +20,7 @@ import org.agilewiki.jactor2.core.util.Timer;
  * @param <RESPONSE_TYPE> The type of response.
  */
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
-        RequestMtImpl<RESPONSE_TYPE> implements AsyncRequestImpl<RESPONSE_TYPE>, AsyncOperation<RESPONSE_TYPE> {
+        RequestMtImpl<RESPONSE_TYPE> implements AsyncNativeRequest<RESPONSE_TYPE> {
 
     private final Set<RequestMtImpl<?>> pendingRequests = new HashSet<RequestMtImpl<?>>();
 
