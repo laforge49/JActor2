@@ -134,6 +134,18 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
     <RT, RT2> void send(final AOp<RT> _aOp,
                         final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
+    <RT> void send(final SyncNativeRequest<RT> _syncNativeRequest,
+                   final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+
+    <RT, RT2> void send(final SyncNativeRequest<RT> _syncNativeRequest,
+                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+
+    <RT> void send(final AsyncNativeRequest<RT> _asyncNativeRequest,
+                   final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+
+    <RT, RT2> void send(final AsyncNativeRequest<RT> _asyncNativeRequest,
+                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+
     /**
      * Do a direct method call on an AReq.
      *

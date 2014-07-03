@@ -295,6 +295,34 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
+    public <RT> void send(final SyncNativeRequest<RT> _syncNativeRequest,
+                   final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+        send(PlantImpl.getSingleton().createSyncRequestImpl(_syncNativeRequest, _syncNativeRequest.getTargetReactor()),
+                _asyncResponseProcessor);
+    }
+
+    @Override
+    public <RT, RT2> void send(final SyncNativeRequest<RT> _syncNativeRequest,
+                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+        send(PlantImpl.getSingleton().createSyncRequestImpl(_syncNativeRequest, _syncNativeRequest.getTargetReactor()),
+                _dis, _fixedResponse);
+    }
+
+    @Override
+    public <RT> void send(final AsyncNativeRequest<RT> _asyncNativeRequest,
+                   final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+        send(PlantImpl.getSingleton().createAsyncRequestImpl(_asyncNativeRequest, _asyncNativeRequest.getTargetReactor()),
+                _asyncResponseProcessor);
+    }
+
+    @Override
+    public <RT, RT2> void send(final AsyncNativeRequest<RT> _asyncNativeRequest,
+                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+        send(PlantImpl.getSingleton().createAsyncRequestImpl(_asyncNativeRequest, _asyncNativeRequest.getTargetReactor()),
+                _dis, _fixedResponse);
+    }
+
+    @Override
     public <RT> void asyncDirect(final AOp<RT> _aOp,
                                  final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception {
