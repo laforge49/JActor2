@@ -1,9 +1,6 @@
 package org.agilewiki.jactor2.core.requests.impl;
 
-import org.agilewiki.jactor2.core.requests.AOp;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.*;
 
 public interface AsyncRequestImpl<RESPONSE_TYPE> extends
         RequestImpl<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
@@ -145,6 +142,10 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT>                    The type of response returned.
      */
     <RT> void asyncDirect(final AOp<RT> _aOp,
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor)
+            throws Exception;
+
+    <RT> void asyncDirect(final AsyncNativeRequest<RT> _asyncNativeRequest,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception;
 

@@ -81,4 +81,7 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
 
     <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception;
+
+    <RT> RT syncDirect(final SyncNativeRequest<RT> _syncNativeRequest)
+            throws Exception;
 }
