@@ -60,19 +60,23 @@ public abstract class BladeBase implements Blade {
         _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
     }
 
+    public boolean isDirectOk(final Reactor _sourceReactor) {
+        if (!reactor.asReactorImpl().isRunning()) {
+            throw new IllegalStateException(
+                    "Not thread safe: not called from within an active request");
+        }
+        return reactor == _sourceReactor;
+    }
+
     /**
      * Validate that the source reactor is the same as the target and that the source reactor is active.
      *
      * @param _sourceReactor    The source reactor.
      */
     public void directCheck(final Reactor _sourceReactor) {
-        if (reactor != _sourceReactor) {
+        if (!isDirectOk(_sourceReactor)) {
             throw new UnsupportedOperationException(
                     "Not thread safe: source reactor is not the same");
-        }
-        if (!reactor.asReactorImpl().isRunning()) {
-            throw new IllegalStateException(
-                    "Not thread safe: not called from within an active request");
         }
     }
 
