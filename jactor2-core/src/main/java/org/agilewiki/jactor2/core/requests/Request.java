@@ -10,6 +10,7 @@ import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
  *
  * @param <RESPONSE_TYPE>    The type response value.
  */
+@Deprecated
 public interface Request<RESPONSE_TYPE> extends Operation<RESPONSE_TYPE> {
     /**
      * Returns the object used to implement the request.

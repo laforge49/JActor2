@@ -15,6 +15,7 @@ import org.agilewiki.jactor2.core.util.Timer;
  *
  * @param <RESPONSE_TYPE> The type of response value.
  */
+@Deprecated
 public abstract class AsyncRequest<RESPONSE_TYPE> implements
         AsyncOperation<RESPONSE_TYPE>, Request<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
 
