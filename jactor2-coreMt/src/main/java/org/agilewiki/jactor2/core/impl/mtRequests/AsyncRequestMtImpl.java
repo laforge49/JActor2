@@ -326,17 +326,31 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     public <RT> void asyncDirect(final AOp<RT> _aOp,
                                  final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception {
+        final ExceptionHandler<RESPONSE_TYPE> oldExceptionHandler = getExceptionHandler();
         _aOp.targetReactor.directCheck(getTargetReactor());
-        _aOp.processAsyncOperation(this, _asyncResponseProcessor);
+        _aOp.processAsyncOperation(this, new AsyncResponseProcessor<RT>() {
+            @Override
+            public void processAsyncResponse(RT _response) throws Exception {
+                setExceptionHandler(oldExceptionHandler);
+                _asyncResponseProcessor.processAsyncResponse(_response);
+            }
+        });
     }
 
     @Override
     public <RT> void asyncDirect(final AsyncNativeRequest<RT> _asyncNativeRequest,
                                final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception {
+        final ExceptionHandler<RESPONSE_TYPE> oldExceptionHandler = getExceptionHandler();
         ReactorMtImpl reactorMtImpl = (ReactorMtImpl) _asyncNativeRequest.getTargetReactor();
         reactorMtImpl.directCheck(getTargetReactor());
-        _asyncNativeRequest.processAsyncOperation(this, _asyncResponseProcessor);
+        _asyncNativeRequest.processAsyncOperation(this, new AsyncResponseProcessor<RT>() {
+            @Override
+            public void processAsyncResponse(RT _response) throws Exception {
+                setExceptionHandler(oldExceptionHandler);
+                _asyncResponseProcessor.processAsyncResponse(_response);
+            }
+        });
     }
 
     @Override
