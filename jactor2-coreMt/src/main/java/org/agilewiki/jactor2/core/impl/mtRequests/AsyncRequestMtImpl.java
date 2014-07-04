@@ -22,7 +22,7 @@ import org.agilewiki.jactor2.core.util.Timer;
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> implements AsyncNativeRequest<RESPONSE_TYPE> {
 
-    private final Set<RequestMtImpl<?>> pendingRequests = new HashSet<RequestMtImpl<?>>();
+    private final Set<Operation<?>> pendingOperations = new HashSet<Operation<?>>();
 
     private boolean noHungRequestCheck;
 
@@ -72,7 +72,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public int getPendingResponseCount() {
-        return pendingRequests.size();
+        return pendingOperations.size();
     }
 
     /**
@@ -102,7 +102,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     private void pendingCheck() throws Exception {
-        if (incomplete && !isCanceled() && (pendingRequests.size() == 0)
+        if (incomplete && !isCanceled() && (pendingOperations.size() == 0)
                 && !noHungRequestCheck) {
             targetReactor.asReactorImpl().error("hung request:\n" + toString());
             close();
@@ -119,7 +119,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public void responseReceived(final RequestImpl<?> request) {
-        pendingRequests.remove(request);
+        pendingOperations.remove(request);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         }
         final RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _requestImpl;
         if (_responseProcessor != OneWayResponseProcessor.SINGLETON) {
-            pendingRequests.add(requestImpl);
+            pendingOperations.add(requestImpl);
         }
         requestImpl.doSend(targetReactorImpl, _responseProcessor);
     }
@@ -159,7 +159,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
                     "send called on inactive request");
         }
         final RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _requestImpl;
-        pendingRequests.add(requestImpl);
+        pendingOperations.add(requestImpl);
         requestImpl.doSend(targetReactorImpl, new AsyncResponseProcessor<RT>() {
             @Override
             public void processAsyncResponse(final RT _response)
@@ -209,11 +209,13 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         if (!incomplete) {
             return;
         }
-        final HashSet<RequestMtImpl<?>> pr = new HashSet<RequestMtImpl<?>>(
-                pendingRequests);
-        final Iterator<RequestMtImpl<?>> it = pr.iterator();
+        final HashSet<Operation<?>> pr = new HashSet<Operation<?>>(
+                pendingOperations);
+        final Iterator<Operation<?>> it = pr.iterator();
         while (it.hasNext()) {
-            it.next().cancel();
+            Operation<?> operation = it.next();
+            if (operation instanceof RequestMtImpl)
+                ((RequestMtImpl<?>) operation).cancel();
         }
         super.close();
         asOperation().onClose(this);
@@ -228,7 +230,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     @Override
     public boolean cancel(final RequestImpl<?> _requestImpl) {
         final RequestMtImpl<?> requestImpl = (RequestMtImpl<?>) _requestImpl;
-        if (!pendingRequests.remove(requestImpl)) {
+        if (!pendingOperations.remove(requestImpl)) {
             return false;
         }
         requestImpl.cancel();
@@ -240,11 +242,13 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void cancelAll() {
-        final Set<RequestImpl<?>> all = new HashSet<RequestImpl<?>>(
-                pendingRequests);
-        final Iterator<RequestImpl<?>> it = all.iterator();
+        final Set<Operation<?>> all = new HashSet<Operation<?>>(
+                pendingOperations);
+        final Iterator<Operation<?>> it = all.iterator();
         while (it.hasNext()) {
-            cancel(it.next());
+            Operation<?> operation = it.next();
+            if (operation instanceof RequestMtImpl)
+                cancel((RequestMtImpl<?>) operation);
         }
     }
 
