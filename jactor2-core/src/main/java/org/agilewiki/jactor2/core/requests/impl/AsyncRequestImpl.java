@@ -153,10 +153,12 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param _asyncResponseProcessor Handles the response.
      * @param <RT>                    The type of response returned.
      */
+    @Deprecated
     <RT> void asyncDirect(final AOp<RT> _aOp,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception;
 
+    @Deprecated
     <RT> void asyncDirect(final AsyncNativeRequest<RT> _asyncNativeRequest,
                           final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception;
