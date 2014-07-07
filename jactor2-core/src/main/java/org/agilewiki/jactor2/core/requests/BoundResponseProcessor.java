@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.requests;
 
 import org.agilewiki.jactor2.core.blades.Blade;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * A thread-safe wrapper for an AsyncResponseProcessor.
@@ -42,9 +43,9 @@ public class BoundResponseProcessor<RESPONSE_TYPE> implements
      */
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE rsp) {
-        new SyncRequest<Void>(targetBlade.getReactor()) {
+        new SOp<Void>("boundSignal", targetBlade.getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 rp.processAsyncResponse(rsp);
                 return null;
             }
