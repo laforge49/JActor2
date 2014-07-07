@@ -3,25 +3,26 @@ package org.agilewiki.jactor2.core.readme.requests;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class AnyMain {
     public static void main(final String[] _args) throws Exception {
         new Plant();
         try {
             System.out.println("\ntest 1");
-            long x = new Any<Long>(new A2(1), new A2(2), new A2(3)).call();
+            long x = new Any<Long>(new A2("1", 1), new A2("2", 2), new A2("3", 3)).call();
             System.out.println("got " + x);
 
             System.out.println("\ntest 2");
-            x = new Any<Long>(new A3(1), new A3(2), new A3(0)).call();
+            x = new Any<Long>(new A3("1", 1), new A3("2", 2), new A3("3", 0)).call();
             System.out.println("got " + x);
 
             System.out.println("\ntest 3");
             try {
-                new Any<Long>(new A3(0), new A3(0), new A3(0)).call();
+                new Any<Long>(new A3("1", 0), new A3("2", 0), new A3("3", 0)).call();
             } catch (ForcedException fe) {
                 System.out.println("Forced Exception");
             }
@@ -31,72 +32,77 @@ public class AnyMain {
     }
 }
 
-class Any<RESPONSE_TYPE> extends AsyncRequest<RESPONSE_TYPE> {
-    final AsyncRequest<RESPONSE_TYPE>[] requests;
+class Any<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> {
+    final AOp<RESPONSE_TYPE>[] requests;
 
-    public Any(final AsyncRequest<RESPONSE_TYPE>... _requests) throws Exception {
-        super(new NonBlockingReactor());
+    public Any(final AOp<RESPONSE_TYPE>... _requests) throws Exception {
+        super("any", new NonBlockingReactor());
         requests = _requests;
     }
 
     @Override
-    public void processAsyncRequest() throws Exception {
-
-        setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
+    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                      final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            throws Exception {
+        _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
             @Override
             public void processException(
                     Exception e,
                     AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
                     throws Exception {
-                if (getPendingResponseCount() == 0)
+                if (_asyncRequestImpl.getPendingResponseCount() == 0)
                     throw e;
             }
         });
 
         int i = 0;
         while (i < requests.length) {
-            send(requests[i], this); //Send the requests and pass back the first result received
+            _asyncRequestImpl.send(requests[i], _asyncResponseProcessor); //Send the requests and pass back the first result received
             i += 1;
         }
     }
 }
 
-class A2 extends AsyncRequest<Long> {
+class A2 extends AOp<Long> {
     final long delay;
 
-    A2(final long _delay) throws Exception {
-        super(new NonBlockingReactor());
+    A2(final String _name, final long _delay) throws Exception {
+        super(_name, new NonBlockingReactor());
         delay = _delay;
     }
 
     @Override
-    public void processAsyncRequest() {
+    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                      final AsyncResponseProcessor<Long> _asyncResponseProcessor)
+            throws Exception {
         for (long i = 0; i < delay * 100000; i++)
             Thread.yield();
-        processAsyncResponse(delay);
+        _asyncResponseProcessor.processAsyncResponse(delay);
     }
 }
 
 class ForcedException extends Exception {
 }
 
-class A3 extends AsyncRequest<Long> {
+class A3 extends AOp<Long> {
     final long delay;
 
-    A3(final long _delay) throws Exception {
-        super(new BlockingReactor());
+    A3(final String _name, final long _delay) throws Exception {
+        super(_name, new BlockingReactor());
         delay = _delay;
     }
 
     @Override
-    public void processAsyncRequest() throws ForcedException {
+    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                      final AsyncResponseProcessor<Long> _asyncResponseProcessor)
+            throws Exception {
         if (delay == 0)
             throw new ForcedException();
         for (long i = 0; i < delay * 10000000; i++) {
-            if (i % 1000 == 0 && isCanceled())
+            if (i % 1000 == 0 && _asyncRequestImpl.isCanceled())
                 return;
             Thread.yield();
         }
-        processAsyncResponse(delay);
+        _asyncResponseProcessor.processAsyncResponse(delay);
     }
 }
