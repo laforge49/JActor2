@@ -367,46 +367,56 @@ But by introducing request factory methods we can then use interfaces to decoupl
 
 ```java
 
-    import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
     import org.agilewiki.jactor2.core.impl.Plant;
-    import org.agilewiki.jactor2.core.requests.AsyncRequest;
+    import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+    import org.agilewiki.jactor2.core.requests.AOp;
     import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+    import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
     interface B {
-        AsyncRequest<Void> newAdd1();
+        AOp<Void> add1AOp();
     }
 
     class BImpl extends NonBlockingBladeBase implements B {
-        @Override
-        public AsyncRequest<Void> newAdd1() {
-            return new AsyncBladeRequest<Void>() {
-                int count;
+        int count;
 
+        public BImpl() throws Exception {
+        }
+
+        @Override
+        public AOp<Void> add1AOp() {
+            return new AOp<Void>("add1", getReactor()) {
                 @Override
-                public void processAsyncRequest() throws Exception {
-                    count += 1;
-                    processAsyncResponse(null);
+                public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        throws Exception {
+                    count = count + 1;
+                    _asyncResponseProcessor.processAsyncResponse(null);
                 }
             };
         }
     }
 
     class A extends NonBlockingBladeBase {
-        public AsyncRequest<Void> newStart(final B _b) {
-            return new AsyncBladeRequest<Void>() {
-                AsyncRequest<Void> dis = this;
+        public A() throws Exception {
+        }
 
-                AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
-                    @Override
-                    public void processAsyncResponse(Void _response) {
-                        System.out.println("added 1");
-                        dis.processAsyncResponse(null);
-                    }
-                };
-
+        public AOp<Void> startAOp(final B _b) {
+            return new AOp<Void>("start", getReactor()) {
                 @Override
-                public void processAsyncRequest() throws Exception {
-                    send(_b.newAdd1(), startResponse);
+                public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        throws Exception {
+
+                    AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
+                        @Override
+                        public void processAsyncResponse(final Void _response) throws Exception {
+                            System.out.println("added 1");
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                        }
+                    };
+
+                    _asyncRequestImpl.send(_b.add1AOp(), startResponse);
                 }
             };
         }
@@ -418,7 +428,7 @@ But by introducing request factory methods we can then use interfaces to decoupl
             try {
                 A a = new A();
                 B b = new BImpl();
-                a.newStart(b).call();
+                a.startAOp(b).call();
             } finally {
                 Plant.close();
             }

@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.requests;
 
-import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 /**
@@ -34,6 +32,6 @@ public interface AsyncOperation<RESPONSE_TYPE> extends Operation<RESPONSE_TYPE> 
      * @param _asyncResponseProcessor Handles the response.
      */
     void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
-                                                  final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                               final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception;
 }

@@ -1,57 +1,55 @@
 package org.agilewiki.jactor2.core.readme.blades;
 
-import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 interface BBB {
-    AsyncRequest<Void> newAdd1();
+    AOp<Void> add1AOp();
 }
 
 class BImpl extends NonBlockingBladeBase implements BBB {
-    /**
-     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
-     */
+    int count;
+
     public BImpl() throws Exception {
     }
 
     @Override
-    public AsyncRequest<Void> newAdd1() {
-        return new AsyncBladeRequest<Void>() {
-            int count;
-
+    public AOp<Void> add1AOp() {
+        return new AOp<Void>("add1", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                              final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
                 count = count + 1;
-                processAsyncResponse(null);
+                _asyncResponseProcessor.processAsyncResponse(null);
             }
         };
     }
 }
 
 class AAA extends NonBlockingBladeBase {
-    /**
-     * Create a non-blocking blade and a non-blocking reactor whose parent is the internal reactor of Plant.
-     */
     public AAA() throws Exception {
     }
 
-    public AsyncRequest<Void> newStart(final BBB _b) {
-        return new AsyncBladeRequest<Void>() {
-            AsyncRequest<Void> dis = this;
-
-            AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
-                @Override
-                public void processAsyncResponse(final Void _response) {
-                    System.out.println("added 1");
-                    dis.processAsyncResponse(null);
-                }
-            };
-
+    public AOp<Void> startAOp(final BBB _b) {
+        return new AOp<Void>("start", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                send(_b.newAdd1(), startResponse);
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                              final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+
+                AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(final Void _response) throws Exception {
+                        System.out.println("added 1");
+                        _asyncResponseProcessor.processAsyncResponse(null);
+                    }
+                };
+
+                _asyncRequestImpl.send(_b.add1AOp(), startResponse);
             }
         };
     }
@@ -63,7 +61,7 @@ public class Decoupled {
         try {
             final AAA a = new AAA();
             final BBB b = new BImpl();
-            a.newStart(b).call();
+            a.startAOp(b).call();
         } finally {
             Plant.close();
         }
