@@ -5,7 +5,9 @@ import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * A reactor parent, facilities are named and registered with Plant.
@@ -127,27 +129,6 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         return namedBlades.containsKey(_name);
     }
 
-    private NamedBlade _unregisterBlade(final String _name) {
-        final NamedBlade removed = namedBlades.get(_name);
-        if (removed != null) {
-            namedBlades = namedBlades.minus(_name);
-            registrationNotifier.signalContent(new RegistrationNotification(this, _name, null), this);
-        }
-        return removed;
-    }
-
-    /**
-     * A direct method to unregister a named blade.
-     *
-     * @param _name     The name of the blade.
-     * @param _facility The calling facility.
-     * @return The unregistered blade.
-     */
-    public NamedBlade unregisterBlade(final String _name, final Facility _facility) {
-        directCheck(_facility);
-        return _unregisterBlade(_name);
-    }
-
     /**
      * A request to unregister the named blade. The result of the request is
      * the unregistered blade, or null.
@@ -155,34 +136,19 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _name The name of the blade.
      * @return The request to unregister.
      */
-    public SyncRequest<NamedBlade> unregisterBladeSReq(final String _name) {
-        return new SyncRequest<NamedBlade>(Facility.this) {
+    public SOp<NamedBlade> unregisterBladeSOp(final String _name) {
+        return new SOp<NamedBlade>("unregisterBlade", Facility.this) {
             @Override
-            public NamedBlade processSyncRequest() throws Exception {
-                return _unregisterBlade(_name);
+            public NamedBlade processSyncOperation(RequestImpl _requestImpl) throws Exception {
+                final NamedBlade removed = namedBlades.get(_name);
+                if (removed != null) {
+                    namedBlades = namedBlades.minus(_name);
+                    registrationNotifier.signalContent(
+                            new RegistrationNotification(Facility.this, _name, null), Facility.this);
+                }
+                return removed;
             }
         };
-    }
-
-    private void _registerBlade(final NamedBlade _blade) {
-        String name = _blade.getName();
-        final NamedBlade oldBlade = namedBlades.get(name);
-        if (oldBlade != null) {
-            throw new IllegalArgumentException("duplicate blade name");
-        }
-        namedBlades = namedBlades.plus(name, _blade);
-        registrationNotifier.signalContent(new RegistrationNotification(this, name, _blade), this);
-    }
-
-    /**
-     * A direct method to register a named blade.
-     *
-     * @param _blade    The blade being registered.
-     * @param _facility The calling facility.
-     */
-    public void registerBlade(final NamedBlade _blade, final Facility _facility) {
-        directCheck(_facility);
-        _registerBlade(_blade);
     }
 
     /**
@@ -193,13 +159,20 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
      * @param _blade The blade being registered.
      * @return The request to register.
      */
-    public SyncRequest<Void> registerBladeSReq(final NamedBlade _blade) {
+    public SOp<Void> registerBladeSOp(final NamedBlade _blade) {
         String name = _blade.getName();
         validateName(name);
-        return new SyncBladeRequest<Void>() {
+        return new SOp<Void>("registerBlade", getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
-                _registerBlade(_blade);
+            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+                String name = _blade.getName();
+                final NamedBlade oldBlade = namedBlades.get(name);
+                if (oldBlade != null) {
+                    throw new IllegalArgumentException("duplicate blade name");
+                }
+                namedBlades = namedBlades.plus(name, _blade);
+                registrationNotifier.signalContent(
+                        new RegistrationNotification(Facility.this, name, _blade), Facility.this);
                 return null;
             }
         };

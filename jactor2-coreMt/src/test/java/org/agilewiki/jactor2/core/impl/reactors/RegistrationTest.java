@@ -31,9 +31,9 @@ public class RegistrationTest extends CallTestBase {
                                 + registrationNotification.name);
                 }
             });
-            call(facility.registerBladeSReq(namedBlade));
-            call(facility.unregisterBladeSReq("TestFacility"));
-            call(facility.unregisterBladeSReq("FooBar"));
+            call(facility.registerBladeSOp(namedBlade));
+            call(facility.unregisterBladeSOp("TestFacility"));
+            call(facility.unregisterBladeSOp("FooBar"));
         } finally {
             Plant.close();
         }
