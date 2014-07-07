@@ -11,11 +11,6 @@ import org.agilewiki.jactor2.core.requests.Request;
 public class CallTestBase extends TestCase {
     /** Implemented differently in coreSt(), since call() does not exist there. */
     protected <RESPONSE_TYPE> RESPONSE_TYPE call(
-            final Request<RESPONSE_TYPE> request) throws Exception {
-        return request.call();
-    }
-
-    protected <RESPONSE_TYPE> RESPONSE_TYPE call(
             final Operation<RESPONSE_TYPE> operation) throws Exception {
         return operation.call();
     }
