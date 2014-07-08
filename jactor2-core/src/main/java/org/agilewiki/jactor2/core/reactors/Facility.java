@@ -6,7 +6,6 @@ import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.requests.SOp;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**

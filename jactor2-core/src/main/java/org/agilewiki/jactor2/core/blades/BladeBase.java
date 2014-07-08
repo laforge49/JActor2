@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.blades;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.Request;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 /**
  * Optional base class for blades.

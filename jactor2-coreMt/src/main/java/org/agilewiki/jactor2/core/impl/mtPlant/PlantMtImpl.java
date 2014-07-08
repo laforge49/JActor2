@@ -24,7 +24,6 @@ import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.AsyncOperation;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
