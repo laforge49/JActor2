@@ -19,7 +19,7 @@ public class PubSubTest extends CallTestBase {
         try {
             final NonBlockingReactor reactor = new NonBlockingReactor();
             final RequestBus<Void> requestBus = new RequestBus<Void>(reactor);
-            call(requestBus.signalsContentSReq(null));
+            call(requestBus.signalsContentSOp(null));
             final Subscription<Void> s1 = call(new SubscribeAReq<Void>(
                     requestBus, reactor) {
                 @Override
@@ -30,9 +30,9 @@ public class PubSubTest extends CallTestBase {
                     _asyncRequest.processAsyncResponse(null);
                 }
             });
-            call(requestBus.signalsContentSReq(null));
+            call(requestBus.signalsContentSOp(null));
             s1.unsubscribe();
-            call(requestBus.signalsContentSReq(null));
+            call(requestBus.signalsContentSOp(null));
         } finally {
             Plant.close();
         }

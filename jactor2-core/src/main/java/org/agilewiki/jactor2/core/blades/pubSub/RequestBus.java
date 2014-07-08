@@ -9,7 +9,9 @@ import org.agilewiki.jactor2.core.blades.filters.Filter;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * A blade that publishes content to interested subscribers, using either signals or sends.
@@ -57,10 +59,10 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
      * @param _content The content to be published.
      * @return The request.
      */
-    public SyncRequest<Void> signalsContentSReq(final CONTENT _content) {
-        return new SyncBladeRequest<Void>() {
+    public SOp<Void> signalsContentSOp(final CONTENT _content) {
+        return new SOp<Void>("signalsContent", getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 signalContent(_content);
                 return null;
             }
