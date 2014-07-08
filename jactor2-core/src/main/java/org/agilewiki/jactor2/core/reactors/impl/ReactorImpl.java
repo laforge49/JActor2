@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 /**
  * Base class for internal reactor implementations.
@@ -82,7 +82,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      *
      * @return null.
      */
-    SyncRequest<Void> nullSReq();
+    SOp<Void> nullSOp();
 
     /**
      * Add a closeable to the list of closeables.

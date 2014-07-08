@@ -7,7 +7,7 @@ public class SleeperMessageTimeout {
         new Plant();
         try {
             Hanger hanger = new Hanger();
-            hanger.sleeperSReq().call();
+            hanger.sleeperSOp().call();
             System.out.println("never gets here");
         } finally {
             Plant.close();

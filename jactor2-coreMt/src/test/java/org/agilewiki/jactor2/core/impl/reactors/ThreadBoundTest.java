@@ -24,7 +24,7 @@ public class ThreadBoundTest extends CallTestBase {
                 }
             });
             final Blade11 blade1 = new Blade11(reactor);
-            final String response = blade1.hiSReq().call();
+            final String response = blade1.hiSOp().call();
             System.out.println(response);
             assertEquals("Hello world!", response);
         } finally {

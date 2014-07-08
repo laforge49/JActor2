@@ -7,7 +7,7 @@ public class LooperMessageTimeout {
         new Plant();
         try {
             Hanger hanger = new Hanger();
-            hanger.looperSReq().signal();
+            hanger.looperSOp().signal();
             Thread.sleep(Long.MAX_VALUE);
         } finally {
             Plant.close();

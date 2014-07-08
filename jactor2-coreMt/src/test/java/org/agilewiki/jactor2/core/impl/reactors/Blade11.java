@@ -2,7 +2,8 @@ package org.agilewiki.jactor2.core.impl.reactors;
 
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * Test code.
@@ -13,10 +14,10 @@ public class Blade11 extends ThreadBoundBladeBase {
         super(mbox);
     }
 
-    public SyncRequest<String> hiSReq() {
-        return new SyncBladeRequest<String>() {
+    public SOp<String> hiSOp() {
+        return new SOp<String>("hi", getReactor()) {
             @Override
-            public String processSyncRequest() throws Exception {
+            public String processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 return "Hello world!";
             }
         };

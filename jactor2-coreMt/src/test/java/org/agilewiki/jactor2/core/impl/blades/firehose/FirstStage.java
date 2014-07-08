@@ -8,7 +8,8 @@ import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class FirstStage extends IsolationBladeBase implements Runnable {
 
@@ -68,9 +69,9 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
                 });
         t0 = System.currentTimeMillis();
 
-        new SyncRequest<Void>(this.getReactor()) {
+        new SOp<Void>("null", this.getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 return null;
             }
         }.signal();

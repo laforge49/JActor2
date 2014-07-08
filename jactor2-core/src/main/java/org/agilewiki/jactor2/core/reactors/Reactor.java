@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 /**
  * <p>
@@ -79,7 +79,7 @@ public interface Reactor extends Closeable, Blade {
      *
      * @return A request that does nothing.
      */
-    SyncRequest<Void> nullSReq();
+    SOp<Void> nullSOp();
 
     /**
      * Returns the parent reactor. Usually this will be the plant internal reactor.

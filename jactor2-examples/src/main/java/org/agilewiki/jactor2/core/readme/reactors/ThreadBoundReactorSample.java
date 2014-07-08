@@ -3,7 +3,8 @@ package org.agilewiki.jactor2.core.readme.reactors;
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class ThreadBoundReactorSample {
 
@@ -29,10 +30,9 @@ public class ThreadBoundReactorSample {
         final SampleThreadBoundBlade threadBoundBlade = new SampleThreadBoundBlade(reactor);
 
         //Terminate the blades.
-        new SyncRequest<Void>(threadBoundBlade.getReactor()) {
-
+        new SOp<Void>("finBlade", threadBoundBlade.getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 threadBoundBlade.fin();
                 return null;
             }

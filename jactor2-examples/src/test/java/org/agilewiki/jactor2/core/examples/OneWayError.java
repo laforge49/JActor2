@@ -2,6 +2,10 @@ package org.agilewiki.jactor2.core.examples;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class OneWayError extends NonBlockingBladeBase {
     /**
@@ -13,7 +17,7 @@ public class OneWayError extends NonBlockingBladeBase {
     static public void main(final String[] _args) throws Exception {
         new Plant();
         try {
-            new OneRuntime().new OneWaySReq().signal();
+            new OneRuntime().new OneWaySOp("direct", new NonBlockingReactor()).signal();
             new OneWayError().new IndirectSReq().call();
             System.out.println("ok");
         } finally {
@@ -24,7 +28,7 @@ public class OneWayError extends NonBlockingBladeBase {
     public class IndirectSReq extends AsyncBladeRequest<Void> {
         @Override
         public void processAsyncRequest() throws Exception {
-            send(new OneRuntime().new OneWaySReq(), null);
+            send(new OneRuntime().new OneWaySOp("oneway", getReactor()), null);
             processAsyncResponse(null);
         }
     }
@@ -37,9 +41,13 @@ class OneRuntime extends NonBlockingBladeBase {
     public OneRuntime() throws Exception {
     }
 
-    public class OneWaySReq extends SyncBladeRequest<Void> {
+    public class OneWaySOp extends SOp<Void> {
+        public OneWaySOp(String _opName, Reactor _targetReactor) {
+            super(_opName, _targetReactor);
+        }
+
         @Override
-        public Void processSyncRequest() throws RuntimeException {
+        public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
             throw new RuntimeException();
         }
     }

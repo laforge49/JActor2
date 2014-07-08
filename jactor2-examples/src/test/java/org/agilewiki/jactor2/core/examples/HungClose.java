@@ -7,7 +7,7 @@ public class HungClose {
         new Plant();
         try {
             Hanger hanger = new Hanger();
-            hanger.looperSReq().signal();
+            hanger.looperSOp().signal();
         } finally {
             System.out.println("closing");
             Plant.close();

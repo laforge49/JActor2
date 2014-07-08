@@ -53,7 +53,7 @@ public class InProcess extends NonBlockingBladeBase {
                 send(indirectDelay.isleep(), responseProcessor);
                 send(indirectDelay.isleep(), responseProcessor);
                 send(indirectDelay.isleep(), responseProcessor);
-                send(new Delay().sleepSReq(200), new AsyncResponseProcessor<Void>() {
+                send(new Delay().sleepSOp(200), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(Void _response) {
                         try {
@@ -75,7 +75,7 @@ class IndirectDelay extends NonBlockingBladeBase {
         return new AsyncBladeRequest<Void>() {
             @Override
             public void processAsyncRequest() throws Exception {
-                send(new Delay().sleepSReq(10000), this);
+                send(new Delay().sleepSOp(10000), this);
             }
         };
     }

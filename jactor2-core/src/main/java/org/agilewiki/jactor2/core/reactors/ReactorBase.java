@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 /**
  * Base class for reactors.
@@ -76,8 +76,8 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
     }
 
     @Override
-    public SyncRequest<Void> nullSReq() {
-        return asReactorImpl().nullSReq();
+    public SOp<Void> nullSOp() {
+        return asReactorImpl().nullSOp();
     }
 
     /**

@@ -2,7 +2,8 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * Simulates I/O through the use of Thread.sleep().
@@ -29,10 +30,10 @@ public class Delay extends BlockingBladeBase {
      * @param _delay The duration of the delay in milliseconds.
      * @return The delay request.
      */
-    public SyncRequest<Void> sleepSReq(final int _delay) {
-        return new SyncBladeRequest<Void>() {
+    public SOp<Void> sleepSOp(final int _delay) {
+        return new SOp<Void>("sleep", getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 Thread.sleep(_delay);
                 return null;
             }

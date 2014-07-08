@@ -3,10 +3,8 @@ package org.agilewiki.jactor2.core.readme.blades;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.*;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class Account extends NonBlockingBladeBase {
     private int balance;
@@ -24,10 +22,10 @@ public class Account extends NonBlockingBladeBase {
         deposit(_amount);
     }
 
-    public SyncRequest<Void> depositSReq(final int _amount) {
-        return new SyncBladeRequest<Void>() {
+    public SOp<Void> depositSOp(final int _amount) {
+        return new SOp<Void>("deposit", getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 deposit(_amount);
                 return null;
             }
@@ -64,7 +62,7 @@ public class Account extends NonBlockingBladeBase {
                 balance -= _amount;
                 hold += _amount;
                 setExceptionHandler(depositExceptionHandler);
-                send(_account.depositSReq(_amount), depositResponseProcessor);
+                send(_account.depositSOp(_amount), depositResponseProcessor);
             }
         };
     }
@@ -73,7 +71,7 @@ public class Account extends NonBlockingBladeBase {
         new Plant();
         try {
             final Account account1 = new Account();
-            account1.depositSReq(1000).call();
+            account1.depositSOp(1000).call();
             final Account account2 = new Account();
             System.out.println(account1.transferAReq(500, account2).call());
         } finally {
