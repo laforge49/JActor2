@@ -95,15 +95,4 @@ public abstract class BladeBase implements Blade {
             super(BladeBase.this.reactor);
         }
     }
-
-    protected abstract class SyncBladeRequest<RESPONSE_TYPE> extends
-            SyncRequest<RESPONSE_TYPE> {
-
-        /**
-         * Create an AyncRequest targetd to this blade.
-         */
-        public SyncBladeRequest() {
-            super(BladeBase.this.reactor);
-        }
-    }
 }
