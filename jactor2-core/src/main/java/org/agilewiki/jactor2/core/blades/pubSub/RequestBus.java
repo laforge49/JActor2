@@ -10,7 +10,6 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SOp;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
