@@ -2,7 +2,9 @@ package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * Returns a result after a delay.
@@ -47,9 +49,9 @@ public class DelayAReq extends AsyncRequest<Void> {
             @Override
             public void run() {
                 try {
-                    new SyncRequest<Void>(PlantBase.getInternalFacility()) {
+                    new SOp<Void>("timeout", PlantBase.getInternalFacility()) {
                         @Override
-                        public Void processSyncRequest() throws Exception {
+                        public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                             if (!isCanceled()) {
                                 dis.processAsyncResponse(null);
                             }
