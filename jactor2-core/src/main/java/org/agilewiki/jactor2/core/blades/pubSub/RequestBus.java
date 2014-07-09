@@ -7,9 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.filters.Filter;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.*;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
@@ -74,8 +73,8 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
      * @param _content The content to be published.
      * @return The request.
      */
-    public AsyncRequest<Void> sendsContentAReq(final CONTENT _content) {
-        return new AsyncBladeRequest<Void>() {
+    public AOp<Void> sendsContentAOp(final CONTENT _content) {
+        return new SAOp<Void>("sendsContent", getReactor()) {
             final AsyncResponseProcessor<Void> dis = this;
 
             int count;
@@ -93,8 +92,8 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
             };
 
             @Override
-            public void processAsyncRequest() throws Exception {
-                setNoHungRequestCheck();
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl) throws Exception {
+                _asyncRequestImpl.setNoHungRequestCheck();
                 count = subscriptions.size();
                 final Iterator<Subscription<CONTENT>> it = subscriptions
                         .keySet().iterator();
@@ -102,7 +101,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
                     final Subscription<CONTENT> subscription = it.next();
                     final Filter<CONTENT> filter = subscription.filter;
                     if (filter.match(_content)) {
-                        send(subscription.publicationAReq(_content),
+                        _asyncRequestImpl.send(subscription.publicationAReq(_content).asRequestImpl(),
                                 sendResponse);
                     } else {
                         count--;

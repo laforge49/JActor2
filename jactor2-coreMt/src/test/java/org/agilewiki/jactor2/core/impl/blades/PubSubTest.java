@@ -46,7 +46,7 @@ public class PubSubTest extends CallTestBase {
             final NonBlockingReactor busReactor = new NonBlockingReactor();
             final CommonReactor subscriberReactor = new NonBlockingReactor();
             final RequestBus<Void> requestBus = new RequestBus<Void>(busReactor);
-            call(requestBus.sendsContentAReq(null));
+            call(requestBus.sendsContentAOp(null));
             assertEquals(counter.get(), 0);
             call(new SubscribeAReq<Void>(requestBus, subscriberReactor) {
                 @Override
@@ -57,11 +57,11 @@ public class PubSubTest extends CallTestBase {
                     _asyncRequest.processAsyncResponse(null);
                 }
             });
-            call(requestBus.sendsContentAReq(null));
+            call(requestBus.sendsContentAOp(null));
             assertEquals(counter.get(), 1);
             subscriberReactor.close();
             try {
-                call(requestBus.sendsContentAReq(null));
+                call(requestBus.sendsContentAOp(null));
             } catch (final ReactorClosedException e) {
             }
             assertEquals(counter.get(), 1);

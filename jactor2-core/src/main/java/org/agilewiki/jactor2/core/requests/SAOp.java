@@ -34,7 +34,7 @@ public abstract class SAOp<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> implements 
     }
 
     @Override
-    public void processAsyncResponse(RESPONSE_TYPE _response) throws Exception {
+    final public void processAsyncResponse(RESPONSE_TYPE _response) throws Exception {
         asyncResponseProcessor.processAsyncResponse(_response);
     }
 

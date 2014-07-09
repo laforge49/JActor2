@@ -28,11 +28,11 @@ public class PubSubSample {
                 }
             }.call();
             System.out.println("\nPublishing null.");
-            requestBus.sendsContentAReq(null).call();
+            requestBus.sendsContentAOp(null).call();
             System.out.println("\nPublishing ribit");
-            requestBus.sendsContentAReq("ribit").call();
+            requestBus.sendsContentAOp("ribit").call();
             System.out.println("\nPublishing abc");
-            requestBus.sendsContentAReq("abc").call();
+            requestBus.sendsContentAOp("abc").call();
         } finally {
             plant.close();
         }

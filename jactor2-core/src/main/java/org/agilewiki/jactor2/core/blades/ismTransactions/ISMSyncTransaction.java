@@ -60,7 +60,7 @@ abstract public class ISMSyncTransaction<VALUE> extends
                             .updateImmutableReference(_immutableReference);
                     immutableChangeManager.close();
                     send(ismReference.changeBus
-                            .sendsContentAReq(immutableChanges),
+                            .sendsContentAOp(immutableChanges),
                             dis, immutable);
                 }
             };
@@ -72,7 +72,7 @@ abstract public class ISMSyncTransaction<VALUE> extends
                     immutableChanges = new ImmutableChanges<VALUE>(
                             immutableChangeManager);
                     send(ismReference.validationBus
-                            .sendsContentAReq(immutableChanges),
+                            .sendsContentAOp(immutableChanges),
                             validationResponseProcessor);
                 }
             };
