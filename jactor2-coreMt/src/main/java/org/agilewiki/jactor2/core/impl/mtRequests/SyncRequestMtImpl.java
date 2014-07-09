@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.impl.mtRequests;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncNativeRequest;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.util.Timer;
 
@@ -24,7 +23,7 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
      * @param _targetReactor The target reactor.
      */
     public SyncRequestMtImpl(final SyncOperation<RESPONSE_TYPE> _syncOperation,
-            final Reactor _targetReactor) {
+                             final Reactor _targetReactor) {
         super(_targetReactor);
         syncOperation = _syncOperation;
     }
