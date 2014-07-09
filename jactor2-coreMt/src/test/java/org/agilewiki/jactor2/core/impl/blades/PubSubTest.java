@@ -11,6 +11,8 @@ import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class PubSubTest extends CallTestBase {
     public void testI() throws Exception {
@@ -24,10 +26,11 @@ public class PubSubTest extends CallTestBase {
                     requestBus, reactor) {
                 @Override
                 protected void processContent(final Void _content,
-                        final AsyncRequest<Void> _asyncRequest)
+                                              AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Void> _asyncResponseProcessor)
                         throws Exception {
                     System.out.println("ping");
-                    _asyncRequest.processAsyncResponse(null);
+                    _asyncResponseProcessor.processAsyncResponse(null);
                 }
             });
             call(requestBus.signalsContentSOp(null));
@@ -51,10 +54,12 @@ public class PubSubTest extends CallTestBase {
             call(new SubscribeAReq<Void>(requestBus, subscriberReactor) {
                 @Override
                 protected void processContent(final Void _content,
-                        final AsyncRequest<Void> _asyncRequest) {
+                                              AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        throws Exception {
                     System.out.println("ping");
                     counter.incrementAndGet();
-                    _asyncRequest.processAsyncResponse(null);
+                    _asyncResponseProcessor.processAsyncResponse(null);
                 }
             });
             call(requestBus.sendsContentAOp(null));

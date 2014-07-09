@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.filters.Filter;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 /**
  * A request to subscribe to the content published by a RequestBus.
@@ -52,8 +53,9 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
                 requestBus, subscriberReactor, filter) {
             @Override
             protected void processContent(final CONTENT _content,
-                    final AsyncRequest<Void> _asyncRequest) throws Exception {
-                SubscribeAReq.this.processContent(_content, _asyncRequest);
+                                          AsyncRequestImpl _asyncRequestImpl,
+                                          AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+                SubscribeAReq.this.processContent(_content, _asyncRequestImpl, _asyncResponseProcessor);
             }
         };
         requestBus.subscriptions.put(subscription, Boolean.TRUE);
@@ -73,13 +75,11 @@ public class SubscribeAReq<CONTENT> extends AsyncRequest<Subscription<CONTENT>> 
 
     /**
      * Process the content of interest using the reactor of the subscriber.
-     *
-     * @param _content                The received content.
-     * @param _asyncRequest Used to indicate when processing is complete.
      */
     protected void processContent(final CONTENT _content,
-            final AsyncRequest<Void> _asyncRequest) throws Exception {
+                                  AsyncRequestImpl _asyncRequestImpl,
+                                  AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
         processContent(_content);
-        _asyncRequest.processAsyncResponse(null);
+        _asyncResponseProcessor.processAsyncResponse(null);
     }
 }

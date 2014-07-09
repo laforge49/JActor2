@@ -7,7 +7,10 @@ import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 /**
  * A subscription allows a subscriber to receive content of interest from a RequestBus.
@@ -61,22 +64,21 @@ abstract public class Subscription<CONTENT> extends NonBlockingBladeBase impleme
         closeableImpl.close();
     }
 
-    AsyncRequest<Void> publicationAReq(final CONTENT _content) {
-        return new AsyncRequest<Void>(subscriberReactor) {
+    AOp<Void> publicationAOp(final CONTENT _content) {
+        return new AOp<Void>("publication", subscriberReactor) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                processContent(_content, this);
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+                processContent(_content, _asyncRequestImpl, _asyncResponseProcessor);
             }
         };
     }
 
     /**
      * Process the content of interest using the reactor of the subscriber.
-     *
-     * @param _content                The received content.
-     * @param _asyncRequest     The request context.
      */
     abstract protected void processContent(CONTENT _content,
-                                           AsyncRequest<Void> _asyncRequest)
+                                           AsyncRequestImpl _asyncRequestImpl,
+                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception;
 }

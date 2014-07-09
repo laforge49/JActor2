@@ -33,7 +33,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
             final Subscription<CONTENT> subscription = it.next();
             final Filter<CONTENT> filter = subscription.filter;
             if (filter.match(_content)) {
-                subscription.publicationAReq(_content).signal();
+                subscription.publicationAOp(_content).signal();
             }
         }
     }
@@ -101,7 +101,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
                     final Subscription<CONTENT> subscription = it.next();
                     final Filter<CONTENT> filter = subscription.filter;
                     if (filter.match(_content)) {
-                        _asyncRequestImpl.send(subscription.publicationAReq(_content).asRequestImpl(),
+                        _asyncRequestImpl.send(subscription.publicationAOp(_content),
                                 sendResponse);
                     } else {
                         count--;

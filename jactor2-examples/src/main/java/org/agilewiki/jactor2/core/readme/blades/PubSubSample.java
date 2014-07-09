@@ -6,6 +6,8 @@ import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class PubSubSample {
     public static void main(final String[] args) throws Exception {
@@ -22,9 +24,11 @@ public class PubSubSample {
             }.call();
             new SubscribeAReq<String>(requestBus, reactor, new EqualsFilter<String>("ribit")) {
                 @Override
-                protected void processContent(String _content, AsyncRequest<Void> _asyncRequest) {
+                protected void processContent(String _content, AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                        throws Exception {
                     System.out.println("*** Ribit! ***");
-                    _asyncRequest.processAsyncResponse(null);
+                    _asyncResponseProcessor.processAsyncResponse(null);
                 }
             }.call();
             System.out.println("\nPublishing null.");
