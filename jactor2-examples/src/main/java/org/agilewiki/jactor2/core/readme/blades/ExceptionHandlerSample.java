@@ -3,8 +3,13 @@ package org.agilewiki.jactor2.core.readme.blades;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
+
+import java.io.IOException;
 
 public class ExceptionHandlerSample {
 
@@ -20,17 +25,17 @@ public class ExceptionHandlerSample {
 
             try {
                 //Create and call an exception request.
-                exceptionBlade.exceptionAReq().call();
+                exceptionBlade.exceptionAOp().call();
                 System.out.println("can not get here");
-            } catch (IllegalStateException ise) {
-                System.out.println("got first IllegalStateException, as expected");
+            } catch (IOException ise) {
+                System.out.println("got first IOException, as expected");
             }
 
             //Create an ExceptionHandlerBlade.
             ExceptionHandlerBlade exceptionHandlerBlade =
                     new ExceptionHandlerBlade(exceptionBlade, new NonBlockingReactor());
             //Create a test request, call it and print the results.
-            System.out.println(exceptionHandlerBlade.testAReq().call());
+            System.out.println(exceptionHandlerBlade.testAOp().call());
 
         } finally {
             //shutdown the facility
@@ -48,11 +53,13 @@ class ExceptionBlade extends NonBlockingBladeBase {
     }
 
     //Returns an exception request.
-    AsyncRequest<Void> exceptionAReq() {
-        return new AsyncBladeRequest<Void>() {
+    AOp<Void> exceptionAOp() {
+        return new AOp<Void>("exception", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                throw new IllegalStateException(); //Throw an exception when the request is processed.
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+                throw new IOException(); //Throw an exception when the request is processed.
             }
         };
     }
@@ -71,28 +78,28 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
     }
 
     //Returns a test request.
-    AsyncRequest<String> testAReq() {
-        return new AsyncBladeRequest<String>() {
-            AsyncRequest<String> dis = this;
-
+    AOp<String> testAOp() {
+        return new AOp<String>("test", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<String> _asyncResponseProcessor)
+                    throws Exception {
                 //Create and assign an exception handler.
-                setExceptionHandler(new ExceptionHandler<String>() {
+                _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(final Exception _exception) throws Exception {
-                        if (_exception instanceof IllegalStateException) {
+                        if (_exception instanceof IOException) {
                             //Returns a result if an IllegalStateException was thrown.
-                            return "got IllegalStateException, as expected";
-                        } else //Otherwise rethrow the exception.
+                            return "got IOException, as expected";
+                        } else { //Otherwise rethrow the exception.
                             throw _exception;
+                        }
                     }
                 });
 
                 //Create an exception request and doSend it to the exception blades for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                send(exceptionBlade.exceptionAReq(), dis, "can not get here");
+                _asyncRequestImpl.send(exceptionBlade.exceptionAOp(), _asyncResponseProcessor, "can not get here");
             }
         };
     }
