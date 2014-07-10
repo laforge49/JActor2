@@ -3,7 +3,10 @@ package org.agilewiki.jactor2.core.readme.reactors;
 import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 import javax.swing.*;
 
@@ -12,7 +15,7 @@ public class SwingBoundReactorSample {
         //Create a plant with 5 threads.
         Plant plant = new Plant(5);
 
-        new HelloWorld(new SwingBoundReactor()).createAndShowAReq().signal();
+        new HelloWorld(new SwingBoundReactor()).createAndShowAOp().signal();
     }
 }
 
@@ -21,10 +24,12 @@ class HelloWorld extends SwingBoundBladeBase {
         super(_reactor);
     }
 
-    AsyncRequest<Void> createAndShowAReq() {
-        return new AsyncBladeRequest<Void>() {
+    AOp<Void> createAndShowAOp() {
+        return new AOp<Void>("createAndShow", getReactor()) {
             @Override
-            public void processAsyncRequest() {
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
                 //Create and set up the window.
                 JFrame frame = new JFrame("HelloWorld");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //no exit until all threads are closed.
@@ -41,7 +46,7 @@ class HelloWorld extends SwingBoundBladeBase {
                 frame.setVisible(true);
 
                 //return the result.
-                processAsyncResponse(null);
+                _asyncResponseProcessor.processAsyncResponse(null);
             }
         };
     }
