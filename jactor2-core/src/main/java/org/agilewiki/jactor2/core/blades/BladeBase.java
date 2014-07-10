@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.core.blades;
 
+import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.Request;
 
@@ -57,6 +59,11 @@ public abstract class BladeBase implements Blade {
      */
     protected <RESPONSE_TYPE> void send(final Request<RESPONSE_TYPE> _request) {
         _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
+    }
+
+    protected <RESPONSE_TYPE> void send(final AOp<RESPONSE_TYPE> _aOp) {
+        PlantImpl.getSingleton().createAsyncRequestImpl(_aOp, _aOp.targetReactor).
+                doSend(getReactor().asReactorImpl(), null);
     }
 
     public boolean isDirectOk(final Reactor _sourceReactor) {

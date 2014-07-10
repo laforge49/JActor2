@@ -87,7 +87,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
     }
 
     private void send() {
-        send(next.processDataAReq(firehoseData));
+        send(next.processDataAOp(firehoseData));
         list = null;
         firehoseData = null;
         ackCount += 1;
