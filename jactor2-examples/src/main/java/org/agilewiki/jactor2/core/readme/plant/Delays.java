@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.readme.plant;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.plant.DelayAReq;
+import org.agilewiki.jactor2.core.plant.DelayAOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
@@ -30,7 +30,7 @@ public class Delays extends NonBlockingBladeBase {
                 long j = 0;
                 while(j < count) {
                     j++;
-                    DelayAReq delay = new DelayAReq(100);
+                    DelayAOp delay = new DelayAOp(100);
                     send(delay, delayResponseProcessor);
                 }
             }

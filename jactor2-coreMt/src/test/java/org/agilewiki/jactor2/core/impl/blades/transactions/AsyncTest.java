@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.blades.transactions.ImmutableSource;
 import org.agilewiki.jactor2.core.blades.transactions.SyncTransaction;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.plant.DelayAReq;
+import org.agilewiki.jactor2.core.plant.DelayAOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 
 public class AsyncTest extends CallTestBase {
@@ -18,7 +18,7 @@ public class AsyncTest extends CallTestBase {
             protected void update(final ImmutableSource<String> source,
                     final AsyncResponseProcessor<Void> asyncResponseProcessor)
                     throws Exception {
-                applyAReq.send(new DelayAReq(1000),
+                applyAReq.send(new DelayAOp(1000),
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(
