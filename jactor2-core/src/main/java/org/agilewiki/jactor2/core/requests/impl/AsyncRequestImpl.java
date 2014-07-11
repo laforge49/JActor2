@@ -93,7 +93,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param _asyncResponseProcessor Handles the response.
      * @param <RT>                    The type of response returned.
      */
-    <RT> void send(final SOp<RT> _sOp,
+    <RT> RequestImpl<RT> send(final SOp<RT> _sOp,
                    final AsyncResponseProcessor<RT> _asyncResponseProcessor);
 
     /**
@@ -107,7 +107,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT>           The response value type.
      * @param <RT2>          The replacement value type.
      */
-    <RT, RT2> void send(final SOp<RT> _sOp,
+    <RT, RT2> RequestImpl<RT> send(final SOp<RT> _sOp,
                         final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
@@ -131,7 +131,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT>           The response value type.
      * @param <RT2>          The replacement value type.
      */
-    <RT, RT2> void send(final AOp<RT> _aOp,
+    <RT, RT2> AsyncRequestImpl<RT> send(final AOp<RT> _aOp,
                         final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     <RT> void send(final SyncNativeRequest<RT> _syncNativeRequest,
