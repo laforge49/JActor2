@@ -3,8 +3,10 @@ package org.agilewiki.jactor2.core.readme.requests;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class RequestSample {
 
@@ -19,16 +21,16 @@ public class RequestSample {
             SampleBlade2 bladeA = new SampleBlade2(new NonBlockingReactor());
 
             //Initialize blades to 1.
-            bladeA.updateAReq(1).signal();
+            bladeA.updateAOp(1).signal();
 
             //Change blades to 2.
-            System.out.println("was " + bladeA.updateAReq(2).call() + " but is now 2");
+            System.out.println("was " + bladeA.updateAOp(2).call() + " but is now 2");
 
             //Create bladeB with a reference to blades.
             IndirectBlade bladeB = new IndirectBlade(bladeA, new NonBlockingReactor());
 
             //Indirectly change blades to 42.
-            System.out.println("was " + bladeB.indirectAReq(42).call() + " but is now 42");
+            System.out.println("was " + bladeB.indirectAOp(42).call() + " but is now 42");
 
         } finally {
             //shutdown the facility
@@ -51,14 +53,15 @@ class SampleBlade2 extends NonBlockingBladeBase {
     }
 
     //Return an update request.
-    AsyncRequest<Integer> updateAReq(final int _newState) {
-        return new AsyncBladeRequest<Integer>() {
-
+    AOp<Integer> updateAOp(final int _newState) {
+        return new AOp<Integer>("update", getReactor()) {
             @Override
-            public void processAsyncRequest() {
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Integer> _asyncResponseProcessor)
+                    throws Exception {
                 int oldState = state;
                 state = _newState; //assign the new state
-                processAsyncResponse(oldState); //return the old state.
+                _asyncResponseProcessor.processAsyncResponse(oldState); //return the old state.
             }
         };
     }
@@ -78,24 +81,23 @@ class IndirectBlade extends NonBlockingBladeBase {
     }
 
     //Return a request to update the other blades and return its new state.
-    AsyncRequest<Integer> indirectAReq(final int _newState) {
-        return new AsyncBladeRequest<Integer>() {
-            AsyncRequest<Integer> dis = this;
-
+    AOp<Integer> indirectAOp(final int _newState) {
+        return new AOp<Integer>("indirect", getReactor()) {
             @Override
-            public void processAsyncRequest() {
-
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                              final AsyncResponseProcessor<Integer> _asyncResponseProcessor)
+                    throws Exception {
                 //Get a request from the other blades.
-                AsyncRequest<Integer> req = blade.updateAReq(_newState);
+                AOp<Integer> req = blade.updateAOp(_newState);
 
                 //Send the request to the other blades.
-                send(req, new AsyncResponseProcessor<Integer>() {
+                _asyncRequestImpl.send(req, new AsyncResponseProcessor<Integer>() {
 
                     @Override
-                    public void processAsyncResponse(Integer response) {
+                    public void processAsyncResponse(Integer response) throws Exception {
 
                         //Return the old state.
-                        dis.processAsyncResponse(response);
+                        _asyncResponseProcessor.processAsyncResponse(response);
                     }
                 });
             }
