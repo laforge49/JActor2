@@ -117,7 +117,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param _asyncResponseProcessor Handles the response.
      * @param <RT>                    The type of response returned.
      */
-    <RT> void send(final AOp<RT> _aOp,
+    <RT> AsyncRequestImpl<RT> send(final AOp<RT> _aOp,
                    final AsyncResponseProcessor<RT> _asyncResponseProcessor);
 
     /**
