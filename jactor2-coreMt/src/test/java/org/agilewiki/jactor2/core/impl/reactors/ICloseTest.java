@@ -6,7 +6,6 @@ import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.plant.DelayAOp;
 import org.agilewiki.jactor2.core.requests.AOp;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
@@ -14,7 +13,7 @@ public class ICloseTest extends CallTestBase {
     public void testa() throws Exception {
         new Plant();
         try {
-            call(new IHang().goAReq());
+            call(new IHang().goAOp());
         } finally {
             Plant.close();
         }
@@ -26,7 +25,7 @@ class IHang extends BlockingBladeBase {
     IHang() throws Exception {
     }
 
-    AOp<Void> goAReq() {
+    AOp<Void> goAOp() {
         return new AOp<Void>("go", getReactor()) {
             @Override
             public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
