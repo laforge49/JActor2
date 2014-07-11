@@ -3,9 +3,8 @@ package org.agilewiki.jactor2.core.examples;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Delay;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.*;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class InProcess extends NonBlockingBladeBase {
 
@@ -13,7 +12,7 @@ public class InProcess extends NonBlockingBladeBase {
         new Plant();
         try {
             InProcess inProcess = new InProcess();
-            inProcess.mightHang().call();
+            inProcess.mightHangOp().call();
         } finally {
             Plant.close();
         }
@@ -22,38 +21,39 @@ public class InProcess extends NonBlockingBladeBase {
     public InProcess() throws Exception {
     }
 
-    public AsyncRequest<Void> mightHang() {
-        return new AsyncBladeRequest<Void>() {
-            AsyncRequest<Void> dis = this;
-
+    public AOp<Void> mightHangOp() {
+        return new SAOp<Void>("mightHang", getReactor()) {
             AsyncResponseProcessor<Void> responseProcessor = new AsyncResponseProcessor<Void>() {
                 @Override
-                public void processAsyncResponse(Void _response) {
+                public void processAsyncResponse(Void _response) throws Exception {
                     System.out.println("normal response");
-                    if (dis.getPendingResponseCount() == 0)
-                        dis.processAsyncResponse(null);
+                    if (getAsyncRequestImpl().getPendingResponseCount() == 0)
+                        processAsyncResponse(null);
                 }
             };
 
             ExceptionHandler<Void> exceptionHandler = new ExceptionHandler<Void>() {
                 @Override
-                public void processException(Exception e, AsyncResponseProcessor dat) {
+                public void processException(Exception e, AsyncResponseProcessor dat)
+                        throws Exception {
                     System.out.println(e);
-                    if (dis.getPendingResponseCount() == 0)
-                        dis.processAsyncResponse(null);
+                    if (getAsyncRequestImpl().getPendingResponseCount() == 0) {
+                        processAsyncResponse(null);
+                    }
                 }
             };
 
             @Override
-            public void processAsyncRequest() throws Exception {
-                setExceptionHandler(exceptionHandler);
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl)
+                    throws Exception {
+                _asyncRequestImpl.setExceptionHandler(exceptionHandler);
                 final IndirectDelay indirectDelay = new IndirectDelay();
-                send(indirectDelay.isleep(), responseProcessor);
-                send(indirectDelay.isleep(), responseProcessor);
-                send(indirectDelay.isleep(), responseProcessor);
-                send(indirectDelay.isleep(), responseProcessor);
-                send(indirectDelay.isleep(), responseProcessor);
-                send(new Delay().sleepSOp(200), new AsyncResponseProcessor<Void>() {
+                _asyncRequestImpl.send(indirectDelay.iSleepOp(), responseProcessor);
+                _asyncRequestImpl.send(indirectDelay.iSleepOp(), responseProcessor);
+                _asyncRequestImpl.send(indirectDelay.iSleepOp(), responseProcessor);
+                _asyncRequestImpl.send(indirectDelay.iSleepOp(), responseProcessor);
+                _asyncRequestImpl.send(indirectDelay.iSleepOp(), responseProcessor);
+                _asyncRequestImpl.send(new Delay().sleepSOp(200), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(Void _response) {
                         try {
@@ -71,11 +71,13 @@ public class InProcess extends NonBlockingBladeBase {
 class IndirectDelay extends NonBlockingBladeBase {
     public IndirectDelay() throws Exception {}
 
-    public AsyncRequest<Void> isleep() {
-        return new AsyncBladeRequest<Void>() {
+    public AOp<Void> iSleepOp() {
+        return new AOp<Void>("iSleep", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                send(new Delay().sleepSOp(10000), this);
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+                _asyncRequestImpl.send(new Delay().sleepSOp(10000), _asyncResponseProcessor);
             }
         };
     }
