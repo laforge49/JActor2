@@ -81,7 +81,7 @@ abstract public class ISMSyncTransaction<VALUE> extends
             public void processAsyncRequest() throws Exception {
                 immutableChangeManager = new ImmutableChangeManager<VALUE>(
                         ismReference.getImmutable());
-                eval(_immutableReference, this, superResponseProcessor);
+                eval(_immutableReference, asRequestImpl(), superResponseProcessor);
             }
         };
     }

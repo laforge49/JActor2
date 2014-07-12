@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 /**
  * A composable transaction for updating an ImmutableReference.
@@ -34,7 +35,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
     /**
      * The request which updates operate under.
      */
-    protected AsyncRequest<IMMUTABLE> applyAReq;
+    protected AsyncRequestImpl<IMMUTABLE> applyAReq;
 
     /**
      * Compose a Transaction.
@@ -81,7 +82,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
 
     protected void eval(
             final ImmutableReference<IMMUTABLE> _immutableReference,
-            final AsyncRequest<IMMUTABLE> request,
+            final AsyncRequestImpl<IMMUTABLE> request,
             final AsyncResponseProcessor<IMMUTABLE> dis) throws Exception {
         _eval(_immutableReference,
                 request,
@@ -107,7 +108,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
         return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
             @Override
             public void processAsyncRequest() throws Exception {
-                eval(_immutableReference, this, this);
+                eval(_immutableReference, asRequestImpl(), asRequestImpl());
             }
         };
     }
@@ -132,7 +133,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
 
             @Override
             public void processAsyncRequest() throws Exception {
-                _eval(_immutableReference, this, _evalResponseProcessor);
+                _eval(_immutableReference, asRequestImpl(), _evalResponseProcessor);
             }
         };
     }
@@ -182,7 +183,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
 
     @Override
     public void _eval(final ImmutableReference<IMMUTABLE> _root,
-            final AsyncRequest<IMMUTABLE> _applyAReq,
+            final AsyncRequestImpl<IMMUTABLE> _applyAReq,
             final AsyncResponseProcessor<Void> _dis) throws Exception {
         reactor = _root.reactor;
         applyAReq = _applyAReq;
