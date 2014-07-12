@@ -1,10 +1,14 @@
 package org.agilewiki.jactor2.core.examples;
 
+import com.sun.javafx.runtime.async.AbstractAsyncOperation;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class OneWayError extends NonBlockingBladeBase {
@@ -18,18 +22,24 @@ public class OneWayError extends NonBlockingBladeBase {
         new Plant();
         try {
             new OneRuntime().new OneWaySOp("direct", new NonBlockingReactor()).signal();
-            new OneWayError().new IndirectSReq().call();
+            new OneWayError().new IndirectAOp("indirect", new NonBlockingReactor()).call();
             System.out.println("ok");
         } finally {
             Plant.close();
         }
     }
 
-    public class IndirectSReq extends AsyncBladeRequest<Void> {
+    public class IndirectAOp extends AOp<Void> {
+        public IndirectAOp(String _opName, Reactor _targetReactor) {
+            super(_opName, _targetReactor);
+        }
+
         @Override
-        public void processAsyncRequest() throws Exception {
-            send(new OneRuntime().new OneWaySOp("oneway", getReactor()), null);
-            processAsyncResponse(null);
+        public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                          AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                throws Exception {
+            _asyncRequestImpl.send(new OneRuntime().new OneWaySOp("oneway", getReactor()), null);
+            _asyncResponseProcessor.processAsyncResponse(null);
         }
     }
 }
