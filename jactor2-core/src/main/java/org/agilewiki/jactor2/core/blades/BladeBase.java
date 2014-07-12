@@ -85,20 +85,4 @@ public abstract class BladeBase implements Blade {
                     "Not thread safe: source reactor is not the same");
         }
     }
-
-    /**
-     * An AsyncRequest targeted to this blade.
-     *
-     * @param <RESPONSE_TYPE> The type of response value.
-     */
-    protected abstract class AsyncBladeRequest<RESPONSE_TYPE> extends
-            AsyncRequest<RESPONSE_TYPE> {
-
-        /**
-         * Create an AyncRequest targetd to this blade.
-         */
-        public AsyncBladeRequest() {
-            super(BladeBase.this.reactor);
-        }
-    }
 }
