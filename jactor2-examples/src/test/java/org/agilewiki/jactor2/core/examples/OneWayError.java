@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.examples;
 
-import com.sun.javafx.runtime.async.AbstractAsyncOperation;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
