@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.blades.transactions;
 
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
@@ -103,12 +104,14 @@ abstract public class TransactionBase<IMMUTABLE> implements
      * @param _immutableReference The ImmutableReference to which the transaction is to be applied.
      * @return The new request.
      */
-    public AsyncRequest<IMMUTABLE> applyAReq(
+    public AOp<IMMUTABLE> applyAOp(
             final ImmutableReference<IMMUTABLE> _immutableReference) {
-        return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
+        return new AOp<IMMUTABLE>("apply", _immutableReference.getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                eval(_immutableReference, asRequestImpl(), asRequestImpl());
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<IMMUTABLE> _asyncResponseProcessor)
+                    throws Exception {
+                eval(_immutableReference, _asyncRequestImpl, _asyncResponseProcessor);
             }
         };
     }
@@ -119,21 +122,23 @@ abstract public class TransactionBase<IMMUTABLE> implements
      * @param _immutableReference The ImmutableReference to which the transaction is to be applied.
      * @return The new request.
      */
-    public AsyncRequest<IMMUTABLE> evalAReq(
+    public AOp<IMMUTABLE> evalAOp(
             final ImmutableReference<IMMUTABLE> _immutableReference) {
-        return new AsyncRequest<IMMUTABLE>(_immutableReference.getReactor()) {
-            private final AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
-                @Override
-                public void processAsyncResponse(final Void _response)
-                        throws Exception {
-                    applyAReq.processAsyncResponse(immutable);
-                    applyAReq = null;
-                }
-            };
-
+        return new AOp<IMMUTABLE>("eval", _immutableReference.getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                _eval(_immutableReference, asRequestImpl(), _evalResponseProcessor);
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                              final AsyncResponseProcessor<IMMUTABLE> _asyncResponseProcessor)
+                    throws Exception {
+                AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(final Void _response)
+                            throws Exception {
+                        _asyncResponseProcessor.processAsyncResponse(immutable);
+                        applyAReq = null;
+                    }
+                };
+
+                _eval(_immutableReference, _asyncRequestImpl, _evalResponseProcessor);
             }
         };
     }

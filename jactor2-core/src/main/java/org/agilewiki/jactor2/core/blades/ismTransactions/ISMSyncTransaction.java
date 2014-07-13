@@ -4,8 +4,10 @@ import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableReference;
 import org.agilewiki.jactor2.core.blades.transactions.SyncTransaction;
 import org.agilewiki.jactor2.core.blades.transactions.TransactionBase;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 /**
  * Base class for isMap sync transactions.
@@ -45,43 +47,42 @@ abstract public class ISMSyncTransaction<VALUE> extends
     }
 
     @Override
-    public AsyncRequest<ISMap<VALUE>> applyAReq(
+    public AOp<ISMap<VALUE>> applyAOp(
             final ImmutableReference<ISMap<VALUE>> _immutableReference) {
-        return new AsyncRequest<ISMap<VALUE>>(_immutableReference.getReactor()) {
-            private final AsyncResponseProcessor<ISMap<VALUE>> dis = this;
-
-            private final ISMReference<VALUE> ismReference = (ISMReference<VALUE>) _immutableReference;
-
-            private final AsyncResponseProcessor<Void> validationResponseProcessor = new AsyncResponseProcessor<Void>() {
-                @Override
-                public void processAsyncResponse(final Void _response)
-                        throws Exception {
-                    ISMSyncTransaction.super
-                            .updateImmutableReference(_immutableReference);
-                    immutableChangeManager.close();
-                    send(ismReference.changeBus
-                            .sendsContentAOp(immutableChanges),
-                            dis, immutable);
-                }
-            };
-
-            private final AsyncResponseProcessor<ISMap<VALUE>> superResponseProcessor = new AsyncResponseProcessor<ISMap<VALUE>>() {
-                @Override
-                public void processAsyncResponse(final ISMap<VALUE> _response)
-                        throws Exception {
-                    immutableChanges = new ImmutableChanges<VALUE>(
-                            immutableChangeManager);
-                    send(ismReference.validationBus
-                            .sendsContentAOp(immutableChanges),
-                            validationResponseProcessor);
-                }
-            };
-
+        return new AOp<ISMap<VALUE>>("apply", _immutableReference.getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                immutableChangeManager = new ImmutableChangeManager<VALUE>(
-                        ismReference.getImmutable());
-                eval(_immutableReference, asRequestImpl(), superResponseProcessor);
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                              final AsyncResponseProcessor<ISMap<VALUE>> _asyncResponseProcessor)
+                    throws Exception {
+                final ISMReference<VALUE> ismReference = (ISMReference<VALUE>) _immutableReference;
+
+                final AsyncResponseProcessor<Void> validationResponseProcessor = new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(final Void _response)
+                            throws Exception {
+                        ISMSyncTransaction.super
+                                .updateImmutableReference(_immutableReference);
+                        immutableChangeManager.close();
+                        _asyncRequestImpl.send(ismReference.changeBus
+                                        .sendsContentAOp(immutableChanges),
+                                _asyncResponseProcessor, immutable);
+                    }
+                };
+
+                final AsyncResponseProcessor<ISMap<VALUE>> superResponseProcessor =
+                        new AsyncResponseProcessor<ISMap<VALUE>>() {
+                    @Override
+                    public void processAsyncResponse(final ISMap<VALUE> _response)
+                            throws Exception {
+                        immutableChanges = new ImmutableChanges<VALUE>(
+                                immutableChangeManager);
+                        _asyncRequestImpl.send(ismReference.validationBus
+                                        .sendsContentAOp(immutableChanges),
+                                validationResponseProcessor);
+                    }
+                };
+
+                eval(_immutableReference, _asyncRequestImpl, superResponseProcessor);
             }
         };
     }

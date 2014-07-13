@@ -67,13 +67,13 @@ public class ISMTransactionTest extends CallTestBase {
             assertEquals(0, immutableState.size());
 
             call(new ISMUpdateTransaction<String>("1", "first")
-                    .applyAReq(propertiesReference));
+                    .applyAOp(propertiesReference));
             assertEquals(0, immutableState.size());
             immutableState = propertiesReference.getImmutable();
             assertEquals(1, immutableState.size());
 
             call(new ISMUpdateTransaction<String>("1", "second")
-                    .applyAReq(propertiesReference));
+                    .applyAOp(propertiesReference));
             assertEquals(1, immutableState.size());
             immutableState = propertiesReference.getImmutable();
             assertEquals(1, immutableState.size());
@@ -81,7 +81,7 @@ public class ISMTransactionTest extends CallTestBase {
             String msg = null;
             try {
                 call(new ISMUpdateTransaction<String>("fudge", "second")
-                        .applyAReq(propertiesReference));
+                        .applyAOp(propertiesReference));
             } catch (final Exception e) {
                 msg = e.getMessage();
             }
@@ -91,7 +91,7 @@ public class ISMTransactionTest extends CallTestBase {
             assertEquals(1, immutableState.size());
 
             call(new ISMUpdateTransaction<String>("1", (String) null)
-                    .applyAReq(propertiesReference));
+                    .applyAOp(propertiesReference));
             immutableState = propertiesReference.getImmutable();
             assertEquals(0, immutableState.size());
         } finally {
