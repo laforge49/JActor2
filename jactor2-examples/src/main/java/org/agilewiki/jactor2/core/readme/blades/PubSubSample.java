@@ -2,10 +2,9 @@ package org.agilewiki.jactor2.core.readme.blades;
 
 import org.agilewiki.jactor2.core.blades.filters.EqualsFilter;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAOp;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
@@ -16,13 +15,13 @@ public class PubSubSample {
             NonBlockingReactor reactor = new NonBlockingReactor();
             RequestBus<String> requestBus =
                     new RequestBus<String>(reactor);
-            new SubscribeAReq<String>(requestBus, reactor) {
+            new SubscribeAOp<String>(requestBus, reactor) {
                 @Override
                 protected void processContent(String _content) throws Exception {
                     System.out.println("got " + _content);
                 }
             }.call();
-            new SubscribeAReq<String>(requestBus, reactor, new EqualsFilter<String>("ribit")) {
+            new SubscribeAOp<String>(requestBus, reactor, new EqualsFilter<String>("ribit")) {
                 @Override
                 protected void processContent(String _content, AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)

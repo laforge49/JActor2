@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.blades.ismTransactions.ISMUpdateTransaction;
 import org.agilewiki.jactor2.core.blades.ismTransactions.ImmutableChange;
 import org.agilewiki.jactor2.core.blades.ismTransactions.ImmutableChanges;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAOp;
 import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
@@ -24,7 +24,7 @@ public class ISMTransactionTest extends CallTestBase {
             final CommonReactor reactor = new NonBlockingReactor();
 
             final RequestBus<ImmutableChanges<String>> validationBus = propertiesReference.validationBus;
-            call(new SubscribeAReq<ImmutableChanges<String>>(validationBus,
+            call(new SubscribeAOp<ImmutableChanges<String>>(validationBus,
                     reactor) {
                 @Override
                 protected void processContent(
@@ -44,7 +44,7 @@ public class ISMTransactionTest extends CallTestBase {
             });
 
             final RequestBus<ImmutableChanges<String>> changeBus = propertiesReference.changeBus;
-            call(new SubscribeAReq<ImmutableChanges<String>>(changeBus, reactor) {
+            call(new SubscribeAOp<ImmutableChanges<String>>(changeBus, reactor) {
                 @Override
                 protected void processContent(
                         final ImmutableChanges<String> _content)

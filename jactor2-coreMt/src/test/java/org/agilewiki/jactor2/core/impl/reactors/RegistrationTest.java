@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.reactors;
 
 import org.agilewiki.jactor2.core.blades.NamedBlade;
-import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAReq;
+import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAOp;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.Facility;
@@ -18,7 +18,7 @@ public class RegistrationTest extends CallTestBase {
                 }
             };
             final Facility facility = new Facility("TestFacility");
-            call(new SubscribeAReq<RegistrationNotification>(
+            call(new SubscribeAOp<RegistrationNotification>(
                     facility.registrationNotifier, facility) {
                 @Override
                 protected void processContent(
