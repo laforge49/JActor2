@@ -10,7 +10,7 @@ public class Test3 extends CallTestBase {
     public void testI() throws Exception {
         new Plant();
         final BladeC bladeC = new BladeC();
-        final String result = call(bladeC.throwAReq());
+        final String result = call(bladeC.throwAOp());
         assertEquals("java.io.IOException: thrown on request", result);
         Plant.close();
     }

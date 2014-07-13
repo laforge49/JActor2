@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class BladeC {
     private final Reactor reactor;
@@ -14,11 +16,13 @@ public class BladeC {
         this.reactor = new IsolationReactor();
     }
 
-    public AsyncRequest<String> throwAReq() {
-        return new AsyncRequest<String>(reactor) {
+    public AOp<String> throwAOp() {
+        return new AOp<String>("throw", reactor) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                setExceptionHandler(new ExceptionHandler<String>() {
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                              AsyncResponseProcessor<String> _asyncResponseProcessor)
+                    throws Exception {
+                _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(final Exception exception)
                             throws Exception {
