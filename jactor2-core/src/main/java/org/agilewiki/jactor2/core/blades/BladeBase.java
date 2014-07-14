@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.blades;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AOp;
-import org.agilewiki.jactor2.core.requests.Request;
 
 /**
  * Optional base class for blades.
@@ -54,12 +53,8 @@ public abstract class BladeBase implements Blade {
     /**
      * Send a one-way message using the blade's reactor as the source.
      *
-     * @param _request        The request to be passed.
+     * @param _aOp        The operation to be processed.
      */
-    protected <RESPONSE_TYPE> void send(final Request<RESPONSE_TYPE> _request) {
-        _request.asRequestImpl().doSend(getReactor().asReactorImpl(), null);
-    }
-
     protected <RESPONSE_TYPE> void send(final AOp<RESPONSE_TYPE> _aOp) {
         PlantImpl.getSingleton().createAsyncRequestImpl(_aOp, _aOp.targetReactor).
                 doSend(getReactor().asReactorImpl(), null);

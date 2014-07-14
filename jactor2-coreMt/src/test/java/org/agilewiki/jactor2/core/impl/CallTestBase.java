@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.impl;
 import junit.framework.TestCase;
 
 import org.agilewiki.jactor2.core.requests.Operation;
-import org.agilewiki.jactor2.core.requests.Request;
 
 /**
  * Test code base class.
