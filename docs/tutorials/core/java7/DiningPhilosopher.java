@@ -4,6 +4,9 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class DiningPhilosopher extends NonBlockingBladeBase {
+	public DiningPhilosopher() throws Exception {
+	}
+	
     public AsyncRequest<Integer> feastAReq(final DiningTable _diningTable, final int _seat) {
         return new AsyncBladeRequest<Integer>() {
             final AsyncRequest<Integer> dis = this;

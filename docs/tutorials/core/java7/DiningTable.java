@@ -11,7 +11,7 @@ public class DiningTable extends NonBlockingBladeBase {
     private int[] forkUsage;
     private AsyncResponseProcessor<Boolean>[] pendingResponses;
 
-    public DiningTable(final int _seats, final int _meals) {
+    public DiningTable(final int _seats, final int _meals) throws Exception {
         seats = _seats;
         meals = _meals;
         forkUsage = new int[seats];

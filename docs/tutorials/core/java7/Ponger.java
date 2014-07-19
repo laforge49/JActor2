@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 public class Ponger extends BladeBase {
     private long count = 0;
     
-    public Ponger() {
+    public Ponger() throws Exception {
         _initialize(new NonBlockingReactor());
     }
     

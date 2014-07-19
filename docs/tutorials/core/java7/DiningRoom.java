@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class DiningRoom extends NonBlockingBladeBase {
+	public DiningRoom() throws Exception {
+	}
+
     public AsyncRequest<List<Integer>> feastAReq(final int _seats, final int _meals) {
         return new AsyncBladeRequest<List<Integer>>() {
             final AsyncRequest<List<Integer>> dis = this;
@@ -27,9 +30,9 @@ public class DiningRoom extends NonBlockingBladeBase {
             };
             
             @Override
-            public void processAsyncRequest() {
+            public void processAsyncRequest() throws Exception {
                 int i = 0;
-                DiningTable diningTable = new DiningTable(
+                final DiningTable diningTable = new DiningTable(
                     _seats,
                     _meals);
                 while (i < _seats) {

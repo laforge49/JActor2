@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 public class Delays extends NonBlockingBladeBase {
     private final long count;
 
-    Delays(final long _count) {
+    Delays(final long _count) throws Exception {
         count = _count;
     }
 

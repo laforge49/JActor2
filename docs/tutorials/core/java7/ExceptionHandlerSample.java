@@ -41,6 +41,9 @@ public class ExceptionHandlerSample {
 
 //A blade with a request that throws an exception.
 class ExceptionBlade extends NonBlockingBladeBase {
+	ExceptionBlade() throws Exception {
+	}
+
     //Returns an exception request.
     AsyncRequest<Void> exceptionAReq() {
         return new AsyncBladeRequest<Void>() {
@@ -59,7 +62,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blade with a reference to an exception blade.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) {
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) throws Exception {
         exceptionBlade = _exceptionBlade;
     }
 

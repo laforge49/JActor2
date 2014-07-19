@@ -26,6 +26,9 @@ public class Isolation extends NonBlockingBladeBase {
             Plant.close();
         }
     }
+	
+	public Isolation() throws Exception {
+	}
     
     AsyncRequest<Void> runAReq(final Isolate _isolate) {
         return new AsyncBladeRequest<Void>() {
@@ -51,9 +54,9 @@ class Isolate extends BladeBase {
         return new AsyncBladeRequest<Void>() {
             AsyncRequest dis = this;
 
-            public void processAsyncRequest() {
+            public void processAsyncRequest() throws Exception {
                 int oldState = state;
-                int newState = state + 1;
+                final int newState = state + 1;
                 System.out.println("was " + oldState + ", now " + newState); 
                 Delay delay = new Delay();
                 send(delay.sleepSReq(1), new AsyncResponseProcessor<Void>() {

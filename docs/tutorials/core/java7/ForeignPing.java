@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.requests.SyncRequest;
 public class ForeignPing extends NonBlockingBladeBase {
     private final Ponger ponger;
 
-    public ForeignPing(final Ponger _ponger) {
+    public ForeignPing(final Ponger _ponger) throws Exception {
         ponger = _ponger;
     }
     

@@ -4,6 +4,9 @@ import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class StackOverflow extends NonBlockingBladeBase {
+
+	public StackOverflow() throws Exception {
+	}
     
     void recur() {
         recur();

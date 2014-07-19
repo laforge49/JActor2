@@ -3,6 +3,9 @@ import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.SyncRequest;
 
 public class Signals extends NonBlockingBladeBase {
+
+	public Signals() throws Exception {
+	}
     
     public static void main(final String[] _args) throws Exception {
         new Plant();
