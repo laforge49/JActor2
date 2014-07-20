@@ -1,5 +1,5 @@
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
@@ -14,22 +14,12 @@ public class Ponger extends BladeBase {
         _initialize(_reactor);
     }
 
-    private long ping() {
-        count += 1;
-        return count;
-    }
-
-    //Directly callable
-    public long ping(final Reactor _sourceReactor) {
-        directCheck(_sourceReactor);
-        return ping();
-    }
-
-    public SyncRequest<Long> pingSReq() {
-        return new SyncBladeRequest() {
+    public SOp<Long> pingSOp() {
+        return new SOp("ping", getReactor()) {
             @Override
             public Long processSyncRequest() {
-                return ping();
+				count += 1;
+				return count;
             }
         };
     }

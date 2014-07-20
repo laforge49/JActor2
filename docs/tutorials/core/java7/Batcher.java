@@ -1,6 +1,6 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
@@ -14,28 +14,26 @@ public class Batcher extends NonBlockingBladeBase {
         ponger = _ponger;
     }
     
-    public AsyncRequest<Void> runAReq() {
-        return new AsyncBladeRequest<Void>() {
-            final AsyncRequest<Void> dis = this;
-            
-            final AsyncResponseProcessor<Long> pingResponseProcessor = 
-                new AsyncResponseProcessor<Long>() {
+    public AOp<Void> runAOp() {
+        return new AOp<Void>("run", getReactor()) {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+				final AsyncResponseProcessor<Long> pingResponseProcessor = 
+						new AsyncResponseProcessor<Long>() {
+					long i = 0;
                 
-                long i = 0;
-                
-                @Override
-                public void processAsyncResponse(final Long _response) {
-                    i++;
-                    if (i == count)
-                        dis.processAsyncResponse(null);
-                }
-            };
+					@Override
+					public void processAsyncResponse(final Long _response) {
+						i++;
+						if (i == count)
+							_asyncResponseProcessor.processAsyncResponse(null);
+					}
+				};
             
-            public void processAsyncRequest() {
                 long j = 0;
                 while(j < count) {
                     j++;
-                    send(ponger.pingSReq(), pingResponseProcessor);
+                    _asyncRequestImpl.send(ponger.pingSOp(), pingResponseProcessor);
                 }
             }
         };
@@ -47,9 +45,9 @@ public class Batcher extends NonBlockingBladeBase {
         try {
             Ponger ponger = new Ponger(new NonBlockingReactor(1000, count));
             Batcher batcher = new Batcher(new NonBlockingReactor(1000, count), count, ponger);
-            AsyncRequest<Void> runAReq = batcher.runAReq();
+            AOp<Void> runAOp = batcher.runAOp();
             final long before = System.nanoTime();
-            runAReq.call();
+            runAOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
             SpeedReport.print("Batch Timings", duration, count);
