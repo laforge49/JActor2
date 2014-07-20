@@ -18,7 +18,7 @@ public class Ponger extends BladeBase {
     public SOp<Long> pingSOp() {
         return new SOp("ping", getReactor()) {
             @Override
-            public Long processSyncRequest() {
+            public Long processSyncOperation(final RequestImpl _requestImpl) {
 				count += 1;
 				return count;
             }

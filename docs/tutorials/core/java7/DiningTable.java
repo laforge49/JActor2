@@ -1,7 +1,8 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class DiningTable extends NonBlockingBladeBase {
     public final int seats;
@@ -46,22 +47,21 @@ public class DiningTable extends NonBlockingBladeBase {
         return false;
     }
     
-    public AsyncRequest<Boolean> eatAReq(final int _seat) {
-        return new AsyncBladeRequest<Boolean>() {
-            final AsyncRequest<Boolean> dis = this;
-            
+    public AOp<Boolean> eatAOp(final int _seat) {
+        return new AOp<Boolean>("eat", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                setNoHungRequestCheck(); //inhibit the test for hung request
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+                _asyncRequestImpl.setNoHungRequestCheck(); //inhibit the test for hung request
                 
                 if (mealsEaten == meals) {
-                    dis.processAsyncResponse(false);
+                    _asyncResponseProcessor.processAsyncResponse(false);
                     return;
                 }
                 
                 if (getForks(_seat)) {
                     chowTime(_seat);
-                    dis.processAsyncResponse(true);
+                    _asyncResponseProcessor.processAsyncResponse(true);
                     return;
                 }
                 
@@ -105,10 +105,10 @@ public class DiningTable extends NonBlockingBladeBase {
         }
     }
     
-    public SyncRequest<Void> ateSReq(final int _seat) {
+    public SOp<Void> ateSOp(final int _seat) {
         return new SyncBladeRequest<Void>() {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 int leftFork = leftFork(_seat);
                 int rightFork = rightFork(_seat);
                 forkUsage[leftFork] = -1;
