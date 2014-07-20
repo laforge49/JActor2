@@ -1,9 +1,9 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 public class BankAccount extends NonBlockingBladeBase {
     private int balance;
@@ -11,45 +11,44 @@ public class BankAccount extends NonBlockingBladeBase {
     
     public BankAccount() throws Exception {}
 
-    public SyncRequest<Void> depositSReq(final int _amount) {
-        return new SyncBladeRequest<Void>() {
+    public SOp<Void> depositSOp(final int _amount) {
+        return new SOp<Void>("deposit", getReactor()) {
             @Override
-            public Void processSyncRequest() {
+            public Void processSyncOperation() {
                 balance += _amount;
                 return null;
             }
         };
     }
 
-    public AsyncRequest<Boolean> transferAReq(final int _amount, final BankAccount _account) {
-        return new AsyncBladeRequest<Boolean>() {
-            AsyncRequest<Boolean> dis = this;
-
-            ExceptionHandler<Boolean> depositExceptionHandler = new ExceptionHandler<Boolean>() {
-                @Override
-                public Boolean processException(Exception e) {
-                    hold -= _amount;
-                    balance += _amount;
-                    return false;
-                }
-            };
-
-            AsyncResponseProcessor<Void> depositResponseProcessor = new AsyncResponseProcessor<Void>() {
-                @Override
-                public void processAsyncResponse(Void _response) {
-                    hold -= _amount;
-                    dis.processAsyncResponse(true);
-                }
-            };
-
+    public AOp<Boolean> transferAOp(final int _amount, final BankAccount _account) {
+        return new AOp<Boolean>("transfer", getReactor()) {
             @Override
-            public void processAsyncRequest() {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+				ExceptionHandler<Boolean> depositExceptionHandler = new ExceptionHandler<Boolean>() {
+					@Override
+					public Boolean processException(Exception e) {
+						hold -= _amount;
+						balance += _amount;
+						return false;
+					}
+				};
+
+			AsyncResponseProcessor<Void> depositResponseProcessor = new AsyncResponseProcessor<Void>() {
+					@Override
+					public void processAsyncResponse(Void _response) {
+						hold -= _amount;
+						_asyncResponseProcessor.processAsyncResponse(true);
+					}
+				};
+
                 if (_amount > balance)
-                    dis.processAsyncResponse(false);
+                    _asyncResponseProcessor.processAsyncResponse(false);
                 balance -= _amount;
                 hold += _amount;
-                setExceptionHandler(depositExceptionHandler);
-                send(_account.depositSReq(_amount), depositResponseProcessor);
+                _asyncRequestImpl.setExceptionHandler(depositExceptionHandler);
+                _asyncRequestImpl.send(_account.depositSOp(_amount), depositResponseProcessor);
             }
         };
     }
@@ -58,9 +57,9 @@ public class BankAccount extends NonBlockingBladeBase {
         new Plant();
         try {
             BankAccount account1 = new BankAccount();
-            account1.depositSReq(1000).call();
+            account1.depositSOp(1000).call();
             BankAccount account2 = new BankAccount();
-            System.out.println(account1.transferAReq(500, account2).call());
+            System.out.println(account1.transferAOp(500, account2).call());
         } finally {
             Plant.close();
         }
