@@ -1,8 +1,9 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.DelayAReq;
+import org.agilewiki.jactor2.core.plant.DelayAOp;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Delays extends NonBlockingBladeBase {
     private final long count;
@@ -11,25 +12,24 @@ public class Delays extends NonBlockingBladeBase {
         count = _count;
     }
 
-    public AsyncRequest<Void> runAReq() {
-        return new AsyncBladeRequest<Void>() {
-            final AsyncRequest<Void> dis = this;
+    public AOp<Void> runAOp() {
+        return new AOp<Void>("run", getReactor()) {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+				final AsyncResponseProcessor<Void> delayResponseProcessor =
+						new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(final Void _response) {
+                        if (_asyncRequestImpl.getPendingResponseCount() == 0)
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                    }
+                };
 
-            final AsyncResponseProcessor<Void> delayResponseProcessor =
-                    new AsyncResponseProcessor<Void>() {
-                        @Override
-                        public void processAsyncResponse(final Void _response) {
-                            if (dis.getPendingResponseCount() == 0)
-                                dis.processAsyncResponse(null);
-                        }
-                    };
-
-            public void processAsyncRequest() {
                 long j = 0;
                 while(j < count) {
                     j++;
-                    DelayAReq delay = new DelayAReq(100);
-                    send(delay, delayResponseProcessor);
+                    DelayAReq delay = new DelayAOp(100);
+                    _asyncRequestImpl.send(delay, delayResponseProcessor);
                 }
             }
         };
@@ -40,9 +40,9 @@ public class Delays extends NonBlockingBladeBase {
         new Plant(10);
         try {
             Delays delays = new Delays(count);
-            AsyncRequest<Void> runAReq = delays.runAReq();
+            AsyncRequest<Void> runAOp = delays.runAOp();
             final long before = System.currentTimeMillis();
-            runAReq.call();
+            runAOp.call();
             final long after = System.currentTimeMillis();
             final long duration = after - before;
             System.out.println("Delay Test with " + count + " delays run in parallel");

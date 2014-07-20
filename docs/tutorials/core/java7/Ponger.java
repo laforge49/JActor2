@@ -2,6 +2,7 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Ponger extends BladeBase {
     private long count = 0;
