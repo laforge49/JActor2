@@ -1,5 +1,5 @@
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class ForeignSendSpeedReport {
@@ -9,9 +9,9 @@ public class ForeignSendSpeedReport {
         try {
             Ponger ponger = new Ponger();
             Pinger pinger = new Pinger(new NonBlockingReactor(), ponger);
-            AsyncRequest<Void> loopAReq = pinger.loopAReq(count);
+            AOp<Void> loopAOp = pinger.loopAOp(count);
             final long before = System.nanoTime();
-            loopAReq.call();
+            loopAOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
             SpeedReport.print("Foreign Send Timings", duration, count);
