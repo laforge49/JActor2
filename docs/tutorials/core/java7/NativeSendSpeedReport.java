@@ -1,5 +1,5 @@
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class NativeSendSpeedReport {
@@ -10,9 +10,9 @@ public class NativeSendSpeedReport {
             Ponger ponger = new Ponger();
             NonBlockingReactor sharedReactor = (NonBlockingReactor) ponger.getReactor();
             Pinger pinger = new Pinger(sharedReactor, ponger);
-            AsyncRequest<Void> loopAReq = pinger.loopAReq(count);
+            AOp<Void> loopAReq = pinger.loopAOp(count);
             final long before = System.nanoTime();
-            loopAReq.call();
+            loopAOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
             SpeedReport.print("Native Send Timings", duration, count);
