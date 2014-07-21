@@ -1,6 +1,6 @@
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 public class DirectSpeedReport {
     public static void main(final String[] _args) throws Exception {
@@ -8,9 +8,9 @@ public class DirectSpeedReport {
         new Plant();
         try {
             Ponger ponger = new Ponger(new BlockingReactor());
-            SyncRequest<Void> loopSReq = new PongerLoop(ponger, count);
+            SOp<Void> loopSOp = new PongerLoop(ponger, count);
             final long before = System.nanoTime();
-            loopSReq.call();
+            loopSOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
             SpeedReport.print("Direct Timings", duration, count);
