@@ -1,8 +1,9 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class ForeignPing extends NonBlockingBladeBase {
     private final Ponger ponger;
@@ -11,20 +12,20 @@ public class ForeignPing extends NonBlockingBladeBase {
         ponger = _ponger;
     }
     
-    public AsyncRequest<Void> pingAReq() {
-        return new AsyncBladeRequest<Void>() {
-            AsyncRequest<Void> dis = this;
-        
-            AsyncResponseProcessor<Long> pongerResponseProcessor = 
-                    new AsyncResponseProcessor<Long>() {
-                public void processAsyncResponse(final Long response) {
-                    dis.processAsyncResponse(null);
-                }
-            };
+    public AOp<Void> pingAOp() {
+        return new AOp<Void>("ping", getReactor()) {
+            @Override
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+				AsyncResponseProcessor<Long> pongerResponseProcessor = 
+						new AsyncResponseProcessor<Long>() {
+					public void processAsyncResponse(final Long response) {
+						_asyncResponseProcessor.processAsyncResponse(null);
+					}
+				};
             
-            public void processAsyncRequest() {
-                SyncRequest<Long> pingSReq = ponger.pingSReq();
-                send(pingSReq, pongerResponseProcessor);
+                SyncRequest<Long> pingSOp = ponger.pingSOp();
+                _asyncRequestImpl.send(pingSOp, pongerResponseProcessor);
             }
         };
     }
@@ -34,8 +35,8 @@ public class ForeignPing extends NonBlockingBladeBase {
         try {
             Ponger ponger = new Ponger();
             ForeignPing foreignPing = new ForeignPing(ponger);
-            AsyncRequest<Void> pingAReq = foreignPing.pingAReq();
-            pingAReq.call();
+            AOp<Void> pingAOp = foreignPing.pingAOp();
+            pingAOp.call();
         } finally {
             Plant.close();
         }
