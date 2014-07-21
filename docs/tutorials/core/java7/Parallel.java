@@ -1,8 +1,9 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Delay;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Parallel extends NonBlockingBladeBase {
     private final long count;
@@ -11,25 +12,24 @@ public class Parallel extends NonBlockingBladeBase {
         count = _count;
     }
     
-    public AsyncRequest<Void> runAReq() {
-        return new AsyncBladeRequest<Void>() {
-            final AsyncRequest<Void> dis = this;
+    public AOp<Void> runAOp() {
+        return new AOp<Void>("run", getReactor()) {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+				final AsyncResponseProcessor<Void> sleepResponseProcessor = 
+						new AsyncResponseProcessor<Void>() {
+					@Override
+					public void processAsyncResponse(final Void _response) {
+						if (_asyncRequestImpl.getPendingResponseCount() == 0)
+							_asyncResponseProcessor.processAsyncResponse(null);
+					}
+				};
             
-            final AsyncResponseProcessor<Void> sleepResponseProcessor = 
-                    new AsyncResponseProcessor<Void>() {
-                @Override
-                public void processAsyncResponse(final Void _response) {
-                    if (dis.getPendingResponseCount() == 0)
-                        dis.processAsyncResponse(null);
-                }
-            };
-            
-            public void processAsyncRequest() throws Exception {
                 long j = 0;
                 while(j < count) {
                     j++;
                     Delay delay = new Delay();
-                    send(delay.sleepSReq(100), sleepResponseProcessor);
+                    _asyncRequestImpl.send(delay.sleepSOp(100), sleepResponseProcessor);
                 }
             }
         };
@@ -40,9 +40,9 @@ public class Parallel extends NonBlockingBladeBase {
         new Plant(10);
         try {
             Parallel parallel = new Parallel(count);
-            AsyncRequest<Void> runAReq = parallel.runAReq();
+            AOp<Void> runAOp = parallel.runAOp();
             final long before = System.currentTimeMillis();
-            runAReq.call();
+            runAOp.call();
             final long after = System.currentTimeMillis();
             final long duration = after - before;
             System.out.println("Parallel Test with 10 Threads");
