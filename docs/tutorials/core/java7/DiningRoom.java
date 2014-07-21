@@ -1,9 +1,10 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 import java.util.Iterator;
 import java.util.List;
@@ -13,24 +14,25 @@ public class DiningRoom extends NonBlockingBladeBase {
 	public DiningRoom() throws Exception {
 	}
 
-    public AsyncRequest<List<Integer>> feastAReq(final int _seats, final int _meals) {
-        return new AsyncBladeRequest<List<Integer>>() {
-            final AsyncRequest<List<Integer>> dis = this;
+    public AOp<List<Integer>> feastAOp(final int _seats, final int _meals) {
+        return new AOp<List<Integer>>("feast", getReactor()) {
             List<Integer> mealsEaten = new LinkedList<Integer>();
             
-            AsyncResponseProcessor<Integer> feastResponseProcessor =
-                new AsyncResponseProcessor<Integer>() {
-                    @Override
-                    public void processAsyncResponse(final Integer _feastResponse) {
-                        mealsEaten.add(_feastResponse);
-                        if (mealsEaten.size() == _seats) {
-                            dis.processAsyncResponse(mealsEaten);
-                        }
-                    }
-            };
-            
             @Override
-            public void processAsyncRequest() throws Exception {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+
+				AsyncResponseProcessor<Integer> feastResponseProcessor =
+						new AsyncResponseProcessor<Integer>() {
+					@Override
+					public void processAsyncResponse(final Integer _feastResponse) {
+						mealsEaten.add(_feastResponse);
+						if (mealsEaten.size() == _seats) {
+							_asyncResponseProcessor.processAsyncResponse(mealsEaten);
+						}
+					}
+				};
+            
                 int i = 0;
                 final DiningTable diningTable = new DiningTable(
                     _seats,
@@ -38,8 +40,8 @@ public class DiningRoom extends NonBlockingBladeBase {
                 while (i < _seats) {
                     DiningPhilosopher diningPhilosopher =
                         new DiningPhilosopher();
-                    AsyncRequest<Integer> feastAReq = diningPhilosopher.feastAReq(diningTable, i);
-                    send(feastAReq, feastResponseProcessor);
+                    AOp<Integer> feastAReq = diningPhilosopher.feastAOp(diningTable, i);
+                    _asyncRequestImpl.send(feastAReq, feastResponseProcessor);
                     ++i;
                 }
             }
@@ -52,9 +54,9 @@ public class DiningRoom extends NonBlockingBladeBase {
         new Plant();
         try {
             DiningRoom diningRoom = new DiningRoom();
-            AsyncRequest<List<Integer>> feastAReq = diningRoom.feastAReq(seats, meals);
+            AsyncRequest<List<Integer>> feastAOp = diningRoom.feastAOp(seats, meals);
             long before = System.nanoTime();
-            List<Integer> mealsEaten = feastAReq.call();
+            List<Integer> mealsEaten = feastAOp.call();
             long after = System.nanoTime();
             long duration = after - before;
             System.out.println("Seats: " + seats);
