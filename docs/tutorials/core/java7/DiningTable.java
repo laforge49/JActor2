@@ -2,6 +2,7 @@ import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class DiningTable extends NonBlockingBladeBase {
@@ -106,7 +107,7 @@ public class DiningTable extends NonBlockingBladeBase {
     }
     
     public SOp<Void> ateSOp(final int _seat) {
-        return new SyncBladeRequest<Void>() {
+        return new SOp<Void>("ate", getReactor()) {
             @Override
             public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 int leftFork = leftFork(_seat);

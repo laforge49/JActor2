@@ -1,25 +1,26 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 class Hanger extends NonBlockingBladeBase {
     Hanger() throws Exception {
         super(new NonBlockingReactor());
     }
 
-    SyncRequest<Void> looperSReq() {
-        return new SyncBladeRequest<Void>() {
+    SOp<Void> looperSOp() {
+        return new SOp<Void>("looper", getReactor()) {
             @Override
-            public Void processSyncRequest() {
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 while (true) {}
             }
         };
     }
 
-    SyncRequest<Void> sleeperSReq() {
-        return new SyncBladeRequest<Void>() {
+    SOp<Void> sleeperSOp() {
+        return new SOp<Void>("sleeper", getReactor()) {
             @Override
-            public Void processSyncRequest() throws InterruptedException {
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 Thread.sleep(Long.MAX_VALUE);
                 return null;
             }
