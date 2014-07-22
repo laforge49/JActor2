@@ -2,6 +2,7 @@ import org.agilewiki.jactor2.core.blades.*;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.*;
 import org.agilewiki.jactor2.core.reactors.*;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class ThreadMigration extends NonBlockingBladeBase {
     public static void main(final String[] _args) 
@@ -14,7 +15,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
                 new NonBlockingReactor();
             ThreadMigration threadMigration = 
                 new ThreadMigration(reactor);
-            threadMigration.startAReq().call();
+            threadMigration.startAOp().call();
         } finally {
             plant.close();
         }
@@ -25,16 +26,16 @@ public class ThreadMigration extends NonBlockingBladeBase {
         super(_reactor);
     }
     
-    public AsyncRequest<Void> startAReq() {
-        return new AsyncBladeRequest<Void>() {
+    public AOp<Void> startAOp() {
+        return new AOp<Void>() {
             @Override
-            public void processAsyncRequest() 
-                    throws Exception {
+			public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
                 NonBlockingReactor subReactor = new NonBlockingReactor();
                 SubActor subActor = new SubActor(subReactor);
-                subActor.doAReq("         signal").signal();
-                send(subActor.doAReq("           send"), this);
+                subActor.doAOp("         signal").signal();
+                _asyncRequestImpl.send(subActor.doAReq("           send"), _asyncResponseProcessor);
             }
         };
     }
@@ -46,14 +47,14 @@ class SubActor extends NonBlockingBladeBase {
         super(_reactor);
     }
     
-    public AsyncRequest<Void> doAReq(final String _label) {
-        return new AsyncBladeRequest<Void>() {
+    public AOp<Void> doAOp(final String _label) {
+        return new AOp<Void>("do", getReactor()) {
             @Override
-            public void processAsyncRequest() 
-                    throws Exception {
+			public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 System.out.println(_label + " thread: " + 
                     Thread.currentThread());
-                processAsyncResponse(null);
+                _asyncResponseProcessor.processAsyncResponse(null);
             }
         };
     }
