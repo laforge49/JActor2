@@ -24,7 +24,7 @@ public class Batcher extends NonBlockingBladeBase {
 					long i = 0;
                 
 					@Override
-					public void processAsyncResponse(final Long _response) {
+					public void processAsyncResponse(final Long _response) throws Exception {
 						i++;
 						if (i == count)
 							_asyncResponseProcessor.processAsyncResponse(null);

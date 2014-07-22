@@ -19,7 +19,7 @@ public class Delays extends NonBlockingBladeBase {
 				final AsyncResponseProcessor<Void> delayResponseProcessor =
 						new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(final Void _response) {
+                    public void processAsyncResponse(final Void _response) throws Exception {
                         if (_asyncRequestImpl.getPendingResponseCount() == 0)
                             _asyncResponseProcessor.processAsyncResponse(null);
                     }
@@ -28,7 +28,7 @@ public class Delays extends NonBlockingBladeBase {
                 long j = 0;
                 while(j < count) {
                     j++;
-                    DelayAReq delay = new DelayAOp(100);
+                    DelayAOp delay = new DelayAOp(100);
                     _asyncRequestImpl.send(delay, delayResponseProcessor);
                 }
             }
@@ -40,7 +40,7 @@ public class Delays extends NonBlockingBladeBase {
         new Plant(10);
         try {
             Delays delays = new Delays(count);
-            AsyncRequest<Void> runAOp = delays.runAOp();
+            AOp<Void> runAOp = delays.runAOp();
             final long before = System.currentTimeMillis();
             runAOp.call();
             final long after = System.currentTimeMillis();

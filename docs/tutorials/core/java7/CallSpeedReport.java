@@ -10,7 +10,7 @@ public class CallSpeedReport {
             long i = 0L;
             while (i < count) {
                 i += 1;
-                long j = ponger.pingSReq().call();
+                long j = ponger.pingSOp().call();
             }
             final long after = System.nanoTime();
             final long duration = after - before;

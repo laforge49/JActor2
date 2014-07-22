@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class BankAccount extends NonBlockingBladeBase {
@@ -26,7 +27,7 @@ public class BankAccount extends NonBlockingBladeBase {
         return new AOp<Boolean>("transfer", getReactor()) {
             @Override
             public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
-					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+					final AsyncResponseProcessor<Boolean> _asyncResponseProcessor) throws Exception {
 				ExceptionHandler<Boolean> depositExceptionHandler = new ExceptionHandler<Boolean>() {
 					@Override
 					public Boolean processException(Exception e) {
@@ -36,9 +37,9 @@ public class BankAccount extends NonBlockingBladeBase {
 					}
 				};
 
-			AsyncResponseProcessor<Void> depositResponseProcessor = new AsyncResponseProcessor<Void>() {
+				AsyncResponseProcessor<Void> depositResponseProcessor = new AsyncResponseProcessor<Void>() {
 					@Override
-					public void processAsyncResponse(Void _response) {
+					public void processAsyncResponse(Void _response) throws Exception {
 						hold -= _amount;
 						_asyncResponseProcessor.processAsyncResponse(true);
 					}
