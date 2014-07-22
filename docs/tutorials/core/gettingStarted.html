@@ -20,6 +20,12 @@ You will need a few things to work with JActor2 core:
 <a href="https://code.google.com/p/guava-libraries/">Google guava</a>.
 </li>
 <li>
+<a href="http://mvnrepository.com/artifact/org.pcollections/pcollections/2.1.2">PCollections</a>.
+</li>
+<li>
+<a href="http://metrics.codahale.com/">Metrics</a>.
+</li>
+<li>
 The JActor2 <a href="java7/jactor2-core-0.9.0.jar">core</a>
 and <a href="java7/jactor2-coreMt-0.9.0.jar">coreMt</a> jar files. And
 </li>
@@ -28,14 +34,14 @@ A test script.
 For windows, you can use <a href="java7/test.bat">test.bat</a>:
 <pre>
 del *.class
-javac -classpath jactor2-core-0.9.0.jar;jactor2-coreMt-0.9.0.jar;slf4j-api-1.7.5.jar *.java
-java -classpath jactor2-core-0.9.0.jar;jactor2-coreMt-0.9.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;guava-15.0.jar;. %1
+javac -classpath jactor2-core-0.10.0.jar;jactor2-coreMt-0.10.0.jar;slf4j-api-1.7.5.jar *.java
+java -classpath jactor2-core-0.10.0.jar;jactor2-coreMt-0.10.0.jar;slf4j-api-1.7.5.jar;slf4j-simple-1.7.5.jar;guava-15.0.jar;pcollections-2.1.2.jar;metrics-core-3.0.1.jar;. %1
 </pre>
 Othrwise, you can likely use <a href="java7/test.sh">test.sh</a>:
 <pre>
 rm -fr *.class
-javac -cp jactor2-core-0.9.0.jar:jactor2-coreMt-0.9.0.jar:slf4j-api-1.7.5.jar *.java
-java -cp jactor2-core-0.9.0.jar:jactor2-coreMt-0.9.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:guava-15.0.jar:. $1
+javac -cp jactor2-core-0.10.0.jar:jactor2-coreMt-0.9.0.jar:slf4j-api-1.7.5.jar *.java
+java -cp jactor2-core-0.10.0.jar:jactor2-coreMt-0.9.0.jar:slf4j-api-1.7.5.jar:slf4j-simple-1.7.5.jar:guava-15.0.jar:pcollections-2.1.2.jar:metrics-core-3.0.1.jar:. $1
 </pre>
 </li>
 </ull>
