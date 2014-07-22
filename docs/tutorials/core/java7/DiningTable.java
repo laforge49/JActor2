@@ -52,7 +52,7 @@ public class DiningTable extends NonBlockingBladeBase {
         return new AOp<Boolean>("eat", getReactor()) {
             @Override
             public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
-					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+					final AsyncResponseProcessor<Boolean> _asyncResponseProcessor) throws Exception {
                 _asyncRequestImpl.setNoHungRequestCheck(); //inhibit the test for hung request
                 
                 if (mealsEaten == meals) {
@@ -66,7 +66,7 @@ public class DiningTable extends NonBlockingBladeBase {
                     return;
                 }
                 
-                pendingResponses[_seat] = dis;
+                pendingResponses[_seat] = _asyncResponseProcessor;
             }
         };
     }

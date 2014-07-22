@@ -16,18 +16,18 @@ public class DiningPhilosopher extends NonBlockingBladeBase {
             
             @Override
             public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
-					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+					final AsyncResponseProcessor<Integer> _asyncResponseProcessor) throws Exception {
                 ateResponseProcessor = new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(final Void _ateResponse) {
-                        AsyncRequest<Boolean> eatAOp = _diningTable.eatAOp(_seat);
+                        AOp<Boolean> eatAOp = _diningTable.eatAOp(_seat);
                         _asyncRequestImpl.send(eatAOp, eatResponseProcessor);
                     }
                 };
 				
                 eatResponseProcessor = new AsyncResponseProcessor<Boolean>() {
                     @Override
-                    public void processAsyncResponse(final Boolean _eatResponse) {
+                    public void processAsyncResponse(final Boolean _eatResponse) throws Exception {
                         if (!_eatResponse) {
                             _asyncResponseProcessor.processAsyncResponse(mealsEaten);
                             return;

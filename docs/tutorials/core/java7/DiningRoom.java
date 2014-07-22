@@ -20,12 +20,12 @@ public class DiningRoom extends NonBlockingBladeBase {
             
             @Override
             public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
-					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+					final AsyncResponseProcessor<List<Integer>> _asyncResponseProcessor) throws Exception {
 
 				AsyncResponseProcessor<Integer> feastResponseProcessor =
 						new AsyncResponseProcessor<Integer>() {
 					@Override
-					public void processAsyncResponse(final Integer _feastResponse) {
+					public void processAsyncResponse(final Integer _feastResponse) throws Exception {
 						mealsEaten.add(_feastResponse);
 						if (mealsEaten.size() == _seats) {
 							_asyncResponseProcessor.processAsyncResponse(mealsEaten);
@@ -54,7 +54,7 @@ public class DiningRoom extends NonBlockingBladeBase {
         new Plant();
         try {
             DiningRoom diningRoom = new DiningRoom();
-            AsyncRequest<List<Integer>> feastAOp = diningRoom.feastAOp(seats, meals);
+            AOp<List<Integer>> feastAOp = diningRoom.feastAOp(seats, meals);
             long before = System.nanoTime();
             List<Integer> mealsEaten = feastAOp.call();
             long after = System.nanoTime();
