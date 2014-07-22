@@ -23,17 +23,18 @@ public class Pinger extends NonBlockingBladeBase {
 				final AsyncResponseProcessor<Long> pingResponseProcessor = 
 						new AsyncResponseProcessor<Long>() {
 					@Override
-					public void processAsyncResponse(final Long _response) {
+					public void processAsyncResponse(final Long _response) throws Exception {
 						i++;
-						iterate(_asyncRequestImpl, _asyncResponseProcessor);
+						iterate(_asyncRequestImpl, _asyncResponseProcessor, pingResponseProcessor);
 					}
 				};
 
-                iterate(_asyncRequestImpl, _asyncResponseProcessor);
+                iterate(_asyncRequestImpl, _asyncResponseProcessor, pingResponseProcessor);
             }
             
             public void iterate(final AsyncRequestImpl _asyncRequestImpl, 
-					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor,
+					final AsyncResponseProcessor<Long> pingResponseProcessor) throws Exception {
                 if (i >= _count) {
                     _asyncResponseProcessor.processAsyncResponse(null);
                     return;

@@ -59,7 +59,7 @@ class Isolate extends BladeBase {
                 System.out.println("was " + oldState + ", now " + newState); 
                 Delay delay = new Delay();
                 _asyncRequestImpl.send(delay.sleepSOp(1), new AsyncResponseProcessor<Void>() {
-                    public void processAsyncResponse(Void response) {
+                    public void processAsyncResponse(Void response) throws Exception {
                         state = newState; //belated update
                         _asyncResponseProcessor.processAsyncResponse(null);
                     }

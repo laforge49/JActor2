@@ -19,12 +19,12 @@ public class ForeignPing extends NonBlockingBladeBase {
 					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
 				AsyncResponseProcessor<Long> pongerResponseProcessor = 
 						new AsyncResponseProcessor<Long>() {
-					public void processAsyncResponse(final Long response) {
+					public void processAsyncResponse(final Long response) throws Exception {
 						_asyncResponseProcessor.processAsyncResponse(null);
 					}
 				};
             
-                SyncRequest<Long> pingSOp = ponger.pingSOp();
+                SOp<Long> pingSOp = ponger.pingSOp();
                 _asyncRequestImpl.send(pingSOp, pongerResponseProcessor);
             }
         };

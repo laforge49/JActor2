@@ -73,7 +73,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
         return new AOp<String>("test", getReactor()) {
             @Override
             public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
-					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+					final AsyncResponseProcessor<String> _asyncResponseProcessor) throws Exception {
  
                 //Create and assign an exception handler.
                 _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<String>() {
@@ -89,9 +89,9 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
 
                 //Create an exception request and doSend it to the exception blade for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                _asyncRequestImpl.send(exceptionBlade.exceptionAReq(), new AsyncResponseProcessor<Void>() {
+                _asyncRequestImpl.send(exceptionBlade.exceptionAOp(), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(final Void _response) {
+                    public void processAsyncResponse(final Void _response) throws Exception {
                         _asyncResponseProcessor.processAsyncResponse("can not get here");
                     }
                 });

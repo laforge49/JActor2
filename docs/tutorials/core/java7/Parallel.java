@@ -19,7 +19,7 @@ public class Parallel extends NonBlockingBladeBase {
 				final AsyncResponseProcessor<Void> sleepResponseProcessor = 
 						new AsyncResponseProcessor<Void>() {
 					@Override
-					public void processAsyncResponse(final Void _response) {
+					public void processAsyncResponse(final Void _response) throws Exception {
 						if (_asyncRequestImpl.getPendingResponseCount() == 0)
 							_asyncResponseProcessor.processAsyncResponse(null);
 					}

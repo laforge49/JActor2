@@ -10,7 +10,7 @@ public class NativeSendSpeedReport {
             Ponger ponger = new Ponger();
             NonBlockingReactor sharedReactor = (NonBlockingReactor) ponger.getReactor();
             Pinger pinger = new Pinger(sharedReactor, ponger);
-            AOp<Void> loopAReq = pinger.loopAOp(count);
+            AOp<Void> loopAOp = pinger.loopAOp(count);
             final long before = System.nanoTime();
             loopAOp.call();
             final long after = System.nanoTime();
