@@ -17,10 +17,9 @@ public class PongerLoop extends SOp<Void> {
     @Override
     public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
         long i = 0;
-        Reactor reactor = getTargetReactor();
         while (i < count) {
             i++;
-            ponger.ping(reactor);
+            ponger.pingSOp();
         }
         return null;
     }

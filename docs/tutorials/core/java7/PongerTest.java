@@ -6,7 +6,7 @@ public class PongerTest {
         new Plant();
         try {
             Ponger ponger = new Ponger();
-            long j = ponger.pingSReq().call();
+            long j = ponger.pingSOp().call();
             if (1 != j)
                 throw new IllegalStateException("unexpected result");
         } finally {

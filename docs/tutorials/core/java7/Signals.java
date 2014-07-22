@@ -17,7 +17,7 @@ public class Signals extends NonBlockingBladeBase {
                 i++;
                 signals.printSOp(i).signal();
             }
-            signals.getReactor().nullSReq().call();
+            signals.getReactor().nullSOp().call();
         } finally {
             Plant.close();
         }

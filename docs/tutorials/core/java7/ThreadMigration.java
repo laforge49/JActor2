@@ -27,7 +27,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
     }
     
     public AOp<Void> startAOp() {
-        return new AOp<Void>() {
+        return new AOp<Void>("start", getReactor()) {
             @Override
 			public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
@@ -35,7 +35,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
                 NonBlockingReactor subReactor = new NonBlockingReactor();
                 SubActor subActor = new SubActor(subReactor);
                 subActor.doAOp("         signal").signal();
-                _asyncRequestImpl.send(subActor.doAReq("           send"), _asyncResponseProcessor);
+                _asyncRequestImpl.send(subActor.doAOp("           send"), _asyncResponseProcessor);
             }
         };
     }
