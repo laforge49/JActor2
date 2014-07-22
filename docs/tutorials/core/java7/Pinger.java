@@ -1,8 +1,9 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Pinger extends NonBlockingBladeBase {
     private final Ponger ponger;
@@ -12,33 +13,33 @@ public class Pinger extends NonBlockingBladeBase {
         ponger = _ponger;
     }
 
-    public AsyncRequest<Void> loopAReq(final long _count) {
-        return new AsyncBladeRequest<Void>() {
-            final AsyncRequest<Void> dis = this;
+    public AOp<Void> loopAOp(final long _count) {
+        return new AOp<Void>("loop", getReactor()) {
             long i = 0;
 
-            final AsyncResponseProcessor<Long> pingResponseProcessor = 
-                    new AsyncResponseProcessor<Long>() {
+			@Override
+			public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+				final AsyncResponseProcessor<Long> pingResponseProcessor = 
+						new AsyncResponseProcessor<Long>() {
+					@Override
+					public void processAsyncResponse(final Long _response) {
+						i++;
+						iterate(_asyncRequestImpl, _asyncResponseProcessor);
+					}
+				};
 
-                @Override
-                public void processAsyncResponse(final Long _response) {
-                    i++;
-                    iterate();
-                }
-            };
-
-            @Override
-            public void processAsyncRequest() {
-                iterate();
+                iterate(_asyncRequestImpl, _asyncResponseProcessor);
             }
             
-            public void iterate() {
+            public void iterate(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 if (i >= _count) {
-                    dis.processAsyncResponse(null);
+                    _asyncResponseProcessor.processAsyncResponse(null);
                     return;
                 }
-                SyncRequest<Long> ping = ponger.pingSReq();
-                send(ping, pingResponseProcessor);
+                SOp<Long> pingSOp = ponger.pingSOp();
+                _asyncRequestImpl.send(pingSOp, pingResponseProcessor);
             }
         };
     }

@@ -1,7 +1,8 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class StackOverflow extends NonBlockingBladeBase {
 
@@ -12,10 +13,10 @@ public class StackOverflow extends NonBlockingBladeBase {
         recur();
     }
 
-    SyncRequest<Void> recurSReq() {
-        return new SyncBladeRequest() {
+    SOp<Void> recurSOp() {
+        return new SOp("recur", getReactor()) {
             @Override
-            public Void processSyncRequest() {
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 recur();
                 return null;
             }
@@ -25,7 +26,7 @@ public class StackOverflow extends NonBlockingBladeBase {
     public static void main(final String[] args) throws Exception {
         Plant plant = new Plant();
         try {
-            new StackOverflow().recurSReq().call();
+            new StackOverflow().recurSOp().call();
         } catch (final ReactorClosedException _rce) {
             System.out.println("\nCaught " + _rce + "\n");
         } finally {

@@ -1,6 +1,7 @@
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class Signals extends NonBlockingBladeBase {
 
@@ -14,7 +15,7 @@ public class Signals extends NonBlockingBladeBase {
             int i = 0;
             while (i < 10) {
                 i++;
-                signals.printSReq(i).signal();
+                signals.printSOp(i).signal();
             }
             signals.getReactor().nullSReq().call();
         } finally {
@@ -22,9 +23,10 @@ public class Signals extends NonBlockingBladeBase {
         }
     }
         
-    SyncRequest<Void> printSReq(final Integer _i) {
-        return new SyncBladeRequest<Void>() {
-            public Void processSyncRequest() {
+    SOp<Void> printSOp(final Integer _i) {
+        return new SOp<Void>("print", getReactor()) {
+            @Override
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 System.out.println(_i);
                 return null;
             }
