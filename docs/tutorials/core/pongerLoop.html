@@ -8,64 +8,66 @@
 <h1>PongerLoop - Direct Method calls per Second</h1>
 <p>
 Direct method calls are quite fast, even with checks for thread safety. 
-We will use <a href="java7/PongerLoop.java">PongerLoop</a>, an external sync request
+We will use <a href="java7/PongerLoop.java">PongerLoop</a>, an external SOp
 that logically extends Ponger, to see just how fast direct access can be.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
-public class PongerLoop extends SyncRequest&lt;Void&gt; {
+public class PongerLoop extends SOp&lt;Void&gt; {
     private final Ponger ponger;
     private final long count;
 
     public PongerLoop(
             final Ponger _ponger, 
             final long _count) {
-        super(_ponger.getReactor());
+        super("pongerLoop", _ponger.getReactor());
         ponger = _ponger;
         count = _count;
     }
     
     @Override
-    protected Void processSyncRequest() {
+    public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+        SOp pingSOp = ponger.pingSOp();
         long i = 0;
-        Reactor reactor = getTargetReactor();
-        while (i < count) {
+        while (i &lt; count) {
             i++;
-            ponger.ping(reactor);
+            _requestImpl.syncDirect(pingSOp);
         }
         return null;
     }
 }
 </pre>
 <h3>
-<a href="../../api/core/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/SOp.html">SOp</a>
 </h3>
 <pre>
-public class PongerLoop extends SyncRequest&lt;Void&gt; {
+public class PongerLoop extends SOp&lt;Void&gt; {
     ...
 }
 </pre>
 <p>
-PongerLoop extends SyncRequest. The response type is Void.
+PongerLoop extends SOp. The response type is Void.
 This is a form of composition that, in effect, dynamically adds a new type of request to 
 an existing blade.
 </p>
 <h3>
-Directly calling a method on another Blade
+Directly calling a operation on another Blade
 </h3>
 <pre>
+        SOp pingSOp = ponger.pingSOp();
         long i = 0;
-        Reactor reactor = getTargetReactor();
-        while (i < count) {
+        while (i &lt; count) {
             i++;
-            ponger.ping(reactor);
+            _requestImpl.syncDirect(pingSOp);
         }
 </pre>
 <p>
-A direct method call requires the reactor of the request to ensure thread safety.
-Unlike call, no messages are passed between threads and no threads are blocked.
+To ensure thread safety, invoking an operation directly can only be done when the external operation uses the same
+reactor as the request being invoked.
+Unlike the call method, no messages are passed between threads and no threads are blocked.
 </p>
 <h3>
 <a href="java7/DirectSpeedReport.java">DirectSpeedReport</a>
@@ -76,17 +78,17 @@ DirectSpeedReport is a small program that times the Ponger request and creates a
 <pre>
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 public class DirectSpeedReport {
     public static void main(final String[] _args) throws Exception {
-        final long count = 500000000L;
+        final long count = 2000000000L;
         new Plant();
         try {
             Ponger ponger = new Ponger(new BlockingReactor());
-            SyncRequest<Void> startSReq = new PongerLoop(ponger, count);
+            SOp&lt;Void&gt; loopSOp = new PongerLoop(ponger, count);
             final long before = System.nanoTime();
-            startSReq.call();
+            loopSOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
             SpeedReport.print("Direct Timings", duration, count);
@@ -97,15 +99,15 @@ public class DirectSpeedReport {
 }
 </pre>
 <p>
-DirectSpeedReport uses a BlockingReactor because startRequest will be running to long
+Ponger uses a BlockingReactor because loopSOp will be running to long
 for it to use a NonBlockingReactor.
 </p>
 <pre>
 Direct Timings
-Test duration in nanoseconds: 3997018431
+Test duration in nanoseconds: 4925392155
 Number of exchanges: 2000000000
-Exchanges per second: 500372974
-Latency in seconds: 1.9985092155E-9
+Exchanges per second: 406059037
+Latency in seconds: 2.4626960775E-9
 </pre>
 </body>
 </html>

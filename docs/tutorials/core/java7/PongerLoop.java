@@ -16,10 +16,11 @@ public class PongerLoop extends SOp<Void> {
     
     @Override
     public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+		SOp pingSOp = ponger.pingSOp();
         long i = 0;
         while (i < count) {
             i++;
-            ponger.pingSOp();
+            _requestImpl.syncDirect(pingSOp);
         }
         return null;
     }
