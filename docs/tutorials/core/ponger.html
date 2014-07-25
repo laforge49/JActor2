@@ -1,11 +1,11 @@
 <html>
-<head> <title>SyncRequest </title>
+<head> <title>SOp</title>
 </head>
 <body>
 <p>
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; Ponger
 </p>
-<h1>Ponger - SyncRequest</h1>
+<h1>Ponger - SOp</h1>
 <p>
 JActor is a framework for ensuring thread safety without locks.
 JActor supports the use of multiple
@@ -18,7 +18,7 @@ which serve as light-weight threads, and which are sometimes called
 Each reactor, in turn, can have any number of
 <a href="../../api/core/org/agilewiki/jactor2/core/blades/Blade.html">Blade</a>s,
 with each blade having some state that is accessed in a thread-safe way via one or more
-<a href="../../api/core/org/agilewiki/jactor2/core/requests/Request.html">Request</a>s.
+synchronous or asynchronous operations.
 </p>
 <p>
 There are 5 types of reactors:
@@ -41,51 +41,41 @@ Multiple blades can share the same reactor, which introduces an aspect of compos
 can safely access each other's state either directly or via simple methods.
 </p>
 <p>
-There are two types of requests:
-<a href="../../api/core/org/agilewiki/jactor2/core/requests/SyncRequest.html">SyncRequest</a>s and
-<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html">AsyncRequest</a>s.
-Directly callable methods on a blade are also supported,
-but for now we will focus mostly on synchronous requests. 
-Synchronous requests are a lock-free alternative to Java's synchronized.
+There are two types of operations:
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/SOp.html">SOp</a> and
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/AOp.html">AOp</a>.
+But for now we will focus mostly on SOp, which supports synchronous operations. 
+SOp is a lock-free alternative to Java's synchronized.
 </p>
 <p>
 Our first example is 
 <a href="java7/Ponger.java">Ponger</a>,
-a blade with a synchronous request, pingSReq.
-This request returns the number of times it has been invoked:
+a blade with a synchronous operation, pingSOp.
+This operation returns the number of times it has been invoked:
 <pre>
 import org.agilewiki.jactor2.core.blades.BladeBase;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class Ponger extends BladeBase {
     private long count = 0;
     
-    public Ponger() {
-        _initialize(new NonBlockingReactor();
+    public Ponger() throws Exception {
+        _initialize(new NonBlockingReactor());
     }
     
     public Ponger(final Reactor _reactor) {
         _initialize(_reactor);
     }
-    
-    private long ping() {
-        count += 1;
-        return count;
-    }
 
-    //Directly callable
-    public long ping(final Reactor _sourceReactor) {
-        directCheck();
-        return ping();
-    }
-
-    public SyncRequest<Long> pingSReq() {
-        return new SyncBladeRequest() {
+    public SOp&lt;Long&gt; pingSOp() {
+        return new SOp("ping", getReactor()) {
             @Override
-            public Long processSyncRequest() {
-                return ping();
+            public Long processSyncOperation(final RequestImpl _requestImpl) {
+				count += 1;
+				return count;
             }
         };
     }
@@ -98,8 +88,8 @@ Thread Safety
     private long count = 0;
 </pre>
 <p>
-The member variable count is private and the only means of updating it are through a
-request or a directly callable method, which makes it thread-safe.
+The member variable count is private and the only means of updating it are through an
+operation, which makes it thread-safe as long as the processSyncOperation is not called directly.
 </p>
 <h3>
 The Reactor
@@ -123,42 +113,26 @@ specify a particular reactor, which is useful when sharing reactors between blad
 reactor created by default.
 </p>
 <h3>
-Directly Callable Methods
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/SOp.html">SOp</a>
 </h3>
 <pre>
-    //Directly callable
-    public long ping(final Reactor _sourceReactor) {
-        directCheck(_sourceReactor);
-        return ping();
-    }
-</pre>
-<p>
-A request can safely call a method on another blade directly if the calling request and the blade being
-called use the same reactor. A call to the
-<a href="../../api/core/org/agilewiki/jactor2/core/blades/BladeBase.html#directCheck-org.agilewiki.jactor2.core.reactors.Reactor-">directCheck</a>
-method by the method being directly called ensures that the reactor of the calling request is the same and that the reactor is active.
-</p>
-<h3>
-<a href="../../api/core/org/agilewiki/jactor2/core/blades/BladeBase.SyncBladeRequest.html">SyncBladeRequest</a>
-</h3>
-<pre>
-    public SyncRequest&lt;Long&gt; pingSReq() {
-        return new SyncBladeRequest&lt;Long&gt;() {
+    public SOp&lt;Long&gt; pingSOp() {
+        return new SOp("ping", getReactor()) {
             ...
         };
     }
 </pre>
 <p>
-The pingSReq method returns a non-reusable instance of a SyncRequest for accessing the state of the blade.
-Once the caller of the pingSReq method has a SyncRequest there are several different ways to invoke the request,
+The pingSOp method returns a reusable instance of a SOp for accessing the state of the blade.
+Once the caller of the pingSOp method has a SOp there are several different ways to invoke the operation,
 as we will see later.
 </p>
 <p>
-SyncBladeRequest is a BladeBase nested class that extends SyncRequest.
-Alternatively, we could use "new SyncRequest&lt;Long&gt;(getReactor())".
+The arguments of the SOp constructor are (1) the name of the request and (2) the reactor used by the blade.
+The getReactor method is implemented by all blades.
 </p>
 <h3>
-<a href="../../api/core/org/agilewiki/jactor2/core/requests/SyncRequest.html#processSyncRequest--">processSyncRequest</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/SyncOperation.html#processSyncOperation-org.agilewiki.jactor2.core.requests.impl.RequestImpl-">processSyncOperation</a>
 </h3>
 <pre>
             @Override
@@ -167,9 +141,9 @@ Alternatively, we could use "new SyncRequest&lt;Long&gt;(getReactor())".
             }
 </pre>
 <p>
-The processSyncRequest method is called when the SyncRequest is invoked.
+The processSyncOperation method is called when the SOp is invoked.
 It always runs on the thread of the reactor assigned to the blade,
-regardless of which thread was used to invoke the SyncRequest, making it thread safe.
+regardless of which thread was used to invoke the SOp, making it thread safe.
 </p>
 <h2>
 <a href="java7/PongerTest.java">PongerTest</a>
@@ -186,7 +160,7 @@ public class PongerTest {
         new Plant();
         try {
             Ponger ponger = new Ponger();
-            long j = ponger.pingSReq().call();
+            long j = ponger.pingSOp().call();
             if (1 != j)
                 throw new IllegalStateException("unexpected result");
         } finally {
@@ -334,14 +308,14 @@ by using an alternate constructor.
 <a href="../../api/core/org/agilewiki/jactor2/core/requests/Request.html#call--">call</a>
 </h3>
 <pre>
-            long j = ponger.pingSReq().call();
+            long j = ponger.pingSOp().call();
             if (1 != j)
                 throw new IllegalStateException("unexpected result");
 </pre>
 <p>
-The call method is one of two ways of invoking a synchronous request,
-but <strong>call can not be used from within a request.</strong>
-The call method blocks the main thread until it can return the result passed back from the invoked request.
+The call method is one of three ways of invoking a SOp,
+but <strong>call can not be used from within an operation.</strong>
+The call method blocks the main thread until it can return the result passed back from the invoked operation.
 </p>
 </body>
 </html>
