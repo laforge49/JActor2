@@ -48,6 +48,10 @@ But for now we will focus mostly on SOp, which supports synchronous operations.
 SOp is a lock-free alternative to Java's synchronized.
 </p>
 <p>
+And there are four ways an operation can be invoked: directly, with a call method,
+via a send and by signalling.
+</p>
+<p>
 Our first example is 
 <a href="java7/Ponger.java">Ponger</a>,
 a blade with a synchronous operation, pingSOp.
@@ -88,8 +92,8 @@ Thread Safety
     private long count = 0;
 </pre>
 <p>
-The member variable count is private and the only means of updating it are through an
-operation, which makes it thread-safe as long as the processSyncOperation is not called directly.
+The member variable count is private and the only means of updating it are through the pingSOp
+operation, which makes it thread-safe as long as the processSyncOperation itself is not called by the application.
 </p>
 <h3>
 The Reactor
@@ -313,7 +317,7 @@ by using an alternate constructor.
                 throw new IllegalStateException("unexpected result");
 </pre>
 <p>
-The call method is one of three ways of invoking a SOp,
+The call method is one of the four ways of invoking a SOp,
 but <strong>call can not be used from within an operation.</strong>
 The call method blocks the main thread until it can return the result passed back from the invoked operation.
 </p>
