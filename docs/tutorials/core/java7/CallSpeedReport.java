@@ -1,4 +1,5 @@
 import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 public class CallSpeedReport {
     public static void main(final String[] _args) throws Exception {
@@ -6,7 +7,7 @@ public class CallSpeedReport {
         Plant plant = new Plant();
         try {
             Ponger ponger = new Ponger();
-            SOp pingSOp = ponger.pingSOp();
+            SOp<Long> pingSOp = ponger.pingSOp();
             final long before = System.nanoTime();
             long i = 0L;
             while (i < count) {
