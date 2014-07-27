@@ -1,13 +1,13 @@
 <html>
-<head><title>Direct Method calls per Second</title>
+<head><title>Sync Direct method calls per Second</title>
 </head>
 <body>
 <p>
 <a href="https://github.com/laforge49/JActor2#readme">JActor2</a> &gt; <a href="../../index.html">Docs</a> &gt; <a href="../index.html">Tutorials</a> &gt; <a href="index.html">Core</a> &gt; PongerLoop
 </p>
-<h1>PongerLoop - Direct Method calls per Second</h1>
+<h1>PongerLoop - Sync Direct method calls per Second</h1>
 <p>
-Direct method calls are quite fast, even with checks for thread safety. 
+The <a href="../../api/core/org/agilewiki/jactor2/core/requests/impl/RequestImpl.html#syncDirect-org.agilewiki.jactor2.core.requests.SOp-">syncDirect</a> method calls are quite fast, even with checks for thread safety. 
 We will use <a href="java7/PongerLoop.java">PongerLoop</a>, an external SOp
 that logically extends Ponger, to see just how fast direct access can be.
 </p>
@@ -30,7 +30,7 @@ public class PongerLoop extends SOp&lt;Void&gt; {
     
     @Override
     public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
-        SOp pingSOp = ponger.pingSOp();
+        SOp&lt;Long&gt; pingSOp = ponger.pingSOp();
         long i = 0;
         while (i &lt; count) {
             i++;
@@ -57,7 +57,7 @@ an existing blade.
 Directly calling a operation on another Blade
 </h3>
 <pre>
-        SOp pingSOp = ponger.pingSOp();
+        SOp&lt;Long&gt; pingSOp = ponger.pingSOp();
         long i = 0;
         while (i &lt; count) {
             i++;

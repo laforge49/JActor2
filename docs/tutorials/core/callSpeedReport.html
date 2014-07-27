@@ -29,7 +29,7 @@ public class CallSpeedReport {
         Plant plant = new Plant();
         try {
             Ponger ponger = new Ponger();
-            SOp pingSOp = ponger.pingSOp();
+            SOp&lt;Long&gt; pingSOp = ponger.pingSOp();
             final long before = System.nanoTime();
             long i = 0L;
             while (i &lt; count) {
