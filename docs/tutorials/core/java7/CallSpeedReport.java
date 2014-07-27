@@ -6,11 +6,12 @@ public class CallSpeedReport {
         Plant plant = new Plant();
         try {
             Ponger ponger = new Ponger();
+            SOp pingSOp = ponger.pingSOp();
             final long before = System.nanoTime();
             long i = 0L;
             while (i < count) {
                 i += 1;
-                long j = ponger.pingSOp().call();
+                long j = pingSOp.call();
             }
             final long after = System.nanoTime();
             final long duration = after - before;
