@@ -10,7 +10,8 @@ import org.agilewiki.jactor2.core.util.Timer;
 /**
  * An asynchronous operation, optionally used to define an AsyncRequest.
  */
-public abstract class AOp<RESPONSE_TYPE> implements AsyncOperation<RESPONSE_TYPE> {
+public abstract class AOp<RESPONSE_TYPE> implements
+        AsyncOperation<RESPONSE_TYPE> {
     public final String opName;
     public final ReactorBase targetReactor;
 
@@ -25,15 +26,17 @@ public abstract class AOp<RESPONSE_TYPE> implements AsyncOperation<RESPONSE_TYPE
         targetReactor = (ReactorBase) _targetReactor;
     }
 
-    @Override
+//    @Override
     public void signal() {
-        PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor).signal();
+        PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor)
+                .signal();
     }
 
     @GwtIncompatible
-    @Override
+//    @Override
     public RESPONSE_TYPE call() throws Exception {
-        return PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor).call();
+        return PlantImpl.getSingleton()
+                .createAsyncRequestImpl(this, targetReactor).call();
     }
 
     @Override

@@ -2,7 +2,8 @@ package org.agilewiki.jactor2.core.impl;
 
 import junit.framework.TestCase;
 
-import org.agilewiki.jactor2.core.requests.Operation;
+import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.SOp;
 
 /**
  * Test code base class.
@@ -10,7 +11,13 @@ import org.agilewiki.jactor2.core.requests.Operation;
 public class CallTestBase extends TestCase {
     /** Implemented differently in coreSt(), since call() does not exist there. */
     protected <RESPONSE_TYPE> RESPONSE_TYPE call(
-            final Operation<RESPONSE_TYPE> operation) throws Exception {
+            final AOp<RESPONSE_TYPE> operation) throws Exception {
+        return operation.call();
+    }
+
+    /** Implemented differently in coreSt(), since call() does not exist there. */
+    protected <RESPONSE_TYPE> RESPONSE_TYPE call(
+            final SOp<RESPONSE_TYPE> operation) throws Exception {
         return operation.call();
     }
 }

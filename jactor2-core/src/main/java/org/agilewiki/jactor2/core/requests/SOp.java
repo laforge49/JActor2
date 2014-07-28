@@ -3,14 +3,14 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * A synchronous operation, optionally used to define a SyncRequest.
  */
-public abstract class SOp<RESPONSE_TYPE> implements SyncOperation<RESPONSE_TYPE> {
+public abstract class SOp<RESPONSE_TYPE> implements
+        SyncOperation<RESPONSE_TYPE> {
     public final String opName;
     public final ReactorBase targetReactor;
 
@@ -25,15 +25,17 @@ public abstract class SOp<RESPONSE_TYPE> implements SyncOperation<RESPONSE_TYPE>
         targetReactor = (ReactorBase) _targetReactor;
     }
 
-    @Override
+//    @Override
     public void signal() {
-        PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor).signal();
+        PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor)
+                .signal();
     }
 
     @GwtIncompatible
-    @Override
+//    @Override
     public RESPONSE_TYPE call() throws Exception {
-        return PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor).call();
+        return PlantImpl.getSingleton()
+                .createSyncRequestImpl(this, targetReactor).call();
     }
 
     @Override

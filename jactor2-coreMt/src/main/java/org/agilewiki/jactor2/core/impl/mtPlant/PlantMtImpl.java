@@ -14,14 +14,18 @@ import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.SwingBoundReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.ThreadBoundReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.AsyncRequestMtImpl;
+import org.agilewiki.jactor2.core.impl.mtRequests.AsyncRequestMtImplWithData;
 import org.agilewiki.jactor2.core.impl.mtRequests.SyncRequestMtImpl;
+import org.agilewiki.jactor2.core.impl.mtRequests.SyncRequestMtImplWithData;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Facility;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.requests.AsyncNativeRequestWithData;
 import org.agilewiki.jactor2.core.requests.AsyncOperation;
+import org.agilewiki.jactor2.core.requests.SyncNativeRequestWithData;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
@@ -189,6 +193,22 @@ public class PlantMtImpl extends PlantImpl {
             final AsyncOperation<RESPONSE_TYPE> _asyncOperation,
             final Reactor _targetReactor) {
         return new AsyncRequestMtImpl<RESPONSE_TYPE>(_asyncOperation,
+                _targetReactor);
+    }
+
+    @Override
+    public <RESPONSE_TYPE> SyncNativeRequestWithData<RESPONSE_TYPE> createSyncRequestImplWithData(
+            final SyncOperation<RESPONSE_TYPE> _syncOperation,
+            final Reactor _targetReactor) {
+        return new SyncRequestMtImplWithData<RESPONSE_TYPE>(_syncOperation,
+                _targetReactor);
+    }
+
+    @Override
+    public <RESPONSE_TYPE> AsyncNativeRequestWithData<RESPONSE_TYPE> createAsyncRequestImplWithData(
+            final AsyncOperation<RESPONSE_TYPE> _asyncOperation,
+            final Reactor _targetReactor) {
+        return new AsyncRequestMtImplWithData<RESPONSE_TYPE>(_asyncOperation,
                 _targetReactor);
     }
 
