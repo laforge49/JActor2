@@ -13,63 +13,64 @@ messages sent to the same destination are sent together in a group.
 This is illustrated by <a href="java7/Batcher.java">Batcher</a>.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
+import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
-public class Batcher extends NonBlockingBladeBase {
+public class Batcher extends BlockingBladeBase {
     private final long count;
     private final Ponger ponger;
     
-    public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger) {
-        initialize(_reactor);
+    public Batcher(final BlockingReactor _reactor, final long _count, final Ponger _ponger) {
+        super(_reactor);
         count = _count;
         ponger = _ponger;
     }
     
-    public AsyncRequest&lt;Void&gt; runAReq() {
-        return new AsyncBladeRequest&lt;Void&gt;() {
-            final AsyncRequest&lt;Void&gt; dis = this;
-            
-            final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
-                new AsyncResponseProcessor&lt;Long&gt;() {
+    public AOp&lt;Void&gt; runAOp() {
+        return new AOp&lt;Void&gt;("run", getReactor()) {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+                    final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
+                final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
+                        new AsyncResponseProcessor&lt;Long&gt;() {
+                    long i = 0;
                 
-                long i = 0;
-                
-                @Override
-                public void processAsyncResponse(final Long _response) {
-                    i++;
-                    if (i == count)
-                        dis.processAsyncResponse(null);
-                }
-            };
+                    @Override
+                    public void processAsyncResponse(final Long _response) throws Exception {
+                        i++;
+                        if (i == count)
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                    }
+                };
             
-            public void processAsyncRequest() {
+                SOp&lt;Long&gt; pingSOp = ponger.pingSOp();
                 long j = 0;
-                while(j < count) {
+                while(j &lt; count) {
                     j++;
-                    send(ponger.pingSReq(), pingResponseProcessor);
+                    _asyncRequestImpl.send(pingSOp, pingResponseProcessor);
                 }
             }
         };
     }
     
     public static void main(final String[] _args) throws Exception {
-        final int count = 1000000;
-        new Plant();
+        final int count = 2000000;
+        Plant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new NonBlockingReactor(1000, count));
-            Batcher batcher = new Batcher(new NonBlockingReactor(1000, count), count, ponger);
-            AsyncRequest&lt;Void&gt; runAReq = batcher.runAReq();
+            Ponger ponger = new Ponger(new BlockingReactor(1000, count));
+            Batcher batcher = new Batcher(new BlockingReactor(1000, count), count, ponger);
+            AOp&lt;Void&gt; runAOp = batcher.runAOp();
             final long before = System.nanoTime();
-            runAReq.call();
+            runAOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.startAReq("Batch Timings", duration, count).call();
+            SpeedReport.print("Batch Timings", duration, count);
         } finally {
-            Plant.close();
+            plant.close();
         }
     }
 }
@@ -77,21 +78,25 @@ public class Batcher extends NonBlockingBladeBase {
 Output:
 
 Batch Timings
-Test duration in nanoseconds: 830473407
-Number of exchanges: 1000000
-Exchanges per second: 1204132
-Latency in seconds: 8.30473407E-7
+Test duration in nanoseconds: 9265453400
+Number of exchanges: 2000000
+Exchanges per second: 215855
+Latency in seconds: 4.6327267E-6
 </pre>
 <p>
 The code that drives this is fairly simple. We put the send invocation in a simple loop,
 which means that all the requests will be sent out at one time, when the loop completes:
 </p>
 <pre>
-            public void processAsyncRequest() {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+                    final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
+                ...
+            
+                SOp&lt;Long&gt; pingSOp = ponger.pingSOp();
                 long j = 0;
-                while(j < count) {
+                while(j &lt; count) {
                     j++;
-                    send(ponger.pingSReq(), pingResponseProcessor);
+                    _asyncRequestImpl.send(pingSOp, pingResponseProcessor);
                 }
             }
 </pre>
@@ -100,26 +105,25 @@ After the requests have been sent, the responses are counted. When
 all the responses have been received, a result of null is returned:
 </p>
 <pre>
-            final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
-                new AsyncResponseProcessor&lt;Long&gt;() {
+                final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
+                        new AsyncResponseProcessor&lt;Long&gt;() {
+                    long i = 0;
                 
-                long i = 0;
-                
-                @Override
-                public void processAsyncResponse(final Long _response) {
-                    i++;
-                    if (i == count)
-                        dis.processAsyncResponse(null);
-                }
-            };
+                    @Override
+                    public void processAsyncResponse(final Long _response) throws Exception {
+                        i++;
+                        if (i == count)
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                    }
+                };
 </pre>
 <p>
 An alternate constructor for the reactor is also used which lets us set the initial sizes
 of some internal structures:
 </p>
 <pre>
-            Ponger ponger = new Ponger(new NonBlockingReactor(1000, count));
-            Batcher batcher = new Batcher(new NonBlockingReactor(1000, count), count, ponger);
+            Ponger ponger = new Ponger(new BlockingReactor(1000, count));
+            Batcher batcher = new Batcher(new BlockingReactor(1000, count), count, ponger);
 </pre>
 </body>
 </html>
