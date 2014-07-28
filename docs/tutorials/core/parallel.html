@@ -19,35 +19,35 @@ each running in a different reactor. And the total processing time is just over 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Delay;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Parallel extends NonBlockingBladeBase {
     private final long count;
     
-    public Parallel(final long _count) {
+    public Parallel(final long _count) throws Exception {
         count = _count;
     }
     
-    public AsyncRequest&lt;Void&gt; runAReq() {
-        return new AsyncBladeRequest&lt;Void&gt;() {
-            final AsyncRequest&lt;Void&gt; dis = this;
+    public AOp&lt;Void&gt; runAOp() {
+        return new AOp&lt;Void&gt;("run", getReactor()) {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
+				final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor = 
+						new AsyncResponseProcessor&lt;Void&gt;() {
+					@Override
+					public void processAsyncResponse(final Void _response) throws Exception {
+						if (_asyncRequestImpl.getPendingResponseCount() == 0)
+							_asyncResponseProcessor.processAsyncResponse(null);
+					}
+				};
             
-            final AsyncResponseProcessor&lt;Void&gt; sleepResponseProcessor = 
-                    new AsyncResponseProcessor&lt;Void&gt;() {
-                @Override
-                public void processAsyncResponse(final Void _response) {
-                    if (dis.getPendingResponseCount() == 0)
-                        dis.processAsyncResponse(null);
-                }
-            };
-            
-            public void processAsyncRequest() {
                 long j = 0;
-                while(j < count) {
+                while(j &lt; count) {
                     j++;
                     Delay delay = new Delay();
-                    send(delay.sleepSReq(100), sleepResponseProcessor);
+                    _asyncRequestImpl.send(delay.sleepSOp(100), sleepResponseProcessor);
                 }
             }
         };
@@ -55,12 +55,12 @@ public class Parallel extends NonBlockingBladeBase {
     
     public static void main(final String[] _args) throws Exception {
         final long count = 10L;
-        BasicPlant plant = new Plant(10);
+        new Plant(10);
         try {
             Parallel parallel = new Parallel(count);
-            AsyncRequest&lt;Void&gt; runAReq = parallel.runAReq();
+            AOp&lt;Void&gt; runAOp = parallel.runAOp();
             final long before = System.currentTimeMillis();
-            runAReq.call();
+            runAOp.call();
             final long after = System.currentTimeMillis();
             final long duration = after - before;
             System.out.println("Parallel Test with 10 Threads");
@@ -68,7 +68,7 @@ public class Parallel extends NonBlockingBladeBase {
             System.out.println("sleep duration: 100 milliseconds");
             System.out.println("total time: " + duration + " milliseconds");
         } finally {
-            plant.close();
+            Plant.close();
         }
     }
 }
