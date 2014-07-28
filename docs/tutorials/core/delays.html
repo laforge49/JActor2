@@ -9,45 +9,45 @@
 <p>
 Using sleep to create a delay is fine for simulating I/O, but it blocks the thread.
 So it does not scale very well when you need a lot of timers.
-<a href="../../api/core/org/agilewiki/jactor2/core/plant/DelayAReq.html">DelayAReq</a>,
-on the other hand, is a light-weight request that scales nicely, as it uses the
-<a href="../../api/core/org/agilewiki/jactor2/core/plant/PlantScheduler.html#schedule-java.lang.Runnable-long-">schedule</a>
+<a href="../../api/core/org/agilewiki/jactor2/core/plant/DelayAOp.html">DelayAOp</a>,
+on the other hand, is a light-weight operation that scales nicely, as it uses the
+<a href="../../api/core/org/agilewiki/jactor2/core/plant/PlantScheduler.html#schedule-java.lang.Runnable-int-">schedule</a>
 method in PlantScheduler.
-The <a href="java7/Delays.java">Delays</a> program demonstrates the scalability of DelayAReq by running 10,000 timers in parallel.
+The <a href="java7/Delays.java">Delays</a> program demonstrates the scalability of DelayAOp by running 10,000 timers in parallel.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.DelayAReq;
+import org.agilewiki.jactor2.core.plant.DelayAOp;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Delays extends NonBlockingBladeBase {
     private final long count;
 
-    Delays(final long _count) {
+    Delays(final long _count) throws Exception {
         count = _count;
     }
 
-    public AsyncRequest&lt;Void&gt; runAReq() {
-        return new AsyncBladeRequest&lt;Void&gt;() {
-            final AsyncRequest&lt;Void&gt; dis = this;
+    public AOp&lt;Void&gt; runAOp() {
+        return new AOp&lt;Void&gt;("run", getReactor()) {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
+				final AsyncResponseProcessor&lt;Void&gt; delayResponseProcessor =
+						new AsyncResponseProcessor&lt;Void&gt;() {
+                    @Override
+                    public void processAsyncResponse(final Void _response) throws Exception {
+                        if (_asyncRequestImpl.getPendingResponseCount() == 0)
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                    }
+                };
 
-            final AsyncResponseProcessor&lt;Void&gt; delayResponseProcessor =
-                    new AsyncResponseProcessor&lt;Void&gt;() {
-                        @Override
-                        public void processAsyncResponse(final Void _response) {
-                            if (dis.getPendingResponseCount() == 0)
-                                dis.processAsyncResponse(null);
-                        }
-                    };
-
-            public void processAsyncRequest() {
                 long j = 0;
-                while(j < count) {
+                while(j &lt; count) {
                     j++;
-                    DelayAReq delay = new DelayAReq(100);
-                    send(delay, delayResponseProcessor);
+                    DelayAOp delay = new DelayAOp(100);
+                    _asyncRequestImpl.send(delay, delayResponseProcessor);
                 }
             }
         };
@@ -58,9 +58,9 @@ public class Delays extends NonBlockingBladeBase {
         new Plant(10);
         try {
             Delays delays = new Delays(count);
-            AsyncRequest&lt;Void&gt; runAReq = delays.runAReq();
+            AOp&lt;Void&gt; runAOp = delays.runAOp();
             final long before = System.currentTimeMillis();
-            runAReq.call();
+            runAOp.call();
             final long after = System.currentTimeMillis();
             final long duration = after - before;
             System.out.println("Delay Test with " + count + " delays run in parallel");
@@ -76,7 +76,7 @@ public class Delays extends NonBlockingBladeBase {
     
 Delay Test with 10000 delays run in parallel
 delay duration: 100 milliseconds each
-total time: 172 milliseconds
+total time: 304 milliseconds
 </pre>
 </body>
 </html>
