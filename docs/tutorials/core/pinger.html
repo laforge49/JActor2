@@ -13,91 +13,92 @@ The <a href="java7/Pinger.java">Pinger</a> blade is a good example of such a loo
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.SAOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Pinger extends NonBlockingBladeBase {
     private final Ponger ponger;
+    private final SOp&lt;Long&gt; pingSOp = ponger.pingSOp();
 
     public Pinger(final NonBlockingReactor _reactor, final Ponger _ponger) {
         super(_reactor);
         ponger = _ponger;
+        pingSOp = ponger.pingSOp();
     }
 
-    public AsyncRequest&lt;Void&gt; loopAReq(final long _count) {
-        return new AsyncBladeRequest&lt;Void&gt;() {
-            final AsyncRequest&lt;Void&gt; dis = this;
+    public AOp&lt;Void&gt; loopAOp(final long _count) {
+        return new SAOp&lt;Void&gt;("loop", getReactor()) {
             long i = 0;
 
             final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
                     new AsyncResponseProcessor&lt;Long&gt;() {
-
                 @Override
-                public void processAsyncResponse(final Long _response) {
+                public void processAsyncResponse(final Long _response) throws Exception {
                     i++;
                     iterate();
                 }
             };
 
             @Override
-            public void processAsyncRequest() {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl) throws Exception {
                 iterate();
             }
             
-            public void iterate() {
-                if (i >= _count) {
-                    dis.processAsyncResponse(null);
+            public void iterate() throws Exception {
+                if (i &gt;= _count) {
+                    processAsyncResponse(null);
                     return;
                 }
-                SyncRequest&lt;Long&gt; ping = ponger.pingSReq();
-                send(ping, pingResponseProcessor);
+                getAsyncRequestImpl().send(pingSOp, pingResponseProcessor);
             }
         };
     }
 }
 </pre>
 <h3>
-Requests are Not Reusable
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/SAOp.html">SAOp</a>
+Instances Not Reusable
 </h3>
 <pre>
             long i = 0;
 </pre>
 <p>
-The index variable i is a member of the anonymous AsyncBladeRequest, rather than being a member of the Loop blade.
-And because requests are not reusable, the state of each request is completely isolated from the state of
-all other requests. Intermediate state should be kept as part of the request state, not as part of the blade state.
+The index variable i is a member of the anonymous SAOp, rather than being a member of the Pinger blade.
+And because ASOp operations are not reusable, the state of each operation is completely isolated from the state of
+all other operations. Intermediate state should be kept as part of the operation state, not as part of the blade state.
 </p>
 <p>
 One exception to this rule is when performing I/O, where intermediate state can not be isolated from different
 requests. This is why blades which perform I/O may sometimes need to use an IsolationReactor, which 
-processes each request to completion before processing the next request.
+processes each operation to completion before processing the next operation.
 </p>
 <h3>
-processAsyncRequest
+processAsyncOperation
 </h3>
 <pre>
             @Override
-            public void processAsyncRequest() {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl) throws Exception {
                 iterate();
             }
 </pre>
 <p>
-The processAsyncRequest method is called to process the loop request sent to this blade.
-This method then begins invoking Ponger's pingSReq until the count is reached.
+The processAsyncOperation method is called to process the loop operation sent to this blade.
+This method then begins invoking Ponger's pingSOp until the count is reached.
 </p>
 <h3>
 iterate
 </h3>
 <pre>
             public void iterate() {
-                if (i >= _count) {
-                    dis.processAsyncResponse(null);
+                if (i &gt;= _count) {
+                    processAsyncResponse(null);
                     return;
                 }
-                SyncRequest&lt;Long&gt; ping = ponger.pingSReq();
-                send(ping, pingResponseProcessor);
+                getAsyncRequestImpl().send(pingSOp, pingResponseProcessor);
             }
 </pre>
 <p>
@@ -113,7 +114,6 @@ pingResponseProcessor
 <pre>
             final AsyncResponseProcessor&lt;Long&gt; pingResponseProcessor = 
                     new AsyncResponseProcessor&lt;Long&gt;() {
-
                 @Override
                 public void processAsyncResponse(final Long _response) {
                     i++;
@@ -136,7 +136,7 @@ it is known that the blades share a reactor. But this is not always the case.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class NativeSendSpeedReport {
@@ -147,9 +147,9 @@ public class NativeSendSpeedReport {
             Ponger ponger = new Ponger();
             NonBlockingReactor sharedReactor = (NonBlockingReactor) ponger.getReactor();
             Pinger pinger = new Pinger(sharedReactor, ponger);
-            AsyncRequest&lt;Void&gt; loopAReq = pinger.loopAReq(count);
+            AOp&lt;Void&gt; loopAOp = pinger.loopAOp(count);
             final long before = System.nanoTime();
-            loopAReq.call();
+            loopAOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
             SpeedReport.print("Native Send Timings", duration, count);
@@ -162,20 +162,20 @@ public class NativeSendSpeedReport {
 Output:
 
 Native Send Timings
-Test duration in nanoseconds: 13110429155
+Test duration in nanoseconds: 33256924805
 Number of exchanges: 100000000
-Exchanges per second: 7627515
-Latency in seconds: 1.3110429155E-7
+Exchanges per second: 3006892
+Latency in seconds: 3.3256924805E-7
 </pre>
 <p>
-This is about 200 times slower than when using direct method calls, but then requests have a lot more overhead:
+This is about 100 times slower than when using direct method calls, but then requests have a lot more overhead:
 </p>
 <pre>
 Direct Timings
-Test duration in nanoseconds: 3997018431
+Test duration in nanoseconds: 4925392155
 Number of exchanges: 2000000000
-Exchanges per second: 500372974
-Latency in seconds: 1.9985092155E-9
+Exchanges per second: 406059037
+Latency in seconds: 2.4626960775E-9
 </pre>
 <h2>
 <a href="java7/ForeignSendSpeedReport.java">ForeignSendSpeedReport</a>
@@ -185,7 +185,7 @@ A very common case is sending a request between two blades which have different 
 </p>
 <pre>
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 public class ForeignSendSpeedReport {
@@ -195,9 +195,9 @@ public class ForeignSendSpeedReport {
         try {
             Ponger ponger = new Ponger();
             Pinger pinger = new Pinger(new NonBlockingReactor(), ponger);
-            AsyncRequest&lt;Void&gt; loopAReq = pinger.loopAReq(count);
+            AOp&lt;Void&gt; loopAOp = pinger.loopAOp(count);
             final long before = System.nanoTime();
-            loopAReq.call();
+            loopAOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
             SpeedReport.print("Foreign Send Timings", duration, count);
@@ -212,10 +212,10 @@ In this case the send is roughly twice as slow as when the two blades use a comm
 </p>
 <pre>
 Foreign Send Timings
-Test duration in nanoseconds: 7951983198
+Test duration in nanoseconds: 8201212896
 Number of exchanges: 10000000
-Exchanges per second: 1257547
-Latency in seconds: 7.951983198E-7
+Exchanges per second: 1219331
+Latency in seconds: 8.201212896E-7
 </pre>
 <p>
 Even so, a send between two blades with different reactors is
@@ -223,10 +223,10 @@ still about 10 times faster than when using a call method:
 </p>
 <pre>
 Call Timings
-Test duration in nanoseconds: 5943797021
+Test duration in nanoseconds: 7731381822
 Number of exchanges: 1000000
-Exchanges per second: 168242
-Latency in seconds: 5.943797021E-6
+Exchanges per second: 129342
+Latency in seconds: 7.731381822E-6
 </pre>
 </body>
 </html>

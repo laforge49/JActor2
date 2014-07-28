@@ -8,10 +8,12 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Pinger extends NonBlockingBladeBase {
     private final Ponger ponger;
+    private final SOp<Long> pingSOp;
 
     public Pinger(final NonBlockingReactor _reactor, final Ponger _ponger) {
         super(_reactor);
         ponger = _ponger;
+        pingSOp = ponger.pingSOp();
     }
 
     public AOp<Void> loopAOp(final long _count) {
@@ -37,7 +39,6 @@ public class Pinger extends NonBlockingBladeBase {
                     processAsyncResponse(null);
                     return;
                 }
-                SOp<Long> pingSOp = ponger.pingSOp();
                 getAsyncRequestImpl().send(pingSOp, pingResponseProcessor);
             }
         };
