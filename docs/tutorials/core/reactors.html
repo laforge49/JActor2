@@ -8,6 +8,7 @@
 <h1>Reactors - Lightweight Threads</h1>
 <p>
 Reactors manage message flow and serve as lightweight threads.
+(A message is created when an operation is called, sent or signaled.)
 A reactor is assigned a thread when it has work to do. 
 The reactor releases the thread
 either when there is nothing left to work on or 
@@ -69,7 +70,7 @@ Disbursed after processing each message.
 False
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
-Requests are processed to completion before the next request is processed.
+Operations are processed to completion before the next request is processed.
 However the processing of signals is not constrained.
 </td>
 <td style="padding: 5px;" bgcolor="lightyellow">
@@ -112,8 +113,8 @@ Disbursed when there are no more messages to be processed.
 IsolationReactor
 </h2>
 <p>
-The use of an IsolationReactor is sometimes essential to properly process an asynchronous request.
-This happens when a request accesses the state of the blade,
+The use of an IsolationReactor is sometimes essential to properly process an asynchronous operation.
+This happens when an operation accesses the state of the blade,
 sends a request to another reactor,
 and then updates the state of the blade based on its old value.
 This is illustrated by the <a href="java7/Isolation.java">Isolation</a> program:
@@ -123,11 +124,12 @@ import org.agilewiki.jactor2.core.blades.BladeBase;
 import org.agilewiki.jactor2.core.impl.Delay;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Isolation extends NonBlockingBladeBase {
     
@@ -138,24 +140,26 @@ public class Isolation extends NonBlockingBladeBase {
 
             System.out.println("\nBump with NonBlockingReactor\n");
             Isolate isolate = new Isolate(new NonBlockingReactor());
-            isolation.runAReq(isolate).call();
+            isolation.runAOp(isolate).call();
             
             System.out.println("\nBump with IsolationReactor\n");
             isolate = new Isolate(new IsolationReactor());
-            isolation.runAReq(isolate).call();
+            isolation.runAOp(isolate).call();
         } finally {
             Plant.close();
         }
     }
+	
+	public Isolation() throws Exception {
+	}
     
-    AsyncRequest&lt;Void&gt; runAReq(final Isolate _isolate) {
-        return new AsyncBladeRequest&lt;Void&gt;() {
-            AsyncRequest&lt;Void&gt; dis = this;
-            
-            public void processAsyncRequest() {
-                send(_isolate.bumpAReq(), null);
-                send(_isolate.bumpAReq(), null);
-                send(_isolate.bumpAReq(), dis);
+    AOp&lt;Void&gt; runAOp(final Isolate _isolate) {
+        return new AOp&lt;Void&gt;("run", getReactor()) {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
+                _asyncRequestImpl.send(_isolate.bumpAOp(), null);
+                _asyncRequestImpl.send(_isolate.bumpAOp(), null);
+                _asyncRequestImpl.send(_isolate.bumpAOp(), _asyncResponseProcessor);
             }
         };
     }
@@ -164,23 +168,22 @@ public class Isolation extends NonBlockingBladeBase {
 class Isolate extends BladeBase { 
     int state;
     
-    public Isolate(final Reactor _reactor) {
+    Isolate(final Reactor _reactor) {
         _initialize(_reactor);
     }
     
-    AsyncRequest&lt;Void&gt; bumpAReq() {
-        return new AsyncBladeRequest&lt;Void&gt;() {
-            AsyncRequest dis = this;
-
-            public void processAsyncRequest() {
+    AOp&lt;Void&gt; bumpAOp() {
+        return new AOp&lt;Void&gt;("bump", getReactor()) {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
                 int oldState = state;
-                int newState = state + 1;
+                final int newState = state + 1;
                 System.out.println("was " + oldState + ", now " + newState); 
                 Delay delay = new Delay();
-                send(delay.sleepSReq(1), new AsyncResponseProcessor<Void>() {
-                    public void processAsyncResponse(Void response) {
+                _asyncRequestImpl.send(delay.sleepSOp(1), new AsyncResponseProcessor&lt;Void&gt;() {
+                    public void processAsyncResponse(Void response) throws Exception {
                         state = newState; //belated update
-                        dis.processAsyncResponse(null);
+                        _asyncResponseProcessor.processAsyncResponse(null);
                     }
                 });
             }

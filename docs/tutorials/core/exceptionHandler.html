@@ -69,11 +69,11 @@ class ExceptionBlade extends NonBlockingBladeBase {
 	}
 
     //Returns an exception request.
-    AOp<Void> exceptionAOp() {
-        return new AOp<Void>("exception", getReactor()) {
+    AOp&lt;Void&gt; exceptionAOp() {
+        return new AOp&lt;Void&gt;("exception", getReactor()) {
             @Override
             public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
-					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
                 throw new IOException(); //Throw an exception when the request is processed.
             }
         };
@@ -92,14 +92,14 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
     }
 
     //Returns a test request.
-    AOp<String> testAOp() {
-        return new AOp<String>("test", getReactor()) {
+    AOp&lt;String&gt; testAOp() {
+        return new AOp&lt;String&gt;("test", getReactor()) {
             @Override
             public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
-					final AsyncResponseProcessor<String> _asyncResponseProcessor) throws Exception {
+					final AsyncResponseProcessor&lt;String&gt; _asyncResponseProcessor) throws Exception {
  
                 //Create and assign an exception handler.
-                _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<String>() {
+                _asyncRequestImpl.setExceptionHandler(new ExceptionHandler&lt;String&gt;() {
                     @Override
                     public String processException(final Exception _exception) throws Exception {
                         if (_exception instanceof IOException) {
@@ -112,7 +112,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
 
                 //Create an exception request and doSend it to the exception blade for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                _asyncRequestImpl.send(exceptionBlade.exceptionAOp(), new AsyncResponseProcessor<Void>() {
+                _asyncRequestImpl.send(exceptionBlade.exceptionAOp(), new AsyncResponseProcessor&lt;Void&gt;() {
                     @Override
                     public void processAsyncResponse(final Void _response) throws Exception {
                         _asyncResponseProcessor.processAsyncResponse("can not get here");
