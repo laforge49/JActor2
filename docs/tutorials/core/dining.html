@@ -26,57 +26,47 @@ take time out to think when they can not immediately get a fork.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
-/*
-Each philosopher has a seat at the table, and the seats are numbered from 0 through 4.
-The DiningPhilosopher class implements a single public request, feastAReq, 
-which returns the number of meals the philosopher ate once all the spaghetti was eaten.
-
-The feast request executes a simple loop, calling eatAReq and ateSReq until eatAReq returns a result
-of false--which indicates that there is no more food to eat.
-*/
 public class DiningPhilosopher extends NonBlockingBladeBase {
-    public AsyncRequest&lt;Integer&gt; feastAReq(final DiningTable _diningTable, final int _seat) {
-        return new AsyncBladeRequest&lt;Integer&gt;() {
-            final AsyncRequest&lt;Integer&gt; dis = this;
-            
-            private int mealsEaten; //The number of meals eaten by this philosopher.
+	public DiningPhilosopher() throws Exception {
+	}
+	
+    public AOp&lt;Integer&gt; feastAOp(final DiningTable _diningTable, final int _seat) {
+        return new AOp&lt;Integer&gt;("feast", getReactor()) {
+            private int mealsEaten;
             private AsyncResponseProcessor&lt;Void&gt; ateResponseProcessor;
             private AsyncResponseProcessor&lt;Boolean&gt; eatResponseProcessor;
             
             @Override
-            public void processAsyncRequest() {
-            
-                //The logic to process a response from a DiningTable.ateSReq.
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor&lt;Integer&gt; _asyncResponseProcessor) throws Exception {
                 ateResponseProcessor = new AsyncResponseProcessor&lt;Void&gt;() {
                     @Override
                     public void processAsyncResponse(final Void _ateResponse) {
-                        AsyncRequest&lt;Boolean&gt; eatAReq = _diningTable.eatAReq(_seat);
-                        send(eatAReq, eatResponseProcessor);
+                        AOp&lt;Boolean&gt; eatAOp = _diningTable.eatAOp(_seat);
+                        _asyncRequestImpl.send(eatAOp, eatResponseProcessor);
                     }
                 };
-                
-                //The logic to process a response from a DiningTable.eatAReq.
+				
                 eatResponseProcessor = new AsyncResponseProcessor&lt;Boolean&gt;() {
                     @Override
-                    public void processAsyncResponse(final Boolean _eatResponse) {
+                    public void processAsyncResponse(final Boolean _eatResponse) throws Exception {
                         if (!_eatResponse) {
-                            //The food is gone, so return the number of meals eaten.
-                            dis.processAsyncResponse(mealsEaten);
+                            _asyncResponseProcessor.processAsyncResponse(mealsEaten);
                             return;
                         }
                         mealsEaten++;
-                        SyncRequest&lt;Void&gt; ateSReq = _diningTable.ateSReq(_seat);
-                        send(ateSReq, ateResponseProcessor);
+                        SOp&lt;Void&gt; ateSReq = _diningTable.ateSOp(_seat);
+                        _asyncRequestImpl.send(ateSReq, ateResponseProcessor);
                     }
                 };
-                
-                //Start by eating the first plate of spaghetti.
-                AsyncRequest&lt;Boolean&gt; eatAReq = _diningTable.eatAReq(_seat);
-                send(eatAReq, eatResponseProcessor);
+				
+                AOp&lt;Boolean&gt; eatAOp = _diningTable.eatAOp(_seat);
+                _asyncRequestImpl.send(eatAOp, eatResponseProcessor);
             }
         };
     }
@@ -90,28 +80,30 @@ there is no more spaghetti, whichever comes first.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class DiningTable extends NonBlockingBladeBase {
-    public final int seats; //The number of seats around the table == the number of philosophers.
-    public final int meals; //The number of plates of spaghetti to be eaten.
+    public final int seats;
+    public final int meals;
     
-    private int mealsEaten; //The number of plates of spaghetti eaten to date.
-    private int[] forkUsage;    //seat number which is using the fork, or -1 if available.
-    private AsyncResponseProcessor&lt;Boolean&gt;[] pendingResponses; //Pending eat requests, or null.
+    private int mealsEaten;
+    private int[] forkUsage;
+    private AsyncResponseProcessor&lt;Boolean&gt;[] pendingResponses;
 
-    public DiningTable(final int _seats, final int _meals) {
+    public DiningTable(final int _seats, final int _meals) throws Exception {
         seats = _seats;
         meals = _meals;
         forkUsage = new int[seats];
         int i = 0;
-        while (i < seats) {
-            forkUsage[i] = -1;  //Mark the fork as available.
+        while (i &lt; seats) {
+            forkUsage[i] = -1;
             i++;
         }
-        pendingResponses = new AsyncResponseProcessor[seats]; //Initially there are no pending eat requests.
+        pendingResponses = new AsyncResponseProcessor[seats];
     }
     
     private int leftFork(final int _seat) {
@@ -126,10 +118,6 @@ public class DiningTable extends NonBlockingBladeBase {
         return forkUsage[_seat] == -1;
     }
     
-    /*
-        Assign the forks to the left and right of the seat
-        only if both forks are available.
-    */
     private boolean getForks(final int _seat) {
         int leftFork = leftFork(_seat);
         int rightFork = rightFork(_seat);
@@ -141,56 +129,37 @@ public class DiningTable extends NonBlockingBladeBase {
         return false;
     }
     
-    /*
-        The eatAReq is created and then invoked when the philosopher is ready 
-        to eat another meal.
-        
-        When an eat request is received but there are no more meals to serve, 
-        a response of false is passed back.
-
-        If there are more meals remaining and both forks are acquired, then 
-        call the chowTime method and a response of true is passed back to the 
-        requesting philosopher.
-
-        Otherwise, the response is left pending until either there is no more 
-        spaghetti or both forks become available.
-    */
-    public AsyncRequest&lt;Boolean&gt; eatAReq(final int _seat) {
-        return new AsyncBladeRequest&lt;Boolean&gt;() {
-            final AsyncRequest&lt;Boolean&gt; dis = this;
-            
+    public AOp&lt;Boolean&gt; eatAOp(final int _seat) {
+        return new AOp&lt;Boolean&gt;("eat", getReactor()) {
             @Override
-            public void processAsyncRequest() throws Exception {
-                setNoHungRequestCheck(); //inhibit the test for hung request
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor&lt;Boolean&gt; _asyncResponseProcessor) throws Exception {
+                _asyncRequestImpl.setNoHungRequestCheck(); //inhibit the test for hung request
                 
-                if (mealsEaten == meals) {  //There is no more food to be eaten.
-                    dis.processAsyncResponse(false); //The feast is finished.
+                if (mealsEaten == meals) {
+                    _asyncResponseProcessor.processAsyncResponse(false);
                     return;
                 }
                 
-                if (getForks(_seat)) {  We have food and both forks, so lets eat!
+                if (getForks(_seat)) {
                     chowTime(_seat);
-                    dis.processAsyncResponse(true); //The philosopher has eaten another meal.
+                    _asyncResponseProcessor.processAsyncResponse(true);
                     return;
                 }
                 
-                pendingResponses[_seat] = dis; //The forks are not available, so respond to the eat request later.
+                pendingResponses[_seat] = _asyncResponseProcessor;
             }
         };
     }
     
-    /*
-        The chowTime method increments the number of meals eaten by 1. Then if all the meals 
-        have been eaten, the pending philosophers are passed back a false.
-    */
     private void chowTime(final int _seat) throws Exception {
-        mealsEaten++;   //One more meal has been eaten.
-        if (mealsEaten == meals) {  //The food is gone, so process the pending eat requests.
+        mealsEaten++;
+        if (mealsEaten == meals) {
             int i = 0;
-            while (i < seats) {
-                AsyncResponseProcessor<Boolean> pendingResponse = pendingResponses[i];
+            while (i &lt; seats) {
+                AsyncResponseProcessor&lt;Boolean&gt; pendingResponse = pendingResponses[i];
                 if (pendingResponse != null) {
-                    pendingResponse.processAsyncResponse(false);    //The feast is over.
+                    pendingResponse.processAsyncResponse(false);
                 }
                 i++;
             }
@@ -204,38 +173,30 @@ public class DiningTable extends NonBlockingBladeBase {
     private int rightSeat(final int _fork) {
         return _fork;
     }
-    
-    /*
-        If there is a pending request for the seat, both forks are acquired and 
-        there is some food left, then clear the pending request, call the chowTime 
-        method and pass true back to the pending philosopher.
-    */
+
     private void notice(final int _seat) throws Exception {
         AsyncResponseProcessor&lt;Boolean&gt; pendingResponse = pendingResponses[_seat];
         if (pendingResponse == null)
-            return; //No response is pending.
+            return;
         if (!getForks(_seat))
-            return; //The forks are not yet available.
-        pendingResponses[_seat] = null;
-        if (mealsEaten < meals) {   //We have food and both forks, so lets eat.
+            return;
+        if (mealsEaten &lt; meals) {
+            pendingResponses[_seat] = null;
             chowTime(_seat);
-            pendingResponse.processAsyncResponse(true); //The philosopher has eaten another meal.
+            pendingResponse.processAsyncResponse(true);
         }
     }
     
-    /*
-        The ateSReq is created and then invoked when a philosopher is finished eating a meal.
-    */
-    public SyncRequest&lt;Void&gt; ateSReq(final int _seat) {
-        return new SyncBladeRequest&lt;Void&gt;() {
+    public SOp&lt;Void&gt; ateSOp(final int _seat) {
+        return new SOp&lt;Void&gt;("ate", getReactor()) {
             @Override
-            public Void processSyncRequest() throws Exception {
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 int leftFork = leftFork(_seat);
                 int rightFork = rightFork(_seat);
-                forkUsage[leftFork] = -1;   //Done with the left fork for now.
-                forkUsage[rightFork] = -1;  //Done with the right fork for now.
-                notice(leftSeat(leftFork)); //See if the left seat has a response pending.
-                notice(rightSeat(rightFork));   //See if the right seat has a response pending.
+                forkUsage[leftFork] = -1;
+                forkUsage[rightFork] = -1;
+                notice(leftSeat(leftFork));
+                notice(rightSeat(rightFork));
                 return null;
             }
         };
@@ -250,55 +211,48 @@ to the feast. When all the meals have been eaten, the dining room validates and 
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
 public class DiningRoom extends NonBlockingBladeBase {
-    /*
-        The dining room implements a feast request, which creates the dining table and 
-        the philosophers and sends a feast request to all the philosophers. The result 
-        returned is a list of the number of meals eaten by each philosopher.
-    */
-    public AsyncRequest&lt;List&lt;Integer&gt;&gt; feastAReq(final int _seats, final int _meals) {
-        return new AsyncBladeRequest&lt;List&lt;Integer&gt;&gt;() {
-            final AsyncResponseProcessor&lt;List&lt;Integer&gt;&gt; dis = this;
-            List&lt;Integer&gt; mealsEaten = new LinkedList&lt;Integer&gt;(); //The list passed back when the feast is done.
+	public DiningRoom() throws Exception {
+	}
+
+    public AOp&lt;List&lt;Integer&gt;&gt; feastAOp(final int _seats, final int _meals) {
+        return new AOp&lt;List&lt;Integer&gt;&gt;("feast", getReactor()) {
+            List&lt;Integer&gt; mealsEaten = new LinkedList&lt;Integer&gt;();
             
-            /*
-                Processes the response from a philosopher when he is done feasting.
-            */
-            AsyncResponseProcessor&lt;Integer&gt; feastResponseProcessor =
-                new AsyncResponseProcessor&lt;Integer&gt;() {
-                    @Override
-                    public void processAsyncResponse(final Integer _feastResponse) {
-                        mealsEaten.add(_feastResponse);
-                        if (mealsEaten.size() == _seats) {  //This is the response from the last philosopher.
-                            dis.processAsyncResponse(mealsEaten);
-                        }
-                    }
-            };
-            
-            /*
-                Start the feast.
-            */
             @Override
-            public void processAsyncRequest() {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor&lt;List&lt;Integer&gt;&gt; _asyncResponseProcessor) throws Exception {
+
+				AsyncResponseProcessor&lt;Integer&gt; feastResponseProcessor =
+						new AsyncResponseProcessor&lt;Integer&gt;() {
+					@Override
+					public void processAsyncResponse(final Integer _feastResponse) throws Exception {
+						mealsEaten.add(_feastResponse);
+						if (mealsEaten.size() == _seats) {
+							_asyncResponseProcessor.processAsyncResponse(mealsEaten);
+						}
+					}
+				};
+            
                 int i = 0;
-                DiningTable diningTable = new DiningTable(
-                    new NonBlockingReactor(),
+                final DiningTable diningTable = new DiningTable(
                     _seats,
                     _meals);
-                while (i < _seats) {
+                while (i &lt; _seats) {
                     DiningPhilosopher diningPhilosopher =
-                        new DiningPhilosopher(new NonBlockingReactor());
-                    AsyncRequest&lt;Integer&gt; feastAReq = diningPhilosopher.feastAReq(diningTable, i);
-                    send(feastAReq, feastResponseProcessor);
+                        new DiningPhilosopher();
+                    AOp&lt;Integer&gt; feastAReq = diningPhilosopher.feastAOp(diningTable, i);
+                    _asyncRequestImpl.send(feastAReq, feastResponseProcessor);
                     ++i;
                 }
             }
@@ -311,20 +265,20 @@ public class DiningRoom extends NonBlockingBladeBase {
         new Plant();
         try {
             DiningRoom diningRoom = new DiningRoom();
-            AsyncRequest&lt;List&lt;Integer&gt;&gt; feastAReq = diningRoom.feastAReq(seats, meals);
+            AOp&lt;List&lt;Integer&gt;&gt; feastAOp = diningRoom.feastAOp(seats, meals);
             long before = System.nanoTime();
-            List&lt;Integer&gt; mealsEaten = feastAReq.call(); //Run the feast.
+            List&lt;Integer&gt; mealsEaten = feastAOp.call();
             long after = System.nanoTime();
             long duration = after - before;
             System.out.println("Seats: " + seats);
             System.out.println("Meals: " + meals);
             System.out.println("\nMeals eaten by each philosopher:");
-            Iterator<Integer> it = mealsEaten.iterator();
+            Iterator&lt;Integer&gt; it = mealsEaten.iterator();
             int totalEaten = 0;
             while (it.hasNext()) {
                 int me = it.next();
                 totalEaten += me;
-                if (mealsEaten.size() < 11)
+                if (mealsEaten.size() &lt; 11)
                     System.out.println("    " + me);
             }
             if (totalEaten != meals)
@@ -332,6 +286,7 @@ public class DiningRoom extends NonBlockingBladeBase {
             System.out.println("\nTest duration in nanoseconds: " + duration);
             if (duration > 0) {
                 System.out.println("Total meals eaten per second: " + (1000000000L * meals / duration));
+            }
         } finally {
             Plant.close();
         }
@@ -346,14 +301,14 @@ Seats: 5
 Meals: 1,000,000
 
 Meals eaten by each philosopher:
-    160221
-    202250
-    165867
-    168376
-    303286
+    192368
+    167389
+    294981
+    151082
+    194180
 
-Test duration in nanoseconds: 2267395410
-Total meals eaten per second: 441034
+Test duration in nanoseconds: 3410205190
+Total meals eaten per second: 293237
 </pre>
 </body>
 </html>
