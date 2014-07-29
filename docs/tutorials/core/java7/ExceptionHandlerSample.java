@@ -98,5 +98,4 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
             }
         };
     }
-
 }

@@ -16,16 +16,17 @@ But this is covered through the use of an
 </p>
 <p>
 An ExceptionHandler can be assigned while processing a asynchronous request by calling the
-<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html#setExceptionHandler-org.agilewiki.jactor2.core.requests.ExceptionHandler-">setExceptionHandler</a> 
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/impl/AsyncRequestImpl.html#setExceptionHandler-org.agilewiki.jactor2.core.requests.ExceptionHandler-">setExceptionHandler</a> 
 method.
 This is illustrated by the <a href="java7/ExceptionHandlerSample.java">ExceptionHandlerSample</a> program.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 import java.io.IOException;
 
@@ -43,7 +44,7 @@ public class ExceptionHandlerSample {
 
             try {
                 //Create and call an exception request.
-                exceptionBlade.exceptionAReq().call();
+                exceptionBlade.exceptionAOp().call();
                 System.out.println("can not get here");
             } catch (IOException ise) {
                 System.out.println("got first IOException, as expected");
@@ -53,7 +54,7 @@ public class ExceptionHandlerSample {
             ExceptionHandlerBlade exceptionHandlerBlade =
                     new ExceptionHandlerBlade(exceptionBlade);
             //Create a test request, call it and print the results.
-            System.out.println(exceptionHandlerBlade.testAReq().call());
+            System.out.println(exceptionHandlerBlade.testAOp().call());
 
         } finally {
             //shutdown the facility
@@ -64,11 +65,15 @@ public class ExceptionHandlerSample {
 
 //A blade with a request that throws an exception.
 class ExceptionBlade extends NonBlockingBladeBase {
+	ExceptionBlade() throws Exception {
+	}
+
     //Returns an exception request.
-    AsyncRequest&lt;Void&gt; exceptionAReq() {
-        return new AsyncBladeRequest&lt;Void&gt;() {
+    AOp<Void> exceptionAOp() {
+        return new AOp<Void>("exception", getReactor()) {
             @Override
-            public void processAsyncRequest() throws IOException {
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 throw new IOException(); //Throw an exception when the request is processed.
             }
         };
@@ -76,27 +81,25 @@ class ExceptionBlade extends NonBlockingBladeBase {
 }
 
 //A blade with an exception handler.
-class ExceptionHandlerBlade extends BladeBase {
+class ExceptionHandlerBlade extends NonBlockingBladeBase {
 
     //A blade with a request that throws an exception.
     private final ExceptionBlade exceptionBlade;
 
     //Create an exception handler blade with a reference to an exception blade.
-    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) {
+    ExceptionHandlerBlade(final ExceptionBlade _exceptionBlade) throws Exception {
         exceptionBlade = _exceptionBlade;
-        initialize(_reactor);
     }
 
     //Returns a test request.
-    AsyncRequest&lt;String&gt; testAReq() {
-        return new AsyncBladeRequest&lt;String&gt;() {
-            AsyncRequest&lt;String&gt; dis = this;
-
+    AOp<String> testAOp() {
+        return new AOp<String>("test", getReactor()) {
             @Override
-            public void processAsyncRequest() {
-
+            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+					final AsyncResponseProcessor<String> _asyncResponseProcessor) throws Exception {
+ 
                 //Create and assign an exception handler.
-                setExceptionHandler(new ExceptionHandler&lt;String&gt;() {
+                _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<String>() {
                     @Override
                     public String processException(final Exception _exception) throws Exception {
                         if (_exception instanceof IOException) {
@@ -109,16 +112,15 @@ class ExceptionHandlerBlade extends BladeBase {
 
                 //Create an exception request and doSend it to the exception blade for processing.
                 //The thrown exception is then caught by the assigned exception handler.
-                send(exceptionBlade.exceptionAReq(), new AsyncResponseProcessor&lt;Void&gt;() {
+                _asyncRequestImpl.send(exceptionBlade.exceptionAOp(), new AsyncResponseProcessor<Void>() {
                     @Override
-                    public void processAsyncResponse(final Void _response) {
-                        dis.processAsyncResponse("can not get here");
+                    public void processAsyncResponse(final Void _response) throws Exception {
+                        _asyncResponseProcessor.processAsyncResponse("can not get here");
                     }
                 });
             }
         };
     }
-
 }
 
 Output:
