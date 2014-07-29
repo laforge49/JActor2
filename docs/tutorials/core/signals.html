@@ -7,19 +7,19 @@
 </p>
 <h1>Signals - One-way Messages</h1>
 <p>
-In addition to using call, directly callable methods and send, 
+In addition to using call, syncDirect and send, 
 the signal method can be used to pass a request to its target blade for processing.
 Using signals means:
 </p>
 <ul>
 <li>
-Like directly callable methods and send, signal does not block any thread.
+Like syncDirect and send, signal does not block any thread.
 </li>
 <li>
-Unlike call, directly callable methods and send, signal can be used from any thread.
+Unlike call, syncDirect and send, signal can be used from any thread.
 </li>
 <li>
-Like call and directly callable methods, signal messages are unbuffered--they are sent immediately.
+Like call and syncDirect, signal messages are unbuffered--they are sent immediately.
 </li>
 <li>
 Unlike call and send, there is no response passed back from the request passed as a signal.
@@ -29,7 +29,7 @@ passed back to the source of the request.
 </ul>
 <p>
 Strange things tend to happen when you overuse signals, as it is easy to fill memory with signals awaiting processing.
-This slows garbage collection and my start the program pagging to disk.
+This slows garbage collection and my start the program paging to disk.
 Signals are supported because there are situations when they are invaluable. But their use is
 not entirely risk free.
 </p>
@@ -39,9 +39,13 @@ The <a href="java7/Signals.java">Signals</a> program illustrates the use of sign
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class Signals extends NonBlockingBladeBase {
+
+	public Signals() throws Exception {
+	}
     
     public static void main(final String[] _args) throws Exception {
         new Plant();
@@ -50,17 +54,18 @@ public class Signals extends NonBlockingBladeBase {
             int i = 0;
             while (i < 10) {
                 i++;
-                signals.printSReq(i).signal();
+                signals.printSOp(i).signal();
             }
-            signals.getReactor().nullSReq().call(); //Force all signals to be processed.
+            signals.getReactor().nullSOp().call();
         } finally {
             Plant.close();
         }
     }
         
-    SyncRequest<Void> printSReq(final Integer _i) {
-        return new SyncBladeRequest<Void>() {
-            public Void processSyncRequest() {
+    SOp<Void> printSOp(final Integer _i) {
+        return new SOp<Void>("print", getReactor()) {
+            @Override
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 System.out.println(_i);
                 return null;
             }
