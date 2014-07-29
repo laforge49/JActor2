@@ -52,7 +52,7 @@ public class Signals extends NonBlockingBladeBase {
         try {
             Signals signals = new Signals();
             int i = 0;
-            while (i < 10) {
+            while (i &lt; 10) {
                 i++;
                 signals.printSOp(i).signal();
             }
@@ -62,8 +62,8 @@ public class Signals extends NonBlockingBladeBase {
         }
     }
         
-    SOp<Void> printSOp(final Integer _i) {
-        return new SOp<Void>("print", getReactor()) {
+    SOp&lt;Void&gt; printSOp(final Integer _i) {
+        return new SOp&lt;Void&gt;("print", getReactor()) {
             @Override
             public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 System.out.println(_i);
