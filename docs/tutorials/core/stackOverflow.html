@@ -17,18 +17,22 @@ This is demonstrated in the <a href="java7/StackOverflow.java">StackOverflow</a>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class StackOverflow extends NonBlockingBladeBase {
+
+	public StackOverflow() throws Exception {
+	}
     
     void recur() {
         recur();
     }
 
-    SyncRequest<Void> recurSReq() {
-        return new SyncBladeRequest() {
+    SOp&lt;Void&gt; recurSOp() {
+        return new SOp("recur", getReactor()) {
             @Override
-            public Void processSyncRequest() {
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 recur();
                 return null;
             }
@@ -38,7 +42,7 @@ public class StackOverflow extends NonBlockingBladeBase {
     public static void main(final String[] args) throws Exception {
         Plant plant = new Plant();
         try {
-            new StackOverflow().recurSReq().call();
+            new StackOverflow().recurSOp().call();
         } catch (final ReactorClosedException _rce) {
             System.out.println("\nCaught " + _rce + "\n");
         } finally {
@@ -47,21 +51,19 @@ public class StackOverflow extends NonBlockingBladeBase {
     }
 }
 
+
     Output:
     
+Caught org.agilewiki.jactor2.core.reactors.ReactorClosedException
 [Thread-0] ERROR org.agilewiki.jactor2.core.reactors.Reactor - stack overflow er
 ror -> reactor close
-Caught org.agilewiki.jactor2.core.reactors.ReactorClosedException
-
 
 java.lang.StackOverflowError
-        at StackOverflow.recur(StackOverflow.java:9)
-        at StackOverflow.recur(StackOverflow.java:9)
-        at StackOverflow.recur(StackOverflow.java:9)
-        at StackOverflow.recur(StackOverflow.java:9)
-        at StackOverflow.recur(StackOverflow.java:9)
-        at StackOverflow.recur(StackOverflow.java:9)
-        at StackOverflow.recur(StackOverflow.java:9)
+        at StackOverflow.recur(StackOverflow.java:13)
+        at StackOverflow.recur(StackOverflow.java:13)
+        at StackOverflow.recur(StackOverflow.java:13)
+        at StackOverflow.recur(StackOverflow.java:13)
+        at StackOverflow.recur(StackOverflow.java:13)
         ...
 </pre>
 </body>
