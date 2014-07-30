@@ -1,16 +1,16 @@
-import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
-public class Batcher extends BlockingBladeBase {
+public class Batcher extends NonBlockingBladeBase {
     private final long count;
     private final Ponger ponger;
     
-    public Batcher(final BlockingReactor _reactor, final long _count, final Ponger _ponger) {
+    public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger) {
         super(_reactor);
         count = _count;
         ponger = _ponger;
@@ -43,17 +43,18 @@ public class Batcher extends BlockingBladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        final int count = 2000000;
+        final int count = 10000;
         Plant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new BlockingReactor(1000, count));
-            Batcher batcher = new Batcher(new BlockingReactor(1000, count), count, ponger);
+            Ponger ponger = new Ponger(new NonBlockingReactor(10000, count));
+            Batcher batcher = new Batcher(new NonBlockingReactor(10000, count), count, ponger);
             AOp<Void> runAOp = batcher.runAOp();
             final long before = System.nanoTime();
-            runAOp.call();
+            for (int i = 0; i < 10000; i++) 
+                runAOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.print("Batch Timings", duration, count);
+            SpeedReport.print("Batch Timings", duration, count * 10000);
         } finally {
             plant.close();
         }

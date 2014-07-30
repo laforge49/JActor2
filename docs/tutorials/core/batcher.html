@@ -13,19 +13,19 @@ messages sent to the same destination are sent together in a group.
 This is illustrated by <a href="java7/Batcher.java">Batcher</a>.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
+import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.reactors.BlockingReactor;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
-public class Batcher extends BlockingBladeBase {
+public class Batcher extends NonBlockingBladeBase {
     private final long count;
     private final Ponger ponger;
     
-    public Batcher(final BlockingReactor _reactor, final long _count, final Ponger _ponger) {
+    public Batcher(final NonBlockingReactor _reactor, final long _count, final Ponger _ponger) {
         super(_reactor);
         count = _count;
         ponger = _ponger;
@@ -58,17 +58,18 @@ public class Batcher extends BlockingBladeBase {
     }
     
     public static void main(final String[] _args) throws Exception {
-        final int count = 2000000;
+        final int count = 10000;
         Plant plant = new Plant();
         try {
-            Ponger ponger = new Ponger(new BlockingReactor(1000, count));
-            Batcher batcher = new Batcher(new BlockingReactor(1000, count), count, ponger);
+            Ponger ponger = new Ponger(new NonBlockingReactor(1000, count));
+            Batcher batcher = new Batcher(new NonBlockingReactor(1000, count), count, ponger);
             AOp&lt;Void&gt; runAOp = batcher.runAOp();
             final long before = System.nanoTime();
-            runAOp.call();
+            for (int i = 0; i &lt; 10000; i++) 
+                runAOp.call();
             final long after = System.nanoTime();
             final long duration = after - before;
-            SpeedReport.print("Batch Timings", duration, count);
+            SpeedReport.print("Batch Timings", duration, count * 10000);
         } finally {
             plant.close();
         }
@@ -78,10 +79,10 @@ public class Batcher extends BlockingBladeBase {
 Output:
 
 Batch Timings
-Test duration in nanoseconds: 9265453400
-Number of exchanges: 2000000
-Exchanges per second: 215855
-Latency in seconds: 4.6327267E-6
+Test duration in nanoseconds: 40976103298
+Number of exchanges: 100000000
+Exchanges per second: 2440446
+Latency in seconds: 4.0976103298E-7
 </pre>
 <p>
 The code that drives this is fairly simple. We put the send invocation in a simple loop,
@@ -122,8 +123,8 @@ An alternate constructor for the reactor is also used which lets us set the init
 of some internal structures:
 </p>
 <pre>
-            Ponger ponger = new Ponger(new BlockingReactor(1000, count));
-            Batcher batcher = new Batcher(new BlockingReactor(1000, count), count, ponger);
+            Ponger ponger = new Ponger(new NonBlockingReactor(1000, count));
+            Batcher batcher = new Batcher(new NonBlockingReactor(1000, count), count, ponger);
 </pre>
 </body>
 </html>
