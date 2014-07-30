@@ -16,22 +16,21 @@ Alternatively, you can use a
 to specify the desired subclass of PlantConfiguration.
 </p>
 <p>
-The <a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html">Recovery</a> class
-is included in PlantConfiguration. Recovery defines both failure detection and recovery.
+PlantConfiguration includes a factory method for <a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html">Recovery</a>. 
+Recovery defines both failure detection and recovery.
 Changing the Recovery class is done by overriding the 
 <a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/PlantConfiguration.html#createRecovery--">createRecovery</a> method
 in a subclass of PlantConfiguration.
 </p>
 When the
 <a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/Plant.html">Plant</a> singleton is created,
-it creates a reactor for internal use and assigns the Recovery object found in its PlantConfiguration using the
+it creates a reactor for internal use and assigns a Recovery object created by its PlantConfiguration using the
 <a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtReactors/ReactorMtImpl.html#setRecovery-org.agilewiki.jactor2.core.impl.mtPlant.Recovery-">setRecovery</a>
 method. When subsequent reactors are created, they are assigned the same recovery object as their parent reactor--which is,
 by default, the internal reactor of the plant.
 <p>
-Failures may occur when a reactor processes a request or response message. Three types of failure are handled by Recovery: 
-message timeout, hung thread and hung asynchronous request. Which reactor is used to handle a failure is determined by the reactor 
-processing the message that caused the failure.
+Failures may occur when a reactor processes an operation. Three types of failure are handled by Recovery: 
+message timeout, hung thread and hung asynchronous request.
 </p>
 <h2>Message Timeouts</h2>
 <p>
@@ -43,17 +42,17 @@ is used to determine how often the reactors are to be polled. The default value 
 </p>
 <p>
 The Recovery method
-<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getMessageTimeoutMillis-org.agilewiki.jactor2.core.reactors.ReactorImpl-">getMessageTimeoutMillis</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getMessageTimeoutMillis-org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl-">getMessageTimeoutMillis</a>
 is used to determine how long a message can be processed before being timed out. The default value is
 300,000 milliseconds for blocking reactors and 1,000 milliseconds for all other types of reactors.
 </p>
 <p>
 Once a message has timed out, then the Recovery method
-<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onMessageTimeout-org.agilewiki.jactor2.core.reactors.ReactorImpl-">onMessageTimeout</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onMessageTimeout-org.agilewiki.jactor2.core.reactors.impl.ReactorImpl-">onMessageTimeout</a>
 handles the recovery. The default action is to close the Reactor, which results in an interrupt being passed to the thread processing the message. 
 The application then has a limited
 time to detect and throw an InterruptedException. How long it has is determined by the Recovery method
-<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getThreadInterruptMillis-org.agilewiki.jactor2.core.reactors.ReactorImpl-">getThreadInterruptMillis</a>.
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#getThreadInterruptMillis-org.agilewiki.jactor2.core.reactors.impl.ReactorImpl-">getThreadInterruptMillis</a>.
 The default value is 1,000 milliseconds.
 </p>
 <p>
@@ -71,26 +70,27 @@ In contrast, the looper request does not check to see if the thread has received
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.SyncRequest;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 class Hanger extends NonBlockingBladeBase {
-    Hanger() {
+    Hanger() throws Exception {
         super(new NonBlockingReactor());
     }
 
-    SyncRequest&lt;Void&gt; looperSReq() {
-        return new SyncBladeRequest&lt;Void&gt;() {
+    SOp&lt;Void&gt; looperSOp() {
+        return new SOp&lt;Void&gt;("looper", getReactor()) {
             @Override
-            public Void processSyncRequest() {
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 while (true) {}
             }
         };
     }
 
-    SyncRequest&lt;Void&gt; sleeperSReq() {
-        return new SyncBladeRequest&lt;Void&gt;() {
+    SOp&lt;Void&gt; sleeperSOp() {
+        return new SOp&lt;Void&gt;("sleeper", getReactor()) {
             @Override
-            public Void processSyncRequest() throws InterruptedException {
+            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 Thread.sleep(Long.MAX_VALUE);
                 return null;
             }
@@ -112,7 +112,7 @@ public class SleeperMessageTimeout {
         final Plant plant = new Plant();
         try {
             Hanger hanger = new Hanger();
-            hanger.sleeperSReq().call();
+            hanger.sleeperSOp().call();
             System.out.println("never gets here");
         } finally {
             plant.close();
@@ -122,48 +122,45 @@ public class SleeperMessageTimeout {
 
     Output:
     
-[pool-1-thread-1] ERROR org.agilewiki.jactor2.core.reactors.Reactor - message ti
+[pool-1-thread-2] ERROR org.agilewiki.jactor2.core.reactors.Reactor - message ti
 meout -> reactor close
-[Thread-0] WARN org.agilewiki.jactor2.core.reactors.Reactor - message interrupte
-d on close message=Hanger$2, isClosed=false, isSignal=false, source=org.agilewik
-i.jactor2.core.impl.RequestImplBase$Pender, target=org.agilewiki.jactor2.core.re
-actors.NonBlockingReactor, this=org.agilewiki.jactor2.core.impl.SyncRequestImpl@
-28741fab
-Exception in thread "main" org.agilewiki.jactor2.core.plant.ServiceClosedExcepti
-on
-        at org.agilewiki.jactor2.core.impl.RequestImplBase.close(RequestImplBase
-.java:288)
-        at org.agilewiki.jactor2.core.impl.ReactorImpl.close2(ReactorImpl.java:2
-02)
-        at org.agilewiki.jactor2.core.impl.ReactorImpl.closeAll(ReactorImpl.java
-:549)
-        at org.agilewiki.jactor2.core.impl.ReactorImpl.close(ReactorImpl.java:16
-7)
-        at org.agilewiki.jactor2.core.plant.Recovery.onMessageTimeout(Recovery.j
-ava:22)
-        at org.agilewiki.jactor2.core.impl.ReactorImpl.reactorPoll(ReactorImpl.j
-ava:482)
-        at org.agilewiki.jactor2.core.impl.ReactorImpl.reactorPoll(ReactorImpl.j
-ava:491)
-        at org.agilewiki.jactor2.core.impl.PlantImpl$1.run(PlantImpl.java:76)
-        at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:51
+[Thread-1] WARN org.agilewiki.jactor2.core.reactors.Reactor - message interrupte
+d on close message=sleeper, isComplete=false, isOneWay=false, source=org.agilewi
+ki.jactor2.core.impl.mtRequests.RequestMtImpl$Pender@4f83e6d4, target=org.agilew
+iki.jactor2.core.impl.mtReactors.NonBlockingReactorMtImpl@21bf446e, this=org.agi
+lewiki.jactor2.core.impl.mtRequests.SyncRequestMtImpl@5ca79114
+Exception in thread "main" org.agilewiki.jactor2.core.reactors.ReactorClosedExce
+ption
+        at org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl.close(Reques
+tMtImpl.java:345)
+        at org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl.fail(Reactor
+MtImpl.java:304)
+        at org.agilewiki.jactor2.core.impl.mtPlant.Recovery.onMessageTimeout(Rec
+overy.java:46)
+        at org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl.reactorPoll(
+ReactorMtImpl.java:624)
+        at org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl.reactorPoll(
+ReactorMtImpl.java:634)
+        at org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl$1.run(PlantMtImpl
+.java:270)
+        at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:47
 1)
-        at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+        at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:304)
         at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.
-access$301(ScheduledThreadPoolExecutor.java:180)
+access$301(ScheduledThreadPoolExecutor.java:178)
         at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.
-run(ScheduledThreadPoolExecutor.java:294)
+run(ScheduledThreadPoolExecutor.java:293)
         at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.
-java:1142)
+java:1145)
         at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor
-.java:617)
-        at java.lang.Thread.run(Thread.java:744)
+.java:615)
+        at java.lang.Thread.run(Thread.java:745)
 </pre>
 <h2>Hung Threads</h2>
 <p>
 When there is no response to an interrupt, the thread is considered hung and the
 Recovery method
-<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onHungThread-org.agilewiki.jactor2.core.reactors.ReactorImpl-">onHungThread</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onHungThread-org.agilewiki.jactor2.core.reactors.impl.ReactorImpl-">onHungThread</a>
 is called to handle the recovery.
 The default action is to call the 
 <a href="../../api/core/org/agilewiki/jactor2/core/plant/PlantBase.html#close--">close</a> method on Plant
@@ -175,14 +172,14 @@ calls the looper request on Hanger, resulting in a hung thread and then terminat
 of the program.
 </p>
 <pre>
-import org.agilewiki.jactor2.core.plant.Plant;
+import org.agilewiki.jactor2.core.impl.Plant;
 
 public class LooperMessageTimeout {
     static public void main(final String[] _args) throws Exception {
         final Plant plant = new Plant();
         try {
             Hanger hanger = new Hanger();
-            hanger.looperSReq().signal();
+            hanger.looperSOp().signal();
             Thread.sleep(Long.MAX_VALUE);
         } finally {
             plant.close();
@@ -196,13 +193,15 @@ public class LooperMessageTimeout {
 meout -> reactor close
 [pool-1-thread-1] ERROR org.agilewiki.jactor2.core.reactors.Reactor - hung threa
 d
-message=Hanger$1, isClosed=true, isSignal=true, source=null, target=org.agilewik
-i.jactor2.core.reactors.NonBlockingReactor, this=org.agilewiki.jactor2.core.impl
-.SyncRequestImpl@1b4f5062
+message=looper, isComplete=true, isOneWay=true, source=null, target=org.agilewik
+i.jactor2.core.impl.mtReactors.NonBlockingReactorMtImpl@5dccb1ae, this=org.agile
+wiki.jactor2.core.impl.mtRequests.SyncRequestMtImpl@79b2dc6
+[pool-1-thread-1] ERROR org.agilewiki.jactor2.core.reactors.Reactor - hung threa
+d -> plant exit
 </pre>
-<h2>Hung Asynchronous Requests</h2>
+<h2>Hung Asynchronous Operations</h2>
 <p>
-When working with asynchronous requests, it is easy to forget to send a response.
+When working with asynchronous operations, it is easy to forget to send a response.
 Then the program hangs without a hint as to what went wrong. So a bit of logic has been
 added to detect this situation.
 </p>
@@ -213,14 +212,14 @@ So when a message is done processing, there is no response yet for the
 current request and there are no pending responses, it is quite likely that
 there is a bug and the request has been hung.
 This is when the recovery method
-<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onHungRequest-org.agilewiki.jactor2.core.requests.RequestImpl-">onHungRequest</a>
+<a href="../../api/coreMt/org/agilewiki/jactor2/core/impl/mtPlant/Recovery.html#onHungRequest-org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl-">onHungRequest</a>
 is called.
 The default action is to close the reactor.
 </p>
 <p>
 Of course, things are often not that simple. A blade may save a request and respond to it later.
 In this case we need to call
-<a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncRequest.html#setNoHungRequestCheck--">setNoHungRequestCheck</a>.
+<a href="../../api/core/org/agilewiki/jactor2/core/requests/impl/AsyncRequestImpl.html#setNoHungRequestCheck--">setNoHungRequestCheck</a>.
 Fortunately this is an unusual case, so most of the time we are assured that the request will not hang
 and we can focus our code reviews on code that uses the setNoHungRequestCheck method.
 </p>
@@ -230,8 +229,10 @@ demonstrates what happens when there is no response to an asynchronous request.
 </p>
 <pre>
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.plant.Plant;
-import org.agilewiki.jactor2.core.requests.AsyncRequest;
+import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class AsyncHang extends NonBlockingBladeBase {
 
@@ -239,48 +240,55 @@ public class AsyncHang extends NonBlockingBladeBase {
         new Plant();
         try {
             AsyncHang asyncHang = new AsyncHang();
-            asyncHang.hangAReq().call();
+            asyncHang.hangAOp().call();
         } finally {
             Plant.close();
         }
     }
 
-    public AsyncRequest<Void> hangAReq() {
-        return new AsyncBladeRequest<Void>() {
+    public AsyncHang() throws Exception {
+    }
+
+    public AOp&lt;Void&gt; hangAOp() {
+        return new AOp&lt;Void&gt;("hang", getReactor()) {
             @Override
-            public void processAsyncRequest() {
+            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl, 
+					AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
                 //no response--the request hangs
             }
         };
     }
 }
 
+
     Output:
     
 [Thread-0] ERROR org.agilewiki.jactor2.core.reactors.Reactor - hung request:
-message=AsyncHang$1, isClosed=false, isSignal=false, source=org.agilewiki.jactor
-2.core.impl.RequestImplBase$Pender, target=org.agilewiki.jactor2.core.reactors.N
-onBlockingReactor, this=org.agilewiki.jactor2.core.impl.AsyncRequestImpl@ff60fc4
-
+message=hang, isComplete=false, isOneWay=false, source=org.agilewiki.jactor2.cor
+e.impl.mtRequests.RequestMtImpl$Pender@10dca5b7, target=org.agilewiki.jactor2.co
+re.impl.mtReactors.NonBlockingReactorMtImpl@1425a311, this=org.agilewiki.jactor2
+.core.impl.mtRequests.AsyncRequestMtImpl@6039a07
 [Thread-0] ERROR org.agilewiki.jactor2.core.reactors.Reactor - request hung -> r
 eactor close
-Exception in thread "main" org.agilewiki.jactor2.core.plant.ServiceClosedExcepti
-on
-        at org.agilewiki.jactor2.core.impl.RequestImplBase.close(RequestImplBase
-.java:288)
-        at org.agilewiki.jactor2.core.impl.AsyncRequestImpl.pendingCheck(AsyncRe
-questImpl.java:62)
-        at org.agilewiki.jactor2.core.impl.AsyncRequestImpl.processRequestMessag
-e(AsyncRequestImpl.java:70)
-        at org.agilewiki.jactor2.core.impl.RequestImplBase.eval(RequestImplBase.
-java:303)
-        at org.agilewiki.jactor2.core.impl.ReactorImpl.processMessage(ReactorImp
-l.java:367)
-        at org.agilewiki.jactor2.core.impl.ReactorImpl.run(ReactorImpl.java:460)
-
-        at org.agilewiki.jactor2.core.plant.ThreadManager$1.run(ThreadManager.ja
-va:76)
-        at java.lang.Thread.run(Thread.java:744)
+Exception in thread "main" org.agilewiki.jactor2.core.reactors.ReactorClosedExce
+ption
+        at org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl.close(Reques
+tMtImpl.java:345)
+        at org.agilewiki.jactor2.core.impl.mtRequests.AsyncRequestMtImpl.close(A
+syncRequestMtImpl.java:219)
+        at org.agilewiki.jactor2.core.impl.mtRequests.AsyncRequestMtImpl.pending
+Check(AsyncRequestMtImpl.java:108)
+        at org.agilewiki.jactor2.core.impl.mtRequests.AsyncRequestMtImpl.process
+RequestMessage(AsyncRequestMtImpl.java:117)
+        at org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl.eval(Request
+MtImpl.java:370)
+        at org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl.processMessa
+ge(ReactorMtImpl.java:488)
+        at org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl.run(ReactorM
+tImpl.java:577)
+        at org.agilewiki.jactor2.core.impl.mtPlant.ReactorPoolThreadManager$1.ru
+n(ReactorPoolThreadManager.java:78)
+        at java.lang.Thread.run(Thread.java:745)
 </pre>
 </body>
 </html>
