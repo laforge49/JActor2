@@ -115,7 +115,7 @@ IsolationReactor
 <p>
 The use of an IsolationReactor is sometimes essential to properly process an asynchronous operation.
 This happens when an operation accesses the state of the blade,
-sends a request to another reactor,
+sends an operation to another reactor,
 and then updates the state of the blade based on its old value.
 This is illustrated by the <a href="java7/Isolation.java">Isolation</a> program:
 </p>
