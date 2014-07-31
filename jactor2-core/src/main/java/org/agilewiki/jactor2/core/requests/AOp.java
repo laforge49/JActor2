@@ -26,14 +26,12 @@ public abstract class AOp<RESPONSE_TYPE> implements
         targetReactor = (ReactorBase) _targetReactor;
     }
 
-//    @Override
     public void signal() {
         PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor)
                 .signal();
     }
 
     @GwtIncompatible
-//    @Override
     public RESPONSE_TYPE call() throws Exception {
         return PlantImpl.getSingleton()
                 .createAsyncRequestImpl(this, targetReactor).call();

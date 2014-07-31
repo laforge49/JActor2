@@ -10,12 +10,12 @@ import org.agilewiki.jactor2.core.reactors.Facility;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.AsyncNativeRequestWithData;
 import org.agilewiki.jactor2.core.requests.AsyncOperation;
-import org.agilewiki.jactor2.core.requests.SyncNativeRequestWithData;
+import org.agilewiki.jactor2.core.requests.AsyncRequestImplWithData;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.requests.impl.RequestImplWithData;
 
 /**
  * Internal implementation for Plant.
@@ -88,10 +88,10 @@ abstract public class PlantImpl {
             AsyncOperation<RESPONSE_TYPE> _asyncOperation,
             Reactor _targetReactor);
 
-    abstract public <RESPONSE_TYPE> SyncNativeRequestWithData<RESPONSE_TYPE> createSyncRequestImplWithData(
+    abstract public <RESPONSE_TYPE> RequestImplWithData<RESPONSE_TYPE> createSyncRequestImplWithData(
             SyncOperation<RESPONSE_TYPE> _syncOperation, Reactor _targetReactor);
 
-    abstract public <RESPONSE_TYPE> AsyncNativeRequestWithData<RESPONSE_TYPE> createAsyncRequestImplWithData(
+    abstract public <RESPONSE_TYPE> AsyncRequestImplWithData<RESPONSE_TYPE> createAsyncRequestImplWithData(
             AsyncOperation<RESPONSE_TYPE> _asyncOperation,
             Reactor _targetReactor);
 

@@ -16,8 +16,8 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.SyncNativeRequestWithData;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
+import org.agilewiki.jactor2.core.requests.impl.RequestImplWithData;
 
 /**
  * Internal implementation of a SyncRequest, with user payload.
@@ -28,7 +28,7 @@ import org.agilewiki.jactor2.core.requests.SyncOperation;
  */
 public class SyncRequestMtImplWithData<RESPONSE_TYPE> extends
         SyncRequestMtImpl<RESPONSE_TYPE> implements
-        SyncNativeRequestWithData<RESPONSE_TYPE> {
+        RequestImplWithData<RESPONSE_TYPE> {
 
     /** Double parameter 0. */
     private double doubleParam0;
@@ -67,349 +67,57 @@ public class SyncRequestMtImplWithData<RESPONSE_TYPE> extends
 
     /** {@inheritDoc} */
     @Override
-    public double getDouble0() {
-        return doubleParam0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setDouble0(final double newValue) {
-        doubleParam0 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public double getDouble1() {
-        return doubleParam1;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setDouble1(final double newValue) {
-        doubleParam1 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public double getDouble2() {
+    public double getDouble(final int index) {
+        if (index == 0) {
+            return doubleParam0;
+        }
+        if (index == 1) {
+            return doubleParam1;
+        }
+        // We assume the use of invalid indexes would have already failed when
+        // calling the setter.
         return doubleParam2;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setDouble2(final double newValue) {
-        doubleParam2 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    @Override
-    public Object getObject0() {
-        return objectParam0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setObject0(final Object newValue) {
-        objectParam0 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    @Override
-    public Object getObject1() {
-        return objectParam1;
+    public void setDouble(final int index, final double newValue) {
+        if (index == 0) {
+            doubleParam0 = newValue;
+        } else if (index == 1) {
+            doubleParam1 = newValue;
+        } else if (index == 2) {
+            doubleParam2 = newValue;
+        } else {
+            throw new IndexOutOfBoundsException(String.valueOf(index));
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setObject1(final Object newValue) {
-        objectParam1 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    @Override
-    public Object getObject2() {
+    public Object getObject(final int index) {
+        if (index == 0) {
+            return objectParam0;
+        }
+        if (index == 1) {
+            return objectParam1;
+        }
+        // We assume the use of invalid indexes would have already failed when
+        // calling the setter.
         return objectParam2;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setObject2(final Object newValue) {
-        objectParam2 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean getBoolean0() {
-        return doubleParam0 != 0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setBoolean0(final boolean newValue) {
-        doubleParam0 = newValue ? 1 : 0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public byte getByte0() {
-        return (byte) doubleParam0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setByte0(final byte newValue) {
-        doubleParam0 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public char getChar0() {
-        return (char) doubleParam0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setChar0(final char newValue) {
-        doubleParam0 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public short getShort0() {
-        return (short) doubleParam0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setShort0(final short newValue) {
-        doubleParam0 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public int getInt0() {
-        return (int) doubleParam0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setInt0(final int newValue) {
-        doubleParam0 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public float getFloat0() {
-        return (float) doubleParam0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setFloat0(final float newValue) {
-        doubleParam0 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public long getLong0() {
-        if (objectParam0 instanceof Long) {
-            return (Long) objectParam0;
-        }
-        return (long) doubleParam0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setLong0(final long newValue) {
-        if ((newValue >= MIN_LONG_VALUE) && (newValue <= MAX_LONG_VALUE)) {
-            doubleParam0 = newValue;
-        } else {
+    public void setObject(final int index, final Object newValue) {
+        if (index == 0) {
             objectParam0 = newValue;
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean getBoolean1() {
-        return doubleParam1 != 0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setBoolean1(final boolean newValue) {
-        doubleParam1 = newValue ? 1 : 0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public byte getByte1() {
-        return (byte) doubleParam1;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setByte1(final byte newValue) {
-        doubleParam1 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public char getChar1() {
-        return (char) doubleParam1;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setChar1(final char newValue) {
-        doubleParam1 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public short getShort1() {
-        return (short) doubleParam1;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setShort1(final short newValue) {
-        doubleParam1 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public int getInt1() {
-        return (int) doubleParam1;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setInt1(final int newValue) {
-        doubleParam1 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public float getFloat1() {
-        return (float) doubleParam1;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setFloat1(final float newValue) {
-        doubleParam1 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public long getLong1() {
-        if (objectParam1 instanceof Long) {
-            return (Long) objectParam1;
-        }
-        return (long) doubleParam1;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setLong1(final long newValue) {
-        if ((newValue >= MIN_LONG_VALUE) && (newValue <= MAX_LONG_VALUE)) {
-            doubleParam1 = newValue;
-        } else {
+        } else if (index == 1) {
             objectParam1 = newValue;
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean getBoolean2() {
-        return doubleParam2 != 0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setBoolean2(final boolean newValue) {
-        doubleParam2 = newValue ? 1 : 0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public byte getByte2() {
-        return (byte) doubleParam2;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setByte2(final byte newValue) {
-        doubleParam2 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public char getChar2() {
-        return (char) doubleParam2;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setChar2(final char newValue) {
-        doubleParam2 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public short getShort2() {
-        return (short) doubleParam2;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setShort2(final short newValue) {
-        doubleParam2 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public int getInt2() {
-        return (int) doubleParam2;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setInt2(final int newValue) {
-        doubleParam2 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public float getFloat2() {
-        return (float) doubleParam2;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setFloat2(final float newValue) {
-        doubleParam2 = newValue;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public long getLong2() {
-        if (objectParam2 instanceof Long) {
-            return (Long) objectParam2;
-        }
-        return (long) doubleParam2;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setLong2(final long newValue) {
-        if ((newValue >= MIN_LONG_VALUE) && (newValue <= MAX_LONG_VALUE)) {
-            doubleParam2 = newValue;
-        } else {
+        } else if (index == 2) {
             objectParam2 = newValue;
+        } else {
+            throw new IndexOutOfBoundsException(String.valueOf(index));
         }
     }
 }

@@ -25,14 +25,12 @@ public abstract class SOp<RESPONSE_TYPE> implements
         targetReactor = (ReactorBase) _targetReactor;
     }
 
-//    @Override
     public void signal() {
         PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor)
                 .signal();
     }
 
     @GwtIncompatible
-//    @Override
     public RESPONSE_TYPE call() throws Exception {
         return PlantImpl.getSingleton()
                 .createSyncRequestImpl(this, targetReactor).call();

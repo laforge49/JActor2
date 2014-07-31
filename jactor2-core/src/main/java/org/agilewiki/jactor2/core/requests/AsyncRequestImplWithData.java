@@ -15,14 +15,15 @@
  */
 package org.agilewiki.jactor2.core.requests;
 
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImplWithData;
 
 /**
- * API for a payload-carrying native synchronous request.
+ * API for a payload-carrying asynchronous request.
  *
  * @author monster
  */
-public interface SyncNativeRequestWithData<RESPONSE_TYPE> extends
-        SyncNativeRequest<RESPONSE_TYPE>, RequestImplWithData<RESPONSE_TYPE> {
+public interface AsyncRequestImplWithData<RESPONSE_TYPE> extends
+        AsyncRequestImpl<RESPONSE_TYPE>, RequestImplWithData<RESPONSE_TYPE> {
 
 }
