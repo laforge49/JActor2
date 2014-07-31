@@ -407,7 +407,9 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         private ObjectVar(final Class<E> _type, final E _defVal) {
             type = Objects.requireNonNull(_type, "type");
             if (_defVal != null) {
-                if (!type.isInstance(_defVal)) {
+                if (_defVal.getClass() != type) {
+                    // TODO This does not work in GWT
+//                if (!type.isInstance(_defVal)) {
                     throw new IllegalArgumentException("A "
                             + _defVal.getClass() + " is not a " + type);
                 }
@@ -416,8 +418,11 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
 
         /** Returns the value. */
+        @SuppressWarnings("unchecked")
         public E get(final RequestImplWithData<?> _requestImpl) {
-            return type.cast(_requestImpl.getObject(index));
+            return (E) _requestImpl.getObject(index);
+            // TODO This does not work in GWT
+//            return type.cast(_requestImpl.getObject(index));
         }
 
         /** Sets the value. */
