@@ -202,6 +202,11 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
                 .getExceptionHandler();
     }
 
+    /**
+     * A safe way to copy pendingRequests.
+     *
+     * @return A copy of pendingRequests.
+     */
     private TreeSet<RequestImpl<?>> copyPendingRequests() {
         TreeSet<RequestImpl<?>> prc = new TreeSet<RequestImpl<?>>();
         if (pendingRequests.isEmpty())
@@ -224,8 +229,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         if (!incomplete) {
             return;
         }
-        final HashSet<RequestImpl<?>> pr = new HashSet<RequestImpl<?>>(
-                pendingRequests);
+        final TreeSet<RequestImpl<?>> pr = copyPendingRequests();
         final Iterator<RequestImpl<?>> it = pr.iterator();
         while (it.hasNext()) {
             RequestImpl<?> request = it.next();
@@ -256,8 +260,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void cancelAll() {
-        final Set<RequestImpl<?>> all = new HashSet<RequestImpl<?>>(
-                pendingRequests);
+        final TreeSet<RequestImpl<?>> all = copyPendingRequests();
         final Iterator<RequestImpl<?>> it = all.iterator();
         while (it.hasNext()) {
             RequestImpl<?> request = it.next();
