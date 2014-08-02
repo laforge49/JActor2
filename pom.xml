@@ -5,7 +5,7 @@
 
     <groupId>org.agilewiki.jactor2</groupId>
     <artifactId>jactor2</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
     <packaging>pom</packaging>
     <name>JActor2</name>
     <description>POJO Actors</description>

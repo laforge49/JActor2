@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.impl.mtRequests;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
@@ -22,7 +23,7 @@ import org.agilewiki.jactor2.core.util.Timer;
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> implements AsyncNativeRequest<RESPONSE_TYPE> {
 
-    private final Set<RequestImpl<?>> pendingRequests = new HashSet<RequestImpl<?>>();
+    private final Set<RequestImpl<?>> pendingRequests = new TreeSet<RequestImpl<?>>();
 
     private boolean noHungRequestCheck;
 

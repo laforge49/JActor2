@@ -573,4 +573,11 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
             throw new UnsupportedOperationException();
         }
     }
+
+    @Override
+    public int compareTo(RequestImpl _requestImpl) {
+        Integer me = hashCode();
+        Integer h = _requestImpl.hashCode();
+        return me.compareTo(h);
+    }
 }

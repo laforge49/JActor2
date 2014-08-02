@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.agilewiki.jactor2</groupId>
         <artifactId>jactor2</artifactId>
-        <version>0.10.0</version>
+        <version>0.11.0</version>
     </parent>
 
     <artifactId>jactor2-examples</artifactId>
@@ -85,12 +85,12 @@
         <dependency>
             <groupId>org.agilewiki.jactor2</groupId>
             <artifactId>jactor2-core</artifactId>
-            <version>0.10.0</version>
+            <version>0.11.0</version>
         </dependency>
         <dependency>
             <groupId>org.agilewiki.jactor2</groupId>
             <artifactId>jactor2-coreMt</artifactId>
-            <version>0.10.0</version>
+            <version>0.11.0</version>
         </dependency>
         <!--dependency>
             <groupId>org.agilewiki.jactor2</groupId>
