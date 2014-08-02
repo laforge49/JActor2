@@ -2,8 +2,6 @@ package org.agilewiki.jactor2.core.blades.ismTransactions;
 
 import java.util.SortedMap;
 
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
-
 /**
  * The content passed to subscribers of the validation and change RequestBus instances.
  */

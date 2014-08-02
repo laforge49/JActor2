@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.blades.ismTransactions;
 
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
-
 import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
