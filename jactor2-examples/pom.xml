@@ -29,18 +29,6 @@
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.5</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${project.basedir}/src/main/xtend-gen</directory>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                        <fileset>
-                            <directory>${project.basedir}/src/test/xtend-gen</directory>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
@@ -58,25 +46,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--plugin>
-                <groupId>org.eclipse.xtend</groupId>
-                <artifactId>xtend-maven-plugin</artifactId>
-                <version>2.6.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
-                            <goal>xtend-install-debug-info</goal>
-                            <goal>xtend-test-install-debug-info</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/src/main/xtend-gen</outputDirectory>
-                            <testOutputDirectory>${project.basedir}/src/test/xtend-gen</testOutputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin-->
         </plugins>
     </build>
 
@@ -92,11 +61,6 @@
             <artifactId>jactor2-coreMt</artifactId>
             <version>0.10.0</version>
         </dependency>
-        <!--dependency>
-            <groupId>org.agilewiki.jactor2</groupId>
-            <artifactId>jactor2-xtend</artifactId>
-            <version>0.10.0</version>
-        </dependency-->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -107,16 +71,6 @@
             <artifactId>pcollections</artifactId>
             <version>2.1.2</version>
         </dependency>
-        <!--dependency>
-            <groupId>org.eclipse.xtend</groupId>
-            <artifactId>org.eclipse.xtend.lib</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.xtend</groupId>
-            <artifactId>org.eclipse.xtend.core</artifactId>
-            <version>2.6.1</version>
-        </dependency-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
