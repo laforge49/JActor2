@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.transactions;
+package org.agilewiki.jactor2.core.blades.ismTransactions;
 
 import java.util.Map;
 import java.util.SortedSet;

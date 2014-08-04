@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.agilewiki.jactor2.core.blades.filters.Filter;
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableSource;
 
 /**

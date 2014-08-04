@@ -1,10 +1,13 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NamedBlade;
+import org.agilewiki.jactor2.core.blades.ismTransactions.ISMReference;
+import org.agilewiki.jactor2.core.blades.ismTransactions.ISMUpdateTransaction;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
+import org.agilewiki.jactor2.core.blades.ismTransactions.ISMap;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
+import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
@@ -18,6 +21,8 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
 
     public final RequestBus<RegistrationNotification> registrationNotifier;
 
+    public final ISMReference<String> configuration;
+
     /**
      * Create a facility with the Plant internal reactor as the parent.
      *
@@ -26,6 +31,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
     public Facility(final String _name) throws Exception {
         name = _name;
         registrationNotifier = new RequestBus<RegistrationNotification>(this);
+        configuration = new ISMReference<>();
     }
 
     /**
@@ -39,6 +45,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         super(_parentReactor);
         name = _name;
         registrationNotifier = new RequestBus<RegistrationNotification>(this);
+        configuration = new ISMReference<>();
     }
 
     /**
@@ -53,6 +60,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         super(_initialOutboxSize, _initialLocalQueueSize);
         name = _name;
         registrationNotifier = new RequestBus<RegistrationNotification>(this);
+        configuration = new ISMReference<>();
     }
 
     /**
@@ -69,6 +77,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         super(null, _initialOutboxSize, _initialLocalQueueSize);
         name = _name;
         registrationNotifier = new RequestBus<RegistrationNotification>(this);
+        configuration = new ISMReference<>(getReactor());
     }
 
     @Override
@@ -175,5 +184,28 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
                 return null;
             }
         };
+    }
+
+    /**
+     * Returns the value of a property.
+     *
+     * @param propertyName The property name.
+     * @return The property value, or null.
+     */
+    public Object getProperty(final String propertyName) {
+        return configuration.getImmutable().get(propertyName);
+    }
+
+    public AOp<ISMap<String>> putPropertyAOp(final String _propertyName,
+                                             final String _propertyValue) {
+        return new ISMUpdateTransaction<String>(_propertyName, _propertyValue).
+                applyAOp(configuration);
+    }
+
+    public AOp<ISMap<String>> putPropertyAOp(final String _propertyName,
+                                             final String _expectedValue,
+                                             final String _propertyValue) {
+        return new ISMUpdateTransaction<String>(_propertyName, _propertyValue, _expectedValue).
+                applyAOp(configuration);
     }
 }

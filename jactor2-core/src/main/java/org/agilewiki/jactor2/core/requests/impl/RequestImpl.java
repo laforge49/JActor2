@@ -11,7 +11,7 @@ import org.agilewiki.jactor2.core.util.GwtIncompatible;
  *
  * @param <RESPONSE_TYPE>    The return value type.
  */
-public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable {
+public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable, Comparable<RequestImpl> {
 
     /**
      * Returns the Request implemented by this RequestImpl.

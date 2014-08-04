@@ -10,7 +10,7 @@ import org.agilewiki.jactor2.core.blades.ismTransactions.ImmutableChange;
 import org.agilewiki.jactor2.core.blades.ismTransactions.ImmutableChanges;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAOp;
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
+import org.agilewiki.jactor2.core.blades.ismTransactions.ISMap;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;

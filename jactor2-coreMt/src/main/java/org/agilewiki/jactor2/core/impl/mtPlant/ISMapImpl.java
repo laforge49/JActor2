@@ -9,7 +9,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
+import org.agilewiki.jactor2.core.blades.ismTransactions.ISMap;
 import org.pcollections.HashPMap;
 import org.pcollections.HashTreePMap;
 

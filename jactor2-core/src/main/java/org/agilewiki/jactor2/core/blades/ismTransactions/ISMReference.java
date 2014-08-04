@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.blades.ismTransactions;
 import java.util.Map;
 
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableReference;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;

@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.blades.ismTransactions;
 
-import org.agilewiki.jactor2.core.blades.transactions.ISMap;
 import org.agilewiki.jactor2.core.blades.transactions.ImmutableSource;
 
 /**

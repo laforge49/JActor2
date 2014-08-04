@@ -1,8 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
@@ -22,7 +20,7 @@ import org.agilewiki.jactor2.core.util.Timer;
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> implements AsyncNativeRequest<RESPONSE_TYPE> {
 
-    private final Set<RequestImpl<?>> pendingRequests = new HashSet<RequestImpl<?>>();
+    private final TreeSet<RequestImpl<?>> pendingRequests = new TreeSet<RequestImpl<?>>();
 
     private boolean noHungRequestCheck;
 
@@ -204,13 +202,34 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
                 .getExceptionHandler();
     }
 
+    /**
+     * A safe way to copy pendingRequests.
+     *
+     * @return A copy of pendingRequests.
+     */
+    private TreeSet<RequestImpl<?>> copyPendingRequests() {
+        TreeSet<RequestImpl<?>> prc = new TreeSet<RequestImpl<?>>();
+        if (pendingRequests.isEmpty())
+            return prc;
+        RequestImpl<?> pendingRequest = pendingRequests.first();
+        try {
+            pendingRequest = pendingRequests.first();
+        } catch (NoSuchElementException nsee) {
+            return prc;
+        }
+        while (pendingRequest != null) {
+            prc.add(pendingRequest);
+            pendingRequest = pendingRequests.higher(pendingRequest);
+        }
+        return prc;
+    }
+
     @Override
     public void close() {
         if (!incomplete) {
             return;
         }
-        final HashSet<RequestImpl<?>> pr = new HashSet<RequestImpl<?>>(
-                pendingRequests);
+        final TreeSet<RequestImpl<?>> pr = copyPendingRequests();
         final Iterator<RequestImpl<?>> it = pr.iterator();
         while (it.hasNext()) {
             RequestImpl<?> request = it.next();
@@ -241,8 +260,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void cancelAll() {
-        final Set<RequestImpl<?>> all = new HashSet<RequestImpl<?>>(
-                pendingRequests);
+        final TreeSet<RequestImpl<?>> all = copyPendingRequests();
         final Iterator<RequestImpl<?>> it = all.iterator();
         while (it.hasNext()) {
             RequestImpl<?> request = it.next();
