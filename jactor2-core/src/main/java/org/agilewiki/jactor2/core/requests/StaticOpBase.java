@@ -505,7 +505,7 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
     /**
      * Create a static asynchronous operation.
      *
-     * @param _opName           The name of the operation.
+     * @param bladeType           The class of the operation.
      */
     protected StaticOpBase(final Class<B> bladeType) {
         opName = removeOuter(getClass());

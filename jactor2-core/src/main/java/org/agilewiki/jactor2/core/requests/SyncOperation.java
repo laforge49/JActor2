@@ -12,4 +12,6 @@ public interface SyncOperation<RESPONSE_TYPE> extends Operation<RESPONSE_TYPE> {
      * @return The value returned by the target blades.
      */
     RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception;
+
+    RESPONSE_TYPE doSync(final RequestImpl _requestImpl) throws Exception;
 }

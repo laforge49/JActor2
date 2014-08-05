@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
 import org.agilewiki.jactor2.core.util.Timer;
 
@@ -23,6 +24,13 @@ public abstract class SOp<RESPONSE_TYPE> implements
     public SOp(final String _opName, final Reactor _targetReactor) {
         opName = _opName;
         targetReactor = (ReactorBase) _targetReactor;
+    }
+
+    public RESPONSE_TYPE doSync(final RequestImpl _requestImpl) throws Exception {
+        if (!_requestImpl.getTargetReactor().asReactorImpl().isRunning())
+            throw new IllegalStateException(
+                    "Not thread safe: not called from within an active request");
+        return processSyncOperation(_requestImpl);
     }
 
     public void signal() {

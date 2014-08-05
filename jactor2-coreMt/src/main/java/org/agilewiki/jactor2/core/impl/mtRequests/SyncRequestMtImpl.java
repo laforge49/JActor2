@@ -55,6 +55,14 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
+    public RESPONSE_TYPE doSync(final RequestImpl _requestImpl) throws Exception {
+        if (!_requestImpl.getTargetReactor().asReactorImpl().isRunning())
+            throw new IllegalStateException(
+                    "Not thread safe: not called from within an active request");
+        return processSyncOperation(_requestImpl);
+    }
+
+    @Override
     public RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception {
         throw new IllegalStateException();
     }

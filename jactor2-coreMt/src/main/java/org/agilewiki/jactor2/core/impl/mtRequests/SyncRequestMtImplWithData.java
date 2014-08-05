@@ -17,6 +17,7 @@ package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImplWithData;
 
 /**
@@ -119,5 +120,13 @@ public class SyncRequestMtImplWithData<RESPONSE_TYPE> extends
         } else {
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
+    }
+
+    @Override
+    public RESPONSE_TYPE doSync(final RequestImpl _requestImpl) throws Exception {
+        if (!_requestImpl.getTargetReactor().asReactorImpl().isRunning())
+            throw new IllegalStateException(
+                    "Not thread safe: not called from within an active request");
+        return processSyncOperation(_requestImpl);
     }
 }
