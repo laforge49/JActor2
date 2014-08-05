@@ -500,9 +500,10 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
     @Override
     public <RT> RT syncDirect(final SyncNativeRequest<RT> _syncNativeRequest)
             throws Exception {
-        ReactorMtImpl reactorMtImpl = (ReactorMtImpl) _syncNativeRequest.getTargetReactor();
-        reactorMtImpl.directCheck(getTargetReactor());
-        return _syncNativeRequest.processSyncOperation(this);
+        if (getTargetReactor() != getSourceReactor())
+            throw new UnsupportedOperationException(
+                    "Not thread safe: source reactor is not the same");
+        return _syncNativeRequest.doSync(this);
     }
 
     @Override

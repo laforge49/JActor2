@@ -33,6 +33,13 @@ public abstract class SOp<RESPONSE_TYPE> implements
         return processSyncOperation(_requestImpl);
     }
 
+    /**
+     * The processSyncRequest method will be invoked by the target Reactor on its own thread.
+     *
+     * @return The value returned by the target blades.
+     */
+    public abstract RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception;
+
     public void signal() {
         PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor)
                 .signal();

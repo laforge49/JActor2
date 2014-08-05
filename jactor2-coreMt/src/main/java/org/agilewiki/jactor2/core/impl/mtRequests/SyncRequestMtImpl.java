@@ -45,7 +45,7 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
         boolean success = false;
         final RESPONSE_TYPE result;
         try {
-            result = syncOperation.processSyncOperation(this);
+            result = syncOperation.doSync(this);
             success = true;
         } finally {
             timer.updateNanos(timer.nanos() - start, success);
@@ -62,7 +62,6 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
         return processSyncOperation(_requestImpl);
     }
 
-    @Override
     public RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception {
         throw new IllegalStateException();
     }

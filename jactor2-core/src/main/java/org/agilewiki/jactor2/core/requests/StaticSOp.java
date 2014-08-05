@@ -36,7 +36,7 @@ public abstract class StaticSOp<B extends Blade, RESPONSE_TYPE> extends
 
     @SuppressWarnings("unchecked")
     @Override
-    public final RESPONSE_TYPE processSyncOperation(
+    public final RESPONSE_TYPE doSync(
             @SuppressWarnings("rawtypes") final RequestImpl _requestImpl)
             throws Exception {
         final RequestImplWithData<RESPONSE_TYPE> req = (RequestImplWithData<RESPONSE_TYPE>) _requestImpl;
