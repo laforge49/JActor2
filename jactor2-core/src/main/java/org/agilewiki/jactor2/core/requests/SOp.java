@@ -38,7 +38,7 @@ public abstract class SOp<RESPONSE_TYPE> implements
      *
      * @return The value returned by the target blades.
      */
-    public abstract RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception;
+    protected abstract RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception;
 
     public void signal() {
         PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor)

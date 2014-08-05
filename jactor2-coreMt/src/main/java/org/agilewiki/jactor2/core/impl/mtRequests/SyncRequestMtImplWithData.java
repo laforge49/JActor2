@@ -121,12 +121,4 @@ public class SyncRequestMtImplWithData<RESPONSE_TYPE> extends
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
     }
-
-    @Override
-    public RESPONSE_TYPE doSync(final RequestImpl _requestImpl) throws Exception {
-        if (!_requestImpl.getTargetReactor().asReactorImpl().isRunning())
-            throw new IllegalStateException(
-                    "Not thread safe: not called from within an active request");
-        return processSyncOperation(_requestImpl);
-    }
 }

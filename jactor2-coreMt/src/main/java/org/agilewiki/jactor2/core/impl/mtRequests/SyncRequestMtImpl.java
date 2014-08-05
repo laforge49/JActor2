@@ -62,7 +62,7 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
         return processSyncOperation(_requestImpl);
     }
 
-    public RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+    protected RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception {
         throw new IllegalStateException();
     }
 }
