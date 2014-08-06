@@ -71,7 +71,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
 
         new SOp<Void>("null", this.getReactor()) {
             @Override
-            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 return null;
             }
         }.signal();

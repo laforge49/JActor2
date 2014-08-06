@@ -51,7 +51,7 @@ public class DelayAOp extends SAOp<Void> {
                 try {
                     new SOp<Void>("timeout", PlantBase.getInternalFacility()) {
                         @Override
-                        public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+                        protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                             if (!_asyncRequestImpl.isCanceled()) {
                                 dis.processAsyncResponse(null);
                             }

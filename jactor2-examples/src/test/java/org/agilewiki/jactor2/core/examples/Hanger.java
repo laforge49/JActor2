@@ -13,7 +13,7 @@ class Hanger extends NonBlockingBladeBase {
     SOp<Void> looperSOp() {
         return new SOp<Void>("looper", getReactor()) {
             @Override
-            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 while (true) {}
             }
         };

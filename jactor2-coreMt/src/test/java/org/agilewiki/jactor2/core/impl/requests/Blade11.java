@@ -17,7 +17,7 @@ public class Blade11 extends IsolationBladeBase {
     public SOp<String> hiSOp() {
         return new SOp<String>("hi", getReactor()) {
             @Override
-            public String processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected String processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 return "Hello world!";
             }
         };

@@ -33,7 +33,7 @@ public class Delay extends BlockingBladeBase {
     public SOp<Void> sleepSOp(final int _delay) {
         return new SOp<Void>("sleep", getReactor()) {
             @Override
-            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 Thread.sleep(_delay);
                 return null;
             }

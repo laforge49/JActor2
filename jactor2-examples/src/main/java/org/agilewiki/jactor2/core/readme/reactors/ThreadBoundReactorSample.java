@@ -32,7 +32,7 @@ public class ThreadBoundReactorSample {
         //Terminate the blades.
         new SOp<Void>("finBlade", threadBoundBlade.getReactor()) {
             @Override
-            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 threadBoundBlade.fin();
                 return null;
             }

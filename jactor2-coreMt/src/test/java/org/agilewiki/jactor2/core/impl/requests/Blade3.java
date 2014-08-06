@@ -15,7 +15,7 @@ public class Blade3 extends IsolationBladeBase {
     public SOp<Void> hi3SOp() {
         return new SOp<Void>("hi3", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 System.out.println("Hello world!");
                 return null;
             }

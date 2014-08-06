@@ -60,7 +60,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
     public SOp<Void> signalsContentSOp(final CONTENT _content) {
         return new SOp<Void>("signalsContent", getReactor()) {
             @Override
-            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 signalContent(_content);
                 return null;
             }

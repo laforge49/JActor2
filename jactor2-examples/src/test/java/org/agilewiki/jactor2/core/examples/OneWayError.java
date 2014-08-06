@@ -56,7 +56,7 @@ class OneRuntime extends NonBlockingBladeBase {
         }
 
         @Override
-        public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+        protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
             throw new RuntimeException();
         }
     }

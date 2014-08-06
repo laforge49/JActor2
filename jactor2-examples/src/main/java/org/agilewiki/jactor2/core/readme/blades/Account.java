@@ -16,7 +16,7 @@ public class Account extends NonBlockingBladeBase {
     public SOp<Void> depositSOp(final int _amount) {
         return new SOp<Void>("deposit", getReactor()) {
             @Override
-            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 balance += _amount;
                 return null;
             }

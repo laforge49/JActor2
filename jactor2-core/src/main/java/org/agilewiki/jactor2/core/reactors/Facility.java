@@ -141,7 +141,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
     public SOp<NamedBlade> unregisterBladeSOp(final String _name) {
         return new SOp<NamedBlade>("unregisterBlade", Facility.this) {
             @Override
-            public NamedBlade processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected NamedBlade processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 final NamedBlade removed = namedBlades.get(_name);
                 if (removed != null) {
                     namedBlades = namedBlades.minus(_name);
@@ -166,7 +166,7 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         validateName(name);
         return new SOp<Void>("registerBlade", getReactor()) {
             @Override
-            public Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 String name = _blade.getName();
                 final NamedBlade oldBlade = namedBlades.get(name);
                 if (oldBlade != null) {
