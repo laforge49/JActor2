@@ -10,12 +10,11 @@ The net result being code that is both simpler and more robust, and hence easier
     - [Synchronous Calls](#synchronous-calls)
     - [Asynchronous Sends](#asynchronous-sends)
     - [Exception Handling](#exception-handling)
-    - [Request Factories](#request-factories)
+    - [Operation Factories](#operation-factories)
     - [Parallel Processing](#parallel-processing)
 - [Advanced Features](#advanced-features)
-    - [Canceled Requests](#canceled-requests)
+    - [Canceled Operations](#canceled-operations)
     - [Partial Failure](#partial-failure)
-    - [Direct Method Calls](#direct-method-calls)
     - [Message Buffers](#message-buffers)
     - [Thread Migration](#thread-migration)
     - [OnIdle](#onidle)
@@ -24,7 +23,6 @@ The net result being code that is both simpler and more robust, and hence easier
     - [Request Passing](#request-passing)
     - [Request Types](#request-types)
 - [Next Step](#next-step)
-- [Upcoming Projects](#upcoming-projects)
 - [Links](#links)
 
 Background
@@ -94,24 +92,24 @@ Introducing JActor2
 
 JActor2 differs from other actor frameworks in several ways:
 
-1. Requests are first-class objects, typically defined within the context of an actor's state
+1. Operations are first-class objects, typically defined within the context of an actor's state
 as a nested or anonymous class, so when
-they are evaluated they can operate on that state. This is in contrast to other frameworks where
-the request is little more than a name and a set of parameters.
-2. Uncaught exceptions and responses are passed back to the context from which a request originated,
+they are invoked, they can operate on that state. This is in contrast to other frameworks where
+the operation is little more than a name and a set of parameters.
+2. Uncaught exceptions and responses are passed back to the context from which an operation was invoked,
 modeling the way exceptions and return values are handled with Java method calls.
-3. For every request that is sent to another actor, there is every assurance that a response or exception
+3. For every operation that is invoked on another actor, there is every assurance that a response or exception
 will be passed back.
-4. Messages (requests/responses) are processed in the order they are received by an actor.
+4. Messages (operation invocations/responses) are processed in the order they are received by an actor.
 
 There are three things of particular note here:
 
-1. Uncaught exceptions are passed back to the context which originated a request, i.e. to the context most likely able
+1. Uncaught exceptions are passed back to the context which invoked an operation, i.e. to the context most likely able
 to handle those exceptions. This differs from more traditional actor frameworks where the supervisor of an actor
 must handle the exceptions without knowledge of the context from which they arose.
-2. A response or exception is passed back for every request that is sent, though processing is entirely asynchronous.
-This is largely the result of modeling requests after Java method calls, but with additional support for detecting
-infinite loops and erroneous request processing.
+2. A response or exception is passed back for every operation that is invoked, though processing is entirely asynchronous.
+This is largely the result of modeling operations after Java method calls, but with additional support for detecting
+infinite loops and erroneous processing.
 3. Messages are not selected for processing based on the state of the actor, but are processed in the order received.
 Nor does an actor block its thread when waiting for a response.
 Actors then are not coupled, so
@@ -126,20 +124,17 @@ Reactors are composable.
 [blades](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/blades/package-summary.html).
 A blade has state and a reference to the reactor it is a part of,
 though the default constructor of a blade will often create its own reactor.
-Blades define the requests which operate on their state.
-- Messages are called
-[requests](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/package-summary.html)
-and are first class single-use objects.
-Requests are bound to a blade or reactor and are evaluated (executed)
+Blades define the operations which access their state.
+- Messages are used to pass operations and responses between treads.
+Operations are bound to a blade or reactor and are processed (executed)
 only on the reactor's thread.
-After a request has been evaluated and has a result, it becomes a response
-and is passed back to the reactor which originated the request.
-- When a request is sent by one actor to another actor, a callback is assigned to the request.
+After an operation has been processed, the response
+is passed back to the reactor which invoked the operation.
+- When an operation is sent by one actor to another actor, a callback is assigned to the message.
 The callback is a subclass of
 [AsyncResponseProcessor](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/AsyncResponseProcessor.html)
 and has a single method, processAsyncResponse.
-When a response is passed back to the originating reactor, the processAsyncResponse method is called on the thread of
-the originating actor.
+When a response is passed back to the originating reactor, the processAsyncResponse method is called on the reactor's thread.
 - The [Plant](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/plant/package-summary.html)
 is a singleton which creates the thread pool used by the reactors.
 Plant's methods are all static.
@@ -148,10 +143,10 @@ Synchronous Calls
 -----
 
 Reactors mostly interact with other reactors, but it is not turtles all the way down. Java programs begin of course
-with a main method. To pass a request to a reactor, we use the request's call method.
+with a main method. To pass an operation to a reactor, we use the operation's call method.
 
-The call method is synchronous. The thread is blocked until a response value or an exception is passed back.
-The return value of the call method is the response value assigned by the request when it is evaluated by the
+The call method is synchronous. The thread is blocked until a response or an exception is passed back.
+The return value of the call method is the response assigned by the operation when it is evaluated by the
 reactor. But when an exception is passed back, it is thrown.
 
 ```java
@@ -173,11 +168,11 @@ reactor. But when an exception is passed back, it is thrown.
 
 1. A Plant is created. Plant in turn creates the thread pool.
 2. A blade, A, is created, which in turn creates its own reactor.
-3. A request bound to blade A, Start, is created.
-4. The Start request is added to the inbox of A's reactor.
+3. An operation bound to blade A, Start, is created.
+4. The Start operation is added to the inbox of A's reactor.
 5. The main thread waits for an assured response or an exception. (A
 [ReactorClosedException](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/reactors/ReactorClosedException.html)
-is thrown if the Start request hangs.)
+is thrown if the Start operation hangs.)
 6. The plant is closed, which in turn closes blade A's reactor and the thread pool.
 
 ![Image](images/call.jpg)
@@ -186,13 +181,13 @@ Asynchronous Sends
 -----
 
 Messages are always passed asynchronously between reactors. Two-way messages are passed
-using the send method on the AsyncRequest class. And the two arguments to send are
-(1) the request to be invoked on the target reactor and (2) the callback to be executed
-on completion of that request.
+using the send method on an AsyncRequestImpl object. And the two arguments to send are
+(1) the operation to be invoked on the target reactor and (2) the callback to be executed
+on completion of that operation.
 
 A request/response exchange between actors does not block.
 
-Let use say that a Start request in blade A is to send an Add1 request to blade B.
+Let use say that a Start operation in blade A is to send an Add1 operation to blade B.
 
 ```java
 
@@ -249,23 +244,23 @@ Let use say that a Start request in blade A is to send an Add1 request to blade 
 
 1. Blade B is created in the constructor of A.
 2. The startResponse is created.
-2. The startResponse is assigned to the Start request and the Start request is added to the inbox of blade A's reactor.
-3. Blade A's reactor evaluates the Start request. The Start request creates the Add1 request.
-4. The  Start request is added to the inbox of Blade B's reactor.
-5. Blade B's reactor evaluates the Add1 request. The Add1 request adds 1 to blade B's count.
-6. The Add1 request is assigned a result value of null and is passed back to blade A's reactor.
+2. The startResponse is sent with the Start operation to the inbox of blade A's reactor.
+3. Blade A's reactor evaluates the Start operation. The Start operation creates the Add1 operation.
+4. The  Add1 operation is send to the inbox of Blade B's reactor.
+5. Blade B's reactor evaluates the Add1 operation. The Add1 operation adds 1 to blade B's count.
+6. The Add1 operation is assigned a result of null and is passed back to blade A's reactor.
 7. The startResponse callback is evaluated by blade A's reactor. The callback prints "added 1".
-8. The Start request is assigned a result value of null and is passed back to the reactor which originated the
-Start request.
+8. The Start operation assigns a result of null which is passed back to the reactor that invoked the
+Start operation.
 
 ![Image](images/send.jpg)
 
 Exception Handling
 -----
 
-When an exception is raised and uncaught while processing a request, the natural thing to do is to pass that exception
-back to the originating request. It would be nice to use try/catch to intercept that exception in the originating
-request, but that is simply not possible. So we use an
+When an exception is raised and uncaught while processing an operation, the natural thing to do is to pass that exception
+back to the context that invoked the operation. It would be nice to use try/catch to intercept that exception in the originating
+operation, but that is simply not possible. So we use an
 [ExceptionHandler](http://www.agilewiki.org/docs/api/org/agilewiki/jactor2/core/requests/ExceptionHandler.html)
 instead.
 
@@ -284,7 +279,7 @@ instead.
         AOp<Void> startAOp() {
             return new AOp<Void>("start", getReactor()) {
                 @Override
-                public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                                   final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                         throws Exception {
                     B b = new B();
@@ -324,7 +319,7 @@ instead.
         AOp<Void> woopsAOp() {
             return new AOp<Void>("woops", getReactor()) {
                 @Override
-                public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                                   AsyncResponseProcessor<Void> _asyncResponseProcessor)
                         throws Exception {
                     throw new IOException();
@@ -334,36 +329,36 @@ instead.
     }
 ```
 
-1. Blade B is created in the constructor of the Start request.
+1. Blade B is created in the constructor of the Start operation.
 2. The woopsResponse is created.
 3. The exceptionHandler is created.
-4. The Start request is added to the inbox of blade A's reactor.
-5. Blade A's reactor evaluates the Start request.
-The start request is assigned the exceptionHandler.
-6. A Woops request is created.
-7. The woopsResponse is assigned to the Woops request and the Woops request is added to the inbox of blade B's reactor.
-8. Blade B's reactor evaluates the Woops request,
+4. The Start operation is sent to the inbox of blade A's reactor.
+5. Blade A's reactor evaluates the Start operation.
+The start operation is assigned the exceptionHandler.
+6. A Woops operation is created.
+7. The woopsResponse is sent with the Woops operation to the inbox of blade B's reactor.
+8. Blade B's reactor evaluates the Woops operation,
 which throws an IOException.
-9. The Woops request is assigned a result value of IOException and is passed back to to blade A's reactor.
+9. The Woops operation assigns a result of IOException and is passed back to to blade A's reactor.
 10. The exceptionHandler is evaluated by blade A's reactor with a value of IOException, and
 prints "got IOException"
-11. The Start request is assigned a result value of null and
-is passed back to the reactor which originated the Start request.
+11. The Start operation assigns a result value of null which
+is passed back to the reactor which originated the Start operation.
 
 ![Image](images/exceptionHandler.jpg)
 
-When a request does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
-to the originating request. Exceptions then are handled very much as they are when doing a method call.
+When an operation does not have an exception handler, any uncaught or unhandled exceptions are simply passed up
+to the originating operation. Exceptions then are handled very much as they are when doing a method call.
 
-There is a huge advantage to this approach. When a request is sent, the originating request will **always** get
+There is a huge advantage to this approach. When an operation is sent, the originating operation will **always** get
 back either a result or an exception. So you do not need to write a lot of defensive code, making your applications
 easier to write and naturally more robust.
 
-Request Factories
+Operation Factories
 -----
 
 Nested classes impede decoupling, which is important for clarity, testing and reusability.
-But by introducing request factory methods we can then use interfaces to decouple our blades.
+But by introducing operation factory methods we can then use interfaces to decouple our blades.
 
 ```java
 
@@ -387,7 +382,7 @@ But by introducing request factory methods we can then use interfaces to decoupl
         public AOp<Void> add1AOp() {
             return new AOp<Void>("add1", getReactor()) {
                 @Override
-                public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                                   final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                         throws Exception {
                     count = count + 1;
@@ -404,7 +399,7 @@ But by introducing request factory methods we can then use interfaces to decoupl
         public AOp<Void> startAOp(final B _b) {
             return new AOp<Void>("start", getReactor()) {
                 @Override
-                public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                                   final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                         throws Exception {
 
@@ -440,7 +435,7 @@ Parallel Processing
 -----
 
 So far everything we have looked at, while fully asynchronous, is entirely sequential--doing one thing at a time in
-a pre-determined order. But doing things in parallel is as simple as having multiple sends.
+a pre-determined order. But doing things in parallel is as simple as having multiple outstanding sends.
 
 ```java
 
@@ -462,15 +457,15 @@ a pre-determined order. But doing things in parallel is as simple as having mult
     }
 
     class All extends AOp<Void> {
-        final AOp<Void>[] requests;
+        final AOp<Void>[] operations;
 
-        All(final AOp<Void> ... _requests) throws Exception {
+        All(final AOp<Void> ... _operations) throws Exception {
             super("All", new NonBlockingReactor());
-            requests = _requests;
+            operations = _operations;
         }
 
         @Override
-        public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+        protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                           final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                 throws Exception {
 
@@ -483,8 +478,8 @@ a pre-determined order. But doing things in parallel is as simple as having mult
             };
 
             int i = 0;
-            while (i < requests.length) {
-                _asyncRequestImpl.send(requests[i], responseProcessor);
+            while (i < operations.length) {
+                _asyncRequestImpl.send(operations[i], responseProcessor);
                 i += 1;
             }
         }
@@ -496,7 +491,7 @@ a pre-determined order. But doing things in parallel is as simple as having mult
         }
 
         @Override
-        public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+        protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
                 throws Exception {
             System.out.println(opName);
@@ -506,18 +501,18 @@ a pre-determined order. But doing things in parallel is as simple as having mult
 ```
 
 In the above example there is no persistent state, which is why there are no blades. Instead we just define
-request classes and in their constructors we create the required reactors.
+operation classes and in their constructors we create the required reactors.
 
-One new method has been introduced in the responseProcessor, getPendingResponseCount(). JActor2 tracks the
-number of incomplete subordinate requests and this method returns their count. We use this method to ensure that
-all the requests have completed before the All request returns a null response value.
+One new method has been introduced in the responseProcessor, _asyncRequestImpl.getPendingResponseCount(). JActor2 tracks the
+number of incomplete subordinate operations and this method returns their count. We use this method to ensure that
+all the operations have completed before the All operation returns a null response value.
 
 Advanced Features
 =====
 
 JActor2 goes well beyond basic 2-way messaging, providing a comprehensive and robust set of features.
 
-Canceled Requests
+Canceled Operations
 -----
 
 Requests are canceled when they are no longer useful and once canceled, a request can no longer send subordinate
@@ -551,7 +546,7 @@ requests in parallel and use the first result returned.
         }
 
         @Override
-        public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+        protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                           final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
                 throws Exception {
             _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
@@ -600,7 +595,7 @@ Here then is the rest of the program and its output:
         }
 
         @Override
-        public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+        protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                           final AsyncResponseProcessor<Long> _asyncResponseProcessor)
                 throws Exception {
             for (long i = 0; i < delay * 100000; i++)
@@ -620,7 +615,7 @@ Here then is the rest of the program and its output:
         }
 
         @Override
-        public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+        protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                           final AsyncResponseProcessor<Long> _asyncResponseProcessor)
                 throws Exception {
             if (delay == 0)
@@ -702,17 +697,6 @@ So it is important to catch this exception at the points where a partial failure
 
 The point here is that any sufficiently large program will have bugs, and isolating a failure to a few reactors
 can be very important. The failed reactors can then be optionally restarted.
-
-Direct Method Calls
------
-
-Methods of one blade can and should directly call the methods of another blade, providing either
-
-- The method being called is thread-safe. Or
-- Both blades use the same reactor.
-
-Of course, when a method is not thread-safe, it is a good idea to provide some form of sanity check. The method
-being called can do this by calling the directCheck method on BladeBase, which many blade classes extend.
 
 Message Buffers
 -----
@@ -813,30 +797,7 @@ A good next step now would be to look at the
 [core tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html),
 which covers programming with JActor2 step-by-step.
 
-Upcoming Projects
-=====
 
-- JActor2 [modules](https://github.com/laforge49/JActor-Modules) (alpha)
-    - A  classpath loader is needed so different modules can access different jar files.
-    - The API needs cleaning up and the javadocs updated.
-    - Integration of facilities with ZooKeeper would move JActor nicely towards cluster support.
-    - The tutorial needs a lot of work.
-- JActor2 [logback](https://github.com/laforge49/JActor-util/issues?milestone=2&page=1&state=open) (new)
-    - Integration with [logback](http://logback.qos.ch/) would provide added support for clusters.
-    - [Groovy](http://logback.qos.ch/manual/groovy.html) can be used for logback configuration.
-    [ServerSocketAppender](http://logback.qos.ch/manual/appenders.html) and
-    [SocketReceiver](http://logback.qos.ch/manual/receivers.html) can used to pass the logs.
-    This would allow us to have multiple nodes that do the file logging. These nodes then would need
-    to be configured with one SocketReceiver per ZooKeeper node of interest.
-- JActor2 [web](https://github.com/laforge49/JActor-util/issues?milestone=4&page=1&state=open) (new)
-    - Integration of JActor2 with something like netty's web server would make it easier to use JActor2 based servlets.
-- JActor2 [durable](https://github.com/laforge49/JActor-util/issues?milestone=1&page=1&state=open) (alpha)
-    - The code needs a good rework, using composition to simplify the API much the same way it was done in core.
-    A super high-speed serialization library is important, but no if no one understands how to use it.
-    - A tutorial is needed.
-- JActor2 [db](https://github.com/laforge49/JActor-util/issues?milestone=3&page=1&state=open) (new)
-    - A high-performance database with live backups that builds on JActor2 serialization and distributed logging
-    could be very useful in building scalable applications.
 
 Links
 -----
