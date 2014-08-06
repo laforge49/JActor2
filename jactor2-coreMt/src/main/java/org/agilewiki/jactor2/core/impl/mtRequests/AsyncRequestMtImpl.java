@@ -211,7 +211,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         TreeSet<RequestImpl<?>> prc = new TreeSet<RequestImpl<?>>();
         if (pendingRequests.isEmpty())
             return prc;
-        RequestImpl<?> pendingRequest = pendingRequests.first();
+        RequestImpl<?> pendingRequest;
         try {
             pendingRequest = pendingRequests.first();
         } catch (NoSuchElementException nsee) {
