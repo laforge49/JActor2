@@ -491,7 +491,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
     @Override
     public <RT> RT syncDirect(final SOp<RT> _sOp)
             throws Exception {
-        if (getTargetReactor() != getSourceReactor())
+        if (getTargetReactor() != _sOp.targetReactor)
             throw new UnsupportedOperationException(
                     "Not thread safe: source reactor is not the same");
         return _sOp.doSync(this);
