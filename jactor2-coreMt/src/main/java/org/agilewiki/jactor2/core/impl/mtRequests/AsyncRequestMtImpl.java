@@ -372,8 +372,10 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     public <RT> void asyncDirect(final AOp<RT> _aOp,
                                  final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception {
+        if (getTargetReactor() != _aOp.targetReactor)
+            throw new UnsupportedOperationException(
+                    "Not thread safe: source reactor is not the same");
         final ExceptionHandler<RESPONSE_TYPE> oldExceptionHandler = getExceptionHandler();
-        _aOp.targetReactor.directCheck(getTargetReactor());
         _aOp.doAsync(this, new AsyncResponseProcessor<RT>() {
             @Override
             public void processAsyncResponse(final RT _response)
@@ -390,10 +392,10 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             final AsyncNativeRequest<RT> _asyncNativeRequest,
             final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception {
+        if (getTargetReactor() != _asyncNativeRequest.getTargetReactor())
+            throw new UnsupportedOperationException(
+                    "Not thread safe: source reactor is not the same");
         final ExceptionHandler<RESPONSE_TYPE> oldExceptionHandler = getExceptionHandler();
-        final ReactorMtImpl reactorMtImpl = (ReactorMtImpl) _asyncNativeRequest
-                .getTargetReactor();
-        reactorMtImpl.directCheck(getTargetReactor());
         _asyncNativeRequest.doAsync(this,
                 new AsyncResponseProcessor<RT>() {
                     @Override
