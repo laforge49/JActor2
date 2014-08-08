@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
@@ -20,7 +21,9 @@ import org.agilewiki.jactor2.core.util.Timer;
 public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> implements AsyncNativeRequest<RESPONSE_TYPE> {
 
-    private final TreeSet<RequestImpl<?>> pendingRequests = new TreeSet<RequestImpl<?>>();
+    private final static Boolean YO = true;
+    private final ConcurrentHashMap<RequestImpl<?>, Boolean> pendingRequests =
+            new ConcurrentHashMap<RequestImpl<?>, Boolean>();
 
     private boolean noHungRequestCheck;
 
@@ -141,7 +144,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         }
         final RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _requestImpl;
         if (_responseProcessor != OneWayResponseProcessor.SINGLETON) {
-            pendingRequests.add(requestImpl);
+            pendingRequests.put(requestImpl, YO);
         }
         requestImpl.doSend(targetReactorImpl, _responseProcessor);
     }
@@ -157,7 +160,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
                     "send called on inactive request");
         }
         final RequestMtImpl<RT> requestImpl = (RequestMtImpl<RT>) _requestImpl;
-        pendingRequests.add(requestImpl);
+        pendingRequests.put(requestImpl, YO);
         requestImpl.doSend(targetReactorImpl, new AsyncResponseProcessor<RT>() {
             @Override
             public void processAsyncResponse(final RT _response)
@@ -207,21 +210,8 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      *
      * @return A copy of pendingRequests.
      */
-    private TreeSet<RequestImpl<?>> copyPendingRequests() {
-        TreeSet<RequestImpl<?>> prc = new TreeSet<RequestImpl<?>>();
-        if (pendingRequests.isEmpty())
-            return prc;
-        RequestImpl<?> pendingRequest;
-        try {
-            pendingRequest = pendingRequests.first();
-        } catch (NoSuchElementException nsee) {
-            return prc;
-        }
-        while (pendingRequest != null) {
-            prc.add(pendingRequest);
-            pendingRequest = pendingRequests.higher(pendingRequest);
-        }
-        return prc;
+    private HashSet<RequestImpl<?>> copyPendingRequests() {
+        return new HashSet<>(pendingRequests.keySet());
     }
 
     @Override
@@ -229,7 +219,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         if (!incomplete) {
             return;
         }
-        final TreeSet<RequestImpl<?>> pr = copyPendingRequests();
+        final HashSet<RequestImpl<?>> pr = copyPendingRequests();
         final Iterator<RequestImpl<?>> it = pr.iterator();
         while (it.hasNext()) {
             RequestImpl<?> request = it.next();
@@ -260,7 +250,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void cancelAll() {
-        final TreeSet<RequestImpl<?>> all = copyPendingRequests();
+        final HashSet<RequestImpl<?>> all = copyPendingRequests();
         final Iterator<RequestImpl<?>> it = all.iterator();
         while (it.hasNext()) {
             RequestImpl<?> request = it.next();
