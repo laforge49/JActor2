@@ -26,6 +26,7 @@ public abstract class SOp<RESPONSE_TYPE> implements
         targetReactor = (ReactorBase) _targetReactor;
     }
 
+    @Override
     public RESPONSE_TYPE doSync(final RequestImpl _requestImpl) throws Exception {
         if (!_requestImpl.getTargetReactor().asReactorImpl().isRunning())
             throw new IllegalStateException(

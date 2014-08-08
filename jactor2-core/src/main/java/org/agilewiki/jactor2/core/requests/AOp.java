@@ -26,6 +26,16 @@ public abstract class AOp<RESPONSE_TYPE> implements
         targetReactor = (ReactorBase) _targetReactor;
     }
 
+    @Override
+    public void doAsync(final AsyncRequestImpl _asyncRequestImpl,
+                        final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            throws Exception {
+        if (!_asyncRequestImpl.getTargetReactor().asReactorImpl().isRunning())
+            throw new IllegalStateException(
+                    "Not thread safe: not called from within an active request");
+        processAsyncOperation(_asyncRequestImpl, _asyncResponseProcessor);
+    }
+
     public void signal() {
         PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor)
                 .signal();
