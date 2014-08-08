@@ -29,7 +29,7 @@ public class ThreadMigration extends NonBlockingBladeBase {
     public AOp<Void> startAOp() {
         return new AOp<Void>("start", getReactor()) {
             @Override
-			public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+			protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 System.out.println("ThreadMigration thread: " + Thread.currentThread());
                 NonBlockingReactor subReactor = new NonBlockingReactor();
@@ -50,7 +50,7 @@ class SubActor extends NonBlockingBladeBase {
     public AOp<Void> doAOp(final String _label) {
         return new AOp<Void>("do", getReactor()) {
             @Override
-			public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+			protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 System.out.println(_label + " thread: " + 
                     Thread.currentThread());

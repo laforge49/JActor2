@@ -15,7 +15,7 @@ public class DiningPhilosopher extends NonBlockingBladeBase {
             private AsyncResponseProcessor<Boolean> eatResponseProcessor;
             
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Integer> _asyncResponseProcessor) throws Exception {
                 ateResponseProcessor = new AsyncResponseProcessor<Void>() {
                     @Override

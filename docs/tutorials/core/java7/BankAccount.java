@@ -16,7 +16,7 @@ public class BankAccount extends NonBlockingBladeBase {
     public SOp<Void> depositSOp(final int _amount) {
         return new SOp<Void>("deposit", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) {
                 balance += _amount;
                 return null;
             }
@@ -26,7 +26,7 @@ public class BankAccount extends NonBlockingBladeBase {
     public AOp<Boolean> transferAOp(final int _amount, final BankAccount _account) {
         return new AOp<Boolean>("transfer", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Boolean> _asyncResponseProcessor) throws Exception {
 				ExceptionHandler<Boolean> depositExceptionHandler = new ExceptionHandler<Boolean>() {
 					@Override

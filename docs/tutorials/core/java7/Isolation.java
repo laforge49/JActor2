@@ -33,7 +33,7 @@ public class Isolation extends NonBlockingBladeBase {
     
     AOp<Void> runAOp(final Isolate _isolate) {
         return new AOp<Void>("run", getReactor()) {
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 _asyncRequestImpl.send(_isolate.bumpAOp(), null);
                 _asyncRequestImpl.send(_isolate.bumpAOp(), null);
@@ -52,7 +52,7 @@ class Isolate extends BladeBase {
     
     AOp<Void> bumpAOp() {
         return new AOp<Void>("bump", getReactor()) {
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 int oldState = state;
                 final int newState = state + 1;

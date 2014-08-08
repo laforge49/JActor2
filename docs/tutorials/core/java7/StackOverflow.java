@@ -16,7 +16,7 @@ public class StackOverflow extends NonBlockingBladeBase {
     SOp<Void> recurSOp() {
         return new SOp("recur", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 recur();
                 return null;
             }

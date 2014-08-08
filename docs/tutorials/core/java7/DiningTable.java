@@ -51,7 +51,7 @@ public class DiningTable extends NonBlockingBladeBase {
     public AOp<Boolean> eatAOp(final int _seat) {
         return new AOp<Boolean>("eat", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Boolean> _asyncResponseProcessor) throws Exception {
                 _asyncRequestImpl.setNoHungRequestCheck(); //inhibit the test for hung request
                 
@@ -109,7 +109,7 @@ public class DiningTable extends NonBlockingBladeBase {
     public SOp<Void> ateSOp(final int _seat) {
         return new SOp<Void>("ate", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 int leftFork = leftFork(_seat);
                 int rightFork = rightFork(_seat);
                 forkUsage[leftFork] = -1;

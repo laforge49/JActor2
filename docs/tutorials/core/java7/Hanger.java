@@ -11,7 +11,7 @@ class Hanger extends NonBlockingBladeBase {
     SOp<Void> looperSOp() {
         return new SOp<Void>("looper", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 while (true) {}
             }
         };
@@ -20,7 +20,7 @@ class Hanger extends NonBlockingBladeBase {
     SOp<Void> sleeperSOp() {
         return new SOp<Void>("sleeper", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 Thread.sleep(Long.MAX_VALUE);
                 return null;
             }

@@ -22,7 +22,7 @@ public class AsyncHang extends NonBlockingBladeBase {
     public AOp<Void> hangAOp() {
         return new AOp<Void>("hang", getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl, 
 					AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 //no response--the request hangs
             }

@@ -15,7 +15,7 @@ public class ForeignPing extends NonBlockingBladeBase {
     public AOp<Void> pingAOp() {
         return new AOp<Void>("ping", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
 				AsyncResponseProcessor<Long> pongerResponseProcessor = 
 						new AsyncResponseProcessor<Long>() {

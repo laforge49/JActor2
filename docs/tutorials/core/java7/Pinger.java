@@ -30,7 +30,7 @@ public class Pinger extends NonBlockingBladeBase {
 			};
 
 			@Override
-			public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl) throws Exception {
+			protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl) throws Exception {
                 iterate();
             }
             

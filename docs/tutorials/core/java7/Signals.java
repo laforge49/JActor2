@@ -26,7 +26,7 @@ public class Signals extends NonBlockingBladeBase {
     SOp<Void> printSOp(final Integer _i) {
         return new SOp<Void>("print", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 System.out.println(_i);
                 return null;
             }

@@ -19,7 +19,7 @@ public class DiningRoom extends NonBlockingBladeBase {
             List<Integer> mealsEaten = new LinkedList<Integer>();
             
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor<List<Integer>> _asyncResponseProcessor) throws Exception {
 
 				AsyncResponseProcessor<Integer> feastResponseProcessor =
