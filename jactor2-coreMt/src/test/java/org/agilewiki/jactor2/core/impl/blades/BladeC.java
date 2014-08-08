@@ -19,7 +19,7 @@ public class BladeC {
     public AOp<String> throwAOp() {
         return new AOp<String>("throw", reactor) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<String> _asyncResponseProcessor)
                     throws Exception {
                 _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<String>() {

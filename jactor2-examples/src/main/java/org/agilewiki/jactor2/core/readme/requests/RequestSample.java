@@ -55,7 +55,7 @@ class SampleBlade2 extends NonBlockingBladeBase {
     AOp<Integer> updateAOp(final int _newState) {
         return new AOp<Integer>("update", getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Integer> _asyncResponseProcessor)
                     throws Exception {
                 int oldState = state;
@@ -83,7 +83,7 @@ class IndirectBlade extends NonBlockingBladeBase {
     AOp<Integer> indirectAOp(final int _newState) {
         return new AOp<Integer>("indirect", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<Integer> _asyncResponseProcessor)
                     throws Exception {
                 //Get a request from the other blades.

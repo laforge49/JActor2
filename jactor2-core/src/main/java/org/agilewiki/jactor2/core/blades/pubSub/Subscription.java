@@ -66,7 +66,7 @@ abstract public class Subscription<CONTENT> extends NonBlockingBladeBase impleme
     AOp<Void> publicationAOp(final CONTENT _content) {
         return new AOp<Void>("publication", subscriberReactor) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
                 processContent(_content, _asyncRequestImpl, _asyncResponseProcessor);
             }

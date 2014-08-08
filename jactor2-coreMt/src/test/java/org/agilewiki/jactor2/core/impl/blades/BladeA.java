@@ -16,7 +16,7 @@ public class BladeA {
 
         throwAOp = new AOp<Void>("throw", reactor) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 throw new IOException("thrown on request");

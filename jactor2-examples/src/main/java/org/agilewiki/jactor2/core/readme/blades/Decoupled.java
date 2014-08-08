@@ -20,7 +20,7 @@ class BImpl extends NonBlockingBladeBase implements BBB {
     public AOp<Void> add1AOp() {
         return new AOp<Void>("add1", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 count = count + 1;
@@ -37,7 +37,7 @@ class AAA extends NonBlockingBladeBase {
     public AOp<Void> startAOp(final BBB _b) {
         return new AOp<Void>("start", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
 

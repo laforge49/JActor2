@@ -34,7 +34,7 @@ public class OneWayError extends NonBlockingBladeBase {
         }
 
         @Override
-        public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+        protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                           AsyncResponseProcessor<Void> _asyncResponseProcessor)
                 throws Exception {
             _asyncRequestImpl.send(new OneRuntime().new OneWaySOp("oneway", getReactor()), null);

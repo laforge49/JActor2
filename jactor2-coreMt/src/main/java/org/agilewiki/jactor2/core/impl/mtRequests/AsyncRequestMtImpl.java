@@ -462,7 +462,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      * @param _asyncRequestImpl       The request context--may be of a different RESPONSE_TYPE.
      * @param _asyncResponseProcessor Handles the response.
      */
-    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                       final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
         throw new IllegalStateException();

@@ -67,7 +67,7 @@ public class SubscribeAOp<CONTENT> extends AOp<Subscription<CONTENT>> {
     }
 
     @Override
-    public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+    protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                       AsyncResponseProcessor<Subscription<CONTENT>> _asyncResponseProcessor)
             throws Exception {
         final Subscription<CONTENT> subscription = new Subscription<CONTENT>(

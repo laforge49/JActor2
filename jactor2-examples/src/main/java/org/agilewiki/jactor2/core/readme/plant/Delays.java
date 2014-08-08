@@ -17,7 +17,7 @@ public class Delays extends NonBlockingBladeBase {
     public AOp<Void> runAOp() {
         return new AOp<Void>("run", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 final AsyncResponseProcessor<Void> delayResponseProcessor =

@@ -27,7 +27,7 @@ public class Account extends NonBlockingBladeBase {
                                              final Account _account) {
         return new AOp<Boolean>("transfer", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<Boolean> _asyncResponseProcessor)
                     throws Exception {
                 ExceptionHandler<Boolean> depositExceptionHandler = new ExceptionHandler<Boolean>() {

@@ -26,7 +26,7 @@ class HelloWorld extends SwingBoundBladeBase {
     AOp<Void> createAndShowAOp() {
         return new AOp<Void>("createAndShow", getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 //Create and set up the window.

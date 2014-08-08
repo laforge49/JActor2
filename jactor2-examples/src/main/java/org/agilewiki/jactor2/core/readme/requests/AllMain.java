@@ -26,7 +26,7 @@ class All extends AOp<Void> {
     }
 
     @Override
-    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                       final AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception {
 
@@ -52,7 +52,7 @@ class A1 extends AOp<Void> {
     }
 
     @Override
-    public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+    protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                       AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception {
         System.out.println(opName);

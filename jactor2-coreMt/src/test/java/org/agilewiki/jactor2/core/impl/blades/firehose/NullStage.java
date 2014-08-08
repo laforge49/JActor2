@@ -21,7 +21,7 @@ public class NullStage extends IsolationBladeBase implements DataProcessor {
     public AOp<Void> processDataAOp(final FirehoseData _firehoseData) {
         return new AOp<Void>("nullStage", getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 final List<Long> list = _firehoseData.getContent();

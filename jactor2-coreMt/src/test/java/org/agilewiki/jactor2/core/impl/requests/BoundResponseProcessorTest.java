@@ -28,7 +28,7 @@ class Driver extends NonBlockingBladeBase {
     public Driver() throws Exception {
         doitAOp = new AOp<String>("doit", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                                final AsyncResponseProcessor<String> _asyncResponseProcessor)
                     throws Exception {
                 _asyncRequestImpl.setNoHungRequestCheck();

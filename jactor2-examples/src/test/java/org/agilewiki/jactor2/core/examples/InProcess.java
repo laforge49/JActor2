@@ -74,7 +74,7 @@ class IndirectDelay extends NonBlockingBladeBase {
     public AOp<Void> iSleepOp() {
         return new AOp<Void>("iSleep", getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 _asyncRequestImpl.send(new Delay().sleepSOp(10000), _asyncResponseProcessor);

@@ -41,7 +41,7 @@ class Any<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> {
     }
 
     @Override
-    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                       final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
         _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
@@ -72,7 +72,7 @@ class A2 extends AOp<Long> {
     }
 
     @Override
-    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                       final AsyncResponseProcessor<Long> _asyncResponseProcessor)
             throws Exception {
         for (long i = 0; i < delay * 100000; i++)
@@ -93,7 +93,7 @@ class A3 extends AOp<Long> {
     }
 
     @Override
-    public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                       final AsyncResponseProcessor<Long> _asyncResponseProcessor)
             throws Exception {
         if (delay == 0)

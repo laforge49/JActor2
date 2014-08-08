@@ -28,7 +28,7 @@ class A extends NonBlockingBladeBase {
     AOp<Void> startAOp() {
         return new AOp<Void>("start", getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 AsyncResponseProcessor<Void> startResponse = new AsyncResponseProcessor<Void>() {
@@ -53,7 +53,7 @@ class B extends NonBlockingBladeBase {
     AOp<Void> add1AOp() {
         return new AOp<Void>("add1", getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                                  AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 count += 1;

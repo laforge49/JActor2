@@ -107,7 +107,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
             final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AOp<IMMUTABLE>("apply", _immutableReference.getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<IMMUTABLE> _asyncResponseProcessor)
                     throws Exception {
                 eval(_immutableReference, _asyncRequestImpl, _asyncResponseProcessor);
@@ -125,7 +125,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
             final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AOp<IMMUTABLE>("eval", _immutableReference.getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<IMMUTABLE> _asyncResponseProcessor)
                     throws Exception {
                 AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {

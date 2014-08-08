@@ -49,7 +49,7 @@ abstract public class ISMSyncTransaction<VALUE> extends
             final ImmutableReference<ISMap<VALUE>> _immutableReference) {
         return new AOp<ISMap<VALUE>>("apply", _immutableReference.getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                               final AsyncResponseProcessor<ISMap<VALUE>> _asyncResponseProcessor)
                     throws Exception {
                 final ISMReference<VALUE> ismReference = (ISMReference<VALUE>) _immutableReference;

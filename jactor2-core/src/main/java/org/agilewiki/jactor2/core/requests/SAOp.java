@@ -15,7 +15,7 @@ public abstract class SAOp<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> implements 
     }
 
     @Override
-    final public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+    final protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                       AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
         if (asyncRequestImpl != null)
