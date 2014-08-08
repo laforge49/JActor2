@@ -56,8 +56,7 @@ public abstract class StaticAOp<B extends Blade, RESPONSE_TYPE> extends
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public final void processAsyncOperation(
+    protected final void processAsyncOperation(
             @SuppressWarnings("rawtypes") final AsyncRequestImpl _asyncRequestImpl,
             final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {

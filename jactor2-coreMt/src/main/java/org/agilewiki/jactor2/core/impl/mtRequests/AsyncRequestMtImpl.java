@@ -123,7 +123,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     @Override
     protected void processRequestMessage() throws Exception {
         start = asyncOperation.getTimer().nanos();
-        asyncOperation.processAsyncOperation(this, this);
+        asyncOperation.doAsync(this, this);
         pendingCheck();
     }
 
@@ -374,7 +374,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             throws Exception {
         final ExceptionHandler<RESPONSE_TYPE> oldExceptionHandler = getExceptionHandler();
         _aOp.targetReactor.directCheck(getTargetReactor());
-        _aOp.processAsyncOperation(this, new AsyncResponseProcessor<RT>() {
+        _aOp.doAsync(this, new AsyncResponseProcessor<RT>() {
             @Override
             public void processAsyncResponse(final RT _response)
                     throws Exception {
@@ -394,7 +394,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         final ReactorMtImpl reactorMtImpl = (ReactorMtImpl) _asyncNativeRequest
                 .getTargetReactor();
         reactorMtImpl.directCheck(getTargetReactor());
-        _asyncNativeRequest.processAsyncOperation(this,
+        _asyncNativeRequest.doAsync(this,
                 new AsyncResponseProcessor<RT>() {
                     @Override
                     public void processAsyncResponse(final RT _response)
@@ -454,7 +454,12 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         processAsyncOperation(_asyncRequestImpl, _asyncResponseProcessor);
     }
 
-    @Override
+    /**
+     * The processAsyncOperation method will be invoked by the target Reactor on its own thread.
+     *
+     * @param _asyncRequestImpl       The request context--may be of a different RESPONSE_TYPE.
+     * @param _asyncResponseProcessor Handles the response.
+     */
     public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                       final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {

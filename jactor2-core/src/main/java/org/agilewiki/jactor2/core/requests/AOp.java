@@ -36,6 +36,16 @@ public abstract class AOp<RESPONSE_TYPE> implements
         processAsyncOperation(_asyncRequestImpl, _asyncResponseProcessor);
     }
 
+    /**
+     * The processAsyncOperation method will be invoked by the target Reactor on its own thread.
+     *
+     * @param _asyncRequestImpl       The request context--may be of a different RESPONSE_TYPE.
+     * @param _asyncResponseProcessor Handles the response.
+     */
+    abstract protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                               final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            throws Exception;
+
     public void signal() {
         PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor)
                 .signal();
