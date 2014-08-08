@@ -55,6 +55,16 @@ public abstract class StaticAOp<B extends Blade, RESPONSE_TYPE> extends
         _asyncRequestImpl.onClose(_asyncRequestImpl);
     }
 
+    @Override
+    public void doAsync(final AsyncRequestImpl _asyncRequestImpl,
+                        final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            throws Exception {
+        if (!_asyncRequestImpl.getTargetReactor().asReactorImpl().isRunning())
+            throw new IllegalStateException(
+                    "Not thread safe: not called from within an active request");
+        processAsyncOperation(_asyncRequestImpl, _asyncResponseProcessor);
+    }
+
     @SuppressWarnings("unchecked")
     protected final void processAsyncOperation(
             @SuppressWarnings("rawtypes") final AsyncRequestImpl _asyncRequestImpl,
