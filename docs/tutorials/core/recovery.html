@@ -81,7 +81,7 @@ class Hanger extends NonBlockingBladeBase {
     SOp&lt;Void&gt; looperSOp() {
         return new SOp&lt;Void&gt;("looper", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 while (true) {}
             }
         };
@@ -90,7 +90,7 @@ class Hanger extends NonBlockingBladeBase {
     SOp&lt;Void&gt; sleeperSOp() {
         return new SOp&lt;Void&gt;("sleeper", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 Thread.sleep(Long.MAX_VALUE);
                 return null;
             }
@@ -252,7 +252,7 @@ public class AsyncHang extends NonBlockingBladeBase {
     public AOp&lt;Void&gt; hangAOp() {
         return new AOp&lt;Void&gt;("hang", getReactor()) {
             @Override
-            public void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl, 
 					AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
                 //no response--the request hangs
             }

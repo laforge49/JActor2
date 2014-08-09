@@ -34,7 +34,7 @@ public class ForeignPing extends NonBlockingBladeBase {
     public AOp&lt;Void&gt; pingAOp() {
         return new AOp&lt;Void&gt;("ping", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
 				AsyncResponseProcessor&lt;Long&gt; pongerResponseProcessor = 
 						new AsyncResponseProcessor&lt;Long&gt;() {
@@ -258,7 +258,7 @@ from Ponger's pingSReq.
 <a href="../../api/core/org/agilewiki/jactor2/core/requests/AsyncOperation.html#processAsyncOperation-org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl-org.agilewiki.jactor2.core.requests.AsyncResponseProcessor-">processAsyncOperation</a>
 </h2>
 <pre>
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
 				...
             

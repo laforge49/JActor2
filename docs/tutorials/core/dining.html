@@ -50,7 +50,7 @@ public class DiningPhilosopher extends NonBlockingBladeBase {
             private AsyncResponseProcessor&lt;Boolean&gt; eatResponseProcessor;
             
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor&lt;Integer&gt; _asyncResponseProcessor) throws Exception {
                 //The logic to process a response from a DiningTable.ateSReq.
                 ateResponseProcessor = new AsyncResponseProcessor&lt;Void&gt;() {
@@ -161,7 +161,7 @@ public class DiningTable extends NonBlockingBladeBase {
     public AOp&lt;Boolean&gt; eatAOp(final int _seat) {
         return new AOp&lt;Boolean&gt;("eat", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor&lt;Boolean&gt; _asyncResponseProcessor) throws Exception {
                 _asyncRequestImpl.setNoHungRequestCheck(); //inhibit the test for hung request
                 
@@ -231,7 +231,7 @@ public class DiningTable extends NonBlockingBladeBase {
     public SOp&lt;Void&gt; ateSOp(final int _seat) {
         return new SOp&lt;Void&gt;("ate", getReactor()) {
             @Override
-            public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+            protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
                 int leftFork = leftFork(_seat);
                 int rightFork = rightFork(_seat);
                 forkUsage[leftFork] = -1; //Done with the left fork for now.
@@ -279,7 +279,7 @@ public class DiningRoom extends NonBlockingBladeBase {
                 Start the feast.
             */
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor&lt;List&lt;Integer&gt;&gt; _asyncResponseProcessor) throws Exception {
 
                 /*

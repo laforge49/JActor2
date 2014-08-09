@@ -29,7 +29,7 @@ public class PongerLoop extends SOp&lt;Void&gt; {
     }
     
     @Override
-    public Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
+    protected Void processSyncOperation(final RequestImpl _requestImpl) throws Exception {
         SOp&lt;Long&gt; pingSOp = ponger.pingSOp();
         long i = 0;
         while (i &lt; count) {

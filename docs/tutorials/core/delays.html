@@ -32,7 +32,7 @@ public class Delays extends NonBlockingBladeBase {
 
     public AOp&lt;Void&gt; runAOp() {
         return new AOp&lt;Void&gt;("run", getReactor()) {
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
 				final AsyncResponseProcessor&lt;Void&gt; delayResponseProcessor =
 						new AsyncResponseProcessor&lt;Void&gt;() {

@@ -72,7 +72,7 @@ class ExceptionBlade extends NonBlockingBladeBase {
     AOp&lt;Void&gt; exceptionAOp() {
         return new AOp&lt;Void&gt;("exception", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor&lt;Void&gt; _asyncResponseProcessor) throws Exception {
                 throw new IOException(); //Throw an exception when the request is processed.
             }
@@ -95,7 +95,7 @@ class ExceptionHandlerBlade extends NonBlockingBladeBase {
     AOp&lt;String&gt; testAOp() {
         return new AOp&lt;String&gt;("test", getReactor()) {
             @Override
-            public void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl, 
 					final AsyncResponseProcessor&lt;String&gt; _asyncResponseProcessor) throws Exception {
  
                 //Create and assign an exception handler.
