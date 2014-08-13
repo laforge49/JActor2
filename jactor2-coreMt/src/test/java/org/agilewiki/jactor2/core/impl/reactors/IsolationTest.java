@@ -64,6 +64,21 @@ public class IsolationTest extends CallTestBase {
             Plant.close();
         }
     }
+
+    public void test5() throws Exception {
+        Thread.sleep(100);
+        System.err.println("\ntest 5");
+        new Plant();
+        try {
+            IsolationReactor reactor = new IsolationReactor();
+            Foot foot = new Foot(reactor);
+            Via via = new Via(foot.dAOp());
+            Head head = new Head(via.dAOp(), reactor);
+            assertFalse(call(head.dAOp()));
+        } finally {
+            Plant.close();
+        }
+    }
 }
 
 interface IsIt {
@@ -74,6 +89,11 @@ class Head extends IsolationBladeBase implements IsIt {
     private final AOp<Boolean> d;
 
     public Head(final AOp<Boolean> _d) throws Exception {
+        d = _d;
+    }
+
+    public Head(final AOp<Boolean> _d, final IsolationReactor _reactor) throws Exception {
+        super(_reactor);
         d = _d;
     }
 
