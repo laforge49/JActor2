@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AOp;
@@ -58,8 +59,7 @@ public class IsolationTest extends CallTestBase {
             Foot foot = new Foot(new IsolationReactor());
             Via via = new Via(foot.dAOp());
             Head head = new Head(via.dAOp());
-            //assertFalse(call(head.dAOp()));
-            assertTrue(call(head.dAOp())); //todo should be assertFalse
+            assertFalse(call(head.dAOp()));
         } finally {
             Plant.close();
         }
@@ -111,6 +111,7 @@ class Foot extends IsolationBladeBase implements IsIt {
             protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                                  AsyncResponseProcessor<Boolean> _asyncResponseProcessor)
                     throws Exception {
+                System.err.println("dFoot isIsolated: "+((RequestMtImpl)_asyncRequestImpl).isIsolated());
                 _asyncResponseProcessor.processAsyncResponse(true);
             }
         };
@@ -131,6 +132,7 @@ class Via extends NonBlockingBladeBase implements IsIt {
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                                  final AsyncResponseProcessor<Boolean> _asyncResponseProcessor)
                     throws Exception {
+                System.err.println("dVia isIsolated: "+((RequestMtImpl)_asyncRequestImpl).isIsolated());
                 _asyncRequestImpl.send(d, _asyncResponseProcessor);
             }
         };

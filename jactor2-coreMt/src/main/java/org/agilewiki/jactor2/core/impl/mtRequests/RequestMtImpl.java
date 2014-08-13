@@ -209,14 +209,21 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
                 && (source.getThreadReference().get() != Thread.currentThread())) {
             throw new IllegalStateException("send from wrong thread");
         }
+        use();
+        responseProcessor = _responseProcessor;
+        if (responseProcessor == null) {
+            responseProcessor = (AsyncResponseProcessor<RESPONSE_TYPE>) OneWayResponseProcessor.SINGLETON;
+        }
+        requestSource = source;
         if (!source.isRunning()) {
             throw new IllegalStateException(
                     "A valid source sourceReactor can not be idle");
         }
+        oldMessage = source.getCurrentRequest();
         if ((oldMessage != null) && oldMessage.isIsolated()) {
             isolated = true;
-        }
-        isolated = !source.isCommonReactor();
+        } else
+            isolated = !source.isCommonReactor();
         if (!(targetReactor instanceof CommonReactor)) {
             if (isolated && (_responseProcessor != null)) {
                 throw new UnsupportedOperationException(
@@ -224,16 +231,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
             }
             isolated = true;
         }
-        use();
-        AsyncResponseProcessor<RESPONSE_TYPE> rp = _responseProcessor;
-        if (rp == null) {
-            rp = (AsyncResponseProcessor<RESPONSE_TYPE>) OneWayResponseProcessor.SINGLETON;
-        }
-        requestSource = source;
-        oldMessage = source.getCurrentRequest();
         sourceExceptionHandler = (ExceptionHandler<RESPONSE_TYPE>) source
                 .getExceptionHandler();
-        responseProcessor = rp;
         final boolean local = targetReactor == source.asReactor();
         if (local || !source.buffer(this, targetReactorImpl)) {
             targetReactorImpl.unbufferedAddMessage(this, local);
