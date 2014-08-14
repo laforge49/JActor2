@@ -15,6 +15,8 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
     /** Empty Var array. */
     private static final Var[] NO_VARS = new Var[0];
 
+    private static volatile int nextHash;
+
     /** Number of double variables defined until now. */
     private int doubles = 0;
 
@@ -26,6 +28,9 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
 
     /** The Blade variable. */
     protected final ObjectVar<B> blade;
+
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
 
     /** Base class for variables. */
     private static abstract class Var {
@@ -510,6 +515,12 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
     protected StaticOpBase(final Class<B> bladeType) {
         opName = removeOuter(getClass());
         blade = var(bladeType);
+    }
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     /**

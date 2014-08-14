@@ -14,6 +14,7 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
  */
 abstract public class TransactionBase<IMMUTABLE> implements
         Transaction<IMMUTABLE> {
+    private static volatile int nextHash;
 
     /**
      * The blade's reactor.
@@ -36,6 +37,8 @@ abstract public class TransactionBase<IMMUTABLE> implements
      * The request which updates operate under.
      */
     protected AsyncRequestImpl<IMMUTABLE> applyAReq;
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
 
     /**
      * Compose a Transaction.
@@ -44,6 +47,12 @@ abstract public class TransactionBase<IMMUTABLE> implements
      */
     TransactionBase(final Transaction<IMMUTABLE> _parent) {
         parent = _parent;
+    }
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     @Override
@@ -107,10 +116,12 @@ abstract public class TransactionBase<IMMUTABLE> implements
             final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AOp<IMMUTABLE>("apply", _immutableReference.getReactor()) {
             @Override
-            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
-                                              AsyncResponseProcessor<IMMUTABLE> _asyncResponseProcessor)
+            protected void processAsyncOperation(
+                    final AsyncRequestImpl _asyncRequestImpl,
+                    final AsyncResponseProcessor<IMMUTABLE> _asyncResponseProcessor)
                     throws Exception {
-                eval(_immutableReference, _asyncRequestImpl, _asyncResponseProcessor);
+                eval(_immutableReference, _asyncRequestImpl,
+                        _asyncResponseProcessor);
             }
         };
     }
@@ -125,10 +136,11 @@ abstract public class TransactionBase<IMMUTABLE> implements
             final ImmutableReference<IMMUTABLE> _immutableReference) {
         return new AOp<IMMUTABLE>("eval", _immutableReference.getReactor()) {
             @Override
-            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
-                                              final AsyncResponseProcessor<IMMUTABLE> _asyncResponseProcessor)
+            protected void processAsyncOperation(
+                    final AsyncRequestImpl _asyncRequestImpl,
+                    final AsyncResponseProcessor<IMMUTABLE> _asyncResponseProcessor)
                     throws Exception {
-                AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
+                final AsyncResponseProcessor<Void> _evalResponseProcessor = new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(final Void _response)
                             throws Exception {
@@ -137,7 +149,8 @@ abstract public class TransactionBase<IMMUTABLE> implements
                     }
                 };
 
-                _eval(_immutableReference, _asyncRequestImpl, _evalResponseProcessor);
+                _eval(_immutableReference, _asyncRequestImpl,
+                        _evalResponseProcessor);
             }
         };
     }

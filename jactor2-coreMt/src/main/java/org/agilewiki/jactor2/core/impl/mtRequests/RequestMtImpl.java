@@ -9,7 +9,11 @@ import org.agilewiki.jactor2.core.reactors.CommonReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.*;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.Operation;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.SyncNativeRequest;
 import org.agilewiki.jactor2.core.requests.impl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.SignalResponseProcessor;
@@ -22,6 +26,7 @@ import org.agilewiki.jactor2.core.util.Timer;
  */
 public abstract class RequestMtImpl<RESPONSE_TYPE> implements
         RequestImpl<RESPONSE_TYPE>, Operation<RESPONSE_TYPE> {
+    private static volatile int nextHash;
 
     /**
      * Assigned to current time when Facility.DEBUG.
@@ -93,6 +98,9 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
      */
     protected boolean canceled;
 
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
+
     /**
      * Create a RequestMtImpl.
      *
@@ -105,6 +113,12 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
         }
         targetReactor = _targetReactor;
         targetReactorImpl = (ReactorMtImpl) targetReactor.asReactorImpl();
+    }
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     /**
@@ -488,8 +502,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
     }
 
     @Override
-    public <RT> RT syncDirect(final SOp<RT> _sOp)
-            throws Exception {
+    public <RT> RT syncDirect(final SOp<RT> _sOp) throws Exception {
         if (getTargetReactor() != _sOp.targetReactor)
             throw new UnsupportedOperationException(
                     "Not thread safe: source reactor is not the same");
@@ -577,9 +590,9 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
     }
 
     @Override
-    public int compareTo(RequestImpl _requestImpl) {
-        Integer me = hashCode();
-        Integer h = _requestImpl.hashCode();
+    public int compareTo(final RequestImpl _requestImpl) {
+        final Integer me = hashCode();
+        final Integer h = _requestImpl.hashCode();
         return me.compareTo(h);
     }
 }

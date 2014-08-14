@@ -10,7 +10,12 @@ import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
  * Implements multiple dependencies.
  */
 public class CloseableImplImpl implements CloseableImpl {
+    private static volatile int nextHash;
+
     private final Closeable closeable;
+
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
 
     private final ConcurrentHashMap<ReactorImpl, Boolean> closers = new ConcurrentHashMap<ReactorImpl, Boolean>(
             8, 0.9f, 1);
@@ -23,6 +28,12 @@ public class CloseableImplImpl implements CloseableImpl {
      */
     public CloseableImplImpl(final Closeable _closeable) {
         closeable = _closeable;
+    }
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     @Override

@@ -12,8 +12,11 @@ import org.agilewiki.jactor2.core.util.Timer;
  */
 public abstract class SOp<RESPONSE_TYPE> implements
         SyncOperation<RESPONSE_TYPE> {
+    private static volatile int nextHash;
     public final String opName;
     public final ReactorBase targetReactor;
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
 
     /**
      * Creata a synchronous operation.
@@ -24,6 +27,12 @@ public abstract class SOp<RESPONSE_TYPE> implements
     public SOp(final String _opName, final Reactor _targetReactor) {
         opName = _opName;
         targetReactor = (ReactorBase) _targetReactor;
+    }
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     @Override

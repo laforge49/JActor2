@@ -45,6 +45,8 @@ public class Timer extends com.codahale.metrics.Timer {
     /** The ConsoleReporter. */
     private static volatile ConsoleReporter reporter;
 
+    private static volatile int nextHash;
+
     /** Sets up a ConsoleReporter, if not yet setup. */
     public static void setupConsoleReporter(final long reportEveryMillis) {
         if (reporter == null) {
@@ -60,6 +62,9 @@ public class Timer extends com.codahale.metrics.Timer {
 
     /** The name. */
     public final String name;
+
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
 
     /**
      * Returns a Timer for the given class.
@@ -108,6 +113,12 @@ public class Timer extends com.codahale.metrics.Timer {
     private Timer(final String name) {
         this.name = name;
         failed = new Meter(CLOCK);
+    }
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     /** Returns the name */

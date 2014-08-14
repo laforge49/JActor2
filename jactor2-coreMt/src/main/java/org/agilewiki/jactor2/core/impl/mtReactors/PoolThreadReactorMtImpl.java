@@ -12,7 +12,12 @@ import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
 
 abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
         PoolThreadReactorImpl {
+    private static volatile int nextHash;
+
     private Runnable onIdle;
+
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
 
     /**
      * Create an PoolThreadReactorMtImpl.
@@ -24,6 +29,12 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
     public PoolThreadReactorMtImpl(final NonBlockingReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
+    }
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     /**

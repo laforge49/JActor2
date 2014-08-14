@@ -8,10 +8,19 @@ import org.agilewiki.jactor2.core.requests.AOp;
  * Optional base class for blades.
  */
 public abstract class BladeBase implements Blade {
+    private static volatile int nextHash;
     /**
      * The blade's targetReactor.
      */
     private Reactor reactor;
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
 
     /**
      * Returns true when the blade has been initialized.

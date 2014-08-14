@@ -12,8 +12,11 @@ import org.agilewiki.jactor2.core.util.Timer;
  */
 public abstract class AOp<RESPONSE_TYPE> implements
         AsyncOperation<RESPONSE_TYPE> {
+    private static volatile int nextHash;
     public final String opName;
     public final ReactorBase targetReactor;
+    /** Our hashcode. */
+    private final int hashCode = nextHash++;
 
     /**
      * Create an asynchronous operation.
@@ -24,6 +27,12 @@ public abstract class AOp<RESPONSE_TYPE> implements
     public AOp(final String _opName, final Reactor _targetReactor) {
         opName = _opName;
         targetReactor = (ReactorBase) _targetReactor;
+    }
+
+    /** Redefines the hashcode for a faster hashing. */
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     @Override
