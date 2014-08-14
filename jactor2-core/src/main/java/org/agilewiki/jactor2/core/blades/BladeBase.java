@@ -14,17 +14,12 @@ public abstract class BladeBase implements Blade {
     private Reactor reactor;
 
     /**
-     * True when initialized, this flag is used to prevent the targetReactor from being changed.
-     */
-    private boolean initialized;
-
-    /**
      * Returns true when the blade has been initialized.
      *
      * @return True when the blade has been initialized.
      */
     public boolean isInitialized() {
-        return initialized;
+        return (reactor != null);
     }
 
     /**
@@ -35,13 +30,12 @@ public abstract class BladeBase implements Blade {
      * @param _reactor The blade's targetReactor.
      */
     protected void _initialize(final Reactor _reactor) {
-        if (initialized) {
+        if (reactor != null) {
             throw new IllegalStateException("Already initialized " + this);
         }
         if (_reactor == null) {
             throw new IllegalArgumentException("Reactor may not be null");
         }
-        initialized = true;
         reactor = _reactor;
     }
 
@@ -56,8 +50,9 @@ public abstract class BladeBase implements Blade {
      * @param _aOp        The operation to be processed.
      */
     protected <RESPONSE_TYPE> void send(final AOp<RESPONSE_TYPE> _aOp) {
-        PlantImpl.getSingleton().createAsyncRequestImpl(_aOp, _aOp.targetReactor).
-                doSend(getReactor().asReactorImpl(), null);
+        PlantImpl.getSingleton()
+                .createAsyncRequestImpl(_aOp, _aOp.targetReactor)
+                .doSend(getReactor().asReactorImpl(), null);
     }
 
     public boolean isDirectOk(final Reactor _sourceReactor) {
