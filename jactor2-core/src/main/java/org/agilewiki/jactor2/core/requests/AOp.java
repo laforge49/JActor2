@@ -28,7 +28,7 @@ public abstract class AOp<RESPONSE_TYPE> implements
 
     @Override
     public void doAsync(final AsyncRequestImpl _asyncRequestImpl,
-                        final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+            final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
         if (!_asyncRequestImpl.getTargetReactor().asReactorImpl().isRunning())
             throw new IllegalStateException(
@@ -42,8 +42,9 @@ public abstract class AOp<RESPONSE_TYPE> implements
      * @param _asyncRequestImpl       The request context--may be of a different RESPONSE_TYPE.
      * @param _asyncResponseProcessor Handles the response.
      */
-    abstract protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
-                               final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+    abstract protected void processAsyncOperation(
+            final AsyncRequestImpl _asyncRequestImpl,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception;
 
     public void signal() {
@@ -64,7 +65,7 @@ public abstract class AOp<RESPONSE_TYPE> implements
 
     @Override
     public Timer getTimer() {
-        return Timer.DEFAULT;
+        return Timer.NOP;
     }
 
     /**

@@ -27,7 +27,8 @@ public abstract class SOp<RESPONSE_TYPE> implements
     }
 
     @Override
-    public RESPONSE_TYPE doSync(final RequestImpl _requestImpl) throws Exception {
+    public RESPONSE_TYPE doSync(final RequestImpl _requestImpl)
+            throws Exception {
         if (!_requestImpl.getTargetReactor().asReactorImpl().isRunning())
             throw new IllegalStateException(
                     "Not thread safe: not called from within an active request");
@@ -39,7 +40,8 @@ public abstract class SOp<RESPONSE_TYPE> implements
      *
      * @return The value returned by the target blades.
      */
-    protected abstract RESPONSE_TYPE processSyncOperation(final RequestImpl _requestImpl) throws Exception;
+    protected abstract RESPONSE_TYPE processSyncOperation(
+            final RequestImpl _requestImpl) throws Exception;
 
     public void signal() {
         PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor)
@@ -59,6 +61,6 @@ public abstract class SOp<RESPONSE_TYPE> implements
 
     @Override
     public Timer getTimer() {
-        return Timer.DEFAULT;
+        return Timer.NOP;
     }
 }

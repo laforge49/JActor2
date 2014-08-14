@@ -9,7 +9,7 @@ public interface Operation<RESPONSE_TYPE> {
     /**
      * Returns the Timer used to track the performance of this Request instance.
      *
-     * Null is not allowed are return value, but Timer.NOP can be used to disable tracking.
+     * Null is not allowed as return value, but Timer.NOP can be used to disable tracking.
      *
      * @return the Timer used to track the performance of this Request instance.
      */

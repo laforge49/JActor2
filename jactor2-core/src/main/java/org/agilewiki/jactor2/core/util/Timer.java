@@ -98,7 +98,7 @@ public class Timer extends com.codahale.metrics.Timer {
      *
      * @return time tick in nanoseconds
      */
-    public long nanos() {
+    public final long nanos() {
         return (this == NOP) ? 0 : CLOCK.getTick();
     }
 

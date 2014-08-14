@@ -534,7 +534,7 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
 
     @Override
     public Timer getTimer() {
-        return Timer.DEFAULT;
+        return Timer.NOP;
     }
 
     /**
