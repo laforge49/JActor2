@@ -76,13 +76,13 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     /**
-     * Returns a count of the number of subordinate requests which have not yet responded.
+     * Returns true if no subordinate requests have not yet responded.
      *
-     * @return A count of the number of subordinate requests which have not yet responded.
+     * @return true if no subordinate requests have not yet responded.
      */
     @Override
-    public final int getPendingResponseCount() {
-        return pendingRequests.size();
+    public final boolean hasNoPendingResponses() {
+        return pendingRequests.isEmpty();
     }
 
     /**
@@ -114,7 +114,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     private List<RequestImpl<?>> copyPendingRequests() {
         // Note: This will be called outside of our own reactor.
         final ArrayList<RequestImpl<?>> result = new ArrayList<>(
-                (int) (getPendingResponseCount() * 1.1));
+                (int) (pendingRequests.size() * 1.1));
         boolean again = true;
         while (again) {
             result.clear();
@@ -158,7 +158,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     private void pendingCheck() throws Exception {
-        if (incomplete && !isCanceled() && (getPendingResponseCount() == 0)
+        if (incomplete && !isCanceled() && hasNoPendingResponses()
                 && !noHungRequestCheck) {
             targetReactor.asReactorImpl().error("hung request:\n" + toString());
             close();

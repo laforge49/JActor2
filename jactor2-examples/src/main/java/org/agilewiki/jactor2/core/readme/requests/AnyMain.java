@@ -13,17 +13,20 @@ public class AnyMain {
         new Plant();
         try {
             System.out.println("\ntest 1");
-            long x = new Any<Long>(new A2("1", 1), new A2("2", 2), new A2("3", 3)).call();
+            long x = new Any<Long>(new A2("1", 1), new A2("2", 2), new A2("3",
+                    3)).call();
             System.out.println("got " + x);
 
             System.out.println("\ntest 2");
-            x = new Any<Long>(new A3("1", 1), new A3("2", 2), new A3("3", 0)).call();
+            x = new Any<Long>(new A3("1", 1), new A3("2", 2), new A3("3", 0))
+                    .call();
             System.out.println("got " + x);
 
             System.out.println("\ntest 3");
             try {
-                new Any<Long>(new A3("1", 0), new A3("2", 0), new A3("3", 0)).call();
-            } catch (ForcedException fe) {
+                new Any<Long>(new A3("1", 0), new A3("2", 0), new A3("3", 0))
+                        .call();
+            } catch (final ForcedException fe) {
                 System.out.println("Forced Exception");
             }
         } finally {
@@ -41,19 +44,21 @@ class Any<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> {
     }
 
     @Override
-    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
-                                      final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+    protected void processAsyncOperation(
+            final AsyncRequestImpl _asyncRequestImpl,
+            final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
-        _asyncRequestImpl.setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
-            @Override
-            public void processException(
-                    Exception e,
-                    AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
-                    throws Exception {
-                if (_asyncRequestImpl.getPendingResponseCount() == 0)
-                    throw e;
-            }
-        });
+        _asyncRequestImpl
+                .setExceptionHandler(new ExceptionHandler<RESPONSE_TYPE>() {
+                    @Override
+                    public void processException(
+                            final Exception e,
+                            final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                            throws Exception {
+                        if (_asyncRequestImpl.hasNoPendingResponses())
+                            throw e;
+                    }
+                });
 
         int i = 0;
         while (i < requests.length) {
@@ -72,8 +77,9 @@ class A2 extends AOp<Long> {
     }
 
     @Override
-    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
-                                      final AsyncResponseProcessor<Long> _asyncResponseProcessor)
+    protected void processAsyncOperation(
+            final AsyncRequestImpl _asyncRequestImpl,
+            final AsyncResponseProcessor<Long> _asyncResponseProcessor)
             throws Exception {
         for (long i = 0; i < delay * 100000; i++)
             Thread.yield();
@@ -93,8 +99,9 @@ class A3 extends AOp<Long> {
     }
 
     @Override
-    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
-                                      final AsyncResponseProcessor<Long> _asyncResponseProcessor)
+    protected void processAsyncOperation(
+            final AsyncRequestImpl _asyncRequestImpl,
+            final AsyncResponseProcessor<Long> _asyncResponseProcessor)
             throws Exception {
         if (delay == 0)
             throw new ForcedException();

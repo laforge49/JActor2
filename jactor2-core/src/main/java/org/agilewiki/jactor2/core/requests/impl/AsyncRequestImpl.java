@@ -1,6 +1,11 @@
 package org.agilewiki.jactor2.core.requests.impl;
 
-import org.agilewiki.jactor2.core.requests.*;
+import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AsyncNativeRequest;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
+import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.SyncNativeRequest;
 
 public interface AsyncRequestImpl<RESPONSE_TYPE> extends
         RequestImpl<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {
@@ -9,6 +14,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      *
      * @param _response The response to this request.
      */
+    @Override
     void processAsyncResponse(final RESPONSE_TYPE _response);
 
     /**
@@ -18,11 +24,11 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
     void setNoHungRequestCheck();
 
     /**
-     * Returns a count of the number of subordinate requests which have not yet responded.
+     * Returns true if no subordinate requests have not yet responded.
      *
-     * @return A count of the number of subordinate requests which have not yet responded.
+     * @return true if no subordinate requests have not yet responded.
      */
-    int getPendingResponseCount();
+    boolean hasNoPendingResponses();
 
     /**
      * Returns an exception as a response instead of throwing it.
@@ -58,7 +64,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT>               The type of result value.
      */
     <RT> void send(final RequestImpl<RT> _requestImpl,
-                   final AsyncResponseProcessor<RT> _responseProcessor);
+            final AsyncResponseProcessor<RT> _responseProcessor);
 
     /**
      * Send a subordinate request, providing the originating request is not canceled.
@@ -71,7 +77,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT2>          The fixed response type.
      */
     <RT, RT2> void send(final RequestImpl<RT> _requestImpl,
-                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
      * Cancel a subordinate RequestImpl.
@@ -94,7 +100,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT>                    The type of response returned.
      */
     <RT> RequestImpl<RT> send(final SOp<RT> _sOp,
-                   final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+            final AsyncResponseProcessor<RT> _asyncResponseProcessor);
 
     /**
      * Pass a request to its target and then replace its response value,
@@ -108,7 +114,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT2>          The replacement value type.
      */
     <RT, RT2> RequestImpl<RT> send(final SOp<RT> _sOp,
-                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
      * Pass a request to its target reactor, providing the originating request is not canceled.
@@ -118,7 +124,7 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT>                    The type of response returned.
      */
     <RT> AsyncRequestImpl<RT> send(final AOp<RT> _aOp,
-                   final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+            final AsyncResponseProcessor<RT> _asyncResponseProcessor);
 
     /**
      * Pass a request to its target and then replace its response value,
@@ -132,19 +138,19 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * @param <RT2>          The replacement value type.
      */
     <RT, RT2> AsyncRequestImpl<RT> send(final AOp<RT> _aOp,
-                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     <RT> void send(final SyncNativeRequest<RT> _syncNativeRequest,
-                   final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+            final AsyncResponseProcessor<RT> _asyncResponseProcessor);
 
     <RT, RT2> void send(final SyncNativeRequest<RT> _syncNativeRequest,
-                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     <RT> void send(final AsyncNativeRequest<RT> _asyncNativeRequest,
-                   final AsyncResponseProcessor<RT> _asyncResponseProcessor);
+            final AsyncResponseProcessor<RT> _asyncResponseProcessor);
 
     <RT, RT2> void send(final AsyncNativeRequest<RT> _asyncNativeRequest,
-                        final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
+            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
      * Do a direct method call on an AReq.
@@ -155,12 +161,12 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      */
     @Deprecated
     <RT> void asyncDirect(final AOp<RT> _aOp,
-                          final AsyncResponseProcessor<RT> _asyncResponseProcessor)
+            final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception;
 
     @Deprecated
     <RT> void asyncDirect(final AsyncNativeRequest<RT> _asyncNativeRequest,
-                          final AsyncResponseProcessor<RT> _asyncResponseProcessor)
+            final AsyncResponseProcessor<RT> _asyncResponseProcessor)
             throws Exception;
 
     /**

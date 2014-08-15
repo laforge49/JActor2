@@ -20,20 +20,22 @@ public class AllMain {
 class All extends AOp<Void> {
     final AOp<Void>[] requests;
 
-    All(final AOp<Void> ... _requests) throws Exception {
+    All(final AOp<Void>... _requests) throws Exception {
         super("All", new NonBlockingReactor());
         requests = _requests;
     }
 
     @Override
-    protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
-                                      final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+    protected void processAsyncOperation(
+            final AsyncRequestImpl _asyncRequestImpl,
+            final AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception {
 
-        AsyncResponseProcessor<Void> responseProcessor = new AsyncResponseProcessor<Void>() {
+        final AsyncResponseProcessor<Void> responseProcessor = new AsyncResponseProcessor<Void>() {
             @Override
-            public void processAsyncResponse(Void _response) throws Exception {
-                if (_asyncRequestImpl.getPendingResponseCount() == 0)
+            public void processAsyncResponse(final Void _response)
+                    throws Exception {
+                if (_asyncRequestImpl.hasNoPendingResponses())
                     _asyncResponseProcessor.processAsyncResponse(null);
             }
         };
@@ -47,13 +49,14 @@ class All extends AOp<Void> {
 }
 
 class A1 extends AOp<Void> {
-    A1(String _name) throws Exception {
+    A1(final String _name) throws Exception {
         super(_name, new NonBlockingReactor());
     }
 
     @Override
-    protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
-                                      AsyncResponseProcessor<Void> _asyncResponseProcessor)
+    protected void processAsyncOperation(
+            final AsyncRequestImpl _asyncRequestImpl,
+            final AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception {
         System.out.println(opName);
         _asyncResponseProcessor.processAsyncResponse(null);
