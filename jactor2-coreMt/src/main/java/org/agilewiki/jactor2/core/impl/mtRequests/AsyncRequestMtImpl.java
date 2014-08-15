@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,9 +31,6 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         RequestMtImpl<RESPONSE_TYPE> implements
         AsyncNativeRequest<RESPONSE_TYPE> {
 
-    private final ConcurrentHashMap<RequestImpl<?>, Boolean> pendingRequests = new ConcurrentHashMap<RequestImpl<?>, Boolean>(
-            8, 0.75f, 4);
-
     private boolean noHungRequestCheck;
 
     private final AsyncOperation<RESPONSE_TYPE> asyncOperation;
@@ -41,6 +39,9 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      * Used by the Timer.
      */
     private volatile long start;
+
+    /** The expected number of responses. */
+    private int expectedResponses = 16;
 
     /**
      * Create an AsyncRequestMtImpl and bind it to its operation and target targetReactor.
@@ -80,9 +81,13 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      *
      * @return true if no subordinate requests have not yet responded.
      */
+    @SuppressWarnings("rawtypes")
     @Override
     public final boolean hasNoPendingResponses() {
-        return pendingRequests.isEmpty();
+        final Object pr = get();
+        return (pr == null)
+                || ((pr instanceof ConcurrentHashMap) && ((ConcurrentHashMap) pr)
+                        .isEmpty());
     }
 
     /**
@@ -92,9 +97,28 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      *
      * @return true if present.
      */
+    @SuppressWarnings("rawtypes")
     private boolean pendingRequestsRemove(final RequestImpl<?> request) {
-        final Boolean result = pendingRequests.remove(request);
-        return (result == null) ? false : result.booleanValue();
+        while (true) {
+            final Object pendingRequests = get();
+            if (pendingRequests != null) {
+                if (pendingRequests instanceof RequestImpl) {
+                    if (pendingRequests == request) {
+                        if (compareAndSet(pendingRequests, null)) {
+                            // We just removed it
+                            return true;
+                        }
+                        // Concurrent modification; try again
+                        continue;
+                    }
+                    // Not there
+                } else {
+                    return ((ConcurrentHashMap) pendingRequests)
+                            .remove(request) != null;
+                }
+            }
+            return false;
+        }
     }
 
     /**
@@ -103,7 +127,33 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      * @param request The request to be added
      */
     private void pendingRequestsAdd(final RequestImpl<?> request) {
-        pendingRequests.put(request, Boolean.TRUE);
+        while (true) {
+            final Object pendingRequests = get();
+            if (pendingRequests == null) {
+                if (compareAndSet(null, request)) {
+                    // We just added it
+                    return;
+                }
+                // Concurrent modification; try again
+            } else {
+                if (pendingRequests instanceof RequestImpl) {
+                    final ConcurrentHashMap<RequestImpl<?>, Boolean> map = new ConcurrentHashMap<RequestImpl<?>, Boolean>(
+                            expectedResponses, 0.75f, 4);
+                    map.put((RequestImpl<?>) pendingRequests, Boolean.TRUE);
+                    map.put(request, Boolean.TRUE);
+                    if (compareAndSet(pendingRequests, map)) {
+                        // We just added it
+                        return;
+                    }
+                    // Concurrent modification; try again
+                } else {
+                    final ConcurrentHashMap<RequestImpl<?>, Boolean> map = (ConcurrentHashMap<RequestImpl<?>, Boolean>) pendingRequests;
+                    map.put(request, Boolean.TRUE);
+                    // We just added it
+                    return;
+                }
+            }
+        }
     }
 
     /**
@@ -111,24 +161,41 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      *
      * @return A copy of pendingRequests.
      */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private List<RequestImpl<?>> copyPendingRequests() {
-        // Note: This will be called outside of our own reactor.
-        final ArrayList<RequestImpl<?>> result = new ArrayList<>(
-                (int) (pendingRequests.size() * 1.1));
-        boolean again = true;
-        while (again) {
+        final Object pendingRequests = get();
+        if (pendingRequests == null) {
+            return Collections.emptyList();
+        }
+        if (pendingRequests instanceof RequestImpl) {
+            // Weird generics issue here.
+            return (List) Collections.singletonList(pendingRequests);
+        }
+        final ConcurrentHashMap<RequestImpl<?>, Boolean> map = (ConcurrentHashMap<RequestImpl<?>, Boolean>) pendingRequests;
+        final ArrayList<RequestImpl<?>> result = new ArrayList<RequestImpl<?>>(
+                (int) (map.size() * 1.1));
+        while (true) {
             result.clear();
             try {
-                result.addAll(pendingRequests.keySet());
-                again = false;
+                result.addAll(map.keySet());
+                while (result.remove(null)) {
+                    // NOP
+                }
+                return result;
             } catch (final Exception e) {
-                // Better chance next time ...
+                // NOP
             }
         }
-        while (result.remove(null)) {
-            // Drop all nulls.
-        }
-        return result;
+    }
+
+    /**
+     * Sets the "expected" number of pending responses. This is just a hint.
+     *
+     * @param responses the "expected" number of pending responses.
+     */
+    @Override
+    public final void setExpectedPendingResponses(final int responses) {
+        expectedResponses = responses;
     }
 
     /**

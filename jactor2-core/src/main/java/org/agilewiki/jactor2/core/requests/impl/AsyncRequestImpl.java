@@ -186,4 +186,11 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
      * By default, onClose does nothing.
      */
     void onClose(final AsyncRequestImpl _asyncRequestImpl);
+
+    /**
+     * Sets the "expected" number of pending responses. This is just a hint.
+     *
+     * @param responses the "expected" number of pending responses.
+     */
+    void setExpectedPendingResponses(int responses);
 }

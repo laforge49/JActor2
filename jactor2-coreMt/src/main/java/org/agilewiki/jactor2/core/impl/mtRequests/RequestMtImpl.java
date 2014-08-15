@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
@@ -24,8 +25,9 @@ import org.agilewiki.jactor2.core.util.Timer;
  *
  * @param <RESPONSE_TYPE>
  */
-public abstract class RequestMtImpl<RESPONSE_TYPE> implements
-        RequestImpl<RESPONSE_TYPE>, Operation<RESPONSE_TYPE> {
+public abstract class RequestMtImpl<RESPONSE_TYPE> extends
+        AtomicReference<Object> implements RequestImpl<RESPONSE_TYPE>,
+        Operation<RESPONSE_TYPE> {
     private static volatile int nextHash;
 
     /**
@@ -497,7 +499,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> implements
                 + ", isOneWay=" + isOneWay() + ", source="
                 + (requestSource == null ? "null" : requestSource)
                 + ", target=" + getTargetReactor().asReactorImpl() + ", this="
-                + super.toString()
+                + getClass().toString() + "#"
+                + Integer.toHexString(super.hashCode())
                 + (oldMessage == null ? "" : "\n" + oldMessage.toString());
     }
 
