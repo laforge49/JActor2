@@ -57,11 +57,20 @@ public class IsolationInbox extends Inbox {
 
     @Override
     protected void offerLocal(final RequestMtImpl<?> msg) {
-        if (!msg.isComplete() && !msg.isSignal()) {
-            localResponsePendingQueue.offer(msg);
-        } else {
+        if (msg.isComplete() || msg.isSignal()) {
             localNoResponsePendingQueue.offer(msg);
+            return;
         }
+        if (msg.getSourceReactor() != null && msg.getSourceReactor() == msg.getTargetReactor()) {
+            localNoResponsePendingQueue.offer(msg);
+            return;
+        }
+        RequestMtImpl<?> oldMsg = msg.getOldRequest();
+        if (oldMsg != null && oldMsg.getIsolationReactor() != null) {
+            localNoResponsePendingQueue.offer(msg);
+            return;
+        }
+        localResponsePendingQueue.offer(msg);
     }
 
     @Override
@@ -115,7 +124,7 @@ public class IsolationInbox extends Inbox {
             return;
         }
         if (processingRequest != null) {
-            throw new IllegalStateException("already processing a request");
+            return;
         }
         processingRequest = _requestImpl;
     }

@@ -118,6 +118,10 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         targetReactorImpl = (ReactorMtImpl) targetReactor.asReactorImpl();
     }
 
+    public RequestMtImpl<?> getOldRequest() {
+        return oldMessage;
+    }
+
     /** Redefines the hashcode for a faster hashing. */
     @Override
     public int hashCode() {
@@ -242,7 +246,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         } else
             isolationReactor = source.isCommonReactor() ? null : (IsolationReactor) source.asReactor();
         if (!(targetReactor instanceof CommonReactor)) {
-            if (isolationReactor != null && (_responseProcessor != null)) {
+            if (isolationReactor != null && isolationReactor != targetReactor && (_responseProcessor != null)) {
                 throw new UnsupportedOperationException(
                         "Isolated requests can not be nested, even indirectly:\n" + toString());
             }
