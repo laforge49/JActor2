@@ -16,9 +16,9 @@ import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 public class IsolationInbox extends Inbox {
 
     /**
-     * True when processing a request and the response has not yet been assigned.
+     * The request being processed to completion.
      */
-    private boolean processingRequest;
+    private RequestMtImpl<?> processingRequest;
 
     /**
      * Local response-pending (requests) queue for same-thread exchanges.
@@ -73,13 +73,13 @@ public class IsolationInbox extends Inbox {
 
     @Override
     public boolean isIdle() {
-        return !processingRequest && isEmpty();
+        return null == processingRequest && isEmpty();
     }
 
     @Override
     public boolean hasWork() {
         while (localNoResponsePendingQueue.isEmpty()
-                && (processingRequest || localResponsePendingQueue.isEmpty())) {
+                && (processingRequest != null || localResponsePendingQueue.isEmpty())) {
             final Object obj = concurrentQueue.poll();
             if (obj == null) {
                 return false;
@@ -114,20 +114,22 @@ public class IsolationInbox extends Inbox {
         if (_requestImpl.isSignal()) {
             return;
         }
-        if (processingRequest) {
+        if (processingRequest != null) {
             throw new IllegalStateException("already processing a request");
         }
-        processingRequest = true;
+        processingRequest = _requestImpl;
     }
 
     @Override
-    public void requestEnd(final RequestMtImpl<?> _message) {
-        if (_message.isSignal()) {
+    public void requestEnd(final RequestMtImpl<?> _requestImpl) {
+        if (_requestImpl.isSignal()) {
             return;
         }
-        if (!processingRequest) {
-            throw new IllegalStateException("not processing a request");
+        if (processingRequest == null) {
+            throw new IllegalStateException("not processing request:\n" + _requestImpl.toString());
         }
-        processingRequest = false;
+        if (processingRequest != _requestImpl)
+            return;
+        processingRequest = null;
     }
 }

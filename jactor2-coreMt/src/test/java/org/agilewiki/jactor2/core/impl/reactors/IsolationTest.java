@@ -74,7 +74,21 @@ public class IsolationTest extends CallTestBase {
             Foot foot = new Foot(reactor);
             Via via = new Via(foot.dAOp());
             Head head = new Head(via.dAOp(), reactor);
-            //assertFalse(call(head.dAOp()));
+            assertFalse(call(head.dAOp()));
+        } finally {
+            Plant.close();
+        }
+    }
+
+    public void test6() throws Exception {
+        Thread.sleep(100);
+        System.err.println("\ntest 6");
+        new Plant();
+        try {
+            IsolationReactor reactor = new IsolationReactor();
+            Foot foot = new Foot(reactor);
+            Head head = new Head(foot.dAOp(), reactor);
+            assertFalse(call(head.dAOp()));
         } finally {
             Plant.close();
         }
