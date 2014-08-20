@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
@@ -88,7 +89,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
     /**
      * True when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
      */
-    private boolean isolated;
+    private IsolationReactor isolationReactor;
 
     /**
      * The response created when this request impl is evaluated.
@@ -236,16 +237,16 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
                     "A valid source sourceReactor can not be idle");
         }
         oldMessage = source.getCurrentRequest();
-        if ((oldMessage != null) && oldMessage.isIsolated()) {
-            isolated = true;
+        if ((oldMessage != null) && oldMessage.getIsolationReactor() != null) {
+            isolationReactor = oldMessage.getIsolationReactor();
         } else
-            isolated = !source.isCommonReactor();
+            isolationReactor = source.isCommonReactor() ? null : (IsolationReactor) source.asReactor();
         if (!(targetReactor instanceof CommonReactor)) {
-            if (isolated && (_responseProcessor != null)) {
+            if (isolationReactor != null && (_responseProcessor != null)) {
                 throw new UnsupportedOperationException(
                         "Isolated requests can not be nested, even indirectly:\n" + toString());
             }
-            isolated = true;
+            isolationReactor = (IsolationReactor) targetReactor;
         }
         sourceExceptionHandler = (ExceptionHandler<RESPONSE_TYPE>) source
                 .getExceptionHandler();
@@ -346,8 +347,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         return !incomplete;
     }
 
-    public boolean isIsolated() {
-        return isolated;
+    public IsolationReactor getIsolationReactor() {
+        return isolationReactor;
     }
 
     @Override
