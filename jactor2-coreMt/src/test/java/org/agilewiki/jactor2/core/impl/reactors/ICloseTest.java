@@ -37,7 +37,7 @@ class IHang extends BlockingBladeBase {
                 final AOp<Void> noRspAOp = iHung.noRspAOp();
                 final AsyncRequestImpl<Void> noRspImpl = _asyncRequestImpl.send(noRspAOp, _asyncResponseProcessor);
                 _asyncRequestImpl.send(iHung.getReactor().nullSOp(), _asyncResponseProcessor);
-                _asyncRequestImpl.send(new DelayAOp(50), new AsyncResponseProcessor<Void>() {
+                _asyncRequestImpl.send(new DelayAOp(100), new AsyncResponseProcessor<Void>() {
                     @Override
                     public void processAsyncResponse(final Void _response) {
                         _asyncRequestImpl.cancel(noRspImpl);
