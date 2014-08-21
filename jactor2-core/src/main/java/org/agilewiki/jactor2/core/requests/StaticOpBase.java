@@ -497,12 +497,12 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         return new LongVar(defVal);
     }
 
-    /** Creates and returns a new ObjectVar<E>. */
+    /** Creates and returns a new ObjectVar&lt;E&gt;. */
     public final <E> ObjectVar<E> var(final Class<E> type) {
         return new ObjectVar<E>(type, null);
     }
 
-    /** Creates and returns a new ObjectVar<E>. */
+    /** Creates and returns a new ObjectVar&lt;E&gt;. */
     public final <E> ObjectVar<E> var(final Class<E> type, final E defVal) {
         return new ObjectVar<E>(type, defVal);
     }
