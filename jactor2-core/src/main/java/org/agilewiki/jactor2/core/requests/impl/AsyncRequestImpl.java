@@ -153,23 +153,6 @@ public interface AsyncRequestImpl<RESPONSE_TYPE> extends
             final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse);
 
     /**
-     * Do a direct method call on an AReq.
-     *
-     * @param _aOp                    The boilerplate-free alternative to AsyncRequest.
-     * @param _asyncResponseProcessor Handles the response.
-     * @param <RT>                    The type of response returned.
-     */
-    @Deprecated
-    <RT> void asyncDirect(final AOp<RT> _aOp,
-            final AsyncResponseProcessor<RT> _asyncResponseProcessor)
-            throws Exception;
-
-    @Deprecated
-    <RT> void asyncDirect(final AsyncNativeRequest<RT> _asyncNativeRequest,
-            final AsyncResponseProcessor<RT> _asyncResponseProcessor)
-            throws Exception;
-
-    /**
      * An optional callback used to signal that the request has been canceled.
      * This method must be thread-safe, as there is no constraint on which
      * thread is used to call it.

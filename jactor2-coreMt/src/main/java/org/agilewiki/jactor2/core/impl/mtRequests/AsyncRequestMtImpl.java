@@ -456,45 +456,6 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
-    @Deprecated
-    public <RT> void asyncDirect(final AOp<RT> _aOp,
-            final AsyncResponseProcessor<RT> _asyncResponseProcessor)
-            throws Exception {
-        if (getTargetReactor() != _aOp.targetReactor)
-            throw new UnsupportedOperationException(
-                    "Not thread safe: source reactor is not the same");
-        final ExceptionHandler<RESPONSE_TYPE> oldExceptionHandler = getExceptionHandler();
-        _aOp.doAsync(this, new AsyncResponseProcessor<RT>() {
-            @Override
-            public void processAsyncResponse(final RT _response)
-                    throws Exception {
-                setExceptionHandler(oldExceptionHandler);
-                _asyncResponseProcessor.processAsyncResponse(_response);
-            }
-        });
-    }
-
-    @Override
-    @Deprecated
-    public <RT> void asyncDirect(
-            final AsyncNativeRequest<RT> _asyncNativeRequest,
-            final AsyncResponseProcessor<RT> _asyncResponseProcessor)
-            throws Exception {
-        if (getTargetReactor() != _asyncNativeRequest.getTargetReactor())
-            throw new UnsupportedOperationException(
-                    "Not thread safe: source reactor is not the same");
-        final ExceptionHandler<RESPONSE_TYPE> oldExceptionHandler = getExceptionHandler();
-        _asyncNativeRequest.doAsync(this, new AsyncResponseProcessor<RT>() {
-            @Override
-            public void processAsyncResponse(final RT _response)
-                    throws Exception {
-                setExceptionHandler(oldExceptionHandler);
-                _asyncResponseProcessor.processAsyncResponse(_response);
-            }
-        });
-    }
-
-    @Override
     public void onCancel(final AsyncRequestImpl _asyncRequestImpl) {
         onCancel();
     }
