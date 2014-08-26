@@ -182,7 +182,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
                     // NOP
                 }
                 return result;
-            } catch (final Exception e) {
+            } catch (final Throwable e) {
                 // NOP
             }
         }
