@@ -300,7 +300,10 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
             final Thread thread = getThreadReference().get();
             if (thread != null) {
                 thread.interrupt();
-                final boolean timeout = timeoutSemaphore.acquire();
+                boolean timeout = false;
+                try {
+                    timeout = timeoutSemaphore.acquire();
+                } catch (InterruptedException ie) {}
                 currentRequest.close();
                 if (timeout
                         && (isRunning() & (PlantImpl.getSingleton() != null))) {
