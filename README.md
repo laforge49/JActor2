@@ -811,6 +811,7 @@ Links
     - [JActor2-CoreMt Javadoc pages](http://www.agilewiki.org/docs/api/coreMt/index.html)
     - Dependencies: core, [guava](https://code.google.com/p/guava-libraries/)
     - benchmark: [repository](https://github.com/skunkiferous/PingPong), [results](http://skunkiferous.github.io/PingPong/)
+- [modules (Plugin support)] (https://github.com/laforge49/JActor-Modules)
 - [Downloads](http://www.agilewiki.org/downloads)
 - [Google Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/agilewikidevelopers)
 - License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
