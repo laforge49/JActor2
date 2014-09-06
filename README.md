@@ -805,11 +805,11 @@ Links
 
 - core (JActor2 API)
     - [JActor2-Core Javadoc pages](http://www.agilewiki.org/docs/api/core/index.html)
-    - Dependencies: [slf4j](http://www.slf4j.org/)
+    - Dependencies: [Metrics](https://github.com/dropwizard/metrics)
 - coreMt (Multi-threaded Implementation)
     - [Tutorial](http://www.agilewiki.org/docs/tutorials/core/index.html)
     - [JActor2-CoreMt Javadoc pages](http://www.agilewiki.org/docs/api/coreMt/index.html)
-    - Dependencies: core, [guava](https://code.google.com/p/guava-libraries/)
+    - Dependencies: core, [slf4j](http://www.slf4j.org/), [guava](https://code.google.com/p/guava-libraries/), [PCollections](http://mvnrepository.com/artifact/org.pcollections/pcollections/2.1.2)
     - benchmark: [repository](https://github.com/skunkiferous/PingPong), [results](http://skunkiferous.github.io/PingPong/)
 - [modules (Plugin support)] (https://github.com/laforge49/JActor-Modules)
 - [Downloads](http://www.agilewiki.org/downloads)
