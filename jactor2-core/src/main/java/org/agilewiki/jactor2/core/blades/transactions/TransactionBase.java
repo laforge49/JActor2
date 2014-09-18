@@ -83,8 +83,8 @@ abstract public class TransactionBase<IMMUTABLE> implements
             public void processAsyncResponse(final Void _response)
                     throws Exception {
                 updateImmutableReference(_immutableReference);
-                dis.processAsyncResponse(immutable);
                 applyAReq = null;
+                dis.processAsyncResponse(immutable);
             }
         };
     }
@@ -96,14 +96,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
         _eval(_immutableReference,
                 request,
                 evalResponseProcessor(_immutableReference,
-                        new AsyncResponseProcessor<IMMUTABLE>() {
-                            @Override
-                            public void processAsyncResponse(
-                                    final IMMUTABLE _response) throws Exception {
-                                evalResponseProcessor(_immutableReference, dis)
-                                        .processAsyncResponse(null);
-                            }
-                        }));
+                        dis));
     }
 
     /**
