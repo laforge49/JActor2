@@ -8,7 +8,7 @@ import java.util.Map;
  * A transmutable map.
  */
 public class TransmutableMap<K, V> extends HashMap<K, V> implements Transmutable<Map<K, V>> {
-    protected Map unmodifiable;
+    protected volatile Map<K, V> unmodifiable;
 
     public TransmutableMap() {
         createUnmodifiable();

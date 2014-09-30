@@ -8,7 +8,7 @@ import java.util.Set;
  * A transmutabe set.
  */
 public class TransmutableSet<E> extends HashSet<E> implements Transmutable<Set<E>> {
-    protected Set<E> unmodifiable;
+    protected volatile Set<E> unmodifiable;
 
     public TransmutableSet() {
         createUnmodifiable();

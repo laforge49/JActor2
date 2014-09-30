@@ -4,7 +4,7 @@ package org.agilewiki.jactor2.core.blades.transmutable;
  * A transmutable String.
  */
 public class TransmutableString implements Transmutable<String> {
-    protected String unmodifiable;
+    protected volatile String unmodifiable;
     public final StringBuilder stringBuilder;
 
     public TransmutableString() {
