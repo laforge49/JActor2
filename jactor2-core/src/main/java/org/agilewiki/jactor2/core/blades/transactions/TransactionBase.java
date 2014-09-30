@@ -37,6 +37,7 @@ abstract public class TransactionBase<IMMUTABLE> implements
      * The request which updates operate under.
      */
     protected AsyncRequestImpl<IMMUTABLE> applyAReq;
+
     /** Our hashcode. */
     private final int hashCode = nextHash++;
 
