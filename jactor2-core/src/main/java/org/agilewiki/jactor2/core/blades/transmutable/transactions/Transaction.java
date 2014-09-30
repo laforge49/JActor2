@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
  * A composable transaction.
  */
 public interface Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DATATYPE>>
-        extends IsolationBlade, TransmutableSource<DATATYPE, TRANSMUTABLE> {
+        extends IsolationBlade {
     /**
      * Evaluate the transaction.
      *

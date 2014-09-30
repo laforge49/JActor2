@@ -9,7 +9,8 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
  * An IsolationBlade to which transactions can be applied.
  */
 public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<DATATYPE>>
-        implements IsolationBlade, TransmutableSource<DATATYPE, TRANSMUTABLE> {
+        extends TransmutableSource<DATATYPE, TRANSMUTABLE>
+        implements IsolationBlade {
 
     /**
      * The blade's reactor.
@@ -19,7 +20,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
     /**
      * The transmutable to be operated on.
      */
-    private TRANSMUTABLE transmutable;
+    private final TRANSMUTABLE transmutable;
 
     private DATATYPE unmodifiable;
 
@@ -66,7 +67,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
     }
 
     @Override
-    public TRANSMUTABLE getTransmutable() {
+    protected TRANSMUTABLE getTransmutable() {
         return transmutable;
     }
 

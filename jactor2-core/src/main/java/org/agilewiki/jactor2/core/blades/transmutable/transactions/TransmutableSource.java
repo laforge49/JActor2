@@ -3,13 +3,13 @@ package org.agilewiki.jactor2.core.blades.transmutable.transactions;
 import org.agilewiki.jactor2.core.blades.transmutable.Transmutable;
 
 /**
- * Source of a transmutable object.
+ * Provides a reference to a transutable.
  */
-public interface TransmutableSource<DATATYPE, TRANSMUTABLE extends Transmutable<DATATYPE>> {
+public abstract class TransmutableSource<DATATYPE, TRANSMUTABLE extends Transmutable<DATATYPE>> {
     /**
-     * Returns the transmutable;
+     * Returns the transmutable.
      *
-     * @return The transmutable, or null.
+     * @return The transmutable.
      */
-    TRANSMUTABLE getTransmutable();
+    abstract protected TRANSMUTABLE getTransmutable();
 }
