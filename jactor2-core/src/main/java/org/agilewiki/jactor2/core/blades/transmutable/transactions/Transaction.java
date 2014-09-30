@@ -9,11 +9,11 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
  * A composable transaction.
  */
 public interface Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DATATYPE>>
-        extends IsolationBlade, Transmutable<DATATYPE>, TransmutableSource<DATATYPE, TRANSMUTABLE> {
+        extends IsolationBlade, TransmutableSource<DATATYPE, TRANSMUTABLE> {
     /**
      * Evaluate the transaction.
      *
-     * @param _root      The root of the chain, a transmutable reference.
+     * @param _root      The root of the transaction chain, a transmutable reference.
      * @param _applyAReq The request to apply.
      * @param _dis       The response processor.
      */

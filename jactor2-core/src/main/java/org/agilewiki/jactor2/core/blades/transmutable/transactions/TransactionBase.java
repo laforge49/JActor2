@@ -52,21 +52,6 @@ public abstract class TransactionBase<DATATYPE, TRANSMUTABLE extends Transmutabl
     }
 
     @Override
-    public DATATYPE getUnmodifiable() {
-        return transmutable.getUnmodifiable();
-    }
-
-    @Override
-    public void createUnmodifiable() {
-        transmutable.createUnmodifiable();
-    }
-
-    @Override
-    public Transmutable<DATATYPE> recover() {
-        return transmutable.recover();
-    }
-
-    @Override
     public TRANSMUTABLE getTransmutable() {
         return transmutable;
     }

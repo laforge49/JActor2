@@ -9,7 +9,7 @@ public interface TransmutableSource<DATATYPE, TRANSMUTABLE extends Transmutable<
     /**
      * Returns the transmutable;
      *
-     * @return The transmutavle, or null.
+     * @return The transmutable, or null.
      */
     TRANSMUTABLE getTransmutable();
 }

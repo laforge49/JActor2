@@ -8,34 +8,24 @@ import java.util.Map;
  * A transmutable map.
  */
 public class TransmutableMap<K, V> extends HashMap<K, V> implements Transmutable<Map<K, V>> {
-    protected volatile Map<K, V> unmodifiable;
-
     public TransmutableMap() {
-        createUnmodifiable();
     }
 
     public TransmutableMap(int size) {
         super(size);
-        createUnmodifiable();
     }
 
     public TransmutableMap(Map map) {
         super(map);
-        createUnmodifiable();
     }
 
     @Override
-    public Map<K, V> getUnmodifiable() {
-        return unmodifiable;
+    public Map<K, V> createUnmodifiable() {
+        return Collections.unmodifiableMap(new HashMap(this));
     }
 
     @Override
-    public void createUnmodifiable() {
-        unmodifiable = Collections.unmodifiableMap(new HashMap(this));
-    }
-
-    @Override
-    public Transmutable<Map<K, V>> recover() {
-        return null;
+    public TransmutableMap<K, V> recreate(Map<K, V> map) {
+        return new TransmutableMap<K, V>(map);
     }
 }

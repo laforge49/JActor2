@@ -6,39 +6,28 @@ import java.util.*;
  * A transmutable tree set.
  */
 public class TransmutableSortedSet<E> extends TreeSet<E> implements Transmutable<SortedSet<E>> {
-    protected volatile SortedSet<E> unmodifiable;
-
     public TransmutableSortedSet() {
-        createUnmodifiable();
     }
 
     public TransmutableSortedSet(Comparator<? super E> comparator) {
         super(comparator);
-        createUnmodifiable();
     }
 
     public TransmutableSortedSet(Set<E> set) {
         super(set);
-        createUnmodifiable();
     }
 
     public TransmutableSortedSet(SortedSet<E> set) {
         super(set);
-        createUnmodifiable();
     }
 
     @Override
-    public SortedSet<E> getUnmodifiable() {
-        return unmodifiable;
+    public SortedSet<E> createUnmodifiable() {
+        return Collections.unmodifiableSortedSet(new TreeSet<E>(this));
     }
 
     @Override
-    public void createUnmodifiable() {
-        unmodifiable = Collections.unmodifiableSortedSet(new TreeSet<E>(this));
-    }
-
-    @Override
-    public Transmutable<SortedSet<E>> recover() {
-        return new TransmutableSet(unmodifiable);
+    public TransmutableSortedSet<E> recreate(SortedSet<E> unmodifiable) {
+        return new TransmutableSortedSet(unmodifiable);
     }
 }

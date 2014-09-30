@@ -9,7 +9,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
  * An IsolationBlade to which transactions can be applied.
  */
 public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<DATATYPE>>
-        implements IsolationBlade, Transmutable<DATATYPE>, TransmutableSource<DATATYPE, TRANSMUTABLE> {
+        implements IsolationBlade, TransmutableSource<DATATYPE, TRANSMUTABLE> {
 
     /**
      * The blade's reactor.
@@ -21,6 +21,8 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
      */
     private TRANSMUTABLE transmutable;
 
+    private DATATYPE unmodifiable;
+
     /**
      * Create an ImmutableReference blade.
      *
@@ -29,6 +31,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
     public TransmutableReference(final TRANSMUTABLE _transmutable) throws Exception {
         reactor = new IsolationReactor();
         transmutable = _transmutable;
+        unmodifiable = transmutable.createUnmodifiable();
     }
 
     /**
@@ -41,6 +44,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
                                  final IsolationReactor _reactor) {
         reactor = _reactor;
         transmutable = _transmutable;
+        unmodifiable = transmutable.createUnmodifiable();
     }
 
     /**
@@ -53,6 +57,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
                                  final NonBlockingReactor _parentReactor) throws Exception {
         reactor = new IsolationReactor(_parentReactor);
         transmutable = _transmutable;
+        unmodifiable = transmutable.createUnmodifiable();
     }
 
     @Override
@@ -65,18 +70,11 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
         return transmutable;
     }
 
-    @Override
     public DATATYPE getUnmodifiable() {
-        return transmutable.getUnmodifiable();
+        return unmodifiable;
     }
 
-    @Override
-    public void createUnmodifiable() {
-        transmutable.createUnmodifiable();
-    }
-
-    @Override
-    public Transmutable<DATATYPE> recover() {
-        return transmutable.recover();
+    protected void updateUnmodifiable() {
+        unmodifiable = transmutable.createUnmodifiable();
     }
 }
