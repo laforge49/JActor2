@@ -39,6 +39,10 @@ abstract public class ISMSyncTransaction<VALUE> extends
         return immutableChangeManager;
     }
 
+    /**
+     * Masks updateImmutableReference except for calls explicitly made to super.
+     * @param _immutableReference The ImmutableReference to which the transaction is applied.
+     */
     @Override
     protected void updateImmutableReference(
             final ImmutableReference<ISMap<VALUE>> _immutableReference) {
