@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.impl.blades.transmutable.transactions;
 
-import org.agilewiki.jactor2.core.blades.transmutable.Transmutable;
 import org.agilewiki.jactor2.core.blades.transmutable.TransmutableString;
 import org.agilewiki.jactor2.core.blades.transmutable.transactions.SyncTransaction;
 import org.agilewiki.jactor2.core.blades.transmutable.transactions.TransmutableReference;
@@ -24,7 +23,8 @@ public class SyncTest extends CallTestBase {
             TransmutableReference<String, TransmutableString> t =
                     new TransmutableReference<String, TransmutableString>(new TransmutableString("fun"));
             System.out.println(t.getUnmodifiable()); // fun
-            //call(addGood.applyAOp(t));
+            call(addGood.applyAOp(t));
+            System.out.println(t.getUnmodifiable()); // good fun
         } finally {
             Plant.close();
         }

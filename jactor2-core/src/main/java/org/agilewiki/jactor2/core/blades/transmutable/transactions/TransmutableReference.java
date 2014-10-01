@@ -63,7 +63,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
 
     @Override
     public IsolationReactor getReactor() {
-        return null;
+        return reactor;
     }
 
     @Override
