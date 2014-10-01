@@ -29,7 +29,7 @@ abstract public class SyncTransaction<DATATYPE, TRANSMUTABLE extends Transmutabl
      *
      * @param source The Transaction or TransmutableReference holding the immutable to be operated on.
      */
-    abstract protected void update(TransmutableSource<DATATYPE, TRANSMUTABLE> source)
+    abstract protected void update(TRANSMUTABLE transmutable)
             throws Exception;
 
     @Override
@@ -48,7 +48,7 @@ abstract public class SyncTransaction<DATATYPE, TRANSMUTABLE extends Transmutabl
             _dis.processAsyncResponse(null);
             return;
         }
-        update(_source);
+        update(_source.getTransmutable());
         _dis.processAsyncResponse(null);
     }
 }

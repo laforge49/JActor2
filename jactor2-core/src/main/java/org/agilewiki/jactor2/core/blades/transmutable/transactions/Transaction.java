@@ -77,9 +77,9 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
     /**
      * Evaluate the transaction.
      *
-     * @param _transmutableReference    The transmutable reference.
-     * @param request                   The request.
-     * @param dis                       The async response processor.
+     * @param _transmutableReference The transmutable reference.
+     * @param request                The request.
+     * @param dis                    The async response processor.
      */
     protected void eval(
             final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference,
@@ -94,7 +94,7 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
     /**
      * Creates a request to apply the transaction to a transmutable reference.
      *
-     * @param _transmutableReference    The transmutable reference.
+     * @param _transmutableReference The transmutable reference.
      * @return The request.
      */
     public AOp<Void> applyAOp(
@@ -199,7 +199,7 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
     /**
      * Returns true if the precheck passes.
      *
-     * @param _transmutable    The transmutable prior to the update being applied.
+     * @param _transmutable The transmutable prior to the update being applied.
      */
     protected boolean precheck(final TRANSMUTABLE _transmutable) throws Exception {
         return true;
