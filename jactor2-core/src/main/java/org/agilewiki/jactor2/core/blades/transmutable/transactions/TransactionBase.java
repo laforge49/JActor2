@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.transmutable.Transmutable;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 /**
@@ -22,7 +23,7 @@ public abstract class TransactionBase<DATATYPE, TRANSMUTABLE extends Transmutabl
     /**
      * The parent transaction in the chain of transactions.
      */
-    private final Transaction<DATATYPE, TRANSMUTABLE> parent;
+    private final TransactionBase<DATATYPE, TRANSMUTABLE> parent;
 
     /**
      * The transmutable data structure to be operated on.
@@ -44,7 +45,7 @@ public abstract class TransactionBase<DATATYPE, TRANSMUTABLE extends Transmutabl
      *
      * @param _parent The transaction to be applied before this one.
      */
-    TransactionBase(final Transaction<DATATYPE, TRANSMUTABLE> _parent) {
+    TransactionBase(final TransactionBase<DATATYPE, TRANSMUTABLE> _parent) {
         parent = _parent;
     }
 
@@ -109,10 +110,91 @@ public abstract class TransactionBase<DATATYPE, TRANSMUTABLE extends Transmutabl
         };
     }
 
+    protected ExceptionHandler<Void> exceptionHandler() {
+        return new ExceptionHandler<Void>() {
+            /**
+             * Process an exception or rethrow it.
+             *
+             * @param e The exception to be processed.
+             */
+            @Override
+            public Void processException(final Exception e)
+                    throws Exception {
+                getReactor().error(trace.toString());
+                throw e;
+            }
+        };
+    }
+
+    /**
+     * Apply the update.
+     *
+     * @param _source The source transaction or immutable reference.
+     * @param _dis    Signals completion of the update.
+     */
+    abstract protected void _apply(final TransmutableSource<DATATYPE, TRANSMUTABLE> _source,
+                                   final AsyncResponseProcessor<Void> _dis) throws Exception;
+
+    /**
+     * Update applied with a source of ImmutableReference.
+     */
+    protected void applySourceReference(
+            final TransmutableReference<DATATYPE, TRANSMUTABLE> _reference) {
+        trace = new StringBuffer("");
+    }
+
+    /**
+     * Update applied with a source of another transaction.
+     *
+     * @param _transaction The other transaction.
+     */
+    protected void applySourceTransaction(
+            final TransactionBase<DATATYPE, TRANSMUTABLE> _transaction) {
+        trace = _transaction.trace;
+    }
+
     @Override
     public void _eval(TransmutableReference<DATATYPE, TRANSMUTABLE> _root,
                       AsyncRequestImpl<TRANSMUTABLE> _applyAReq,
-                      AsyncResponseProcessor<Void> _dis) throws Exception {
+                      final AsyncResponseProcessor<Void> _dis) throws Exception {
+        reactor = _root.reactor;
+        applyAReq = _applyAReq;
+        if (parent == null) {
+            if (_root.getTransmutable() == null) {
+                transmutable = null;
+                _dis.processAsyncResponse(null);
+            } else {
+                _apply(_root, _dis);
+            }
+        } else {
+            parent._eval(_root, applyAReq, new AsyncResponseProcessor<Void>() {
+                @Override
+                public void processAsyncResponse(final Void _response)
+                        throws Exception {
+                    if (parent.getTransmutable() == null) {
+                        transmutable = null;
+                        _dis.processAsyncResponse(null);
+                    } else {
+                        _apply(parent, _dis);
+                    }
+                }
+            });
+        }
+    }
 
+    /**
+     * Update the trace.
+     */
+    protected void updateTrace() {
+        trace.insert(0, "\nTRACE: " + getClass().getName());
+    }
+
+    /**
+     * Returns true if the precheck passes.
+     *
+     * @param _transmutable    The transmutable prior to the update being applied.
+     */
+    protected boolean precheck(final TRANSMUTABLE _transmutable) throws Exception {
+        return true;
     }
 }
