@@ -20,7 +20,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
     /**
      * The transmutable to be operated on.
      */
-    private final TRANSMUTABLE transmutable;
+    private TRANSMUTABLE transmutable;
 
     private DATATYPE unmodifiable;
 
@@ -77,5 +77,9 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
 
     protected void updateUnmodifiable() {
         unmodifiable = transmutable.createUnmodifiable();
+    }
+
+    protected void recreate() {
+        transmutable = (TRANSMUTABLE) transmutable.recreate(unmodifiable);
     }
 }

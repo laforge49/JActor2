@@ -111,7 +111,8 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
         };
     }
 
-    protected ExceptionHandler<Void> exceptionHandler() {
+    protected ExceptionHandler<Void> exceptionHandler(
+            final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference) {
         return new ExceptionHandler<Void>() {
             /**
              * Process an exception or rethrow it.
@@ -121,6 +122,7 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
             @Override
             public Void processException(final Exception e)
                     throws Exception {
+                _transmutableReference.recreate();
                 getReactor().error(trace.toString());
                 throw e;
             }
@@ -165,6 +167,7 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
                       AsyncRequestImpl<TRANSMUTABLE> _applyAReq,
                       final AsyncResponseProcessor<Void> _dis) throws Exception {
         reactor = _root.reactor;
+        getReactor().asReactorImpl().setExceptionHandler(exceptionHandler(_root));
         applyAReq = _applyAReq;
         if (parent == null) {
             transmutable = _root.getTransmutable();

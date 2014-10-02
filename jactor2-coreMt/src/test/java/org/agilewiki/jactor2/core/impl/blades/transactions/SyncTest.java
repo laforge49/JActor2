@@ -6,6 +6,8 @@ import org.agilewiki.jactor2.core.blades.transactions.SyncTransaction;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 
+import java.io.IOException;
+
 public class SyncTest extends CallTestBase {
     public void testI() throws Exception {
         new Plant();
@@ -31,7 +33,7 @@ public class SyncTest extends CallTestBase {
             @Override
             public void update(final ImmutableSource<String> source)
                     throws Exception {
-                throw new NullPointerException();
+                throw new IOException();
             }
         };
 

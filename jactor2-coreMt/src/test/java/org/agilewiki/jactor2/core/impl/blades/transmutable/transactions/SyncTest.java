@@ -6,6 +6,8 @@ import org.agilewiki.jactor2.core.blades.transmutable.transactions.TransmutableR
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 
+import java.io.IOException;
+
 public class SyncTest extends CallTestBase {
     public void testI() throws Exception {
         new Plant();
@@ -32,7 +34,7 @@ public class SyncTest extends CallTestBase {
             @Override
             public void update(final TransmutableString transmutable)
                     throws Exception {
-                throw new NullPointerException();
+                throw new IOException();
             }
         };
 
@@ -65,7 +67,7 @@ public class SyncTest extends CallTestBase {
                 System.out.println("*** " + e);
             }
             System.out.println(t.getUnmodifiable()); // times
-            //call(noop.applyAOp(t));
+            call(noop.applyAOp(t));
             System.out.println(t.getUnmodifiable()); // times
         } finally {
             Plant.close();

@@ -42,7 +42,6 @@ abstract public class SyncTransaction<DATATYPE, TRANSMUTABLE extends Transmutabl
             applySourceReference((TransmutableReference<DATATYPE, TRANSMUTABLE>) _source);
         }
         updateTrace();
-        getReactor().asReactorImpl().setExceptionHandler(exceptionHandler());
         if (!precheck(_source.getTransmutable())) {
             transmutable = null;
             _dis.processAsyncResponse(null);
