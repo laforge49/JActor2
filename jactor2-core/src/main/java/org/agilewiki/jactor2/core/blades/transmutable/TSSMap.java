@@ -1,6 +1,5 @@
 package org.agilewiki.jactor2.core.blades.transmutable;
 
-import java.util.Map;
 import java.util.SortedMap;
 
 /**
@@ -10,9 +9,9 @@ public class TSSMap<VALUE> extends TransmutableMap<String, VALUE> {
     /**
      * Make an immutable subMap.
      *
-     * @param map        A sorted map.
-     * @param prefix     The keys in the submap all start with this prefix.
-     * @param <VALUE>    The type of value
+     * @param map     A sorted map.
+     * @param prefix  The keys in the submap all start with this prefix.
+     * @param <VALUE> The type of value
      * @return A subMap.
      */
     public static <VALUE> SortedMap<String, VALUE> subMap(SortedMap<String, VALUE> map, String prefix) {
@@ -27,6 +26,6 @@ public class TSSMap<VALUE> extends TransmutableMap<String, VALUE> {
      * @return A subMap.
      */
     public SortedMap<String, VALUE> subMap(String prefix) {
-        return subMap((SortedMap<String, VALUE>)this, prefix);
+        return subMap((SortedMap<String, VALUE>) this, prefix);
     }
 }

@@ -27,7 +27,7 @@ abstract public class AsyncTransaction<DATATYPE, TRANSMUTABLE extends Transmutab
     /**
      * Updates the transmutable data structure.
      *
-     * @param transmutable The Transmutable.
+     * @param transmutable           The Transmutable.
      * @param asyncResponseProcessor Updates the immutable in the target transaction.
      */
     abstract protected void update(TRANSMUTABLE transmutable,
