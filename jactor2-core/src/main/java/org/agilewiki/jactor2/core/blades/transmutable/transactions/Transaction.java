@@ -167,8 +167,8 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
         reactor = _root.reactor;
         applyAReq = _applyAReq;
         if (parent == null) {
-            if (_root.getTransmutable() == null) {
-                transmutable = null;
+            transmutable = _root.getTransmutable();
+            if (transmutable == null) {
                 _dis.processAsyncResponse(null);
             } else {
                 _apply(_root, _dis);
@@ -178,8 +178,8 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
                 @Override
                 public void processAsyncResponse(final Void _response)
                         throws Exception {
-                    if (parent.getTransmutable() == null) {
-                        transmutable = null;
+                    transmutable = parent.getTransmutable();
+                    if (transmutable == null) {
                         _dis.processAsyncResponse(null);
                     } else {
                         _apply(parent, _dis);
