@@ -27,16 +27,46 @@ public class SyncTest extends CallTestBase {
             }
         };
 
+        final SyncTransaction<String, TransmutableString> bogus =
+                new SyncTransaction<String, TransmutableString>(addGood) {
+            @Override
+            public void update(final TransmutableString transmutable)
+                    throws Exception {
+                throw new NullPointerException();
+            }
+        };
+
+        final SyncTransaction<String, TransmutableString> noop =
+                new SyncTransaction<String, TransmutableString>() {
+                    @Override
+                    protected void update(TransmutableString transmutable) throws Exception {
+                    }
+                };
+
         try {
             TransmutableReference<String, TransmutableString> t =
                     new TransmutableReference<String, TransmutableString>(new TransmutableString("fun"));
             System.out.println(t.getUnmodifiable()); // fun
             call(addGood.applyAOp(t));
             System.out.println(t.getUnmodifiable()); // good fun
+            call(noop.applyAOp(t));
+            System.out.println(t.getUnmodifiable()); // good fun
             t = new TransmutableReference<String, TransmutableString>(new TransmutableString("grapes"));
             System.out.println(t.getUnmodifiable()); // grapes
             call(addMoreGood.applyAOp(t));
             System.out.println(t.getUnmodifiable()); // more good grapes
+            call(noop.applyAOp(t));
+            System.out.println(t.getUnmodifiable()); // more good grapes
+            t = new TransmutableReference<String, TransmutableString>(new TransmutableString("times"));
+            System.out.println(t.getUnmodifiable()); // times
+            try {
+                call(bogus.applyAOp(t));
+            } catch (final Exception e) {
+                System.out.println("*** " + e);
+            }
+            System.out.println(t.getUnmodifiable()); // times
+            //call(noop.applyAOp(t));
+            System.out.println(t.getUnmodifiable()); // times
         } finally {
             Plant.close();
         }
