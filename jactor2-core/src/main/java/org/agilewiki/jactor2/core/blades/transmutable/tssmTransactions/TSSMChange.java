@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.blades.transmutable;
+package org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions;
 
 /**
  * Represents a change made to a items in the TSSMap.

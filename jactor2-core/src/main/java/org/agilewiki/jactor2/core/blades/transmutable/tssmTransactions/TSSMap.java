@@ -1,4 +1,6 @@
-package org.agilewiki.jactor2.core.blades.transmutable;
+package org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions;
+
+import org.agilewiki.jactor2.core.blades.transmutable.TransmutableMap;
 
 import java.util.SortedMap;
 
