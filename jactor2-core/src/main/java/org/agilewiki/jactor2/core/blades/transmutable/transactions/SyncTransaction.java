@@ -20,14 +20,14 @@ abstract public class SyncTransaction<DATATYPE, TRANSMUTABLE extends Transmutabl
      *
      * @param _parent The transaction to be applied before this one.
      */
-    SyncTransaction(Transaction<DATATYPE, TRANSMUTABLE> _parent) {
+    public SyncTransaction(Transaction<DATATYPE, TRANSMUTABLE> _parent) {
         super(_parent);
     }
 
     /**
-     * Updates the immutable data structure.
+     * Updates the transmutable data structure.
      *
-     * @param source The Transaction or TransmutableReference holding the immutable to be operated on.
+     * @param transmutable The Transmutable.
      */
     abstract protected void update(TRANSMUTABLE transmutable)
             throws Exception;

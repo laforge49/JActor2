@@ -19,12 +19,24 @@ public class SyncTest extends CallTestBase {
             }
         };
 
+        final SyncTransaction<String, TransmutableString> addMoreGood =
+                new SyncTransaction<String, TransmutableString>(addGood) {
+            @Override
+            public void update(final TransmutableString transmutable) {
+                transmutable.stringBuilder.insert(0, "more ");
+            }
+        };
+
         try {
             TransmutableReference<String, TransmutableString> t =
                     new TransmutableReference<String, TransmutableString>(new TransmutableString("fun"));
             System.out.println(t.getUnmodifiable()); // fun
             call(addGood.applyAOp(t));
             System.out.println(t.getUnmodifiable()); // good fun
+            t = new TransmutableReference<String, TransmutableString>(new TransmutableString("grapes"));
+            System.out.println(t.getUnmodifiable()); // grapes
+            call(addMoreGood.applyAOp(t));
+            System.out.println(t.getUnmodifiable()); // more good grapes
         } finally {
             Plant.close();
         }
