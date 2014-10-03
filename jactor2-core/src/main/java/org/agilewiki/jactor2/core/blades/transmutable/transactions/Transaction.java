@@ -44,9 +44,9 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
     /**
      * Compose a Transaction.
      *
-     * @param _parent The transaction to be applied before this one.
+     * @param _parent The transaction to be applied before this one, or null.
      */
-    Transaction(final Transaction<DATATYPE, TRANSMUTABLE> _parent) {
+    public Transaction(final Transaction<DATATYPE, TRANSMUTABLE> _parent) {
         parent = _parent;
     }
 
