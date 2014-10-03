@@ -11,12 +11,12 @@ public class TSSMChangeManager<VALUE> implements AutoCloseable {
 
     private TSSMap<VALUE> tssMap;
 
-    final TreeMap<String, TSSMChange<VALUE>> changes = new TreeMap<String, TSSMChange<VALUE>>();
+    final public TreeMap<String, TSSMChange<VALUE>> changes = new TreeMap<String, TSSMChange<VALUE>>();
 
     /**
      * An unmodifiable view of the immutable changes.
      */
-    final public SortedMap<String, TSSMChange<VALUE>> readOnlyChanges = Collections.unmodifiableSortedMap(changes);
+    final public SortedMap<String, TSSMChange<VALUE>> unmodifiableChanges = Collections.unmodifiableSortedMap(changes);
 
     private boolean closed;
 
