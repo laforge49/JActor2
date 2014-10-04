@@ -27,6 +27,14 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
         this(new TSSMap<VALUE>());
     }
 
+    public TSSMReference(IsolationReactor _reactor) throws Exception {
+        this(new TSSMap<VALUE>(), _reactor);
+    }
+
+    public TSSMReference(NonBlockingReactor _parentReactor) throws Exception {
+        this(new TSSMap<VALUE>(), _parentReactor);
+    }
+
     public TSSMReference(Map<String, VALUE> _map) throws Exception {
         this(new TSSMap<VALUE>(_map));
     }
