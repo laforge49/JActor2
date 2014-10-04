@@ -141,8 +141,7 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
     /**
      * Update applied with a source of ImmutableReference.
      */
-    protected void applySourceReference(
-            final TransmutableReference<DATATYPE, TRANSMUTABLE> _reference) {
+    protected void applySourceReference() {
         trace = new StringBuffer("");
     }
 

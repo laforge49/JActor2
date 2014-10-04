@@ -41,7 +41,7 @@ abstract public class AsyncTransaction<DATATYPE, TRANSMUTABLE extends Transmutab
             final Transaction<DATATYPE, TRANSMUTABLE> transaction = (Transaction<DATATYPE, TRANSMUTABLE>) _source;
             applySourceTransaction(transaction);
         } else {
-            applySourceReference((TransmutableReference<DATATYPE, TRANSMUTABLE>) _source);
+            applySourceReference();
         }
         updateTrace();
         if (!precheck(_source.getTransmutable())) {
