@@ -3,12 +3,29 @@ package org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions;
 import org.agilewiki.jactor2.core.blades.transmutable.TransmutableMap;
 import org.agilewiki.jactor2.core.blades.transmutable.TransmutableSortedMap;
 
+import java.util.Comparator;
+import java.util.Map;
 import java.util.SortedMap;
 
 /**
  * Transmutable Sorted String Map has keys that are strings.
  */
 public class TSSMap<VALUE> extends TransmutableSortedMap<String, VALUE> {
+    public TSSMap() {
+    }
+
+    public TSSMap(Comparator<? super String> comparator) {
+        super(comparator);
+    }
+
+    public TSSMap(Map<String, VALUE> map) {
+        super(map);
+    }
+
+    public TSSMap(SortedMap<String, VALUE> map) {
+        super(map);
+    }
+
     /**
      * Make an immutable subMap.
      *
