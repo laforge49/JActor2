@@ -80,13 +80,13 @@ public class TSSMUpdateTransaction<VALUE> extends TSSMTransaction<VALUE> {
     }
 
     @Override
-    protected void update(TSSMap<VALUE> _transmutable) throws Exception {
+    protected void update(final TSSMap<VALUE> _transmutable) throws Exception {
         tssmChangeManager.put(name, value);
     }
 
     @Override
-    protected boolean precheck(final TSSMap<VALUE> tssMap) {
-        VALUE old = tssMap.get(name);
+    protected boolean precheck(final TSSMap<VALUE> _tssMap) {
+        VALUE old = _tssMap.get(name);
         return !expecting || (expectedValue == null && old == null) ||
                 (expectedValue != null && expectedValue.equals(old));
     }
