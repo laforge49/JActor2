@@ -47,4 +47,9 @@ public class TSSMap<VALUE> extends TransmutableSortedMap<String, VALUE> {
     public SortedMap<String, VALUE> subMap(String prefix) {
         return subMap(this, prefix);
     }
+
+    @Override
+    public TSSMap<VALUE> recreate(SortedMap<String, VALUE> unmodifiable) {
+        return new TSSMap<VALUE>(unmodifiable);
+    }
 }
