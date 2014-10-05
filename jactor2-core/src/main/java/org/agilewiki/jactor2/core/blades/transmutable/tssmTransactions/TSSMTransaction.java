@@ -55,6 +55,7 @@ abstract public class TSSMTransaction<VALUE>
                     public void processAsyncResponse(final Void _response)
                             throws Exception {
                         tssmChangeManager.close();
+                        updateUnmodifiable(_transmutableReference);
                         _asyncRequestImpl.send(tssmReference.changeBus
                                         .sendsContentAOp(tssmChanges),
                                 _asyncResponseProcessor, transmutable);

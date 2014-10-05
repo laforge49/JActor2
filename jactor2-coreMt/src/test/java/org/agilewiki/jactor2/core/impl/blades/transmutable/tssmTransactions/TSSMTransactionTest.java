@@ -84,12 +84,13 @@ public class TSSMTransactionTest extends CallTestBase {
             } catch (final Exception e) {
                 msg = e.getMessage();
             }
-            /*
+
             assertEquals("no way", msg);
             assertEquals(1, immutableState.size());
             immutableState = propertiesReference.getUnmodifiable();
             assertEquals(1, immutableState.size());
 
+            /*
             call(new TSSMUpdateTransaction<String>("1", (String) null)
                     .applyAOp(propertiesReference));
             immutableState = propertiesReference.getUnmodifiable();

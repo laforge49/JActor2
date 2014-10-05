@@ -81,10 +81,6 @@ public class TSSMUpdateTransaction<VALUE> extends TSSMTransaction<VALUE> {
 
     @Override
     protected void update(TSSMap<VALUE> _transmutable) throws Exception {
-        if (value == null)
-            _transmutable.remove(name);
-        else
-            _transmutable.put(name, value);
         tssmChangeManager.put(name, value);
     }
 

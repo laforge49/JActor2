@@ -67,7 +67,6 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
             @Override
             public void processAsyncResponse(final Void _response)
                     throws Exception {
-                _transmutableReference.updateUnmodifiable();
                 applyAReq = null;
                 dis.processAsyncResponse(null);
             }
@@ -106,9 +105,19 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
                     final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 eval(_transmutableReference, _asyncRequestImpl,
-                        _asyncResponseProcessor);
+                        new AsyncResponseProcessor<Void>() {
+                            @Override
+                            public void processAsyncResponse(Void _response) throws Exception {
+                                updateUnmodifiable(_transmutableReference);
+                                _asyncResponseProcessor.processAsyncResponse(null);
+                            }
+                        });
             }
         };
+    }
+
+    protected void updateUnmodifiable(final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference) {
+        _transmutableReference.updateUnmodifiable();
     }
 
     protected ExceptionHandler<Void> exceptionHandler(
