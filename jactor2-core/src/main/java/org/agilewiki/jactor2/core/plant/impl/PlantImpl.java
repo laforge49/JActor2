@@ -1,8 +1,5 @@
 package org.agilewiki.jactor2.core.plant.impl;
 
-import java.util.Map;
-
-import org.agilewiki.jactor2.core.blades.ismTransactions.ISMap;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
@@ -117,31 +114,4 @@ abstract public class PlantImpl {
      * @return The scheduler.
      */
     abstract public PlantScheduler getPlantScheduler();
-
-    /**
-     * Create an ISMap.
-     *
-     * @param <V>    The type of value.
-     * @return A new ISMap.
-     */
-    abstract public <V> ISMap<V> createISMap();
-
-    /**
-     * Create an ISMap
-     *
-     * @param key      Key.
-     * @param value    Value
-     * @param <V>      The type of value.
-     * @return A new ISMap
-     */
-    public abstract <V> ISMap<V> createISMap(String key, V value);
-
-    /**
-     * Create an ISMap
-     *
-     * @param m      Content.
-     * @param <V>    The type of value.
-     * @return A new ISMap.
-     */
-    public abstract <V> ISMap<V> createISMap(Map<String, V> m);
 }

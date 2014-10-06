@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.closeable.impl;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implements multiple dependencies.

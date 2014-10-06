@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.requests;
 
-import java.util.Objects;
-
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.impl.RequestImplWithData;
 import org.agilewiki.jactor2.core.util.Timer;
+
+import java.util.Objects;
 
 /**
  * A static abstract operation.

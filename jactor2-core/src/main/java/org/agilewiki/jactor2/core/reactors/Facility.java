@@ -1,15 +1,14 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.NamedBlade;
-import org.agilewiki.jactor2.core.blades.ismTransactions.ISMReference;
-import org.agilewiki.jactor2.core.blades.ismTransactions.ISMUpdateTransaction;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.ismTransactions.ISMap;
+import org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions.TSSMap;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
-import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+
+import java.util.SortedMap;
 
 /**
  * A reactor parent, facilities are named and registered with Plant.
@@ -17,7 +16,8 @@ import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 public class Facility extends NonBlockingReactor implements NamedBlade {
     public final String name;
 
-    protected ISMap<NamedBlade> namedBlades = PlantBase.createISMap();
+    public SortedMap<String, NamedBlade> namedBlades = new TSSMap();
+    protected TSSMap<NamedBlade> namedBladesTransmutable = new TSSMap();
 
     public final RequestBus<RegistrationNotification> registrationNotifier;
 
@@ -103,35 +103,6 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
     }
 
     /**
-     * Returns the ISMap of named blades.
-     *
-     * @return The ISMap.
-     */
-    public ISMap<NamedBlade> getBlades() {
-        return namedBlades;
-    }
-
-    /**
-     * Returns the named blade.
-     *
-     * @param _name The name of the blade.
-     * @return The Blade, or null.
-     */
-    public NamedBlade getBlade(final String _name) {
-        return namedBlades.get(_name);
-    }
-
-    /**
-     * Returns true if the blade is registered.
-     *
-     * @param _name The name of the blade.
-     * @return True when the blade is registered.
-     */
-    public boolean isRegisteredBlade(final String _name) {
-        return namedBlades.containsKey(_name);
-    }
-
-    /**
      * A request to unregister the named blade. The result of the request is
      * the unregistered blade, or null.
      *
@@ -142,9 +113,9 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
         return new SOp<NamedBlade>("unregisterBlade", Facility.this) {
             @Override
             protected NamedBlade processSyncOperation(RequestImpl _requestImpl) throws Exception {
-                final NamedBlade removed = namedBlades.get(_name);
+                final NamedBlade removed = namedBladesTransmutable.remove(_name);
                 if (removed != null) {
-                    namedBlades = namedBlades.minus(_name);
+                    namedBlades = namedBladesTransmutable.createUnmodifiable();
                     registrationNotifier.signalContent(
                             new RegistrationNotification(Facility.this, _name, null), Facility.this);
                 }
@@ -168,11 +139,12 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
             @Override
             protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 String name = _blade.getName();
-                final NamedBlade oldBlade = namedBlades.get(name);
+                final NamedBlade oldBlade = namedBladesTransmutable.get(name);
                 if (oldBlade != null) {
                     throw new IllegalArgumentException("duplicate blade name");
                 }
-                namedBlades = namedBlades.plus(name, _blade);
+                namedBladesTransmutable.put(name, _blade);
+                namedBlades = namedBladesTransmutable.createUnmodifiable();
                 registrationNotifier.signalContent(
                         new RegistrationNotification(Facility.this, name, _blade), Facility.this);
                 return null;
