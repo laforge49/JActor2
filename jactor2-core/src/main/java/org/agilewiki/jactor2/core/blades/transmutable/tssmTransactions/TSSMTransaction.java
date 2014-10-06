@@ -20,7 +20,7 @@ abstract public class TSSMTransaction<VALUE>
     /**
      * Create a Transaction.
      */
-    TSSMTransaction() {
+    public TSSMTransaction() {
         super(null);
     }
 
@@ -29,7 +29,7 @@ abstract public class TSSMTransaction<VALUE>
      *
      * @param _parent The transaction to be applied before this one, or null.
      */
-    TSSMTransaction(final TSSMTransaction<VALUE> _parent) {
+    public TSSMTransaction(final TSSMTransaction<VALUE> _parent) {
         super(_parent);
     }
 
