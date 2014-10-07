@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.reactors;
 import org.agilewiki.jactor2.core.blades.NamedBlade;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions.TSSMap;
-import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
@@ -16,7 +15,7 @@ import java.util.SortedMap;
 public class Facility extends NonBlockingReactor implements NamedBlade {
     public final String name;
 
-    public SortedMap<String, NamedBlade> namedBlades = new TSSMap();
+    private volatile SortedMap<String, NamedBlade> namedBlades = new TSSMap();
     protected TSSMap<NamedBlade> namedBladesTransmutable = new TSSMap();
 
     public final RequestBus<RegistrationNotification> registrationNotifier;
@@ -100,6 +99,10 @@ public class Facility extends NonBlockingReactor implements NamedBlade {
                         + PlantImpl.PLANT_INTERNAL_FACILITY_NAME);
             }
         }
+    }
+
+    public SortedMap<String, NamedBlade> getNamedBlades() {
+        return namedBlades;
     }
 
     /**

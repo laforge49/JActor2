@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl;
 
 import junit.framework.TestCase;
-
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.SOp;
 

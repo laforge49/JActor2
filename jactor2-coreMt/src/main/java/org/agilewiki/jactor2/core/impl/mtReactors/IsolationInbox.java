@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 /**
  * The inbox used by IsolationReactor, the next request is not made available for processing

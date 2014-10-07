@@ -1,7 +1,5 @@
 package org.agilewiki.jactor2.core.impl.blades;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAOp;
 import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
@@ -12,6 +10,8 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PubSubTest extends CallTestBase {
     public void testI() throws Exception {

@@ -1,11 +1,11 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+
 import java.util.ArrayDeque;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 
 /**
  * An outbox holds a collection of send buffers.

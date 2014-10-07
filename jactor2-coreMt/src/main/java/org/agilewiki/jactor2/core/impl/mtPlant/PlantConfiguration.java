@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import java.util.concurrent.ThreadFactory;
-
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
+
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Base class for configuring the Plant.

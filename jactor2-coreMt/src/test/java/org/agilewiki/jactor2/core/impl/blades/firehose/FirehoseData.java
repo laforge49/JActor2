@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl.blades.firehose;
 
-import java.util.List;
-
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
+
+import java.util.List;
 
 public class FirehoseData {
     private final BoundResponseProcessor<Void> ack;

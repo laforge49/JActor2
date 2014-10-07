@@ -22,7 +22,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
      */
     private TRANSMUTABLE transmutable;
 
-    private DATATYPE unmodifiable;
+    volatile private DATATYPE unmodifiable;
 
     /**
      * Create an ImmutableReference blade.

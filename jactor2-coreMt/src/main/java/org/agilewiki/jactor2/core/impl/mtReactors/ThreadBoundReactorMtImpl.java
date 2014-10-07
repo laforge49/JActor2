@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
+
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A reactor bound to a thread.

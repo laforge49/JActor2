@@ -1,8 +1,5 @@
 package org.agilewiki.jactor2.core.impl.blades.firehose;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
@@ -10,6 +7,9 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirstStage extends IsolationBladeBase implements Runnable {
 

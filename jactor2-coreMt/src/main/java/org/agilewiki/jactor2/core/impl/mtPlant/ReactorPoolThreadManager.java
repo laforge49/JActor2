@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
 import org.agilewiki.jactor2.core.impl.mtReactors.PoolThreadReactorMtImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * The ReactorPoolThreadManager is used to process a queue of Reactor's

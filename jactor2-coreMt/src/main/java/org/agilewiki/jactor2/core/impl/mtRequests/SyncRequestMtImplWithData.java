@@ -17,7 +17,6 @@ package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImplWithData;
 
 /**

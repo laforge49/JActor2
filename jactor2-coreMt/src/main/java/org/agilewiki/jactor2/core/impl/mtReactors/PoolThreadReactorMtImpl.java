@@ -1,14 +1,14 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
+
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
         PoolThreadReactorImpl {

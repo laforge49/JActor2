@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import javax.swing.SwingUtilities;
-
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
+
+import javax.swing.*;
 
 /**
  * A reactor bound to the Swing UI thread.

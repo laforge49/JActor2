@@ -1,12 +1,12 @@
 package org.agilewiki.jactor2.core.impl.blades;
 
-import java.io.IOException;
-
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
+
+import java.io.IOException;
 
 /**
  * Test code.
