@@ -9,7 +9,7 @@ public class TSSMChangeManager<VALUE> implements AutoCloseable {
 
     private TSSMap<VALUE> tssMap;
 
-    final public List<TSSMChange<VALUE>> changes = new ArrayList<TSSMChange<VALUE>>();
+    final protected List<TSSMChange<VALUE>> changes = new ArrayList<TSSMChange<VALUE>>();
 
     /**
      * An unmodifiable view of the changes.
