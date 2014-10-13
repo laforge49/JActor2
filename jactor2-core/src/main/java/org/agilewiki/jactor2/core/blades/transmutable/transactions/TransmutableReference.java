@@ -100,7 +100,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
                     final AsyncRequestImpl _asyncRequestImpl,
                     final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
-                eval(_transaction, _asyncRequestImpl,
+                _transaction._eval(TransmutableReference.this, _asyncRequestImpl,
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(Void _response) throws Exception {
@@ -125,7 +125,6 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
             final AsyncResponseProcessor<Void> dis) throws Exception {
         _transaction._eval(this,
                 request,
-                _transaction.evalResponseProcessor(this,
-                        dis));
+                dis);
     }
 }

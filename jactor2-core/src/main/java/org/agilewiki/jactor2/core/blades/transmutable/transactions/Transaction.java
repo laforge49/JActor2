@@ -60,19 +60,6 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
         return transmutable;
     }
 
-    protected AsyncResponseProcessor<Void> evalResponseProcessor(
-            final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference,
-            final AsyncResponseProcessor<Void> dis) {
-        return new AsyncResponseProcessor<Void>() {
-            @Override
-            public void processAsyncResponse(final Void _response)
-                    throws Exception {
-                applyAReq = null;
-                dis.processAsyncResponse(null);
-            }
-        };
-    }
-
     protected ExceptionHandler<Void> exceptionHandler(
             final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference) {
         return new ExceptionHandler<Void>() {
@@ -151,6 +138,7 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
                 }
             });
         }
+        applyAReq = null;
     }
 
     /**
