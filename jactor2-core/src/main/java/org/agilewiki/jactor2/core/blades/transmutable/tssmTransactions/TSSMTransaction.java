@@ -33,6 +33,14 @@ abstract public class TSSMTransaction<VALUE>
         super(_parent);
     }
 
+    final protected void update(TSSMap<VALUE> transmutable)
+            throws Exception {
+        update();
+    }
+
+    abstract protected void update()
+            throws Exception;
+
     public TSSMChangeManager<VALUE> getTSSMChangeManager() {
         return tssmChangeManager;
     }

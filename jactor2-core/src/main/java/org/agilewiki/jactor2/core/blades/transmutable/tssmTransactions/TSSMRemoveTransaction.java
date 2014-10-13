@@ -35,15 +35,21 @@ public class TSSMRemoveTransaction<VALUE> extends TSSMTransaction<VALUE> {
     }
 
     @Override
-    protected void update(final TSSMap<VALUE> _transmutable) throws Exception {
+    protected void update() throws Exception {
         removed = new HashSet<String>();
-        final Set<String> keys = _transmutable.keySet();
-        final Iterator<String> it = keys.iterator();
+        final Set<String> keys = tssmChangeManager.getTSSMap().keySet();
+        Iterator<String> it = keys.iterator();
         while (it.hasNext()) {
             final String key = it.next();
             if (filter.match(key)) {
-                it.remove();
                 removed.add(key);
+            }
+        }
+        it = removed.iterator();
+        while (it.hasNext()) {
+            final String key = it.next();
+            if (filter.match(key)) {
+                tssmChangeManager.put(key, null);
             }
         }
     }

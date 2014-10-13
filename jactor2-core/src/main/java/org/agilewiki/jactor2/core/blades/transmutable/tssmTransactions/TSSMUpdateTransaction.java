@@ -80,7 +80,7 @@ public class TSSMUpdateTransaction<VALUE> extends TSSMTransaction<VALUE> {
     }
 
     @Override
-    protected void update(final TSSMap<VALUE> _transmutable) throws Exception {
+    protected void update() throws Exception {
         tssmChangeManager.put(name, value);
     }
 
