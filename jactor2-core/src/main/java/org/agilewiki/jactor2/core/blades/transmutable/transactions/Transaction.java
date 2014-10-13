@@ -73,23 +73,6 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
         };
     }
 
-    /**
-     * Evaluate the transaction.
-     *
-     * @param _transmutableReference The transmutable reference.
-     * @param request                The request.
-     * @param dis                    The async response processor.
-     */
-    public void eval(
-            final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference,
-            final AsyncRequestImpl<TRANSMUTABLE> request,
-            final AsyncResponseProcessor<Void> dis) throws Exception {
-        _eval(_transmutableReference,
-                request,
-                evalResponseProcessor(_transmutableReference,
-                        dis));
-    }
-
     protected ExceptionHandler<Void> exceptionHandler(
             final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference) {
         return new ExceptionHandler<Void>() {

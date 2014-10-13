@@ -100,7 +100,7 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
                     final AsyncRequestImpl _asyncRequestImpl,
                     final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
-                _transaction.eval(TransmutableReference.this, _asyncRequestImpl,
+                eval(_transaction, _asyncRequestImpl,
                         new AsyncResponseProcessor<Void>() {
                             @Override
                             public void processAsyncResponse(Void _response) throws Exception {
@@ -110,5 +110,22 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
                         });
             }
         };
+    }
+
+    /**
+     * Evaluate the transaction.
+     *
+     * @param _transaction          The transaction to be evalueated.
+     * @param request                The request.
+     * @param dis                    The async response processor.
+     */
+    protected void eval(
+            final Transaction<DATATYPE, TRANSMUTABLE> _transaction,
+            final AsyncRequestImpl<TRANSMUTABLE> request,
+            final AsyncResponseProcessor<Void> dis) throws Exception {
+        _transaction._eval(this,
+                request,
+                _transaction.evalResponseProcessor(this,
+                        dis));
     }
 }

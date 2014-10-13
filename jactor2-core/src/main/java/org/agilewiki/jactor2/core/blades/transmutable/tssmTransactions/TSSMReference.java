@@ -122,7 +122,7 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
                             }
                         };
 
-                tssmTransaction.eval(TSSMReference.this, _asyncRequestImpl, superResponseProcessor);
+                eval(_tssmTransaction, _asyncRequestImpl, superResponseProcessor);
             }
         };
     }
