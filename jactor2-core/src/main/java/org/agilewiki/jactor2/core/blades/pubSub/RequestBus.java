@@ -22,6 +22,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RequestBus<CONTENT> extends NonBlockingBladeBase {
     final Map<Subscription<CONTENT>, Boolean> subscriptions = new ConcurrentHashMap<Subscription<CONTENT>, Boolean>();
 
+    public boolean noSubscriptions() {
+        return subscriptions.isEmpty();
+    }
+
     public RequestBus() throws Exception {
     }
 

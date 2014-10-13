@@ -103,9 +103,12 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
                             throws Exception {
                         tssmTransaction.tssmChangeManager.close();
                         updateUnmodifiable();
-                        _asyncRequestImpl.send(changeBus
-                                        .sendsContentAOp(tssmChanges),
-                                _asyncResponseProcessor, getTransmutable());
+                        if (changeBus.noSubscriptions()) {
+                            _asyncResponseProcessor.processAsyncResponse(null);
+                        } else
+                            _asyncRequestImpl.send(changeBus
+                                            .sendsContentAOp(tssmChanges),
+                                    _asyncResponseProcessor, getTransmutable());
                     }
                 };
 
@@ -116,9 +119,12 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
                                     throws Exception {
                                 tssmChanges = new TSSMChanges<VALUE>(
                                         tssmTransaction.tssmChangeManager);
-                                _asyncRequestImpl.send(validationBus
-                                                .sendsContentAOp(tssmChanges),
-                                        validationResponseProcessor);
+                                if (validationBus.noSubscriptions()) {
+                                    validationResponseProcessor.processAsyncResponse(null);
+                                } else
+                                    _asyncRequestImpl.send(validationBus
+                                                    .sendsContentAOp(tssmChanges),
+                                            validationResponseProcessor);
                             }
                         };
 
