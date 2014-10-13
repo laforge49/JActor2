@@ -19,7 +19,7 @@ public class TSSMChanges<VALUE> {
 
     public TSSMChanges(
             final TSSMChangeManager<VALUE> tssmChangeManager) {
-        unmodifiableSortedMap = tssmChangeManager.getTSSMap().createUnmodifiable();
+        unmodifiableSortedMap = tssmChangeManager.getUnmodifiableTSSMap();
         unmodifiableChanges = tssmChangeManager.unmodifiableChanges;
     }
 }

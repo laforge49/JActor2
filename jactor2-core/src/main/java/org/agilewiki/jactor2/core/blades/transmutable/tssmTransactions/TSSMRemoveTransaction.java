@@ -37,7 +37,7 @@ public class TSSMRemoveTransaction<VALUE> extends TSSMTransaction<VALUE> {
     @Override
     protected void update() throws Exception {
         removed = new HashSet<String>();
-        final Set<String> keys = tssmChangeManager.getTSSMap().keySet();
+        final Set<String> keys = tssmChangeManager.getUnmodifiableTSSMap().keySet();
         Iterator<String> it = keys.iterator();
         while (it.hasNext()) {
             final String key = it.next();

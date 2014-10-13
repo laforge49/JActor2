@@ -7,7 +7,9 @@ import java.util.*;
  */
 public class TSSMChangeManager<VALUE> implements AutoCloseable {
 
-    private TSSMap<VALUE> tssMap;
+    private final TSSMap<VALUE> tssMap;
+
+    private final SortedMap<String, VALUE> unmodifiableTSSMap;
 
     final protected List<TSSMChange<VALUE>> changes = new ArrayList<TSSMChange<VALUE>>();
 
@@ -20,6 +22,7 @@ public class TSSMChangeManager<VALUE> implements AutoCloseable {
 
     public TSSMChangeManager(final TSSMap<VALUE> _tssMap) {
         tssMap = _tssMap;
+        unmodifiableTSSMap = Collections.unmodifiableSortedMap(tssMap);
     }
 
     /**
@@ -27,8 +30,8 @@ public class TSSMChangeManager<VALUE> implements AutoCloseable {
      *
      * @return The latest version of the isMap.
      */
-    public TSSMap<VALUE> getTSSMap() {
-        return tssMap;
+    public SortedMap<String, VALUE> getUnmodifiableTSSMap() {
+        return unmodifiableTSSMap;
     }
 
     /**
