@@ -65,22 +65,19 @@ public class TSSMTransactionTest extends CallTestBase {
             SortedMap<String, String> immutableState = propertiesReference.getUnmodifiable();
             assertEquals(0, immutableState.size());
 
-            call(new TSSMUpdateTransaction<String>("1", "first")
-                    .applyAOp(propertiesReference));
+            call(propertiesReference.applyAOp(new TSSMUpdateTransaction<String>("1", "first")));
             assertEquals(0, immutableState.size());
             immutableState = propertiesReference.getUnmodifiable();
             assertEquals(1, immutableState.size());
 
-            call(new TSSMUpdateTransaction<String>("1", "second")
-                    .applyAOp(propertiesReference));
+            call(propertiesReference.applyAOp(new TSSMUpdateTransaction<String>("1", "second")));
             assertEquals(1, immutableState.size());
             immutableState = propertiesReference.getUnmodifiable();
             assertEquals(1, immutableState.size());
 
             String msg = null;
             try {
-                call(new TSSMUpdateTransaction<String>("fudge", "second")
-                        .applyAOp(propertiesReference));
+                call(propertiesReference.applyAOp(new TSSMUpdateTransaction<String>("fudge", "second")));
             } catch (final IOException e) {
                 msg = e.getMessage();
             }
@@ -90,8 +87,7 @@ public class TSSMTransactionTest extends CallTestBase {
             immutableState = propertiesReference.getUnmodifiable();
             assertEquals(1, immutableState.size());
 
-            call(new TSSMUpdateTransaction<String>("1", (String) null)
-                    .applyAOp(propertiesReference));
+            call(propertiesReference.applyAOp(new TSSMUpdateTransaction<String>("1", (String) null)));
             immutableState = propertiesReference.getUnmodifiable();
             assertEquals(0, immutableState.size());
         } finally {

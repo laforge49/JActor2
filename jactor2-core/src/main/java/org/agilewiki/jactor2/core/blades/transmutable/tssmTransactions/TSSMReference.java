@@ -1,9 +1,13 @@
 package org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions;
 
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
+import org.agilewiki.jactor2.core.blades.transmutable.transactions.Transaction;
 import org.agilewiki.jactor2.core.blades.transmutable.transactions.TransmutableReference;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 import java.util.Map;
 import java.util.SortedMap;
@@ -79,5 +83,10 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
         super(_tssMap, _parentReactor);
         validationBus = new RequestBus<TSSMChanges<VALUE>>(_parentReactor);
         changeBus = new RequestBus<TSSMChanges<VALUE>>(_parentReactor);
+    }
+
+    @Override
+    public AOp<Void> applyAOp(Transaction<SortedMap<String, VALUE>, TSSMap<VALUE>> _tssmTransaction) {
+        return _tssmTransaction.applyAOp(this);
     }
 }

@@ -49,25 +49,25 @@ public class SyncTest extends CallTestBase {
             TransmutableReference<String, TransmutableString> t =
                     new TransmutableReference<String, TransmutableString>(new TransmutableString("fun"));
             System.out.println(t.getUnmodifiable()); // fun
-            call(addGood.applyAOp(t));
+            call(t.applyAOp(addGood));
             System.out.println(t.getUnmodifiable()); // good fun
-            call(noop.applyAOp(t));
+            call(t.applyAOp(noop));
             System.out.println(t.getUnmodifiable()); // good fun
             t = new TransmutableReference<String, TransmutableString>(new TransmutableString("grapes"));
             System.out.println(t.getUnmodifiable()); // grapes
-            call(addMoreGood.applyAOp(t));
+            call(t.applyAOp(addMoreGood));
             System.out.println(t.getUnmodifiable()); // more good grapes
-            call(noop.applyAOp(t));
+            call(t.applyAOp(noop));
             System.out.println(t.getUnmodifiable()); // more good grapes
             t = new TransmutableReference<String, TransmutableString>(new TransmutableString("times"));
             System.out.println(t.getUnmodifiable()); // times
             try {
-                call(bogus.applyAOp(t));
+                call(t.applyAOp(bogus));
             } catch (final Exception e) {
                 System.out.println("*** " + e);
             }
             System.out.println(t.getUnmodifiable()); // times
-            call(noop.applyAOp(t));
+            call(t.applyAOp(noop));
             System.out.println(t.getUnmodifiable()); // times
         } finally {
             Plant.close();

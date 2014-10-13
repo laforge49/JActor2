@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.blades.transmutable.Transmutable;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
+import org.agilewiki.jactor2.core.requests.AOp;
 
 /**
  * An IsolationBlade to which transactions can be applied.
@@ -81,5 +82,16 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
 
     protected void recreate() {
         transmutable = (TRANSMUTABLE) transmutable.recreate(unmodifiable);
+    }
+
+    /**
+     * Creates a request to apply the transaction to a transmutable reference.
+     *
+     * @param _transaction The transaction to be applied.
+     * @return The request.
+     */
+    public AOp<Void> applyAOp(
+            final Transaction<DATATYPE, TRANSMUTABLE> _transaction) {
+        return _transaction.applyAOp(this);
     }
 }
