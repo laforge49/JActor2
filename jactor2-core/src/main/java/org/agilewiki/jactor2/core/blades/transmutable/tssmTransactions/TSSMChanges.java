@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions;
 
+import java.util.List;
 import java.util.SortedMap;
 
 /**
@@ -12,9 +13,9 @@ public class TSSMChanges<VALUE> {
     public final SortedMap<String, VALUE> unmodifiableSortedMap;
 
     /**
-     * An unmodifiable sorted map of the item changes.
+     * An unmodifiable list of the item changes.
      */
-    public final SortedMap<String, TSSMChange<VALUE>> unmodifiableChanges;
+    public final List<TSSMChange<VALUE>> unmodifiableChanges;
 
     public TSSMChanges(
             final TSSMChangeManager<VALUE> tssmChangeManager) {

@@ -13,6 +13,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.SortedMap;
 
 public class TSSMTransactionTest extends CallTestBase {
@@ -29,9 +30,8 @@ public class TSSMTransactionTest extends CallTestBase {
                 protected void processContent(
                         final TSSMChanges<String> _content)
                         throws Exception {
-                    final SortedMap<String, TSSMChange<String>> readOnlyChanges = _content.unmodifiableChanges;
-                    final Iterator<TSSMChange<String>> it = readOnlyChanges
-                            .values().iterator();
+                    final List<TSSMChange<String>> readOnlyChanges = _content.unmodifiableChanges;
+                    final Iterator<TSSMChange<String>> it = readOnlyChanges.iterator();
                     while (it.hasNext()) {
                         final TSSMChange<String> propertyChange = it
                                 .next();
@@ -48,10 +48,9 @@ public class TSSMTransactionTest extends CallTestBase {
                 protected void processContent(
                         final TSSMChanges<String> _content)
                         throws Exception {
-                    final SortedMap<String, TSSMChange<String>> readOnlyChanges = _content.unmodifiableChanges;
+                    final List<TSSMChange<String>> readOnlyChanges = _content.unmodifiableChanges;
                     System.out.println("\nchanges: " + readOnlyChanges.size());
-                    final Iterator<TSSMChange<String>> it = readOnlyChanges
-                            .values().iterator();
+                    final Iterator<TSSMChange<String>> it = readOnlyChanges.iterator();
                     while (it.hasNext()) {
                         final TSSMChange<String> propertyChange = it
                                 .next();

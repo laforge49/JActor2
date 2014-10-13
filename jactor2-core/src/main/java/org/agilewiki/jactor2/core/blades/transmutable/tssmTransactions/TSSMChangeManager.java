@@ -1,8 +1,6 @@
 package org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions;
 
-import java.util.Collections;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * The change manager used by tssm transactions to update the tssMap.
@@ -11,12 +9,12 @@ public class TSSMChangeManager<VALUE> implements AutoCloseable {
 
     private TSSMap<VALUE> tssMap;
 
-    final public TreeMap<String, TSSMChange<VALUE>> changes = new TreeMap<String, TSSMChange<VALUE>>();
+    final public List<TSSMChange<VALUE>> changes = new ArrayList<TSSMChange<VALUE>>();
 
     /**
-     * An unmodifiable view of the immutable changes.
+     * An unmodifiable view of the changes.
      */
-    final public SortedMap<String, TSSMChange<VALUE>> unmodifiableChanges = Collections.unmodifiableSortedMap(changes);
+    final public List<TSSMChange<VALUE>> unmodifiableChanges = Collections.unmodifiableList(changes);
 
     private boolean closed;
 
@@ -56,7 +54,7 @@ public class TSSMChangeManager<VALUE> implements AutoCloseable {
         else
             tssMap.put(_key, _newValue);
         TSSMChange<VALUE> tssmChange = new TSSMChange<VALUE>(_key, oldValue, _newValue);
-        changes.put(_key, tssmChange);
+        changes.add(tssmChange);
     }
 
     @Override
