@@ -38,49 +38,6 @@ abstract public class TSSMTransaction<VALUE>
     }
 
     @Override
-    public AOp<Void> applyAOp(
-            final TransmutableReference<SortedMap<String, VALUE>, TSSMap<VALUE>> _transmutableReference) {
-        return new AOp<Void>("apply", _transmutableReference.getReactor()) {
-
-            private TSSMChanges<VALUE> tssmChanges;
-
-            @Override
-            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
-                                                 final AsyncResponseProcessor<Void> _asyncResponseProcessor)
-                    throws Exception {
-                final TSSMReference<VALUE> tssmReference = (TSSMReference<VALUE>) _transmutableReference;
-
-                final AsyncResponseProcessor<Void> validationResponseProcessor = new AsyncResponseProcessor<Void>() {
-                    @Override
-                    public void processAsyncResponse(final Void _response)
-                            throws Exception {
-                        tssmChangeManager.close();
-                        updateUnmodifiable(_transmutableReference);
-                        _asyncRequestImpl.send(tssmReference.changeBus
-                                        .sendsContentAOp(tssmChanges),
-                                _asyncResponseProcessor, transmutable);
-                    }
-                };
-
-                final AsyncResponseProcessor<Void> superResponseProcessor =
-                        new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(final Void _response)
-                                    throws Exception {
-                                tssmChanges = new TSSMChanges<VALUE>(
-                                        tssmChangeManager);
-                                _asyncRequestImpl.send(tssmReference.validationBus
-                                                .sendsContentAOp(tssmChanges),
-                                        validationResponseProcessor);
-                            }
-                        };
-
-                eval(_transmutableReference, _asyncRequestImpl, superResponseProcessor);
-            }
-        };
-    }
-
-    @Override
     protected void applySourceReference() {
         super.applySourceReference();
         tssmChangeManager = new TSSMChangeManager<VALUE>(transmutable);

@@ -86,7 +86,44 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
     }
 
     @Override
-    public AOp<Void> applyAOp(Transaction<SortedMap<String, VALUE>, TSSMap<VALUE>> _tssmTransaction) {
-        return _tssmTransaction.applyAOp(this);
+    public AOp<Void> applyAOp(final Transaction<SortedMap<String, VALUE>, TSSMap<VALUE>> _tssmTransaction) {
+        return new AOp<Void>("apply", getReactor()) {
+
+            private TSSMChanges<VALUE> tssmChanges;
+
+            @Override
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                                 final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+                final TSSMTransaction<VALUE> tssmTransaction = (TSSMTransaction<VALUE>) _tssmTransaction;
+
+                final AsyncResponseProcessor<Void> validationResponseProcessor = new AsyncResponseProcessor<Void>() {
+                    @Override
+                    public void processAsyncResponse(final Void _response)
+                            throws Exception {
+                        tssmTransaction.tssmChangeManager.close();
+                        updateUnmodifiable();
+                        _asyncRequestImpl.send(changeBus
+                                        .sendsContentAOp(tssmChanges),
+                                _asyncResponseProcessor, getTransmutable());
+                    }
+                };
+
+                final AsyncResponseProcessor<Void> superResponseProcessor =
+                        new AsyncResponseProcessor<Void>() {
+                            @Override
+                            public void processAsyncResponse(final Void _response)
+                                    throws Exception {
+                                tssmChanges = new TSSMChanges<VALUE>(
+                                        tssmTransaction.tssmChangeManager);
+                                _asyncRequestImpl.send(validationBus
+                                                .sendsContentAOp(tssmChanges),
+                                        validationResponseProcessor);
+                            }
+                        };
+
+                tssmTransaction.eval(TSSMReference.this, _asyncRequestImpl, superResponseProcessor);
+            }
+        };
     }
 }

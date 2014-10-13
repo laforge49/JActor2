@@ -80,7 +80,7 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
      * @param request                The request.
      * @param dis                    The async response processor.
      */
-    protected void eval(
+    public void eval(
             final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference,
             final AsyncRequestImpl<TRANSMUTABLE> request,
             final AsyncResponseProcessor<Void> dis) throws Exception {
