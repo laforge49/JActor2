@@ -5,6 +5,8 @@ import org.agilewiki.jactor2.core.blades.transmutable.Transmutable;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 /**
  * An IsolationBlade to which transactions can be applied.
@@ -92,6 +94,21 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
      */
     public AOp<Void> applyAOp(
             final Transaction<DATATYPE, TRANSMUTABLE> _transaction) {
-        return _transaction.applyAOp(this);
+        return new AOp<Void>("apply", getReactor()) {
+            @Override
+            protected void processAsyncOperation(
+                    final AsyncRequestImpl _asyncRequestImpl,
+                    final AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+                _transaction.eval(TransmutableReference.this, _asyncRequestImpl,
+                        new AsyncResponseProcessor<Void>() {
+                            @Override
+                            public void processAsyncResponse(Void _response) throws Exception {
+                                updateUnmodifiable();
+                                _asyncResponseProcessor.processAsyncResponse(null);
+                            }
+                        });
+            }
+        };
     }
 }

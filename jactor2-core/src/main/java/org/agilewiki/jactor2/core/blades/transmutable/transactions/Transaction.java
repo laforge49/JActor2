@@ -90,36 +90,6 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
                         dis));
     }
 
-    /**
-     * Creates a request to apply the transaction to a transmutable reference.
-     *
-     * @param _transmutableReference The transmutable reference.
-     * @return The request.
-     */
-    public AOp<Void> applyAOp(
-            final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference) {
-        return new AOp<Void>("apply", _transmutableReference.getReactor()) {
-            @Override
-            protected void processAsyncOperation(
-                    final AsyncRequestImpl _asyncRequestImpl,
-                    final AsyncResponseProcessor<Void> _asyncResponseProcessor)
-                    throws Exception {
-                eval(_transmutableReference, _asyncRequestImpl,
-                        new AsyncResponseProcessor<Void>() {
-                            @Override
-                            public void processAsyncResponse(Void _response) throws Exception {
-                                updateUnmodifiable(_transmutableReference);
-                                _asyncResponseProcessor.processAsyncResponse(null);
-                            }
-                        });
-            }
-        };
-    }
-
-    protected void updateUnmodifiable(final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference) {
-        _transmutableReference.updateUnmodifiable();
-    }
-
     protected ExceptionHandler<Void> exceptionHandler(
             final TransmutableReference<DATATYPE, TRANSMUTABLE> _transmutableReference) {
         return new ExceptionHandler<Void>() {
