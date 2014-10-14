@@ -16,7 +16,7 @@ public class TSSMChangeManager<VALUE> implements AutoCloseable {
     /**
      * An unmodifiable view of the changes.
      */
-    final public List<TSSMChange<VALUE>> unmodifiableChanges = Collections.unmodifiableList(changes);
+    final private List<TSSMChange<VALUE>> unmodifiableChanges = Collections.unmodifiableList(changes);
 
     private boolean closed;
 
@@ -32,6 +32,10 @@ public class TSSMChangeManager<VALUE> implements AutoCloseable {
      */
     public SortedMap<String, VALUE> getUnmodifiableTSSMap() {
         return unmodifiableTSSMap;
+    }
+
+    public TSSMChanges<VALUE> tssmChanges() {
+        return new TSSMChanges<VALUE>(getUnmodifiableTSSMap(), unmodifiableChanges);
     }
 
     /**

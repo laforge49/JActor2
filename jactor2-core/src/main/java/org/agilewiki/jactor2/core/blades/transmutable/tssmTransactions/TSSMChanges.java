@@ -18,8 +18,8 @@ public class TSSMChanges<VALUE> {
     public final List<TSSMChange<VALUE>> unmodifiableChanges;
 
     public TSSMChanges(
-            final TSSMChangeManager<VALUE> tssmChangeManager) {
-        unmodifiableSortedMap = tssmChangeManager.getUnmodifiableTSSMap();
-        unmodifiableChanges = tssmChangeManager.unmodifiableChanges;
+            final SortedMap<String, VALUE> _unmodifiableSortedMap, final List<TSSMChange<VALUE>> _unmodifiableChanges) {
+        unmodifiableSortedMap = _unmodifiableSortedMap;
+        unmodifiableChanges = _unmodifiableChanges;
     }
 }

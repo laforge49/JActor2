@@ -117,8 +117,7 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
                             @Override
                             public void processAsyncResponse(final Void _response)
                                     throws Exception {
-                                tssmChanges = new TSSMChanges<VALUE>(
-                                        tssmTransaction.tssmChangeManager);
+                                tssmChanges = tssmTransaction.getTSSMChangeManager().tssmChanges();
                                 if (validationBus.noSubscriptions()) {
                                     validationResponseProcessor.processAsyncResponse(null);
                                 } else
