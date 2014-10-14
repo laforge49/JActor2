@@ -111,17 +111,17 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
      * @param _applyAReq The request to apply.
      * @param _dis       The response processor.
      */
-    public void _eval(TransmutableReference<DATATYPE, TRANSMUTABLE> _root,
+    public void _eval(final TransmutableReference<DATATYPE, TRANSMUTABLE> _root,
                       AsyncRequestImpl<TRANSMUTABLE> _applyAReq,
                       final AsyncResponseProcessor<Void> _dis) throws Exception {
         reactor = _root.reactor;
-        getReactor().asReactorImpl().setExceptionHandler(exceptionHandler(_root));
         applyAReq = _applyAReq;
         if (parent == null) {
             transmutable = _root.getTransmutable();
             if (transmutable == null) {
                 _dis.processAsyncResponse(null);
             } else {
+                getReactor().asReactorImpl().setExceptionHandler(exceptionHandler(_root));
                 _apply(_root, _dis);
             }
         } else {
@@ -133,6 +133,7 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
                     if (transmutable == null) {
                         _dis.processAsyncResponse(null);
                     } else {
+                        getReactor().asReactorImpl().setExceptionHandler(exceptionHandler(_root));
                         _apply(parent, _dis);
                     }
                 }
