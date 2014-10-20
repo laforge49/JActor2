@@ -86,7 +86,9 @@ public class TSSMTransactionTest extends CallTestBase {
             immutableState = propertiesReference.getUnmodifiable();
             assertEquals(1, immutableState.size());
 
-            call(propertiesReference.applyAOp(new TSSMUpdateTransaction<String>("1", (String) null)));
+            TSSMUpdateTransaction ut = new TSSMUpdateTransaction<String>("1", (String) null);
+            call(propertiesReference.applyAOp(ut));
+            System.out.println(ut);
             immutableState = propertiesReference.getUnmodifiable();
             assertEquals(0, immutableState.size());
         } finally {

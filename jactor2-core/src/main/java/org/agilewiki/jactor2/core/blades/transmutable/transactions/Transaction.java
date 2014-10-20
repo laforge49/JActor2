@@ -157,4 +157,8 @@ public abstract class Transaction<DATATYPE, TRANSMUTABLE extends Transmutable<DA
     protected boolean precheck(final TRANSMUTABLE _transmutable) throws Exception {
         return true;
     }
+
+    public String toString() {
+        return trace.toString();
+    }
 }
