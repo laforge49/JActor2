@@ -45,7 +45,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<metrics.version>3.0.0</metrics.version>
+        <metrics.version>3.0.2</metrics.version>
+        <junit.version>4.11</junit.version>
+        <slf4j.version>1.7.7</slf4j.version>
+        <guava.version>18.0</guava.version>
     </properties>
 
     <modules>
