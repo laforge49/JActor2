@@ -242,7 +242,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         } else
             isolationReactor = source.isCommonReactor() ? null : (IsolationReactor) source.asReactor();
         if (!(targetReactor instanceof CommonReactor)) {
-            if (isolationReactor != null && isolationReactor != targetReactor && (_responseProcessor != null)) {
+            if (isolationReactor != null && isolationReactor != targetReactor && responseProcessor != SignalResponseProcessor.SINGLETON) {
                 throw new UnsupportedOperationException(
                         "Isolated requests can not be nested, even indirectly:\n" + toString());
             }

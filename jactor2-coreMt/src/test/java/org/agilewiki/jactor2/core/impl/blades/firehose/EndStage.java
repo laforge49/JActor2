@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.blades.firehose;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AIOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
@@ -11,8 +11,8 @@ public class EndStage extends IsolationBladeBase implements DataProcessor {
     }
 
     @Override
-    public AOp<Void> processDataAOp(final FirehoseData _firehoseData) {
-        return new AOp<Void>("endStage", getReactor()) {
+    public AIOp<Void> processDataAOp(final FirehoseData _firehoseData) {
+        return new AIOp<Void>("endStage", getReactor()) {
             @Override
             protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)

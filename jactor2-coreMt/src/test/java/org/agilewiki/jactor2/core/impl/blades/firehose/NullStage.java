@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.blades.firehose;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AIOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
@@ -18,8 +18,8 @@ public class NullStage extends IsolationBladeBase implements DataProcessor {
     }
 
     @Override
-    public AOp<Void> processDataAOp(final FirehoseData _firehoseData) {
-        return new AOp<Void>("nullStage", getReactor()) {
+    public AIOp<Void> processDataAOp(final FirehoseData _firehoseData) {
+        return new AIOp<Void>("nullStage", getReactor()) {
             @Override
             protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)
@@ -32,7 +32,7 @@ public class NullStage extends IsolationBladeBase implements DataProcessor {
                     total += list.get(x);
                     x += 1;
                 }
-                _asyncRequestImpl.send(next.processDataAOp(_firehoseData), null);
+                next.processDataAOp(_firehoseData).signal();
                 _asyncResponseProcessor.processAsyncResponse(null);
             }
         };
