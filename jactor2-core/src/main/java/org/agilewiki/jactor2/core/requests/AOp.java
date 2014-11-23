@@ -56,11 +56,6 @@ public abstract class AOp<RESPONSE_TYPE> implements
             final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception;
 
-    public void signal() {
-        PlantImpl.getSingleton().createAsyncRequestImpl(this, targetReactor)
-                .signal();
-    }
-
     @GwtIncompatible
     public RESPONSE_TYPE call() throws Exception {
         return PlantImpl.getSingleton()

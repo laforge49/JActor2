@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.AOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.SIOp;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
@@ -50,7 +50,7 @@ class OneRuntime extends NonBlockingBladeBase {
     public OneRuntime() throws Exception {
     }
 
-    public class OneWaySOp extends SOp<Void> {
+    public class OneWaySOp extends SIOp<Void> {
         public OneWaySOp(String _opName, Reactor _targetReactor) {
             super(_opName, _targetReactor);
         }

@@ -23,12 +23,12 @@ package org.agilewiki.jactor2.core.requests.impl;
  * The "logic" of the request is already defined in an Operation, and in many
  * cases, this logic can be implemented as a singleton. But if the Operation
  * needs "variables" to operate it's work, a new instance of the Operation must
- * be created with very request. By having a pre-defined native request that
+ * be created with every request. By having a pre-defined native request that
  * can carry a small amount of "user payload" with itself (the only use-case
  * for which this Request makes sense), we should be able to make most
  * Operations into singletons.
  *
- * Most methods calls don't have more then 3 parameters, so we currently
+ * Most method calls don't have more then 3 parameters, so we currently
  * support only 3 parameters (index 0 to 2), but since they could be either
  * Objects or primitive values, we support both double and Object as
  * parameters, such that we have in effect 6 parameters. Please remember that

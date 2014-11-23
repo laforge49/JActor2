@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.blades.transmutable.transactions.Transaction;
 import org.agilewiki.jactor2.core.blades.transmutable.transactions.TransmutableReference;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AIOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
@@ -86,8 +86,8 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
     }
 
     @Override
-    public AOp<Void> applyAOp(final Transaction<SortedMap<String, VALUE>, TSSMap<VALUE>> _tssmTransaction) {
-        return new AOp<Void>("apply", getReactor()) {
+    public AIOp<Void> applyAOp(final Transaction<SortedMap<String, VALUE>, TSSMap<VALUE>> _tssmTransaction) {
+        return new AIOp<Void>("apply", getReactor()) {
 
             private TSSMChanges<VALUE> tssmChanges;
 

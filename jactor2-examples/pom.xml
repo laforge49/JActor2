@@ -54,12 +54,12 @@
         <dependency>
             <groupId>org.agilewiki.jactor2</groupId>
             <artifactId>jactor2-core</artifactId>
-            <version>1.0.0</version>
+            <version>${jactor2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.agilewiki.jactor2</groupId>
             <artifactId>jactor2-coreMt</artifactId>
-            <version>1.0.0</version>
+            <version>${jactor2.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

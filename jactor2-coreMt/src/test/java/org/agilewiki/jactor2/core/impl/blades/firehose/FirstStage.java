@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.BoundResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.SIOp;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class FirstStage extends IsolationBladeBase implements Runnable {
                 });
         t0 = System.currentTimeMillis();
 
-        new SOp<Void>("null", this.getReactor()) {
+        new SIOp<Void>("null", this.getReactor()) {
             @Override
             protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 return null;

@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AIOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
@@ -63,8 +63,8 @@ abstract public class Subscription<CONTENT> extends NonBlockingBladeBase impleme
         closeableImpl.close();
     }
 
-    AOp<Void> publicationAOp(final CONTENT _content) {
-        return new AOp<Void>("publication", subscriberReactor) {
+    AIOp<Void> publicationAOp(final CONTENT _content) {
+        return new AIOp<Void>("publication", subscriberReactor) {
             @Override
             protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {

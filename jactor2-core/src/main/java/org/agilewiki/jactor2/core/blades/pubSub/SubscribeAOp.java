@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.blades.pubSub;
 
 import org.agilewiki.jactor2.core.blades.filters.Filter;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AIOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
@@ -13,7 +13,7 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
  *
  * @param <CONTENT> The type of content.
  */
-public class SubscribeAOp<CONTENT> extends AOp<Subscription<CONTENT>> {
+public class SubscribeAOp<CONTENT> extends AIOp<Subscription<CONTENT>> {
     private final RequestBus<CONTENT> requestBus;
     private final CommonReactor subscriberReactor;
     private final Filter<CONTENT> filter;

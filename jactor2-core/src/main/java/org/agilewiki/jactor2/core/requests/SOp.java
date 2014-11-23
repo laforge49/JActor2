@@ -52,11 +52,6 @@ public abstract class SOp<RESPONSE_TYPE> implements
     protected abstract RESPONSE_TYPE processSyncOperation(
             final RequestImpl _requestImpl) throws Exception;
 
-    public void signal() {
-        PlantImpl.getSingleton().createSyncRequestImpl(this, targetReactor)
-                .signal();
-    }
-
     @GwtIncompatible
     public RESPONSE_TYPE call() throws Exception {
         return PlantImpl.getSingleton()

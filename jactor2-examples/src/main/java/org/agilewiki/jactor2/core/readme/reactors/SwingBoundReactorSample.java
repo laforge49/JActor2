@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.readme.reactors;
 import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
-import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.AIOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
@@ -23,8 +23,8 @@ class HelloWorld extends SwingBoundBladeBase {
         super(_reactor);
     }
 
-    AOp<Void> createAndShowAOp() {
-        return new AOp<Void>("createAndShow", getReactor()) {
+    AIOp<Void> createAndShowAOp() {
+        return new AIOp<Void>("createAndShow", getReactor()) {
             @Override
             protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
                                               AsyncResponseProcessor<Void> _asyncResponseProcessor)

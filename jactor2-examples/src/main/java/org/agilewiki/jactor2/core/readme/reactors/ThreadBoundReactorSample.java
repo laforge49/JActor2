@@ -3,7 +3,7 @@ package org.agilewiki.jactor2.core.readme.reactors;
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
-import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.SIOp;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
 public class ThreadBoundReactorSample {
@@ -30,7 +30,7 @@ public class ThreadBoundReactorSample {
         final SampleThreadBoundBlade threadBoundBlade = new SampleThreadBoundBlade(reactor);
 
         //Terminate the blades.
-        new SOp<Void>("finBlade", threadBoundBlade.getReactor()) {
+        new SIOp<Void>("finBlade", threadBoundBlade.getReactor()) {
             @Override
             protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                 threadBoundBlade.fin();

@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.SAOp;
-import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.SIOp;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
@@ -49,7 +49,7 @@ public class DelayAOp extends SAOp<Void> {
             @Override
             public void run() {
                 try {
-                    new SOp<Void>("timeout", PlantBase.getInternalFacility()) {
+                    new SIOp<Void>("timeout", PlantBase.getInternalFacility()) {
                         @Override
                         protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
                             if (!_asyncRequestImpl.isCanceled()) {
