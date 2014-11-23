@@ -768,15 +768,13 @@ with buffering being used when passing both the operation request and the respon
 As with call, a response or exception is assured, though in this case the exception is caught by the optional
 exception handler. A send with callback can only be invoked within the context of another operation. And if the
 invoking operation is canceled, then the subordinate operation is also canceled.
-3. **send with no callback** - A send with no callback is one way to pass a 1-way message to a reactor. Like
-send with callback, the message is buffered. But any
+3. **send with no callback** - A send with no callback is one way to pass a 1-way message to a reactor. Signal always passes the
+message immediately, never buffered. But any
 exception raised while processing the message is simply logged. Send with no callback must be invoked on an
 active reactor--it can but need not be invoked within the context of another request. And if the invoking
 reactor is closed, there is no effect on the processing of the message.
-4. **signal** - Signal is a second way to pass a 1-way message to a reactor. Signal always passes the
-message immediately,
-never buffered. And the signal method can be called on any thread. Any exception thrown when the message is
-processed is simply logged.
+4. **signal** - Signal is a second way to pass a 1-way message to a reactor. It differs only in that
+isolation reactors process signals immediately, while 1-way requests are handled like other requests.
 5. An operation can directly invoke a SOp on the same reactor using the _requestImpl.syncDirect method.
 Messages are not used to pass the operation.
 
