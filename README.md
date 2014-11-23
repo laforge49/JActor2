@@ -790,6 +790,8 @@ not send other operations with a callback. Nor does it support exception handler
 of the processAsyncRequest method, a processSyncRequest method must be overridden, and the result of the
 SOp must be returned by this method. Also, a SOp can be invoked using syncDirect.
 3. **SAOp** - A SAOp is a subclass of AOp that supports stateful operations. Consequently, SAOp is single-use.
+4. **AIOp** - AIOp is a subclass of AOp that supports signals.
+5. **SIOp** - SIOp is a subclass of SOp that supports signals.
 
 Next Step
 =====
