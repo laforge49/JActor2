@@ -760,4 +760,13 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     public void error(final String msg, final Throwable t) {
         logger.error(msg, t);
     }
+
+    @Override
+    public void addResource(ReactorImpl _reactorImpl) {
+    }
+
+    @Override
+    public boolean isResource(ReactorImpl _reactorImpl) {
+        return true;
+    }
 }

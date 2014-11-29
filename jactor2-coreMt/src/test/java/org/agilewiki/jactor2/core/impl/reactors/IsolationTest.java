@@ -46,7 +46,21 @@ public class IsolationTest extends CallTestBase {
             Foot foot = new Foot(new IsolationReactor());
             Head head = new Head(foot.dAOp());
             System.err.println("skipping this test");
-            //assertFalse(call(head.dAOp()));
+            assertFalse(call(head.dAOp()));
+        } finally {
+            Plant.close();
+        }
+    }
+
+    public void test3a() throws Exception {
+        Thread.sleep(100);
+        System.err.println("\ntest 3a");
+        new Plant();
+        try {
+            Foot foot = new Foot(new IsolationReactor());
+            Head head = new Head(foot.dAOp());
+            head.addResource(foot);
+            assertTrue(call(head.dAOp()));
         } finally {
             Plant.close();
         }
@@ -61,7 +75,55 @@ public class IsolationTest extends CallTestBase {
             Via via = new Via(foot.dAOp());
             Head head = new Head(via.dAOp());
             System.err.println("skipping this test");
-            //assertFalse(call(head.dAOp()));
+            assertFalse(call(head.dAOp()));
+        } finally {
+            Plant.close();
+        }
+    }
+
+    public void test4a() throws Exception {
+        Thread.sleep(100);
+        System.err.println("\ntest 4a");
+        new Plant();
+        try {
+            Foot foot = new Foot(new IsolationReactor());
+            Via via = new Via(foot.dAOp());
+            Head head = new Head(via.dAOp());
+            head.addResource(foot);
+            assertTrue(call(head.dAOp()));
+        } finally {
+            Plant.close();
+        }
+    }
+
+    public void test4b() throws Exception {
+        Thread.sleep(100);
+        System.err.println("\ntest 4b");
+        new Plant();
+        try {
+            Foot foot = new Foot(new IsolationReactor());
+            IVia via = new IVia(foot.dAOp());
+            Head head = new Head(via.dAOp());
+            head.addResource(via);
+            via.addResource(foot);
+            assertTrue(call(head.dAOp()));
+        } finally {
+            Plant.close();
+        }
+    }
+
+    public void test4c() throws Exception {
+        Thread.sleep(100);
+        System.err.println("\ntest 4c");
+        new Plant();
+        try {
+            Foot foot = new Foot(new IsolationReactor());
+            IVia via = new IVia(foot.dAOp());
+            Head head = new Head(via.dAOp());
+            head.addResource(via);
+            head.addResource(foot);
+            System.err.println("skipping this test");
+            assertFalse(call(head.dAOp()));
         } finally {
             Plant.close();
         }
@@ -170,6 +232,27 @@ class Via extends NonBlockingBladeBase implements IsIt {
                                                  final AsyncResponseProcessor<Boolean> _asyncResponseProcessor)
                     throws Exception {
                 System.err.println("dVia getIsolated: "+((RequestMtImpl)_asyncRequestImpl).getIsolationReactor());
+                _asyncRequestImpl.send(d, _asyncResponseProcessor);
+            }
+        };
+    }
+}
+
+class IVia extends IsolationBladeBase implements IsIt {
+    private final AOp<Boolean> d;
+
+    public IVia(final AOp<Boolean> _d) throws Exception {
+        d = _d;
+    }
+
+    @Override
+    public AOp<Boolean> dAOp() {
+        return new AOp<Boolean>("dVia", getReactor()) {
+            @Override
+            protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
+                                                 final AsyncResponseProcessor<Boolean> _asyncResponseProcessor)
+                    throws Exception {
+                System.err.println("dIVia getIsolated: "+((RequestMtImpl)_asyncRequestImpl).getIsolationReactor());
                 _asyncRequestImpl.send(d, _asyncResponseProcessor);
             }
         };

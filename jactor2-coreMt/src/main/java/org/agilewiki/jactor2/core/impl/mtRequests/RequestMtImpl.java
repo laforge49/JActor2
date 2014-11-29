@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtRequests;
 
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
+import org.agilewiki.jactor2.core.impl.mtReactors.IsolationReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
@@ -83,7 +84,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
     protected boolean closed = false;
 
     /**
-     * True when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
+     * Not null when the request is, directly or indirectly, from an IsolationReactor that awaits a response.
      */
     private IsolationReactor isolationReactor;
 
@@ -237,14 +238,18 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
                     "A valid source sourceReactor can not be idle");
         }
         oldMessage = source.getCurrentRequest();
-        if ((oldMessage != null) && oldMessage.getIsolationReactor() != null) {
+        if (!source.isCommonReactor())
+            isolationReactor = (IsolationReactor) source.asReactor();
+        else if ((oldMessage != null)) {
             isolationReactor = oldMessage.getIsolationReactor();
-        } else
-            isolationReactor = source.isCommonReactor() ? null : (IsolationReactor) source.asReactor();
+        }
         if (!(targetReactor instanceof CommonReactor)) {
-            if (isolationReactor != null && isolationReactor != targetReactor && responseProcessor != SignalResponseProcessor.SINGLETON) {
+            if (isolationReactor != null &&
+                    isolationReactor != targetReactor &&
+                    responseProcessor != SignalResponseProcessor.SINGLETON &&
+                    !isolationReactor.isResource(targetReactor)) {
                 throw new UnsupportedOperationException(
-                        "Isolated requests can not be nested, even indirectly:\n" + toString());
+                        "Nested isolation requests must be to resources:\n" + toString());
             }
             isolationReactor = (IsolationReactor) targetReactor;
         }
@@ -383,6 +388,13 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
             targetReactorImpl.setCurrentRequest(this);
             targetReactorImpl.requestBegin(this);
             try {
+                if (isolationReactor != null) {
+                    IsolationReactorMtImpl isolationReactorMtImpl =
+                            (IsolationReactorMtImpl) isolationReactor.asReactorImpl();
+                    if (!isolationReactorMtImpl.isResource(targetReactorImpl)) {
+                        throw new IllegalStateException("lock order violation");
+                    }
+                }
                 processRequestMessage();
             } catch (final MigrationException _me) {
                 throw _me;
@@ -390,7 +402,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
                 Thread.currentThread().interrupt();
             } catch (final RuntimeException re) {
                 processException(targetReactorImpl,
-                        new ReactorClosedException());
+                        new ReactorClosedException(re));
                 targetReactorImpl.getRecovery().onRuntimeException(this, re);
             } catch (final Exception e) {
                 processException(targetReactorImpl, e);

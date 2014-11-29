@@ -136,4 +136,19 @@ public interface Reactor extends Closeable, Blade {
      * @param t the exception (throwable) to log
      */
     void error(String msg, Throwable t);
+
+    /**
+     * Reactors are added as resources only on isolation reactors.
+     *
+     * @param _reactor    The resource.
+     */
+    void addResource(Reactor _reactor);
+
+    /**
+     * Returns true except on and for isolation reactors.
+     *
+     * @param _reactor    The resource.
+     * @return Generally true.
+     */
+    boolean isResource(Reactor _reactor);
 }

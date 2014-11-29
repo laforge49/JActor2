@@ -83,4 +83,24 @@ public abstract class BladeBase implements Blade {
                     "Not thread safe: source reactor is not the same");
         }
     }
+
+    /**
+     * Only isolation blades are actually added as resources, and then
+     * it is the blade's reactor rather than the blade itself.
+     *
+     * @param _blade    The resource.
+     */
+    public void addResource(Blade _blade) {
+        getReactor().addResource(_blade.getReactor());
+    }
+
+    /**
+     * Returns true except on and for isolation blades.
+     *
+     * @param _blade    The resource.
+     * @return Generally true.
+     */
+    public boolean isResource(Blade _blade) {
+        return getReactor().isResource(_blade.getReactor());
+    }
 }

@@ -123,4 +123,14 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
     public void error(final String msg, final Throwable t) {
         asReactorImpl().error(msg, t);
     }
+
+    @Override
+    public void addResource(Reactor _reactor) {
+        asReactorImpl().addResource(_reactor.asReactorImpl());
+    }
+
+    @Override
+    public boolean isResource(Reactor _reactor) {
+        return asReactorImpl().isResource(_reactor.asReactorImpl());
+    }
 }

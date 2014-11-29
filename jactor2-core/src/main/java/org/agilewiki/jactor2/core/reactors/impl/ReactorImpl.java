@@ -131,4 +131,19 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * @param t the exception (throwable) to log
      */
     void error(String msg, Throwable t);
+
+    /**
+     * Reactors are added as resources only on isolation reactors.
+     *
+     * @param _reactorImpl    The resource.
+     */
+    void addResource(ReactorImpl _reactorImpl);
+
+    /**
+     * Returns true except on and for isolation reactors.
+     *
+     * @param _reactorImpl    The resource.
+     * @return Generally true.
+     */
+    boolean isResource(ReactorImpl _reactorImpl);
 }
