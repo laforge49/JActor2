@@ -5,8 +5,9 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,10 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
 
-    private final Map<IsolationReactorMtImpl, Boolean> resources =
-            new ConcurrentHashMap<IsolationReactorMtImpl, Boolean>();
-
-    public final Boolean TRUE = true;
+    private final Set<IsolationReactorMtImpl> resources =
+            Collections.newSetFromMap(new ConcurrentHashMap<IsolationReactorMtImpl, Boolean>());
 
     /**
      * Create an IsolationReactorMtImpl.
@@ -60,7 +59,7 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
             if (isolationReactorMtImpl.isResource(this)) {
                 throw new IllegalStateException("circular resources");
             }
-            resources.put(isolationReactorMtImpl, TRUE);
+            resources.add(isolationReactorMtImpl);
         }
     }
 
@@ -69,8 +68,8 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
         if (this == _reactorImpl)
             return true;
         if (_reactorImpl instanceof IsolationReactorMtImpl) {
-            if (!resources.containsKey(_reactorImpl)) {
-                Iterator<IsolationReactorMtImpl> it = resources.keySet().iterator();
+            if (!resources.contains(_reactorImpl)) {
+                Iterator<IsolationReactorMtImpl> it = resources.iterator();
                 while (it.hasNext()) {
                     IsolationReactorMtImpl i = it.next();
                     if (i.isResource(_reactorImpl))
