@@ -246,10 +246,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         if (!(targetReactor instanceof CommonReactor)) {
             if (isolationReactor != null &&
                     isolationReactor != targetReactor &&
-                    responseProcessor != SignalResponseProcessor.SINGLETON &&
-                    !isolationReactor.isResource(targetReactor)) {
-                throw new UnsupportedOperationException(
-                        "Nested isolation requests must be to resources:\n" + toString());
+                    responseProcessor != SignalResponseProcessor.SINGLETON) {
+                isolationReactor.addResource(targetReactor);
             }
             isolationReactor = (IsolationReactor) targetReactor;
         }
@@ -391,9 +389,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
                 if (isolationReactor != null) {
                     IsolationReactorMtImpl isolationReactorMtImpl =
                             (IsolationReactorMtImpl) isolationReactor.asReactorImpl();
-                    if (!isolationReactorMtImpl.isResource(targetReactorImpl)) {
-                        throw new IllegalStateException("lock order violation");
-                    }
+                    isolationReactorMtImpl.addResource(targetReactorImpl);
                 }
                 processRequestMessage();
             } catch (final MigrationException _me) {

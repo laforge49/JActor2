@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,7 +26,7 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
      * @param _initialLocalQueueSize The initial local queue size.
      */
     public IsolationReactorMtImpl(final NonBlockingReactor _parentReactor,
-            final int _initialOutboxSize, final int _initialLocalQueueSize) {
+                                  final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
@@ -54,30 +54,33 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
 
     @Override
     public void addResource(ReactorImpl _reactorImpl) {
-        if (_reactorImpl instanceof IsolationReactorMtImpl) {
-            IsolationReactorMtImpl isolationReactorMtImpl = (IsolationReactorMtImpl) _reactorImpl;
-            if (isolationReactorMtImpl.isResource(this)) {
-                throw new IllegalStateException("circular resources");
-            }
-            resources.add(isolationReactorMtImpl);
+        if (isResource(_reactorImpl))
+            return;
+        IsolationReactorMtImpl isolationReactorMtImpl = (IsolationReactorMtImpl) _reactorImpl;
+        if (isolationReactorMtImpl.isResource(this)) {
+            throw new IllegalStateException("circular resources");
         }
+        resources.add(isolationReactorMtImpl);
     }
 
     @Override
     public boolean isResource(ReactorImpl _reactorImpl) {
+        if (!(_reactorImpl instanceof IsolationReactorMtImpl))
+            return true;
         if (this == _reactorImpl)
             return true;
-        if (_reactorImpl instanceof IsolationReactorMtImpl) {
-            if (!resources.contains(_reactorImpl)) {
-                Iterator<IsolationReactorMtImpl> it = resources.iterator();
-                while (it.hasNext()) {
-                    IsolationReactorMtImpl i = it.next();
-                    if (i.isResource(_reactorImpl))
-                        return true;
-                }
-                return false;
+        if (resources.contains(_reactorImpl))
+            return true;
+        Set<IsolationReactorMtImpl> rs = new HashSet<IsolationReactorMtImpl>(resources.size());
+        while (rs.size() > 0) {
+            IsolationReactorMtImpl i = rs.iterator().next();
+            if (i.resources.contains(_reactorImpl)) {
+                resources.add((IsolationReactorMtImpl) _reactorImpl);
+                return true;
             }
+            rs.addAll(i.resources);
+            rs.remove(i);
         }
-        return true;
+        return false;
     }
 }

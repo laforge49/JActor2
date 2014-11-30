@@ -45,21 +45,6 @@ public class IsolationTest extends CallTestBase {
         try {
             Foot foot = new Foot(new IsolationReactor());
             Head head = new Head(foot.dAOp());
-            System.err.println("skipping this test");
-            assertFalse(call(head.dAOp()));
-        } finally {
-            Plant.close();
-        }
-    }
-
-    public void test3a() throws Exception {
-        Thread.sleep(100);
-        System.err.println("\ntest 3a");
-        new Plant();
-        try {
-            Foot foot = new Foot(new IsolationReactor());
-            Head head = new Head(foot.dAOp());
-            head.addResource(foot);
             assertTrue(call(head.dAOp()));
         } finally {
             Plant.close();
@@ -75,7 +60,7 @@ public class IsolationTest extends CallTestBase {
             Via via = new Via(foot.dAOp());
             Head head = new Head(via.dAOp());
             System.err.println("skipping this test");
-            assertFalse(call(head.dAOp()));
+            assertTrue(call(head.dAOp()));
         } finally {
             Plant.close();
         }
@@ -87,43 +72,9 @@ public class IsolationTest extends CallTestBase {
         new Plant();
         try {
             Foot foot = new Foot(new IsolationReactor());
-            Via via = new Via(foot.dAOp());
-            Head head = new Head(via.dAOp());
-            head.addResource(foot);
-            assertTrue(call(head.dAOp()));
-        } finally {
-            Plant.close();
-        }
-    }
-
-    public void test4b() throws Exception {
-        Thread.sleep(100);
-        System.err.println("\ntest 4b");
-        new Plant();
-        try {
-            Foot foot = new Foot(new IsolationReactor());
             IVia via = new IVia(foot.dAOp());
             Head head = new Head(via.dAOp());
-            head.addResource(via);
-            via.addResource(foot);
             assertTrue(call(head.dAOp()));
-        } finally {
-            Plant.close();
-        }
-    }
-
-    public void test4c() throws Exception {
-        Thread.sleep(100);
-        System.err.println("\ntest 4c");
-        new Plant();
-        try {
-            Foot foot = new Foot(new IsolationReactor());
-            IVia via = new IVia(foot.dAOp());
-            Head head = new Head(via.dAOp());
-            head.addResource(via);
-            head.addResource(foot);
-            System.err.println("skipping this test");
-            assertFalse(call(head.dAOp()));
         } finally {
             Plant.close();
         }
