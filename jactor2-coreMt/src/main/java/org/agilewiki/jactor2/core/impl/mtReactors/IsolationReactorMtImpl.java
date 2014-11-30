@@ -72,13 +72,17 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
         if (resources.contains(_reactorImpl))
             return true;
         Set<IsolationReactorMtImpl> rs = new HashSet<IsolationReactorMtImpl>(resources.size());
+        Set<IsolationReactorMtImpl> visited = new HashSet<IsolationReactorMtImpl>(resources.size());
         while (rs.size() > 0) {
             IsolationReactorMtImpl i = rs.iterator().next();
-            if (i.resources.contains(_reactorImpl)) {
-                resources.add((IsolationReactorMtImpl) _reactorImpl);
-                return true;
+            if (!visited.contains(i)) {
+                if (i.resources.contains(_reactorImpl)) {
+                    resources.add((IsolationReactorMtImpl) _reactorImpl);
+                    return true;
+                }
+                rs.addAll(i.resources);
+                visited.add(i);
             }
-            rs.addAll(i.resources);
             rs.remove(i);
         }
         return false;
