@@ -25,7 +25,7 @@ public class IsolationReactorMtImpl extends PoolThreadReactorMtImpl {
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      */
-    public IsolationReactorMtImpl(final NonBlockingReactor _parentReactor,
+    public IsolationReactorMtImpl(final IsolationReactor _parentReactor,
                                   final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }

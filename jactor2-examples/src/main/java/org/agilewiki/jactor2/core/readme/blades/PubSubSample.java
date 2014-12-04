@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.filters.EqualsFilter;
 import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAOp;
 import org.agilewiki.jactor2.core.impl.Plant;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
@@ -12,7 +13,7 @@ public class PubSubSample {
     public static void main(final String[] args) throws Exception {
         final Plant plant = new Plant();
         try {
-            NonBlockingReactor reactor = new NonBlockingReactor();
+            IsolationReactor reactor = new IsolationReactor();
             RequestBus<String> requestBus =
                     new RequestBus<String>(reactor);
             new SubscribeAOp<String>(requestBus, reactor) {

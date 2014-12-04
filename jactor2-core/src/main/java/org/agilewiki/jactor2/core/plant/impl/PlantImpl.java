@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.Facility;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
@@ -59,23 +60,23 @@ abstract public class PlantImpl {
     abstract public ReactorImpl getCurrentReactorImpl();
 
     abstract public ReactorImpl createNonBlockingReactorImpl(
-            final NonBlockingReactor _parentReactor, int _initialOutboxSize,
+            final IsolationReactor _parentReactor, int _initialOutboxSize,
             int _initialLocalQueueSize);
 
     abstract public ReactorImpl createBlockingReactorImpl(
-            final NonBlockingReactor _parentReactor, int _initialOutboxSize,
+            final IsolationReactor _parentReactor, int _initialOutboxSize,
             int _initialLocalQueueSize);
 
     abstract public ReactorImpl createIsolationReactorImpl(
-            final NonBlockingReactor _parentReactor, int _initialOutboxSize,
+            final IsolationReactor _parentReactor, int _initialOutboxSize,
             int _initialLocalQueueSize);
 
     abstract public ReactorImpl createSwingBoundReactorImpl(
-            final NonBlockingReactor _parentReactor, int _initialOutboxSize,
+            final IsolationReactor _parentReactor, int _initialOutboxSize,
             int _initialLocalQueueSize);
 
     abstract public ReactorImpl createThreadBoundReactorImpl(
-            final NonBlockingReactor _parentReactor, int _initialOutboxSize,
+            final IsolationReactor _parentReactor, int _initialOutboxSize,
             int _initialLocalQueueSize, Runnable _boundProcessor);
 
     abstract public <RESPONSE_TYPE> RequestImpl<RESPONSE_TYPE> createSyncRequestImpl(

@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.impl.mtReactors;
 
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
 
@@ -26,7 +27,7 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      */
-    public PoolThreadReactorMtImpl(final NonBlockingReactor _parentReactor,
+    public PoolThreadReactorMtImpl(final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }

@@ -13,10 +13,7 @@ import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestSource;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
-import org.agilewiki.jactor2.core.reactors.CommonReactor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.reactors.*;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SOp;
@@ -101,7 +98,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     /**
      * The parent reactor, or null.
      */
-    public final NonBlockingReactor parentReactor;
+    public final IsolationReactor parentReactor;
 
     private String reason;
 
@@ -112,14 +109,14 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _initialBufferSize     The initial size of a send buffer.
      * @param _initialLocalQueueSize The initial size of the local queue.
      */
-    public ReactorMtImpl(final NonBlockingReactor _parentReactor,
+    public ReactorMtImpl(final IsolationReactor _parentReactor,
             final int _initialBufferSize, final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImplImpl(this);
         final PlantConfiguration plantConfiguration = PlantMtImpl
                 .getSingleton().getPlantConfiguration();
         @SuppressWarnings("resource")
-        final NonBlockingReactorMtImpl parentReactorImpl = _parentReactor == null ? null
-                : (NonBlockingReactorMtImpl) _parentReactor.asReactorImpl();
+        final IsolationReactorMtImpl parentReactorImpl = _parentReactor == null ? null
+                : (IsolationReactorMtImpl) _parentReactor.asReactorImpl();
         recovery = _parentReactor == null ? plantConfiguration.getRecovery()
                 : parentReactorImpl.getRecovery();
         plantScheduler = _parentReactor == null ? plantConfiguration
@@ -176,7 +173,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @return The parent reactor, or null.
      */
     @Override
-    public NonBlockingReactor getParentReactor() {
+    public IsolationReactor getParentReactor() {
         return parentReactor;
     }
 

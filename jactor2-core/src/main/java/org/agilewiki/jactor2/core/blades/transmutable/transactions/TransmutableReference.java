@@ -51,19 +51,6 @@ public class TransmutableReference<DATATYPE, TRANSMUTABLE extends Transmutable<D
         unmodifiable = transmutable.createUnmodifiable();
     }
 
-    /**
-     * Create an ImmutableReference blade.
-     *
-     * @param _transmutable  The transmutable data structure to be operated on.
-     * @param _parentReactor The parent of the blade's reactor.
-     */
-    public TransmutableReference(final TRANSMUTABLE _transmutable,
-                                 final NonBlockingReactor _parentReactor) throws Exception {
-        reactor = new IsolationReactor(_parentReactor);
-        transmutable = _transmutable;
-        unmodifiable = transmutable.createUnmodifiable();
-    }
-
     @Override
     public IsolationReactor getReactor() {
         return reactor;

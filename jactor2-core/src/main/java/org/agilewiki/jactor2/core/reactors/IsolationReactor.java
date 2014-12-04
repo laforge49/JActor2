@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 
 /**
  * Processes each request until completion, processing responses and 1-way messages (e.g. signals) in the order received.
@@ -27,7 +28,7 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      *
      * @param _parentReactor            The parent reactor.
      */
-    public IsolationReactor(final NonBlockingReactor _parentReactor)
+    public IsolationReactor(final IsolationReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl()
                 .getInitialBufferSize(), _parentReactor.asReactorImpl()
@@ -53,11 +54,26 @@ public class IsolationReactor extends ReactorBase implements IsolationBlade {
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public IsolationReactor(final NonBlockingReactor _parentReactor,
+    public IsolationReactor(final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
-        initialize(PlantImpl.getSingleton().createIsolationReactorImpl(
-                _parentReactor, _initialOutboxSize, _initialLocalQueueSize));
+        initialize(createReactorImpl(_parentReactor, _initialOutboxSize,
+                _initialLocalQueueSize));
+    }
+
+    /**
+     * Create the object used to implement the reactor.
+     *
+     * @param _parentReactor        The parent reactor impl object.
+     * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
+     * @param _initialLocalQueueSize    Initial size of the local input queue.
+     * @return The object used to implement the reactor.
+     */
+    protected ReactorImpl createReactorImpl(
+            final IsolationReactor _parentReactor,
+            final int _initialOutboxSize, final int _initialLocalQueueSize) {
+        return PlantImpl.getSingleton().createIsolationReactorImpl(
+                _parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }
 
     /**

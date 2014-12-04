@@ -11,6 +11,7 @@ import org.agilewiki.jactor2.core.impl.mtRequests.SyncRequestMtImplWithData;
 import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Facility;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
@@ -132,7 +133,7 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public ReactorImpl createNonBlockingReactorImpl(
-            final NonBlockingReactor _parentReactor,
+            final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new NonBlockingReactorMtImpl(_parentReactor, _initialOutboxSize,
                 _initialLocalQueueSize);
@@ -140,7 +141,7 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public ReactorImpl createBlockingReactorImpl(
-            final NonBlockingReactor _parentReactor,
+            final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new BlockingReactorMtImpl(_parentReactor, _initialOutboxSize,
                 _initialLocalQueueSize);
@@ -148,7 +149,7 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public ReactorImpl createIsolationReactorImpl(
-            final NonBlockingReactor _parentReactor,
+            final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new IsolationReactorMtImpl(_parentReactor, _initialOutboxSize,
                 _initialLocalQueueSize);
@@ -156,7 +157,7 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public ReactorImpl createSwingBoundReactorImpl(
-            final NonBlockingReactor _parentReactor,
+            final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return new SwingBoundReactorMtImpl(_parentReactor, _initialOutboxSize,
                 _initialLocalQueueSize);
@@ -164,7 +165,7 @@ public class PlantMtImpl extends PlantImpl {
 
     @Override
     public ReactorImpl createThreadBoundReactorImpl(
-            final NonBlockingReactor _parentReactor,
+            final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize,
             final Runnable _boundProcessor) {
         return new ThreadBoundReactorMtImpl(_parentReactor, _initialOutboxSize,

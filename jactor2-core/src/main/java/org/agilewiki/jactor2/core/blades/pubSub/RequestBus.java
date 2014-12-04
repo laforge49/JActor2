@@ -1,12 +1,11 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
+import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.filters.Filter;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.AOp;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.SAOp;
-import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.requests.*;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 
@@ -19,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <CONTENT> The type of content.
  */
-public class RequestBus<CONTENT> extends NonBlockingBladeBase {
+public class RequestBus<CONTENT> extends IsolationBladeBase {
     final Map<Subscription<CONTENT>, Boolean> subscriptions = new ConcurrentHashMap<Subscription<CONTENT>, Boolean>();
 
     public boolean noSubscriptions() {
@@ -29,7 +28,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
     public RequestBus() throws Exception {
     }
 
-    public RequestBus(final NonBlockingReactor _reactor) {
+    public RequestBus(final IsolationReactor _reactor) {
         super(_reactor);
     }
 
@@ -52,7 +51,7 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
      * @param _sourceReactor
      */
     public void signalContent(final CONTENT _content,
-            final NonBlockingReactor _sourceReactor) {
+            final IsolationReactor _sourceReactor) {
         directCheck(_sourceReactor);
         signalContent(_content);
     }
@@ -118,6 +117,26 @@ public class RequestBus<CONTENT> extends NonBlockingBladeBase {
                     dis.processAsyncResponse(null);
                     return;
                 }
+            }
+        };
+    }
+
+    public AIOp<Void> signalContentAOp(final CONTENT _content) {
+        return new AIOp<Void>("signalContent", getReactor()) {
+            @Override
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                                 AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+                final Iterator<Subscription<CONTENT>> it = subscriptions
+                        .keySet().iterator();
+                while (it.hasNext()) {
+                    final Subscription<CONTENT> subscription = it.next();
+                    final Filter<CONTENT> filter = subscription.filter;
+                    if (filter.match(_content)) {
+                        subscription.publicationAOp(_content).signal();
+                    }
+                }
+                _asyncResponseProcessor.processAsyncResponse(null);
             }
         };
     }

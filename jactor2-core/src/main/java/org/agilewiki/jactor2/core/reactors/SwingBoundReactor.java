@@ -36,7 +36,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      *
      * @param _parentReactor            The parent reactor.
      */
-    public SwingBoundReactor(final NonBlockingReactor _parentReactor)
+    public SwingBoundReactor(final IsolationReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl()
                 .getInitialBufferSize(), _parentReactor.asReactorImpl()
@@ -62,7 +62,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public SwingBoundReactor(final NonBlockingReactor _parentReactor,
+    public SwingBoundReactor(final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, null);
@@ -70,7 +70,7 @@ public class SwingBoundReactor extends ThreadBoundReactor implements
 
     @Override
     protected ReactorImpl createReactorImpl(
-            final NonBlockingReactor _parentReactor,
+            final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize,
             final Runnable _boundProcessor) {
         return PlantImpl.getSingleton().createSwingBoundReactorImpl(

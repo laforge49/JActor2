@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 
@@ -27,7 +28,7 @@ public class SwingBoundReactorMtImpl extends ThreadBoundReactorMtImpl {
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      */
-    public SwingBoundReactorMtImpl(final NonBlockingReactor _parentReactor,
+    public SwingBoundReactorMtImpl(final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize, null);
     }

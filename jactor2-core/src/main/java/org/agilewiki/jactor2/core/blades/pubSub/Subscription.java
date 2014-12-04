@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.blades.pubSub;
 
+import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.filters.Filter;
 import org.agilewiki.jactor2.core.blades.filters.NullFilter;
@@ -7,6 +8,7 @@ import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AIOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
@@ -16,15 +18,15 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
  *
  * @param <CONTENT> The type of content.
  */
-abstract public class Subscription<CONTENT> extends NonBlockingBladeBase implements
+abstract public class Subscription<CONTENT> extends IsolationBladeBase implements
         Closeable {
     private final CloseableImpl closeableImpl;
     private final RequestBus<CONTENT> requestBus;
-    private final CommonReactor subscriberReactor;
+    private final IsolationReactor subscriberReactor;
     final Filter<CONTENT> filter;
 
     Subscription(final RequestBus<CONTENT> _requestBus,
-                 final CommonReactor _subscriberReactor,
+                 final IsolationReactor _subscriberReactor,
                  final Filter<CONTENT> _filter) throws Exception {
         super(_requestBus.getReactor());
         closeableImpl = PlantImpl.getSingleton().createCloseableImpl(this);

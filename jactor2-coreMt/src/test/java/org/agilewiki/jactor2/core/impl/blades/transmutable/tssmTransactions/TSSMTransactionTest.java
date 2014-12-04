@@ -9,6 +9,7 @@ import org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions.TSSMUpdat
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class TSSMTransactionTest extends CallTestBase {
         new Plant();
         try {
             final TSSMReference<String> propertiesReference = new TSSMReference<String>();
-            final CommonReactor reactor = new NonBlockingReactor();
+            final IsolationReactor reactor = new IsolationReactor();
 
             final RequestBus<TSSMChanges<String>> validationBus = propertiesReference.validationBus;
             call(new SubscribeAOp<TSSMChanges<String>>(validationBus,

@@ -33,7 +33,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor,
      *
      * @param _parentReactor            The parent reactor.
      */
-    public BlockingReactor(final NonBlockingReactor _parentReactor)
+    public BlockingReactor(final IsolationReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor.asReactorImpl()
                 .getInitialBufferSize(), _parentReactor.asReactorImpl()
@@ -59,7 +59,7 @@ public class BlockingReactor extends ReactorBase implements CommonReactor,
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public BlockingReactor(final NonBlockingReactor _parentReactor,
+    public BlockingReactor(final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         initialize(PlantImpl.getSingleton().createBlockingReactorImpl(

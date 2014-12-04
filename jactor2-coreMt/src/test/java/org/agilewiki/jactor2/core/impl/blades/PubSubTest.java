@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.blades.pubSub.Subscription;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -18,7 +19,7 @@ public class PubSubTest extends CallTestBase {
         System.out.println("I");
         new Plant();
         try {
-            final NonBlockingReactor reactor = new NonBlockingReactor();
+            final IsolationReactor reactor = new IsolationReactor();
             final RequestBus<Void> requestBus = new RequestBus<Void>(reactor);
             call(requestBus.signalsContentSOp(null));
             final Subscription<Void> s1 = call(new SubscribeAOp<Void>(
@@ -45,8 +46,8 @@ public class PubSubTest extends CallTestBase {
         new Plant();
         try {
             final AtomicInteger counter = new AtomicInteger();
-            final NonBlockingReactor busReactor = new NonBlockingReactor();
-            final CommonReactor subscriberReactor = new NonBlockingReactor();
+            final IsolationReactor busReactor = new IsolationReactor();
+            final IsolationReactor subscriberReactor = new IsolationReactor();
             final RequestBus<Void> requestBus = new RequestBus<Void>(busReactor);
             call(requestBus.sendsContentAOp(null));
             assertEquals(counter.get(), 0);

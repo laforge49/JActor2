@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.blades.pubSub;
 
 import org.agilewiki.jactor2.core.blades.filters.Filter;
 import org.agilewiki.jactor2.core.reactors.CommonReactor;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.requests.AIOp;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
@@ -15,7 +16,7 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
  */
 public class SubscribeAOp<CONTENT> extends AIOp<Subscription<CONTENT>> {
     private final RequestBus<CONTENT> requestBus;
-    private final CommonReactor subscriberReactor;
+    private final IsolationReactor subscriberReactor;
     private final Filter<CONTENT> filter;
 
     /**
@@ -26,7 +27,7 @@ public class SubscribeAOp<CONTENT> extends AIOp<Subscription<CONTENT>> {
      * @param _subscriberReactor The reactor of the subscriber blade.
      */
     public SubscribeAOp(final RequestBus<CONTENT> _requestBus,
-                        final CommonReactor _subscriberReactor) {
+                        final IsolationReactor _subscriberReactor) {
         this(_requestBus, _subscriberReactor, null);
     }
 
@@ -38,7 +39,7 @@ public class SubscribeAOp<CONTENT> extends AIOp<Subscription<CONTENT>> {
      * @param _filter            A Filter that selects content of interest.
      */
     public SubscribeAOp(final RequestBus<CONTENT> _requestBus,
-                        final CommonReactor _subscriberReactor,
+                        final IsolationReactor _subscriberReactor,
                         final Filter<CONTENT> _filter) {
         super("subscribe", _subscriberReactor);
         requestBus = _requestBus;

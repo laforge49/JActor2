@@ -1,5 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 /**
@@ -14,7 +15,7 @@ public class NonBlockingReactorMtImpl extends PoolThreadReactorMtImpl {
      * @param _initialOutboxSize     The initial buffer size for outgoing messages.
      * @param _initialLocalQueueSize The initial local queue size.
      */
-    public NonBlockingReactorMtImpl(final NonBlockingReactor _parentReactor,
+    public NonBlockingReactorMtImpl(final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);
     }

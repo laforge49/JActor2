@@ -46,7 +46,7 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
     }
 
     @Override
-    public Reactor getParentReactor() {
+    public IsolationReactor getParentReactor() {
         return asReactorImpl().getParentReactor();
     }
 

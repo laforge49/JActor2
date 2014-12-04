@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
 
@@ -44,7 +45,7 @@ public class ThreadBoundReactorMtImpl extends ReactorMtImpl {
      * @param _initialLocalQueueSize The initial local queue size.
      * @param _boundProcessor        The Runnable used when there are messages to be processed.
      */
-    public ThreadBoundReactorMtImpl(final NonBlockingReactor _parentReactor,
+    public ThreadBoundReactorMtImpl(final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize,
             final Runnable _boundProcessor) {
         super(_parentReactor, _initialOutboxSize, _initialLocalQueueSize);

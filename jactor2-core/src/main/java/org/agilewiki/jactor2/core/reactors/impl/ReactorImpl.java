@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.reactors.impl;
 
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
@@ -31,7 +32,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      *
      * @return The parent reactor, or null.
      */
-    NonBlockingReactor getParentReactor();
+    IsolationReactor getParentReactor();
 
     /**
      * Returns the initial size of a send buffer.

@@ -32,7 +32,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor,
      *
      * @param _parentReactor            The parent reactor.
      */
-    public NonBlockingReactor(final NonBlockingReactor _parentReactor)
+    public NonBlockingReactor(final IsolationReactor _parentReactor)
             throws Exception {
         this(_parentReactor, _parentReactor != null ? _parentReactor
                 .asReactorImpl().getInitialBufferSize() : PlantImpl
@@ -67,7 +67,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor,
      * @param _initialOutboxSize        Initial size of the list of requests/responses for each destination.
      * @param _initialLocalQueueSize    Initial size of the local input queue.
      */
-    public NonBlockingReactor(final NonBlockingReactor _parentReactor,
+    public NonBlockingReactor(final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize)
             throws Exception {
         initialize(createReactorImpl(_parentReactor, _initialOutboxSize,
@@ -83,7 +83,7 @@ public class NonBlockingReactor extends ReactorBase implements CommonReactor,
      * @return The object used to implement the reactor.
      */
     protected ReactorImpl createReactorImpl(
-            final NonBlockingReactor _parentReactor,
+            final IsolationReactor _parentReactor,
             final int _initialOutboxSize, final int _initialLocalQueueSize) {
         return PlantImpl.getSingleton().createNonBlockingReactorImpl(
                 _parentReactor, _initialOutboxSize, _initialLocalQueueSize);

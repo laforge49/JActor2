@@ -12,7 +12,7 @@ import java.util.SortedMap;
 /**
  * A reactor parent, facilities are named and registered with Plant.
  */
-public class Facility extends NonBlockingReactor implements NamedBlade {
+public class Facility extends IsolationReactor implements NamedBlade {
     public final String name;
 
     private volatile SortedMap<String, NamedBlade> namedBlades = new TSSMap();

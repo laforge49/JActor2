@@ -35,20 +35,12 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
         this(new TSSMap<VALUE>(), _reactor);
     }
 
-    public TSSMReference(NonBlockingReactor _parentReactor) throws Exception {
-        this(new TSSMap<VALUE>(), _parentReactor);
-    }
-
     public TSSMReference(Map<String, VALUE> _map) throws Exception {
         this(new TSSMap<VALUE>(_map));
     }
 
     public TSSMReference(Map<String, VALUE> _map, IsolationReactor _reactor) throws Exception {
         this(new TSSMap<VALUE>(_map), _reactor);
-    }
-
-    public TSSMReference(Map<String, VALUE> _map, NonBlockingReactor _parentReactor) throws Exception {
-        this(new TSSMap<VALUE>(_map), _parentReactor);
     }
 
     public TSSMReference(SortedMap<String, VALUE> _sortedMap) throws Exception {
@@ -59,30 +51,16 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
         this(new TSSMap<VALUE>(_sortedMap), _reactor);
     }
 
-    public TSSMReference(SortedMap<String, VALUE> _sortedMap, NonBlockingReactor _parentReactor) throws Exception {
-        this(new TSSMap<VALUE>(_sortedMap), _parentReactor);
-    }
-
     private TSSMReference(TSSMap<VALUE> _tssMap) throws Exception {
         super(_tssMap);
-        final NonBlockingReactor parentReactor = (NonBlockingReactor) getReactor()
-                .getParentReactor();
-        validationBus = new RequestBus<TSSMChanges<VALUE>>(parentReactor);
-        changeBus = new RequestBus<TSSMChanges<VALUE>>(parentReactor);
+        validationBus = new RequestBus<TSSMChanges<VALUE>>(reactor);
+        changeBus = new RequestBus<TSSMChanges<VALUE>>(reactor);
     }
 
     private TSSMReference(TSSMap<VALUE> _tssMap, IsolationReactor _reactor) throws Exception {
         super(_tssMap, _reactor);
-        final NonBlockingReactor parentReactor = (NonBlockingReactor) getReactor()
-                .getParentReactor();
-        validationBus = new RequestBus<TSSMChanges<VALUE>>(parentReactor);
-        changeBus = new RequestBus<TSSMChanges<VALUE>>(parentReactor);
-    }
-
-    private TSSMReference(TSSMap<VALUE> _tssMap, NonBlockingReactor _parentReactor) throws Exception {
-        super(_tssMap, _parentReactor);
-        validationBus = new RequestBus<TSSMChanges<VALUE>>(_parentReactor);
-        changeBus = new RequestBus<TSSMChanges<VALUE>>(_parentReactor);
+        validationBus = new RequestBus<TSSMChanges<VALUE>>(reactor);
+        changeBus = new RequestBus<TSSMChanges<VALUE>>(reactor);
     }
 
     @Override
@@ -107,7 +85,7 @@ public class TSSMReference<VALUE> extends TransmutableReference<SortedMap<String
                             _asyncResponseProcessor.processAsyncResponse(null);
                         } else
                             _asyncRequestImpl.send(changeBus
-                                            .sendsContentAOp(tssmChanges),
+                                            .signalContentAOp(tssmChanges),
                                     _asyncResponseProcessor, getTransmutable());
                     }
                 };
