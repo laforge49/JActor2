@@ -9,7 +9,7 @@ public class A extends IsolationBladeBase {
     }
 
     public AO<Void> run() {
-        return new AO<Void>("run") {
+        return new AO<Void>("runA") {
 
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
