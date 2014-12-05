@@ -1,19 +1,19 @@
-package org.agilewiki.jactor2.core.isolation.simple;
+package org.agilewiki.jactor2.core.isolation;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
-public class Simple extends IsolationBladeBase {
+public class TooSlow extends IsolationBladeBase {
 
     public static void main(final String[] args) throws Exception {
         new Plant();
-        new Simple();
+        new TooSlow();
         System.out.println("initialized");
     }
 
-    public Simple() throws Exception {
+    public TooSlow() throws Exception {
         new AIO("run") {
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
@@ -26,7 +26,7 @@ public class Simple extends IsolationBladeBase {
                         System.out.println("finished");
                     }
                 };
-                _asyncRequestImpl.send(new A().run(), runResponseProcessor);
+                _asyncRequestImpl.send(new Worker(0).hang(), runResponseProcessor);
             }
         }.signal();
     }
