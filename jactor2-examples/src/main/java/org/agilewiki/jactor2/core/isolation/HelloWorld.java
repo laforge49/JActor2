@@ -14,14 +14,11 @@ public class HelloWorld extends IsolationBladeBase {
     }
 
     public HelloWorld() throws Exception {
-        run();
-    }
-
-    public void run() {
         new AIO("run") {
-
             @Override
-            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl, AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                                 AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
                 System.out.println("Hello world!");
                 Plant.close();
             }
