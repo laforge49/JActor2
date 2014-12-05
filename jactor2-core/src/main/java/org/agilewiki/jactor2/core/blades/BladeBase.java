@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.AOp;
+import org.agilewiki.jactor2.core.requests.*;
 
 /**
  * Optional base class for blades.
@@ -81,6 +81,36 @@ public abstract class BladeBase implements Blade {
         if (!isDirectOk(_sourceReactor)) {
             throw new UnsupportedOperationException(
                     "Not thread safe: source reactor is not the same");
+        }
+    }
+
+    public abstract class AO<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> {
+        public AO(final String _opName) {
+            super(_opName, getReactor());
+        }
+    }
+
+    public abstract class AIO<RESPONSE_TYPE> extends AIOp<RESPONSE_TYPE> {
+        public AIO(final String _opName) {
+            super(_opName, getReactor());
+        }
+    }
+
+    public abstract class SAO<RESPONSE_TYPE> extends SAOp<RESPONSE_TYPE> {
+        public SAO(final String _opName) {
+            super(_opName, getReactor());
+        }
+    }
+
+    public abstract class SO<RESPONSE_TYPE> extends SOp<RESPONSE_TYPE> {
+        public SO(final String _opName) {
+            super(_opName, getReactor());
+        }
+    }
+
+    public abstract class SIO<RESPONSE_TYPE> extends SIOp<RESPONSE_TYPE> {
+        public SIO(final String _opName) {
+            super(_opName, getReactor());
         }
     }
 }
