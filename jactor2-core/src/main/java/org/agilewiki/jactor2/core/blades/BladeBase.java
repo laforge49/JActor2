@@ -90,7 +90,7 @@ public abstract class BladeBase implements Blade {
         }
     }
 
-    public abstract class AIO<RESPONSE_TYPE> extends AIOp<RESPONSE_TYPE> {
+    public abstract class AIO extends AIOp<Void> {
         public AIO(final String _opName) {
             super(_opName, getReactor());
         }
@@ -108,7 +108,7 @@ public abstract class BladeBase implements Blade {
         }
     }
 
-    public abstract class SIO<RESPONSE_TYPE> extends SIOp<RESPONSE_TYPE> {
+    public abstract class SIO extends SIOp<Void> {
         public SIO(final String _opName) {
             super(_opName, getReactor());
         }
