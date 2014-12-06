@@ -803,6 +803,8 @@ which covers programming with JActor2 step-by-step.
 Links
 -----
 
+- JActor for Dummies
+    - [Slides](http://www.slideshare.net/laforge49/jactor-for-dummies)
 - core (JActor2 API)
     - [JActor2-Core Javadoc pages](http://www.agilewiki.org/docs/api/core/index.html)
     - Dependencies: [Metrics](https://github.com/dropwizard/metrics)
