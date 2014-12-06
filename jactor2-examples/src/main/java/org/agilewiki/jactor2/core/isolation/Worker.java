@@ -5,11 +5,15 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Worker extends IsolationBladeBase {
-    final String id;
-    int count;
+    public final String id;
+    private int count;
 
     public Worker(final int _id) throws Exception {
         id = "Worker" + _id;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     public AO<Void> run() {
