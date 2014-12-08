@@ -5,15 +5,15 @@ import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
-public class Simple extends IsolationBladeBase {
+public class Timeout extends IsolationBladeBase {
 
     public static void main(final String[] args) throws Exception {
         new Plant();
-        new Simple();
+        new Timeout();
         System.out.println("initialized");
     }
 
-    public Simple() throws Exception {
+    public Timeout() throws Exception {
         new AIO("run") {
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
@@ -26,7 +26,7 @@ public class Simple extends IsolationBladeBase {
                         System.out.println("finished");
                     }
                 };
-                _asyncRequestImpl.send(new Worker(0).run(100000000L, -1), runResponseProcessor);
+                _asyncRequestImpl.send(new Worker(0).run(10000000000L, -1), runResponseProcessor);
             }
         }.signal();
     }
