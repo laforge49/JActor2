@@ -28,6 +28,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         Operation<RESPONSE_TYPE> {
     private static volatile int nextHash;
 
+    private int messageTimeoutMillis = -1;
+
     /**
      * Assigned to current time when Facility.DEBUG.
      */
@@ -606,5 +608,15 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         final Integer me = hashCode();
         final Integer h = _requestImpl.hashCode();
         return me.compareTo(h);
+    }
+
+    @Override
+    public void setMessageTimeoutMillis(final int _timeoutMillis) {
+        messageTimeoutMillis = _timeoutMillis;
+    }
+
+    @Override
+    public int getMessageTimeoutMillis() {
+        return messageTimeoutMillis;
     }
 }

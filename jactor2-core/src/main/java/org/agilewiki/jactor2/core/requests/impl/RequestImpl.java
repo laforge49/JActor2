@@ -87,4 +87,8 @@ public interface RequestImpl<RESPONSE_TYPE> extends AutoCloseable, Comparable<Re
 
     <RT> RT syncDirect(final SyncNativeRequest<RT> _syncNativeRequest)
             throws Exception;
+
+    void setMessageTimeoutMillis(int _timeoutMillis);
+
+    int getMessageTimeoutMillis();
 }

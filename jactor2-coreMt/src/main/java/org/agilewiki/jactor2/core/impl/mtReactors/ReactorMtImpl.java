@@ -614,7 +614,13 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         final double currentTimeMillis = plantScheduler.currentTimeMillis();
         final double mst = messageStartTimeMillis;
         if (mst > 0) {
-            if ((mst + recovery.getMessageTimeoutMillis(this)) < currentTimeMillis) {
+            int timerMillis = recovery.getMessageTimeoutMillis(this);
+            if (currentRequest != null) {
+                int localTimeout = currentRequest.getMessageTimeoutMillis();
+                if (localTimeout > -1)
+                    timerMillis = localTimeout;
+            }
+            if ((mst + timerMillis) < currentTimeMillis) {
                 recovery.onMessageTimeout(this);
             }
         }
