@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.isolation;
+package org.agilewiki.jactor2.core.revisited;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;

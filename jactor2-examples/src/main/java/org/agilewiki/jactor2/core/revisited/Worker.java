@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.isolation;
+package org.agilewiki.jactor2.core.revisited;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
@@ -26,7 +26,7 @@ public class Worker extends IsolationBladeBase {
                 _asyncRequestImpl.setMessageTimeoutMillis(_timeoutMillis);
                 System.out.println(id + ": started  " + count++);
                 for (long i = 0L; i < _iterations; i++);
-                System.out.println(id + ": finished " + count++);
+                System.out.println(id + ": finished " + count);
                 _asyncResponseProcessor.processAsyncResponse(null);
             }
         };
