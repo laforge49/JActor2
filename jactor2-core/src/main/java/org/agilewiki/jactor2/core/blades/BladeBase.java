@@ -84,8 +84,8 @@ public abstract class BladeBase implements Blade {
         }
     }
 
-    public abstract class AR<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> {
-        public AR(final String _opName) {
+    public abstract class AReq<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> {
+        public AReq(final String _opName) {
             super(_opName, getReactor());
         }
     }

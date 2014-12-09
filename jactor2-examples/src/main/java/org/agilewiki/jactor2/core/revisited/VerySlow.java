@@ -13,7 +13,7 @@ public class VerySlow extends IsolationBladeBase {
         System.out.println("initialized");
     }
 
-    public VerySlow() throws Exception {
+    private VerySlow() throws Exception {
         new ASig("run") {
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,

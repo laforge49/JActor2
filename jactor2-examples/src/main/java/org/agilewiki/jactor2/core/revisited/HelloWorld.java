@@ -13,7 +13,7 @@ public class HelloWorld extends IsolationBladeBase {
         System.out.println("initialized");
     }
 
-    public HelloWorld() throws Exception {
+    private HelloWorld() throws Exception {
         new ASig("run") {
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,

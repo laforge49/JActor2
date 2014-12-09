@@ -16,15 +16,15 @@ public class Worker extends IsolationBladeBase {
         return count;
     }
 
-    public AR<Void> run(final long _iterations, final int _timeoutMillis) {
-        return new AR<Void>("run" + id) {
+    public AReq<Void> run(final long _iterations, final int _timeoutMillis) {
+        return new AReq<Void>("run" + id) {
 
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)
                     throws Exception {
                 _asyncRequestImpl.setMessageTimeoutMillis(_timeoutMillis);
-                System.out.println(id + ": started  " + count++);
+                System.out.println(id + ": started  " + ++count);
                 for (long i = 0L; i < _iterations; i++);
                 System.out.println(id + ": finished " + count);
                 _asyncResponseProcessor.processAsyncResponse(null);

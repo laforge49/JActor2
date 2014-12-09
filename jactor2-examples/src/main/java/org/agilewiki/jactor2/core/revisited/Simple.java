@@ -13,7 +13,7 @@ public class Simple extends IsolationBladeBase {
         System.out.println("initialized");
     }
 
-    public Simple() throws Exception {
+    private Simple() throws Exception {
         new ASig("run") {
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,

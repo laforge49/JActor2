@@ -13,7 +13,7 @@ public class Timeout extends IsolationBladeBase {
         System.out.println("initialized");
     }
 
-    public Timeout() throws Exception {
+    private Timeout() throws Exception {
         new ASig("run") {
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
