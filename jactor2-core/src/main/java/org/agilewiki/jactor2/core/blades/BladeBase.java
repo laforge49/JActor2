@@ -84,32 +84,32 @@ public abstract class BladeBase implements Blade {
         }
     }
 
-    public abstract class AO<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> {
-        public AO(final String _opName) {
+    public abstract class AR<RESPONSE_TYPE> extends AOp<RESPONSE_TYPE> {
+        public AR(final String _opName) {
             super(_opName, getReactor());
         }
     }
 
-    public abstract class AIO extends AIOp<Void> {
-        public AIO(final String _opName) {
+    public abstract class ASig extends AIOp<Void> {
+        public ASig(final String _opName) {
             super(_opName, getReactor());
         }
     }
 
-    public abstract class SAO<RESPONSE_TYPE> extends SAOp<RESPONSE_TYPE> {
-        public SAO(final String _opName) {
+    public abstract class OAReq<RESPONSE_TYPE> extends SAOp<RESPONSE_TYPE> {
+        public OAReq(final String _opName) {
             super(_opName, getReactor());
         }
     }
 
-    public abstract class SO<RESPONSE_TYPE> extends SOp<RESPONSE_TYPE> {
-        public SO(final String _opName) {
+    public abstract class SReq<RESPONSE_TYPE> extends SOp<RESPONSE_TYPE> {
+        public SReq(final String _opName) {
             super(_opName, getReactor());
         }
     }
 
-    public abstract class SIO extends SIOp<Void> {
-        public SIO(final String _opName) {
+    public abstract class SSig extends SIOp<Void> {
+        public SSig(final String _opName) {
             super(_opName, getReactor());
         }
     }

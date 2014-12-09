@@ -14,7 +14,7 @@ public class HelloWorld extends IsolationBladeBase {
     }
 
     public HelloWorld() throws Exception {
-        new AIO("run") {
+        new ASig("run") {
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
                                                  final AsyncResponseProcessor<Void> _asyncResponseProcessor)

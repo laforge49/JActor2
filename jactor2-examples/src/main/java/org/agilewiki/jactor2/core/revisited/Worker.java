@@ -16,8 +16,8 @@ public class Worker extends IsolationBladeBase {
         return count;
     }
 
-    public AO<Void> run(final long _iterations, final int _timeoutMillis) {
-        return new AO<Void>("run" + id) {
+    public AR<Void> run(final long _iterations, final int _timeoutMillis) {
+        return new AR<Void>("run" + id) {
 
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
