@@ -7,6 +7,9 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Sequence extends IsolationBladeBase {
 
+    private Worker worker;
+    private AsyncResponseProcessor<Void> runResponseProcessor;
+
     public static void main(final String[] args) throws Exception {
         new Plant();
         new Sequence(5);
@@ -15,8 +18,6 @@ public class Sequence extends IsolationBladeBase {
 
     private Sequence(final int maxCount) throws Exception {
         new ASig("run") {
-            private Worker worker;
-            private AsyncResponseProcessor<Void> runResponseProcessor;
 
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
