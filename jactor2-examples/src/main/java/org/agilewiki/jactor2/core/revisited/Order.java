@@ -3,6 +3,7 @@ package org.agilewiki.jactor2.core.revisited;
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
 public class Order extends IsolationBladeBase {
@@ -48,6 +49,14 @@ public class Order extends IsolationBladeBase {
                         _asyncRequestImpl.send(otherX.run(otherY, "X -> Y"), runResponseProcessor2);
                     }
                 };
+                _asyncRequestImpl.setExceptionHandler(new ExceptionHandler() {
+                    @Override
+                    public void processException(Exception e, AsyncResponseProcessor _asyncResponseProcessor) throws Exception {
+                        Plant.close();
+                        System.err.println("caught exception:");
+                        e.printStackTrace();
+                    }
+                });
                 _asyncRequestImpl.send(otherX.run(otherX, "X -> X"), runResponseProcessor1);
             }
         }.signal();
