@@ -806,6 +806,7 @@ Links
 - JActor2 Revisited
     - [Slides](https://github.com/laforge49/JActor2/raw/master/docs/JActor2Revisited.pdf)
     - [by example](https://github.com/laforge49/JActor2/raw/master/docs/JActor2RevisitedByExample.pdf)
+    - [Getting Started](http://www.agilewiki.org/docs/tutorials/core/gettingStarted.html)
 - core (JActor2 API)
     - [JActor2-Core Javadoc pages](http://www.agilewiki.org/docs/api/core/index.html)
     - Dependencies: [Metrics](https://github.com/dropwizard/metrics)
