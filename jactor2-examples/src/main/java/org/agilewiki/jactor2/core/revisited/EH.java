@@ -6,15 +6,29 @@ import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 
-public class Timeout extends IsolationBladeBase {
+import java.io.IOException;
+
+public class EH extends IsolationBladeBase {
 
     public static void main(final String[] args) throws Exception {
         new Plant();
-        new Timeout();
+        new EH();
         System.out.println("initialized");
     }
 
-    private Timeout() throws Exception {
+    final ExceptionHandler exceptionHandler;
+
+    private EH() throws Exception {
+
+        exceptionHandler = new ExceptionHandler() {
+            @Override
+            public void processException(Exception e, AsyncResponseProcessor _asyncResponseProcessor) throws Exception {
+                Plant.close();
+                System.err.println("caught exception:");
+                e.printStackTrace();
+            }
+        };
+
         new ASig("run") {
             @Override
             protected void processAsyncOperation(final AsyncRequestImpl _asyncRequestImpl,
@@ -27,16 +41,25 @@ public class Timeout extends IsolationBladeBase {
                         System.out.println("finished");
                     }
                 };
-                _asyncRequestImpl.setExceptionHandler(new ExceptionHandler() {
-                    @Override
-                    public void processException(Exception e, AsyncResponseProcessor _asyncResponseProcessor) throws Exception {
-                        Plant.close();
-                        System.err.println("caught exception:");
-                        e.printStackTrace();
-                    }
-                });
-                _asyncRequestImpl.send(new Worker(0).run(10000000000L, -1), runResponseProcessor);
+
+                _asyncRequestImpl.setExceptionHandler(exceptionHandler);
+
+                _asyncRequestImpl.send(new Ex().bad(), runResponseProcessor);
             }
         }.signal();
+    }
+}
+
+class Ex extends IsolationBladeBase {
+
+    Ex() throws Exception {}
+
+    AReq<Void> bad() {
+        return new AReq<Void>("badEx") {
+            @Override
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl, AsyncResponseProcessor<Void> _asyncResponseProcessor) throws Exception {
+                throw new IOException();
+            }
+        };
     }
 }
