@@ -5,7 +5,7 @@
 
     <groupId>org.agilewiki.jactor2</groupId>
     <artifactId>jactor2</artifactId>
-    <version>1.0.0</version>
+    <version>0.14.0</version>
     <packaging>pom</packaging>
     <name>JActor2</name>
     <description>POJO Actors</description>
@@ -45,7 +45,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jactor2.version>1.0.0</jactor2.version>
+        <jactor2.version>0.14.0</jactor2.version>
         <metrics.version>3.0.2</metrics.version>
         <junit.version>4.11</junit.version>
         <slf4j.version>1.7.7</slf4j.version>
