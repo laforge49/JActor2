@@ -94,6 +94,7 @@ public class PlantConfiguration {
      */
     public ReactorPoolThreadManager createReactorPoolThreadManager() {
         return new ReactorPoolThreadManager(reactorThreadPoolSize,
+                getMaxThreadMigrations(),
                 createReactorPoolThreadFactory());
     }
 

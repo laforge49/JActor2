@@ -51,11 +51,13 @@ public final class ReactorPoolThreadManager {
     /**
      * Create a ReactorPoolThreadManager
      *
-     * @param _threadCount   The number of threads to be created.
-     * @param _threadFactory Used to create the threads.
+     * @param _threadCount         The number of threads to be created.
+     * @param _threadFactory       Used to create the threads.
+     * @param _maxThreadMigrations Limits the number of times a thread will follow a message in succession.
      */
     public ReactorPoolThreadManager(final int _threadCount,
-            final ThreadFactory _threadFactory) {
+                                    final int _maxThreadMigrations,
+                                    final ThreadFactory _threadFactory) {
         this.threadCount = _threadCount;
         final Runnable runnable = new Runnable() {
             @Override
@@ -71,7 +73,7 @@ public final class ReactorPoolThreadManager {
                                     .getThreadReference();
                             if ((threadReference.get() == null)
                                     && threadReference.compareAndSet(null,
-                                            currentThread)) {
+                                    currentThread)) {
                                 currentThread.setCurrentReactor(reactor);
                                 while (true) {
                                     try {
