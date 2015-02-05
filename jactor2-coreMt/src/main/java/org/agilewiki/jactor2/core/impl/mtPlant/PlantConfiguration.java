@@ -83,6 +83,10 @@ public class PlantConfiguration {
         return new DefaultReactorPoolThreadFactory();
     }
 
+    public int getMaxThreadMigrations() {
+        return 1000;
+    }
+
     /**
      * Create the reactor pool thread manager.
      *
