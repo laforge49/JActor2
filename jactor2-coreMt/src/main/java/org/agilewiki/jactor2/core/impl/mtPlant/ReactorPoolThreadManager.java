@@ -2,6 +2,7 @@ package org.agilewiki.jactor2.core.impl.mtPlant;
 
 import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
 import org.agilewiki.jactor2.core.impl.mtReactors.PoolThreadReactorMtImpl;
+import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public final class ReactorPoolThreadManager {
     /**
      * The threads in the thread pool.
      */
-    private Thread threads[] = null;
+    private ReactorPoolThread threads[] = null;
 
     /**
      * Create a ReactorPoolThreadManager
@@ -116,10 +117,11 @@ public final class ReactorPoolThreadManager {
                 }
             }
         };
-        threads = new Thread[this.threadCount];
+        threads = new ReactorPoolThread[this.threadCount];
         for (int c = 0; c < _threadCount; c++) {
-            final Thread t = _threadFactory.newThread(runnable);
+            final ReactorPoolThread t = (ReactorPoolThread) _threadFactory.newThread(runnable);
             threads[c] = t;
+            t.setMaxThreadMigrations(_maxThreadMigrations);
             t.start();
         }
     }

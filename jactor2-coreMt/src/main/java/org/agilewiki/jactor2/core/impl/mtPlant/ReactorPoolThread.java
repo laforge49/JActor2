@@ -10,6 +10,8 @@ public class ReactorPoolThread extends Thread {
 
     private volatile PoolThreadReactorImpl currentReactor;
 
+    private int maxThreadMigrations;
+
     /**
      * Create a pool thread.
      *
@@ -35,5 +37,14 @@ public class ReactorPoolThread extends Thread {
      */
     public void setCurrentReactor(final PoolThreadReactorImpl _reactor) {
         currentReactor = _reactor;
+    }
+
+    /**
+     * Assigns the max thread migrations.
+     *
+     * @param _maxThreadMigrations    Limits the number of times a thread will follow a message in succession.
+     */
+    public void setMaxThreadMigrations(final int _maxThreadMigrations) {
+        maxThreadMigrations = _maxThreadMigrations;
     }
 }
