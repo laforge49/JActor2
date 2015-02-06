@@ -110,7 +110,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _initialLocalQueueSize The initial size of the local queue.
      */
     public ReactorMtImpl(final IsolationReactor _parentReactor,
-            final int _initialBufferSize, final int _initialLocalQueueSize) {
+                         final int _initialBufferSize, final int _initialLocalQueueSize) {
         closeableImpl = new CloseableImplImpl(this);
         final PlantConfiguration plantConfiguration = PlantMtImpl
                 .getSingleton().getPlantConfiguration();
@@ -294,7 +294,8 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
                 boolean timeout = false;
                 try {
                     timeout = timeoutSemaphore.acquire();
-                } catch (InterruptedException ie) {}
+                } catch (InterruptedException ie) {
+                }
                 currentRequest.close();
                 if (timeout
                         && (isRunning() & (PlantImpl.getSingleton() != null))) {
@@ -418,7 +419,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @param _local   True when the current thread is assigned to the targetReactor.
      */
     public void unbufferedAddMessage(final RequestMtImpl<?> _message,
-            final boolean _local) {
+                                     final boolean _local) {
         if (isClosing()) {
             if (!_message.isComplete()) {
                 try {
@@ -469,7 +470,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * @return True if the message was buffered.
      */
     public boolean buffer(final RequestMtImpl<?> _message,
-            final ReactorMtImpl _target) {
+                          final ReactorMtImpl _target) {
         return outbox.buffer(_message, _target);
     }
 
@@ -492,7 +493,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
 
     @Override
     public final void incomingResponse(final RequestImpl<?> _message,
-            final ReactorImpl _responseSource) {
+                                       final ReactorImpl _responseSource) {
         final RequestMtImpl<?> message = (RequestMtImpl<?>) _message;
         try {
             @SuppressWarnings("resource")
@@ -640,7 +641,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      *
      * @return The CloseableSet.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     protected final Set<Closeable> getCloseableSet() {
         if (closeables == null) {
             closeables = Collections.newSetFromMap((Map) new MapMaker()
@@ -735,7 +736,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * accompanying message.
      *
      * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+     * @param t   the exception (throwable) to log
      */
     @Override
     public void warn(final String msg, final Throwable t) {
@@ -757,7 +758,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
      * accompanying message.
      *
      * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+     * @param t   the exception (throwable) to log
      */
     @Override
     public void error(final String msg, final Throwable t) {
