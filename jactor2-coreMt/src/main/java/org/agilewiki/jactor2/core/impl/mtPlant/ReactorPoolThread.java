@@ -12,6 +12,8 @@ public class ReactorPoolThread extends Thread {
 
     private int maxThreadMigrations;
 
+    private int migrationCount;
+
     /**
      * Create a pool thread.
      *
@@ -46,5 +48,24 @@ public class ReactorPoolThread extends Thread {
      */
     public void setMaxThreadMigrations(final int _maxThreadMigrations) {
         maxThreadMigrations = _maxThreadMigrations;
+    }
+
+    /**
+     * Clears the migration count.
+     */
+    public void clearMigrationCount() {
+        migrationCount = 0;
+    }
+
+    /**
+     * Add 1 to migration count if max migration count is not exceeded.
+     *
+     * @return True if migration count was incremented.
+     */
+    public boolean incMigrationCount() {
+        if (migrationCount > maxThreadMigrations)
+            return false;
+        migrationCount += 1;
+        return true;
     }
 }
