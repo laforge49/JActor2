@@ -103,17 +103,20 @@ abstract public class PoolThreadReactorMtImpl extends ReactorMtImpl implements
                         && (target instanceof PoolThreadReactorImpl)) {
                     if (!target.isRunning()) {
                         final ReactorPoolThread currentThread = (ReactorPoolThread) threadReference.get();
-                        final PoolThreadReactorMtImpl targ = (PoolThreadReactorMtImpl) target;
-                        final AtomicReference<Thread> targetThreadReference = targ
-                                .getThreadReference();
-                        if ((targetThreadReference.get() == null)
-                                && targetThreadReference.compareAndSet(null,
-                                        currentThread)) {
-                            while (!messages.isEmpty()) {
-                                final RequestMtImpl<?> m = messages.poll();
-                                targ.unbufferedAddMessage(m, true);
+                        if (currentThread.checkMigrationCount()) {
+                            final PoolThreadReactorMtImpl targ = (PoolThreadReactorMtImpl) target;
+                            final AtomicReference<Thread> targetThreadReference = targ
+                                    .getThreadReference();
+                            if ((targetThreadReference.get() == null)
+                                    && targetThreadReference.compareAndSet(null,
+                                    currentThread)) {
+                                while (!messages.isEmpty()) {
+                                    final RequestMtImpl<?> m = messages.poll();
+                                    targ.unbufferedAddMessage(m, true);
+                                }
+                                currentThread.incMigrationCount();
+                                throw new MigrationException(targ);
                             }
-                            throw new MigrationException(targ);
                         }
                     }
                 }

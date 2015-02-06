@@ -58,14 +58,18 @@ public class ReactorPoolThread extends Thread {
     }
 
     /**
-     * Add 1 to migration count if max migration count is not exceeded.
+     * Checks to see if the max migration count is not exceeded.
      *
-     * @return True if migration count was incremented.
+     * @return True if migration count did not exceed the max migration count.
      */
-    public boolean incMigrationCount() {
-        if (migrationCount > maxThreadMigrations)
-            return false;
+    public boolean checkMigrationCount() {
+        return migrationCount <= maxThreadMigrations;
+    }
+
+    /**
+     * Add 1 to migration count.
+     */
+    public void incMigrationCount() {
         migrationCount += 1;
-        return true;
     }
 }
