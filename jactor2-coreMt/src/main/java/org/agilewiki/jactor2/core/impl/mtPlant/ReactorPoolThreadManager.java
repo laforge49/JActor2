@@ -76,6 +76,7 @@ public final class ReactorPoolThreadManager {
                                     && threadReference.compareAndSet(null,
                                     currentThread)) {
                                 currentThread.setCurrentReactor(reactor);
+                                currentThread.clearMigrationCount();
                                 while (true) {
                                     try {
                                         reactor.run();
