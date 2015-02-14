@@ -3,7 +3,6 @@ package org.agilewiki.jactor2.core.requests;
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.impl.RequestImplWithData;
-import org.agilewiki.jactor2.core.util.Timer;
 
 import java.util.Objects;
 
@@ -12,33 +11,51 @@ import java.util.Objects;
  */
 public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends RequestImplWithData<RESPONSE_TYPE>>
         implements Operation<RESPONSE_TYPE> {
-    /** Empty Var array. */
+    /**
+     * Empty Var array.
+     */
     private static final Var[] NO_VARS = new Var[0];
 
     private static volatile int nextHash;
 
-    /** Number of double variables defined until now. */
+    /**
+     * Number of double variables defined until now.
+     */
     private int doubles = 0;
 
-    /** Number of object variables defined until now. */
+    /**
+     * Number of object variables defined until now.
+     */
     private int objects = 0;
 
-    /** All the variables. */
+    /**
+     * All the variables.
+     */
     private Var[] vars = NO_VARS;
 
-    /** The Blade variable. */
+    /**
+     * The Blade variable.
+     */
     protected final ObjectVar<B> blade;
 
-    /** Our hashcode. */
+    /**
+     * Our hashcode.
+     */
     private final int hashCode = nextHash++;
 
-    /** Base class for variables. */
+    /**
+     * Base class for variables.
+     */
     private static abstract class Var {
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         public abstract void init(RequestImplWithData<?> _requestImpl);
     }
 
-    /** Base class for primitive variables. */
+    /**
+     * Base class for primitive variables.
+     */
     private abstract class PrimitiveVar extends Var {
         protected final int index;
 
@@ -51,7 +68,9 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** Base class for Object variables. */
+    /**
+     * Base class for Object variables.
+     */
     private abstract class NonPrimitiveVar extends Var {
         protected final int index;
 
@@ -64,71 +83,99 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** "boolean" primitive variable. */
+    /**
+     * "boolean" primitive variable.
+     */
     protected final class BooleanVar extends PrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final boolean defVal;
 
-        /** Creates a variable with _defVal as default value. */
+        /**
+         * Creates a variable with _defVal as default value.
+         */
         private BooleanVar(final boolean _defVal) {
             defVal = _defVal;
         }
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             set(_requestImpl, defVal);
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         public boolean get(final RequestImplWithData<?> _requestImpl) {
             return _requestImpl.getDouble(index) != 0;
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final boolean newValue) {
+                                                        final boolean newValue) {
             _requestImpl.setDouble(index, newValue ? 1 : 0);
             return _requestImpl;
         }
     }
 
-    /** "byte" primitive variable. */
+    /**
+     * "byte" primitive variable.
+     */
     protected final class ByteVar extends PrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final byte defVal;
 
-        /** Creates a variable with _defVal as default value. */
+        /**
+         * Creates a variable with _defVal as default value.
+         */
         private ByteVar(final byte _defVal) {
             defVal = _defVal;
         }
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             set(_requestImpl, defVal);
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         public byte get(final RequestImplWithData<?> _requestImpl) {
             return (byte) _requestImpl.getDouble(index);
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final byte newValue) {
+                                                        final byte newValue) {
             _requestImpl.setDouble(index, newValue);
             return _requestImpl;
         }
 
-        /** Increments the value, and returns the pre-increment value (works like v++). */
+        /**
+         * Increments the value, and returns the pre-increment value (works like v++).
+         */
         public byte inc(final RequestImplWithData<?> _requestImpl) {
             final byte result = get(_requestImpl);
             set(_requestImpl, (byte) (result + 1));
             return result;
         }
 
-        /** Decrements the value, and returns the pre-increment value (works like v--). */
+        /**
+         * Decrements the value, and returns the pre-increment value (works like v--).
+         */
         public byte dec(final RequestImplWithData<?> _requestImpl) {
             final byte result = get(_requestImpl);
             set(_requestImpl, (byte) (result - 1));
@@ -136,42 +183,58 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** "char" primitive variable. */
+    /**
+     * "char" primitive variable.
+     */
     protected final class CharVar extends PrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final char defVal;
 
-        /** Creates a variable with _defVal as default value. */
+        /**
+         * Creates a variable with _defVal as default value.
+         */
         private CharVar(final char _defVal) {
             defVal = _defVal;
         }
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             set(_requestImpl, defVal);
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         public char get(final RequestImplWithData<?> _requestImpl) {
             return (char) _requestImpl.getDouble(index);
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final char newValue) {
+                                                        final char newValue) {
             _requestImpl.setDouble(index, newValue);
             return _requestImpl;
         }
 
-        /** Increments the value, and returns the pre-increment value (works like v++). */
+        /**
+         * Increments the value, and returns the pre-increment value (works like v++).
+         */
         public char inc(final RequestImplWithData<?> _requestImpl) {
             final char result = get(_requestImpl);
             set(_requestImpl, (char) (result + 1));
             return result;
         }
 
-        /** Decrements the value, and returns the pre-increment value (works like v--). */
+        /**
+         * Decrements the value, and returns the pre-increment value (works like v--).
+         */
         public char dec(final RequestImplWithData<?> _requestImpl) {
             final char result = get(_requestImpl);
             set(_requestImpl, (char) (result - 1));
@@ -179,42 +242,58 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** "short" primitive variable. */
+    /**
+     * "short" primitive variable.
+     */
     protected final class ShortVar extends PrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final short defVal;
 
-        /** Creates a variable with _defVal as default value. */
+        /**
+         * Creates a variable with _defVal as default value.
+         */
         private ShortVar(final short _defVal) {
             defVal = _defVal;
         }
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             set(_requestImpl, defVal);
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         public short get(final RequestImplWithData<?> _requestImpl) {
             return (short) _requestImpl.getDouble(index);
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final short newValue) {
+                                                        final short newValue) {
             _requestImpl.setDouble(index, newValue);
             return _requestImpl;
         }
 
-        /** Increments the value, and returns the pre-increment value (works like v++). */
+        /**
+         * Increments the value, and returns the pre-increment value (works like v++).
+         */
         public short inc(final RequestImplWithData<?> _requestImpl) {
             final short result = get(_requestImpl);
             set(_requestImpl, (short) (result + 1));
             return result;
         }
 
-        /** Decrements the value, and returns the pre-increment value (works like v--). */
+        /**
+         * Decrements the value, and returns the pre-increment value (works like v--).
+         */
         public short dec(final RequestImplWithData<?> _requestImpl) {
             final short result = get(_requestImpl);
             set(_requestImpl, (short) (result - 1));
@@ -222,42 +301,58 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** "int" primitive variable. */
+    /**
+     * "int" primitive variable.
+     */
     protected final class IntVar extends PrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final int defVal;
 
-        /** Creates a variable with _defVal as default value. */
+        /**
+         * Creates a variable with _defVal as default value.
+         */
         private IntVar(final int _defVal) {
             defVal = _defVal;
         }
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             set(_requestImpl, defVal);
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         public int get(final RequestImplWithData<?> _requestImpl) {
             return (int) _requestImpl.getDouble(index);
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final int newValue) {
+                                                        final int newValue) {
             _requestImpl.setDouble(index, newValue);
             return _requestImpl;
         }
 
-        /** Increments the value, and returns the pre-increment value (works like v++). */
+        /**
+         * Increments the value, and returns the pre-increment value (works like v++).
+         */
         public int inc(final RequestImplWithData<?> _requestImpl) {
             final int result = get(_requestImpl);
             set(_requestImpl, (result + 1));
             return result;
         }
 
-        /** Decrements the value, and returns the pre-increment value (works like v--). */
+        /**
+         * Decrements the value, and returns the pre-increment value (works like v--).
+         */
         public int dec(final RequestImplWithData<?> _requestImpl) {
             final int result = get(_requestImpl);
             set(_requestImpl, (result - 1));
@@ -265,42 +360,58 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** "float" primitive variable. */
+    /**
+     * "float" primitive variable.
+     */
     protected final class FloatVar extends PrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final float defVal;
 
-        /** Creates a variable with _defVal as default value. */
+        /**
+         * Creates a variable with _defVal as default value.
+         */
         private FloatVar(final float _defVal) {
             defVal = _defVal;
         }
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             set(_requestImpl, defVal);
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         public float get(final RequestImplWithData<?> _requestImpl) {
             return (float) _requestImpl.getDouble(index);
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final float newValue) {
+                                                        final float newValue) {
             _requestImpl.setDouble(index, newValue);
             return _requestImpl;
         }
 
-        /** Increments the value, and returns the pre-increment value (works like v++). */
+        /**
+         * Increments the value, and returns the pre-increment value (works like v++).
+         */
         public float inc(final RequestImplWithData<?> _requestImpl) {
             final float result = get(_requestImpl);
             set(_requestImpl, (result + 1));
             return result;
         }
 
-        /** Decrements the value, and returns the pre-increment value (works like v--). */
+        /**
+         * Decrements the value, and returns the pre-increment value (works like v--).
+         */
         public float dec(final RequestImplWithData<?> _requestImpl) {
             final float result = get(_requestImpl);
             set(_requestImpl, (result - 1));
@@ -308,42 +419,58 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** "double" primitive variable. */
+    /**
+     * "double" primitive variable.
+     */
     protected final class DoubleVar extends PrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final double defVal;
 
-        /** Creates a variable with _defVal as default value. */
+        /**
+         * Creates a variable with _defVal as default value.
+         */
         private DoubleVar(final double _defVal) {
             defVal = _defVal;
         }
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             set(_requestImpl, defVal);
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         public double get(final RequestImplWithData<?> _requestImpl) {
             return _requestImpl.getDouble(index);
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final double newValue) {
+                                                        final double newValue) {
             _requestImpl.setDouble(index, newValue);
             return _requestImpl;
         }
 
-        /** Increments the value, and returns the pre-increment value (works like v++). */
+        /**
+         * Increments the value, and returns the pre-increment value (works like v++).
+         */
         public double inc(final RequestImplWithData<?> _requestImpl) {
             final double result = get(_requestImpl);
             set(_requestImpl, (result + 1));
             return result;
         }
 
-        /** Decrements the value, and returns the pre-increment value (works like v--). */
+        /**
+         * Decrements the value, and returns the pre-increment value (works like v--).
+         */
         public double dec(final RequestImplWithData<?> _requestImpl) {
             final double result = get(_requestImpl);
             set(_requestImpl, (result - 1));
@@ -351,42 +478,58 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** "long" primitive variable, stored as an Object. */
+    /**
+     * "long" primitive variable, stored as an Object.
+     */
     protected final class LongVar extends NonPrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final Long defVal;
 
-        /** Creates a variable with _defVal as default value. */
+        /**
+         * Creates a variable with _defVal as default value.
+         */
         private LongVar(final long _defVal) {
             defVal = _defVal;
         }
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             _requestImpl.setObject(index, defVal);
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         public long get(final RequestImplWithData<?> _requestImpl) {
             return (Long) _requestImpl.getObject(index);
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final long newValue) {
+                                                        final long newValue) {
             _requestImpl.setObject(index, newValue);
             return _requestImpl;
         }
 
-        /** Increments the value, and returns the pre-increment value (works like v++). */
+        /**
+         * Increments the value, and returns the pre-increment value (works like v++).
+         */
         public long inc(final RequestImplWithData<?> _requestImpl) {
             final long result = get(_requestImpl);
             set(_requestImpl, (result + 1));
             return result;
         }
 
-        /** Decrements the value, and returns the pre-increment value (works like v--). */
+        /**
+         * Decrements the value, and returns the pre-increment value (works like v--).
+         */
         public long dec(final RequestImplWithData<?> _requestImpl) {
             final long result = get(_requestImpl);
             set(_requestImpl, (result - 1));
@@ -394,21 +537,31 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         }
     }
 
-    /** Object variable. */
+    /**
+     * Object variable.
+     */
     protected final class ObjectVar<E> extends NonPrimitiveVar {
-        /** The default value. */
+        /**
+         * The default value.
+         */
         private final E defVal;
 
-        /** Initialize the value of this variable in a request. */
+        /**
+         * Initialize the value of this variable in a request.
+         */
         @Override
         public void init(final RequestImplWithData<?> _requestImpl) {
             _requestImpl.setObject(index, defVal);
         }
 
-        /** The type. */
+        /**
+         * The type.
+         */
         private final Class<E> type;
 
-        /** Creates an Object variable, with type and default value. */
+        /**
+         * Creates an Object variable, with type and default value.
+         */
         private ObjectVar(final Class<E> _type, final E _defVal) {
             type = Objects.requireNonNull(_type, "type");
             if (_defVal != null) {
@@ -422,7 +575,9 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
             defVal = _defVal;
         }
 
-        /** Returns the value. */
+        /**
+         * Returns the value.
+         */
         @SuppressWarnings("unchecked")
         public E get(final RequestImplWithData<?> _requestImpl) {
             return (E) _requestImpl.getObject(index);
@@ -430,15 +585,19 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
 //            return type.cast(_requestImpl.getObject(index));
         }
 
-        /** Sets the value. */
+        /**
+         * Sets the value.
+         */
         public <R extends RequestImplWithData<?>> R set(final R _requestImpl,
-                final E newValue) {
+                                                        final E newValue) {
             _requestImpl.setObject(index, newValue);
             return _requestImpl;
         }
     }
 
-    /** Adds a new variable. */
+    /**
+     * Adds a new variable.
+     */
     private void addVar(final Var var) {
         final Var[] newArray = new Var[vars.length + 1];
         for (int i = 0; i < vars.length; i++) {
@@ -450,59 +609,81 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
 
     public final String opName;
 
-    /** If this is an inner class, remove the outer name. */
+    /**
+     * If this is an inner class, remove the outer name.
+     */
     private static String removeOuter(final Class<?> clazz) {
         final String result = clazz.getSimpleName();
         final int sep = result.lastIndexOf('$');
         return (sep < 0) ? result : result.substring(sep + 1);
     }
 
-    /** Creates and returns a new BooleanVar. */
+    /**
+     * Creates and returns a new BooleanVar.
+     */
     public final BooleanVar var(final boolean defVal) {
         return new BooleanVar(defVal);
     }
 
-    /** Creates and returns a new ByteVar. */
+    /**
+     * Creates and returns a new ByteVar.
+     */
     public final ByteVar var(final byte defVal) {
         return new ByteVar(defVal);
     }
 
-    /** Creates and returns a new CharVar. */
+    /**
+     * Creates and returns a new CharVar.
+     */
     public final CharVar var(final char defVal) {
         return new CharVar(defVal);
     }
 
-    /** Creates and returns a new ShortVar. */
+    /**
+     * Creates and returns a new ShortVar.
+     */
     public final ShortVar var(final short defVal) {
         return new ShortVar(defVal);
     }
 
-    /** Creates and returns a new IntVar. */
+    /**
+     * Creates and returns a new IntVar.
+     */
     public final IntVar var(final int defVal) {
         return new IntVar(defVal);
     }
 
-    /** Creates and returns a new FloatVar. */
+    /**
+     * Creates and returns a new FloatVar.
+     */
     public final FloatVar var(final float defVal) {
         return new FloatVar(defVal);
     }
 
-    /** Creates and returns a new DoubleVar. */
+    /**
+     * Creates and returns a new DoubleVar.
+     */
     public final DoubleVar var(final double defVal) {
         return new DoubleVar(defVal);
     }
 
-    /** Creates and returns a new LongVar. */
+    /**
+     * Creates and returns a new LongVar.
+     */
     public final LongVar var(final long defVal) {
         return new LongVar(defVal);
     }
 
-    /** Creates and returns a new ObjectVar&lt;E&gt;. */
+    /**
+     * Creates and returns a new ObjectVar&lt;E&gt;.
+     */
     public final <E> ObjectVar<E> var(final Class<E> type) {
         return new ObjectVar<E>(type, null);
     }
 
-    /** Creates and returns a new ObjectVar&lt;E&gt;. */
+    /**
+     * Creates and returns a new ObjectVar&lt;E&gt;.
+     */
     public final <E> ObjectVar<E> var(final Class<E> type, final E defVal) {
         return new ObjectVar<E>(type, defVal);
     }
@@ -510,14 +691,16 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
     /**
      * Create a static asynchronous operation.
      *
-     * @param bladeType           The class of the operation.
+     * @param bladeType The class of the operation.
      */
     protected StaticOpBase(final Class<B> bladeType) {
         opName = removeOuter(getClass());
         blade = var(bladeType);
     }
 
-    /** Redefines the hashcode for a faster hashing. */
+    /**
+     * Redefines the hashcode for a faster hashing.
+     */
     @Override
     public int hashCode() {
         return hashCode;

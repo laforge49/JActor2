@@ -9,7 +9,6 @@ import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.util.MetricsTimer;
-import org.agilewiki.jactor2.core.util.Timer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,15 +33,17 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     private volatile long start;
 
-    /** The expected number of responses. */
+    /**
+     * The expected number of responses.
+     */
     private int expectedResponses = 16;
 
     /**
      * Create an AsyncRequestMtImpl and bind it to its operation and target targetReactor.
      *
-     * @param _asyncOperation  The request being implemented.
-     * @param _targetReactor The targetReactor where this AsyncRequest Objects is passed for processing.
-     *                       The thread owned by this targetReactor will process this AsyncRequest.
+     * @param _asyncOperation The request being implemented.
+     * @param _targetReactor  The targetReactor where this AsyncRequest Objects is passed for processing.
+     *                        The thread owned by this targetReactor will process this AsyncRequest.
      */
     public AsyncRequestMtImpl(
             final AsyncOperation<RESPONSE_TYPE> _asyncOperation,
@@ -81,14 +82,13 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
         final Object pr = get();
         return (pr == null)
                 || ((pr instanceof ConcurrentHashMap) && ((ConcurrentHashMap) pr)
-                        .isEmpty());
+                .isEmpty());
     }
 
     /**
      * Removes a RequestImpl from the pending requests; returns true if present.
      *
      * @param request The request to be removed
-     *
      * @return true if present.
      */
     @SuppressWarnings("rawtypes")
@@ -155,7 +155,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      *
      * @return A copy of pendingRequests.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private List<RequestImpl<?>> copyPendingRequests() {
         final Object pendingRequests = get();
         if (pendingRequests == null) {
@@ -250,7 +250,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT> void send(final RequestImpl<RT> _requestImpl,
-            final AsyncResponseProcessor<RT> _responseProcessor) {
+                          final AsyncResponseProcessor<RT> _responseProcessor) {
         if (canceled && (_responseProcessor != null)) {
             return;
         }
@@ -267,7 +267,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT, RT2> void send(final RequestImpl<RT> _requestImpl,
-            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         if (canceled) {
             return;
         }
@@ -374,7 +374,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void setResponse(final Object _response,
-            final ReactorMtImpl _activeReactor) {
+                               final ReactorMtImpl _activeReactor) {
         if ((_response instanceof Throwable)
                 || (targetReactor instanceof CommonReactor)) {
             cancelAll();
@@ -384,7 +384,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT> RequestImpl<RT> send(final SOp<RT> _sOp,
-            final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+                                     final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
         final RequestImpl<RT> ri = PlantImpl.getSingleton()
                 .createSyncRequestImpl(_sOp, _sOp.targetReactor);
         send(ri, _asyncResponseProcessor);
@@ -393,7 +393,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT, RT2> RequestImpl<RT> send(final SOp<RT> _sOp,
-            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+                                          final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         final RequestImpl<RT> ri = PlantImpl.getSingleton()
                 .createSyncRequestImpl(_sOp, _sOp.targetReactor);
         send(ri, _dis, _fixedResponse);
@@ -402,7 +402,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT> AsyncRequestImpl<RT> send(final AOp<RT> _aOp,
-            final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+                                          final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
         final AsyncRequestImpl<RT> ari = PlantImpl.getSingleton()
                 .createAsyncRequestImpl(_aOp, _aOp.targetReactor);
         send(ari, _asyncResponseProcessor);
@@ -411,7 +411,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT, RT2> AsyncRequestImpl<RT> send(final AOp<RT> _aOp,
-            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+                                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         final AsyncRequestImpl<RT> ari = PlantImpl.getSingleton()
                 .createAsyncRequestImpl(_aOp, _aOp.targetReactor);
         send(ari, _dis, _fixedResponse);
@@ -420,23 +420,23 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public <RT> void send(final SyncNativeRequest<RT> _syncNativeRequest,
-            final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
         send(PlantImpl.getSingleton().createSyncRequestImpl(_syncNativeRequest,
                 _syncNativeRequest.getTargetReactor()), _asyncResponseProcessor);
     }
 
     @Override
     public <RT, RT2> void send(final SyncNativeRequest<RT> _syncNativeRequest,
-            final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
+                               final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         send(PlantImpl.getSingleton().createSyncRequestImpl(_syncNativeRequest,
                 _syncNativeRequest.getTargetReactor()), _dis, _fixedResponse);
     }
 
     @Override
     public <RT> void send(final AsyncNativeRequest<RT> _asyncNativeRequest,
-            final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
+                          final AsyncResponseProcessor<RT> _asyncResponseProcessor) {
         send(PlantImpl.getSingleton().createAsyncRequestImpl(
-                _asyncNativeRequest, _asyncNativeRequest.getTargetReactor()),
+                        _asyncNativeRequest, _asyncNativeRequest.getTargetReactor()),
                 _asyncResponseProcessor);
     }
 
@@ -445,7 +445,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
             final AsyncNativeRequest<RT> _asyncNativeRequest,
             final AsyncResponseProcessor<RT2> _dis, final RT2 _fixedResponse) {
         send(PlantImpl.getSingleton().createAsyncRequestImpl(
-                _asyncNativeRequest, _asyncNativeRequest.getTargetReactor()),
+                        _asyncNativeRequest, _asyncNativeRequest.getTargetReactor()),
                 _dis, _fixedResponse);
     }
 
@@ -490,7 +490,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     public void doAsync(final AsyncRequestImpl _asyncRequestImpl,
-            final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                        final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
         if (!_asyncRequestImpl.getTargetReactor().asReactorImpl().isRunning())
             throw new IllegalStateException(

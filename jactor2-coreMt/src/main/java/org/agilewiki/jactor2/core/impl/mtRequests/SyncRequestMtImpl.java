@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.requests.SyncNativeRequest;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.util.MetricsTimer;
-import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * Internal implementation of a SyncRequest.
@@ -20,7 +19,7 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
     /**
      * Create a SyncRequestMtImpl and bind it to its operation and target reactor.
      *
-     * @param _syncOperation   The request being implemented.
+     * @param _syncOperation The request being implemented.
      * @param _targetReactor The target reactor.
      */
     public SyncRequestMtImpl(final SyncOperation<RESPONSE_TYPE> _syncOperation,

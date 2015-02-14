@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
-import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * An asynchronous operation, optionally used to define an AsyncRequest.
@@ -15,21 +14,25 @@ public abstract class AOp<RESPONSE_TYPE> implements
     private static volatile int nextHash;
     public final String opName;
     public final ReactorBase targetReactor;
-    /** Our hashcode. */
+    /**
+     * Our hashcode.
+     */
     private final int hashCode = nextHash++;
 
     /**
      * Create an asynchronous operation.
      *
-     * @param _opName           The name of the operation.
-     * @param _targetReactor    The reactor whose thread will process the operation.
+     * @param _opName        The name of the operation.
+     * @param _targetReactor The reactor whose thread will process the operation.
      */
     public AOp(final String _opName, final Reactor _targetReactor) {
         opName = _opName;
         targetReactor = (ReactorBase) _targetReactor;
     }
 
-    /** Redefines the hashcode for a faster hashing. */
+    /**
+     * Redefines the hashcode for a faster hashing.
+     */
     @Override
     public int hashCode() {
         return hashCode;
@@ -37,7 +40,7 @@ public abstract class AOp<RESPONSE_TYPE> implements
 
     @Override
     public void doAsync(final AsyncRequestImpl _asyncRequestImpl,
-            final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
+                        final AsyncResponseProcessor<RESPONSE_TYPE> _asyncResponseProcessor)
             throws Exception {
         if (!_asyncRequestImpl.getTargetReactor().asReactorImpl().isRunning())
             throw new IllegalStateException(

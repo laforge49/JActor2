@@ -7,7 +7,6 @@ import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.util.MetricsTimer;
-import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * Base class for reactors.
@@ -27,7 +26,7 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
     /**
      * Initialize the reactor.
      *
-     * @param _reactorImpl    The object used to implement the reactor.
+     * @param _reactorImpl The object used to implement the reactor.
      */
     public void initialize(final ReactorImpl _reactorImpl) throws Exception {
         if (_reactorImpl != null) {
@@ -97,7 +96,7 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
      * accompanying message.
      *
      * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+     * @param t   the exception (throwable) to log
      */
     @Override
     public void warn(final String msg, final Throwable t) {
@@ -119,7 +118,7 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
      * accompanying message.
      *
      * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+     * @param t   the exception (throwable) to log
      */
     @Override
     public void error(final String msg, final Throwable t) {

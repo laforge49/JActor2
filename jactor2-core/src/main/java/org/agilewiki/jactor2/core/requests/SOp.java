@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.util.GwtIncompatible;
-import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * A synchronous operation, optionally used to define a SyncRequest.
@@ -15,21 +14,25 @@ public abstract class SOp<RESPONSE_TYPE> implements
     private static volatile int nextHash;
     public final String opName;
     public final ReactorBase targetReactor;
-    /** Our hashcode. */
+    /**
+     * Our hashcode.
+     */
     private final int hashCode = nextHash++;
 
     /**
      * Creata a synchronous operation.
      *
-     * @param _opName           The operation name.
-     * @param _targetReactor    The reactor whose thread will process the operation.
+     * @param _opName        The operation name.
+     * @param _targetReactor The reactor whose thread will process the operation.
      */
     public SOp(final String _opName, final Reactor _targetReactor) {
         opName = _opName;
         targetReactor = (ReactorBase) _targetReactor;
     }
 
-    /** Redefines the hashcode for a faster hashing. */
+    /**
+     * Redefines the hashcode for a faster hashing.
+     */
     @Override
     public int hashCode() {
         return hashCode;

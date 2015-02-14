@@ -5,7 +5,6 @@ import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.util.MetricsTimer;
-import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * <p>
@@ -63,8 +62,8 @@ public interface Reactor extends Closeable, Blade {
     /**
      * Close the reactor;
      *
-     * @param _reason    The reason why the reactor is being closed,
-     *                   or null if not a failure.
+     * @param _reason The reason why the reactor is being closed,
+     *                or null if not a failure.
      */
     void fail(final String _reason) throws Exception;
 
@@ -94,7 +93,7 @@ public interface Reactor extends Closeable, Blade {
     /**
      * Register a Closable that will be closed when the reactor closes.
      *
-     * @param _closeable    The Closeable to be registered.
+     * @param _closeable The Closeable to be registered.
      * @return True if the Closeable was registered.
      */
     boolean addCloseable(final Closeable _closeable);
@@ -102,7 +101,7 @@ public interface Reactor extends Closeable, Blade {
     /**
      * Unregister a Closeable.
      *
-     * @param _closeable    The Closeable to be unregistered.
+     * @param _closeable The Closeable to be unregistered.
      * @return True if the Closeable was unregistered.
      */
     boolean removeCloseable(final Closeable _closeable);
@@ -119,7 +118,7 @@ public interface Reactor extends Closeable, Blade {
      * accompanying message.
      *
      * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+     * @param t   the exception (throwable) to log
      */
     void warn(String msg, Throwable t);
 
@@ -135,21 +134,21 @@ public interface Reactor extends Closeable, Blade {
      * accompanying message.
      *
      * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+     * @param t   the exception (throwable) to log
      */
     void error(String msg, Throwable t);
 
     /**
      * Reactors are added as resources only on isolation reactors.
      *
-     * @param _reactor    The resource.
+     * @param _reactor The resource.
      */
     void addResource(Reactor _reactor);
 
     /**
      * Returns true except on and for isolation reactors.
      *
-     * @param _reactor    The resource.
+     * @param _reactor The resource.
      * @return Generally true.
      */
     boolean isResource(Reactor _reactor);

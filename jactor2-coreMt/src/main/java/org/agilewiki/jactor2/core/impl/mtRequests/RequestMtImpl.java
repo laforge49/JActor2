@@ -13,7 +13,6 @@ import org.agilewiki.jactor2.core.requests.*;
 import org.agilewiki.jactor2.core.requests.impl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.SignalResponseProcessor;
-import org.agilewiki.jactor2.core.util.Timer;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
@@ -100,7 +99,9 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
      */
     protected boolean canceled;
 
-    /** Our hashcode. */
+    /**
+     * Our hashcode.
+     */
     private final int hashCode = nextHash++;
 
     /**
@@ -121,7 +122,9 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         return oldMessage;
     }
 
-    /** Redefines the hashcode for a faster hashing. */
+    /**
+     * Redefines the hashcode for a faster hashing.
+     */
     @Override
     public int hashCode() {
         return hashCode;
@@ -148,6 +151,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
 
     /**
      * Returns true when the request was passed using the signal method.
+     *
      * @return True when the request was passed using the signal method.
      */
     public boolean isSignal() {
@@ -223,7 +227,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
     @SuppressWarnings("unchecked")
     @Override
     public void doSend(final ReactorImpl _source,
-            final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
+                       final AsyncResponseProcessor<RESPONSE_TYPE> _responseProcessor) {
         final ReactorMtImpl source = (ReactorMtImpl) _source;
         if (PlantMtImpl.DEBUG
                 && (source.getThreadReference().get() != Thread.currentThread())) {
@@ -288,7 +292,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
      * @param _activeReactor The responding reactor.
      */
     protected void setResponse(final Object _response,
-            final ReactorMtImpl _activeReactor) {
+                               final ReactorMtImpl _activeReactor) {
         _activeReactor.requestEnd(this);
         incomplete = false;
         response = _response;
@@ -308,7 +312,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
     protected boolean processObjectResponse(final Object _response) {
         if (PlantMtImpl.DEBUG
                 && (targetReactorImpl.getThreadReference().get() != Thread
-                        .currentThread())) {
+                .currentThread())) {
             final IllegalStateException ex = new IllegalStateException(
                     "response from wrong thread");
             targetReactor.asReactorImpl().error("response from wrong thread",
@@ -421,7 +425,8 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
 
     /**
      * A response has been received for a subordinate request.
-     * @param request    A subordinate request.
+     *
+     * @param request A subordinate request.
      */
     public void responseReceived(final RequestImpl<?> request) {
     }
@@ -462,7 +467,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
      * @param _e             The exception to be processed.
      */
     public void processException(final ReactorMtImpl _activeReactor,
-            final Exception _e) {
+                                 final Exception _e) {
         final ReactorMtImpl activeMessageProcessor = _activeReactor;
         @SuppressWarnings("unchecked")
         final ExceptionHandler<RESPONSE_TYPE> exceptionHandler = (ExceptionHandler<RESPONSE_TYPE>) activeMessageProcessor
@@ -569,7 +574,7 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         @SuppressWarnings("rawtypes")
         @Override
         public void incomingResponse(final RequestImpl _message,
-                final ReactorImpl _responseSource) {
+                                     final ReactorImpl _responseSource) {
             result = ((RequestMtImpl) _message).response;
             done.release();
         }

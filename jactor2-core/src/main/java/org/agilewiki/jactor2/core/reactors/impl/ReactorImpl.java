@@ -3,12 +3,10 @@ package org.agilewiki.jactor2.core.reactors.impl;
 import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.util.MetricsTimer;
-import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * Base class for internal reactor implementations.
@@ -18,7 +16,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     /**
      * Initialize the ReactorImpl.
      *
-     * @param _reactor    The Reactor of this ReactorImpl.
+     * @param _reactor The Reactor of this ReactorImpl.
      */
     void initialize(final Reactor _reactor) throws Exception;
 
@@ -60,8 +58,8 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     /**
      * Close the reactor;
      *
-     * @param _reason    The reason why the reactor is being closed,
-     *                   or null if not a failure.
+     * @param _reason The reason why the reactor is being closed,
+     *                or null if not a failure.
      */
     void fail(final String _reason) throws Exception;
 
@@ -115,7 +113,7 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * accompanying message.
      *
      * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+     * @param t   the exception (throwable) to log
      */
     void warn(String msg, Throwable t);
 
@@ -131,21 +129,21 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
      * accompanying message.
      *
      * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+     * @param t   the exception (throwable) to log
      */
     void error(String msg, Throwable t);
 
     /**
      * Reactors are added as resources only on isolation reactors.
      *
-     * @param _reactorImpl    The resource.
+     * @param _reactorImpl The resource.
      */
     void addResource(ReactorImpl _reactorImpl);
 
     /**
      * Returns true except on and for isolation reactors.
      *
-     * @param _reactorImpl    The resource.
+     * @param _reactorImpl The resource.
      * @return Generally true.
      */
     boolean isResource(ReactorImpl _reactorImpl);
