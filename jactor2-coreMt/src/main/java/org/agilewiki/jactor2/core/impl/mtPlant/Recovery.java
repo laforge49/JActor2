@@ -119,13 +119,11 @@ public class Recovery {
     }
 
     /**
-     * Returns the Timer used to track the performance of this Request instance.
+     * Returns the MetricsTimer used to track the performance of this Request instance.
      *
-     * Null is not allowed as return value, but Timer.NOP can be used to disable tracking.
-     *
-     * @return the Timer used to track the performance of this Request instance.
+     * @return the DummyMetricsTimer.
      */
     public MetricsTimer getMetricsTimer() {
-        return Timer.NOP;
+        return new DummyMetricsTimer();
     }
 }
