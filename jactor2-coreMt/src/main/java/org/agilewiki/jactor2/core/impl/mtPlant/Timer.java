@@ -31,26 +31,31 @@ import java.util.concurrent.TimeUnit;
  * @author monster
  */
 public class Timer extends com.codahale.metrics.Timer implements MetricsTimer {
-    /** We always use the default Clock */
+    /**
+     * We always use the default Clock
+     */
     private static final Clock CLOCK = Clock.defaultClock();
 
-    /** The metric registry used. */
+    /**
+     * The metric registry used.
+     */
     public static final MetricRegistry REGISTRY = new MetricRegistry();
 
-    //////////////////////////////////////////////////////////
-    /** The NOP Timer. */
-    public static final Timer NOP = new Timer("NOP");
-
-    //////////////////////////////////////////////////////////
-    /** The default Timer. */
+    /**
+     * The default Timer.
+     */
     public static final Timer DEFAULT = get(Object.class);
 
-    /** The ConsoleReporter. */
+    /**
+     * The ConsoleReporter.
+     */
     private static volatile ConsoleReporter reporter;
 
     private static volatile int nextHash;
 
-    /** Sets up a ConsoleReporter, if not yet setup. */
+    /**
+     * Sets up a ConsoleReporter, if not yet setup.
+     */
     public static void setupConsoleReporter(final long reportEveryMillis) {
         if (reporter == null) {
             reporter = ConsoleReporter.forRegistry(REGISTRY)
@@ -60,27 +65,33 @@ public class Timer extends com.codahale.metrics.Timer implements MetricsTimer {
         }
     }
 
-    /** Meter, for failed requests/calls/executions/events... */
+    /**
+     * Meter, for failed requests/calls/executions/events...
+     */
     public final Meter failed;
 
-    /** The name. */
+    /**
+     * The name.
+     */
     public final String name;
 
-    /** Our hashcode. */
+    /**
+     * Our hashcode.
+     */
     private final int hashCode = nextHash++;
 
     /**
      * Returns a Timer for the given class.
-     *
+     * <p/>
      * It is recommended, for performance reasons, to only call this method
      * once per each type/names pair.
      *
-     * @param type    the first element of the name
-     * @param names   the remaining elements of the name
+     * @param type  the first element of the name
+     * @param names the remaining elements of the name
      * @return A Timer using {@code type} and {@code names} concatenated by periods as "name".
      */
     public static synchronized Timer get(final Class<?> type,
-            final String... names) {
+                                         final String... names) {
         final String name = MetricRegistry.name(type, names);
         final SortedMap<String, com.codahale.metrics.Timer> timers = REGISTRY
                 .getTimers();
@@ -102,7 +113,7 @@ public class Timer extends com.codahale.metrics.Timer implements MetricsTimer {
     }
 
     public final long nanos() {
-        return (this == NOP) ? 0 : CLOCK.getTick();
+        return CLOCK.getTick();
     }
 
     /**
@@ -113,31 +124,33 @@ public class Timer extends com.codahale.metrics.Timer implements MetricsTimer {
         failed = new Meter(CLOCK);
     }
 
-    /** Redefines the hashcode for a faster hashing. */
+    /**
+     * Redefines the hashcode for a faster hashing.
+     */
     @Override
     public int hashCode() {
         return hashCode;
     }
 
-    /** Returns the name */
+    /**
+     * Returns the name
+     */
     @Override
     public String toString() {
         return name;
     }
 
     public final void updateNanos(final long nanos, final boolean success) {
-        if (this != NOP) {
-            update(nanos, TimeUnit.NANOSECONDS);
-            if (!success) {
-                failed.mark();
-            }
+        update(nanos, TimeUnit.NANOSECONDS);
+        if (!success) {
+            failed.mark();
         }
     }
 
     /**
      * Adds a recorded duration in nanoseconds.
      *
-     * @param nanos the length of the duration in nanoseconds
+     * @param nanos   the length of the duration in nanoseconds
      * @param success True, if the execution succeeded.
      */
     public final void updateNanos(final double nanos, final boolean success) {
@@ -147,7 +160,7 @@ public class Timer extends com.codahale.metrics.Timer implements MetricsTimer {
     /**
      * Adds a recorded duration in milliseconds.
      *
-     * @param millis the length of the duration in milliseconds
+     * @param millis  the length of the duration in milliseconds
      * @param success True, if the execution succeeded.
      */
     public final void updateMillis(final long millis, final boolean success) {
@@ -157,7 +170,7 @@ public class Timer extends com.codahale.metrics.Timer implements MetricsTimer {
     /**
      * Adds a recorded duration in milliseconds.
      *
-     * @param millis the length of the duration in milliseconds
+     * @param millis  the length of the duration in milliseconds
      * @param success True, if the execution succeeded.
      */
     public final void updateMillis(final double millis, final boolean success) {

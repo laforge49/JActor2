@@ -124,6 +124,6 @@ public class Recovery {
      * @return the DummyMetricsTimer.
      */
     public MetricsTimer getMetricsTimer() {
-        return new DummyMetricsTimer();
+        return DummyMetricsTimer.DEFAULT;
     }
 }
