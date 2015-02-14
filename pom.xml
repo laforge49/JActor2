@@ -55,6 +55,7 @@
     <modules>
         <module>jactor2-core</module>
         <module>jactor2-coreMt</module>
+        <module>jactor2-metrics</module>
         <module>jactor2-examples</module>
     </modules>
 </project>
