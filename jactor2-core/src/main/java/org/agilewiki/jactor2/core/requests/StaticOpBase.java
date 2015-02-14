@@ -543,11 +543,6 @@ public abstract class StaticOpBase<B extends Blade, RESPONSE_TYPE, RIWD extends 
         return opName;
     }
 
-    @Override
-    public Timer getTimer() {
-        return Timer.NOP;
-    }
-
     /**
      * Creates a RequestImplWithData Request.
      *

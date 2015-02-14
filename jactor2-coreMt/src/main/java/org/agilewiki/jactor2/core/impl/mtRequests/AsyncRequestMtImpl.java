@@ -198,7 +198,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE _response) {
-        final Timer timer = asyncOperation.getTimer();
+        final Timer timer = targetReactor.getTimer();
         timer.updateNanos(timer.nanos() - start, true);
         processObjectResponse(_response);
     }
@@ -212,7 +212,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void processAsyncException(final Exception _response) {
-        final Timer timer = asyncOperation.getTimer();
+        final Timer timer = targetReactor.getTimer();
         timer.updateNanos(timer.nanos() - start, false);
         processObjectResponse(_response);
     }
@@ -228,7 +228,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void processRequestMessage() throws Exception {
-        start = asyncOperation.getTimer().nanos();
+        start = targetReactor.getTimer().nanos();
         asyncOperation.doAsync(this, this);
         pendingCheck();
     }

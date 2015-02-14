@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * Base class for managing failure detection and recovery.
@@ -115,5 +116,16 @@ public class Recovery {
         } catch (final Exception e) {
 
         }
+    }
+
+    /**
+     * Returns the Timer used to track the performance of this Request instance.
+     *
+     * Null is not allowed as return value, but Timer.NOP can be used to disable tracking.
+     *
+     * @return the Timer used to track the performance of this Request instance.
+     */
+    public Timer getTimer() {
+        return Timer.NOP;
     }
 }

@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.util.Timer;
 
 /**
  * Base class for reactors.
@@ -132,5 +133,9 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
     @Override
     public boolean isResource(Reactor _reactor) {
         return asReactorImpl().isResource(_reactor.asReactorImpl());
+    }
+
+    public Timer getTimer() {
+        return reactorImpl.getTimer();
     }
 }

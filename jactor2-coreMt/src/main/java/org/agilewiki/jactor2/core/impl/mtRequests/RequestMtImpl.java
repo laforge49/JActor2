@@ -532,11 +532,6 @@ public abstract class RequestMtImpl<RESPONSE_TYPE> extends
         return _syncNativeRequest.doSync(this);
     }
 
-    @Override
-    public Timer getTimer() {
-        return Timer.DEFAULT;
-    }
-
     /**
      * Pender is used by the RequestMtImpl.call method to block the current thread until a
      * result is available and then either return the result or rethrow it if the result

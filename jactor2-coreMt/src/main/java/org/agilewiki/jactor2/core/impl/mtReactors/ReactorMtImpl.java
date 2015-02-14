@@ -18,10 +18,12 @@ import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SOp;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.Timer;
 import java.util.concurrent.atomic.AtomicReference;
 
 abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
@@ -772,5 +774,9 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
     @Override
     public boolean isResource(ReactorImpl _reactorImpl) {
         return true;
+    }
+
+    public org.agilewiki.jactor2.core.util.Timer getTimer() {
+        return recovery.getTimer();
     }
 }

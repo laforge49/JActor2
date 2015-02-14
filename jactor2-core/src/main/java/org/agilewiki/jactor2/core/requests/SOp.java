@@ -62,9 +62,4 @@ public abstract class SOp<RESPONSE_TYPE> implements
     public String toString() {
         return opName;
     }
-
-    @Override
-    public Timer getTimer() {
-        return Timer.NOP;
-    }
 }

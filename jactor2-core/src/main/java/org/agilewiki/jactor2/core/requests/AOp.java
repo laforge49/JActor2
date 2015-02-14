@@ -67,11 +67,6 @@ public abstract class AOp<RESPONSE_TYPE> implements
         return opName;
     }
 
-    @Override
-    public Timer getTimer() {
-        return Timer.NOP;
-    }
-
     /**
      * Cancels all outstanding requests.
      * This method is thread safe, so it can be called from any thread.

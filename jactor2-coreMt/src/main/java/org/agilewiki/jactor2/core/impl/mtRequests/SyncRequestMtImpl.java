@@ -40,7 +40,7 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void processRequestMessage() throws Exception {
-        final Timer timer = syncOperation.getTimer();
+        final Timer timer = targetReactor.getTimer();
         final long start = timer.nanos();
         boolean success = false;
         final RESPONSE_TYPE result;

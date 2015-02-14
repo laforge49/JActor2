@@ -36,9 +36,11 @@ public class Timer extends com.codahale.metrics.Timer {
     /** The metric registry used. */
     public static final MetricRegistry REGISTRY = new MetricRegistry();
 
+    //////////////////////////////////////////////////////////
     /** The NOP Timer. */
     public static final Timer NOP = new Timer("NOP");
 
+    //////////////////////////////////////////////////////////
     /** The default Timer. */
     public static final Timer DEFAULT = get(Object.class);
 
@@ -98,6 +100,7 @@ public class Timer extends com.codahale.metrics.Timer {
         return result;
     }
 
+    ////////////////////////////////////////////////////////////////
     /**
      * Returns the current time tick.
      *
@@ -127,6 +130,7 @@ public class Timer extends com.codahale.metrics.Timer {
         return name;
     }
 
+    //////////////////////////////////////////////////
     /**
      * Adds a recorded duration in nanoseconds.
      *
