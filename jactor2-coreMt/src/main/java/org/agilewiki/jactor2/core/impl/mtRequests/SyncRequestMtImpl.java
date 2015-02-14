@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.SyncNativeRequest;
 import org.agilewiki.jactor2.core.requests.SyncOperation;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.util.MetricsTimer;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**
@@ -40,7 +41,7 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void processRequestMessage() throws Exception {
-        final Timer timer = targetReactor.getTimer();
+        final MetricsTimer timer = targetReactor.getMetricsTimer();
         final long start = timer.nanos();
         boolean success = false;
         final RESPONSE_TYPE result;

@@ -6,6 +6,7 @@ import org.agilewiki.jactor2.core.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.util.MetricsTimer;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**
@@ -135,7 +136,7 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
         return asReactorImpl().isResource(_reactor.asReactorImpl());
     }
 
-    public Timer getTimer() {
-        return reactorImpl.getTimer();
+    public MetricsTimer getMetricsTimer() {
+        return reactorImpl.getMetricsTimer();
     }
 }

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author monster
  */
-public class Timer extends com.codahale.metrics.Timer {
+public class Timer extends com.codahale.metrics.Timer implements MetricsTimer {
     /** We always use the default Clock */
     private static final Clock CLOCK = Clock.defaultClock();
 
@@ -100,12 +100,6 @@ public class Timer extends com.codahale.metrics.Timer {
         return result;
     }
 
-    ////////////////////////////////////////////////////////////////
-    /**
-     * Returns the current time tick.
-     *
-     * @return time tick in nanoseconds
-     */
     public final long nanos() {
         return (this == NOP) ? 0 : CLOCK.getTick();
     }
@@ -130,13 +124,6 @@ public class Timer extends com.codahale.metrics.Timer {
         return name;
     }
 
-    //////////////////////////////////////////////////
-    /**
-     * Adds a recorded duration in nanoseconds.
-     *
-     * @param nanos the length of the duration in nanoseconds
-     * @param success True, if the execution succeeded.
-     */
     public final void updateNanos(final long nanos, final boolean success) {
         if (this != NOP) {
             update(nanos, TimeUnit.NANOSECONDS);

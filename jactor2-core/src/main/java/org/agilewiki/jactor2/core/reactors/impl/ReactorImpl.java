@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.requests.ExceptionHandler;
 import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.util.MetricsTimer;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**
@@ -150,11 +151,9 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     boolean isResource(ReactorImpl _reactorImpl);
 
     /**
-     * Returns the Timer used to track the performance of this Request instance.
+     * Returns the MetricsTimer used to track the performance of this Request instance.
      *
-     * Null is not allowed as return value, but Timer.NOP can be used to disable tracking.
-     *
-     * @return the Timer used to track the performance of this Request instance.
+     * @return the MetricsTimer used to track the performance of this Request instance.
      */
-    Timer getTimer();
+    MetricsTimer getMetricsTimer();
 }

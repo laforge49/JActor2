@@ -8,6 +8,7 @@ import org.agilewiki.jactor2.core.requests.*;
 import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.requests.impl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.util.MetricsTimer;
 import org.agilewiki.jactor2.core.util.Timer;
 
 import java.util.ArrayList;
@@ -198,7 +199,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void processAsyncResponse(final RESPONSE_TYPE _response) {
-        final Timer timer = targetReactor.getTimer();
+        final MetricsTimer timer = targetReactor.getMetricsTimer();
         timer.updateNanos(timer.nanos() - start, true);
         processObjectResponse(_response);
     }
@@ -212,7 +213,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
      */
     @Override
     public void processAsyncException(final Exception _response) {
-        final Timer timer = targetReactor.getTimer();
+        final MetricsTimer timer = targetReactor.getMetricsTimer();
         timer.updateNanos(timer.nanos() - start, false);
         processObjectResponse(_response);
     }
@@ -228,7 +229,7 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void processRequestMessage() throws Exception {
-        start = targetReactor.getTimer().nanos();
+        start = targetReactor.getMetricsTimer().nanos();
         asyncOperation.doAsync(this, this);
         pendingCheck();
     }

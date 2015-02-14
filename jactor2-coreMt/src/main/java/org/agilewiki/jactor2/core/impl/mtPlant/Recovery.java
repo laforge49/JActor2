@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
+import org.agilewiki.jactor2.core.util.MetricsTimer;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**
@@ -125,7 +126,7 @@ public class Recovery {
      *
      * @return the Timer used to track the performance of this Request instance.
      */
-    public Timer getTimer() {
+    public MetricsTimer getMetricsTimer() {
         return Timer.NOP;
     }
 }

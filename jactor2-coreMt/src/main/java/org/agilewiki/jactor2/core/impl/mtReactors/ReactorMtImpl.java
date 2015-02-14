@@ -776,7 +776,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         return true;
     }
 
-    public org.agilewiki.jactor2.core.util.Timer getTimer() {
-        return recovery.getTimer();
+    public MetricsTimer getMetricsTimer() {
+        return recovery.getMetricsTimer();
     }
 }

@@ -4,6 +4,7 @@ import org.agilewiki.jactor2.core.blades.Blade;
 import org.agilewiki.jactor2.core.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.util.MetricsTimer;
 import org.agilewiki.jactor2.core.util.Timer;
 
 /**
@@ -154,11 +155,9 @@ public interface Reactor extends Closeable, Blade {
     boolean isResource(Reactor _reactor);
 
     /**
-     * Returns the Timer used to track the performance of this Request instance.
+     * Returns the MetricsTimer used to track the performance of this Request instance.
      *
-     * Null is not allowed as return value, but Timer.NOP can be used to disable tracking.
-     *
-     * @return the Timer used to track the performance of this Request instance.
+     * @return the MetricsTimer used to track the performance of this Request instance.
      */
-    Timer getTimer();
+    MetricsTimer getMetricsTimer();
 }
