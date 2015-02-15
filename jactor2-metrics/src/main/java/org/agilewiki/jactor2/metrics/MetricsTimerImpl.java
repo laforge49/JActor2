@@ -42,15 +42,6 @@ public class MetricsTimerImpl extends com.codahale.metrics.Timer implements Metr
     public static final MetricRegistry REGISTRY = new MetricRegistry();
 
     /**
-     * The default Timer.
-     */
-    private static final MetricsTimerImpl DEFAULT = get(Object.class);
-
-    public static final MetricsTimerImpl getMetricsTimer(String name) {
-        return DEFAULT;
-    }
-
-    /**
      * The ConsoleReporter.
      */
     private static volatile ConsoleReporter reporter;
@@ -90,13 +81,10 @@ public class MetricsTimerImpl extends com.codahale.metrics.Timer implements Metr
      * It is recommended, for performance reasons, to only call this method
      * once per each type/names pair.
      *
-     * @param type  the first element of the name
-     * @param names the remaining elements of the name
+     * @param name the name
      * @return A Timer using {@code type} and {@code names} concatenated by periods as "name".
      */
-    public static synchronized MetricsTimerImpl get(final Class<?> type,
-                                          final String... names) {
-        final String name = MetricRegistry.name(type, names);
+    public static synchronized MetricsTimerImpl getMetricsTimer(String name) {
         final SortedMap<String, com.codahale.metrics.Timer> timers = REGISTRY
                 .getTimers();
         final com.codahale.metrics.Timer prev = timers.get(name);
@@ -105,7 +93,7 @@ public class MetricsTimerImpl extends com.codahale.metrics.Timer implements Metr
             if (!(prev instanceof MetricsTimerImpl)) {
                 throw new IllegalStateException("An instance of type "
                         + prev.getClass()
-                        + " is already registered unter the name " + name);
+                        + " is already registered under the name " + name);
             }
             result = (MetricsTimerImpl) prev;
         } else {

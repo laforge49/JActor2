@@ -10,8 +10,11 @@ public class Test11 extends TestCase {
         try {
             final IsolationReactor reactor = new IsolationReactor();
             final Blade11 blade1 = new Blade11(reactor);
-            final String result = blade1.hiSOp().call();
-            assertEquals("Hello world!", result);
+            blade1.hiSOp().call();
+            blade1.hiSOp().call();
+            blade1.hiSOp().call();
+            blade1.hiSOp().call();
+            blade1.hiSOp().call();
         } finally {
             Thread.sleep(1000);
             MetricsPlant.close();
