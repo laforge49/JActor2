@@ -15,6 +15,7 @@ public class Test11 extends TestCase {
             blade1.hiSReq().call();
             blade1.hoAReq().call();
             blade1.hoAReq().call();
+            blade1.humASig().signal();
         } finally {
             Thread.sleep(1000);
             MetricsPlant.close();

@@ -35,4 +35,15 @@ public class Blade11 extends IsolationBladeBase {
             }
         };
     }
+
+    public ASig humASig() {
+        return new ASig("hum") {
+            @Override
+            protected void processAsyncOperation(AsyncRequestImpl _asyncRequestImpl,
+                                                 AsyncResponseProcessor<Void> _asyncResponseProcessor)
+                    throws Exception {
+                _asyncResponseProcessor.processAsyncResponse(null);
+            }
+        };
+    }
 }
