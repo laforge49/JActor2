@@ -3,7 +3,11 @@ package org.agilewiki.jactor2.core.impl.mtPlant;
 import org.agilewiki.jactor2.core.util.MetricsTimer;
 
 public class DummyMetricsTimer implements MetricsTimer {
-    public final static MetricsTimer DEFAULT = new DummyMetricsTimer();
+    private final static DummyMetricsTimer DEFAULT = new DummyMetricsTimer();
+
+    public static final DummyMetricsTimer getMetricsTimer(String name) {
+        return DEFAULT;
+    }
 
     private DummyMetricsTimer() {}
 

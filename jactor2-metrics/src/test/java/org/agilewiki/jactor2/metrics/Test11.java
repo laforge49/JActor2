@@ -5,7 +5,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 public class Test11 extends TestCase {
     public void test() throws Exception {
-        MetricsTimerImpl.setupConsoleReporter(3000);
+        MetricsTimerImpl.setupConsoleReporter(1000);
         new MetricsPlant();
         try {
             final IsolationReactor reactor = new IsolationReactor();
@@ -13,7 +13,7 @@ public class Test11 extends TestCase {
             final String result = blade1.hiSOp().call();
             assertEquals("Hello world!", result);
         } finally {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             MetricsPlant.close();
         }
     }

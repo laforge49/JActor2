@@ -121,9 +121,10 @@ public class Recovery {
     /**
      * Returns the MetricsTimer used to track the performance of this Request instance.
      *
+     * @param _name The name of the timer.
      * @return the DummyMetricsTimer.
      */
-    public MetricsTimer getMetricsTimer() {
-        return DummyMetricsTimer.DEFAULT;
+    public MetricsTimer getMetricsTimer(final String _name) {
+        return DummyMetricsTimer.getMetricsTimer(_name);
     }
 }

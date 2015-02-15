@@ -151,7 +151,8 @@ public interface ReactorImpl extends Closeable, Runnable, Blade {
     /**
      * Returns the MetricsTimer used to track the performance of this Request instance.
      *
+     * @param _name The name of the timer.
      * @return the MetricsTimer used to track the performance of this Request instance.
      */
-    MetricsTimer getMetricsTimer();
+    MetricsTimer getMetricsTimer(final String _name);
 }

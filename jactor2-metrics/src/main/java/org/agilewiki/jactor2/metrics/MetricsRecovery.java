@@ -11,10 +11,11 @@ public class MetricsRecovery extends Recovery {
     /**
      * Returns the MetricsTimer used to track the performance of this Request instance.
      *
+     * @param _name The name of the timer.
      * @return the DummyMetricsTimer.
      */
     @Override
-    public MetricsTimer getMetricsTimer() {
-        return MetricsTimerImpl.DEFAULT;
+    public MetricsTimer getMetricsTimer(final String _name) {
+        return MetricsTimerImpl.getMetricsTimer(_name);
     }
 }

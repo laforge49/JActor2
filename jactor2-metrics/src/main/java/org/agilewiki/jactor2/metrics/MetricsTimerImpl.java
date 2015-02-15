@@ -44,7 +44,11 @@ public class MetricsTimerImpl extends com.codahale.metrics.Timer implements Metr
     /**
      * The default Timer.
      */
-    public static final MetricsTimerImpl DEFAULT = get(Object.class);
+    private static final MetricsTimerImpl DEFAULT = get(Object.class);
+
+    public static final MetricsTimerImpl getMetricsTimer(String name) {
+        return DEFAULT;
+    }
 
     /**
      * The ConsoleReporter.

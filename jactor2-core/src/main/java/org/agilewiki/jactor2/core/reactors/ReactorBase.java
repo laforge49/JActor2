@@ -135,7 +135,7 @@ abstract public class ReactorBase extends BladeBase implements Reactor {
         return asReactorImpl().isResource(_reactor.asReactorImpl());
     }
 
-    public MetricsTimer getMetricsTimer() {
-        return reactorImpl.getMetricsTimer();
+    public MetricsTimer getMetricsTimer(final String _name) {
+        return reactorImpl.getMetricsTimer(_name);
     }
 }

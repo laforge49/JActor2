@@ -776,7 +776,7 @@ abstract public class ReactorMtImpl extends BladeBase implements ReactorImpl,
         return true;
     }
 
-    public MetricsTimer getMetricsTimer() {
-        return recovery.getMetricsTimer();
+    public MetricsTimer getMetricsTimer(final String _name) {
+        return recovery.getMetricsTimer(_name);
     }
 }
