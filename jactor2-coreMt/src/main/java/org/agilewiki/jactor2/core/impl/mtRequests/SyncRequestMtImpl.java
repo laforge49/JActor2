@@ -45,7 +45,7 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
 
     @Override
     protected void processRequestMessage() throws Exception {
-        final MetricsTimer timer = targetReactor.getMetricsTimer("");
+        final MetricsTimer timer = targetReactor.getMetricsTimer("SOp."+getOpName());
         final long start = timer.nanos();
         boolean success = false;
         final RESPONSE_TYPE result;
