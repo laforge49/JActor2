@@ -34,6 +34,11 @@ public class SyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
+    public String getOpName() {
+        return asOperation().getOpName();
+    }
+
+    @Override
     public SyncOperation<RESPONSE_TYPE> asOperation() {
         return syncOperation;
     }

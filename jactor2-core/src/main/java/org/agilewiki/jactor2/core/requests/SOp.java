@@ -12,7 +12,7 @@ import org.agilewiki.jactor2.core.util.GwtIncompatible;
 public abstract class SOp<RESPONSE_TYPE> implements
         SyncOperation<RESPONSE_TYPE> {
     private static volatile int nextHash;
-    public final String opName;
+    private final String opName;
     public final ReactorBase targetReactor;
     /**
      * Our hashcode.
@@ -28,6 +28,11 @@ public abstract class SOp<RESPONSE_TYPE> implements
     public SOp(final String _opName, final Reactor _targetReactor) {
         opName = _opName;
         targetReactor = (ReactorBase) _targetReactor;
+    }
+
+    @Override
+    public String getOpName() {
+        return opName;
     }
 
     /**

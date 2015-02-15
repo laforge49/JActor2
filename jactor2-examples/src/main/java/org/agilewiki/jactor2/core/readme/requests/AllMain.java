@@ -58,7 +58,7 @@ class A1 extends AOp<Void> {
             final AsyncRequestImpl _asyncRequestImpl,
             final AsyncResponseProcessor<Void> _asyncResponseProcessor)
             throws Exception {
-        System.out.println(opName);
+        System.out.println(getOpName());
         _asyncResponseProcessor.processAsyncResponse(null);
     }
 }

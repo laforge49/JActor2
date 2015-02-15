@@ -12,12 +12,17 @@ import org.agilewiki.jactor2.core.util.GwtIncompatible;
 public abstract class AOp<RESPONSE_TYPE> implements
         AsyncOperation<RESPONSE_TYPE> {
     private static volatile int nextHash;
-    public final String opName;
+    private final String opName;
     public final ReactorBase targetReactor;
     /**
      * Our hashcode.
      */
     private final int hashCode = nextHash++;
+
+    @Override
+    public String getOpName() {
+        return opName;
+    }
 
     /**
      * Create an asynchronous operation.

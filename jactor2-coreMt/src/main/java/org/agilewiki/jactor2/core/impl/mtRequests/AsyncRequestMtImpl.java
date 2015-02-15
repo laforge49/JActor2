@@ -58,6 +58,11 @@ public class AsyncRequestMtImpl<RESPONSE_TYPE> extends
     }
 
     @Override
+    public String getOpName() {
+        return asOperation().getOpName();
+    }
+
+    @Override
     public AsyncOperation<RESPONSE_TYPE> asOperation() {
         return asyncOperation;
     }
