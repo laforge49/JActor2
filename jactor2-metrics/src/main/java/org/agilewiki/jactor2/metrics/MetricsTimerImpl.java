@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author monster
  */
-public class MTimer extends com.codahale.metrics.Timer implements MetricsTimer {
+public class MetricsTimerImpl extends com.codahale.metrics.Timer implements MetricsTimer {
     /**
      * We always use the default Clock
      */
@@ -44,7 +44,7 @@ public class MTimer extends com.codahale.metrics.Timer implements MetricsTimer {
     /**
      * The default Timer.
      */
-    public static final MTimer DEFAULT = get(Object.class);
+    public static final MetricsTimerImpl DEFAULT = get(Object.class);
 
     /**
      * The ConsoleReporter.
@@ -90,22 +90,22 @@ public class MTimer extends com.codahale.metrics.Timer implements MetricsTimer {
      * @param names the remaining elements of the name
      * @return A Timer using {@code type} and {@code names} concatenated by periods as "name".
      */
-    public static synchronized MTimer get(final Class<?> type,
-                                         final String... names) {
+    public static synchronized MetricsTimerImpl get(final Class<?> type,
+                                          final String... names) {
         final String name = MetricRegistry.name(type, names);
         final SortedMap<String, com.codahale.metrics.Timer> timers = REGISTRY
                 .getTimers();
         final com.codahale.metrics.Timer prev = timers.get(name);
-        final MTimer result;
+        final MetricsTimerImpl result;
         if (prev != null) {
-            if (!(prev instanceof MTimer)) {
+            if (!(prev instanceof MetricsTimerImpl)) {
                 throw new IllegalStateException("An instance of type "
                         + prev.getClass()
                         + " is already registered unter the name " + name);
             }
-            result = (MTimer) prev;
+            result = (MetricsTimerImpl) prev;
         } else {
-            result = new MTimer(name);
+            result = new MetricsTimerImpl(name);
             REGISTRY.register(name, result);
             REGISTRY.register(name + ".failed", result.failed);
         }
@@ -119,7 +119,7 @@ public class MTimer extends com.codahale.metrics.Timer implements MetricsTimer {
     /**
      * Creates a Timer.
      */
-    private MTimer(final String name) {
+    private MetricsTimerImpl(final String name) {
         this.name = name;
         failed = new Meter(CLOCK);
     }
