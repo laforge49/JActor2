@@ -1,5 +1,5 @@
 /**
- * <h3>Why JActor2</h3>
+ * <h3>Why JActor2?</h3>
  * <p>More and more, programs are mandated to use multiple threads. But there are issues...</p>
  * <ul>
  *     <li>High latency when passing data between threads.</li>
@@ -18,7 +18,7 @@
  *     for actors.</li>
  *     <li>Passing messages still comes with high latency, so small actors are discouraged.</li>
  * </ul>
- * <p>JActor addresses all these issues,
+ * <p>JActor2 addresses all these issues,
  * making it easy to write robust, high-performance software that scales vertically.</p>
  * <ul>
  *     <li>A <code>Blade</code> in JActor2 is a kind of actor, and processes one message at a time.
