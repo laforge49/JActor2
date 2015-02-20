@@ -7,6 +7,7 @@ import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 
 /**
  * Simulates I/O through the use of Thread.sleep().
+ * For a delay use DelayAOp instead, as it does not block the thread.
  */
 public class Delay extends BlockingBladeBase {
     /**
