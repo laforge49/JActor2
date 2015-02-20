@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.plant;
+package org.agilewiki.jactor2.core.plant.impl;
 
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantScheduler;
