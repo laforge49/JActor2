@@ -35,5 +35,7 @@
  *     if message processing completes without sending a response and there are no outstanding requests,
  *     then it can generally be assumed that there is an error.</li>
  * </ul>
+ * <p>for more information, see the JActor2
+ * <a href="https://github.com/laforge49/JActor2#readme" target="_blank">README</a> page.</p>
  */
 package org.agilewiki.jactor2;
