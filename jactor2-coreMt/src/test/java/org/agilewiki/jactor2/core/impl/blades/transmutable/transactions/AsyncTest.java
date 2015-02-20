@@ -7,7 +7,7 @@ import org.agilewiki.jactor2.core.blades.transmutable.transactions.TransmutableR
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.plant.DelayAOp;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 public class AsyncTest extends CallTestBase {
     public void testI() throws Exception {

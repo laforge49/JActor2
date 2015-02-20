@@ -2,9 +2,9 @@ package org.agilewiki.jactor2.core.readme.requests;
 
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
-import org.agilewiki.jactor2.core.requests.AOp;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.messages.AOp;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 
 public class AllMain {
     public static void main(final String[] _args) throws Exception {

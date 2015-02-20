@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.impl.mtMessages.RequestMtImpl;
+import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

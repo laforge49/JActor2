@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl;
 
 import junit.framework.TestCase;
-import org.agilewiki.jactor2.core.requests.AOp;
-import org.agilewiki.jactor2.core.requests.SOp;
+import org.agilewiki.jactor2.core.messages.AOp;
+import org.agilewiki.jactor2.core.messages.SOp;
 
 /**
  * Test code base class.

@@ -2,12 +2,12 @@ package org.agilewiki.jactor2.core.readme.blades;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.requests.AOp;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.SOp;
-import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.messages.AOp;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.ExceptionHandler;
+import org.agilewiki.jactor2.core.messages.SOp;
+import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 
 public class Account extends NonBlockingBladeBase {
     private int balance;

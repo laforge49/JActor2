@@ -3,9 +3,9 @@ package org.agilewiki.jactor2.core.blades.transmutable.transactions;
 import org.agilewiki.jactor2.core.blades.IsolationBlade;
 import org.agilewiki.jactor2.core.blades.transmutable.Transmutable;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
-import org.agilewiki.jactor2.core.requests.ExceptionHandler;
-import org.agilewiki.jactor2.core.requests.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.ExceptionHandler;
+import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 
 /**
  * A composable transaction for updating a TransmutableReference.

@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.metrics;
 
 import org.agilewiki.jactor2.core.impl.mtPlant.Recovery;
-import org.agilewiki.jactor2.core.util.MetricsTimer;
+import org.agilewiki.jactor2.core.plant.MetricsTimer;
 
 /**
  * Metrics class for managing failure detection and recovery.

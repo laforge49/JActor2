@@ -3,8 +3,8 @@ package org.agilewiki.jactor2.core.readme.reactors;
 import org.agilewiki.jactor2.core.blades.ThreadBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.ThreadBoundReactor;
-import org.agilewiki.jactor2.core.requests.SIOp;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.messages.SIOp;
+import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 
 public class ThreadBoundReactorSample {
 

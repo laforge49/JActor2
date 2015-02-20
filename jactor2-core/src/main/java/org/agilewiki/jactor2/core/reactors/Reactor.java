@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.reactors;
 
 import org.agilewiki.jactor2.core.blades.Blade;
-import org.agilewiki.jactor2.core.closeable.Closeable;
+import org.agilewiki.jactor2.core.reactors.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.requests.SOp;
-import org.agilewiki.jactor2.core.util.MetricsTimer;
+import org.agilewiki.jactor2.core.messages.SOp;
+import org.agilewiki.jactor2.core.plant.MetricsTimer;
 
 /**
  * <p>

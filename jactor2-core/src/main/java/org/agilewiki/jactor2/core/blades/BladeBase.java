@@ -2,7 +2,7 @@ package org.agilewiki.jactor2.core.blades;
 
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.requests.*;
+import org.agilewiki.jactor2.core.messages.*;
 
 /**
  * Optional base class for blades.

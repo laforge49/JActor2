@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.blades.transmutable.transactions;
 
 import org.agilewiki.jactor2.core.blades.transmutable.Transmutable;
-import org.agilewiki.jactor2.core.requests.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 
 /**
  * A synchronous operation to be applied to a TransmutableReference.

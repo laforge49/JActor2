@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.BlockingBlade;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
-import org.agilewiki.jactor2.core.util.GwtIncompatible;
+import org.agilewiki.jactor2.core.GwtIncompatible;
 
 /**
  * Process requests/responses which may block the thread or tie it up with a long computation.

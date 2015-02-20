@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.util.GwtIncompatible;
+import org.agilewiki.jactor2.core.GwtIncompatible;
 
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import org.agilewiki.jactor2.core.util.MetricsTimer;
+import org.agilewiki.jactor2.core.plant.MetricsTimer;
 
 public class DummyMetricsTimer implements MetricsTimer {
     private final static DummyMetricsTimer DEFAULT = new DummyMetricsTimer();

@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.blades.ThreadBoundBlade;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.util.GwtIncompatible;
+import org.agilewiki.jactor2.core.GwtIncompatible;
 
 /**
  * A reactor bound to a pre-existing thread.

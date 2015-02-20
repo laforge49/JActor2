@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.blades.filters;
 
-import org.agilewiki.jactor2.core.util.GwtIncompatible;
+import org.agilewiki.jactor2.core.GwtIncompatible;
 
 /**
  * Used to select content of a particular class.

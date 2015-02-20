@@ -2,8 +2,8 @@ package org.agilewiki.jactor2.core.impl;
 
 import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.reactors.BlockingReactor;
-import org.agilewiki.jactor2.core.requests.SOp;
-import org.agilewiki.jactor2.core.requests.impl.RequestImpl;
+import org.agilewiki.jactor2.core.messages.SOp;
+import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 
 /**
  * Simulates I/O through the use of Thread.sleep().

@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
-import org.agilewiki.jactor2.core.impl.mtRequests.RequestMtImpl;
+import org.agilewiki.jactor2.core.impl.mtMessages.RequestMtImpl;
 
 import java.util.ArrayDeque;
 import java.util.IdentityHashMap;
