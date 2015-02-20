@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.impl.mtMessages.AsyncRequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtMessages.AsyncRequestMtImplWithData;
 import org.agilewiki.jactor2.core.impl.mtMessages.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtMessages.SyncRequestMtImplWithData;
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
+import org.agilewiki.jactor2.core.plant.impl.PlantScheduler;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Facility;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;

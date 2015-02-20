@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.messages.ExceptionHandler;
 import org.agilewiki.jactor2.core.messages.SOp;
-import org.agilewiki.jactor2.core.plant.MetricsTimer;
+import org.agilewiki.jactor2.core.plant.impl.MetricsTimer;
 
 /**
  * Base class for internal reactor implementations.

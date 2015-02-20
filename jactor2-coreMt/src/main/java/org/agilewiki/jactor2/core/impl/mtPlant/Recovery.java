@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtMessages.RequestMtImpl;
 import org.agilewiki.jactor2.core.plant.PlantBase;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
-import org.agilewiki.jactor2.core.plant.MetricsTimer;
+import org.agilewiki.jactor2.core.plant.impl.MetricsTimer;
 
 /**
  * Base class for managing failure detection and recovery.

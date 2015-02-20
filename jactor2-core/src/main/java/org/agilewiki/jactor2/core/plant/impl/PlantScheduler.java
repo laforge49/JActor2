@@ -1,4 +1,4 @@
-package org.agilewiki.jactor2.core.plant;
+package org.agilewiki.jactor2.core.plant.impl;
 
 /**
  * A scheduler for Plant, created by PlantConfiguration.

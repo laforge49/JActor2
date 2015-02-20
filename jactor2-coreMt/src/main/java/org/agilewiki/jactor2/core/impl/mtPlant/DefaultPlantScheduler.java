@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtPlant;
 
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
+import org.agilewiki.jactor2.core.plant.impl.PlantScheduler;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;

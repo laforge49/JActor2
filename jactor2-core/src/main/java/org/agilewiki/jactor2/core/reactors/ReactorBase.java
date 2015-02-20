@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.reactors.closeable.impl.CloseableImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.messages.SOp;
-import org.agilewiki.jactor2.core.plant.MetricsTimer;
+import org.agilewiki.jactor2.core.plant.impl.MetricsTimer;
 
 /**
  * Base class for reactors.

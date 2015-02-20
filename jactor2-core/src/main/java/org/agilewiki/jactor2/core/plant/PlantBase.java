@@ -1,6 +1,7 @@
 package org.agilewiki.jactor2.core.plant;
 
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
+import org.agilewiki.jactor2.core.plant.impl.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.Facility;
 
 /**

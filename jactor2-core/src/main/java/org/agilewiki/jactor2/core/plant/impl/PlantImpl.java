@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.plant.impl;
 
 import org.agilewiki.jactor2.core.reactors.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.closeable.impl.CloseableImpl;
-import org.agilewiki.jactor2.core.plant.PlantScheduler;
 import org.agilewiki.jactor2.core.reactors.Facility;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.Reactor;

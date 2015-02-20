@@ -19,7 +19,7 @@ import com.codahale.metrics.Clock;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
-import org.agilewiki.jactor2.core.plant.MetricsTimer;
+import org.agilewiki.jactor2.core.plant.impl.MetricsTimer;
 
 import java.util.SortedMap;
 import java.util.concurrent.Callable;

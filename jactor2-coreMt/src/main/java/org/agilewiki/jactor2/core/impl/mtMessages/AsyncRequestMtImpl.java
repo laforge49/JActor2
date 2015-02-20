@@ -8,7 +8,7 @@ import org.agilewiki.jactor2.core.messages.*;
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.messages.impl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
-import org.agilewiki.jactor2.core.plant.MetricsTimer;
+import org.agilewiki.jactor2.core.plant.impl.MetricsTimer;
 
 import java.util.ArrayList;
 import java.util.Collections;
