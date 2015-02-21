@@ -4,8 +4,8 @@ import org.agilewiki.jactor2.core.blades.NamedBlade;
 import org.agilewiki.jactor2.core.blades.pubSub.SubscribeAOp;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.reactors.Facility;
-import org.agilewiki.jactor2.core.reactors.RegistrationNotification;
+import org.agilewiki.jactor2.core.reactors.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.facilities.RegistrationNotification;
 
 public class RegistrationTest extends CallTestBase {
     public void test1() throws Exception {

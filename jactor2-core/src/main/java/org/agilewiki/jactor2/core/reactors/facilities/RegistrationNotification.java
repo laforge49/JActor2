@@ -1,6 +1,7 @@
-package org.agilewiki.jactor2.core.reactors;
+package org.agilewiki.jactor2.core.reactors.facilities;
 
 import org.agilewiki.jactor2.core.blades.NamedBlade;
+import org.agilewiki.jactor2.core.reactors.facilities.Facility;
 
 /**
  * Notification that a blade has registered/unregistered.
