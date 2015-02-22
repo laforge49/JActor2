@@ -1,9 +1,9 @@
 package org.agilewiki.jactor2.core.impl.messages;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.messages.SOp;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 /**
  * Test code.

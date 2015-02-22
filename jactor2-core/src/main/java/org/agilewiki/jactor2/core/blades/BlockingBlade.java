@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
-import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 import org.agilewiki.jactor2.core.GwtIncompatible;
+import org.agilewiki.jactor2.core.reactors.BlockingReactor;
 
 /**
  * <p>

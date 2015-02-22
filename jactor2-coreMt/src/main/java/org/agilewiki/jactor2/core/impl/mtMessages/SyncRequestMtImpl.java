@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.impl.mtMessages;
 
-import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.messages.SyncNativeRequest;
 import org.agilewiki.jactor2.core.messages.SyncOperation;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 import org.agilewiki.jactor2.core.plant.impl.MetricsTimer;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * Internal implementation of a SyncRequest.

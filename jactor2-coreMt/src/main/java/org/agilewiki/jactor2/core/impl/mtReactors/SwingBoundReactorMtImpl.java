@@ -1,7 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 
 import javax.swing.*;

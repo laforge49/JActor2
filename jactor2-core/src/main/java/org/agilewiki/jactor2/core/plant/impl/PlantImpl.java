@@ -1,17 +1,17 @@
 package org.agilewiki.jactor2.core.plant.impl;
 
-import org.agilewiki.jactor2.core.reactors.closeable.Closeable;
-import org.agilewiki.jactor2.core.reactors.closeable.impl.CloseableImpl;
-import org.agilewiki.jactor2.core.reactors.facilities.Facility;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
-import org.agilewiki.jactor2.core.reactors.Reactor;
-import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 import org.agilewiki.jactor2.core.messages.AsyncOperation;
 import org.agilewiki.jactor2.core.messages.AsyncRequestImplWithData;
 import org.agilewiki.jactor2.core.messages.SyncOperation;
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 import org.agilewiki.jactor2.core.messages.impl.RequestImplWithData;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
+import org.agilewiki.jactor2.core.reactors.Reactor;
+import org.agilewiki.jactor2.core.reactors.closeable.Closeable;
+import org.agilewiki.jactor2.core.reactors.closeable.impl.CloseableImpl;
+import org.agilewiki.jactor2.core.reactors.facilities.Facility;
+import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 
 /**
  * Internal implementation for Plant.

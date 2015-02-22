@@ -2,10 +2,10 @@ package org.agilewiki.jactor2.core.readme.reactors;
 
 import org.agilewiki.jactor2.core.blades.SwingBoundBladeBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 import org.agilewiki.jactor2.core.messages.AIOp;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 
 import javax.swing.*;
 

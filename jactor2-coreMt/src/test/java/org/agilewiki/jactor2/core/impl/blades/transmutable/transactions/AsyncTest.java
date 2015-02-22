@@ -6,8 +6,8 @@ import org.agilewiki.jactor2.core.blades.transmutable.transactions.SyncTransacti
 import org.agilewiki.jactor2.core.blades.transmutable.transactions.TransmutableReference;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.plant.DelayAOp;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
+import org.agilewiki.jactor2.core.plant.DelayAOp;
 
 public class AsyncTest extends CallTestBase {
     public void testI() throws Exception {

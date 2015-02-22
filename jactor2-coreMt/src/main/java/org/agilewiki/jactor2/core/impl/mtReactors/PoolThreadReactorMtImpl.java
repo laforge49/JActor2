@@ -1,8 +1,8 @@
 package org.agilewiki.jactor2.core.impl.mtReactors;
 
+import org.agilewiki.jactor2.core.impl.mtMessages.RequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtPlant.PlantMtImpl;
 import org.agilewiki.jactor2.core.impl.mtPlant.ReactorPoolThread;
-import org.agilewiki.jactor2.core.impl.mtMessages.RequestMtImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
 

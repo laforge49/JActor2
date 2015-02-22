@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.blades;
 
-import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 import org.agilewiki.jactor2.core.GwtIncompatible;
+import org.agilewiki.jactor2.core.reactors.SwingBoundReactor;
 
 /**
  * A swing-bound blade processes the requests and responses that it receives

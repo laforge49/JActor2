@@ -1,7 +1,7 @@
 package org.agilewiki.jactor2.core.reactors.closeable.impl;
 
-import org.agilewiki.jactor2.core.reactors.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
+import org.agilewiki.jactor2.core.reactors.closeable.Closeable;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;
 
 import java.util.concurrent.ConcurrentHashMap;

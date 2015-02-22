@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.messages;
 
+import org.agilewiki.jactor2.core.GwtIncompatible;
+import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorBase;
-import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
-import org.agilewiki.jactor2.core.GwtIncompatible;
 
 /**
  * A synchronous operation, optionally used to define a SyncRequest.

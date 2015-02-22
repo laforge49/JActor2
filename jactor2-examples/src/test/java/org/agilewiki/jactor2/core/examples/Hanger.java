@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.core.examples;
 
 import org.agilewiki.jactor2.core.blades.NonBlockingBladeBase;
-import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 import org.agilewiki.jactor2.core.messages.SIOp;
 import org.agilewiki.jactor2.core.messages.SOp;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.NonBlockingReactor;
 
 class Hanger extends NonBlockingBladeBase {
     Hanger() throws Exception {

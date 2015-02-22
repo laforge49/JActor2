@@ -15,9 +15,9 @@
  */
 package org.agilewiki.jactor2.core.impl.mtMessages;
 
-import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.messages.AsyncOperation;
 import org.agilewiki.jactor2.core.messages.AsyncRequestImplWithData;
+import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
  * Internal implementation of AsyncRequest, with user payload.

@@ -4,10 +4,10 @@ import org.agilewiki.jactor2.core.blades.BlockingBladeBase;
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
 import org.agilewiki.jactor2.core.impl.CallTestBase;
 import org.agilewiki.jactor2.core.impl.Plant;
-import org.agilewiki.jactor2.core.plant.DelayAOp;
 import org.agilewiki.jactor2.core.messages.AOp;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
+import org.agilewiki.jactor2.core.plant.DelayAOp;
 
 public class ICloseTest extends CallTestBase {
     public void testa() throws Exception {

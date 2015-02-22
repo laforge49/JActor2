@@ -2,7 +2,6 @@ package org.agilewiki.jactor2.core.impl.mtPlant;
 
 import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
 import org.agilewiki.jactor2.core.impl.mtReactors.PoolThreadReactorMtImpl;
-import org.agilewiki.jactor2.core.reactors.impl.PoolThreadReactorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

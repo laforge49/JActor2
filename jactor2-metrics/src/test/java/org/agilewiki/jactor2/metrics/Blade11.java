@@ -1,10 +1,10 @@
 package org.agilewiki.jactor2.metrics;
 
 import org.agilewiki.jactor2.core.blades.IsolationBladeBase;
-import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
+import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
 /**
  * Test code.
