@@ -1,10 +1,6 @@
 package org.agilewiki.jactor2.core.reactors.facilities;
 
 import org.agilewiki.jactor2.core.blades.NamedBlade;
-import org.agilewiki.jactor2.core.blades.pubSub.RequestBus;
-import org.agilewiki.jactor2.core.blades.transmutable.tssmTransactions.TSSMap;
-import org.agilewiki.jactor2.core.messages.SOp;
-import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 import org.agilewiki.jactor2.core.plant.impl.PlantImpl;
 import org.agilewiki.jactor2.core.reactors.IsolationReactor;
 
@@ -16,11 +12,6 @@ import java.util.SortedMap;
 public class Facility extends IsolationReactor implements NamedBlade {
     public final String name;
 
-    private volatile SortedMap<String, NamedBlade> namedBlades = new TSSMap();
-    protected TSSMap<NamedBlade> namedBladesTransmutable = new TSSMap();
-
-    public final RequestBus<RegistrationNotification> registrationNotifier;
-
     /**
      * Create a facility with the Plant internal reactor as the parent.
      *
@@ -28,7 +19,6 @@ public class Facility extends IsolationReactor implements NamedBlade {
      */
     public Facility(final String _name) throws Exception {
         name = _name;
-        registrationNotifier = new RequestBus<RegistrationNotification>(this);
     }
 
     /**
@@ -41,7 +31,6 @@ public class Facility extends IsolationReactor implements NamedBlade {
             throws Exception {
         super(_parentReactor);
         name = _name;
-        registrationNotifier = new RequestBus<RegistrationNotification>(this);
     }
 
     /**
@@ -55,7 +44,6 @@ public class Facility extends IsolationReactor implements NamedBlade {
                     final int _initialLocalQueueSize) throws Exception {
         super(_initialOutboxSize, _initialLocalQueueSize);
         name = _name;
-        registrationNotifier = new RequestBus<RegistrationNotification>(this);
     }
 
     /**
@@ -71,7 +59,6 @@ public class Facility extends IsolationReactor implements NamedBlade {
             throws Exception {
         super(null, _initialOutboxSize, _initialLocalQueueSize);
         name = _name;
-        registrationNotifier = new RequestBus<RegistrationNotification>(this);
     }
 
     @Override
@@ -100,59 +87,5 @@ public class Facility extends IsolationReactor implements NamedBlade {
                         + PlantImpl.PLANT_INTERNAL_FACILITY_NAME);
             }
         }
-    }
-
-    public SortedMap<String, NamedBlade> getNamedBlades() {
-        return namedBlades;
-    }
-
-    /**
-     * A request to unregister the named blade. The result of the request is
-     * the unregistered blade, or null.
-     *
-     * @param _name The name of the blade.
-     * @return The request to unregister.
-     */
-    public SOp<NamedBlade> unregisterBladeSOp(final String _name) {
-        return new SOp<NamedBlade>("unregisterBlade", Facility.this) {
-            @Override
-            protected NamedBlade processSyncOperation(RequestImpl _requestImpl) throws Exception {
-                final NamedBlade removed = namedBladesTransmutable.remove(_name);
-                if (removed != null) {
-                    namedBlades = namedBladesTransmutable.createUnmodifiable();
-                    registrationNotifier.signalContent(
-                            new RegistrationNotification(Facility.this, _name, null), Facility.this);
-                }
-                return removed;
-            }
-        };
-    }
-
-    /**
-     * A request to register a blade. The request throws an IllegalStateException
-     * if the name is a duplicate.
-     * An IllegalArgumentException is thrown if the name is invalid.
-     *
-     * @param _blade The blade being registered.
-     * @return The request to register.
-     */
-    public SOp<Void> registerBladeSOp(final NamedBlade _blade) {
-        String name = _blade.getName();
-        validateName(name);
-        return new SOp<Void>("registerBlade", getReactor()) {
-            @Override
-            protected Void processSyncOperation(RequestImpl _requestImpl) throws Exception {
-                String name = _blade.getName();
-                final NamedBlade oldBlade = namedBladesTransmutable.get(name);
-                if (oldBlade != null) {
-                    throw new IllegalArgumentException("duplicate blade name");
-                }
-                namedBladesTransmutable.put(name, _blade);
-                namedBlades = namedBladesTransmutable.createUnmodifiable();
-                registrationNotifier.signalContent(
-                        new RegistrationNotification(Facility.this, name, _blade), Facility.this);
-                return null;
-            }
-        };
     }
 }
