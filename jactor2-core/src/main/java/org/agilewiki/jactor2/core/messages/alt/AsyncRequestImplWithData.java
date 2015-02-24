@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.agilewiki.jactor2.core.messages;
+package org.agilewiki.jactor2.core.messages.alt;
 
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.messages.impl.RequestImplWithData;

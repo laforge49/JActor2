@@ -4,7 +4,7 @@ import org.agilewiki.jactor2.core.GwtIncompatible;
 import org.agilewiki.jactor2.core.messages.AsyncResponseProcessor;
 import org.agilewiki.jactor2.core.messages.Operation;
 import org.agilewiki.jactor2.core.messages.SOp;
-import org.agilewiki.jactor2.core.messages.SyncNativeRequest;
+import org.agilewiki.jactor2.core.messages.alt.SyncNativeRequest;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 import org.agilewiki.jactor2.core.reactors.ReactorClosedException;
 import org.agilewiki.jactor2.core.reactors.impl.ReactorImpl;

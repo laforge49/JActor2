@@ -5,6 +5,7 @@ import org.agilewiki.jactor2.core.impl.mtReactors.IsolationReactorMtImpl;
 import org.agilewiki.jactor2.core.impl.mtReactors.MigrationException;
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.messages.alt.SyncNativeRequest;
 import org.agilewiki.jactor2.core.messages.impl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 import org.agilewiki.jactor2.core.messages.impl.SignalResponseProcessor;

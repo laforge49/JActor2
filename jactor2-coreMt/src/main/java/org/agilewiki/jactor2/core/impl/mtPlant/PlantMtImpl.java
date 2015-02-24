@@ -6,7 +6,7 @@ import org.agilewiki.jactor2.core.impl.mtMessages.SyncRequestMtImpl;
 import org.agilewiki.jactor2.core.impl.mtMessages.SyncRequestMtImplWithData;
 import org.agilewiki.jactor2.core.impl.mtReactors.*;
 import org.agilewiki.jactor2.core.messages.AsyncOperation;
-import org.agilewiki.jactor2.core.messages.AsyncRequestImplWithData;
+import org.agilewiki.jactor2.core.messages.alt.AsyncRequestImplWithData;
 import org.agilewiki.jactor2.core.messages.SyncOperation;
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;

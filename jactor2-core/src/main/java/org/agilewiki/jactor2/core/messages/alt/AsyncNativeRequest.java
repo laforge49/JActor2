@@ -1,5 +1,6 @@
-package org.agilewiki.jactor2.core.messages;
+package org.agilewiki.jactor2.core.messages.alt;
 
+import org.agilewiki.jactor2.core.messages.AsyncOperation;
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 
 /**

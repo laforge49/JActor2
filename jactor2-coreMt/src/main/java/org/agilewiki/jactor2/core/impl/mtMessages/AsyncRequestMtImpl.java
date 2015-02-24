@@ -2,6 +2,8 @@ package org.agilewiki.jactor2.core.impl.mtMessages;
 
 import org.agilewiki.jactor2.core.impl.mtReactors.ReactorMtImpl;
 import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.messages.alt.AsyncNativeRequest;
+import org.agilewiki.jactor2.core.messages.alt.SyncNativeRequest;
 import org.agilewiki.jactor2.core.messages.impl.AsyncRequestImpl;
 import org.agilewiki.jactor2.core.messages.impl.OneWayResponseProcessor;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;

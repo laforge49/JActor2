@@ -1,6 +1,6 @@
 package org.agilewiki.jactor2.core.impl.mtMessages;
 
-import org.agilewiki.jactor2.core.messages.SyncNativeRequest;
+import org.agilewiki.jactor2.core.messages.alt.SyncNativeRequest;
 import org.agilewiki.jactor2.core.messages.SyncOperation;
 import org.agilewiki.jactor2.core.messages.impl.RequestImpl;
 import org.agilewiki.jactor2.core.plant.impl.MetricsTimer;

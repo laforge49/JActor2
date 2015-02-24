@@ -1,6 +1,8 @@
 package org.agilewiki.jactor2.core.messages.impl;
 
 import org.agilewiki.jactor2.core.messages.*;
+import org.agilewiki.jactor2.core.messages.alt.AsyncNativeRequest;
+import org.agilewiki.jactor2.core.messages.alt.SyncNativeRequest;
 
 public interface AsyncRequestImpl<RESPONSE_TYPE> extends
         RequestImpl<RESPONSE_TYPE>, AsyncResponseProcessor<RESPONSE_TYPE> {

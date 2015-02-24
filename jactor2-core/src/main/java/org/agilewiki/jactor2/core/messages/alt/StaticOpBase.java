@@ -1,6 +1,7 @@
-package org.agilewiki.jactor2.core.messages;
+package org.agilewiki.jactor2.core.messages.alt;
 
 import org.agilewiki.jactor2.core.blades.Blade;
+import org.agilewiki.jactor2.core.messages.Operation;
 import org.agilewiki.jactor2.core.messages.impl.RequestImplWithData;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 

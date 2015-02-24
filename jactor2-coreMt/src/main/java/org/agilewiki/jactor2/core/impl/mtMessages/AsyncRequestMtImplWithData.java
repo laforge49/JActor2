@@ -16,7 +16,7 @@
 package org.agilewiki.jactor2.core.impl.mtMessages;
 
 import org.agilewiki.jactor2.core.messages.AsyncOperation;
-import org.agilewiki.jactor2.core.messages.AsyncRequestImplWithData;
+import org.agilewiki.jactor2.core.messages.alt.AsyncRequestImplWithData;
 import org.agilewiki.jactor2.core.reactors.Reactor;
 
 /**
