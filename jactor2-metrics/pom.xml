@@ -31,6 +31,16 @@
                 <configuration>
                     <includePom>true</includePom>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <!-- GWT archetype uses: <phase>package</phase><goal>jar-no-fork</goal> -->
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
