@@ -12,7 +12,7 @@
  * <ul>
  *     <li>Actors employ asynchronous messaging,
  *     so there is no assurance that a response will be returned for a request.
- *     and timerouts tend to create additional load when the failure is due to high load.
+ *     and timeouts tend to create additional load when the failure is due to high load.
  *     So the resulting code tends to be complex.</li>
  *     <li>Datalocks can still occur, and there is no equivalent to CycleDetectingLockFactory
  *     for actors.</li>
